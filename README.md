@@ -52,7 +52,7 @@ Currently documentation in progress.
   * Config Writer
   * Html Tokenizer
 * ODM
-  * Documents
+  * Document
   * Aggregations
   * Compositions
   * UML Export
