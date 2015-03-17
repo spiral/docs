@@ -1,10 +1,10 @@
-# Spiral Framework Documentation
-This repository contains set of documentation files used to describe different aspects of developing application with Spiral Framework.
+# Documentation for Spiral Framework
+This repository contains a set of documentation files used to describe different aspects of developing an application using the Spiral Framework.
 
-Currently documentation in progress.
+This documentation is a living and breathing piece of work and is updated constantly to add more information and know how.
 
 #Table of Contents
-* Installation and Requiments 
+* Installation and Requirements 
 * Architecture Overview
 * Core
   * IoC and Controllable Injections
@@ -32,13 +32,13 @@ Currently documentation in progress.
 * Data Entity Model
   * Accessors
 * Console Commands
-  * Creating console command
+  * Creating Console Commands
 * Debugging and Profiling
   * Profiler Module
   * Logger
 * Cache
 * Modules
-  * Creating new Module
+  * Creating a New Module
 * Image Manipulations
 * Tokenizer
   * PHP Isolator and Fixer
@@ -50,7 +50,7 @@ Currently documentation in progress.
 * Support Classes
   * Reactor (Documentator)
   * Config Writer
-  * Html Tokenizer
+  * HTML Tokenizer
 * ODM
   * Document
   * Aggregations
