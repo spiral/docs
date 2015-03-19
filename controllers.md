@@ -16,6 +16,7 @@ class HomeController extends Controller
 }
 ```
 Default location for new controllers is application/classes/Controllers under namespace `Controllers`. 
+Every controller should extend `Spiral\Core\Controller` or any of it's child.
 
 ##Actions
 Any real controller should contain at least one action, and (recommendedly) default action (by default 
