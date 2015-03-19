@@ -117,3 +117,5 @@ public function index($id, Database $defult)
 
 }
 ```
+##Controllers and HTTP
+To get more information how to route to controllers and generate responses read HTTP section.
