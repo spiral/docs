@@ -19,7 +19,7 @@ The default location for new controllers is application/classes/Controllers unde
 Every controller should extend `Spiral\Core\Controller` or any of it's children.
 
 ##Actions
-Any real controller should contain at least one action and as default action (recommended) (by default 
+Any real controller should contain at least one action and/or default controller action (recommended) (by default 
 `index`). The definition of an action is the same as defining public class method:
 ```php
 <?php
