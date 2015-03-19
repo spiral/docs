@@ -58,7 +58,7 @@ public function index()
    return $this->core->callAction('Controllers\HomeController', 'action', ['name' => 'John']);
 }
 ```
-Executig such controller action without all required parameters will cause `ClientException`. As most
+Executing such controller action without all required parameters will cause `ClientException`. As most
  of the time controllers called via http `Router` parameters will be populated using route optional 
  segments.
 ```php
