@@ -11,6 +11,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * Component Traits
   * Controllers
   * Events
+  * Configuration
 * DBAL
   * Configuration
   * Accessing Databases and Tables
