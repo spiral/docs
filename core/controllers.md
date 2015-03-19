@@ -1,10 +1,10 @@
 # Controllers
-Spiral controller is independend application part which can have multiple enterpoints (actions). 
-Controllers can be called under any evrionment and return any type of response. Most commonly controllers
- used are target for Http Router.
+Spiral controller is an seperate application part which can have multiple entry points (actions). 
+Controllers can be called under any environment and return any type of response. Most commonly controllers
+are used as target for http Router.
 
 ## Definition
-Definition of controller includes simple class creation in any reachable location (PSR-4 compatible):
+The definition of a controller includes a simple class creation in any accessible location (PSR-4 compatible):
 ```php
 <?php
 namespace Controllers;
@@ -15,12 +15,12 @@ class HomeController extends Controller
     //Controller action  
 }
 ```
-Default location for new controllers is application/classes/Controllers under namespace `Controllers`. 
-Every controller should extend `Spiral\Core\Controller` or any of it's child.
+The default location for new controllers is application/classes/Controllers under namespace `Controllers`. 
+Every controller should extend `Spiral\Core\Controller` or any of it's children.
 
 ##Actions
-Any real controller should contain at least one action, and (recommendedly) default action (by default 
-`index`). Definition of action is the same as defining public class method:
+Any real controller should contain at least one action and as default action (recommended) (by default 
+`index`). The definition of an action is the same as defining public class method:
 ```php
 <?php
 namespace Controllers;
@@ -36,9 +36,9 @@ class HomeController extends Controller
 ```
 
 ##Executing controller actions
-Even if controllers usually executed as result of routing, you can call any controller action by 
-using `Core` method `callAction`. This method will accept controller class name, action name (method)
- and set of parameters will be passed to controller method. Parameters will be automatically matched
+Even if the controllers is executed as result of routing, you can call any controller action by 
+using the `Core` method `callAction`. This method will accept the controller class name, action name (method)
+ and the set of parameters will be passed to the controller method. Parameters will automatically be matched
   with appropriate argument name in method definition.
 ```php
 public function action($name, $value = 'default') 
@@ -48,7 +48,7 @@ public function action($name, $value = 'default')
     return "This is controller response.";
 }
 ```
-To execute such action we are going to call `Core` directly:
+To execute such action we will call `Core` directly:
 ```php
 Core::getInstance()->callAction('Controllers\HomeController', 'action', ['name' => 'John']);
 ```
@@ -59,8 +59,8 @@ public function index()
    return $this->core->callAction('Controllers\HomeController', 'action', ['name' => 'John']);
 }
 ```
-Executing such controller action without all required parameters will cause `ClientException`. As most
- of the time controllers called via http `Router` parameters will be populated using route optional 
+Executing this controller action without all the required parameters will return `ClientException`. Most
+ of the time, the controllers are called via http `Router`. Parameters will be populated using route optional 
  segments.
 ```php
 public function bootstrap()
@@ -108,7 +108,7 @@ class HomeController extends Controller
     }
 }
 ```
-> **Attention:** Action parameters can be combined with IoC, however controller will always prefer 
+> **Attention:** Action parameters can be combined with IoC. However, controller prefers 
 parameter over injection.
 
 ```php
@@ -118,4 +118,4 @@ public function index($id, Database $defult)
 }
 ```
 ##Controllers and HTTP
-To get more information how to route to controllers and generate responses read HTTP section.
+For more information on routing to controllers and generating responses, read HTTP section.
