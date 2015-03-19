@@ -1,5 +1,5 @@
 # Controllers
-Spiral controller is an seperate application part which can have multiple entry points (actions). 
+Spiral controller is an separate application part which can have multiple entry points (actions). 
 Controllers can be called under any environment and return any type of response. Most commonly controllers
 are used as target for http Router.
 
