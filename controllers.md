@@ -111,7 +111,6 @@ class HomeController extends Controller
 parameter over injection.
 
 ```php
-<?php
 public function index($id, Database $defult)
 {
 
