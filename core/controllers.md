@@ -44,7 +44,7 @@ using `Core` method `callAction`. This method will accept controller class name,
 public function action($name, $value = 'default') 
 {
     dump($name);
-    dumP($value);
+    dump($value);
     return "This is controller response.";
 }
 ```
