@@ -24,8 +24,8 @@ class Test2 extends Test
 }
 
 Core::bing("Test", "Test2");
-Test::getAlias();  //Test
-Test2::getAlias(); //Test2
+Test::getAlias();  //"Test"
+Test2::getAlias(); //"Test2"
 Test::make();      //Return instance of Test2
 ```
 Additionally `make` method inject provided parameters in class constructor.
@@ -157,8 +157,8 @@ public function action(Test $testA, Test2 $testE)
 ```
 Attention, behaviour of `getAlias` method will be changed:
 ```php
-Test::getAlias();  //Test
-Test2::getAlias(); //Test (!)
+Test::getAlias();  //"Test"
+Test2::getAlias(); //"Test" (!)
 ```
 ## Convert existed class to Component
 You can convert existed class to become component by simply adding trait `Spiral\Core\Component\ComponentTrait`.

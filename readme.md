@@ -23,8 +23,9 @@ This documentation is a living and breathing piece of work and is updated consta
   * Templater
 * Encryption
 * HTTP
+  * Request
+  * Response
   * Middlewares and Filters
-  * Request and Response
   * Routing
   * Cookies
 * Session
