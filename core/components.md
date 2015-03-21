@@ -139,6 +139,11 @@ Singletons follow container bindings:
 Container::bind("Test", "Test2");
 ```
 ```php
+class Test2 extends Test
+{
+}
+```
+```php
 public function action(Test $testA, Test2 $testE)
 {
     $testB = Test::make();
