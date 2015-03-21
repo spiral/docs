@@ -8,8 +8,8 @@ This documentation is a living and breathing piece of work and is updated consta
 * Architecture Overview
 * Core
   * IoC and Controllable Injections
-  * Components and Traits
-  * Controllers
+  * [Components and Traits] (core/components.md)
+  * [Controllers] (core/controllers.md)
   * Events
   * Configuration
 * DBAL
