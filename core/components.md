@@ -23,9 +23,9 @@ class Test2 extends Test
 {
 }
 
-Core::bing("Test", "Test2");
 Test::getAlias();  //"Test"
 Test2::getAlias(); //"Test2"
+Core::bind("Test", "Test2");
 Test::make();      //Return instance of Test2
 ```
 Additionally `make` method inject provided parameters in class constructor.
