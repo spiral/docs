@@ -141,7 +141,7 @@ Core::bind("Test", "Test2");
 ```php
 public function action(Test $testA, Test2 $testE)
 {
-   $testB = Test::make();
+    $testB = Test::make();
     $testC = Test::getInstance();
     $testD = Container::get('Test');
     $testF = Container::get('Test2');
@@ -155,7 +155,7 @@ public function action(Test $testA, Test2 $testE)
     assert($testA instanceof Test2);
 }
 ```
-But behaviour of `getAlias` method will be changed:
+Attention, behaviour of `getAlias` method will be changed:
 ```php
 Test::getAlias();  //Test
 Test2::getAlias(); //Test (!)
