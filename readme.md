@@ -8,7 +8,7 @@ This documentation is a living and breathing piece of work and is updated consta
 * Architecture Overview
 * Core
   * IoC and Controllable Injections
-  * Component Traits
+  * Components and Traits
   * Controllers
   * Events
   * Configuration

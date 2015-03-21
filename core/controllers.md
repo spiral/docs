@@ -18,7 +18,7 @@ class HomeController extends Controller
 The default location for new controllers is application/classes/Controllers under namespace `Controllers`. 
 Every controller should extend `Spiral\Core\Controller` or any of it's children.
 
-##Actions
+## Actions
 Any real controller should contain at least one action and/or default controller action (recommended) (by default 
 `index`). The definition of an action is the same as defining public class method:
 ```php
@@ -35,11 +35,11 @@ class HomeController extends Controller
 }
 ```
 
-##Executing controller actions
+## Executing controller actions
 Even if the controllers is executed as result of routing, you can call any controller action by 
-using the `Core` method `callAction`. This method will accept the controller class name, action name (method)
- and the set of parameters will be passed to the controller method. Parameters will automatically be matched
-  with appropriate argument name in method definition.
+using the `Core` method `callAction`. This method will accept the controller class name, action name
+(method) and the set of parameters will be passed to the controller method. Parameters will automatically
+be matched with appropriate argument name in method definition.
 ```php
 public function action($name, $value = 'default') 
 {
@@ -59,9 +59,9 @@ public function index()
    return $this->core->callAction('Controllers\HomeController', 'action', ['name' => 'John']);
 }
 ```
-Executing this controller action without all the required parameters will return `ClientException`. Most
- of the time, the controllers are called via http `Router`. Parameters will be populated using route optional 
- segments.
+Executing this controller action without all the required parameters will return `ClientException`. 
+Most of the time, the controllers are called via http `Router`. Parameters will be populated using 
+route optional segments.
 ```php
 public function bootstrap()
 {
@@ -76,8 +76,8 @@ public function index($id)
 }
 ```
 
-##Dependency Injection
-Controllers fully support Spiral IoC `Container` in contructors:
+## Dependency Injection
+Controllers fully support Spiral IoC `Container` in constructors:
 ```php
 <?php
 namespace Controllers;
@@ -117,5 +117,5 @@ public function index($id, Database $defult)
 
 }
 ```
-##Controllers and HTTP
+## Controllers and HTTP
 For more information on routing to controllers and generating responses, read HTTP section.
