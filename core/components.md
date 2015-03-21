@@ -1,6 +1,6 @@
 # Components and traits
-Spiral Component is parent class for most of spiral core classes, controllers, components and models.
-Implementation of component is fairly simple and includes only 2 methods. And one contant.
+Spiral Component is base implementation for most of spiral core classes, controllers, components and models.
+Implementation of component is fairly simple and includes only 2 methods. And one constant.
 ```php
 class Component
 {
@@ -10,7 +10,7 @@ class Component
 }
 ```
 Method `getAlias` used to correctly resolve name of logger/event dispatcher binded to parent component. Default
-implementation of that method will return class name, hovewer method can be redefined to return custom value.
+implementation of that method will return class name, however method can be redefined to return custom value.
 
 Method `make` will automatically bypass call to spiral `Container` to create instance of requested component
 with regard to declared bindings.
