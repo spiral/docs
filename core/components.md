@@ -115,16 +115,19 @@ class Test extends Component
 ```
 Now singleton can be received using 4 different methods:
 ```php
-public function action(Test $testA)
+class MyController extends Controller
 {
-    $testB = Test::make();
-    $testC = Test::getInstance();
-    $testD = Container::get('Test');
-    
-    assert($testA === $testB);
-    assert($testB === $testC);
-    assert($testC === $testD);
-    assert($testA instanceof Test);
+    public function action(Test $testA)
+    {
+        $testB = Test::make();
+        $testC = Test::getInstance();
+        $testD = Container::get('Test');
+        
+        assert($testA === $testB);
+        assert($testB === $testC);
+        assert($testC === $testD);
+        assert($testA instanceof Test);
+    }
 }
 ```
 You can always desctuct signleton by using `Container::removeBinding()` method.
@@ -144,20 +147,23 @@ class Test2 extends Test
 }
 ```
 ```php
-public function action(Test $testA, Test2 $testE)
+class MyController extends Controller
 {
-    $testB = Test::make();
-    $testC = Test::getInstance();
-    $testD = Container::get('Test');
-    $testF = Container::get('Test2');
-
-    assert($testA === $testB);
-    assert($testB === $testC);
-    assert($testC === $testD);
-    assert($testD === $testE);
-    assert($testE === $testF);
-
-    assert($testA instanceof Test2);
+    public function action(Test $testA, Test2 $testE)
+    {
+        $testB = Test::make();
+        $testC = Test::getInstance();
+        $testD = Container::get('Test');
+        $testF = Container::get('Test2');
+    
+        assert($testA === $testB);
+        assert($testB === $testC);
+        assert($testC === $testD);
+        assert($testD === $testE);
+        assert($testE === $testF);
+    
+        assert($testA instanceof Test2);
+    }
 }
 ```
 Attention, behaviour of `getAlias` method will be changed:
