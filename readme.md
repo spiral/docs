@@ -49,10 +49,6 @@ This documentation is a living and breathing piece of work and is updated consta
 * Files Component
 * Localization
 * Pagination
-* Support Classes
-  * Reactor (Documentator)
-  * Config Writer
-  * HTML Tokenizer
 * ODM
   * Document
   * Aggregations
