@@ -133,6 +133,7 @@ Container::removeBinding('Test'); //No more Test instance
 ```
 > You can use custom `SINGLETON` constant value, however in this case additional core binding are required.
 
+
 Singletons follow container bindings:
 ```php
 Core::bind("Test", "Test2");
