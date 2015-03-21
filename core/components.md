@@ -1,6 +1,6 @@
 # Components and traits
 Spiral Component is base implementation for most of spiral core classes, controllers, components and models.
-Implementation of component is fairly simple and includes only 2 methods. And one constant.
+Implementation of component is fairly simple and includes only 2 methods and one contant.
 ```php
 class Component
 {
@@ -10,7 +10,7 @@ class Component
 }
 ```
 Method `getAlias` used to correctly resolve name of logger/event dispatcher binded to parent component. Default
-implementation of that method will return class name, however method can be redefined to return custom value.
+implementation of that method will return class name, hovewer method can be redefined to return custom value.
 
 Method `make` will automatically bypass call to spiral `Container` to create instance of requested component
 with regard to declared bindings.
@@ -24,13 +24,15 @@ class Test2 extends Test
 }
 
 Core::bing("Test", "Test2");
-Test::make(); //Will return instance of Test2
+Test::getAlias();  //Test
+Test2::getAlias(); //Test2
+Test::make();      //Return instance of Test2
 ```
 Additionally `make` method inject provided parameters in class constructor.
 ```php
 class Test extends Component 
 {
-    public function __constuct($name, Core $core)
+    public function __construct($name, Core $core)
     {
     }
 }
@@ -63,11 +65,8 @@ MyClass::setLogger(new Monolog\Logger("name"));
 $class = new MyClass();
 $class->logger()->warning("Some message, some {value}", ["value" => "abc"]); //Instance of Monolog\Logger
 ```
-> Attention, extending class with change `getAlias` method value, which will require system to dedicate new
+> Attention, extending class will change `getAlias` method value, which will require system to dedicate new
 `Logger` instance. To keep same logger instance for component and it's all child - redefine getAlias method.
-
-Spiral logger is PSR-3 based, means you can replace it with your custom implementation or external library, 
-such as `Monolog`.
 
 ### EventsTrait
 Used to provide component based event dispatcher. This trait used in `DBAL\Database`, `DataEntity`, `Validator`
@@ -91,7 +90,7 @@ class MyClass extends Component
 MyClass::dispatcher()->addListener('doAction', function (ObjectEvent $event) 
 {
     dump($event->object); //Instance of MyClass
-    $event->content = strtoupper($event->context);
+    $event->context = strtoupper($event->context);
     $event->stopPropagation(); //Ignore other events
 });
 
@@ -100,8 +99,35 @@ echo $class->doAction('value'); //dump of class + "VALUE"
 ```
 > Check Core\Events section for more information about events.
 
-### SingletonTrair
+### SingletonTrait
+Singleton trait used in most of spiral core components such as `DBAL`, `ODM`, `Files` and etc. Trait is not
+pure `Singleton` pattern as constructed instance stored in Container scope and can be removed or replaced at
+any moment. You have to define constant `SINGLETON` to make it work.
+```php
+use Spiral\Core\Component\SingletonTrait;
 
+class Test extends Component
+{
+    use SingletonTrait;
+    
+    const SINGLETON = __CLASS__;
+}
+```
+Now singleton can be received using 4 different methods:
+```php
+public function action(Test $testA)
+{
+    $testB = Test::make();
+    $testC = Test::getInstance();
+    $testD = Container::get('Test');
+    
+    assert($testA === $testB === $testC === $testD);
+}
+```
+You can always desctuct signleton by using `Container::removeBinding()` method.
+```php
+Container::removeBinding('Test'); //No more Test instance
+```
 
 ## Convert existed class to Component
 You can convert existed class to become component by simply adding trait `Spiral\Core\Component\ComponentTrait`.
