@@ -136,7 +136,7 @@ Container::removeBinding('Test'); //No more Test instance
 
 Singletons follow container bindings:
 ```php
-Core::bind("Test", "Test2");
+Container::bind("Test", "Test2");
 ```
 ```php
 public function action(Test $testA, Test2 $testE)
