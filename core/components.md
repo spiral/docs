@@ -128,7 +128,8 @@ You can always desctuct signleton by using `Container::removeBinding()` method.
 ```php
 Container::removeBinding('Test'); //No more Test instance
 ```
-> You can use custom `SINGLETON` constant value, however in this case additional core binding are required.
+> You can use custom `SINGLETON` constant value, however in this case additional component binding are
+required.
 
 ## Convert existed class to Component
 You can convert existed class to become component by simply adding trait `Spiral\Core\Component\ComponentTrait`.
