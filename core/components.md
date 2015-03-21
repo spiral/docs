@@ -121,16 +121,44 @@ public function action(Test $testA)
     $testC = Test::getInstance();
     $testD = Container::get('Test');
     
-    assert($testA === $testB === $testC === $testD);
+    assert($testA === $testB);
+    assert($testB === $testC);
+    assert($testC === $testD);
+    assert($testA instanceof Test);
 }
 ```
 You can always desctuct signleton by using `Container::removeBinding()` method.
 ```php
 Container::removeBinding('Test'); //No more Test instance
 ```
-> You can use custom `SINGLETON` constant value, however in this case additional component binding are
-required.
+> You can use custom `SINGLETON` constant value, however in this case additional core binding are required.
 
+Singletons can be redefined as in examples of `make` method:
+```php
+Core::bind("Test", "Test2");
+```
+```php
+public function action(Test $testA, Test2 $testE)
+{
+   $testB = Test::make();
+    $testC = Test::getInstance();
+    $testD = Container::get('Test');
+    $testF = Container::get('Test2');
+
+    assert($testA === $testB);
+    assert($testB === $testC);
+    assert($testC === $testD);
+    assert($testD === $testE);
+    assert($testE === $testF);
+
+    assert($testA instanceof Test2);
+}
+```
+But behaviour of `getAlias` method will be changed:
+```php
+Test::getAlias();  //Test
+Test2::getAlias(); //Test (!)
+```
 ## Convert existed class to Component
 You can convert existed class to become component by simply adding trait `Spiral\Core\Component\ComponentTrait`.
 ```php
