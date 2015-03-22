@@ -9,6 +9,7 @@ This documentation is a living and breathing piece of work and is updated consta
 * Core
   * [IoC and Controllable Injections] (core/container.md)
   * [Components and Traits] (core/components.md)
+  * [**Core Bindings and Components**] (core/bindings.md)
   * [Controllers] (core/controllers.md)
   * Events
   * Configuration
