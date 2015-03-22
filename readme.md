@@ -36,6 +36,7 @@ This documentation is a living and breathing piece of work and is updated consta
 * Console Commands
   * Creating Console Commands
 * Debugging and Profiling
+  * Exceptions and Errors
   * Profiler Module
   * Logger
 * Cache
