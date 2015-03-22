@@ -15,7 +15,7 @@ php composer.phar create-project spiral/application directory dev-master
 ```
 
 Spiral will configure all folders and permissions automatically after installation. If you want to 
-run configure command manually, execute `core:configure`.
+run configure command later:
 ```
 >./spiral.cli core:configure
 Verifying runtime directory existence and permissions.
