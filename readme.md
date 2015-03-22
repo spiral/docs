@@ -43,7 +43,9 @@ This documentation is a living and breathing piece of work and is updated consta
   * Creating a New Module
 * Image Manipulations
 * Tokenizer
-  * PHP Isolator and Fixer
+  * Classes Lookup
+  * File Reflection
+  * PHP Isolator
 * Redis
 * Storage Engine
 * Files
