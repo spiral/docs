@@ -2,7 +2,7 @@
 Every dbal driver provides ability to read database and table schemas. Schema information includes all column names, their types, indexes and foreign keys.
 
 ## Getting list of tables
-Once you receive instance of `Database` you can check if desired table exists using hasTable method.
+Once you receive instance of `Database` you can check if desired table exists using `hasTable` method.
 ```php
 if ($database->hasTable('users'))
 {
@@ -12,7 +12,7 @@ In some cases you want to receive all database tables (array of `DBAL\Table`):
 ```php
 foreach ($database->getTables() as $table)
 {
-    dumP($table->getName());
+    dump($table->getName());
 }
 ```
 > Attention, all database level table operation will automatically use dtaabase level table prefix. 
