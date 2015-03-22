@@ -180,18 +180,6 @@ class MyController extends Controller
 }
 ```
 
-## Convert existed class to Component
-You can convert existed class to become component by simply adding trait `Spiral\Core\Component\ComponentTrait`.
-```php
-use Spiral\Core\Component\ComponentTrait;
-use Spiral\Core\Component\LoggerTrait;
-
-class MyClass extends SomeParent 
-{
-    use ComponentTrait, LoggerTrait;
-}
-```
-
 ## "Controllable injections"
 Sometimes you may need to receive instance created by parent factory based on some alias or type. Spiral provides convenient
 way to pass injection resolution from `Container` to parent factory/manager.
