@@ -131,7 +131,7 @@ Sometimes you may need to execute your PHP blocks only once, for example based o
 <body>
     <p>[[This is]] <?= $value ?>.</p>
     <?='[[We can also use it in PHP.]]'?>
-    <a href="">[[link]]</a>    
+    <a href="/" title="[[Title string.]]">[[link]]</a>    
     <br/>
     <?php #compile
         echo date("Y m, H:i");
