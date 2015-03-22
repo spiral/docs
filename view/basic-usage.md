@@ -9,7 +9,7 @@ public function action()
 }
 ```
 You can also use View facade:
-```
+```php
 use \Spiral\Facades\View;
 
 View::render('view');
