@@ -99,10 +99,9 @@ Command           | Description
 `dbal:table`      | View table schema of specific database.
 
 
-Command: `./spiral.cli dbal:table postgres people`
-
-Output:
+Example command:
 ```
+> ./spiral.cli dbal:table postgres people
 Columns of postgres.people:
 +---------+-------------------------+----------------+-----------+------------------------------------+
 | Column: | Database Type:          | Abstract Type: | PHP Type: | Default Value:                     |
