@@ -46,3 +46,18 @@ router    | `Spiral\Components\Http\Router\Router` Only inside router scope.
 > All aliases listed in Controller and Core doc comments, so your IDE will highlight their methods.
 
 ![Code highlighting](../images/bindings.png)
+
+## Extending Core Components
+If you wish to use your custom implementation of core component - use container to bind your class.
+```php
+class MyHttp extends HttpDispatcher
+{
+
+}
+```
+```php
+public function bootstrap()
+{
+    $this->bind('Spiral\Components\Http\HttpDispatcher', 'MyHttp');
+}
+```
