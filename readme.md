@@ -46,7 +46,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * PHP Isolator and Fixer
 * Redis
 * Storage Engine
-* Files Component
+* Files
 * Localization
 * Pagination
 * ODM
