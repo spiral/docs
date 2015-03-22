@@ -98,6 +98,7 @@ Command           | Description
 `dbal:databases`  | Get list of databases, their tables and records count.
 `dbal:table`      | View table schema of specific database.
 
+
 Command: `./spiral.cli dbal:table postgres people`
 
 Output:
