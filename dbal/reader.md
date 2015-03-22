@@ -99,7 +99,6 @@ Command           | Description
 `dbal:table`      | View table schema of specific database.
 
 
-Example command:
 ```
 > ./spiral.cli dbal:table postgres people
 Columns of postgres.people:
