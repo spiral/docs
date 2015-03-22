@@ -33,7 +33,7 @@ storage   | `Spiral\Components\Storage\StorageManager`
 dbal      | `Spiral\Components\DBAL\DatabaseManager`
 orm       | `Spiral\Components\ORM\ORM`
 odm       | `Spiral\Components\ODM\ODM`
-cookies   | `Spiral\Components\Http\Cookies\CookieManager`
+cookies   | `Spiral\Components\Http\Cookies\CookieStore`
 session   | `Spiral\Components\Session\SessionStore`
 
 Some aliases will be availble only inside `HttpDispatcher` scope:
