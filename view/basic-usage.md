@@ -139,3 +139,16 @@ Sometimes you may need to execute your PHP blocks only once, for example based o
 </body>
 </html>
 ```
+Now, if we will check cached view file we will see something like that:
+```php
+<html>
+<body>
+    <p>This is <?= $value ?>.</p>
+    <?='We can also use it in PHP.'?>
+    <a href="/" title="Title string.">link</a>    
+    <br/>
+    2015 03, 20:10
+</body>
+</html>
+```
+As you can see all localized strings are replaced with their transaltions and php block executed, however all other php blocks still presented in untouched form.
