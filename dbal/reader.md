@@ -15,7 +15,7 @@ foreach ($database->getTables() as $table)
     dump($table->getName());
 }
 ```
-> Attention, all database level table operation will automatically use dtaabase level table prefix. 
+> Attention, all database level table operation will automatically use database level table prefix. 
 
 ## Working with DBAL\Table
 Once you received instance of `Table`, following operations (besides query builders) available for you:
@@ -33,7 +33,7 @@ $schema = $table->schema();
 > Attention, table schema provides reading and writing abilities, you can read about it more in "DBAL / Schema Builder".
 
 ## Working with TableSchema
-TableSchema provided low level access to table information such as column type (internal and abstract), indexes, foreign key. You can use this infrormation to perform database export or build your own ORM.
+TableSchema provided low level access to table information such as column type (internal and abstract), indexes, foreign key. You can use this information to perform database export or build your own ORM.
 
 Table primary keys:
 ```php
