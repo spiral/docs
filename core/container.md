@@ -113,7 +113,7 @@ $this->core->bind('Models\MyService', new NewService(FileManager::getInstace(), 
 ## Singletons
 Spiral has multiple ways to delcare Singleton clases, two of them (binding instance or singleton resolved) was covered in
 previous sections. Another way to declare that class is singleton - let class tell about it via SINGLETON constant
-and SingletonTrait.
+and SingletonTrait (can be applied only to `Component` classes).
 ```php
 use Spiral\Core\Component\SingletonTrait;
 
