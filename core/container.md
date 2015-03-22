@@ -184,7 +184,7 @@ class MyController extends Controller
 Sometimes you may need to receive instance created by parent factory based on some name or type. Spiral provides convenient
 way to pass injection resolution from `Container` to parent factory/manager.
 
-To declare that class should be resolved using external factory/manager, simply define class constant with factory name
+To declare that class should be resolved using external factory/manager, simply define class constant with factory name.
 ```php
 class MyClass
 {
@@ -216,7 +216,7 @@ public function action(MyClass $myName)
 ```
 
 Following techniques was implemented for all spiral databases (using parameter name) and for cache stores 
-(using parameter type). Following examples provided for controllers method injections:
+(using parameter type).
 ```php
 public function action(Database $db, RedisClient $redis, MongoDatabase $mongo, MemcacheStore $store)
 {
