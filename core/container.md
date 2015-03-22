@@ -75,7 +75,7 @@ class NewService extends MyService
 ```php
 $this->core->bind('Models\MyService', 'Models\NewService');
 ```
-In this case every class injection will be resolved as `Models\NewService`. Following can also be used to bind 
+In this case every injection will be resolved as `Models\NewService`. Following can also be used to bind 
 implementations to interfaces:
 ```php
 $this->core->bing('ServiceInterface', 'Models\MyService');
@@ -89,6 +89,8 @@ class MyController extends Controller
     }
 }
 ```
+> You can use this technique to extend some of spiral core components.
+
 ### Resolvers
 You can also use custom closure function to resolve class instance:
 ```php
