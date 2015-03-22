@@ -21,6 +21,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * Schema Builder
   * Migrations
 * Views
+  * [Basic Usage] (view/basic-usage.md)
   * Templater
 * Encryption
 * HTTP
