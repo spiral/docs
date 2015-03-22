@@ -62,6 +62,7 @@ class HomeController extends Controller
 
 ## Custom Binding
 Sometimes you need more functionality that simple class injections. In this case you can use `Container` bindings to achieve your goals.
+
 ### Registering class Alias
 You can redefine any existed biniging or class by providing your own implementation:
 ```php
@@ -102,11 +103,70 @@ $this->core->bindSingleton('Models\MyService', function() {
     return new NewService(FileManager::getInstace(), 'someting else');
 });
 ```
+
 ### Binding Instances
 You can also bind already constructed instance, in this case every injection will be resolved with that instance.
 ```php
 $this->core->bind('Models\MyService', new NewService(FileManager::getInstace(), 'someting else'));
 ```
+
+## Singletons
+
+
+## "Controllable injections"
+Sometimes you may need to receive instance created by parent factory based on some alias or type. Spiral provides convient
+way to pass injection resolution from `Container` to parent factory/manager.
+
+To declare that class should be resolved using external factory/manager, simply define class constant with factory name
+```php
+class MyClas 
+{
+    class INJECTION_MANAGER = "MyService"
+    
+    public function __construct($name)
+    {
+        dump($name);
+    }
+}
+```
+Factory/manager should implement `Spiral\Core\Container\InjectionManagerInterface`:
+```php
+class MyService implements Spiral\Core\Container\InjectionManagerInterface
+{
+    public static function resolveInjection(\ReflectionClass $class, \ReflectionParameter $parameter)
+    {
+        dump($class->getName()); //MyClass or it's childs
+        return new MyClass($parameter->getName());
+    }
+}
+```
+Usage (controller method):
+```php
+public function action(MyClass $myName)
+{
+    //Will dump "MyClass" and "myName"
+}
+```
+
+Following techniques was implemented for all spiral databases (using parameter name) and for cache strages (using parameter type). Following examples provided for controllers method injections:
+```php
+public function action(Database $db, RedisClient $redis, MonogDatabase $mongo, MemcacheStore $store)
+{
+}
+```
+Provided code is identical to:
+```php
+public function action()
+{
+    $db = $this->dbal->db('default');
+    $redis = $this->redis->client('default');
+    $mongo = $this->odm->db('default');
+    $store = $this->cache->store('memcache');
+}
+```
+In provided example `Container` will pass parameter reflection to DBAL, ODM, Redis and Cache components, which will
+allow them to construct or fetch required instance based on parameter name or type.
+> DBAL, ODM and Redis components has special config section `aliases` which can be used to bind multiple names to one database (for example `db` = `database` = `default`).
 
 
 ## Adding method injection to custom classes
@@ -127,9 +187,8 @@ class MyClass
 ```
 ##Additional Container methods
 You can use additional methods to check binding state or receive all bindings.
-
-`hasBinding`    | Check if desired alias or class name binded in Container.    
-`removeBinding` | Removed existed binding (will destroy associated singleton). 
-`getBindings`   | Get all bindings.                                            
+|`hasBinding`    | Check if desired alias or class name binded in Container.    |    
+|`removeBinding` | Removed existed binding (will destroy associated singleton). |
+|`getBindings`   | Get all bindings.                                            |
 
 
