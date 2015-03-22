@@ -9,8 +9,8 @@ class Component
     public static function make($parameters = array());
 }
 ```
-Method `getAlias` used to correctly resolve name of logger/event dispatcher binded to parent component. Default
-implementation of that method will return class name, hovewer method can be redefined to return custom value.
+Method `getAlias` is used to correctly resolve name of logger/event dispatcher bound to parent component. Default
+implementation of that method will return class name, however method can be redefined to return custom value.
 
 Method `make` will automatically bypass call to spiral `Container` to create instance of requested component
 with regard to declared bindings.
@@ -43,10 +43,10 @@ Test::make(["name" => "value"]); //Core will be injected automatically by Contai
 can be potentially altered by developer on project basis.
 
 ## Component Traits
-Spiral provides set of traits specially designed to work with `Component` classes and relaying on `getAlias` value.
+Spiral provides set of traits specially designed to work with `Component` classes and relying on `getAlias` value.
 
 ### LoggerTrait
-LoggerTrait provides on demand access to `Logger` instance binded with component using it's `alias` value.
+LoggerTrait provides on demand access to `Logger` instance binded with component using its `alias` value.
 Logger associated statically and can be accessed even without constructing class.
 ```php
 use Spiral\Core\Component\LoggerTrait;
@@ -69,7 +69,7 @@ $class->logger()->warning("Some message, some {value}", ["value" => "abc"]); //I
 `Logger` instance. To keep same logger instance for component and it's all child - redefine getAlias method.
 
 ### EventsTrait
-Used to provide component based event dispatcher. This trait used in `DBAL\Database`, `DataEntity`, `Validator`
+Used to provide component based event dispatcher. This trait is used in `DBAL\Database`, `DataEntity`, `Validator`
 and other classes.
 ```php
 use Spiral\Core\Component\EventsTrait;
@@ -100,8 +100,8 @@ echo $class->doAction('value'); //dump of class + "VALUE"
 > Check Core\Events section for more information about events.
 
 ### SingletonTrait
-Singleton trait used in most of spiral core components such as `DBAL`, `ODM`, `Files` and etc. Trait is not
-pure `Singleton` pattern as constructed instance stored in Container scope and can be removed or replaced at
+Singleton trait used in most of spiral core components such as `DBAL`, `ODM`, `Files` and etc. This trait is not a
+pure `Singleton` pattern as constructed instance are stored in Container scope and can be removed or replaced at
 any moment. You have to define constant `SINGLETON` to make it work.
 ```php
 use Spiral\Core\Component\SingletonTrait;
@@ -130,7 +130,7 @@ class MyController extends Controller
     }
 }
 ```
-You can always desctuct signleton by using `Container::removeBinding()` method.
+You can always remove signleton by using `Container::removeBinding()` method.
 ```php
 Container::removeBinding('Test'); //No more Test instance
 ```
