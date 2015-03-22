@@ -59,4 +59,5 @@ This documentation is a living and breathing piece of work and is updated consta
   * Relationships
   * Active Schema
   * UML Export
+  * JSON Documents (ORM + ODM)
 * Helpers
