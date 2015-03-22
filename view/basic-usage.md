@@ -107,7 +107,7 @@ Spiral\Components\View\Processors\TemplateProcessor     | Extend and composite v
 Spiral\Components\View\Processors\EvaluateProcessor     | Execute PHP blocks marked with compilation flag and cache it's result.
 Spiral\Components\View\Processors\ShortTagsProcessor    | Replace php tags `<?` with `<?php`. 
 Spiral\Components\View\Processors\PrettyPrintProcessor  | Remove blank lines.
-> You can create your own processor by implementing `` interface and registering it in view config.
+> You can create your own processor by implementing `Spiral\Components\View\ProcessorInterface` interface and registering it in view config.
 
 ## Localization
 One of view processors used to localize view content based on current language setting provided by `Translator`.
