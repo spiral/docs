@@ -97,3 +97,32 @@ Command           | Description
 ---               | ---
 `dbal:databases`  | Get list of databases, their tables and records count.
 `dbal:table`      | View table schema of specific database.
+
+Command: `./spiral.cli dbal:table postgres people`
+
+Output:
+```
+Columns of postgres.people:
++---------+-------------------------+----------------+-----------+------------------------------------+
+| Column: | Database Type:          | Abstract Type: | PHP Type: | Default Value:                     |
++---------+-------------------------+----------------+-----------+------------------------------------+
+| id      | bigserial               | bigPrimary     | int       | nextval('people_id_seq'::regclass) |
+| name    | character varying (255) | string         | string    | ---                                |
+| income  | numeric (20,2)          | decimal        | float     | ---                                |
+| cityID  | bigint                  | bigInteger     | int       | ---                                |
++---------+-------------------------+----------------+-----------+------------------------------------+
+
+Indexes of postgres.people:
++-----------------------------------+-------+----------+
+| Name:                             | Type: | Columns: |
++-----------------------------------+-------+----------+
+| people_index_income_54ea144908c7c | INDEX | income   |
++-----------------------------------+-------+----------+
+
+Foreign keys of postgres.people:
++-------------------------------------+---------+----------------+-----------------+------------+------------+
+| Name:                               | Column: | Foreign Table: | Foreign Column: | On Delete: | On Update: |
++-------------------------------------+---------+----------------+-----------------+------------+------------+
+| people_foreign_cityID_550ef169f1818 | cityID  | cities         | id              | CASCADE    | NO ACTION  |
++-------------------------------------+---------+----------------+-----------------+------------+------------+
+```
