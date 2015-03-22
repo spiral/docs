@@ -1,6 +1,6 @@
 # Installation and Requirements
-Spiral Framework use `Composer` to resolve dependencies and core file. Check [how to install composer 
-here] (https://getcomposer.org/download/).
+Spiral Framework uses `Composer` to resolve dependencies and core file. Check how to install composer 
+[here] (https://getcomposer.org/download/).
 
 ## Requirements
 Spiral Framework has following server requirements:
@@ -15,7 +15,7 @@ php composer.phar create-project spiral/application directory dev-master
 ```
 
 Spiral will configure all folders and permissions automatically after installation. If you want to 
-run configure command manually, execute `core:configure` command.
+run configure command manually, execute `core:configure`.
 ```
 >./spiral.cli core:configure
 Verifying runtime directory existence and permissions.
@@ -48,5 +48,5 @@ Following configuration files will be altered by this environment:
 ./debug.php
 ./views.php
 ```
-Changing environment will update applicationID, which will automatically invalidate all configuration
+> Environment change will alter applicationID, which will automatically invalidate configuration
 and view cache. Read more about configuring spiral application in Core / Configuration section.
