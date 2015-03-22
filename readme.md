@@ -14,7 +14,6 @@ This documentation is a living and breathing piece of work and is updated consta
   * Configuration
 * DBAL
   * Configuration
-  * Accessing Databases and Tables
   * Query Builders
   * [Schema Reader] (dbal/reader.md)
   * Schema Builder
