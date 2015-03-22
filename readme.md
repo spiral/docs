@@ -1,5 +1,5 @@
-# Documentation for Spiral Framework
-This repository contains a set of documentation files used to describe different aspects of developing an application using the Spiral Framework.
+# Spiral Framework
+This repository contains a set of tutorial files used to describe different aspects of developing an application using the Spiral Framework.
 
 This documentation is a living and breathing piece of work and is updated constantly to add more information and know how.
 
