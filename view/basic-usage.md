@@ -134,7 +134,6 @@ Sometimes you may need to execute your PHP blocks only once, for example based o
     <a href="">[[link]]</a>    
     <br/>
     <?php #compile
-        //This block will be executed only once
         echo date("Y m, H:i");
     ?>
 </body>
