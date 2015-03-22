@@ -187,8 +187,11 @@ class MyClass
 ```
 ##Additional Container methods
 You can use additional methods to check binding state or receive all bindings.
-|`hasBinding`    | Check if desired alias or class name binded in Container.    |    
-|`removeBinding` | Removed existed binding (will destroy associated singleton). |
-|`getBindings`   | Get all bindings.                                            |
+
+Method          | Description
+---             | ---
+`hasBinding`    | Check if desired alias or class name binded in Container.        
+`removeBinding` | Removed existed binding (will destroy associated singleton). 
+`getBindings`   | Get all bindings.                                            
 
 
