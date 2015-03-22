@@ -181,7 +181,7 @@ class MyController extends Controller
 ```
 
 ## "Controllable injections"
-Sometimes you may need to receive instance created by parent factory based on some alias or type. Spiral provides convenient
+Sometimes you may need to receive instance created by parent factory based on some name or type. Spiral provides convenient
 way to pass injection resolution from `Container` to parent factory/manager.
 
 To declare that class should be resolved using external factory/manager, simply define class constant with factory name
