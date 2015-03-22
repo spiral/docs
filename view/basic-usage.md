@@ -23,7 +23,7 @@ public function action()
     ]);
 }
 ```
-Based on provided code, framework will try to find view file located in default view director (specified in configuration of view component) `application/views/view.php`. Such view can be simple php file with inline HTML:
+Based on provided code, framework will try to find view file located in default view directory (specified in configuration of view component) `application/views/view.php`. Such view can be simple php file with inline HTML:
 ```php
 <html>
 <body>
