@@ -1,8 +1,8 @@
 # DBAL / Schema Reader
-Every dbal driver provides ability to read database and table schemas. Schema information includes all column names, their types, indexes and foreign keys.
+Every dbal driver provides the ability to read database and table schemas. Schema information includes all column names, their types, indexes and foreign keys.
 
 ## Getting list of tables
-Once you receive instance of `Database` you can check if desired table exists using `hasTable` method.
+Once you receive an instance of `Database` you can check if the desired table exists using the `hasTable` method.
 ```php
 if ($database->hasTable('users'))
 {
@@ -18,7 +18,7 @@ foreach ($database->getTables() as $table)
 > Attention, all database level table operation will automatically use database level table prefix. 
 
 ## Working with DBAL\Table
-Once you received instance of `Table`, following operations (besides query builders) available for you:
+Once you received instance of `Table`, the following operations (besides query builders) available for you:
 
 List of all table columns associated with their abstract types:
 ```php
