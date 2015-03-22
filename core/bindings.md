@@ -24,7 +24,7 @@ file      | `Spiral\Components\Files\FileManager`
 debug     | `Spiral\Components\Debug\Debugger`
 tokenizer | `Spiral\Components\Tokenizer\Tokenizer`
 cache     | `Spiral\Components\Cache\CacheManager`
-i18n      | `Spiral\Components\Localization\I18nManager`
+i18n      | `Spiral\Components\Localization\Translator`
 view      | `Spiral\Components\View\ViewManager`
 redis     | `Spiral\Components\Redis\RedisManager`
 encrypter | `Spiral\Components\Encrypter\Encrypter`
