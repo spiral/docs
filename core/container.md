@@ -1,11 +1,11 @@
 # Container and Dependency Injection
-Spiral Container is base class for `Core` and `Application` instances. Contantainer provides support for contructor and
-method injections, ability to redefine core components, create singletons and etc. Additionally Contantainer supports
+Spiral Container is base class for `Core` and `Application` instances, it provides support for constructor and
+method injections, ability to redefine core components, create singletons and etc. Additionally Container supports
 "controllable injection" technique, allows to resolve injection via custom code.
 
 ## Usage examples
 Class dependencies will be resolved only if instance created via `make()` method, requested directly via container or 
-declared as dependecly in another class (inner dependency). Let's check some simple examples:
+declared as dependency in another class (inner dependency). Let's check some simple examples:
 ```php
 namespace Models;
 
@@ -28,7 +28,7 @@ $service = new MyService($file); //Manual
 $service = MyService::make();
 $service = Container::get('Models\MyService');
 ```
-Additionally, you can request such class as dependendcy in other classes.
+Additionally, you can request such class as dependency in other classes.
 ```php
 namespace Controllers;
 use Models\MyService;
@@ -64,7 +64,7 @@ class HomeController extends Controller
 Sometimes you need more functionality that simple class injections. In this case you can use `Container` bindings to achieve your goals.
 
 ### Registering class Alias
-You can redefine any existed biniging or class by providing your own implementation:
+You can redefine any existed binding or class by providing your own implementation:
 ```php
 namespace Models;
 
@@ -93,25 +93,25 @@ class MyController extends Controller
 You can also use custom closure function to resolve class instance:
 ```php
 $this->core->bind('Models\MyService', function() {
-    return new NewService(FileManager::getInstace(), 'someting else');
+    return new NewService(FileManager::getInstance(), 'something else');
 });
 ```
 In some cases you will need to construct instance only once (singleton), you can use another method:
 ```php
 $this->core->bindSingleton('Models\MyService', function() {
     //This code will be executed only once on demand
-    return new NewService(FileManager::getInstace(), 'someting else');
+    return new NewService(FileManager::getInstance(), 'something else');
 });
 ```
 
 ### Binding Instances
 You can also bind already constructed instance, in this case every injection will be resolved with that instance.
 ```php
-$this->core->bind('Models\MyService', new NewService(FileManager::getInstace(), 'someting else'));
+$this->core->bind('Models\MyService', new NewService(FileManager::getInstance(), 'something else'));
 ```
 
 ## Singletons
-Spiral has multiple ways to delcare Singleton clases, two of them (binding instance or singleton resolved) was covered in
+Spiral has multiple ways to delcare Singleton classes, two of them (binding instance or singleton resolved) was covered in
 previous sections. Another way to declare that class is singleton - let class tell about it via SINGLETON constant
 and SingletonTrait (can be applied only to `Component` classes).
 ```php
@@ -141,7 +141,7 @@ class MyController extends Controller
     }
 }
 ```
-You can always destruct signleton by using `Container::removeBinding()` method.
+You can always destruct singleton by using `Container::removeBinding()` method.
 ```php
 Container::removeBinding('Test'); //No more Test instance
 ```
@@ -190,12 +190,12 @@ class MyClass extends SomeParent
 ```
 
 ## "Controllable injections"
-Sometimes you may need to receive instance created by parent factory based on some alias or type. Spiral provides convient
+Sometimes you may need to receive instance created by parent factory based on some alias or type. Spiral provides convenient
 way to pass injection resolution from `Container` to parent factory/manager.
 
 To declare that class should be resolved using external factory/manager, simply define class constant with factory name
 ```php
-class MyClas 
+class MyClass
 {
     class INJECTION_MANAGER = "MyService"
     
@@ -211,7 +211,7 @@ class MyService implements Spiral\Core\Container\InjectionManagerInterface
 {
     public static function resolveInjection(\ReflectionClass $class, \ReflectionParameter $parameter)
     {
-        dump($class->getName()); //MyClass or it's childs
+        dump($class->getName()); //MyClass or it's child
         return new MyClass($parameter->getName());
     }
 }
@@ -224,9 +224,10 @@ public function action(MyClass $myName)
 }
 ```
 
-Following techniques was implemented for all spiral databases (using parameter name) and for cache strages (using parameter type). Following examples provided for controllers method injections:
+Following techniques was implemented for all spiral databases (using parameter name) and for cache stores 
+(using parameter type). Following examples provided for controllers method injections:
 ```php
-public function action(Database $db, RedisClient $redis, MonogDatabase $mongo, MemcacheStore $store)
+public function action(Database $db, RedisClient $redis, MongoDatabase $mongo, MemcacheStore $store)
 {
 }
 ```
