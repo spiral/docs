@@ -171,8 +171,8 @@ Attention, behaviour of `getAlias` method will be changed:
 Test::getAlias();  //"Test" - SINGLETON constant value
 Test2::getAlias(); //"Test" (!) - SINGLETON constant value
 ```
-## Convert existed class to Component
-You can convert existed class to become component by simply adding trait `Spiral\Core\Component\ComponentTrait`.
+## Convert existing class to Component
+You can convert existing class to a component by simply adding trait `Spiral\Core\Component\ComponentTrait`.
 ```php
 use Spiral\Core\Component\ComponentTrait;
 use Spiral\Core\Component\LoggerTrait;
