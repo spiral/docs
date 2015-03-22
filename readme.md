@@ -7,7 +7,7 @@ This documentation is a living and breathing piece of work and is updated consta
 * Installation and Requirements 
 * Architecture Overview
 * Core
-  * IoC and Controllable Injections
+  * [IoC and Controllable Injections] (core/container.md)
   * [Components and Traits] (core/components.md)
   * [Controllers] (core/controllers.md)
   * Events
