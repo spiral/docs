@@ -111,7 +111,83 @@ $this->core->bind('Models\MyService', new NewService(FileManager::getInstace(), 
 ```
 
 ## Singletons
+Spiral has multiple ways to delcare Singleton clases, two of them (binding instance or singleton resolved) was covered in
+previous sections. Another way to declare that class is singleton - let class tell about it via SINGLETON constant
+and SingletonTrait.
+```php
+use Spiral\Core\Component\SingletonTrait;
 
+class Test extends Component
+{
+    use SingletonTrait;
+    
+    const SINGLETON = __CLASS__;
+}
+```
+Now singleton can be received using 4 different methods:
+```php
+class MyController extends Controller
+{
+    public function action(Test $testA)
+    {
+        $testB = Test::make();
+        $testC = Test::getInstance();
+        $testD = Container::get('Test');
+        
+        assert($testA === $testB);
+        assert($testB === $testC);
+        assert($testC === $testD);
+        assert($testA instanceof Test);
+    }
+}
+```
+You can always destruct signleton by using `Container::removeBinding()` method.
+```php
+Container::removeBinding('Test'); //No more Test instance
+```
+> You can use custom `SINGLETON` constant value, however in this case additional core binding are required.
+
+Singletons follow container bindings:
+```php
+Container::bind("Test", "Test2");
+```
+```php
+class Test2 extends Test
+{
+}
+```
+```php
+class MyController extends Controller
+{
+    public function action(Test $testA, Test2 $testE)
+    {
+        $testB = Test::make();
+        $testC = Test::getInstance();
+        $testD = Container::get('Test');
+        $testF = Container::get('Test2');
+    
+        assert($testA === $testB);
+        assert($testB === $testC);
+        assert($testC === $testD);
+        assert($testD === $testE);
+        assert($testE === $testF);
+    
+        assert($testA instanceof Test2);
+    }
+}
+```
+
+## Convert existed class to Component
+You can convert existed class to become component by simply adding trait `Spiral\Core\Component\ComponentTrait`.
+```php
+use Spiral\Core\Component\ComponentTrait;
+use Spiral\Core\Component\LoggerTrait;
+
+class MyClass extends SomeParent 
+{
+    use ComponentTrait, LoggerTrait;
+}
+```
 
 ## "Controllable injections"
 Sometimes you may need to receive instance created by parent factory based on some alias or type. Spiral provides convient
@@ -191,7 +267,5 @@ You can use additional methods to check binding state or receive all bindings.
 Method          | Description
 ---             | ---
 `hasBinding`    | Check if desired alias or class name binded in Container.        
-`removeBinding` | Removed existed binding (will destroy associated singleton). 
-`getBindings`   | Get all bindings.                                            
-
-
+`removeBinding` | Remove existed binding (will destroy associated singleton). 
+`getBindings`   | Get all bindings.                         
