@@ -5,7 +5,7 @@ check following examples.
 
 To get component instance or facade read following topics: [Core Components] (core/bindings.md), 
 [Facades] (core/facades.md). All provided examples given for controller action where component
-received via string binding.
+received via string shortcut.
 
 ## Configuring
 Before using encrypter you have to make sure that correct encrypting password (key) is specified. 
