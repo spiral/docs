@@ -91,7 +91,7 @@ Or even in a middle:
 ## Multiple extending
 In many cases your website layout is not always the same and can vary from page to page. Let's say that you have account with navigation, breadcrumps and content. You can add this pieces to every view of your accounts, however we can define new layout to be extended.
 ```html
-<extends:layout.basic/>
+<extends:layouts.basic/>
 <block:title>${pagename} - Account</block:title>
 <block:body>
     <div class="navigation">
