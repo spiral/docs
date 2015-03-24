@@ -8,7 +8,7 @@ Spiral Templater build at top of HTML parser, this means you don't need to learn
 
 ## Extending parent layout
 Most common task in view creation is building pages with common layout. To do that, let's define layout first:
-```php
+```html
 <html>
 <head>
     <title>${title|Untitled}</title>
@@ -26,7 +26,7 @@ Most common task in view creation is building pages with common layout. To do th
 As you can notice you defined multiple tags with `block:` and one `${title|Untitled}`, tags like that can be extended by child view files. The only difference between `${}` and `<block:...>` block definitions that first can be validly used *inside* php code or as tag attribure (`<div class="${class}">`).
 We are going to save this file in `application/views/layouts/basic.php` file (which is identical to view name `layouts/basic`).
 Now, when you would like to create your page view we can extend this layout and replace some of it's blocks.
-```php
+```html
 <extends:layout.basic title="My Page <?=mt_rand(0, 100)?>"/>
 <block:body>
     This is page body.
@@ -37,7 +37,7 @@ In this view file we redefined parent blocks two different ways, first - by usin
 > You can't use `/` in HTML or XML tag names, to separate folder names use `.` instead.
 
 Result of this exetending will look like:
-```php
+```html
 <html>
 <head>
     <title>My Page <?=mt_rand(0, 100)?></title>
@@ -52,14 +52,14 @@ As you can see php code was successfully passed to parent block.
 
 ## Keeping original block content
 In some cases we may need to keep original block content in some form. To do that use block name inside youre declaration:
-```php
+```html
 <block:head>
     <block:head/>
     <meta name="keywords" value="keyword"/>
 </block:head>
 ```
 If we will add this statement to our view file output will look like:
-```php
+```html
 <html>
 <head>
     <title>My Page <?=mt_rand(0, 100)?></title>
@@ -73,14 +73,14 @@ If we will add this statement to our view file output will look like:
 ```
 Are you can see parent value `<meta name="author" value="Spiral"/>` are still there.
 You have no limitation on where to put parent block, it can be at the end of definition:
-```php
+```html
 <block:head>
     <meta name="keywords" value="keyword"/>
     <block:head/>
 </block:head>
 ```
 Or even in a middle:
-```php
+```html
 <block:head>
     <meta name="keywords" value="keyword"/>
     <block:head/>
@@ -90,7 +90,7 @@ Or even in a middle:
 
 ## Multiple extending
 In many cases your website layout is not always the same and can vary from page to page. Let's say that you have account with navigation, breadcrumps and content. You can add this pieces to every view of your accounts, however we can define new layout to be extended.
-```php
+```html
 <extends:layout.basic/>
 <block:title>${pagename} - Account</block:title>
 <block:body>
@@ -107,7 +107,7 @@ In many cases your website layout is not always the same and can vary from page 
 </block:body>
 ```
 Now we can save this view under `application/views/layouts/account.php` and extend it by some of our account pages:
-```php
+```html
 <extends:layout.account pagename="Settings"/>
 <block:content>
     Some settings...
