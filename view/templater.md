@@ -35,6 +35,7 @@ Now, when you would like to create your page view we can extend this layout and 
 In this view file we redefined parent blocks two different ways, first - by using
 `<block:name>content</block:name>` construction, this is longer path but allows us to create really big replacements. In cases where parent block are simple string (usually titles, classes and etc), we can use simplified syntax by decaring replacement as attribute of `extends` opening tag.
 > You can't use `/` in HTML or XML tag names, to separate folder names use `.` instead.
+
 Result of this exetending will look like:
 ```php
 <html>
