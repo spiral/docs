@@ -1,6 +1,6 @@
 # Components and traits
 Spiral Component is the base implementation for most of Spirals' core classes, controllers, components and models.
-Implementing components are fairly simple and includes only 2 methods and one contant. WHAT DOES THIS MEANS? CONTANT?
+Implementing components are fairly simple and includes only 2 methods and one constant. 
 ```php
 class Component
 {
