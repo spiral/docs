@@ -24,7 +24,7 @@ Most common task in view creation is building pages with common layout. To do th
 </html>
 ```
 As you can notice you defined multiple tags with `block:` and one `${title|Untitled}`, tags like that can be extended by child view files. The only difference between `${}` and `<block:...>` block definitions that first can be validly used *inside* php code or as tag attribure (`<div class="${class}">`).
-We are going to save this file in `application/views/layouts/basic.php` file.
+We are going to save this file in `application/views/layouts/basic.php` file (which is identical to view name `layouts/basic`).
 Now, when you would like to create your page view we can extend this layout and replace some of it's blocks.
 ```php
 <extends:layout.basic title="My Page <?=mt_rand(0, 100)?>"/>
