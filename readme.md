@@ -40,7 +40,7 @@ This documentation is a living and breathing piece of work and is updated consta
 * Debugging and Profiling
   * Debugging your code
   * Exceptions and Errors
-  * Logger
+  * Logging
 * Cache
 * Modules
   * Creating a New Module
