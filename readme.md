@@ -53,6 +53,8 @@ This documentation is a living and breathing piece of work and is updated consta
 * Storage Engine
 * Files
 * Localization
+  * Basic Usage
+  * Localization Traits
 * Pagination
 * ODM
   * Document
