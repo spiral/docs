@@ -1,5 +1,5 @@
 # Core Bindings and Components
-Most of spiral core components (DBAL, Cache, Session, ...) has custom string alias like "dbal", this makes possible to receive component instance via magic getter in controller or application class.
+Most of Spirals' core components (DBAL, Cache, Session, ...) have a custom string alias like "dbal." This makes possible to receive component instance via the magic getter in controller or application class.
 ```php
 class MyControllers extends Controller
 {
@@ -15,7 +15,7 @@ List of all core component aliases:
 
 Alias     | Component
 ---       | ---
-core      | Will be binded to application or core instance.
+core      | Will be attached to the application or core instance.
 http      | `Spiral\Components\Http\HttpDispatcher`
 console   | `Spiral\Components\Console\ConsoleDispatcher`
 loader    | `Spiral\Core\Loader`
@@ -36,19 +36,19 @@ odm       | `Spiral\Components\ODM\ODM`
 cookies   | `Spiral\Components\Http\Cookies\CookieStore`
 session   | `Spiral\Components\Session\SessionStore`
 
-Some aliases will be availble only inside `HttpDispatcher` scope:
+Some aliases are only availble inside `HttpDispatcher` scope:
 
 Alias     | Component
 ---       | ---
 request   | `Spiral\Components\Http\Request`
 router    | `Spiral\Components\Http\Router\Router` Only inside router scope.
 
-> All aliases listed in Controller and Core doc comments, so your IDE will highlight their methods.
+> All aliases are listed in the Controller and Core doc comments, so your IDE will highlight their methods.
 
 ![Code highlighting](../images/bindings.png)
 
 ## Extending Core Components
-If you wish to use your custom implementation of core component - use container to bind your class.
+If you want to use your custom implementation of core component, then use container to bind your class.
 ```php
 class MyHttp extends HttpDispatcher
 {
