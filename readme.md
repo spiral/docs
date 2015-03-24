@@ -27,8 +27,8 @@ This documentation is a living and breathing piece of work and is updated consta
 * HTTP
   * Request
   * Response
-  * Middlewares and Filters
-  * Routing
+  * Middlewares
+  * **Routing**
   * Cookies
 * Session
 * Validation
