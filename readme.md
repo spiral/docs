@@ -23,7 +23,7 @@ This documentation is a living and breathing piece of work and is updated consta
 * Views
   * [Basic Usage] (view/basic-usage.md)
   * [Templater] (view/templater.md) (docs unfinished)
-* Encryption
+* [Encryption] (encryption.md)
 * HTTP
   * Request
   * Response
