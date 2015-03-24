@@ -3,8 +3,8 @@ Spiral provides simple core component used to perform basic data encyption. Comp
 on PHP OpenSSL library and used to encrypt Http Cookies. If you want to use it in your code,
 check following examples.
 
-To get component instance or facade read following topics: [Core Components] (../core/bindings.md), 
-[Facades] (../core/facades.md). All provided examples given for controller action where component
+To get component instance or facade read following topics: [Core Components] (core/bindings.md), 
+[Facades] (core/facades.md). All provided examples given for controller action where component
 received via string binding.
 
 ## Configuring
