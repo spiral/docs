@@ -11,6 +11,19 @@ class MyControllers extends Controller
 }
 ```
 
+As any other class or singleton you can request component instance using method or constructor injection:
+```php
+use Spiral\Components\Encrypter\Encrypter;
+
+class MyControllers extends Controller
+{
+    public function index(Encrypter $encrypter)
+    {
+        return $this->view->render('home');
+    }
+}
+```
+
 List of all core component aliases:
 
 Alias     | Component
