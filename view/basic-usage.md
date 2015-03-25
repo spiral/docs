@@ -102,7 +102,7 @@ Spiral supplied with set of view processors used to simplify view development, p
 Processor                                               | Description
 ---                                                     | ---
 Spiral\Components\View\Processors\VariablesProcessor    | Inject static view variables using `@{variable|default}` syntax.
-Spiral\Components\View\Processors\LocalizationProcessor | Translate `[[string]]` patterns, result are cached.
+Spiral\Components\View\Processors\I18nProcessor         | Translate `[[string]]` patterns, result are cached.
 Spiral\Components\View\Processors\TemplateProcessor     | Extend and composite view files, see Templater section to get more information.
 Spiral\Components\View\Processors\EvaluateProcessor     | Execute PHP blocks marked with compilation flag and cache it's result.
 Spiral\Components\View\Processors\ShortTagsProcessor    | Replace php tags `<?` with `<?php`. 
