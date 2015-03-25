@@ -1,7 +1,9 @@
-# Templater
-Sometimes (especially if you bulding complex websites) view component by itself can't satisfy your needs. In this case you can use embedded view processor - Templater.
+# Template Processor
+Sometimes (especially if you bulding complex websites) view component by itself can't satisfy your needs. In this case you can use embedded view composer.
 
-Templater provides ability to combine, extend, import and overwrite views and view blocks. As other processors templater executed at time of view compilation, which means it results are cached and can not be changed in runtime (however you can use static variables to alter template).
+Template Processor provides ability to combine, extend, import and overwrite views and view blocks. As other processors templater executed at time of view compilation, which means it results are cached and can not be changed in runtime (however you can use static variables to alter template).
+
+> Template Processor does not provides logical functionality besides composing view files together. Use plain PHP for that purposes.
 
 ## Principals
 Spiral Templater build at top of HTML parser, this means you don't need to learn any new templating syntax and any IDE or editor will highlight and format your view files. At the same time, you are not able to use templater inside your php blocks, let's view some examples.
