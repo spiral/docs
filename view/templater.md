@@ -52,6 +52,33 @@ Result of this exetending will look like:
 ```
 As you can see php code was successfully passed to parent block.
 
+In many cases your website layout is not always the same and can vary from page to page. Let's say that you have account with navigation, breadcrumps and content. You can add this pieces to every view of your accounts, however we can define new layout to be extended.
+```html
+<extends:layouts.basic/>
+<block:title>${pagename} - Account</block:title>
+<block:body>
+    <div class="navigation">
+        <ul>
+            <li>...</li>
+            <li>...</li>
+        </ul>
+    </div>
+    <div class="breadcrumps">Account / ${pagename}</div>
+    <div class="content">
+        <block:content/>
+    </div>
+</block:body>
+```
+Now we can save this view under `application/views/layouts/account.php` and extend it by some of our account pages:
+```html
+<extends:layout.account pagename="Settings"/>
+<block:content>
+    Some settings...
+</block:content>
+```
+> There is no real limitiation of how nested your extending can be, however more parents will cause longer view compilation.
+
+
 ## Keep original block content
 In some cases we may need to keep original block content in some form. To do that use block name inside youre declaration:
 ```html
@@ -89,33 +116,6 @@ Or even in a middle:
     <meta name="description" value="Description"/>
 </block:head>
 ```
-
-## Multiple Inheritance
-In many cases your website layout is not always the same and can vary from page to page. Let's say that you have account with navigation, breadcrumps and content. You can add this pieces to every view of your accounts, however we can define new layout to be extended.
-```html
-<extends:layouts.basic/>
-<block:title>${pagename} - Account</block:title>
-<block:body>
-    <div class="navigation">
-        <ul>
-            <li>...</li>
-            <li>...</li>
-        </ul>
-    </div>
-    <div class="breadcrumps">Account / ${pagename}</div>
-    <div class="content">
-        <block:content/>
-    </div>
-</block:body>
-```
-Now we can save this view under `application/views/layouts/account.php` and extend it by some of our account pages:
-```html
-<extends:layout.account pagename="Settings"/>
-<block:content>
-    Some settings...
-</block:content>
-```
-> There is no real limitiation of how nested your extending can be, however more parents will cause longer view compilation.
 
 ## Imports and "Virtual Tags"
 
