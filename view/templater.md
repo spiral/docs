@@ -79,7 +79,7 @@ Now we can save this view under `application/views/layouts/account.php` and exte
 > There is no real limitiation of how nested your extending can be, however more parents will cause longer view compilation.
 
 
-## Keep original block content
+## Parent block content
 In some cases we may need to keep original block content in some form. To do that use block name inside youre declaration:
 ```html
 <block:head>
