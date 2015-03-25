@@ -15,7 +15,7 @@ foreach ($database->getTables() as $table)
     dump($table->getName());
 }
 ```
-> Attention, all database level table operation will automatically use database level table prefix. 
+> Attention, all table operation will automatically use database level table prefix. 
 
 ## Working with DBAL\Table
 Once you received an instance of `Table`, the following operations (besides query builders) are available for you:

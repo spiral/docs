@@ -4,11 +4,13 @@ This repository contains a set of tutorial files used to describe different aspe
 This documentation is a living and breathing piece of work and is updated constantly to add more information and know how.
 
 #Table of Contents
-* Installation and Requirements 
+* [Installation and Requirements] (installation.md)
 * Architecture Overview
 * Core
   * [IoC and Controllable Injections] (core/container.md)
   * [Components and Traits] (core/components.md)
+  * [**Core Bindings and Components**] (core/bindings.md)
+  * Facades
   * [Controllers] (core/controllers.md)
   * Events
   * Configuration
@@ -19,13 +21,14 @@ This documentation is a living and breathing piece of work and is updated consta
   * Schema Builder
   * Migrations
 * Views
-  * Templater
-* Encryption
+  * [Basic Usage] (view/basic-usage.md)
+  * [Templater] (view/templater.md) (docs unfinished)
+* [Encryption] (encryption.md)
 * HTTP
   * Request
   * Response
-  * Middlewares and Filters
-  * Routing
+  * Middlewares
+  * **Routing**
   * Cookies
 * Session
 * Validation
@@ -35,18 +38,23 @@ This documentation is a living and breathing piece of work and is updated consta
 * Console Commands
   * Creating Console Commands
 * Debugging and Profiling
-  * Profiler Module
-  * Logger
+  * Debugging your code
+  * Exceptions and Errors
+  * Logging
 * Cache
 * Modules
   * Creating a New Module
 * Image Manipulations
 * Tokenizer
-  * PHP Isolator and Fixer
+  * Classes Lookup
+  * File Reflection
+  * PHP Isolator
 * Redis
 * Storage Engine
-* Files Component
+* Files
 * Localization
+  * Basic Usage
+  * Localization Traits
 * Pagination
 * ODM
   * Document
@@ -58,4 +66,5 @@ This documentation is a living and breathing piece of work and is updated consta
   * Relationships
   * Active Schema
   * UML Export
+  * JSON Documents (ORM + ODM)
 * Helpers

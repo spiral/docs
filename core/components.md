@@ -1,6 +1,6 @@
 # Components and traits
-Spiral Component is base implementation for most of spiral core classes, controllers, components and models.
-Implementation of component is fairly simple and includes only 2 methods and one contant.
+Spiral Component is the base implementation for most of Spirals' core classes, controllers, components and models.
+Implementing components are fairly simple and includes only 2 methods and one constant. 
 ```php
 class Component
 {
@@ -9,11 +9,9 @@ class Component
     public static function make($parameters = array());
 }
 ```
-Method `getAlias` is used to correctly resolve name of logger/event dispatcher bound to parent component. Default
-implementation of that method will return class name, however method can be redefined to return custom value.
+The method `getAlias` is used to correctly resolve the name of logger/event dispatcher attached to the parent component. The default implementation of that method will return the class name. Hovewer, the method can be redefined to return a custom value.
 
-Method `make` will automatically bypass call to spiral `Container` to create instance of requested component
-with regard to declared bindings.
+Method `make` will automatically bypass calls to a Spiral `Container` to create an instance of the requested component with regard to the declared bindings.
 ```php
 class Test extends \Spiral\Core\Component
 {
@@ -28,7 +26,7 @@ Test2::getAlias(); //"Test2"
 Container::bind("Test", "Test2");
 Test::make();      //Return instance of Test2
 ```
-Additionally `make` method inject provided parameters in class constructor.
+Additionally the `make` method will inject the provided parameters into the class constructor.
 ```php
 class Test extends Component 
 {
@@ -39,11 +37,10 @@ class Test extends Component
 
 Test::make(["name" => "value"]); //Core will be injected automatically by Container
 ```
-> Using this way to create instances of components is not required and makes sense only when class implementation
-can be potentially altered by developer on project basis.
+> If you create new instances of components this way, you don't really need to and only makes sense when class implementation can be potentially altered by developer on a project basis.
 
 ## Component Traits
-Spiral provides set of traits specially designed to work with `Component` classes and relying on `getAlias` value.
+Spiral provides a set of traits specifically designed to work with `Component` classes and relies on the `getAlias` value.
 
 ### LoggerTrait
 LoggerTrait provides on demand access to `Logger` instance binded with component using its `alias` value.
