@@ -8,7 +8,7 @@ Template Processor provides ability to combine, extend, import and overwrite vie
 ## Principals
 Spiral Templater build at top of HTML parser, this means you don't need to learn any new templating syntax and any IDE or editor will highlight and format your view files. At the same time, you are not able to use templater inside your php blocks, let's view some examples.
 
-## Extending parent layout
+## Inheritance
 Most common task in view creation is building pages with common layout. To do that, let's define layout first:
 ```html
 <html>
@@ -90,7 +90,7 @@ Or even in a middle:
 </block:head>
 ```
 
-## Multiple extending
+## Multiple Inheritance
 In many cases your website layout is not always the same and can vary from page to page. Let's say that you have account with navigation, breadcrumps and content. You can add this pieces to every view of your accounts, however we can define new layout to be extended.
 ```html
 <extends:layouts.basic/>
