@@ -50,7 +50,7 @@ Result of this exetending will look like:
 ```
 As you can see php code was successfully passed to parent block.
 
-## Keeping original block content
+## Keep original block content
 In some cases we may need to keep original block content in some form. To do that use block name inside youre declaration:
 ```html
 <block:head>
