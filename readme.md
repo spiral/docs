@@ -22,7 +22,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * Migrations
 * Views
   * [Basic Usage] (view/basic-usage.md)
-  * [Composer] (view/templater.md) (docs unfinished)
+  * [**Template Processor**] (view/templater.md) (docs unfinished)
 * [Encryption] (encryption.md)
 * HTTP
   * Request
