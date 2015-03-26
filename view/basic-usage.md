@@ -126,7 +126,7 @@ All captured string will be automatically added to i18n bundles at time of compi
 > Translator will set static variable `language` which means that switching language will generate different view cache.
 
 ## Evaluator
-Sometimes you may need to execute your PHP blocks only once, for example based on static variable value, to do that simply add any of this comments (`/*compile*/`, `#compile`, `#php-compile`) to part of your php block:
+Sometimes you may need to execute your PHP blocks only once, for example based on static variable value or in combination with `Templater` (check Templater Processor section), to do that simply add any of this comments (`/*compile*/`, `#compile`, `#php-compile`) to part of your php block:
 ```php
 <html>
 <body>
