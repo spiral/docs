@@ -152,4 +152,4 @@ Now, if we will check cached view file we will see something like that:
 </body>
 </html>
 ```
-As you can see all localized strings are replaced with their transaltions and php block executed, however all other php blocks still presented in untouched form.
+As you can see all localized strings are replaced with their transaltions and php blocks marked with compilation flag are executed, however all other php blocks still presented in untouched form.
