@@ -49,7 +49,7 @@ odm       | `Spiral\Components\ODM\ODM`
 cookies   | `Spiral\Components\Http\Cookies\CookieStore`
 session   | `Spiral\Components\Session\SessionStore`
 
-Some aliases are only availble inside `HttpDispatcher` scope:
+Some aliases are only available inside `HttpDispatcher` scope:
 
 Alias     | Component
 ---       | ---
