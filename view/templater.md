@@ -119,11 +119,13 @@ Or even in a middle:
 
 ## Imports and "Virtual Tags"
 
+### Import Directory
+
+### Import Single View
+
 ### Context Blocks
 
 ### Inline extending
-
-## Aliases
 
 ## Combining Templater with Evaluator and Runtime PHP
 
