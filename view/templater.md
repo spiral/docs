@@ -27,8 +27,8 @@ Most common task in view creation is building pages with common layout. To do th
 ```
 As you can notice you defined multiple tags with `block:` and one `${title|Untitled}`, tags like that can be extended by child view files. The only difference between `${}` and `<block:...>` block definitions that first can be validly used *inside* php code or as tag attribure (`<div class="${class}">`).
 We are going to save this file in `application/views/layouts/basic.php` file (which is identical to view name `layouts/basic`).
-> Attention, default value for blocks like `${name|default}` is always simple string which will be trimmed. If you want to define more complex default value, or keep spaces use inner language to define block:
-> `${name | <?=" " . "abc"?>}`.
+> Attention, default value for blocks like `${name|default}` is always simple string which will be trimmed by spaces. You can put text, html, php, js or any other value as default. 
+
 Now, when you would like to create your page view we can extend this layout and replace some of it's blocks.
 ```html
 <extends:layout.basic title="My Page <?=mt_rand(0, 100)?>"/>
