@@ -97,7 +97,8 @@ This is @{layout|default-value}
 ```
 
 ## View Processors
-Spiral supplied with set of view processors used to simplify view development, processors:
+For many reasons using pure php views are not useful, to extend syntax and give more abilities spiral uses set of
+view processors:
 
 Processor                                               | Description
 ---                                                     | ---
