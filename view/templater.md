@@ -125,7 +125,7 @@ Or even in a middle:
 
 ### Inline extending
 
-### Context Blocks
+### Magick Blocks (context and attributes)
 
 ## Combining Templater with Evaluator and Runtime PHP
 
