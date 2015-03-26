@@ -123,9 +123,9 @@ Or even in a middle:
 
 ### Import Single View
 
-### Context Blocks
-
 ### Inline extending
+
+### Context Blocks
 
 ## Combining Templater with Evaluator and Runtime PHP
 
