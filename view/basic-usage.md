@@ -24,7 +24,7 @@ public function action()
 }
 ```
 Based on provided code, framework will try to find view file located in default view directory (specified in configuration of view component) `application/views/view.php`. Such view can be simple php file with inline HTML:
-```html
+```php
 <html>
 <body>
     This is <?= $value ?>
@@ -113,7 +113,7 @@ Spiral\Components\View\Processors\PrettyPrintProcessor  | Remove blank lines.
 ## Localization
 One of view processors used to localize view content based on current language setting provided by `Translator`.
 To use localization processor simply update desired string with `[[` and `]]` symbols. As result of every processor compilation cached, there is no limitation of how many strings you can "capture" and no performance drop.
-```html
+```php
 <html>
 <body>
     <p>[[This is]] <?= $value ?>.</p>
@@ -127,7 +127,7 @@ All captured string will be automatically added to i18n bundles at time of compi
 
 ## Evaluator
 Sometimes you may need to execute your PHP blocks only once, for example based on static variable value or in combination with `Templater` (check Templater Processor section), to do that simply add any of this comments (`/*compile*/`, `#compile`, `#php-compile`) to part of your php block:
-```html
+```php
 <html>
 <body>
     <p>[[This is]] <?= $value ?>.</p>
@@ -141,7 +141,7 @@ Sometimes you may need to execute your PHP blocks only once, for example based o
 </html>
 ```
 Now, if we will check cached view file we will see something like that:
-```html
+```php
 <html>
 <body>
     <p>This is <?= $value ?>.</p>
