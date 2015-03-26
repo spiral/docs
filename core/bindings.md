@@ -1,5 +1,6 @@
 # Core Bindings and Components
-Most of Spirals' core components (DBAL, Cache, Session, ...) have a custom string alias like "dbal." This makes possible to receive component instance via the magic getter in controller or application class.
+Most of Spirals' core components (DBAL, Cache, Session, ...) have a custom string alias like "dbal." 
+This makes possible to receive component instance via the magic getter in controller or application class.
 ```php
 class MyControllers extends Controller
 {
