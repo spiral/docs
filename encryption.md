@@ -10,6 +10,7 @@ received via string shortcut.
 ## Configuring
 Before using encrypter you have to make sure that correct encrypting password (key) is specified. 
 You can force such key manually:
+
 ```php
 $this->encrypter->setKey('LKHasd0862l;+)9s');
 ```
@@ -20,11 +21,14 @@ Common application key is updated at time of application creation, and can be al
 manually or via running console command `./spiral.cli core:key`.
 
 ## Encrypting
-To encrypt simple string or array runL
+To encrypt simple string or array run
+
 ```php
 $encrypted = $this->encrypter->encrypt('some data');
 ```
+
 Decrypting can be done using:
+
 ```php
 $data = $this->encrypter->decrypt($encrypted);
 ```
@@ -34,6 +38,7 @@ $data = $this->encrypter->decrypt($encrypted);
 ## Encrypting method (cipher)
 By default spiral use `aes-256-cbc` as cipher method, this value can be changed globally by altering encrypter config, 
 or locally by executing:
+
 ```php
 $this->encrypter->setMethod('des-ecb');
 ```

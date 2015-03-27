@@ -2,6 +2,7 @@
 By default view component provides very basic view rendering abilities, such abilities includes executing
 of php templates with provided set of variables. To initate view rendering use following code (example given for controller
 action):
+
 ```php
 public function action()
 {
@@ -9,12 +10,14 @@ public function action()
 }
 ```
 You can also use View facade:
+
 ```php
 use \Spiral\Facades\View;
 
 View::render('view');
 ```
 To pass view variables use second argument of render method.
+
 ```php
 public function action()
 {
@@ -24,6 +27,7 @@ public function action()
 }
 ```
 Based on provided code, framework will try to find view file located in default view directory (specified in configuration of view component) `application/views/view.php`. Such view can be simple php file with inline HTML:
+
 ```php
 <html>
 <body>
@@ -38,6 +42,7 @@ If you want to connect custom templating engine, you may want to register custom
 ## Namespaces
 All view files are separated by set of namespaces listed in view configuration (`application/config/view.php`) such namespaces
 helps to separate view files between modules, core and application. Let's take a look on sample view config:
+
 ```php
 'namespaces'        => array(
     'default'  => array(
@@ -50,9 +55,11 @@ helps to separate view files between modules, core and application. Let's take a
 )
 ```
 To render view file from dedicated namespace, we can use syntax where namespaces separated by `:` with view name:
+
 ```php
 $this->view->render('spiral:http/serverError');
 ```
+
 > Spiral will always force `default` namespace if nothing else provided.
 
 Provided code will try to locate view named `serverError` in directory `application/views/spiral/` and then in directory `framework/views`. Such organization gives us ability to redefine view files declared in other namespaces by declaring our namespace directory with higher priority.
@@ -82,6 +89,7 @@ Once cache filename located or created, runtime variables will be injected in it
 
 ## Static Variables
 As mentioned earlier view cache depends on set of static variables, such variables designed to be used only while compilation stage and **should not** include any user data. Consider them as compilation options. Different set of variables will be generating different view cache. To set variable use following code:
+
 ```php
 $this->view->staticVariable('layout', 'mobile');
 $this->view->staticVariable('authorized', true);
@@ -92,6 +100,7 @@ dump($this->view->staticVariable('layout'));
 $this->view->render('home');
 ```
 To get access to variable in your view:
+
 ```php
 This is @{layout|default-value}
 ```
@@ -113,6 +122,7 @@ Spiral\Components\View\Processors\PrettyPrintProcessor  | Remove blank lines.
 ## Localization
 One of view processors used to localize view content based on current language setting provided by `Translator`.
 To use localization processor simply update desired string with `[[` and `]]` symbols. As result of every processor compilation cached, there is no limitation of how many strings you can "capture" and no performance drop.
+
 ```php
 <html>
 <body>
@@ -122,11 +132,13 @@ To use localization processor simply update desired string with `[[` and `]]` sy
 </body>
 </html>
 ```
+
 All captured string will be automatically added to i18n bundles at time of compilation.
 > Translator will set static variable `language` which means that switching language will generate different view cache.
 
 ## Evaluator
 Sometimes you may need to execute your PHP blocks only once, for example based on static variable value or in combination with `Templater` (check Templater Processor section), to do that simply add any of this comments (`/*compile*/`, `#compile`, `#php-compile`) to part of your php block:
+
 ```php
 <html>
 <body>
@@ -140,7 +152,9 @@ Sometimes you may need to execute your PHP blocks only once, for example based o
 </body>
 </html>
 ```
+
 Now, if we will check cached view file we will see something like that:
+
 ```php
 <html>
 <body>
@@ -152,4 +166,5 @@ Now, if we will check cached view file we will see something like that:
 </body>
 </html>
 ```
+
 As you can see all localized strings are replaced with their transaltions and php blocks marked with compilation flag are executed, however all other php blocks still presented in untouched form.
