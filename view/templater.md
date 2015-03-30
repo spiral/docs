@@ -82,14 +82,14 @@ Now we can save this view under `application/views/layouts/account.php` and exte
 
 
 ## Parent block content
-In some cases we may need to keep original block content in some form. To do that use block name inside youre declaration:
+In some cases we may need to keep the original block content in some form. To do that use block name inside your declaration:
 ```html
 <block:head>
     <block:head/>
     <meta name="keywords" value="keyword"/>
 </block:head>
 ```
-If we will add this statement to our view file output will look like:
+If we will add this statement to our view file, output will look like:
 ```html
 <html>
 <head>
@@ -102,8 +102,8 @@ If we will add this statement to our view file output will look like:
 </body>
 </html>
 ```
-Are you can see parent value `<meta name="author" value="Spiral"/>` are still there.
-You have no limitation on where to put parent block, it can be at the end of definition:
+Are you can see the parent value `<meta name="author" value="Spiral"/>` is still there.
+You have no limitation on where you can put parent block. It can be at the end of definition:
 ```html
 <block:head>
     <meta name="keywords" value="keyword"/>
