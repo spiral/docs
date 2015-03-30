@@ -40,10 +40,10 @@ Test::make(["name" => "value"]); //Core will be injected automatically by Contai
 > If you create new instances of components this way, you don't really need to and only makes sense when class implementation can be potentially altered by developer on a project basis.
 
 ## Component Traits
-Spiral provides a set of traits specifically designed to work with `Component` classes and relay `getAlias` value.
+Spiral provides a set of traits specifically designed to work with `Component` classes and relies on the `getAlias` value.
 
 ### LoggerTrait
-LoggerTrait provides on demand access to `Logger` instance binded with component using it's `alias` value.
+LoggerTrait provides on demand access to `Logger` instance binded with component using its `alias` value.
 Logger associated statically and can be accessed even without constructing class.
 ```php
 use Spiral\Core\Component\LoggerTrait;
@@ -66,7 +66,7 @@ $class->logger()->warning("Some message, some {value}", ["value" => "abc"]); //I
 `Logger` instance. To keep same logger instance for component and it's all child - redefine getAlias method.
 
 ### EventsTrait
-Used to provide component based event dispatcher. This trait used in `DBAL\Database`, `DataEntity`, `Validator`
+Used to provide component based event dispatcher. This trait is used in `DBAL\Database`, `DataEntity`, `Validator`
 and other classes.
 ```php
 use Spiral\Core\Component\EventsTrait;
@@ -97,8 +97,8 @@ echo $class->doAction('value'); //dump of class + "VALUE"
 > Check Core\Events section for more information about events.
 
 ### SingletonTrait
-Singleton trait used in most of spiral core components such as `DBAL`, `ODM`, `Files` and etc. Trait is not
-pure `Singleton` pattern as constructed instance stored in Container scope and can be removed or replaced at
+Singleton trait used in most of spiral core components such as `DBAL`, `ODM`, `Files` and etc. This trait is not a
+pure `Singleton` pattern as constructed instance are stored in Container scope and can be removed or replaced at
 any moment. You have to define constant `SINGLETON` to make it work.
 ```php
 use Spiral\Core\Component\SingletonTrait;
@@ -127,7 +127,7 @@ class MyController extends Controller
     }
 }
 ```
-You can always desctuct signleton by using `Container::removeBinding()` method.
+You can always remove signleton by using `Container::removeBinding()` method.
 ```php
 Container::removeBinding('Test'); //No more Test instance
 ```
@@ -168,8 +168,8 @@ Attention, behaviour of `getAlias` method will be changed:
 Test::getAlias();  //"Test" - SINGLETON constant value
 Test2::getAlias(); //"Test" (!) - SINGLETON constant value
 ```
-## Convert existed class to Component
-You can convert existed class to become component by simply adding trait `Spiral\Core\Component\ComponentTrait`.
+## Convert existing class to Component
+You can convert existing class to a component by simply adding trait `Spiral\Core\Component\ComponentTrait`.
 ```php
 use Spiral\Core\Component\ComponentTrait;
 use Spiral\Core\Component\LoggerTrait;

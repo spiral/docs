@@ -22,7 +22,7 @@ foreach ($database->getTables() as $table)
 > Attention, all table operation will automatically use database level table prefix. 
 
 ## Working with DBAL\Table
-Once you received instance of `Table`, the following operations (besides query builders) available for you:
+Once you received an instance of `Table`, the following operations (besides query builders) are available for you:
 
 List of all table columns associated with their abstract types:
 
@@ -100,8 +100,7 @@ foreach ($schema->getColumns() as $column)
     dump($column->sqlStatement()); //Column creation syntax
 }
 ```
-
-> Some types can be mapped incorrectly is table was created outside migrations or ORM. For example only MySQL has native enum support, all other databases use enum constraint.
+> Some types can be mapped incorrectly if the table was created outside migrations or ORM. For example only MySQL has native enum support, all other databases use enum constraint.
 
 ## Console Commands
 You can also use console commands to get information about configured tables and their schemas:
