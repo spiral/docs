@@ -1,6 +1,6 @@
 # Core Bindings and Components
 Most of Spirals' core components (DBAL, Cache, Session, ...) have a custom string alias like "dbal." 
-This makes possible to receive component instance via the magic getter in controller or application class.
+This makes it possible to receive component instance via the magic getter in controller or application class.
 ```php
 class MyControllers extends Controller
 {
@@ -12,7 +12,7 @@ class MyControllers extends Controller
 }
 ```
 
-As any other class or singleton you can request component instance using method or constructor injection:
+Like any other class or singleton you can request component instance using method or constructor injection:
 ```php
 use Spiral\Components\Encrypter\Encrypter;
 
@@ -62,7 +62,7 @@ router    | `Spiral\Components\Http\Router\Router` Only inside router scope.
 ![Code highlighting](../images/bindings.png)
 
 ## Extending Core Components
-If you want to use your custom implementation of core component, then use container to bind your class.
+If you want to use your custom implementation of a core component, then use a container to bind your class.
 ```php
 class MyHttp extends HttpDispatcher
 {
