@@ -1,6 +1,6 @@
-# Basic Usage of View component
-By default view component provides very basic view rendering abilities, such abilities includes executing
-of php templates with provided set of variables. To initate view rendering use following code (example given for controller
+# Basic Usage of View Component
+By default, view components provides very basic view rendering abilities, such as rendering
+php templates with a provided set of variables. To initate view rendering use the following code (example given for controller
 action):
 
 ```php
@@ -9,14 +9,14 @@ public function action()
     return $this->view->render('view');
 }
 ```
-You can also use View facade:
+You can also use a View facade:
 
 ```php
 use \Spiral\Facades\View;
 
 View::render('view');
 ```
-To pass view variables use second argument of render method.
+To pass variables to the view use the second argument of render method.
 
 ```php
 public function action()
