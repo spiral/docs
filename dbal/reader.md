@@ -3,44 +3,54 @@ Every dbal driver provides the ability to read database and table schemas. Schem
 
 ## Getting list of tables
 Once you receive an instance of `Database` you can check if the desired table exists using the `hasTable` method.
+
 ```php
 if ($database->hasTable('users'))
 {
 }
 ```
+
 In some cases you want to receive all database tables (array of `DBAL\Table`):
+
 ```php
 foreach ($database->getTables() as $table)
 {
     dump($table->getName());
 }
 ```
+
 > Attention, all table operation will automatically use database level table prefix. 
 
 ## Working with DBAL\Table
 Once you received instance of `Table`, the following operations (besides query builders) available for you:
 
 List of all table columns associated with their abstract types:
+
 ```php
 dump($table->getColumns());
 ```
+
 > Abstract type is internal representation of database type, you can read about it more in "DBAL / Schema Builder".
 
 To get more low level table information, let's use `TableSchema`.
+
 ```php
 $schema = $table->schema();
 ```
+
 > Attention, table schema provides reading and writing abilities, you can read about it more in "DBAL / Schema Builder".
 
 ## Working with TableSchema
 TableSchema provided low level access to table information such as column type (internal and abstract), indexes, foreign key. You can use this information to perform database export or build your own ORM.
 
 Table primary keys:
+
 ```php
 dump($schema->getPrimaryKeys());
 ```
 
 Table indexes:
+
 ```php
 foreach ($schema->getIndexes() as $index)
 {
@@ -51,6 +61,7 @@ foreach ($schema->getIndexes() as $index)
 ```
 
 Table foreign keys (references):
+
 ```php
 foreach ($schema->getForeigns() as $foreign)
 {
@@ -64,6 +75,7 @@ foreach ($schema->getForeigns() as $foreign)
 ```
 
 Table columns:
+
 ```php
 foreach ($schema->getColumns() as $column)
 {
@@ -88,6 +100,7 @@ foreach ($schema->getColumns() as $column)
     dump($column->sqlStatement()); //Column creation syntax
 }
 ```
+
 > Some types can be mapped incorrectly is table was created outside migrations or ORM. For example only MySQL has native enum support, all other databases use enum constraint.
 
 ## Console Commands

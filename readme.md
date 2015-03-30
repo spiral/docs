@@ -22,14 +22,14 @@ This documentation is a living and breathing piece of work and is updated consta
   * Migrations
 * Views
   * [Basic Usage] (view/basic-usage.md)
-  * [**Template Processor**] (view/templater.md) (docs unfinished)
-* [Encryption] (encryption.md)
+  * **Template Processor**
+  * [Encryption] (encryption.md)
 * HTTP
   * Request
   * Response
   * Middlewares
   * **Routing**
-  * Cookies
+  * [Cookies] (http/cookies.md)
 * Session
 * Validation
   * Creating Validation Checker
