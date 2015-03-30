@@ -1,18 +1,18 @@
 # Storage
-One of the most powerful spiral components designed to simplify work with files located remotelly. Currently storage component supports:
+One of the most powerful spiral components, the storage component is designed to simplify work with remote files. Currently, the storage component supports:
 Local server (harddrive), remote FTP, Amazon S3, Rackspace Files.
 
 ## How Storage Engine works
-Storage component provides high level set of operations used to manipulate location of `StorageObject` instances.
+Storage component provides a high level set of operations used to manipulate location of `StorageObject` instances.
 
-General idea is about encoding information about file location in it's own URI (in future `address`) which can either be filename with string prefix or valid URL. This methodic allow developer (you, i assume) skip step related to detecting of file location and makes additional
-column in database unnesessary.
+The general idea is to encode information about the file location in its own URI (in future `address`) which can either be a filename with string prefix or a valid URL. This methodology allows the developer (you, i assume) to skip steps related to detecting of file location and makes additional
+columns in database unnecessary.
 
 ## Configuration
-Configuration of storage component includes two main sections: `servers` and `containers`. Where server represent local or remove location and protocol, container used to provide abstraction level at top of such server.
+The configuration of storage components includes two main sections: `servers` and `containers`. Where server represent the local or remote location and protocol, container is used to provide an abstraction layer on top of the server.
 
 ### Common Container Options
-Every container configuration should always include following fields:
+Every container configuration should always include the following fields:
 
 TABLE
 server
