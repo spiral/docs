@@ -22,14 +22,14 @@ This documentation is a living and breathing piece of work and is updated consta
   * Migrations
 * Views
   * [Basic Usage] (view/basic-usage.md)
-  * [Templater] (view/templater.md) (docs unfinished)
-* [Encryption] (encryption.md)
+  * **Template Processor**
+  * [Encryption] (encryption.md)
 * HTTP
   * Request
   * Response
   * Middlewares
   * **Routing**
-  * Cookies
+  * [Cookies] (http/cookies.md)
 * Session
 * Validation
   * Creating Validation Checker
@@ -52,9 +52,7 @@ This documentation is a living and breathing piece of work and is updated consta
 * Redis
 * Storage Engine
 * Files
-* Localization
-  * Basic Usage
-  * Localization Traits
+* [Localization] (i18n.md)
 * Pagination
 * ODM
   * Document

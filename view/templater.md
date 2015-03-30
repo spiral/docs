@@ -1,12 +1,14 @@
-# Templater
-Sometimes (especially if you bulding complex websites) view component by itself can't satisfy your needs. In this case you can use embedded view processor - Templater.
+# Template Processor
+Sometimes (especially if you bulding complex websites) view component by itself can't satisfy your needs. In this case you can use embedded view composer.
 
-Templater provides ability to combine, extend, import and overwrite views and view blocks. As other processors templater executed at time of view compilation, which means it results are cached and can not be changed in runtime (however you can use static variables to alter template).
+Template Processor provides ability to combine, extend, import and overwrite views and view blocks. As other processors templater executed at time of view compilation, which means it results are cached and can not be changed in runtime (however you can use static variables to alter template).
+
+> Template Processor does not provides any *logical* functionality besides composing view files together. Use PHP for that purposes.
 
 ## Principals
 Spiral Templater build at top of HTML parser, this means you don't need to learn any new templating syntax and any IDE or editor will highlight and format your view files. At the same time, you are not able to use templater inside your php blocks, let's view some examples.
 
-## Extending parent layout
+## Inheritance
 Most common task in view creation is building pages with common layout. To do that, let's define layout first:
 ```html
 <html>
@@ -25,6 +27,8 @@ Most common task in view creation is building pages with common layout. To do th
 ```
 As you can notice you defined multiple tags with `block:` and one `${title|Untitled}`, tags like that can be extended by child view files. The only difference between `${}` and `<block:...>` block definitions that first can be validly used *inside* php code or as tag attribure (`<div class="${class}">`).
 We are going to save this file in `application/views/layouts/basic.php` file (which is identical to view name `layouts/basic`).
+> Attention, default value for blocks like `${name|default}` is always simple string which will be trimmed by spaces. You can put text, html, php, js or any other value as default. 
+
 Now, when you would like to create your page view we can extend this layout and replace some of it's blocks.
 ```html
 <extends:layout.basic title="My Page <?=mt_rand(0, 100)?>"/>
@@ -50,7 +54,34 @@ Result of this exetending will look like:
 ```
 As you can see php code was successfully passed to parent block.
 
-## Keeping original block content
+In many cases your website layout is not always the same and can vary from page to page. Let's say that you have account with navigation, breadcrumps and content. You can add this pieces to every view of your accounts, however we can define new layout to be extended.
+```html
+<extends:layouts.basic/>
+<block:title>${pagename} - Account</block:title>
+<block:body>
+    <div class="navigation">
+        <ul>
+            <li>...</li>
+            <li>...</li>
+        </ul>
+    </div>
+    <div class="breadcrumps">Account / ${pagename}</div>
+    <div class="content">
+        <block:content/>
+    </div>
+</block:body>
+```
+Now we can save this view under `application/views/layouts/account.php` and extend it by some of our account pages:
+```html
+<extends:layout.account pagename="Settings"/>
+<block:content>
+    Some settings...
+</block:content>
+```
+> There is no real limitiation of how nested your extending can be, however more parents will cause longer view compilation.
+
+
+## Parent block content
 In some cases we may need to keep original block content in some form. To do that use block name inside youre declaration:
 ```html
 <block:head>
@@ -88,40 +119,15 @@ Or even in a middle:
 </block:head>
 ```
 
-## Multiple extending
-In many cases your website layout is not always the same and can vary from page to page. Let's say that you have account with navigation, breadcrumps and content. You can add this pieces to every view of your accounts, however we can define new layout to be extended.
-```html
-<extends:layouts.basic/>
-<block:title>${pagename} - Account</block:title>
-<block:body>
-    <div class="navigation">
-        <ul>
-            <li>...</li>
-            <li>...</li>
-        </ul>
-    </div>
-    <div class="breadcrumps">Account / ${pagename}</div>
-    <div class="content">
-        <block:content/>
-    </div>
-</block:body>
-```
-Now we can save this view under `application/views/layouts/account.php` and extend it by some of our account pages:
-```html
-<extends:layout.account pagename="Settings"/>
-<block:content>
-    Some settings...
-</block:content>
-```
-> There is no real limitiation of how nested your extending can be, however more parents will cause longer view compilation.
-
 ## Imports and "Virtual Tags"
 
-### Context Blocks
+### Import Directory
+
+### Import Single View
 
 ### Inline extending
 
-## Aliases
+### Magick Blocks (context and attributes)
 
 ## Combining Templater with Evaluator and Runtime PHP
 
