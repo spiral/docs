@@ -52,9 +52,7 @@ This documentation is a living and breathing piece of work and is updated consta
 * Redis
 * Storage Engine
 * Files
-* Localization
-  * Basic Usage
-  * Localization Traits
+* [Localization] (i18n.md)
 * Pagination
 * ODM
   * Document
