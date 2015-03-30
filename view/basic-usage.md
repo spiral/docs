@@ -16,7 +16,7 @@ use \Spiral\Facades\View;
 
 View::render('view');
 ```
-To pass variables to the view use the second argument of render method.
+To pass variables to the view, use the second argument of the render method.
 
 ```php
 public function action()
@@ -26,7 +26,7 @@ public function action()
     ]);
 }
 ```
-Based on provided code, framework will try to find view file located in default view directory (specified in configuration of view component) `application/views/view.php`. Such view can be simple php file with inline HTML:
+Based on provided code, framework will try to find the view file located in default view directory (specified in the configuration of view component) `application/views/view.php`. Such a view can be a simple php file with inline HTML:
 
 ```php
 <html>
@@ -35,13 +35,13 @@ Based on provided code, framework will try to find view file located in default 
 </body>
 </html>
 ```
-As you can see provided array of view data was exported to be used as local view variables.
-> Spiral does not use any "logic" templater like Smarty or Twig, instead it uses HTML composer (see Templater section).
-If you want to connect custom templating engine, you may want to register custom view Processor.
+As you can see, the provided array of view data was exported  as a local view variables.
+> Spiral does not use any "logic" templater like Smarty or Twig, instead it uses a HTML composer (see Templater section).
+If you want to connect custom templating engine, you should  register a custom view Processor.
 
 ## Namespaces
-All view files are separated by set of namespaces listed in view configuration (`application/config/view.php`) such namespaces
-helps to separate view files between modules, core and application. Let's take a look on sample view config:
+All view files are separated by a set of namespaces listed in the view configuration (`application/config/view.php`). Such namespaces
+help to separate view files between modules, core and application. Let's take a look at a sample view config:
 
 ```php
 'namespaces'        => array(
@@ -54,7 +54,7 @@ helps to separate view files between modules, core and application. Let's take a
     )
 )
 ```
-To render view file from dedicated namespace, we can use syntax where namespaces separated by `:` with view name:
+To render a view file from dedicated namespace, we can use syntax where namespaces are separated by `:` with view name:
 
 ```php
 $this->view->render('spiral:http/serverError');
@@ -66,17 +66,17 @@ Provided code will try to locate view named `serverError` in directory `applicat
 
 > Besides `http/serverError` you can redefine `http/notFound`, `http/forbidden`, `http/badRequest` views.
 
-## Redering Process
-To better understand how to extend view component let's review rendering process:
+## Rendering Process
+To better understand how to extend view component let's review the rendering process:
 
 #### View filename lookup
-First step of any view rendering process is to locate view file should be used to perform rendering. Location depends on provided namespace and set of namespace directories. 
+First step of any view rendering process is to locate the view file that should be used to perform rendering. The location depends on the provided namespace and set of namespace directories. 
 
 #### Generating cached view filename
-Once view file located, spiral will generate cache filename which is used or *will be used* to store cached view template. Generated name depends on environment and set of static variables provided to view component (see section static variables). 
+Once view file located, spiral will generate a cache filename which is used or *will be used* to store cached view template. The generated name depends on the environment and the set of static variables provided to the view component (see section static variables). 
 
 #### View cache check
-If view cache exsist spiral will make sure that original file wasn't altered since cache generation.
+If a view cache exists, spiral will make sure that the original file wasn't altered since cache generation.
 > You can disable cache and always invalidate view cache, this is recommended bahaviour during development as framework can't track updates in nested files. However it will dramatically slow your application. Never turn cache off in production.
 
 #### View Compilation
