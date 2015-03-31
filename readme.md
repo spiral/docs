@@ -23,7 +23,7 @@ This documentation is a living and breathing piece of work and is updated consta
 * Views
   * [Basic Usage] (view/basic-usage.md)
   * **Template Processor**
-  * [Encryption] (encryption.md)
+* [Encryption] (encryption.md)
 * HTTP
   * Request
   * Response
