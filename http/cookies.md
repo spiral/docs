@@ -1,5 +1,5 @@
 # Cookies
-By default PSR 7 does not separate cookie headers from any other Response headers, this may create some problems while trying to work with cookies in an efficient way. To solve this problem, spiral provides 2 different compatible ways to manage cookie headers inside your controlers and middleware.
+By default, PSR 7 does not separate cookie headers from any other Response headers, this may create some problems while trying to work with cookies in an efficient way. To solve this problem, Spiral provides 2 different compatible ways to manage cookie headers inside your controllers and middleware.
 
 ## Set-Cookie String Header
 The first option is to create the cookie header within the response manually. To do that let's use the default `Reponse->withAddedHeader()` 
@@ -23,12 +23,12 @@ public function filter(Response $response)
 }
 ```
 
-As you may see this way does not provide a convenient way to create cookies, however you can create the header manually at any time when you want to control cookie content or other options manually.
+As you can see, this way does not provide a convenient way to create cookies, however you can create the header manually at any time when you want to control cookie content or other options.
 > The CookieManager middleware (see next) will not encrypt cookies specified as simple string headers. This is not recommended due to potentical problem while decrypting cookies.
 
 ## Set-Cookie object header
 Another way to create cookies requires direct access to the `Response` object but provides a simplified interface to generate cookies.
-In this case, the header line will be represent not as a string but as a `Cookie` object where the values are stored as class properties.
+In this case, the header line will not be a string but instead will be  a `Cookie` object where the values are stored as class properties.
 
 
 ```php
@@ -61,16 +61,16 @@ public function filter(Response $response)
 ```
 
 The `Cookie` instance can generate a header string by itself via calling the `compile()` method or by converting the object to string. This ability
-makes Cookie class compatible with PSR 7.
+makes the Cookie class compatible with PSR 7.
 
 > Cookies created via class will be automatically encrypted via the CookieManager.
 
 You can pass values to the `Cookie` instance constructor in the same order as in the `setcookie()` method, however the expires parameter is replaced with the lifetime which is the relative expiration interval in seconds. 
 
 ## Cookie Manager and Middleware
-The third and the last option to manage cookies involves a specially designed interface which will automatically add cookie headers to the response at dispatch time.
+The third and the last option to manage cookies involves a specially designed interface, which will automatically add cookie headers to the response at dispatch time.
 
-Middleware implements the spiral singleton pattern and can be requested with DI, shortcut binding (`cookies`) in controllers or via static facade. All examples are provided for a controller action:
+Middleware implements the spiral singleton pattern and can be requested with DI, shortcut binding (`cookies`) in controllers or via static facade. All examples are assume the use of a controller action:
 
 ```php
 use Spiral\Facades\Cookies;
