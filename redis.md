@@ -1,14 +1,14 @@
 # Redis
-Spiral implements access to **Redis** database using well known `predis` library.
+Spiral implements access to **Redis** database using the well-known `predis` library.
 
 ## Configuring
 
 ## Requesting RedisClient
-RedisClient used to represent single connection to Redis database, such client implements spiral "controllable injection" pattern and can be requested multiple way.
+RedisClient is used to represent a single connection to a Redis database, such client implements spiral "controllable injection" pattern and can be requested multiple ways.
 
 EXAMPLE
 
-Redis client fully implement all predis methods, let's check few simple example (see predis documentation for more information);
+Redis client fully implement all predis methods, let's check a few simple examples (see predis documentation for more information);
 
 ```php
 $client->incx('name', 1);
@@ -24,5 +24,5 @@ In some cases you don't really need RedisClient instance.
 
 EXAMPLE
 
-> Even if you can use this way to work with data, we strongly recommend to work with `RedisClient` directly.
+> Even if you can use this way to work with data, we strongly recommend you use `RedisClient` directly.
 
