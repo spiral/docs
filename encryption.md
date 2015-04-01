@@ -14,7 +14,8 @@ You can use the key manually:
 ```php
 $this->encrypter->setKey('LKHasd0862l;+)9s');
 ```
-> The key should be 16, 24 or 32 characters long ( for 128, 192 and 256 bit keys respectively).
+
+> The key should be 16, 24 or 32 characters long (for 128, 192 and 256 bit keys respectively).
 
 By default, spiral will use the common application key which is specified in the `config/encrypter.php` config file. 
 The common application key is updated at time of application creation, and can be altered at any moment
@@ -42,4 +43,5 @@ or locally by executing:
 ```php
 $this->encrypter->setMethod('des-ecb');
 ```
+
 > To get all available methods execute [`openssl_get_cipher_methods`] (http://php.net/manual/en/function.openssl-get-cipher-methods.php).

@@ -14,20 +14,20 @@ This documentation is a living and breathing piece of work and is updated consta
   * [Controllers] (core/controllers.md)
   * Events
   * Configuration
-* DBAL
+* DBAL and Database Management
   * Configuration
   * Query Builders
   * [Schema Reader] (dbal/reader.md)
   * [Schema Builder] (dbal/builder.md)
   * [Migrations] (dbal/migrations.md)
 * Views
-  * [Basic Usage] (view/basic-usage.md)
-  * [**Template Processor**] (view/templater.md)
+  * Basic Usage {FIX COMPILER FIRST}
+  * **Template Processor** {REFACTOR CODE FIRST}
 * [Encryption] (encryption.md)
 * HTTP
   * Request
   * Response
-  * Middlewares
+  * *Middlewares and Endpoints*
   * **Routing**
   * [Cookies] (http/cookies.md)
 * [Session] (session.md)
@@ -43,7 +43,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * Logging
 * Cache
 * Modules
-  * Creating a New Module
+  * Create a New Module
 * Image Manipulations
 * Tokenizer
   * Classes Lookup

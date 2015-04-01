@@ -1,5 +1,5 @@
 # Cookies
-By default, PSR 7 does not separate cookie headers from any other Response headers, this may create some problems while trying to work with cookies in an efficient way. To solve this problem, Spiral provides 2 different compatible ways to manage cookie headers inside your controllers and middleware.
+By default, PSR 7 does not separate cookie headers from any other `Response` headers, this may create some problems while trying to work with cookies in an efficient way. To solve this problem, Spiral provides 2 different compatible options to manage cookie headera froms inside your controllers and middleware.
 
 ## Set-Cookie String Header
 The first option is to create the cookie header within the response manually. To do that let's use the default `Reponse->withAddedHeader()` 
@@ -10,7 +10,8 @@ public function action()
 {
 	return new Reponse('', 200, array(
 		'Set-Cookie'=>[
-			'name=value'
+			'nameA=valueA',
+			'nameB=valueB'
 		]
 	));
 }
@@ -23,13 +24,15 @@ public function filter(Response $response)
 }
 ```
 
-As you can see, this way does not provide a convenient way to create cookies, however you can create the header manually at any time when you want to control cookie content or other options.
-> The CookieManager middleware (see next) will not encrypt cookies specified as simple string headers. This is not recommended due to potentical problem while decrypting cookies.
+As you can see, this option does not provide a convenient way to create cookies, however you can directly write the header in cases where you want to control the cookie content manually.
+
+> The CookieManager middleware (see next) will not encrypt cookies specified as simple string headers. This is not recommended due to potential problems while decrypting cookies.
 
 ## Set-Cookie object header
 Another way to create cookies requires direct access to the `Response` object but provides a simplified interface to generate cookies.
 In this case, the header line will not be a string but instead will be  a `Cookie` object where the values are stored as class properties.
 
+In this case header line will be represent not as string but as `Cookie` object where values stored as class properties.
 
 ```php
 use Spiral\Components\Http\Cookies\Cookie;
@@ -63,7 +66,7 @@ public function filter(Response $response)
 The `Cookie` instance can generate a header string by itself via calling the `compile()` method or by converting the object to string. This ability
 makes the Cookie class compatible with PSR 7.
 
-> Cookies created via class will be automatically encrypted via the CookieManager.
+> Cookies specified using object header will be automatically encrypted via the CookieManager.
 
 You can pass values to the `Cookie` instance constructor in the same order as in the `setcookie()` method, however the expires parameter is replaced with the lifetime which is the relative expiration interval in seconds. 
 
@@ -80,7 +83,7 @@ use Spiral\Components\Http\Cookies\CookieManager;
 
 public function action(CookieManager $cookies)
 {
-	//All examples are equal
+	//Every example provides same functionality
 	$cookies->set('name', 'value', 3600);
 	
 	$this->cookies->set('name', 'value', 3600);
@@ -89,8 +92,8 @@ public function action(CookieManager $cookies)
 }
 
 ```
-The CookieManager set method accepts parameters in the same order as the `setcookie()` method, however the expires parameter is replaced with the lifetime which is the relative expiration interval in seconds.
+The CookieManager `set` method accepts parameters in the same order as the `setcookie()` method, however the expires parameter is replaced with the lifetime which is the relative expiration interval in seconds.
 
 > The CookieManager will ALWAYS encrypt and deccrypt cookies except for whitelisted cookies (csrf token and session id). If you really need to keep your cookie in non-encrypted form you have to explicitly tell the `CookieManager` to skip cookie encrypting/decrypting by its name.
 > 
-> Make sure that `CookieManager` middleware in not disabled in the http config, this will make all provided examples invalid.
+> Make sure that the `CookieManager` middleware is not disabled in the http config, this will make all provided examples invalid.
