@@ -22,7 +22,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * Migrations
 * Views
   * [Basic Usage] (view/basic-usage.md)
-  * **Template Processor**
+  * [**Template Processor**] (view/templater.md)
 * [Encryption] (encryption.md)
 * HTTP
   * Request
@@ -30,7 +30,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * Middlewares
   * **Routing**
   * [Cookies] (http/cookies.md)
-* Session
+* [Session] (session.md)
 * Validation
   * Creating Validation Checker
 * Data Entity Model
@@ -49,7 +49,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * Classes Lookup
   * File Reflection
   * PHP Isolator
-* Redis
+* [Redis] (redis.md)
 * Storage Engine
 * Files
 * [Localization] (i18n.md)
