@@ -4,6 +4,7 @@ Spiral Framework uses `Composer` to resolve dependencies and core file. Check ho
 
 ## Requirements
 Spiral Framework has following server requirements:
+
 * PHP 5.4+
 * PHP MbString
 * PHP OpenSSL
@@ -16,6 +17,7 @@ php composer.phar create-project spiral/application directory dev-master
 
 Spiral will configure all folders and permissions automatically after installation. If you want to 
 run configure command later:
+
 ```
 >./spiral.cli core:configure
 Verifying runtime directory existence and permissions.
@@ -41,6 +43,7 @@ Application configured.
 By default spiral will check what environment to use based on content of `runtime/environment.php` file
 (this behaviour can be changed by custom Application class). Right after installation, environment value
 will be set as `development`, if you want to change it execute following command:
+
 ```
 >./spiral.cli core:environment production -v
 Environment set to 'production'.
@@ -48,5 +51,6 @@ Following configuration files will be altered by this environment:
 ./debug.php
 ./views.php
 ```
+
 > Environment change will alter applicationID, which will automatically invalidate configuration
 and view cache. Read more about configuring spiral application in Core / Configuration section.
