@@ -18,8 +18,8 @@ This documentation is a living and breathing piece of work and is updated consta
   * Configuration
   * Query Builders
   * [Schema Reader] (dbal/reader.md)
-  * Schema Builder
-  * Migrations
+  * [Schema Builder] (dbal/builder.md)
+  * [Migrations] (dbal/migrations.md)
 * Views
   * [Basic Usage] (view/basic-usage.md)
   * [**Template Processor**] (view/templater.md)
