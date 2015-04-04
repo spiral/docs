@@ -1,15 +1,15 @@
 # Storage
 One of the most powerful spiral components, the storage component is designed to simplify work with remote files. Currently, the storage component supports:
-Local server (harddrive), remote FTP, Amazon S3, Rackspace Files.
+Local server (harddrive), remote FTP, Amazon S3, and Rackspace Files.
 
 ## How Storage Engine works
-Storage component provides a high level set of operations used to manipulate location of `StorageObject` instances.
+The Storage component provides a high level set of operations used to manipulate the location of `StorageObject` instances.
 
 The general idea is to encode information about the file location in its own URI (in future `address`) which can either be a filename with string prefix or a valid URL. This methodology allows the developer (you, i assume) to skip steps related to detecting of file location and makes additional
 columns in database unnecessary.
 
 ## Configuration
-The configuration of storage components includes two main sections: `servers` and `containers`. Where server represent the local or remote location and protocol, container is used to provide an abstraction layer on top of the server.
+The configuration of storage components includes two main sections: `servers` and `containers`. Server represents the local or remote location and protocol, while container is used to provide an abstraction layer on top of the server.
 
 ### Common Container Options
 Every container configuration should always include the following fields:
@@ -25,7 +25,7 @@ Local server does not need any special configuration and mainly declared by clas
 
 example
 
-Container connected to local server should include additional options like folder where files will be stored in and file permissions (by default `FileManager::RUNTIME`).
+Container connected to local server should include additional options like the folder where files will be stored in and file permissions (by default `FileManager::RUNTIME`).
 
 table
 
@@ -33,7 +33,7 @@ example
 
 ### FTP Server
 
-Declaration of ftp container is very similar to local one and includes identical set of options.
+The declaration of a ftp container is very similar to the declaration of a local one and includes an identical set of options.
 
 copy from file 
 
