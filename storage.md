@@ -2,7 +2,7 @@
 One of the most powerful spiral components, the storage component is designed to simplify work with remote files. Currently, the storage component supports:
 Local server (harddrive), remote FTP, Amazon S3, and Rackspace Files.
 
-## How Storage Engine works
+## How the Storage Engine works
 The Storage component provides a high level set of operations used to manipulate the location of `StorageObject` instances.
 
 The general idea is to encode information about the file location in its own URI (in future `address`) which can either be a filename with string prefix or a valid URL. This methodology allows the developer (you, i assume) to skip steps related to detecting of file location and makes additional
@@ -37,7 +37,7 @@ The declaration of a ftp container is very similar to the declaration of a local
 
 copy from file 
 
-> Make sure FTP user has permissions to write and change file mode.
+> Make sure the FTP user has permissions to write and change the file mode.
 
 ### Amazon S3 Server
 
@@ -80,4 +80,4 @@ Generally speaking, you have to use a local container if you want to perform fil
 ## Custom storage server
 If you plan to create your own storage server with custom logic inside (like GridFS, non supported cloud platforms) you only have to implement `Spiral\Components\Storage\ServerInterface` and register the server instance in the storage config.
 
-> Spiral storage component was originally written in 2009-2010, it does not use official Amazon and Rackspace APIs. This problem will be solved in future framework releases. 
+> The Spiral storage component was originally written in 2009-2010, it does not use official Amazon and Rackspace APIs. This problem will be solved in future framework releases. 
