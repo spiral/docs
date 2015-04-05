@@ -50,13 +50,17 @@ public function action($name, $value = 'default')
 ```
 To execute such action we will call `Core` directly:
 ```php
-Core::getInstance()->callAction('Controllers\HomeController', 'action', ['name' => 'John']);
+Core::getInstance()->callAction('Controllers\HomeController', 'action', [
+    'name' => 'John'
+]);
 ```
 Or inside controller (HMVC):
 ```php
 public function index() 
 {
-   return $this->core->callAction('Controllers\HomeController', 'action', ['name' => 'John']);
+   return $this->core->callAction('Controllers\HomeController', 'action', [
+       'name' => 'John'
+   ]);
 }
 ```
 Executing this controller action without all the required parameters will return `ClientException`. 
