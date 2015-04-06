@@ -1,16 +1,16 @@
 # Migrations
-Spiral DBAL Migratios is simple and quick way to managade database schemas and schema udpdates. While main job of schema migration performed by database driver schemas, migrations are responsible to remember state of database and perform high level set of operations.
+Spiral DBAL Migrations is a simple and quick way to managae database schemas and schema udpdates. While main job of schema migration performed by database driver schemas, migrations are responsible for remembering the  state of database and performing high level sets of operations.
 
 Please read about schema building [here] (builder.md).
 
-> Every migration divided by two parts which represented by methods `up` and `down`.
+> Every migration is divided into two parts which are represented by the methods `up` and `down`.
 
 ## Create Migration
-Creating migration is very simple process which requires developer to place class implements `Spiral\Components\DBAL\Migrations\Migration` into application migration folder (specified in dbal config and usually points to `application/migrations`). Filename used to store such implementation should clearly determinate migration path.
+Creating a migration is a very simple process which requires the developer to place class implementing `Spiral\Components\DBAL\Migrations\Migration` into the application migration folder (specified in dbal config and usually pointed to `application/migrations`). The filename used to store this implementation should clearly determine the migration path.
 
-Filename should not follow default naming coversions as it will be loaded using migrator and not composer.
+The filename should not follow default naming coversions as it will be loaded using migrator and not composer.
 
-Simple migration can look like:
+A simple migration can look like:
 
 ```php
 use Spiral\Components\DBAL\Migration;
@@ -34,16 +34,16 @@ class MyMigration extends Migration
 
 ```
 
-While you still can create and move migrations manually you can try much more convinient CLI command designed for that purposes.
+While you can create and move migrations manually, there is a much more convenient CLI command designed for that purposes.
 
 ```
 ./spiral.cli create:migration my_migration
 Migration successfully created: 20150401_130123_my_migration.php
 ```
 
-Such command will create empty migration class into migrations directory. Migration filename will include current date and time, so migrations will always be in correct order.
+This command will create an empty migration class in the migrations directory. The migration filename will include the current date and time, so migrations will always be in the correct order.
 
-File content will looks like:
+The file contents will look like:
 
 ```php
 <?php
@@ -70,14 +70,14 @@ class MyMigration extends Migration
 }
 ```
 
-Migration creator contains set of pre-defined patterns used in migrations.
+The migration creator contains a set of pre-defined patterns used in migrations.
 
 ### Table Creation
-One of the most often operations you can met in migrations is table creation. If you want to include table(s) creation pattern into generated class, use `--create` option (do not include table prefix).
+One of the most common operations you can use in migrations is table creation. If you want to include a table(s) creation pattern into generated class, use `--create` option (do not include table prefix).
 
 `./spiral.cli create:migration my_migration --create="my_table"`
 
-Generated file will look like:
+The generated file will look like:
 
 ```php
 <?php
@@ -111,10 +111,10 @@ class MyMigration extends Migration
 }
 ```
 
-> You have no limits how many tables you want to create in one migration, `--create` option can be used multiple times.
+> You have no limits on how many tables you can create in one migration, the `--create` option can be used multiple times.
 
 ### Table Altering
-When your migration designed to only modify existed table(s) use `--alter` prefix.
+When your migration is designed to only modify existing table(s) use the `--alter` prefix.
 
 `./spiral.cli create:migration my_migration --alter="my_table"`
 
@@ -153,10 +153,10 @@ class MyMigration extends Migration
 }
 ```
 
-> You have no limits how many tables you want to alter in one migration, `--alter` option can be used multiple times.
+> You have no limits how many tables you can alter in one migration, the `--alter` option can be used multiple times.
 
 ### Migration Comment
-If you want to add unique comment to your migration class try to use `--comment` option.
+If you want to add an unique comment to your migration class try using the `--comment` option.
 
 `./spiral.cli create:migration my_migration --comment="This is demo migration."`
 
@@ -203,8 +203,8 @@ class MyMigration extends Migration
 ## Replay Migration
 
 ## Register Migration (for Modules)
-Spiral DBAL module provides internal API to register migration using it's class implmenentation. This functionality can be used by modules and some specific applications.
+The Spiral DBAL module provides an internal API to register migrations using its class implmenentation. This functionality can be used by modules and some specific applications.
 
 
 
-> Spiral Module installer provides simplfilied method to reister migration while intalling modules (see [Modules] (../modules.md)).
+> Spiral Module installer provides a simplified method to register migrations while intalling modules (see [Modules] (../modules.md)).
