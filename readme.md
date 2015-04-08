@@ -21,8 +21,8 @@ This documentation is a living and breathing piece of work and is updated consta
   * [Schema Builder] (dbal/builder.md)
   * [Migrations] (dbal/migrations.md)
 * Views
-  * Basic Usage {FIX COMPILER FIRST}
-  * **Template Processor** {REFACTOR CODE FIRST}
+  * Basic Usage {UPDATE REQUIRED}
+  * **Template Processor** {UPDATE REQUIRED)
 * [Encryption] (encryption.md)
 * HTTP
   * Request
