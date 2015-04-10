@@ -92,4 +92,4 @@ CookieManager `set` method accepts parameters in a same order as `setcookie()` m
 
 > CookieManager will ALWAYS encrypt and descrypt cookies except whitelisted cookies (csrf token and session id). If you really need to keep your cookie in non encrypted form you have to expllicitly tell `CookieManager` to skip cookie encrypting/decrypting by it's name.
 >
-> Make sure that `CookieManager` middleware in not disable in http config, this will make all provided examples invalid.
+> Make sure that `CookieManager` middleware in not disabled in http config, this will make all provided examples invalid.
