@@ -14,11 +14,11 @@ The configuration of storage components includes two main sections: `servers` an
 ### Common Container Options
 Every container configuration should always include the following fields:
 
-TABLE
-server
-prefix
-options
-
+Field   | Description
+---     | ---
+server  | Name of storage server to be used to represent container operations.
+prefix  | Prefix assigned to every container object URI (address), prefixes should be unique between containers.
+options | Storage server specific options, can contain information such as local folder name, amazon bucket and etc.
 
 ### Local Server
 Local server does not need any special configuration and mainly declared by class to be used.
