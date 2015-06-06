@@ -10,7 +10,7 @@ Spiral Framework has following server requirements:
 * PHP OpenSSL
 
 ## Installation
-To install fresh spiral application use following command:
+To install a fresh spiral application use the following command:
 ```
 php composer.phar create-project spiral/application directory dev-master
 ```
@@ -52,5 +52,5 @@ Following configuration files will be altered by this environment:
 ./views.php
 ```
 
-> Environment change will alter applicationID, which will automatically invalidate configuration
-and view cache. Read more about configuring spiral application in Core / Configuration section.
+> Environment changes will alter the applicationID, which will automatically invalidate the configuration
+and view cache. Read more about configuring Spiral applications in Core / Configuration section.

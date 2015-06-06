@@ -18,11 +18,11 @@ This documentation is a living and breathing piece of work and is updated consta
   * Configuration
   * Query Builders
   * [Schema Reader] (dbal/reader.md)
-  * Schema Builder
-  * Migrations
+  * [Schema Builder] (dbal/builder.md)
+  * [Migrations] (dbal/migrations.md)
 * Views
-  * Basic Usage {FIX COMPILER FIRST}
-  * **Template Processor** {REFACTOR CODE FIRST}
+  * Basic Usage {UPDATE REQUIRED}
+  * **Template Processor** {UPDATE REQUIRED)
 * [Encryption] (encryption.md)
 * HTTP
   * Request
@@ -31,7 +31,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * *Middlewares and Endpoints*
   * **Routing**
   * [Cookies] (http/cookies.md)
-* Session
+* [Session] (session.md)
 * Validation
   * Creating Validation Checker
 * Data Entity Model
@@ -50,8 +50,8 @@ This documentation is a living and breathing piece of work and is updated consta
   * Classes Lookup
   * File Reflection
   * PHP Isolator
-* Redis
-* Storage Engine
+* [Redis] (redis.md)
+* [Storage Engine] (storage.md)
 * Files
 * [Localization] (i18n.md)
 * Pagination
