@@ -25,7 +25,8 @@ This documentation is a living and breathing piece of work and is updated consta
   * **Template Processor** {UPDATE REQUIRED)
 * [Encryption] (encryption.md)
 * HTTP
-  * Request
+  * Basic Flow 
+  * [Request] (http/request.md)
   * Working with uploaded files
   * Response
   * *Middlewares and Endpoints*
@@ -33,7 +34,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * [Cookies] (http/cookies.md)
 * [Session] (session.md)
 * Validation
-  * Creating Validation Checker
+  * Create Validation Checker
 * Data Entity Model
   * Accessors
 * Console Commands
@@ -51,7 +52,7 @@ This documentation is a living and breathing piece of work and is updated consta
   * File Reflection
   * PHP Isolator
 * [Redis] (redis.md)
-* [Storage Engine] (storage.md)
+* ! [Storage Engine] (storage.md)
 * Files
 * [Localization] (i18n.md)
 * Pagination
