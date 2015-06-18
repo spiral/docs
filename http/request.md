@@ -1,12 +1,12 @@
 # Http Request
-Spiral Framework implements PSR-7 to handle incoming requests and generate output responses.
+The Spiral Framework implements PSR-7 to handle incoming requests and generate output responses.
 
-You can access input request at any moment using dynamic binding `request` in application container or requesting dependency injection with `ServerRequestInteface`.
+You can access input requests at any time using the dynamic binding `request` in the application container or requesting dependency injection with `ServerRequestInteface`.
 
 ## Get incoming request
-Let's review few examplex of receiving input request instance inside controller.
+Let's review a few examples of receiving an input request instance inside a controller.
 
-> Attention, request can be requested or injected only inside http request scope, following code will fail in console commands or controllers executed outside HttpDispatcher flow.
+> Warning, requests can only be requested or injected inside an http request scope. The following code will fail in console commands or if the controllers are executed outside HttpDispatcher flow.
 
 Using dynamic binding.
 
@@ -18,7 +18,7 @@ public function index()
 }
 ```
 
-Additionally you can receive active request using method injection.
+Additionally, you can get an active request using method injection.
 
 ```php
 public function action(ServerRequestInterface $request)
@@ -30,7 +30,7 @@ public function action(ServerRequestInterface $request)
 To get more information about request structure visit PSR-7 meta document.
 
 ## Nested requests
-In some cases (testing, request emulation) you may want to send altered requested to be executed by `HttpDispatcher`, due PSR-7 request is imutable you can execute such operation fairly easy.
+In some cases (testing, request emulation), you may want to send an altered requested to be executed by `HttpDispatcher`. Since the PSR-7 request is immutable you can execute such operation fairly easy.
 
 ```php
 public function index()
@@ -42,7 +42,7 @@ public function index()
 }
 ```
 
-You can perform any request by `HttpDispatcher` it only has to implement PSR-7 `ServerRequestInterface`. All request injections will be resolved with new provided instance inside `perform` method scope and original request will stay untouched.
+You can perform any request by `HttpDispatcher` by implementing PSR-7 `ServerRequestInterface`. All request injections will be resolved with the newly provided instance inside the `perform` method scope and original request will stay unchanged.
 
 > Consider using `Core` functionality `callAction` for HMVC, calling external controllers using HttpDispatcher are pretty expensive.
 
@@ -54,11 +54,11 @@ public functio index()
 ```
 
 ## Accessing input data (query, post, cookies)
-Client request data can be accessed using ServerRequestInstance and it's getters or via InputManager component which provides simplied data access methods.
+Client request data can be accessed using ServerRequestInstance and ServerRequest getters or via InputManager component, which allows simplied data access methods.
 
-You can read more about ServerRequest getters in PSR-7 meta document, but let's review InputManger functionality as it generally much easier to use to everyday development.
+You can read more about ServerRequest getters in PSR-7 meta document, but let's review InputManger functionality as it generally much easier to use in everyday development.
 
-InputManager can be requested by it's class name using method or constructor dependency, or via dynamic binding `input`.
+InputManager can be requested by it's class name using method or constructor dependency or via dynamic binding `input`.
 
 ```php
 public function index()
@@ -70,7 +70,7 @@ public function index()
 InputManager contains multiple magic properties linked to different part of request plus set of methods to perform common checks.
 
 ### Accessing POST, GET and COOKIES content
-Most of request content can be accesseds by set of input "bags" and simplified methods, every input bag will inplement following methods (using `data` bag as example):
+Most of request content can be accessed by a set of input "bags" and simplified methods. Every input bag will inplement the following methods (using `data` bag as example):
 
 ```php
 public function index()
@@ -108,7 +108,7 @@ public function index()
 }
 ```
 
-HeaderBag has few differences comapared to other bags:
+HeaderBag has a couple of differences when compared to other bags:
 
 * All requested header names will be normalized, so you can ask for header in many forms (Content-Type, content-type and etc.)
 * `get` method will automatically implode all header values into one string using ",", you can disable this behaviour by setting 3rd arugment as false or null.
@@ -116,7 +116,7 @@ HeaderBag has few differences comapared to other bags:
 #### POST data
 We can utilize `data` bag and "data" method of InputManager to get access to request POST data.
 
-> Data bag may be referring not only to POST data but to any value set using setParsedBody of request. For example it can be parsed Json data sent by client.
+> Data bag may be referring not only to POST data but to any value set using setParsedBody of request. For example, it can parse Json data sent by client.
 
 ```php
 public function index()
@@ -155,7 +155,7 @@ public function index()
 }
 ```
 
-ServerBag will automatically normalize all requested server values. This makes possible to get value without uppercasing names: 
+ServerBag will automatically normalize all requested server values. This makes it possible to get value without using all uppercase letters for the names: 
 
 ```php
 $this->input->server('SERVER_PORT');
@@ -163,7 +163,7 @@ $this->input->server('server-port');
 ```
 
 #### Uploaded Files
-To get list of uploaded files or individual file use `files` bag and `file` method. Every uploaded file instance represent using `UploadedFileInterface` which is part of PSR-7.
+To get a list of the uploaded files or individual file use the `files` bag and `file` method. Every uploaded file instance is represented using `UploadedFileInterface` which is part of PSR-7.
 
 ```php
 public function index()
@@ -196,16 +196,16 @@ public function index()
 	dump($this->input->isSecure());
 	
 	//Check request headers to verify that request made over ajax
-	dump($this->input->isAjax());
+	dump($this->request->isAjax());
 	
 	//Receive client ip address (this method uses _SERVER 
 	//value and may not be correct in some cases).
-	dump($this->input->getRemoteAddress());
+	dump($this->request->getRemoteAddress());
 }
 ```
 
 ### Input Facade
-If you would like to work with Input using static methods you can use `Input` facade which has all methods above mapped statically.
+If you would like to work with Input using static methods, you can use `Input` facade which has all the method mentioned above mapped staticly.
 
 ```php
 echo Input::query('name', 'default');
