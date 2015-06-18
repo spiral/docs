@@ -196,7 +196,7 @@ public function index()
 	dump($this->input->isSecure());
 	
 	//Check request headers to verify that request made over ajax
-	dump($this->request->isAjax());
+	dump($this->input->isAjax());
 	
 	//Receive client ip address (this method uses _SERVER 
 	//value and may not be correct in some cases).
