@@ -205,7 +205,7 @@ public function index()
 ```
 
 ### Input Facade
-If you would like to work with Input using static methods you can use `Input` facade which has all method above mapped statically.
+If you would like to work with Input using static methods you can use `Input` facade which has all methods above mapped statically.
 
 ```php
 echo Input::query('name', 'default');
