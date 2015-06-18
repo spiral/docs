@@ -1,7 +1,7 @@
 # Http Request
 The Spiral Framework implements PSR-7 to handle incoming requests and generate output responses.
 
-You can access input requests at any time using the dynamic binding `request` in the application container or requesting dependency injection with `ServerRequestInteface`.
+You can access input request at any time using the dynamic binding `request` in the application container or requesting dependency injection with `ServerRequestInteface`.
 
 ## Get incoming request
 Let's review a few examples of receiving an input request instance inside a controller.
@@ -196,11 +196,11 @@ public function index()
 	dump($this->input->isSecure());
 	
 	//Check request headers to verify that request made over ajax
-	dump($this->request->isAjax());
+	dump($this->input->isAjax());
 	
 	//Receive client ip address (this method uses _SERVER 
 	//value and may not be correct in some cases).
-	dump($this->request->getRemoteAddress());
+	dump($this->input->getRemoteAddress());
 }
 ```
 
