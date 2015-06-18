@@ -28,6 +28,17 @@ public function filter(Response $response)
 
 > CookieManager uses lifetime value instead of expiration, this means that you don't need to provide absolute timestamp.
 
+
+## Using Cookie header class
+Another option to create cookie header is using Cookie class, this class provides lights abstraction at top of Set-Cookier header.
+
+``` php
+return $reponse->withAddedHeader(
+		'Set-Cookie',
+		Cookie::create('name','value')->packHeader()
+	);
+```
+
 ## Using Middleware
 Another option uses `CookieManager` middleware to scheldule cookie to be sent right before Request will be dispatched. In this case our code can be simplified a lot and we don't need Request instance anymore.
 
@@ -40,8 +51,6 @@ public function action()
 ```
 
 One of the benefins about using this method that all cookie header values will be passed though selected protection method (HMAC or encryption).
-
-> Attention, CookieManager middleware executed only once, meaning all nested controllers will manipulate with one set of schelduled cookies.
 
 To get all schelduled cookies execute:
 
@@ -62,6 +71,8 @@ public function listCookies(CookieManager $cookies)
 ```
 
 > Attention, CookieManager can not be used to read incoming cookies, use `InputManager` or active `ServerRequestInstance` for this purposes.
+
+Additionally to cookie creation CookieManager will mount attribute value to active request `cookieDomain` which will contain pre-configured domain to be used for cookie.
 
 ## Selecting protection method
 `CookieManager` middleware provides 2 different ways to protect cookie data.
@@ -126,8 +137,8 @@ public function bootstrap()
 
 > Attention, this method should be executed **before** starting `HttpDispatcher`.
 
-## Configuring cookies path and domain
-Both default `domain` and `path` values are presented in http config and can be edited at any moment.
+## Configuring default cookies domain
+Default `domain` value are presented in http config and can be edited at any moment.
 
 Hovewer, domain value provided in pattern form and can provide additional functionality:
 
@@ -135,7 +146,6 @@ Hovewer, domain value provided in pattern form and can provide additional functi
 ...
 	'cookies' => array(
 		'domain' => '{host}',
-		'path'   => '/',
 		'method' => 'none'
 	)
 ```
@@ -146,7 +156,6 @@ Using provided config default cookie domain value will be calculated using curre
 ...
 	'cookies' => array(
 		'domain' => '.{host}',
-		'path'   => '/',
 		'method' => 'none'
 	)
 ```
@@ -159,7 +168,7 @@ Additionally you can manually force domain:
 ...
 	'cookies' => array(
 		'domain' => 'mydomain.com',
-		'path'   => '/',
 		'method' => 'none'
 	)
 ```
+You can always get currently configured and compiled domain value using `cookieDomain` attribute of active request.
