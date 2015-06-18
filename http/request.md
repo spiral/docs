@@ -200,7 +200,7 @@ public function index()
 	
 	//Receive client ip address (this method uses _SERVER 
 	//value and may not be correct in some cases).
-	dump($this->request->getRemoteAddress());
+	dump($this->input->getRemoteAddress());
 }
 ```
 
