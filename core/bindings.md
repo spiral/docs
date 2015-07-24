@@ -73,6 +73,8 @@ class MyHttp extends HttpDispatcher
 }
 ```
 
+In your Application class.
+
 ```php
 public function bootstrap()
 {
