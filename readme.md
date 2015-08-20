@@ -1,7 +1,7 @@
 # Spiral Framework, Table of Contents
 * Let's start
     *  [Installation and Requiments] (start/installation.md)
-    *  Configurations
+    *  Configuration
 * Architecture Overview
     * IoC Container
     * Core Interfaces
