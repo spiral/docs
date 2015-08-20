@@ -16,7 +16,7 @@
     * [Request Filters] (application/requests.md)
     * [Services] (application/services.md)
     * [Middlewares] (application/middlewares.md)
-    * [Views] (application/views.md)
+    * [View templates] (application/views.md)
 * Http Dispatcher
     * Overview
     * Request Flow
