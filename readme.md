@@ -12,7 +12,7 @@
     * [**Directory structure**] (application/directories.md)
     * [Commands] (application/commands.md)
     * [Controllers] (application/controllers.md)
-    * [Database Entities] (application/directories.md)
+    * [Database Entities] (application/entities.md)
     * [Request Filters] (application/requests.md)
     * [Services] (application/services.md)
     * [Middlewares] (application/middlewares.md)
