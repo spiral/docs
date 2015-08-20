@@ -3,20 +3,20 @@
     *  [**Installation and Requiments**] (start/installation.md)
     *  [Configuration]  (start/configuration.md)
 * Framework Overview
-    * [**IoC Container**] (framework/container.md)
-    * [Core Interfaces] (framework/interfaces.md)
-    * [Request Flow] (framework/flow.md)
-    * [Spiral Components and their bindings] (framework/components.md)
-    * [Exception Handling and Snapshots] (framework/errors.md)
+    * ! [**IoC Container**] (framework/container.md)
+    * ! [Core Interfaces] (framework/interfaces.md)
+    * ! [Request Flow] (framework/flow.md)
+    * ! [Spiral Components and their bindings] (framework/components.md)
+    * ! [Exception Handling and Snapshots] (framework/errors.md)
 * Application Structure
-    * [**Directory structure**] (application/directories.md)
-    * [Commands] (application/commands.md)
-    * [Controllers] (application/controllers.md)
-    * [Database Entities] (application/entities.md)
-    * [Request Filters] (application/requests.md)
-    * [Services] (application/services.md)
-    * [Middlewares] (application/middlewares.md)
-    * [View templates] (application/views.md)
+    * ! [**Directory structure**] (application/directories.md)
+    * ! [Commands] (application/commands.md)
+    * ! [Controllers] (application/controllers.md)
+    * ! [Database Entities] (application/entities.md)
+    * ! [Request Filters] (application/requests.md)
+    * ! [Services] (application/services.md)
+    * ! [Middlewares] (application/middlewares.md)
+    * ! [View templates] (application/views.md)
 * Http Dispatcher
     * Overview
     * Request Flow
