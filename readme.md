@@ -9,14 +9,14 @@
     * Spiral Components and their bindings
     * Exception Handling and Snapshots
 * Application Structure
-    * Directory structure
-    * Commands
-    * Controllers
-    * Database Entities
-    * Request Filters
-    * Services
-    * Middlewares
-    * Views
+    * [**Directory structure**] (application/directories.md)
+    * [Commands] (application/commands.md)
+    * [Controllers] (application/controllers.md)
+    * [Database Entities] (application/directories.md)
+    * [Request Filters] (application/requests.md)
+    * [Services] (application/services.md)
+    * [Middlewares] (application/middlewares.md)
+    * [Views] (application/views.md)
 * Http Dispatcher
     * Overview
     * Request Flow
