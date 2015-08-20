@@ -74,3 +74,5 @@ return [
 ```
 
 Configuration section `cache` in original config will be replaced with new array.
+
+> Due enviroment value is always a string you can create your own local enviroment under any name.
