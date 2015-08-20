@@ -44,6 +44,7 @@
     * Extended Usage (virtual tags and tricks)
 * Storage Manager
     * Overview
+    * Buckets and Objects
     * Storage Servers
     * Tips and Tricks
 * Databases
