@@ -1,5 +1,7 @@
 # Spiral Framework, Table of Contents
-* Installation and Requirements
+* Let's start
+    *  Installation and Requiments
+    *  Configurations
 * Architecture Overview
     * IoC Container
     * Core Interfaces
