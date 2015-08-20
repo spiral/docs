@@ -2,12 +2,12 @@
 * Let's start
     *  [**Installation and Requiments**] (start/installation.md)
     *  [Configuration]  (start/configuration.md)
-* Architecture Overview
-    * IoC Container
-    * Core Interfaces
-    * Request Flow
-    * Spiral Components and their bindings
-    * Exception Handling and Snapshots
+* Framework Overview
+    * [**IoC Container**] (framework/container.md)
+    * [Core Interfaces] (framework/interfaces.md)
+    * [Request Flow] (framework/flow.md)
+    * [**Spiral Components and their bindings**] (framework/components.md)
+    * [Exception Handling and Snapshots] (framework/errors.md)
 * Application Structure
     * [**Directory structure**] (application/directories.md)
     * [Commands] (application/commands.md)
