@@ -16,6 +16,7 @@
     * Request Filters
     * Services
     * Middlewares
+    * Views
 * Http Dispatcher
     * Overview
     * Request Flow
