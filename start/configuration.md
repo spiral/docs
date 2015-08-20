@@ -58,7 +58,7 @@ return [
 ];
 ```
 
-If we wish to diable caching in development enviroment we can create file `config/development/views.php` with content like that:
+If we wish to disable caching in development enviroment we can create file `config/development/views.php` with content like that:
 
 ```php
 <?php
