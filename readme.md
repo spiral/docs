@@ -6,8 +6,8 @@
     * IoC Container
     * Core Interfaces
     * Request Flow
-    * Exception Handling and Snapshots
     * Spiral Components and their bindings
+    * Exception Handling and Snapshots
 * Application Structure
     * Directory structure
     * Commands
