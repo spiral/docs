@@ -11,7 +11,7 @@ config folder named as your enviroment and put configuration file in it. Spiral 
 sections with sections provided by this file.
 
 ## Examples
-Let's look into same configuration file for `ViewProvider` component (`config/views.php`):
+Let's look into same configuration file for `ViewManager` component (`config/views.php`):
 
 ```php
 <?php
