@@ -20,7 +20,7 @@
 * Http Dispatcher
     * Overview
     * Request Flow
-    * Middlewares and Endpoints
+    * Middlewares
     * Routing
     * Error Handling
 * Console and CLI mode
