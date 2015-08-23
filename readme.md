@@ -49,7 +49,7 @@
     * Tips and Tricks
 * Databases
     * Overview 
-    * Schema Readers
+    * [Schema Readers] (database/reading.md)
     * Schema Writers
     * Query Builders
     * Migrations
