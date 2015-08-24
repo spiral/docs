@@ -4,7 +4,7 @@
     *  [Configuration]  (start/configuration.md)
 * Framework Overview
     * [**IoC Container**] (framework/container.md)
-    * ! [Application Memory] (framework/memory.md)
+    * [Application Memory] (framework/memory.md)
     * ! [Core Interfaces] (framework/interfaces.md)
     * ! [Exception Handling and Snapshots] (framework/errors.md)
 * Application
