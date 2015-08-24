@@ -42,7 +42,7 @@
     * Modules
 * Templater
     * Basic Usage
-    * Extended Usage (virtual tags and tricks)
+    * Extended Usage (virtual tags, tips and tricks)
 * Storage Manager
     * Overview
     * Buckets and Objects
