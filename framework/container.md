@@ -188,3 +188,17 @@ with such binding if no other references for class instance exists.
 ```php
 $this->container->removeBinding(MyService::class);
 ```
+
+### Scoping
+There is few scenarious when you might want to create some binding only for specific part of code.
+
+```php
+$outerBinding = $this->container->replace(SomeClass::class, new SomeClassB());
+
+//Every dependency of `SomeClass` will be resolved with SomeClassB
+
+//We can now restore original binding (if any)
+$this->container->restore($outerBinding);
+```
+
+> Container scoping used by `HttpDispatcher` to set active instance of `ServerRequestInterface`.
