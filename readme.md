@@ -6,17 +6,17 @@
     * [**IoC Container**] (framework/container.md)
     * ! [Application Memory] (framework/memory.md)
     * ! [Core Interfaces] (framework/interfaces.md)
-    * ! [Application Flow] (framework/flow.md)
-    * ! [Spiral Components and their bindings] (framework/components.md)
     * ! [Exception Handling and Snapshots] (framework/errors.md)
-* Application Structure
+* Application
+    * ! [Startup Flow] (application/flow.md)
     * ! [**Directory structure**] (application/directories.md)
+    * ! [Components and Short Bindings] (application/components.md)
     * ! [Commands] (application/commands.md)
     * ! [Controllers] (application/controllers.md)
+    * ! [Middlewares] (application/middlewares.md)
     * ! [Database Entities] (application/entities.md)
     * ! [Request Filters] (application/requests.md)
     * ! [Services] (application/services.md)
-    * ! [Middlewares] (application/middlewares.md)
     * ! [View templates] (application/views.md)
 * Http Dispatcher
     * [Request Flow] (http/flow.md)
