@@ -4,7 +4,7 @@ middlewares and response generators.
 
 ## What is request
 Spiral does not provide instance of "global" application request available in any place of application, instead of that it opens so called "request scope" and 
-creates container binding `ServerRequestInterface` and "request" (for shortness) to access active request in controllers, request filters and services. Once
+creates container binding `ServerRequestInterface` and "request" (for shortness) to access active request in controllers, request filters and services executed inside such scope. Once
 request performed and response is generated scope are closed and no instance of global request available anymore.
 
 Due http dispatcher can be created in any environment it is possible to start application or nested request with custom instance of ServerRequestInterface at any
