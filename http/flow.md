@@ -28,7 +28,7 @@ public function index() {
 > You can pass any implementation of `ServerRequestInterface` into `perform` method.
 
 ## Middleware pipeline and endpoint (target)
-Before request can be accessible inside controllers and other application services it will be passed thought set of [Http Middlewares](middlewares.md) which can apply custom logic to filter request/response or even halt execution if some condition met (see `CsrfFilter` middleware).
+Before request can be accessed inside controllers and other application services it will be passed thought set of [Http Middlewares](middlewares.md) which can apply custom logic to filter request/response or even halt execution if some condition met (see `CsrfFilter` middleware).
 
 After every middeware processed incoming request, such request will be passed into so called "endpoint" which contains application logic, controllers and etc, endpoing should only be callable and accept `ServerRequestInterface` as first argument into `__invoke` method  (you can also use closures or custom methods (provided as array or class and method)). Request will be bindined (scope created) in container right before being passed into endpoint.
 
