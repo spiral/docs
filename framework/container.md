@@ -164,6 +164,8 @@ As in other cases you can replace exsited singleton realization with custom clas
 Once MyServive will be requested, Container will route request to `NewService` implementation and store it under binging defined in `MyService` class. In other
 words - every class extends singleton will become singleton to replace it's parent.
 
+> You can always disable singleton behaviour by inheriting class and defining SINGLETON constant as `null`.
+
 ### Additional Container methods
 There is few additional methods in Container you might consider using.
 
