@@ -19,7 +19,6 @@
     * ! [Middlewares] (application/middlewares.md)
     * ! [View templates] (application/views.md)
 * Http Dispatcher
-    * Overview
     * [Request Flow] (http/flow.md)
     * [Request and InputManager] (http/input.md)
     * Middlewares
