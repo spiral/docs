@@ -84,13 +84,16 @@ $this->container->bind(ConfiguratorInterface::class, function(ContainerInterface
 
 > Container will provide itself as first argument to binded function.
 
-To bind one class implementation to another (make sure binded class extends target), this can allow you to mock some functionality, test or
+We can also bind one class implementation to another (make sure binded class extends target), this can allow you to mock some functionality, test or
 even change application behaviour:
 
 ```php
+$this->container->bind(ConfiguratorInterface::class, MyConfigurator::class);
+//...
 $this->container->bind(MyConfigurator::class, NewConfigurator::class);
 ```
 
+Based on such binding every requested `MyConfigurator` or `ConfiguratorInterface` going to be resovled using `NewConfigurator` instance.
 > You can bind not only one class name to another, but class name to some string binding, this might simplify some services access.
 
 ```php
