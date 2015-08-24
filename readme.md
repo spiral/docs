@@ -38,11 +38,11 @@
     * **Views**
     * Reactor
     * Modules
-* **Templater**
-    * Basic Usage
+* Templater
+    * **Basic Usage**
     * Extended Usage (virtual tags, tips and tricks)
-* **Storage Manager**
-    * Overview
+* Storage Manager
+    * **Overview**
     * Buckets and Objects
     * Storage Servers
     * Tips and Tricks
@@ -56,8 +56,8 @@
     * Overview
     * Filters and Accessors
     * Validation
-* **Spiral ORM**
-    * Overview
+* Spiral ORM
+    * **Overview**
     * Scaffolding
     * Relations
     * Passive/Active schemas
