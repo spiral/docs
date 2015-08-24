@@ -19,7 +19,7 @@
     * [Request Flow] (http/flow.md)
     * [Request and InputManager] (http/input.md)
     * Middlewares
-    * Routing
+    * **Routing**
     * Error Handling and Isolation
 * Console and CLI mode
     * Console Dispatcher
@@ -35,7 +35,7 @@
     * Tokenizer
     * Translator
     * Validation
-    * Views
+    * **Views**
     * Reactor
     * Modules
 * Templater
