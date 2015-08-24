@@ -12,13 +12,10 @@
     * ! [Startup Flow] (application/flow.md)
     * ! [Error Handling] (application/errors.md)
     * ! [Components and Short Bindings] (application/components.md)
-    * ! [Commands] (application/commands.md)
-    * ! [Controllers] (application/controllers.md)
-    * ! [Middlewares] (application/middlewares.md)
     * ! [Database Entities] (application/entities.md)
-    * ! [Request Filters] (application/requests.md)
     * ! [Services] (application/services.md)
-    * ! [View templates] (application/views.md)
+    * ! [Controllers] (application/controllers.md)
+    * ! [Request Filters] (application/requests.md)
 * Http Dispatcher
     * [Request Flow] (http/flow.md)
     * [Request and InputManager] (http/input.md)
@@ -28,6 +25,7 @@
 * Console and CLI mode
     * Console Dispatcher
     * Embedded Commands Overview
+    * Scaffoling and Application commands
 * Framework Components
     * Cache
     * Debug (Loggers, Snaphosts, Dumps)
