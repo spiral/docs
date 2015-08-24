@@ -3,7 +3,7 @@
     *  [**Installation and Requiments**] (start/installation.md)
     *  [Configuration]  (start/configuration.md)
 * Framework Overview
-    * ! [**IoC Container**] (framework/container.md)
+    * [**IoC Container**] (framework/container.md)
     * ! [Core Interfaces] (framework/interfaces.md)
     * ! [Application Flow] (framework/flow.md)
     * ! [Spiral Components and their bindings] (framework/components.md)
