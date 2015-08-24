@@ -1,72 +1,76 @@
-# Spiral Framework
-This repository contains a set of tutorial files used to describe different aspects of developing an application using the Spiral Framework.
-
-THIS IS OUTDATED DOCUMENTATION, I'M INPROCESS OF UPDATING IT.
-
-This documentation is a living and breathing piece of work and is updated constantly to add more information and know how.
-
-#Table of Contents
-* [Installation and Requirements] (installation.md)
-* Architecture Overview
-* Core
-  * ! [IoC and Controllable Injections] (core/container.md)
-  * ! [Components and Traits] (core/components.md)
-  * ! [**Core Bindings and Components**] (core/bindings.md)
-  * Facades
-  * [Controllers] (core/controllers.md)
-  * Events
-  * Configuration
-* DBAL and Database Management
-  * Configuration
-  * Query Builders
-  * [Schema Reader] (dbal/reader.md)
-  * [Schema Builder] (dbal/builder.md)
-  * [Migrations] (dbal/migrations.md)
-* Views
-  * Basic Usage {UPDATE REQUIRED}
-  * **Template Processor** {UPDATE REQUIRED)
-* [Encryption] (encryption.md)
-* HTTP
-  * Basic Flow 
-  * [Request] (http/request.md)
-  * Working with uploaded files
-  * Response
-  * *Middlewares and Endpoints*
-  * **Routing**
-  * [Cookies] (http/cookies.md)
-* [Session] (session.md)
-* Validation
-  * Create Validation Checker
-* Data Entity Model
-  * Accessors
-* Console Commands
-  * Creating Console Commands
-* Debugging and Profiling
-  * Debugging your code
-  * Exceptions and Errors
-  * Logging
-* Cache
-* Modules
-  * Create a New Module
-* Image Manipulations
-* Tokenizer
-  * Classes Lookup
-  * File Reflection
-  * PHP Isolator
-* [Redis] (redis.md)
-* ! [Storage Engine] (storage.md)
-* Files
-* [Localization] (i18n.md)
-* Pagination
-* ODM
-  * Document
-  * Aggregations
-  * Compositions
-  * UML Export
-* ORM
-  * ActiveRecord
-  * Relationships
-  * Active Schema
-  * UML Export
-  * JSON Documents (ORM + ODM)
-* Helpers
+# Spiral Framework, Table of Contents
+* Let's start
+    *  [**Installation and Requiments**] (start/installation.md)
+    *  [Configuration]  (start/configuration.md)
+* Framework Overview
+    * [**IoC Container**] (framework/container.md)
+    * ! [Application Memory] (framework/memory.md)
+    * ! [Core Interfaces] (framework/interfaces.md)
+    * ! [Application Flow] (framework/flow.md)
+    * ! [Spiral Components and their bindings] (framework/components.md)
+    * ! [Exception Handling and Snapshots] (framework/errors.md)
+* Application Structure
+    * ! [**Directory structure**] (application/directories.md)
+    * ! [Commands] (application/commands.md)
+    * ! [Controllers] (application/controllers.md)
+    * ! [Database Entities] (application/entities.md)
+    * ! [Request Filters] (application/requests.md)
+    * ! [Services] (application/services.md)
+    * ! [Middlewares] (application/middlewares.md)
+    * ! [View templates] (application/views.md)
+* Http Dispatcher
+    * [Request Flow] (http/flow.md)
+    * [Request and InputManager] (http/input.md)
+    * Middlewares
+    * Routing
+    * Error Handling and Isolation
+* Console and CLI mode
+    * Console Dispatcher
+    * Embedded Commands Overview
+* Framework Components
+    * Cache
+    * Debug (Loggers, Snaphosts, Dumps)
+    * Encrypter
+    * Events
+    * Files
+    * Pagination
+    * Tokenizer
+    * Translator
+    * Validation
+    * Views
+    * Reactor
+    * Modules
+* Templater
+    * Basic Usage
+    * Extended Usage (virtual tags, tips and tricks)
+* Storage Manager
+    * Overview
+    * Buckets and Objects
+    * Storage Servers
+    * Tips and Tricks
+* Databases
+    * Overview 
+    * [Schema Readers] (database/reading.md)
+    * Schema Writers
+    * Query Builders
+    * Migrations
+* Data Entities
+    * Overview
+    * Filters and Accessors
+    * Validation
+* Spiral ORM
+    * Overview
+    * Scaffolding
+    * Relations
+    * Passive/Active schemas
+* Spiral ODM
+    * Overview
+    * Scaffolding
+    * Compositions
+    * Aggregations
+    * JSON Documents (integration with ORM)
+    * UML Export
+* Modules and Extensions
+    * Profiler
+    * Redis
+    * Images
