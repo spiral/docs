@@ -9,6 +9,7 @@
     * ! [Exception Handling and Snapshots] (framework/errors.md)
 * Application
     * ! [Startup Flow] (application/flow.md)
+    * ! [Error Handling] (application/errors.md)
     * ! [**Directory structure**] (application/directories.md)
     * ! [Components and Short Bindings] (application/components.md)
     * ! [Commands] (application/commands.md)
