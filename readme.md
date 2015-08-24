@@ -6,7 +6,6 @@
     * [**IoC Container**] (framework/container.md)
     * [Application Memory] (framework/memory.md)
     * ! [Core Interfaces] (framework/interfaces.md)
-    * ! [Exception Handling and Snapshots] (framework/errors.md)
 * Application
     * ! [**Directory structure**] (application/directories.md)
     * ! [Startup Flow] (application/flow.md)
