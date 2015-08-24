@@ -4,6 +4,7 @@
     *  [Configuration]  (start/configuration.md)
 * Framework Overview
     * [**IoC Container**] (framework/container.md)
+    * ! [Application Memory] (framework/memory.md)
     * ! [Core Interfaces] (framework/interfaces.md)
     * ! [Application Flow] (framework/flow.md)
     * ! [Spiral Components and their bindings] (framework/components.md)
