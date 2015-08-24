@@ -13,7 +13,8 @@ moment. Use dispatcher method "perform" to execute given request.
 Let's view example how to call http perform method in controller using altered or custom request.
 ```php
 public function index() {
-    //This is going to be instance of request previously passed into http dispatcher method, not nesessary initial request
+    //This is going to be instance of request previously passed into http dispatcher method, 
+    //not nesessary initial request
     $request = $this->request;
     
     //Let's change request uri path
