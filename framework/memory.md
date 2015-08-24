@@ -9,7 +9,7 @@ related to client request.
 
 So simply state purpose of `HippocampusInterface` let's say it's very expensive to store information in, and very quick to retrieve it back.
 
-## Storing information in memory
+## Memory usage example
 Let's view some example of service which needs to index available classes and generate set of operations based on it:
 
 ```php
