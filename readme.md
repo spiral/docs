@@ -5,7 +5,7 @@
 * Framework Overview
     * [**IoC Container**] (framework/container.md)
     * [Application Memory] (framework/memory.md)
-    * ! [Core Interfaces] (framework/interfaces.md)
+    * [Framework Interfaces] (framework/interfaces.md)
 * Application
     * ! [**Directory structure**] (application/directories.md)
     * ! [Startup Flow] (application/flow.md)
