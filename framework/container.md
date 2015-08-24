@@ -115,7 +115,7 @@ $this->container->bindSingleton(ConfiguratorInterface::class, function(Container
 });
 ```
 
-In this case `ConfiguratorInterface` will be constructed only once and that returned as instance of MyConfigurator for every requested dependency.
+In this case `ConfiguratorInterface` will be constructed only once and returned as instance of MyConfigurator for every requested dependency.
 You can also bing already constructed instance to become a singleton:
 
 ```php
