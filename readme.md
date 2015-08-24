@@ -19,7 +19,7 @@
     * ! [View templates] (application/views.md)
 * Http Dispatcher
     * Overview
-    * Request Flow
+    * [Request Flow] (http/flow.md)
     * Middlewares
     * Routing
     * Error Handling
