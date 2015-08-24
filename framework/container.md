@@ -124,7 +124,7 @@ $this->container->bindSingleton(ConfiguratorInterface::class, $this);
 
 ### Automatic Singleton binding and SINGLETON constant
 Spiral Container provides internal contract which allow to state that class must be a singleton using class declaration. To mark your class
-as singleton simple define "SINGLETON constant":
+as singleton simple define "SINGLETON constant" and implement `SingletonInterface`:
 
 ```php
 class MyService implements SingletonInterface
@@ -138,7 +138,7 @@ class MyService implements SingletonInterface
 }
 ```
 
-Singleton constant must be pointing to binding which must store constructed instance, by default we are going to use class name. This implementation provides
+SINGLETON constant must be pointing to binding which must store constructed instance, by default we are going to use class name. This implementation provides
 us ability to avoid setting up singleton binding in application bootstrap which can significantly improve performance.
 
 ```php
