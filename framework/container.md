@@ -122,13 +122,6 @@ You can also bing already constructed instance to become a singleton:
 $this->container->bindSingleton(ConfiguratorInterface::class, $this);
 ```
 
-Due internal implementation of Container you can also bing instances as singletons using `bind` method:
-
-```php
-//This code is identical to bindSingleton
-$this->container->bind(ConfiguratorInterface::class, $this);
-```
-
 ### Automatic Singleton binding and SINGLETON constant
 Spiral Container provides internal contract which allow to state that class must be a singleton using class declaration. To mark your class
 as singleton simple define "SINGLETON constant":
