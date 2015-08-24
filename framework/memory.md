@@ -52,7 +52,7 @@ class OperationService
 
 > You can only store arrays and scalar values in long term memory.
 
-`HippocampusInterface` implemented by default using `Core` and `Application` classes, which makes you able to access it's functions using short 'core' binding in your services or controllers.
+`HippocampusInterface` implemented in spiral bundle using `Core` and `Application` classes, which makes you able to access it's functions using short 'core' binding in your services or controllers.
 
 ```php
 public function doSomething()
