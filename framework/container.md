@@ -127,7 +127,7 @@ Spiral Container provides internal contract which allow to state that class must
 as singleton simple define "SINGLETON constant":
 
 ```php
-class MyService 
+class MyService implements SingletonInterface
 {
     const SINGLETON = self::class;
 
