@@ -24,7 +24,7 @@
     * [Request and InputManager] (http/input.md)
     * Middlewares
     * Routing
-    * Error Handling
+    * Error Handling and Isolation
 * Console and CLI mode
     * Console Dispatcher
     * Embedded Commands Overview
