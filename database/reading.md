@@ -6,6 +6,7 @@ Once you received an instance of `Database` you can check if the desired table e
 
 ```php
 if ($database->hasTable('users')) {
+    //...
 }
 ```
 
