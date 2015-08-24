@@ -51,3 +51,14 @@ class OperationService
 ```
 
 > You can only store arrays and scalar values in long term memory.
+
+`HippocampusInterface` implemented by default using `Core` and `Application` classes, which makes you able to access it's functions using short 'core' binding in your services or controllers.
+
+```php
+public function doSomething()
+{
+    dump($this->core->loadData('something'));
+}
+```
+
+You can implement your own version of `HippocampusInterface` using APC, XCache or even Memcache.
