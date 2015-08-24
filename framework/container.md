@@ -100,7 +100,7 @@ Based on such binding every requested `MyConfigurator` or `ConfiguratorInterface
 $this->container->bind('configurator', NewConfigurator::class);
 ```
 
-As before we can request needed instance using get or construct method or magic __get:
+As before we can request needed instance using `get`, `construct` method or via magic `__get`:
 ```php
 dump($this->container->get('configurator'));
 dump($this->container->configurator);
