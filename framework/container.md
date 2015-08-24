@@ -138,8 +138,13 @@ class MyService implements SingletonInterface
 }
 ```
 
-SINGLETON constant must be pointing to binding to store constructed instance, by default we are going to use class name. This implementation provides
-us ability to avoid setting up singleton binding in application bootstrap which can significantly improve performance.
+SINGLETON constant must be pointing to binding to store constructed instance, by default we are going to use class name, which is identical to:
+
+```php
+$this->container->bindSingleton(MyService::class, new MyService(...));
+```
+
+This implementation provides us ability to avoid setting up singleton bindings in application bootstrap which can significantly improve performance.
 
 ```php
 public function index(MyService $service)
