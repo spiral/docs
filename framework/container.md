@@ -156,7 +156,7 @@ public function index(MyService $service)
 
 > Most of spiral components has defined SINGLETON constant.
 
-As in other cases you can replace exsited singleton implementation with custom classes:
+As in other cases you can replace exsited singleton realization with custom classes:
 ```php
   $this->container->hasInstance(MyService::class, NewService::class);
 ```
