@@ -5,7 +5,7 @@
 * Framework Overview
     * ! [**IoC Container**] (framework/container.md)
     * ! [Core Interfaces] (framework/interfaces.md)
-    * ! [Request Flow] (framework/flow.md)
+    * ! [Application Flow] (framework/flow.md)
     * ! [Spiral Components and their bindings] (framework/components.md)
     * ! [Exception Handling and Snapshots] (framework/errors.md)
 * Application Structure
