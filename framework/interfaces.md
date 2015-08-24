@@ -1,5 +1,5 @@
 # Core Interfaces  
-Spiral framework is built based on set of spiral components, there is few interfaces shared with application and pre-binded in framework bundle.
+Spiral Framework bundle built at top of Spiral Components and provides set of interfaces can be used in custom applications or modules.
 
 | Interface                                          | Description 
 | ---                                                | ---
