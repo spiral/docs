@@ -8,9 +8,9 @@
     * ! [Core Interfaces] (framework/interfaces.md)
     * ! [Exception Handling and Snapshots] (framework/errors.md)
 * Application
+    * ! [**Directory structure**] (application/directories.md)
     * ! [Startup Flow] (application/flow.md)
     * ! [Error Handling] (application/errors.md)
-    * ! [**Directory structure**] (application/directories.md)
     * ! [Components and Short Bindings] (application/components.md)
     * ! [Commands] (application/commands.md)
     * ! [Controllers] (application/controllers.md)
