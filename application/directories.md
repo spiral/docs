@@ -21,4 +21,4 @@ scaffoling and cache directoring comes pre-configured. Let's review default dire
 | /application/runtime/logging/     | Default directory to store application and error logs and exception shapshots.                       
 | /application/views/               | View templates used by ViewManager to generate View instances. Just views.                           
 | /vendor/                          | Composer vendor directory, aliased under "libraries" directory.              
-| /webroot/                         | Application public directory, application enterpoint (index.php) located here as any other public asset file. Aliased as "public" directory.
+| **/webroot/**                     | Application public directory, application enterpoint (index.php) located here as any other public asset file. Aliased as "public" directory.
