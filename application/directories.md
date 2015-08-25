@@ -15,7 +15,7 @@ scaffoling and cache directoring comes pre-configured. Let's review default dire
 | /application/classes/Services/    | Service layer classes, used to manage you data entities creation, saving and fetching and much more, namespace "Services".       
 | **/application/config/**          | Configuration files used by components.                           
 | /application/migrations/          | Default location for migrations                            
-| /application/runtime/             | Application data directory, can be created autoamtically via `configure` command and store dynamic data, aliases as "runtime".
+| /application/runtime/             | Application data directory, can be created automatically via `configure` command and store dynamic data, aliases as "runtime".
 | /application/runtime/cache/       | Directory to store application memory files view cache and etc. Aliases under "cache".         
 | /application/runtime/i18n/        | Translator will store string bundle files here.                            
 | /application/runtime/logging/     | Default directory to store application and error logs and exception shapshots.                       

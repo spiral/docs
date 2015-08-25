@@ -13,12 +13,12 @@
     * ! [Database Entities] (application/entities.md)
     * ! [Services] (application/services.md)
     * ! [Controllers] (application/controllers.md)
-    * ! [Request Filters] (application/requests.md)
 * Http Dispatcher
     * [Request Flow] (http/flow.md)
     * [Request and InputManager] (http/input.md)
     * Middlewares
     * **Routing**
+    * ! [Request Filters] (http/filters.md)
     * Error Handling and Isolation
 * Console and CLI mode
     * Console Dispatcher
