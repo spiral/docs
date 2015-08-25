@@ -1,11 +1,10 @@
 # Http Dispatcher Request flow
-Spiral HTTP сomponent based on [PSR7](http://www.php-fig.org/psr/psr-7/) implenentation of http requests and responses, spiral utilizes [Zend implementation](https://github.com/zendframework/zend-diactoros) of such protocol as internal backbone. PSR7 makes dispatcher compatible with other frameworks,
+Spiral HTTP Component based on [PSR7](http://www.php-fig.org/psr/psr-7/) implenentation of http requests and responses, spiral utilizes [Zend implementation](https://github.com/zendframework/zend-diactoros) of such protocol as internal backbone. PSR7 makes dispatcher compatible with other frameworks,
 middlewares and response generators.
 
 ## What is request
 Spiral does not provide instance of "global" application request available in any place of application, instead of that it opens so called "request scope" and 
-creates container binding `ServerRequestInterface` and "request" (for shortness) to access active request in controllers, request filters and services executed inside such scope. Once
-request performed and response is generated scope are closed and no instance of global request available anymore.
+creates container binding `ServerRequestInterface` and "request" (for shortness) to access active request in controllers, request filters and services executed inside such scope. Once request performed and response is generated scope are closed and no instance of global request available anymore.
 
 Due http dispatcher can be created in any environment it is possible to start application or nested request with custom instance of ServerRequestInterface at any
 moment. Use dispatcher method "perform" to execute given request.
@@ -40,3 +39,33 @@ Once endpoint (controller) generated response such responce will be converted in
 ![middleware onion](http://stackphp.com/img/onion.png)
 
 Where "Session" and "Authentication" treated as middlewares and "App" as endpoint.
+
+## How HttpDispatcher works
+HttpDispatcher has 3 notable methods we would like to check due they create our application backbone flow.
+
+### Request perform method
+Method `perform` can be counted as blackbox accepting `ServerRequestInterface` as input and providing `ResponseInterface` as result, interally every request will be
+passed thought set of middlewares (see above) as send to http endpoing (in default scenario this is http `Router`).
+
+### Dispatch method
+Dispatch method used to send generated response back to client, it utilizes zend `EmitterInterface` which provides you ability to change way how reponses send to 
+client browser or even store response in memory.
+
+### Start method
+Start method is Core constact implemented in every spiral dispatcher, it only must create response, perform it and send to client, let's view it's source for educational
+purposes:
+```php
+public function start()
+{
+    //We need request to start, let's cast it
+    $request = $this->request();
+
+    //Now we can generate response using request
+    $response = $this->perform($request);
+
+    if (!empty($response)) {
+        //Sending to client
+        $this->dispatch($response);
+    }
+}
+```
