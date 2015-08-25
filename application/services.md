@@ -92,6 +92,7 @@ dependencies, hovewer spiral provides set of short bindings which can be resolve
 > You can use same technique in Controllers. If you will decide to use specific component in your service, you can simply create variable named as it's binding which will replace magic `__get`.
 
 Check this list of default component bindings:
+
 | Binding   | Compoment                               | 
 | ---       | ---                                     |
 | core      | Spiral\Core\Core or Application         |
