@@ -55,6 +55,8 @@ $response = $http->perform($request);
 Dispatch method used to send generated response back to client, it utilizes zend `EmitterInterface` which provides you ability to change way how reponses send to 
 client browser or even store response in memory.
 
+> It's not nesessary that application will stop after response were dispatched.
+
 ### Start method
 Start method is Core constact implemented in every spiral dispatcher, it only must create response, perform it and send to client, let's view it's source for educational
 purposes:
