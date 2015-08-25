@@ -10,8 +10,8 @@
     * [**Directory structure**] (application/directories.md)
     * [Startup Flow] (application/startup.md)
     * [Error Handling] (application/errors.md)
-    * [Database Entities] (application/entities.md)
-    * ! [Services] (application/services.md)
+    * [Database and Data Entities] (application/entities.md)
+    * [Services] (application/services.md)
     * ! [Controllers] (application/controllers.md)
 * Http Dispatcher
     * [Request Flow] (http/flow.md)
