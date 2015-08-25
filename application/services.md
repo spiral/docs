@@ -114,6 +114,7 @@ Check this list of default component bindings:
 | views     | Spiral\Views\ViewManager                |
 
 Following bindings will be available only when application executing inside `HttpDispatcher->perform()` method (actually inside `MiddlewarePipeline`):
+
 | Binding   | Compoment                               | 
 | ---       | ---                                     |
 | cookies   | Spiral\Http\Cookies\CookieManager       | 
