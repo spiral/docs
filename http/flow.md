@@ -41,7 +41,7 @@ Once endpoint (controller) generated response such responce will be converted in
 Where "Session" and "Authentication" treated as middlewares and "App" as endpoint.
 
 ## How HttpDispatcher works
-HttpDispatcher has 3 notable methods we would like to check due they create our application backbone flow.
+HttpDispatcher has 3 notable methods we would like to check due they define our application backbone flow.
 
 ### Request perform method
 Method `perform` can be counted as blackbox accepting `ServerRequestInterface` as input and providing `ResponseInterface` as result, interally every request will be
