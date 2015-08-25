@@ -7,8 +7,7 @@ You can request instance of spiral container by defining `ContainerInterface` de
 based on framework bundle, you will be able to access global container using binding "core" or requesting instance of `Core` or `Application` due both of this classes
 extends generic container implementation.
 
-> Most of spiral services, requests and controllers already have internal property "container" which you can use. In addition to that, first initiated container will
-be treated as global component container and can be accessible statically using "Component::container()" method. Static functionality used mainly in helper traits and
+> Most of spiral services, requests and controllers already have internal property "container" which you can use. In addition to that, spiral core will mount itself as global component container and can be accessible statically using "Component::container()" method. Static functionality used mainly in helper traits and
 models as fallback to resolve needed service outside of application context.
 
 ### Container injection
