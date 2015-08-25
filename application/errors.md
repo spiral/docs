@@ -21,8 +21,7 @@ object will be passed to active application dispatcher to display it's content (
 
 ### Reporting snapshots
 Right before sending snapshot to dispatcher, core will execute `report` method of `SnapshotInterface`, such method dedicated to record information about happen error
-or even send this information somewere. Default debug dispatcher record exception error message into error log and render html file with full exception trace in runtime 
-directory, this html file can be used to analyze exception post factum.
+or even send this information somewere. Default debug snaoshot implementation will record exception error message into error log and render html file with full exception trace in `runtime/logging/snapshots` directory, this html file can be used to analyze exception post factum.
 
 ### Describing snapshot
 Snspahot `describe` method simply convers exception information and trace into array, this data can be used to make lighter reporting (without rendering) or, for example,
@@ -34,3 +33,5 @@ it to client browser if HttpDispatcher allowing that. Exception view will look l
 ![alt text](https://raw.githubusercontent.com/spiral/guide/master/resources/exception.png)
 
 > You are able to click on method arguments in stack trace to preview their content.
+
+You can simply create your own exception snapshot handler, but impelementing `SnaphotInterface` and writing your own render, describe and report method.
