@@ -43,9 +43,13 @@ Where "Session" and "Authentication" treated as middlewares and "App" as endpoin
 ## How HttpDispatcher works
 HttpDispatcher has 3 notable methods we would like to check due they define our application backbone flow.
 
-### Request perform method
+### Perform method
 Method `perform` can be counted as blackbox accepting `ServerRequestInterface` as input and providing `ResponseInterface` as result, interally every request will be
 passed thought set of middlewares (see above) as send to http endpoing (in default scenario this is http `Router`).
+
+```php
+$response = $http->perform($request);
+```
 
 ### Dispatch method
 Dispatch method used to send generated response back to client, it utilizes zend `EmitterInterface` which provides you ability to change way how reponses send to 
