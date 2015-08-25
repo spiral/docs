@@ -14,12 +14,12 @@
     * ! [Database Entities] (application/entities.md)
     * ! [Services] (application/services.md)
     * ! [Controllers] (application/controllers.md)
-    * ! [Request Filters] (application/requests.md)
-* Http Dispatcher
+  * Http Dispatcher
     * [Request Flow] (http/flow.md)
     * [Request and InputManager] (http/input.md)
+    * ! [Request Filters] (application/requests.md)  
     * Middlewares
-    * Routing
+    * **Routing**
     * Error Handling and Isolation
 * Console and CLI mode
     * Console Dispatcher
@@ -35,14 +35,14 @@
     * Tokenizer
     * Translator
     * Validation
-    * Views
+    * **Views**
     * Reactor
     * Modules
 * Templater
-    * Basic Usage
+    * **Basic Usage**
     * Extended Usage (virtual tags, tips and tricks)
 * Storage Manager
-    * Overview
+    * **Overview**
     * Buckets and Objects
     * Storage Servers
     * Tips and Tricks
@@ -57,7 +57,7 @@
     * Filters and Accessors
     * Validation
 * Spiral ORM
-    * Overview
+    * **Overview**
     * Scaffolding
     * Relations
     * Passive/Active schemas
