@@ -30,6 +30,7 @@ to be sent to client in case if browser expects JSON.
 ### Redering snapshot
 Render method dedicated to convert exception information into more user friendly form, by default it will render view template defined in `config/debug.php` and send
 it to client browser if HttpDispatcher allowing that. Exception view will look like that:
+
 ![alt text](https://raw.githubusercontent.com/spiral/guide/master/resources/exception.png)
 
 > You are able to click on method arguments in stack trace to preview their content.

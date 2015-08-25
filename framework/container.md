@@ -205,4 +205,4 @@ $this->container->restore($outerBinding);
 > Container scoping used by `HttpDispatcher` to set active instance of `ServerRequestInterface`.
 
 ## What is resolved using container?
-Spiral container used to resolve every framework component, controller, command or extenal module, this means you can freely declarate dependies in such classes.
+Spiral container used to resolve every framework component, service,  controller, command or extenal module, this means you can freely declarate dependies in such classes.
