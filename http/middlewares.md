@@ -27,7 +27,7 @@ class HeadersMiddleware extends Service implements MiddlewareInterface
 }
 ```
 
-First of all, to make this middleware work we have to assign it to general http pipeline (using http configuration) which is applied to every request or to specific route.
+First of all, to make this middleware work we have to assign it to primary http pipeline (using http configuration) which is applied to every request or to specific route.
 We are going to add this middleware to primary middleware chain in http config:
 
 ```php
