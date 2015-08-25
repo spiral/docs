@@ -16,7 +16,7 @@
 * Http Dispatcher
     * [Request Flow] (http/flow.md)
     * [Request and InputManager] (http/input.md)
-    * Middlewares
+    * [Middlewares] (http/middlewares.md)
     * **Routing**
     * ! [Request Filters] (http/filters.md)
     * Error Handling and Isolation
