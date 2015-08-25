@@ -49,7 +49,7 @@ class HomeController extends Controller
 }
 ```
 
-In addition to that every controller provides support for method injection, which allows you to request needed dependencies in action specifically:
+In addition to that, every controller provides support for method injection, which allows you to request needed dependencies in action specifically:
 ```php
 class HomeController extends Controller
 {
