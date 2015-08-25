@@ -7,17 +7,16 @@
     * [Application Memory] (framework/memory.md)
     * [Framework Interfaces] (framework/interfaces.md)
 * Application
-    * ! [**Directory structure**] (application/directories.md)
+    * [**Directory structure**] (application/directories.md)
     * ! [Startup Flow] (application/flow.md)
     * ! [Error Handling] (application/errors.md)
-    * ! [Components and Short Bindings] (application/components.md)
     * ! [Database Entities] (application/entities.md)
     * ! [Services] (application/services.md)
     * ! [Controllers] (application/controllers.md)
-  * Http Dispatcher
+    * ! [Request Filters] (application/requests.md)
+* Http Dispatcher
     * [Request Flow] (http/flow.md)
     * [Request and InputManager] (http/input.md)
-    * ! [Request Filters] (application/requests.md)  
     * Middlewares
     * **Routing**
     * Error Handling and Isolation
