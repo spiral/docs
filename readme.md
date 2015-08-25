@@ -12,7 +12,7 @@
     * [Error Handling] (application/errors.md)
     * [Database and Data Entities] (application/entities.md)
     * [Services] (application/services.md)
-    * ! [Controllers] (application/controllers.md)
+    * [Controllers] (application/controllers.md)
 * Http Dispatcher
     * [Request Flow] (http/flow.md)
     * [Request and InputManager] (http/input.md)
