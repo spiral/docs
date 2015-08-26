@@ -19,7 +19,7 @@
     * [Middlewares] (http/middlewares.md)
     * [**Routing**] (http/routing.md)
     * [Request Filters] (http/filters.md)
-    * Error Handling and Isolation
+    * [Error Handling and Isolation] (http/errors.md)
 * Console and CLI mode
     * Console Dispatcher
     * Embedded Commands Overview
