@@ -42,7 +42,7 @@ Due spiral application requires few directory names to be defined, we can use cu
 working directory. Right after that we can connect Composer autoloading.
 
 The last, but the most imporant step is to create global container used by helpers and trais and pre-load some application components. All of this operations
-are located in Core::init method, which requires only base list of directories to work (`root`, `libraries` and `application`). As you may notice, you can 
+are located in `Core::init` method, which requires only base list of directories to work (`root`, `libraries` and `application`). As you may notice, you can 
 easily alter your application directory and every nested directory like "classes" or "runtime" with follow this definition.
 
 ## What is happening in Core init method
