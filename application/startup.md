@@ -154,7 +154,7 @@ public function start(DispatcherInterface $dispatcher = null)
 
 As you can see you are able to provide your own instance of DispatcherInterface into start method and define our own flow, in other scenario spiral will create dispatcher based on sapi.
 
-We can try now to "simplify" index.php file to reflect what will happen in web enviroment (attention, you should not be doing that, due dispather variable will not be set):
+We can try now to "simplify" index.php file to reflect what will happen in web enviroment (attention, you should not be doing that, due dispatcher variable will not be set):
 
 ```php
 //Let's start!
