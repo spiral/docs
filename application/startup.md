@@ -130,9 +130,8 @@ foreach ($core->autoload as $module) {
 }
 ```
 
-By default autoloadin will contain only two components to load `Loader` and `ModuleManager`:
-* Loader will mount itself at top of Composer class loading method and will cache locations of every loaded class in runtime loadmat, this will help to improve performance
-a little bit.
+By default autoloading will contain only two components to load `Loader` and `ModuleManager`:
+* Loader will mount itself at top of Composer autoloader and cache locations of every loaded class in runtime loadmat, this will help to improve performance a little bit.
 * [ModuleManager] (components/modules.md) will load bindings requested by installed modules, and bootstrap module itself if it needed. You can see what modules mounted in your application checking `config/modules.php` file.
 
 The last step in initiation is to bootload core. This methods by default overwriten by `Application` and contains no code.
