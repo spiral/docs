@@ -22,7 +22,7 @@
     * [Error Handling and Isolation] (http/errors.md)
 * Console and CLI mode
     * [Overview] (console/commands.md)
-    * Scaffoling and Application commands
+    * [Scaffoling and Application commands] (console/scaffolding.md)
 * Framework Components
     * Cache
     * Debug (Loggers, Snaphosts, Dumps)
