@@ -192,7 +192,8 @@ class Name implements InjectableInterface
 {
     const INJECTOR = Injector::class;
     
-    //This argument can not be automatically set by Container if we trying to resolve this class in our arguments
+    //This argument can not be automatically set by Container if we trying to resolve
+    //this class in our arguments
     public function __constrcut($name)
     {
         //...
