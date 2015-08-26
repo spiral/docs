@@ -18,8 +18,7 @@ directories have the correct permissions and are available for application (you 
 commands in configure sequence, see **Console and CLI Mode**).
 
 ## Environment
-By default, the Spiral application will define it's enviroment name using data located in "application/runtime/enviroment.php"
-file (default application logic will use enviroment value to alter component configuration files to define different 
+By default, the Spiral application will define it's enviroment name using data located in "application/runtime/enviroment.php" file (default application logic will use enviroment value to alter component configuration files to define different 
 behaviours). 
 
 When this file isn't set or the application is just installed, spiral will force "development" enviroment. To change enviroment simply
