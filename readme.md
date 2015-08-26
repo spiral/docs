@@ -17,7 +17,7 @@
     * [Request Flow] (http/flow.md)
     * [Request and InputManager] (http/input.md)
     * [Middlewares] (http/middlewares.md)
-    * **Routing**
+    * [**Routing**] (http/routing.md)
     * ! [Request Filters] (http/filters.md)
     * Error Handling and Isolation
 * Console and CLI mode
