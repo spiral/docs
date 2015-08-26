@@ -15,7 +15,7 @@ One of fastest ways to install a fresh spiral application is to use the composer
 
 Right after installation, the Spiral framework will execute the console command `configure` to ensure that all neccesary 
 directories have the correct permissions and are available for application (you can register you own
-commands in configure sequence, see [**Console and CLI Mode**](/console/overview.md)).
+commands in configure sequence, see [**Console and CLI Mode**](/console/commands.md)).
 
 ## Environment
 By default, the Spiral application will define it's enviroment name using data located in "application/runtime/enviroment.php" file (default application logic will use enviroment value to alter component configuration files to define different 
