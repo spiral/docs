@@ -156,33 +156,33 @@ public function bootstrap()
 }
 ```
 
-> Controller actions will be executed using `CoreInterface->callAction` every catched route parameter will be passed to action. Technically you can even assign your own router instance as Route endpoint to create nested routing.
+> Controller actions are executed using `CoreInterface->callAction`. Every catched route parameter is passed to action. Technically, you can even assign your own router instance as a Route endpoint to create nested routing.
 
-If your component or module utilizes `RouterTrait` (as `HttpDispatcher` which we going to use as example) we can defined routes in shorter form:
+If your component or module utilizes `RouterTrait` (as `HttpDispatcher` which we are going to use as an example) we can define routes in this shorter form:
 ```php
 //This is Application bootstrap method
 public function bootstrap()
 {
-    //Default route name will be based on route target in our case 'Controllers\MyController::myAction' you can use this name later to generate urls
+    //Default route name will be based on route target. In our case, with 'Controllers\MyController::myAction' you can use this name later to generate urls
     $this->http->route('myurl', 'Controllers\MyController::myAction')->setName('name');
 }
 ```
 
-Let's try to understand how we can defined Uris to be handled, parameters and additional route conditions. Let's start with simple definition which will point "url" to our home controller action index.
+Let's look at how we can define Uris to be handled, parameters are definded and any additional route conditions. Let's start with a simple definition which will point "url" to our home controller action index.
 
 ```php
 $this->http->route('url', 'Controllers\HomeController::index');
 ```
 
-> Route will match url repsecting value of `basePath` in your `HttpDispatcher` configuration.
+> Route will match url respecting value of `basePath` in your `HttpDispatcher` configuration.
 
-If we wish to fetch some value from our Uri and convert it into action parameter we can use `< >` braces:
+If you want to fetch a value from our Uri and convert it into action parameter, you can use `< >` braces:
 
 ```php
 $this->http->route('profile-<id>', 'Controllers\UserController::showProfile');
 ```
 
-This route will match every url which will look like "profile-*" (profile-1, profile-abc) and convert second part of url into parameter named "id", we can now modify our controller action to accept such parameter:
+This route will match every url, which will look like "profile-*" (profile-1, profile-abc) and convert the second part of url into a parameter named "id". We can now modify our controller action to accept such parameters:
 
 ```php
 public function showProfile($id)
@@ -191,7 +191,7 @@ public function showProfile($id)
 }
 ```
 
-Due every route url pattern will be converted into regular expressing we can clarify some url segments with specific pattern, for example let's make showProfile react only for numeric ids:
+Since every route url pattern will be converted into regular expression, we can clarify some url segments with a specific pattern. For example let's make showProfile only react to numeric ids:
 
 ```php
 $this->http->route('profile-<id:\d+>', 'Controllers\UserController::showProfile');
@@ -203,13 +203,13 @@ You are able to use any amount of route parameter and include / into your patter
 $this->http->route('pages/<name>', 'Controllers\PageController::show')->setName('page');
 ```
 
-In addtion to that, you might want to state that some of your url segments are optional, we can use `[ ]` for that:
+In addtion, you may want to state that some of your url segments are optional. For that, we can use `[ ]`:
 
 ```php
 $this->http->route('profile[-<id:\d+>]', 'Controllers\UserController::showProfile');
 ```
 
-This route now match urls like "profile-1" and "profile", hovewer you have to modify your action to state default value for id, for example null:
+This route now matches urls like "profile-1" and "profile". Hovewer you have to modify your action to state the default value for id. For example null:
 
 ```php
 public function showProfile($id = null)
@@ -218,33 +218,33 @@ public function showProfile($id = null)
 }
 ```
 
-You also can use default argument of route defintition to give value for optional parameter:
+You can also use a default argument for the route definition to give an optional parameter a value:
 
 ```php
 $this->http->route('profile[-<id:\d+>]', 'Controllers\UserController::showProfile', ['id' => 0]);
 ```
 
-There is few scenarious when you might want to point your route to every controller action and include action name into route, we can do it using special parameter
-`<action>` for that and including such action into our target:
+There are a few scenarios where you might want to point your route to every controller action and include the action name into your route. We can do it using special parameter
+`<action>` and include this action into our target:
 
 ```php
 $this->http->route('accounts/<action>', 'Controllers\UserController::<action>');
 ```
 
-As in case with other paramerts your action might be stated as optional, in this case controller will execute it's default action (usually index):
+As is the case with other parameters, your action might be stated as optional. In this case, your controller will execute it's default action (usually index):
 
 ```php
 $this->http->route('accounts[/<action>]', 'Controllers\UserController::<action>');
 $this->http->route('users[/<action:edit|save|open>]', 'Controllers\UserController::<action>');
 ```
 
-Let's try to create route which is going to execute specific controller action and provide id parameter to such actions:
+Let's try to create a route which is going to execute a specific controller action and provide an id parameter to these actions:
 
 ```php
 $this->http->route('accounts[/<action>[/<id:\d+>]]', 'Controllers\UserController::<action>');
 ```
 
-You can also ask rounte to match full uri (including hostname) rather than path only (`basePath` value ingnored in this case):
+You can also ask route to match the full uri (including hostname) instead of just the path only (`basePath` value will be ingnored in this case):
 
 ```php
 $this->http->route(
@@ -254,19 +254,18 @@ $this->http->route(
 ```
 
 ## Routes and [Middlewares](middlewares.md)
-Middlewares assigned to Route will be executed before controller/endpoint action met and can be used to perform route specific request/response filteting.
-For example we can create cache middleware which is going to store controller response in memory and set valid response cookies:
+Middlewares is assigned to Route and will be executed before controller/endpoint action is met. It can be used to perform route specific request/response filtering.
+For example we can create a cached middleware which will store the controller response in memory and set a valid response cookies:
 
 ```php
 //Cache content for 1 day
 $this->http->route('showSomething', 'Controllers\SomeController::show')->with(new CacheMiddleware(86400));
 ```
 
-> Route middlewares are perfect spot for caching, csrf and access limiting middlewares.
+> Route middlewares are a perfect spot for caching, csrf and access limiting middlewares.
 
 ## Direct and Default routes
-As mention before, if you didn't define any of your route, or request can not be matched Router will try to match and perform request using default route, default route
-defintion located in http config and looks like:
+If you haven't defined any of your routes or your request can't be matched, Router will attempt to match by performing your request via the default route. The default routes defintion is located in http config and looks like:
 
 ```php
  'router'       => [
@@ -285,34 +284,33 @@ defintion located in http config and looks like:
     ],
 ```
 
-This defintition will be used to construct instance of `DirectRoute`, direct route has differs from usual routes by granting ability to include controller name
-into url, controller name will be combined with default namespace and postfix to create controller class. In addtional to that you can defined default controler name
-and set of controller alises.
+This defintition will be used to construct an instance of `DirectRoute`. Direct route is different from the usual routes because it grants the ability to include controller name into url. The controller name will be combined with default namespace and postfix to create the controller class. In addtion, you can define the default controller name
+and set of controller aliases.
 
-Let's check url like "/users", this url will be matched and will create set of parameters `[controller => users, action => null, id => null]`, due there is no such controller alias "users" (there is only "index" alias pointing to `Controllers\HomeController`) controller class will be generated using defined namespace and postfix:
+Let's check a url like "/users". This url will be matched and will create set of parameters `[controller => users, action => null, id => null]`. Since there isn't a controller alias "users" (there is only "index", alias is pointing to `Controllers\HomeController`) controller class is generated using a defined namespace and postfix:
 `Controllers\UsersController`.
 
 ## Generate URLs using routes
-In many cases you may want to generate URL specific to some route without locking yourself to url pattern, you can do that by using Router method `createUri` which will return `UriInterface`.
+In many cases, you may want to generate a URL specific to some route without locking yourself to a url pattern. You can do this by using Router method, `createUri` which will return `UriInterface`.
 
 ```php
 //routeName = 'profile[/<id>]'
 dump($this->router->createUri('routeName', 'id' => $user->id)); // profile/ID
 ```
 
-You should only provide route name and set of parameters to be interpolated into URL. If route does not have some of provided parameters in it's pattern, such parameters will be added into query string:
+You should only provide a route name and set of parameters to be interpolated into URL. If route does not have all of the provided parameters in it's pattern, such parameters will be added into query string:
 
 ```php
 //routeName = 'profile[/<id>]'
 dump($this->router->createUri('routeName', 'id' => $user->id, 'success' => 'yes')); // /profile/ID?success=yes
 ```
 
-In addition to that you can specify route name in a format "controller::action", such name will be exploded and interpolated into pattern defined in default route:
+Additionally, you can specify the route name in a format "controller::action", so that the name will be interpolated into a pattern defined in the default route:
 ```php
 dump($this->router->createUri('users::edit', 'id' => $user->id, 'success' => 'yes')); // /users/edit/ID?success=yes
 ```
 
-> Do not forget to convert `UriInterface` to string before sending to client over json.
+> Do not forget to convert `UriInterface` to a string before sending to your client over json.
 
 ## Using Router separatelly from HttpDispatcher
-You can eslity use Router class outside of HttpDispatcher, for example by writing 
+You can easily use Router class outside of HttpDispatcher, for example by writing 
