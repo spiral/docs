@@ -1,10 +1,10 @@
 # Routing
-As any other framework spiral provides pre-built mechanism to manger you applicatin url structure, this operations performed by Http `Router` and `Route` classes.
+Like other frameworks, Spiral provides a pre-built mechanism to manage your application's url structure. This operation is performed by the Http `Router` and `Route` classes.
 
 ## What is Router?
-Router is default http endpoint (see Http Request Flow) which accepts `ServerRequestInterface` and applies it to set of created routes to find match (based on Uri, method or any other request property), when route matched Router will execute it by providing instances of `ServerRequestInterface` and `ContainerInterface`. The rest of logic (what controller to be called and what parameters to be passed) located in `Route` class itself.
+Router is the default http endpoint (see Http Request Flow) which accepts `ServerRequestInterface` and applies it to a set of created routes to find match (based on Uri, method or any other request property). When the route is matched, Router will execute it by providing instances of `ServerRequestInterface` and `ContainerInterface`. The rest of the logic (what controller is called and what parameters are passed) is located in the `Route` class itself.
 
-Let's look into `RouterInterface` to better understand how does it works:
+Let's check out the `RouterInterface` to better understand how it works:
 
 ```php
 interface RouterInterface
@@ -44,7 +44,7 @@ interface RouterInterface
     public function getRoutes();
 
     /**
-     * Route which did match with incoming request will be marked as active and can be fetched using
+     * Route which matches with the incoming request will be marked as active and can be fetched using
      * this method.
      *
      * @return RouteInterface
@@ -52,9 +52,9 @@ interface RouterInterface
     public function activeRoute();
 
     /**
-     * Generate valid route URL using route name and set of parameters. Should support controller
-     * and action name separated by ":" - in this case router should find appropriate route and
-     * create url using it.
+     * Generate valid route URL using route name and set of parameters. This should support controller
+     * and action name separated by ":" - In this case, the router should find the appropriate route and
+     * create a url using it.
      *
      * @param string           $route Route name.
      * @param array            $parameters
@@ -67,32 +67,32 @@ interface RouterInterface
 }
 ```
 
-As you can see Router defines few method which allows you add routes in runtime, in addition to that, you might want to pre-create some routes before even creating router, for example you can use `RouterTrait`:
+As you can see, Router defines a few methods which allow you to add routes in runtime. In addition to that, you can pre-create some routes before the router is created. For example, you can use `RouterTrait`:
 
 ```php
 //This is Application bootstrap method
 public function bootstrap()
 {
-    //This route will be sent to Router at time of it's creation
+    //This route will be sent to Router when created
     $this->http->addRoute(new MyRoute());
 }
 ```
 
-In addition to that, `RouterInterface` declaring abilities to retrieve route which did match request (Router must be invoked first), get list of every declared route
-or even create user using route name and set of parameters.
+In addition to that, declaring the `RouterInterface` gives you the ability to retrieve route which matches the request (Router has to be invoked first), get a list of every declared route
+or even create some user via the route name and set of parameters.
 
 ## Default Spiral Router
-Default spiral implementation of `RouterInterface` includes one addition which provides ability to use default (fallback) route, such route can be provided as pre-created instance, changed using `setDefaultRoute` or even be in a form of options to used to construcg `DirectRoute` (see below). Main purpose of default route is to handle Uris which wasn't matched by any other route. Usually default route specified as instance of `DirectRoute` which can not only fetch controller action name from Uri but controller class itself (using aliases, namespaces and postfixes).
+The default Spiral implementation of `RouterInterface` includes one additional thing which provides the ability to use default (fallback) route. Such a route can be provided as a pre-created instance, changed using `setDefaultRoute` or even consist of options that can be used to construct `DirectRoute` (see below). The main purpose of the default route is to handle Uris which weren't matched to any other route. Usually the default route is specified as an instance of `DirectRoute` which can fetch the controller action name from Uri and the controller class itself (using aliases, namespaces and postfixes).
 
 ## What is Route?
-Every declared route must implement `RouteInterface` which declares basic route abilies:
+Every declared route must use `RouteInterface` which declares the basic route abilities:
 
 ```php
 interface RouteInterface
 {
     /**
-     * Controller and action in route targets and createURL route name has to be separated like
-     * that.
+     * Controller and action in route targets and createURL route name must be separated like
+     * below.
      */
     const SEPARATOR = '::';
 
@@ -102,7 +102,7 @@ interface RouteInterface
     public function getName();
 
     /**
-     * Check if route matched with provided request.
+     * Check if route is matched with to the provided request.
      *
      * @param ServerRequestInterface $request
      * @param string                 $basePath
@@ -112,7 +112,7 @@ interface RouteInterface
     public function match(ServerRequestInterface $request, $basePath = '/');
 
     /**
-     * Execute route on given request. Has to be called after match method.
+     * Execute route on a given request. Has to be named after the match method.
      *
      * @param ServerRequestInterface $request
      * @param ContainerInterface     $container
@@ -121,7 +121,7 @@ interface RouteInterface
     public function perform(ServerRequestInterface $request, ContainerInterface $container);
 
     /**
-     * Generate valid route URL using route name and set of parameters.
+     * Generate valid route URL using the route name and a set of parameters.
      *
      * @param array            $parameters
      * @param string           $basePath
@@ -137,12 +137,11 @@ interface RouteInterface
 }
 ```
 
-You can create your own routes with custom logic inside, however let's stick to default implementation in this guide section.
+You can create your own routes with custom logic inside, however its best to stick to the default implementation seen in this guide section.
 
 ## Route definition
-In most of cases you are going to work with default spiral routes, represented by class `Spiral\Http\Routing\Route`, such route provides you ablity to specify
-url pattern to be matched, set of url chunks to be converted into parameters (which can later be send to controller) an define route target as controller::action, closure
-or even some callable class (for example inner Router or Module).
+In most of cases, you are going to work with the default spiral routes, represented by class `Spiral\Http\Routing\Route`. Such route lets you specify the
+url pattern to be matched, the set of url chunks to be converted into parameters (which can later be sent to controller),  define a route target as controller::action, closure or even some callable class (for example inner Router or Module).
 
 ```php
 //This is Application bootstrap method
