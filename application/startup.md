@@ -58,7 +58,7 @@ and only defines custom bootrap method, we can easly replace it with core itself
 ], true)->start();
 ```
 
-Let's view the content of Core::init method to better understand how spiral boots.
+Let's view the content of `Core::init` method to better understand how spiral boots.
 
 ```php
 public static function init(array $directories, $catchErrors = true)
@@ -102,14 +102,13 @@ public static function init(array $directories, $catchErrors = true)
 First you may notice, that there is additional method arguments, which allows spiral to to handle global error handlers, in cases where you want spiral work 
 under another application you can disable error handling and do it on higher level.
 
-Instanse of spiral core defined based on what class call init method, in default application it will be `Application` class, so we can rewrite our fist init 
-line with:
+Instanse of spiral core defined based on what class call init method, in default application it will be `Application` class, so we can rewrite our fist init line with:
 
 ```php
     $core = new \Application($directories + ['framework' => dirname(__DIR__)]);
 ```
 
-Due spiral core extends basic spiral Container class and implements set of interfaces required for different compoments with can bind our instace of every 
+Due spiral core extends basic spiral Container class and implements set of interfaces required for different compoments to work, we can bind our instace of every 
 interface we implemented, we can do it using `bindSingleton` method or directly overwrite bindings:
 
 ```php
