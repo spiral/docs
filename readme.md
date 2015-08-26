@@ -21,8 +21,7 @@
     * [Request Filters] (http/filters.md)
     * [Error Handling and Isolation] (http/errors.md)
 * Console and CLI mode
-    * Console Dispatcher
-    * Embedded Commands Overview
+    * [Overview] (console/commands.md)
     * Scaffoling and Application commands
 * Framework Components
     * Cache
