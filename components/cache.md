@@ -1,5 +1,5 @@
 # Cache
-Spiral provides access to simplistic cache implementation using interfaces `Spiral\Cache\CacheInterface` (provider) and `Spiral\Cache\StoreInterface` both of this interfaces already pre-mapped in spiral to their implementations and ready to be used.
+Spiral provides easy to use access to cache implementation using the `Spiral\Cache\CacheInterface` (provider) and `Spiral\Cache\StoreInterface` interfaces. Both of this interfaces already pre-mapped in spiral to their implementations and ready to be used.
 
 ## Cache Provided
 To start let's view CacheInterface to understand how our `CacheProvider` works:
@@ -30,7 +30,7 @@ public function index(CacheInterface $cache, CacheProvider $provider)
     
     $viaContainer = $this->container->get(CacheInterface);
     
-    //We can also use short binding defined in default implementatio of spiral Core
+    //We can also use short binding defined in default implementation of spiral Core
     //and available in every Service
     $store = $this->cache->store();    
 }
