@@ -229,6 +229,8 @@ At this moment spiral support 4 different cache adapters by default and one adap
 | XCacheStore    | Utilizes XCache to store data, might be limited in memory.                                                                               |
 | RedisStore     | Available only with Redis extension, will use defined predis client to store data into.                                                  |
 
+> Spiral does not support tagged cache at this moment.
+
 ## Controllable Injections
 As mention in IoC guide some of spiral classes and interfaces support so called controllable injections, such injenctions provides you ability to request specific
 cache adapter without calling provider every time. CacheProvider will use requested store class to provide you valid instance, let's look at example in controller action (can also be used in constructors or init methods):
