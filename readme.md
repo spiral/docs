@@ -25,7 +25,7 @@
     * [Scaffoling and Application commands] (console/scaffolding.md)
 * Framework Components
     * [Cache] (components/cache.md)
-    * Debug (Loggers, Snaphosts, Dumps)
+    * [Debug (Loggers, Snaphosts, Dumps)] (components/debug.md)
     * Encrypter
     * Events
     * Files
