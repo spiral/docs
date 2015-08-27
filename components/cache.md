@@ -30,7 +30,8 @@ public function index(CacheInterface $cache, CacheProvider $provider)
     
     $viaContainer = $this->container->get(CacheInterface);
     
-    //We can also use short binding defined in default implementatio of spiral Core and available in every Service
+    //We can also use short binding defined in default implementatio of spiral Core
+    //and available in every Service
     $store = $this->cache->store();    
 }
 ```
