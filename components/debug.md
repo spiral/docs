@@ -242,21 +242,21 @@ class TestService extends Service
 Dumper and dump method in addition to outputing content into active buffer can send dump info into different outputs:
 
 ```php
- public function index(MemcacheStore $memcacheStore)
-    {
-        //Output buffer
-        dump($memcacheStore, Dumper::OUTPUT_ECHO);
-        
-        //Dump information in Spiral\Debug\Debugger log using print_r
-        dump($memcacheStore, Dumper::OUTPUT_LOG);
+public function index(MemcacheStore $memcacheStore)
+{
+    //Output buffer
+    dump($memcacheStore, Dumper::OUTPUT_ECHO);
+    
+    //Dump information in Spiral\Debug\Debugger log using print_r
+    dump($memcacheStore, Dumper::OUTPUT_LOG);
 
-        //Dump information in Spiral\Debug\Debugger log with nice formatting
-        dump($memcacheStore, Dumper::OUTPUT_LOG_NICE);
+    //Dump information in Spiral\Debug\Debugger log with nice formatting
+    dump($memcacheStore, Dumper::OUTPUT_LOG_NICE);
 
-        //Return dump as string
-        $dump = dump($memcacheStore, Dumper::OUTPUT_RETURN);
+    //Return dump as string
+    $dump = dump($memcacheStore, Dumper::OUTPUT_RETURN);
 
-    }
+}
 ```
 
 ## Profiler Module
