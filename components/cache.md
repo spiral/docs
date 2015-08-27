@@ -235,14 +235,14 @@ cache adapter without calling provider every time. CacheProvider will use reques
 
 ```php
 public function index(StoreInterface $store, FileStore $fileStore, MemcacheStore $memcacheStore)
-    {
-        //Will be instance of default cache store
-        dump($store);
+{
+    //Will be instance of default cache store
+    dump($store);
 
-        dumP($fileStore);
+    dumP($fileStore);
 
-        dump($memcacheStore);
-    }
+    dump($memcacheStore);
+}
 ```
 
 > Attention, this is magic.
