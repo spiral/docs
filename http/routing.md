@@ -1,5 +1,5 @@
 # Routing
-As any other framework spiral provides pre-built mechanism to manger you applicatin url structure, this operations performed by Http `Router` and `Route` classes.
+As any other framework spiral provides pre-built mechanism to mange you applicatin url structure, this operations performed by Http `Router` and `Route` classes.
 
 ## What is Router?
 Router is default http endpoint (see Http Request Flow) which accepts `ServerRequestInterface` and applies it to set of created routes to find match (based on Uri, method or any other request property), when route matched Router will execute it by providing instances of `ServerRequestInterface` and `ContainerInterface`. The rest of logic (what controller to be called and what parameters to be passed) located in `Route` class itself.
