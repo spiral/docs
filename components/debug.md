@@ -1,5 +1,5 @@
 # Debug
-Spiral provides embedded debug component with set of classes useful in developing and debugging your application. Debug does not mean to replace existed debugging tools like XDebug and create to only simplify your application development and profiling in remote enviroments.
+Spiral provides embedded debug component with set of classes useful in developing and debugging your application. Debug does not mean to replace existed debugging tools like XDebug and created to only simplify your application development and profiling in remote enviroments.
 
 ## Loggers
 Spiral Logger class built at top of PSR3 standard and compatible with it. You can simply replace default application logger using Monolog classes and etc.
