@@ -2,6 +2,8 @@
 Http Middlewares is very powerful tool allowing you manipulate with application flow using PSR7 request and response. Middlewares executed using so called pipeline, 
 which will push request and response thought chain on defined middlewares.
 
+> Yes, we all love middlewares.
+
 ## Scaffoling
 You can generate empty middleware using `create:middleware name` command, scaffolded middlewares automatically extend Service class so you can use any of service features (like short bindings, singleton constants and init method) in your class. In addition to that you can define service dependencies using `-d` option.
 
