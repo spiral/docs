@@ -79,7 +79,7 @@ public function bootstrap()
 ```
 
 In addition to that, `RouterInterface` declaring abilities to retrieve route which did match request (Router must be invoked first), get list of every declared route
-or even create user using route name and set of parameters.
+or even create url using route name and set of parameters.
 
 ## Default Spiral Router
 Default spiral implementation of `RouterInterface` includes one addition which provides ability to use default (fallback) route, such route can be provided as pre-created instance, changed using `setDefaultRoute` or even be in a form of options to used to construcg `DirectRoute` (see below). Main purpose of default route is to handle Uris which wasn't matched by any other route. Usually default route specified as instance of `DirectRoute` which can not only fetch controller action name from Uri but controller class itself (using aliases, namespaces and postfixes).
