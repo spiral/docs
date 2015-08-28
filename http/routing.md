@@ -294,7 +294,7 @@ Let's check url like "/users", this url will be matched and will create set of p
 `Controllers\UsersController`.
 
 ## Generate URLs using routes
-In many cases you may want to generate URL specific to some route without locking yourself to url pattern, you can do that by using Router method `createUri` which will return `UriInterface`.
+In many cases you may want to generate URL specific to some route without locking yourself to url pattern, you can do that by using Router method `createUri` for that.
 
 ```php
 //routeName = 'profile[/<id>]'
@@ -312,8 +312,3 @@ In addition to that you can specify route name in a format "controller::action",
 ```php
 dump($this->router->createUri('users::edit', 'id' => $user->id, 'success' => 'yes')); // /users/edit/ID?success=yes
 ```
-
-> Do not forget to convert `UriInterface` to string before sending to client over json.
-
-## Using Router separatelly from HttpDispatcher
-You can eslity use Router class outside of HttpDispatcher, for example by writing 
