@@ -7,8 +7,7 @@ You can request instance of spiral container by defining `ContainerInterface` de
 based on framework bundle, you will be able to access global container using binding "core" or requesting instance of `Core` or `Application` due both of this classes
 extends generic container implementation.
 
-> Most of spiral services, requests and controllers already have internal property "container" which you can use. In addition to that, first initiated container will
-be treated as global component container and can be accessible statically using "Component::container()" method. Static functionality used mainly in helper traits and
+> Most of spiral services, requests and controllers already have internal property "container" which you can use. In addition to that, spiral core will mount itself as global component container and can be accessible statically using "Component::container()" method. Static functionality used mainly in helper traits and
 models as fallback to resolve needed service outside of application context.
 
 ### Container injection
@@ -164,6 +163,8 @@ As in other cases you can replace exsited singleton realization with custom clas
 Once MyServive will be requested, Container will route request to `NewService` implementation and store it under binging defined in `MyService` class. In other
 words - every class extends singleton will become singleton to replace it's parent.
 
+> You can always disable singleton behaviour by inheriting class and defining SINGLETON constant as `null`.
+
 ### Additional Container methods
 There is few additional methods in Container you might consider using.
 
@@ -204,4 +205,4 @@ $this->container->restore($outerBinding);
 > Container scoping used by `HttpDispatcher` to set active instance of `ServerRequestInterface`.
 
 ## What is resolved using container?
-Spiral container used to resolve every framework component, controller, command or extenal module, this means you can freely declarate dependies in such classes.
+Spiral container used to resolve every framework component, service,  controller, command or extenal module, this means you can freely declarate dependies in such classes.

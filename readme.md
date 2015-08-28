@@ -7,27 +7,25 @@
     * [Application Memory] (framework/memory.md)
     * [Framework Interfaces] (framework/interfaces.md)
 * Application
-    * ! [**Directory structure**] (application/directories.md)
-    * ! [Startup Flow] (application/flow.md)
-    * ! [Error Handling] (application/errors.md)
-    * ! [Components and Short Bindings] (application/components.md)
-    * ! [Database Entities] (application/entities.md)
-    * ! [Services] (application/services.md)
-    * ! [Controllers] (application/controllers.md)
-    * ! [Request Filters] (application/requests.md)
+    * [**Directory structure**] (application/directories.md)
+    * [Startup Flow] (application/startup.md)
+    * [Error Handling] (application/errors.md)
+    * [Database and Data Entities] (application/entities.md)
+    * [Services] (application/services.md)
+    * [Controllers] (application/controllers.md)
 * Http Dispatcher
     * [Request Flow] (http/flow.md)
     * [Request and InputManager] (http/input.md)
-    * Middlewares
-    * Routing
-    * Error Handling and Isolation
+    * [Middlewares] (http/middlewares.md)
+    * [**Routing**] (http/routing.md)
+    * [Request Filters] (http/filters.md)
+    * [Error Handling and Isolation] (http/errors.md)
 * Console and CLI mode
-    * Console Dispatcher
-    * Embedded Commands Overview
-    * Scaffoling and Application commands
+    * [Overview] (console/commands.md)
+    * [Scaffoling and Application commands] (console/scaffolding.md)
 * Framework Components
-    * Cache
-    * Debug (Loggers, Snaphosts, Dumps)
+    * [Cache] (components/cache.md)
+    * [Debug (Loggers, Snaphosts, Dumps)] (components/debug.md)
     * Encrypter
     * Events
     * Files
@@ -35,14 +33,14 @@
     * Tokenizer
     * Translator
     * Validation
-    * Views
+    * **Views**
     * Reactor
     * Modules
 * Templater
-    * Basic Usage
+    * **Basic Usage**
     * Extended Usage (virtual tags, tips and tricks)
 * Storage Manager
-    * Overview
+    * **Overview**
     * Buckets and Objects
     * Storage Servers
     * Tips and Tricks
@@ -57,7 +55,7 @@
     * Filters and Accessors
     * Validation
 * Spiral ORM
-    * Overview
+    * **Overview**
     * Scaffolding
     * Relations
     * Passive/Active schemas
