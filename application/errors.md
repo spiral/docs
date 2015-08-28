@@ -16,7 +16,7 @@ As you can see that only thing this method is doing - converting generic php err
 
 ## Exception Handler
 When application raises uncached exception, such exception will be handled by Core method `handleException`, this method, by default will wrap exception object
-using `SnaphotInterface` (by default binded with `Spiral\Debug\Snapshot)`). Snapshots used to report, describe and render exceptions. Every generated snapshot
+using `SnaphotInterface` (by default binded with `Spiral\Debug\Snapshot`). Snapshots used to report, describe and render exceptions. Every generated snapshot
 object will be passed to active application dispatcher to display it's content (to be rendered) to use (if allowed, see `HttpDispatcher` [Errors and Isolation] (/http/errors.md)).
 
 ### Reporting snapshots
