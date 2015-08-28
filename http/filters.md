@@ -1,5 +1,5 @@
 # Request Filters
-Request filters is models specially designed to handle user request perameters and populate target entity (for example ORM or ODM). In easier works, this is mapper
+Request filters is models specially designed to handle user request perameters and populate target entity (for example ORM or ODM). In other words, this is mapper
 of form values to model fields. RequestFilter can define it's own set of getters, setters, accessors and validations for fields. RequestFilter utilizes functionaly of
 InputManager to populate it's fields.
 > You might read about DataEnties, ORM, ODM and Validations first.
