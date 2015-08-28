@@ -1,5 +1,5 @@
 # Error Handling
-Spiral will defined set of error, exception and shutdown handles while core initiation, you can read about it more [here] (startup.md). By default spiral will work in 
+Spiral will define set of error, exception and shutdown handles while core initiation, you can read about it more [here] (startup.md). By default spiral will work in 
 strict mode, meaning that using undefined variables or deprecated functions will thrown an `ErrorException`.
 
 ## Error Handler
