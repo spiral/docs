@@ -22,10 +22,10 @@
     * [Error Handling and Isolation] (http/errors.md)
 * Console and CLI mode
     * [Overview] (console/commands.md)
-    * [Scaffoling and Application commands] (console/scaffolding.md)
+    * [Custom Commands] (console/scaffolding.md)
 * Framework Components
     * [Cache] (components/cache.md)
-    * [Debug (Loggers, Snaphosts, Dumps)] (components/debug.md)
+    * [Debug (Loggers, Benchmarks, Dumps)] (components/debug.md)
     * Encrypter
     * Events
     * Files

@@ -1,16 +1,16 @@
 # Application Memory
-One of the notable spiral components which deserves it's own section is application memory component or `HippocampusInterface`. Memory interface responsible
-for storing component cache information into permanent, enviroment specific storage. Default spiral implementation will generate php file in [runtime
+One of the notable spiral components which deserves it's own section is the application memory component or `HippocampusInterface`. Memory interface responsible
+for storing component cache information into permanent, enviroment specific storage. The default spiral implementation will generate php file in [runtime
 directory] (application/directories.md) to store provided data.
 
-General idea of memory is to speed up application bootstrapping and move some runtime operations into backgroud, memory used to store configuration cache,
-orm and odm schema, loadmap, console commands and tokenizer cache; it can also be used to compiled routes and etc. Application memory are very similar to cache component hovewer it must never be used to store any data
+General idea of memory is to speed up application bootstrapping and move some runtime operations into the backgroud, memory used to store configuration cache,
+orm and odm schema, loadmap, console commands and tokenizer cache; it can also be used to compiled routes and etc. Application memory are very similar to cache component however it must never be used to store any data
 related to client request.
 
-So simply state purpose of `HippocampusInterface` let's say it's very expensive to store information in, and very quick to retrieve it back.
+So to simply state the purpose of the `HippocampusInterface` let's say it's very expensive to store information in, and very quick to retrieve it back.
 
 ## Memory usage example
-Let's view some example of service which needs to index available classes and generate set of operations based on it:
+Let's view an example of a service which needs to index available classes and generate set of operations based on it:
 
 ```php
 abstract class Operation 
@@ -52,7 +52,7 @@ class OperationService
 
 > You can only store arrays and scalar values in long term memory.
 
-`HippocampusInterface` implemented in spiral bundle using `Core` and `Application` classes, which makes you able to access it's functions using short 'core' binding in your services or controllers.
+`HippocampusInterface` is implemented in spiral bundle using `Core` and `Application` classes, which lets you access it's functions using short 'core' binding in your services or controllers.
 
 ```php
 public function doSomething()

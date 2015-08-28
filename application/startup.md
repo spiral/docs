@@ -8,7 +8,7 @@ Application enterpoint located in webroot/index.php file and only performs appli
  *
  * @package   spiralFramework
  * @author    Anton Titov (Wolfy-J)
- * @copyright ©2009-2011
+ * @copyright Â©2009-2011
  */
 define('SPIRAL_INITIAL_TIME', microtime(true));
 
@@ -38,11 +38,11 @@ Application::init([
 
 First of all we defining helper constant 'SPIRAL_INITIAL_TIME' used by spiral Profiler module to correclty display application benchmarking. Secondly spiral will force internal encdoing to `UTF-8`, due spiral support multiple languages and databases this is required step.
 
-Due spiral application requires few directory names to be defined, we can use current project root (`__DIR__`) to defined our primary directory and make sure this is our 
+Due spiral application requires few directory names to be defined, we can use current project root (`__DIR__`) to define our primary directory and make sure this is our 
 working directory. Right after that we can connect Composer autoloading.
 
 The last, but the most imporant step is to create global container used by helpers and trais and pre-load some application components. All of this operations
-are located in Core::init method, which requires only base list of directories to work (`root`, `libraries` and `application`). As you may notice, you can 
+are located in `Core::init` method, which requires only base list of directories to work (`root`, `libraries` and `application`). As you may notice, you can 
 easily alter your application directory and every nested directory like "classes" or "runtime" with follow this definition.
 
 ## What is happening in Core init method
@@ -58,7 +58,7 @@ and only defines custom bootrap method, we can easly replace it with core itself
 ], true)->start();
 ```
 
-Let's view the content of Core::init method to better understand how spiral boots.
+Let's view the content of `Core::init` method to better understand how spiral boots.
 
 ```php
 public static function init(array $directories, $catchErrors = true)
@@ -102,14 +102,13 @@ public static function init(array $directories, $catchErrors = true)
 First you may notice, that there is additional method arguments, which allows spiral to to handle global error handlers, in cases where you want spiral work 
 under another application you can disable error handling and do it on higher level.
 
-Instanse of spiral core defined based on what class call init method, in default application it will be `Application` class, so we can rewrite our fist init 
-line with:
+Instanse of spiral core defined based on what class call init method, in default application it will be `Application` class, so we can rewrite our fist init line with:
 
 ```php
     $core = new \Application($directories + ['framework' => dirname(__DIR__)]);
 ```
 
-Due spiral core extends basic spiral Container class and implements set of interfaces required for different compoments with can bind our instace of every 
+Due spiral core extends basic spiral Container class and implements set of interfaces required for different compoments to work, we can bind our instace of every 
 interface we implemented, we can do it using `bindSingleton` method or directly overwrite bindings:
 
 ```php
@@ -131,9 +130,8 @@ foreach ($core->autoload as $module) {
 }
 ```
 
-By default autoloadin will contain only two components to load `Loader` and `ModuleManager`:
-* Loader will mount itself at top of Composer class loading method and will cache locations of every loaded class in runtime loadmat, this will help to improve performance
-a little bit.
+By default autoloading will contain only two components to load `Loader` and `ModuleManager`:
+* Loader will mount itself at top of Composer autoloader and cache locations of every loaded class in runtime loadmat, this will help to improve performance a little bit.
 * [ModuleManager] (components/modules.md) will load bindings requested by installed modules, and bootstrap module itself if it needed. You can see what modules mounted in your application checking `config/modules.php` file.
 
 The last step in initiation is to bootload core. This methods by default overwriten by `Application` and contains no code.
@@ -154,10 +152,9 @@ public function start(DispatcherInterface $dispatcher = null)
 }
 ```
 
-As you can see you are able to provide your own instance of DispatcherInterface into start method and defined your own flow, in other scenario spiral will create
-dispatcher based on sapi.
+As you can see you are able to provide your own instance of DispatcherInterface into start method and define our own flow, in other scenario spiral will create dispatcher based on sapi.
 
-We can try now to "simplify" index.php file to reflect what will happen in web enviroment (attention, you should not be doing that, due dispather variable will not be set):
+We can try now to "simplify" index.php file to reflect what will happen in web enviroment (attention, you should not be doing that, due dispatcher variable will not be set):
 
 ```php
 //Let's start!

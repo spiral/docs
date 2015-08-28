@@ -36,3 +36,18 @@ it to client browser if HttpDispatcher allowing that. Exception view will look l
 > You are able to click on method arguments in stack trace to preview their content.
 
 You can simply create your own exception snapshot handler, but impelementing `SnaphotInterface` and writing your own render, describe and report method.
+
+You can edit snaphot options in `debug.php` configuration file:
+
+```php
+'snapshots'     => [
+    'view'      => 'spiral:exception',
+    'reporting' => [
+        'enabled'      => true,
+        'maxSnapshots' => 20,
+        'directory'    => directory('runtime') . '/logging/snapshots',
+        'filename'     => '{date}-{exception}.html',
+        'dateFormat'   => 'd.m.Y-Hi.s',
+    ]
+]
+```

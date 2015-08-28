@@ -1,5 +1,5 @@
 # Debug
-Spiral provides embedded debug component with set of classes useful in developing and debugging your application. Debug does mean to replace existed debugging tools like XDebug and create to only simplify your application development and profiling in remote enviroments.
+Spiral provides embedded debug component with set of classes useful in developing and debugging your application. Debug does not mean to replace existed debugging tools like XDebug and created to only simplify your application development and profiling in remote enviroments.
 
 ## Loggers
 Spiral Logger class built at top of PSR3 standard and compatible with it. You can simply replace default application logger using Monolog classes and etc.
@@ -242,21 +242,21 @@ class TestService extends Service
 Dumper and dump method in addition to outputing content into active buffer can send dump info into different outputs:
 
 ```php
- public function index(MemcacheStore $memcacheStore)
-    {
-        //Output buffer
-        dump($memcacheStore, Dumper::OUTPUT_ECHO);
-        
-        //Dump information in Spiral\Debug\Debugger log using print_r
-        dump($memcacheStore, Dumper::OUTPUT_LOG);
+public function index(MemcacheStore $memcacheStore)
+{
+    //Output buffer
+    dump($memcacheStore, Dumper::OUTPUT_ECHO);
+    
+    //Dump information in Spiral\Debug\Debugger log using print_r
+    dump($memcacheStore, Dumper::OUTPUT_LOG);
 
-        //Dump information in Spiral\Debug\Debugger log with nice formatting
-        dump($memcacheStore, Dumper::OUTPUT_LOG_NICE);
+    //Dump information in Spiral\Debug\Debugger log with nice formatting
+    dump($memcacheStore, Dumper::OUTPUT_LOG_NICE);
 
-        //Return dump as string
-        $dump = dump($memcacheStore, Dumper::OUTPUT_RETURN);
+    //Return dump as string
+    $dump = dump($memcacheStore, Dumper::OUTPUT_RETURN);
 
-    }
+}
 ```
 
 ## Profiler Module

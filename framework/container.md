@@ -165,6 +165,66 @@ words - every class extends singleton will become singleton to replace it's pare
 
 > You can always disable singleton behaviour by inheriting class and defining SINGLETON constant as `null`.
 
+### Controllable Injections
+Spiral Container supports injection feature which might significanlty simplify access to some component instances (databases, cache adapters, storage buckets) in constructor and methods injections (however it will add little bit "magic" in your code):
+
+
+```php
+public function index(Database $primary, Database $secondary)
+{
+    dump($primary);
+    dump($secondary);
+}
+
+public function cached(CacheStore $storeA, MemcacheStore $storeB)
+{
+    dump($storeA);
+    dump($storeB);
+}
+```
+
+Both of this examples (this is controller code) demonstrates principal of controllable injections which based on dedicating class injection to it's factory using context.
+
+Let's view how our class may look like to defined it's own injectable:
+
+```php
+class Name implements InjectableInterface
+{
+    const INJECTOR = Injector::class;
+    
+    //This argument can not be automatically set by Container if we trying to resolve
+    //this class in our arguments
+    public function __constrcut($name)
+    {
+        //...
+    }
+}
+```
+
+When injector will look like:
+
+```php
+class Injector implements InjectorInterface
+{
+    public function createInjection(\ReflectionClass $class, \ReflectionParameter $parameter)
+    {
+        return new Name($parameter->getName());
+    }
+}
+```
+
+As result we can request instance of `Name` using method arguments:
+
+```php
+public function method(Name $john, Name $bob)
+{
+    dump($john);
+    dump($bob);
+}
+```
+
+> Attention, i think this feature is cool, but you must be accurate using it.
+
 ### Additional Container methods
 There is few additional methods in Container you might consider using.
 

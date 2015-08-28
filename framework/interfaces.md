@@ -1,5 +1,5 @@
 # Core Interfaces  
-Spiral Framework bundle built at top of Spiral Components and provides set of interfaces can be used in custom applications or modules.
+Spiral Framework bundle built on top of Spiral Components and provides a set of interfaces that can be used in custom applications or modules.
 
 | Interface                                        | Description 
 | ---                                              | ---

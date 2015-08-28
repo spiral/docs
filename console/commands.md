@@ -38,10 +38,10 @@ Spiral provides big set of commands you might use if your application:
 | server             | Run Spiral Development server on specified host and port.                |
 | update             | Perform application schemas and cache update.                            |
 | console:refresh    | **Reindex console commands (run after creating command in application).**|
-| core:environment   | Show/change application environment (data/environment.php).              |
-| core:key           | Update encryption key for current environment.                           |
-| core:reset         | Reset application runtime cache and invalidate configs.                  |
-| core:touch         | Touch configuration files to reset their cached state.                   |
+| environment        | Show/change application environment (data/environment.php).              |
+| app:key            | Update encryption key for current environment.                           |
+| app:reset          | Reset application runtime cache and invalidate configs.                  |
+| app:touch          | Touch configuration files to reset their cached state.                   |
 | create:command     | Generate new command.                                                    |
 | create:controller  | Generate new controller.                                                 |
 | create:document    | Generate new ODM document.                                               |
