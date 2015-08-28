@@ -25,7 +25,7 @@
     * [Custom Commands] (console/scaffolding.md)
 * Framework Components
     * [Cache] (components/cache.md)
-    * [Debug (Loggers, Benchamarks, Dumps)] (components/debug.md)
+    * [Debug (Loggers, Benchmarks, Dumps)] (components/debug.md)
     * Encrypter
     * Events
     * Files
