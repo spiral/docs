@@ -27,7 +27,7 @@
     * [Cache] (components/cache.md)
     * [Debug (Loggers, Benchmarks, Dumps)] (components/debug.md)
     * [Encrypter] (components/encrypter.md)
-    * Events
+    * [Events] (components/events.md)
     * Files
     * Pagination
     * Tokenizer
