@@ -2,7 +2,7 @@
 In spiral framework i tried to limit events usage as much as i can, at this moment events are generally using only in DataEntity type classes (ORM and ODM models), every other place trying to utilize interfaces and dependencies. This made me possible to create very light and simple event dispatching mechanism without overloading application
 and framework with hidden logic.
 
-> There is only few framework specific events: "notFound" in `Spiral\Core\Components\Loader` and "statement" event in `Spiral\Database\Entities\Database`.
+> There is only few framework specific events: "notFound" in `Spiral\Core\Components\Loader` and "statement" event in `Spiral\Database\Entities\Database`. In 99% cases you will never met events in your application.
 
 ## Events Dispatchers
 First of all let's take a look at class which is reposinble for raising and registering listeners ot our events:
