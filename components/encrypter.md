@@ -60,7 +60,9 @@ interface EncrypterInterface
 }
 ```
 
-You can see we can encrypt, decrypt, generate random set of bytes and change encryption keys our of the box. By default spiral will bind `EncrypterInterface` to `Spiral\Encrypter\Encrypter` class which utilized OpenSSL extensions for such operation. Due interal implementation will pack your data using `serialize` method you can encrypt any serializable data set (for example arrays). If you wish to get access to encrypter in your code - use IoC container, depencency injections or short binding "encrypter" (as usual we are giving example using Controller action).
+You can see we can encrypt, decrypt, generate random set of bytes and change encryption keys our of the box. By default spiral will bind `EncrypterInterface` to `Spiral\Encrypter\Encrypter` class which utilized OpenSSL extensions for such operation. Due interal implementation will pack your data using `serialize` method you can encrypt any serializable data set (for example arrays).
+
+If you wish to get access to encrypter in your code - use IoC container, depencency injections or short binding "encrypter" (as usual we are giving example using Controller action).
 
 ```php
 public function index(EncrypterInterface $encrypter)
