@@ -26,7 +26,7 @@
 * Framework Components
     * [Cache] (components/cache.md)
     * [Debug (Loggers, Benchmarks, Dumps)] (components/debug.md)
-    * Encrypter
+    * [Encrypter] (components/encrypter.md)
     * Events
     * Files
     * Pagination
