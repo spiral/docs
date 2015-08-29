@@ -30,7 +30,7 @@
     * [Events] (components/events.md)
     * Files
     * Pagination
-    * Tokenizer
+    * [Tokenizer] (components/tokenizer.md)
     * Translator
     * Validation
     * **Views**
