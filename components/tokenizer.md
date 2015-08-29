@@ -89,7 +89,7 @@ public function index()
 
     dump($reflection->getClasses());
 
-    //Will locate every "dump" function and "self::something" call and it's arguments
+    //Will locate every "dump" function, "self::something" call and it's arguments
     dump($reflection->getCalls());
 
     self::something($reflection, "string");
