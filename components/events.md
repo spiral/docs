@@ -163,5 +163,4 @@ public function index()
 ```
 
 Second event listener will never be executed.
-
 > At this moment listeners executed in order of how they was registered in dispatcher.
