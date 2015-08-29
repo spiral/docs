@@ -48,14 +48,13 @@ interface TokenizerInterface
 }
 ```
 
-As you see the most important part of Tokenizer component located in getClasses method. Let's try to view some examples, as in other cases we can use short core binding "tokenizer" in our Controllers and Services:
+As you see the most important part of Tokenizer component located in getClasses method. Let's try to view some examples (as in other cases we can use short core binding "tokenizer" in our Controllers and Services):
 
 ```php
 public function index()
 {
     //Find every controller class
     dump($this->tokenizer->getClasses(ControllerInterface::class));
-
 
     //Find every Record class
     dump($this->tokenizer->getClasses(Record::class));
