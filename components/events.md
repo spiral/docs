@@ -167,9 +167,12 @@ Second event listener will never be executed.
 > At this moment listeners executed in order of how they was registered in dispatcher.
 
 You your context is scalar value or you want to overwrite it entirelly you can use buffer variable:
+
 ```php
 self::events()->listen('something', function (ObjectEvent $event) {
     $context = &$event->context();
     $context = 'cba';
 });
 ```
+
+> Some events might not use `fire` method return value or even work without any context.
