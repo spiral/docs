@@ -117,7 +117,7 @@ As you can see we defined our event (using `fire`) "something" in method doSomet
 
 Let's try to create some listeners:
 ```php
- public function index()
+public function index()
 {
     self::events()->listen('something', function (ObjectEvent $event) {
         dump($event->context());
@@ -130,7 +130,7 @@ Let's try to create some listeners:
 Now we have event listener which will dump our context data (["abc"]) and object with raised an event, if we wish to modify our context we can create different listener:
 
 ```php
- public function index()
+public function index()
 {
     self::events()->listen('something', function (ObjectEvent $event) {
         dump($event->parent());
