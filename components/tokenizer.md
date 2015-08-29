@@ -67,7 +67,7 @@ public function index()
 }
 ```
 
-> You have to rememeber that Tokenizer `getClasses` and VERY slow method, you should never use it in runtime.
+> You have to rememeber that Tokenizer `getClasses` is VERY slow method, you should never use it in runtime.
 
 ## Default Tokenizer Implementation
 Default TokenizerInterface implementation provides few additional features which can be useful for you. First of all, we can always get every used trait for given class (including traits used by parents):
