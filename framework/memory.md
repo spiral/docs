@@ -62,8 +62,8 @@ public function doSomething()
 
 You can implement your own version of `HippocampusInterface` using APC, XCache or even Memcache. 
 
-## Embedding to your components
-Before you will embed `HippocampusInterface` into your component you must remember 3 basic rules:
+## Embedding Memory into Components
+Before you will embed `HippocampusInterface` into your component or service you must remember 3 basic rules:
 1) Do not expect that stored data will always be in memory, it might dissapear at any moment.
-2) Do not store any data related to user request, action or data. Memory is only for logic caching.
+2) Do not store any data related to user request, action or information. Memory is only for logic caching.
 3) Do not feed this thing after midnight.
