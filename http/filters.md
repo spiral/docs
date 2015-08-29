@@ -1,14 +1,13 @@
 # Request Filters
-Request filters is models specially designed to handle user request perameters and populate target entity (for example ORM or ODM). In easier works, this is mapper
-of form values to model fields. RequestFilter can define it's own set of getters, setters, accessors and validations for fields. RequestFilter utilizes functionaly of
+Request filters is a model designed specially to handle user request parameters and populate the target entity (for example ORM or ODM). In other words, this maps form values to model fields. RequestFilter can define it's own set of getters, setters, accessors and validations for fields. RequestFilter utilizes functionality of
 InputManager to populate it's fields.
-> You might read about DataEnties, ORM, ODM and Validations first.
+> It may be best to read about DataEnties, ORM, ODM and Validations first.
 
 ## Scaffolding
-You can create new `RequestFilter` using command `create:request name` as in case with ORM and ODM entities you can pre-specify fields to be grabbed from request. 
-If you wish to generate request for existed database entity simply use key '-e'.
+You can create a new `RequestFilter` by using the command `create:request name`. With ORM and ODM entities, you can pre-specify fields to be grabbed from request. 
+If you wish to generate a request for your existing database entity simply use key '-e'.
 
-Let's look to some examples, first of all we can define some database entity:
+Let's look at some examples. First of all, we can define a database entity:
 
 ```php
 class User extends Record
@@ -34,7 +33,7 @@ class User extends Record
 }
 ```
 
-Now using console command `create:request user -e user` we will get something like that:
+Now using console command `create:request user -e user` we will get something like this:
 
 ```php
 /**
@@ -92,7 +91,7 @@ class UseryRequest extends RequestFilter
 }
 ```
 
-Let's try to view example of request usage in controller method and then walk thought it's schema definition:
+Let's check out an example of request usage in controller method and then walk through it's schema definition:
 
 ```php
 public function createUser(UserRequest $request)
@@ -104,7 +103,7 @@ public function createUser(UserRequest $request)
 }
 ```
 
-As you can see we declared method dependency for our request, this will automatically let request access to InputManager and popuplate it's fields described in it's schema.
+As you can see, we declared method dependency for our request. This will automatically allow access to InputManager and popuplate it's fields described in it's schema.
 
 ```php
 protected $schema = [
@@ -113,7 +112,7 @@ protected $schema = [
 ];
 ```
 
-Schema definition includes target field name, it's source and origin name specified using dot notation. We can easlity switch our request to read values from query:
+Schema definition will include the target field name, it's source and origin name specified using dot notation. We can easily switch our request to read the values from query:
 
 ```php
 protected $schema = [
@@ -122,7 +121,7 @@ protected $schema = [
 ];
 ```
 
-In addition to that we can specify origin name using dot notation.
+In addition, we can specify the origin name using dot notation.
 
 ```php
 protected $schema = [
@@ -131,7 +130,7 @@ protected $schema = [
 ];
 ```
 
-RequestFilter support differnt sources you can use for defininition, basicaly any method in `InputManager` can be used as source:
+RequestFilter supports different sources you can use for definition.  Any method in `InputManager` can be used as source:
 ```php
 protected $schema = [
   'name'   => 'post:name',           //identical to "data:name"
@@ -144,9 +143,9 @@ protected $schema = [
 **Other sources you can use:** uri (UriInterface), path (PAGE URI PATH), method (HTTP METHOD), isSecure (bool), isAjax (bool), isJsonExpected (bool), remoteAddress (string), header:origin, data:origin, post:origin, query:origin, cookie:origin, file:origin, server:origin, attribute:origin.
 
 ## Populating target Entity
-Once request generated you can it's values mapped to approprate fields to populate some database entity, you can either do it manually via get/setFields or use request `populate` method which will copy fields from request to target entity and validate it to make sure that everything is ok.
+Once the request is generated, you can map it's values to approprate fields to populate some database entity. You can either do it manually via get/setFields or use request `populate` method which will copy fields from request to target entity and validate it to make sure that everything is ok.
 
-You can put your custom logic into populate method to handle more complex scenarious for example file uploads. 
+You can put your custom logic into your populate method to handle more complex scenarious. For example, within file uploads. 
 
 ```php
 /**
@@ -217,7 +216,7 @@ protected $schema = [
 ];
 ```
 
-Fox example if request with given schema will have any errors related to "name" field `getErrors` method will return following structure:
+Fox example, if the request within a given schema returns any errors related to "name" field `getErrors`, method will return the following structure:
 ```php
 [
     'user' => [

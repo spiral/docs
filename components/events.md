@@ -1,5 +1,5 @@
 # Events and Event Dispatchers
-In spiral framework i tried to limit events usage as much as i can, at this moment events are generally using only in DataEntity type classes (ORM and ODM models), every other place trying to utilize interfaces and dependencies. This made me possible to create very light and simple event dispatching mechanism without overloading application
+In spiral framework i tried to limit events usage as much as i can, at this moment events are generally used only in DataEntity type classes (ORM and ODM models) and few Core/Database components, every other place trying to utilize interfaces and dependencies. This made me possible to create very light and simple event dispatching mechanism without overloading application
 and framework with hidden logic.
 
 > There is only few framework specific events: "notFound" in `Spiral\Core\Components\Loader` and "statement" event in `Spiral\Database\Entities\Database`. In 99% cases you will never met events in your application.
@@ -117,7 +117,7 @@ As you can see we defined our event (using `fire`) "something" in method doSomet
 
 Let's try to create some listeners:
 ```php
- public function index()
+public function index()
 {
     self::events()->listen('something', function (ObjectEvent $event) {
         dump($event->context());
@@ -130,7 +130,7 @@ Let's try to create some listeners:
 Now we have event listener which will dump our context data (["abc"]) and object with raised an event, if we wish to modify our context we can create different listener:
 
 ```php
- public function index()
+public function index()
 {
     self::events()->listen('something', function (ObjectEvent $event) {
         dump($event->parent());
@@ -165,3 +165,14 @@ public function index()
 Second event listener will never be executed.
 
 > At this moment listeners executed in order of how they was registered in dispatcher.
+
+You your context is scalar value or you want to overwrite it entirelly you can use buffer variable:
+
+```php
+self::events()->listen('something', function (ObjectEvent $event) {
+    $context = &$event->context();
+    $context = 'cba';
+});
+```
+
+> Some events might not use `fire` method return value or even work without any context.
