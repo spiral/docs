@@ -1,11 +1,10 @@
 # Events and Event Dispatchers
-In spiral framework i tried to limit events usage as much as i can, at this moment events are generally used only in DataEntity type classes (ORM and ODM models) and few Core/Database components, every other place trying to utilize interfaces and dependencies. This made me possible to create very light and simple event dispatching mechanism without overloading application
-and framework with hidden logic.
+In spiral framework i tried to limit events usage as much as i can to make framework core and components to as clear as possible. At this moment events are only used in DataEntity type classes (ORM and ODM models), Core Loader and Database entity class, in every other place i'm trying to utilize interfaces and dependencies. 
 
-> There is only few framework specific events: "notFound" in `Spiral\Core\Components\Loader` and "statement" event in `Spiral\Database\Entities\Database`. In 99% cases you will never met events in your application.
+Due most of places where events are really needed has very similar requiments i managed to create very light and simple event dispatching mechanism without overcomplicating events logic.
 
 ## Events Dispatchers
-First of all let's take a look at class which is reposinble for raising and registering listeners ot our events:
+First of all let's take a look at class which is reposinble for raising and registering listeners to our events:
 
 ```php
 interface DispatcherInterface
@@ -58,7 +57,7 @@ interface DispatcherInterface
 }
 ```
 
-Event itself represented by simple object which must implement `EventInterface`:
+Event itself will represented by simple object which must implement `EventInterface`:
 
 ```php
 interface EventInterface
@@ -91,17 +90,17 @@ interface EventInterface
 }
 ```
 
-As you can see such even provides method named `context()` which will return reference to event payload information with ability to alter such structure, this gives us ability to not onbly listen to something, but modify payload and event result. 
+As you can see such even provides method named `context()` which will return reference to event payload information with ability to alter such structure, this gives us ability to not onbly listen to something, but modify payload and event chain result.
 
 ## Event Trait
-Spiral events provides ability to create and maintain event dispached on class (not object basis, meaning every class instance will share such event dispatcher), hovewer raised events with become an instace of `ObjectEvent` with reference to parent. We can use EventsTrait for such purposes:
+Spiral event component provides ability to create and maintain event dispacher on class level (meaning every class instance will utilize same dispatcher and set of listements, this is mainly done for performance reasons), hovewer raised events with become an instace of `ObjectEvent` with reference to parent. Let's use `EventsTrait` for such purposes:
 
 ```php
 class HomeController extends Controller
 {
     use EventsTrait;
 
-    public function index()
+    public function index() 
     {
         dump($this->doSomething('abc'));
     }
@@ -113,21 +112,21 @@ class HomeController extends Controller
 }
 ```
 
-As you can see we defined our event (using `fire`) "something" in method doSomething. As event context we provide our input data, same data will be returned when event passed thought every listener.
+As you can see we define our event "something" (using `fire` method) in "doSomething" action. As event context we will provide our input data variable, same data will be returned when event passed thought every listener. Let's try to create some listeners
 
-Let's try to create some listeners:
 ```php
 public function index()
 {
     self::events()->listen('something', function (ObjectEvent $event) {
         dump($event->context());
+        dump($event->parent());
     });
 
     dump($this->doSomething(['abc']));
 }
 ```
 
-Now we have event listener which will dump our context data (["abc"]) and object with raised an event, if we wish to modify our context we can create different listener:
+Now we have event listener which will dump our context data (["abc"]) and object which raised an event, if we wish to modify our context we can create different listener:
 
 ```php
 public function index()
@@ -138,14 +137,15 @@ public function index()
     });
 
     self::events()->listen('something', function (ObjectEvent $event) {
-        $event->context()[] = 'cba';
+        $context = &$event->context();
+        $context[] = 'cba';
     });
 
     dump($this->doSomething(['abc']));
 }
 ```
 
-Result of our `doSomething` method will be modified (['abc', 'cba']). If you wish to stop every other listener from perforoming, you can call stopPropagnation() method of provided event object:
+Result of our `doSomething` method now will be modified (['abc', 'cba']). If you wish to stop every other listener from performing, you can call stopPropagnation() method of provided event object:
 
 ```php
 public function index()
@@ -163,16 +163,4 @@ public function index()
 ```
 
 Second event listener will never be executed.
-
 > At this moment listeners executed in order of how they was registered in dispatcher.
-
-You your context is scalar value or you want to overwrite it entirelly you can use buffer variable:
-
-```php
-self::events()->listen('something', function (ObjectEvent $event) {
-    $context = &$event->context();
-    $context = 'cba';
-});
-```
-
-> Some events might not use `fire` method return value or even work without any context.
