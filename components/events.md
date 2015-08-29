@@ -145,14 +145,6 @@ public function index()
 }
 ```
 
-You your context is scalar value or you want to overwrite it entirelly you can use buffer variable:
-```php
-self::events()->listen('something', function (ObjectEvent $event) {
-    $context = &$event->context();
-    $context = 'cba';
-});
-```
-
 Result of our `doSomething` method will be modified (['abc', 'cba']). If you wish to stop every other listener from perforoming, you can call stopPropagnation() method of provided event object:
 
 ```php
@@ -173,3 +165,11 @@ public function index()
 Second event listener will never be executed.
 
 > At this moment listeners executed in order of how they was registered in dispatcher.
+
+You your context is scalar value or you want to overwrite it entirelly you can use buffer variable:
+```php
+self::events()->listen('something', function (ObjectEvent $event) {
+    $context = &$event->context();
+    $context = 'cba';
+});
+```
