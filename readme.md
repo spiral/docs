@@ -26,8 +26,8 @@
 * Framework Components
     * [Cache] (components/cache.md)
     * [Debug (Loggers, Benchmarks, Dumps)] (components/debug.md)
-    * Encrypter
-    * Events
+    * [Encrypter] (components/encrypter.md)
+    * [Events] (components/events.md)
     * Files
     * Pagination
     * Tokenizer
