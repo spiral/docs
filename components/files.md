@@ -223,3 +223,14 @@ public function index(FilesInterface $files)
     dump($this->files->read(directory('runtime') . '/folder/file.txt'));
 }
 ```
+
+Another pretty common operation is located in `getFiles` method and used to recursivelly read content of specified directory:
+
+```php
+public function index()
+{
+    dump($this->files->getFiles(directory('runtime'), 'php'));
+}
+```
+
+> If you really dreaming about move/copy directory functionality you can achieve it by combining `getFiles` method with `relativePath` method. :)
