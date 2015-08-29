@@ -291,7 +291,7 @@ Let's check a url like "/users". This url will be matched and will create set of
 `Controllers\UsersController`.
 
 ## Generate URLs using routes
-In many cases, you may want to generate a URL specific to some route without locking yourself to a url pattern. You can do this by using Router method, `createUri`.
+In many cases, you may want to generate a URL specific to some route without locking yourself to a url pattern. You can do this by using Router method, `createUri` (attention, method will return instance of `UriInterface`).
 
 ```php
 //routeName = 'profile[/<id>]'
