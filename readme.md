@@ -28,7 +28,7 @@
     * [Debug (Loggers, Benchmarks, Dumps)] (components/debug.md)
     * [Encrypter] (components/encrypter.md)
     * [Events] (components/events.md)
-    * Files
+    * [Files] (components/files.md)
     * Pagination
     * Tokenizer
     * Translator
