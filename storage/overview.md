@@ -1,12 +1,16 @@
 # Storage Manager
-Spiral `StorageManager` (`Spiral\Storage\StorageInterface`) component provides unified abstraction across multiple data/file storages including local harddrive (`FilesInterface` used), Amazon S3, Rackspace Files, remove server over SFTP, remote server over FTP, GridFS storage. General principle of StorageManager is to abstract stored data/files using only two primary enties: objects and **buckets**. The third type or entity - **server** are hidden inside buckets.
+Spiral `StorageManager` (`Spiral\Storage\StorageInterface`) component provides unified abstraction across multiple data/file storages including local harddrive (`FilesInterface` used), Amazon S3, Rackspace Files, remove server over SFTP, remote server over FTP, GridFS storage.
 
-In this two entities, objects (`StorageObject` or `ObjectInterface` class) are only responsible for high level abstraction including metadata wrapping and exposing set of helper methods. Bucket (`StorageBucker` or `BucketInterface`) hovewer reposible for low level data operations, such as adding, removing, renaming and replacing objects in bucket or buckets.
+General concept of StorageManager is to abstract stored data/files using only two primary enties: objects and **buckets** and limit set of operations as much as it can. 
+
+> The third storage entity **server** are hidden inside buckets and not concidered as something developer should have access to.
+
+In this two entities, objects (`StorageObject` or `ObjectInterface` class) are only responsible for high level abstraction including metadata wrapping and exposing set of helper methods. Buckets (`StorageBucker` or `BucketInterface`) hovewer handle all low level data operations, such as adding, removing, renaming and replacing objects in bucket or buckets.
 
 > StorageManager has deep intergration with PSR7 streams and `UploadedFileInterface`.
 
 ## StorageInterface
-First of all, let's view our primary storage interface understand what set of methods are available for us:
+First of all, let's view our primary storage interface to understand what set of methods are available for us:
 
 ```php
 interface StorageInterface
@@ -78,8 +82,10 @@ interface StorageInterface
 }
 ```
 
+As you can see StorageManager provides us ability to get specific bucket, server or object instance or create new one of each. Let's try to review buckets functionality first.
+
 ## Storage Buckets
-StorageManager buckets provides set of operations you might want to consider use in your application:
+StorageManager buckets provides set of operations you might want to consider using in your application, to start let's check `BucketInterface`:
 
 ```php
 interface BucketInterface
@@ -247,14 +253,338 @@ interface BucketInterface
 }
 ```
 
-One the most important properties of StrorageBuckets is **prefix** and **server**. Prefix responsible for generating storage object address unique for it's storage bucket, when server are responsible for all low level bucket operations.
+One the most important properties of StrorageBuckets is **prefix** and **server**. Prefix responsible for generating storage object address unique for it's parent bucket by joining object name and bucket prefix values; server are responsible for all low level bucket operations. You can also notice dependency of `FilesInterface`, this dedendency are required due buckets provides us bridge between local file enviroment and remote storegae.
 
-> As you can see there is no directory related set of operation as you can encode directory name into object name.
+> As you can see there is no directory related operation as you can encode directory name into object name.
+
+One very important bucket function called located in `getOption` method, this method much provide set of server specific options required to perform low level operations, usually such options declared in storage component configuration file (`application/config/storage.md`).
+
+> You can read more about server specific options in [storage servers] (servers.md) section.
 
 ## Configuring StorageBuckets
+Before we will jump to some of our examples, let's try to declare and configure few buckets and related servers, we can use storage configuration file to archive that:
+
+```php
+return [
+    'servers' => [
+        'local'     => [
+            'class'   => Servers\LocalServer::class,
+            'options' => [
+                'home' => directory('root')
+            ]
+        ],
+        'amazon'    => [
+            'class'   => Servers\AmazonServer::class,
+            'options' => [
+                'verify'    => false,
+                'accessKey' => '',
+                'secretKey' => '',
+            ]
+        ],
+        'rackspace' => [
+            'class'   => Servers\RackspaceServer::class,
+            'options' => [
+                'verify'   => false,
+                'username' => '',
+                'apiKey'   => ''
+            ]
+        ],
+        'ftp'       => [
+            'class'   => Servers\FtpServer::class,
+            'options' => [
+                'host'     => '127.0.0.1',
+                'login'    => 'Wolfy-J',
+                'password' => '',
+                'home'     => '/'
+            ]
+        ],
+        'sftp'      => [
+            'class'   => Servers\SftpServer::class,
+            'options' => [
+                'host'       => 'hostname.com',
+                'home'       => '/home/',
+                'authMethod' => 'pubkey',
+                'username'   => '',
+                'password'   => '',
+                'publicKey'  => '',
+                'privateKey' => ''
+            ]
+        ],
+        'gridfs'    => [
+            'class'   => Servers\GridfsServer::class,
+            'options' => [
+                'database' => 'default'
+            ]
+        ]
+    ],
+    'buckets' => [
+        'local'     => [
+            'server'  => 'local',
+            'prefix'  => 'local:',
+            'options' => [
+                //Temporary location
+                'directory' => '/application/runtime/storage/'
+            ]
+        ],
+        'uploads'   => [
+            'server'  => 'local',
+            'prefix'  => '/uploads/',
+            'options' => [
+                //Temporary location
+                'directory' => '/webroot/uploads/'
+            ]
+        ],
+        'amazon'    => [
+            'server'  => 'amazon',
+            'prefix'  => 'https://s3.amazonaws.com/my-bucket/',
+            'options' => [
+                'public' => true,
+                'bucket' => 'my-bucket'
+            ]
+        ],
+        'rackspace' => [
+            'server'  => 'rackspace',
+            'prefix'  => 'rackspace:',
+            'options' => [
+                'container' => 'container-name',
+                'region'    => 'DFW'
+            ]
+        ],
+        'ftp'       => [
+            'server'  => 'ftp',
+            'prefix'  => 'ftp:',
+            'options' => [
+                'directory' => '/',
+                'mode'      => \Spiral\Files\FilesInterface::RUNTIME
+            ]
+        ],
+        'sftp'      => [
+            'server'  => 'sftp',
+            'prefix'  => 'sftp:',
+            'options' => [
+                'directory' => 'uploads',
+                'mode'      => \Spiral\Files\FilesInterface::RUNTIME
+            ]
+        ],
+        'gridfs'    => [
+            'server'  => 'gridfs',
+            'prefix'  => 'gridfs:',
+            'options' => [
+                'collection' => 'files'
+            ]
+        ]
+    ]
+];
+```
+
+First of all, out configuration file declares 6 servers we can use to store data in, every server has it's unique name, adapter class and set of connection options, in our case we declared: local, amazon, rackspace, ftp, sftp and gridfs servers. You can read more about server configurations in dedicated configuration section.
+
+Next, we created few named containers each associated with unique prefix, server and server specific options, in our case we have: 
+1) **local** - will store data in local directory "application/runtime/storage" (directory will be created automatically). Work with local filesystem directly. Evert created object will gain prefix "local:" (such prefix can not be understand by frontend and expose real file location).
+2) **uploads** - stores data in public directory "webroot/uploades" with prefix "/uploads/", such prefix provides us ability to send object address directory to frontend or view.
+3) **amazon** - utilized Amazon S3 server storage with prefix "https://s3.amazonaws.com/my-bucket/" (such prefix provides us ability to send object address to frontend directly). As additional server options we stated that every bucket file must be public.
+4) **rackspace** - uses Rackspace Files server with default region "DFW" and specified rackspace bucket name. Our prefix - "rackspace:".
+5) **ftp** - provides us access to remote server over ftp connection, points directly to server root directory and specified default file mode as 777. Prefix - "ftp:" (can not be exposed to client).
+6) **sftp** - remove server storage over sftp connection, points to "/home/uploads" directory with private prefix "sftp:" and default file mode 777.
+7) **gridfs** - stores data in MongoDB GridFS collection "files", private prefix "gridfs:".
+
+## Work with Storage component
+Once we can have our buckets created and servers configured (you must enter your own connection values in servers you with to use) we can start working with our storage component. We are going to use provided config as example:
+
+### Put New file into bucket
+We can put new file/data into specified bucket using `StorageManager` or `BucketInterface` put method, we are going to use `StorageManager` received using short binding "storage" in controller action:
+
+```php
+public function index()
+{
+    //We can put data into bucket using filename
+    $object = $this->storage->put('local', 'file.txt', __FILE__);
+    dump($object);
+
+    //Resource
+    $object = $this->storage->put('local', 'file.txt', fopen(__FILE__, 'rb'));
+    dump($object);
+
+    //Stream
+    $object = $this->storage->put('local', 'file.txt', \GuzzleHttp\Psr7\stream_for(
+        fopen(__FILE__, 'rb')
+    ));
+    dump($object);
+
+    //Or even using uploaded file
+    if (!empty($file = $this->input->file('upload'))) {
+        $object = $this->storage->put('local', 'file.txt', $file);
+        dump($object);
+    }
+}
+```
+
+> Every put operation will replace existed data.
+
+As result of such code we will get file named "file.txt" in our "application/runtime/storage" directory. In object dump you may notice that address is specified as "local:file.txt", such address is created using object name and bucket prefix and provides us ability to crealy identify file location.
+
+### Open storage object by it's address
+Once we have data located in some bucket we only need to store generated address somewere as it's value clearly defines object name and object bucket. Let's use address from previous example and try to get some information about our object:
+
+```php
+public function index()
+{
+    $address = 'local:file.txt';
+    $object = $this->storage->open($address);
+    dump($object);
+}
+```
+
+Before we will start working with retrieved object, let's quickly look as `ObjectInterface` to check what methods are available for us:
+
+```php
+interface ObjectInterface extends StreamableInterface
+{
+    /**
+     * @param string           $address Full object address.
+     * @param StorageInterface $storage Storage component.
+     * @throws ObjectException
+     */
+    public function __construct($address, StorageInterface $storage);
+
+    /**
+     * Get object name inside parent bucket.
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * Get full object address.
+     *
+     * @return string
+     */
+    public function getAddress();
+
+    /**
+     * Get associated bucket instance.
+     *
+     * @return BucketInterface
+     */
+    public function getBucket();
+
+    /**
+     * Check if object exists.
+     *
+     * @return bool
+     * @throws ServerException
+     * @throws BucketException
+     * @throws ObjectException
+     */
+    public function exists();
+
+    /**
+     * Get object size or return false of object does not exists.
+     *
+     * @return int|bool
+     * @throws ServerException
+     * @throws BucketException
+     * @throws ObjectException
+     */
+    public function getSize();
+
+    /**
+     * Must return filename which is valid in associated FilesInterface instance. Must trow an
+     * exception if object does not exists. Filename can be temporary and should not be used
+     * between sessions. You must never write anything to this file.
+     *
+     * @return string
+     * @throws ServerException
+     * @throws BucketException
+     * @throws ObjectException
+     */
+    public function localFilename();
+
+    /**
+     * Delete object from associated bucket.
+     *
+     * @throws ServerException
+     * @throws BucketException
+     * @throws ObjectException
+     */
+    public function delete();
+
+    /**
+     * Rename storage object without changing it's bucket.
+     *
+     * @param string $newname
+     * @return self
+     * @throws ServerException
+     * @throws BucketException
+     * @throws ObjectException
+     */
+    public function rename($newname);
+
+    /**
+     * Copy storage object to another bucket. Method must return ObjectInterface which points to
+     * new storage object.
+     *
+     * @param BucketInterface|string $destination
+     * @return self
+     * @throws ServerException
+     * @throws BucketException
+     * @throws ObjectException
+     */
+    public function copy($destination);
+
+    /**
+     * Move storage object data to another bucket.
+     *
+     * @param BucketInterface|string $destination
+     * @return self
+     * @throws ServerException
+     * @throws BucketException
+     * @throws ObjectException
+     */
+    public function replace($destination);
+
+    /**
+     * Must be serialized into object address.
+     *
+     * @return string
+     */
+    public function __toString();
+}
+```
+
+Now we can modify our code to read object properties without being worrying where object is stored into:
+
+```php
+public function index()
+{
+    $address = 'local:file.txt';
+    $object = $this->storage->open($address);
+
+    dump($object->exists());
+    dump($object->getName());
+    dump($object->getSize());
+    dump($object->getAddress());
+    dump($object->getBucket());
+    
+    dump($object->getStream());
+    dump($object->localFilename());
+}
+```
+
+From given methods let's focus on two most important: `getStream` and `localFilename`.
+
+### Accessing storage object data
 
 
-## Using StorageManager
-As with other components you can get access to storage manager using `Spiral\Storage\StorageInterface` or short binding "storage". 
+### Deleting object
 
 
+### Rename object
+
+### Move or Copy object to another bucket
+
+
+## Multiple application enviroments
+One of the biggest benefits of using StorageManager is that you can point your buckets to different servers in different application enviroments. Due your StorageManager code are pretty universal you can your bucket pointing to local harddriver in development and, for example, to Amazon S3 in production. In addtion to that you can easity change your application storage logic at any moment by simply introducing more buckets.
+
+> Tip: use local bucket to keep files for some processing before sending to permanent storage, for example every uploaded image can be stored on server directly, processed in background and send to permanent bucket after, in this case you can avoid any network charges caused by downloading file from remote storage to process it.
