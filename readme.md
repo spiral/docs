@@ -31,7 +31,7 @@
     * [Files] (components/files.md)
     * Pagination
     * [Tokenizer] (components/tokenizer.md)
-    * Translator
+    * [Translator] (components/translator.md)
     * **Views**
     * Reactor
     * Modules
