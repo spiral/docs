@@ -668,13 +668,13 @@ public function index()
     dump($object->replace('rackspace')->getAddress());
 
     //Replacing from "rackspace" to "ftp": ftp:file.txt
-    dump($object->replace('rackspace')->getAddress());
+    dump($object->replace('ftp')->getAddress());
     
     //Replacing from "ftp" to "sftp": sftp:file.txt
-    dump($object->replace('rackspace')->getAddress());
+    dump($object->replace('sftp')->getAddress());
     
     //Replacing from "sftp" to "gridfs": gridfs:file.txt
-    dump($object->replace('rackspace')->getAddress());
+    dump($object->replace('gridfs')->getAddress());
     
     //Returning to original location
     dump($object->replace('local')->getAddress());
