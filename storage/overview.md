@@ -380,13 +380,13 @@ return [
 First of all, out configuration file declares 6 servers we can use to store data in, every server has it's unique name, adapter class and set of connection options, in our case we declared: local, amazon, rackspace, ftp, sftp and gridfs servers. You can read more about server configurations in dedicated configuration section.
 
 Next, we created few named containers each associated with unique prefix, server and server specific options, in our case we have: 
-1) **local** - will store data in local directory "application/runtime/storage" (directory will be created automatically). Work with local filesystem directly. Evert created object will gain prefix "local:" (such prefix can not be understand by frontend and expose real file location).
-2) **uploads** - stores data in public directory "webroot/uploades" with prefix "/uploads/", such prefix provides us ability to send object address directory to frontend or view.
-3) **amazon** - utilized Amazon S3 server storage with prefix "https://s3.amazonaws.com/my-bucket/" (such prefix provides us ability to send object address to frontend directly). As additional server options we stated that every bucket file must be public.
-4) **rackspace** - uses Rackspace Files server with default region "DFW" and specified rackspace bucket name. Our prefix - "rackspace:".
-5) **ftp** - provides us access to remote server over ftp connection, points directly to server root directory and specified default file mode as 777. Prefix - "ftp:" (can not be exposed to client).
-6) **sftp** - remove server storage over sftp connection, points to "/home/uploads" directory with private prefix "sftp:" and default file mode 777.
-7) **gridfs** - stores data in MongoDB GridFS collection "files", private prefix "gridfs:".
+    1) **local** - will store data in local directory "application/runtime/storage" (directory will be created automatically). Work with local filesystem directly. Evert created object will gain prefix "local:" (such prefix can not be understand by frontend and expose real file location).
+    2) **uploads** - stores data in public directory "webroot/uploades" with prefix "/uploads/", such prefix provides us ability to send object address directory to frontend or view.
+    3) **amazon** - utilized Amazon S3 server storage with prefix "https://s3.amazonaws.com/my-bucket/" (such prefix provides us ability to send object address to frontend directly). As additional server options we stated that every bucket file must be public.
+    4) **rackspace** - uses Rackspace Files server with default region "DFW" and specified rackspace bucket name. Our prefix - "rackspace:".
+    5) **ftp** - provides us access to remote server over ftp connection, points directly to server root directory and specified default file mode as 777. Prefix - "ftp:" (can not be exposed to client).
+    6) **sftp** - remove server storage over sftp connection, points to "/home/uploads" directory with private prefix "sftp:" and default file mode 777.
+    7) **gridfs** - stores data in MongoDB GridFS collection "files", private prefix "gridfs:".
 
 ## Work with Storage component
 Once we can have our buckets created and servers configured (you must enter your own connection values in servers you with to use) we can start working with our storage component. We are going to use provided config as example:
