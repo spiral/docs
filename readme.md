@@ -43,7 +43,6 @@
 * Storage Manager
     * **Buckets and Objects**
     * Storage Servers
-    * Tips and Tricks
 * Databases
     * Overview 
     * Query Builders
