@@ -1,7 +1,7 @@
 # Application Memory
 One of the notable spiral components which deserves it's own section is the application memory component or `HippocampusInterface`. Memory interface responsible
 for storing component cache information into "permanent", enviroment specific storage. The default spiral implementation will generate php file in [runtime
-directory] (application/directories.md) to store provided data.
+directory] (/application/directories.md) to store provided data.
 
 General idea of memory is to speed up application bootstrapping and move some runtime operations into the backgroud, memory used to store configuration cache,
 orm and odm schema, loadmap, console commands and tokenizer cache; it can also be used to cache compiled routes and etc. Application memory are very similar to cache component however it must never be used to store any data related to client request.
