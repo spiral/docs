@@ -1,5 +1,5 @@
 # Translator
-Spiral Translator component provides ability to create, fetch and manage your application translation and localization. Generic principle of translator is to organize set of strings to be translated or localized into one common storage file called "string bundle". In addtion to that, spiral framework provides set of tools which can simplify development process and exclude step of registering string in bundle files manually.
+Spiral Translator component provides ability to create, fetch and manage your application translation text. Generic principle of translator is to organize set of strings to be translated into one common storage file called "string bundle". In addtion to that, spiral framework provides set of tools which can simplify development process and exclude step of registering string in bundle files manually.
 
 ## TranslatorInterface
 You can always retrieve instance of Translator component using either `TranslatorInterface` dependency or short binding "i18n", let's check `TranslatorInterface` source to see what methods are available for us:
@@ -223,3 +223,6 @@ Spiral [ViewManager] (/components/views.php) has pre-built view source processor
 ```
 
 One notable part of view localization is that view manager will use current translator language as **cache dependency**, meaning string translation are performed at compilation and not runtime phase of view rendering, this way provides you ability to translate and "capture" as many strings as you want without any performance drop.
+
+## Same Language Translation
+One notable aspect of covering as much view text with translator tags as possible is that such text can be edited from client side, for example by using admin panel (coming soon).
