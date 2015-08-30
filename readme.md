@@ -54,13 +54,12 @@
     * Filters and Accessors
     * Validation
 * Spiral ORM
-    * **Overview**
+    * **Record Model**
     * Scaffolding
     * Relations
     * Passive/Active schemas
 * Spiral ODM
-    * Overview
-    * Scaffolding
+    * **Document Model**
     * Compositions
     * Aggregations
     * JSON Documents (integration with ORM)
