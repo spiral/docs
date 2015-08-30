@@ -225,4 +225,4 @@ Spiral [ViewManager] (/components/views.php) has pre-built view source processor
 One notable part of view localization is that view manager will use current translator language as **cache dependency**, meaning string translation are performed at compilation and not runtime phase of view rendering, this way provides you ability to translate and "capture" as many strings as you want without any performance drop.
 
 ## Same Language Translation
-One notable aspect of covering as much view text with translator tags as possible is that such text can be edited from client side, for example by using admin panel (coming soon).
+One notable aspect of covering as much view text with translator tags as possible is that such text can be edited from client side (for example by using admin panel, coming soon) to translate weird programmers language into normal one.
