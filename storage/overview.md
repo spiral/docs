@@ -574,7 +574,41 @@ public function index()
 From given methods let's focus on two most important: `getStream` and `localFilename`.
 
 ### Accessing storage object data
-TODO
+Storage component will be useless without providing you ability to read data of stored object. Right now you have 2 methods use can use your our application:
+
+```php
+public function index()
+{
+    $address = 'local:file.txt';
+    $object = $this->storage->open($address);
+
+    //Get PSR7 stream associated with object data
+    dump($object->getStream());
+    
+    //Get local filename associated with object
+    dump($object->localFilename());
+}
+```
+
+If `getStream` method is self explanatory and can be used, for example, in generating PSR7 response, `localFilename` must be described closesly.
+
+First of all, `localFilename` method will return filename which must never be used to write any data into, it is purely read only. You can easily use such
+filename in copy, read and other file operations like in provided example:
+
+```php
+public function index()
+{
+    $address = 'local:file.txt';
+    $object = $this->storage->open($address);
+    
+    //Get local filename associated with object
+    $this->files->copy($object->localFilename(), 'local.txt');
+}
+```
+
+Hovewer you must know that given filename is not nesessary real filename at all, in many cases (when you working with remote servers like Amazon or Rackspace) it will look like `spiral://000000000f6cae89000000005103baf7` and only be accessible inside spiral enviroment. Such behaviour presented due spiral will create "virtual" filenames for some storages using stream wrapper instead of writing object data to real local filename.
+
+> Recevied local filename will be automatically descructed, do not remove it by youself.
 
 ### Rename object
 We can easily rename of our storage object using method `rename`:
@@ -614,8 +648,43 @@ public function index()
 ```
 
 ### Move or Copy object to another bucket
-TODO
+One of them most poweverful features of storage manager is ability to copy or move storage object into specified bucket without worrying about how it will be done. Object address will be corrected based on it's parent bucket: 
 
+```php
+public function index()
+{
+    $address = 'local:file.txt';
+    $object = $this->storage->open($address);
+    
+    //Object will return self from "replace method" and new object from "copy" method
+    
+    //Replacing from "local" to "uploads": uploads/file.txt
+    dump($object->replace('uploads')->getAddress());
+    
+    //Replacing from "uploads" to "amazon": https://s3.amazonaws.com/my-bucket/file.txt
+    dump($object->replace('amazon')->getAddress());
+    
+    //Replacing from "amazon" to "rackspace": rackspace:file.txt
+    dump($object->replace('rackspace')->getAddress());
+
+    //Replacing from "rackspace" to "ftp": ftp:file.txt
+    dump($object->replace('rackspace')->getAddress());
+    
+    //Replacing from "ftp" to "sftp": sftp:file.txt
+    dump($object->replace('rackspace')->getAddress());
+    
+    //Replacing from "sftp" to "gridfs": gridfs:file.txt
+    dump($object->replace('rackspace')->getAddress());
+    
+    //Returning to original location
+    dump($object->replace('local')->getAddress());
+    
+    //Copying file to amazon
+    dump($object->copy('amazon')->getAddress());
+}
+```
+
+> Spiral will try to move and copy files in a most efficient way as possible, for example copying file from one amazon bucket to another will happen on amazon size. Hovewer in many cases (especially in cross server copying) current application memory will be used as copy/move buffer.
 
 ## Multiple application enviroments
 One of the biggest benefits of using StorageManager is that you can point your buckets to different servers in different application enviroments. Due your StorageManager code are pretty universal you can your bucket pointing to local harddriver in development and, for example, to Amazon S3 in production. In addtion to that you can easity change your application storage logic at any moment by simply introducing more buckets.
