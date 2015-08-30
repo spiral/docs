@@ -41,7 +41,7 @@
     * Extended Usage (virtual tags, tips and tricks)
     * Spiral Toolkit module
 * Storage Manager
-    * ! [**Buckets and Objects**] (storage/ovewview.md)
+    * ! [**Buckets and Objects**] (storage/overview.md)
     * Storage Servers
 * Databases
     * Overview 
