@@ -576,15 +576,50 @@ From given methods let's focus on two most important: `getStream` and `localFile
 ### Accessing storage object data
 
 
-### Deleting object
-
-
 ### Rename object
+We can easily rename of our storage object using method `rename`:
+
+```php
+public function index()
+{
+    $address = 'local:file.txt';
+    $object = $this->storage->open($address);
+
+    $object->rename('new.txt');
+}
+```
+
+All storage servers support ability to automatically create directory for storage objects, meaning we can include our folder into object name:
+
+```php
+public function index()
+{
+    $address = 'local:file.txt';
+    $object = $this->storage->open($address);
+
+    $object->rename('folder/new.txt');
+}
+```
+
+### Delete object
+Any storage object can be deleted at any moment using `delete` method:
+
+```php
+public function index()
+{
+    $address = 'local:file.txt';
+    $object = $this->storage->open($address);
+    $object->delete();
+}
+```
 
 ### Move or Copy object to another bucket
 
 
+
 ## Multiple application enviroments
 One of the biggest benefits of using StorageManager is that you can point your buckets to different servers in different application enviroments. Due your StorageManager code are pretty universal you can your bucket pointing to local harddriver in development and, for example, to Amazon S3 in production. In addtion to that you can easity change your application storage logic at any moment by simply introducing more buckets.
+
+> Tip: do not forger to handle `StorageException` when performing storage related operations.
 
 > Tip: use local bucket to keep files for some processing before sending to permanent storage, for example every uploaded image can be stored on server directly, processed in background and send to permanent bucket after, in this case you can avoid any network charges caused by downloading file from remote storage to process it.
