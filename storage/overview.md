@@ -574,7 +574,7 @@ public function index()
 From given methods let's focus on two most important: `getStream` and `localFilename`.
 
 ### Accessing storage object data
-
+TODO
 
 ### Rename object
 We can easily rename of our storage object using method `rename`:
@@ -614,7 +614,7 @@ public function index()
 ```
 
 ### Move or Copy object to another bucket
-
+TODO
 
 
 ## Multiple application enviroments
