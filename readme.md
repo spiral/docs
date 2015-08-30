@@ -32,13 +32,14 @@
     * Pagination
     * [Tokenizer] (components/tokenizer.md)
     * Translator
-    * Validation
     * **Views**
     * Reactor
     * Modules
+    * **Validation**
 * Templater
     * **Basic Usage**
     * Extended Usage (virtual tags, tips and tricks)
+    * Spiral Toolkit module
 * Storage Manager
     * **Overview**
     * Buckets and Objects
@@ -46,9 +47,9 @@
     * Tips and Tricks
 * Databases
     * Overview 
+    * Query Builders
     * [Schema Readers] (database/reading.md)
     * Schema Writers
-    * Query Builders
     * Migrations
 * Data Entities
     * Overview
