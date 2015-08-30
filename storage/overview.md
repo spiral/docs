@@ -377,6 +377,8 @@ return [
 ];
 ```
 
+> Obviously, this configuration contain a lot of placeholders - remove everything you do not encount to use.
+
 First of all, out configuration file declares 6 servers we can use to store data in, every server has it's unique name, adapter class and set of connection options, in our case we declared: local, amazon, rackspace, ftp, sftp and gridfs servers. You can read more about server configurations in dedicated configuration section.
 
 Next, we created few named containers each associated with unique prefix, server and server specific options, in our case we have: 
