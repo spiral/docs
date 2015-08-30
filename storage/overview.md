@@ -389,7 +389,7 @@ Next, we created few named containers each associated with unique prefix, server
 * **gridfs** - stores data in MongoDB GridFS collection "files", private prefix "gridfs:".
 
 ## Work with Storage component
-Once we can have our buckets created and servers configured (you must enter your own connection values in servers you with to use) we can start working with our storage component. We are going to use provided config as example:
+Once we have our buckets and servers configured (you must enter your own connection values in servers you wish to use) we can start working with our storage component. We are going to use provided config as example.
 
 ### Put New file into bucket
 We can put new file/data into specified bucket using `StorageManager` or `BucketInterface` put method, we are going to use `StorageManager` received using short binding "storage" in controller action:
