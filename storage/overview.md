@@ -620,6 +620,6 @@ public function index()
 ## Multiple application enviroments
 One of the biggest benefits of using StorageManager is that you can point your buckets to different servers in different application enviroments. Due your StorageManager code are pretty universal you can your bucket pointing to local harddriver in development and, for example, to Amazon S3 in production. In addtion to that you can easity change your application storage logic at any moment by simply introducing more buckets.
 
-> Tip: do not forger to handle `StorageException` when performing storage related operations.
+> Tip: do not forget to handle `StorageException` when performing storage related operations.
 
 > Tip: use local bucket to keep files for some processing before sending to permanent storage, for example every uploaded image can be stored on server directly, processed in background and send to permanent bucket after, in this case you can avoid any network charges caused by downloading file from remote storage to process it.
