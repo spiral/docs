@@ -377,10 +377,7 @@ public function index()
     $file = new FileElement($this->files, 'MyNamespace');
 
     $class = new ClassElement('MyClass');
-
-    $class->setComment([
-        'This is our class.'
-    ]);
+    $class->setComment(['This is our class.']);
 
     $file->setUses([Component::class, \Countable::class]);
     $class->setExtends('Component')->addInterface('Countable');
