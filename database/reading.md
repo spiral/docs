@@ -93,8 +93,8 @@ You can also use console commands to get information about configured tables and
 
 Command           | Description 
 ---               | ---
-`dbal:list`       | Get list of databases, their tables and records count.
-`dbal:describe`   | View table schema of default or specific database.
+dbal:list       | Get list of databases, their tables and records count.
+dbal:describe  | View table schema of default or specific database.
 
 ```
 > ./spiral.cli dbal:table people --database=postgres
