@@ -367,6 +367,112 @@ class MyClass extends Component  implements Countable
 }
 ```
 
+Our resulted code needed to generate such class will be pretty huge but easly to modularize:
+
+```php
+public function index()
+{
+    //We are going to create file element with primary
+    //file namespace "MyNamespace"
+    $file = new FileElement($this->files, 'MyNamespace');
+
+    $class = new ClassElement('MyClass');
+
+    $class->setComment([
+        'This is our class.'
+    ]);
+
+    $file->setUses([Component::class, \Countable::class]);
+    $class->setExtends('Component')->addInterface('Countable');
+    
+    $class->setConstant('SOME_VALUE', 'ABC', ['This is my constant.']);
+
+    //Property represented by ProperyElement
+    $property = $class->property('myProperty', ['This is my static property.']);
+
+    $property->setStatic(true)->setAccess(PropertyElement::ACCESS_PRIVATE);
+
+    //We can also set default property value
+    $property->setDefault(true, [
+        'a' => 1,
+        'b' => 2
+    ]);
+
+    //In addition let's add non static public property
+    $class->property(
+        'nonStatic',
+        ['Non static property.']
+    )->setAccess(PropertyElement::ACCESS_PUBLIC)->setDefault(true, null);
+
+    //Such method will be created with empty body
+    $class->method('count', ['This is count method.']);
+
+    //Let's work with "doSomething" method closer
+    $doMethod = $class->method('doSomething');
+
+    //First of all we can set method top comment (one extra line).
+    $doMethod->setComment(['This is do method.', '']);
+
+    //Not we can define method parameter by it's name and type,
+    //method will automatically generate section in doc comment
+    $doMethod->parameter('name', 'string');
+
+    //If we wish to work with parameter closer we can get instance
+    //of ParameterElement
+    $parameter = $doMethod->parameter('entity', 'DataEntity');
+
+    //We declared our parameter type as specified class name,
+    //let's add such class into file uses
+    $file->addUse(DataEntity::class);
+
+    //Next we can force parameter type in it's declaration (not comment)
+    $parameter->setType('DataEntity');
+
+    //We can also specify default parameter value
+    $parameter->setOptional(true, null);
+
+    //First of all we want to add return value to our comment,
+    //let's use second argument to specify that we appending lines
+    $doMethod->setComment([
+        '@return string'
+    ], true);
+
+    //Default indentation is 4 tabs, source must be provides from
+    //first indentation level
+    $doMethod->setSource([
+        'if (!empty($entity)) {',
+        '    //This is pretty weird code',
+        '    return get_class($entity);',
+        '}',
+        '',
+        'return $name;'
+    ]);
+
+    //Ad before we can read what parent and interfaces used by class
+    dump($class->getExtends());
+    dumP($class->getInterfaces());
+
+    //To add new class into file we can use method addClass
+    $file->addClass($class);
+
+    //We can also set file header comment, reactor comments
+    //can be specified in a form of string or array of lines
+    $file->setComment([
+        'This file was generated automatically.',
+        'See components/reactor.'
+    ]);
+
+    //To write file to disk we have to only specify it's location,
+    //mode and request to automatically create needed directory
+    //Most of generated classes will be readonly from web user
+    $file->render(
+        directory('application') . '/classes/MyNamespace/MyClass.php',
+        FilesInterface::READONLY,
+        true
+    );
+}
+```
+
 ## Generators and Scaffoling
 In addition to low level element manipulation, spiral provides set of pre-created code generator and command to be used for application scaffolding:
 
