@@ -30,7 +30,6 @@ public function index()
     dump($file->getUses());
     dumP($file->getElements());
 
-
     //We can also set file header comment, reactor comments
     //can be specified in a form of string or array of lines
     $file->setComment([
