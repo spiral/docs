@@ -33,7 +33,7 @@
     * [Tokenizer] (components/tokenizer.md)
     * [Translator] (components/translator.md)
     * **Views**
-    * Reactor
+    * [Reactor] (components/reactor.md)
     * Modules
     * **Validation**
 * Templater
