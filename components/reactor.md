@@ -448,10 +448,6 @@ public function index()
         'return $name;'
     ]);
 
-    //Ad before we can read what parent and interfaces used by class
-    dump($class->getExtends());
-    dumP($class->getInterfaces());
-
     //To add new class into file we can use method addClass
     $file->addClass($class);
 
