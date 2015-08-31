@@ -108,7 +108,7 @@ $class->setExtends('Component')->addInterface('Countable');
 
 //Ad before we can read what parent and interfaces used by class
 dump($class->getExtends());
-dumP($class->getInterfaces());
+dump($class->getInterfaces());
 ```
 
 So far generated code will look like that:
