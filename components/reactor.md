@@ -467,7 +467,7 @@ public function index()
 ```
 
 ## Generators and Scaffoling
-In addition to low level element manipulation, spiral provides set of pre-created code generator and command to be used for application scaffolding:
+In addition to low level element manipulation, spiral provides set of pre-created code generators and commands to be used for application scaffolding:
 
 | Command           | Generator Class                               | Description                   |
 | ---               | ---                                           | ---                           |
