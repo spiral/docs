@@ -55,7 +55,6 @@
     * Validation
 * Spiral ORM
     * **Record Model**
-    * Scaffolding
     * Relations
     * Passive/Active schemas
 * Spiral ODM
