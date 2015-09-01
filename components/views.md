@@ -190,7 +190,7 @@ Based on given interface we can see 3 primary methods ViewManager will work with
 
 Due most of existed templating engines converts internal format into plan php files almost all of them can be mounted as compilers.
 
-> Compiler must handle caching and cache validations by itself, hovewer i recommend for you read about view cache dependecies below.
+> Compiler must handle caching and cache validations by itself, hovewer i recommend for you read about view cache dependecies below. Compiler class does not have any access to view variables.
 
 ### View Renderer
 Second engine class declared under index 'view' must accept instance of engine compiler and render `compiledFilename()`. In cases when you want your view class work with compilers you have to implement `CompilerAwareInterface` which has pre-defined set of arguments for it's constructor:
@@ -347,7 +347,119 @@ interface FilenameAwareInterface extends ViewInterface
 > You still can handle caching and compilations inside your view if you want.
 
 ## Spiral View Compiler
-Default spiral compiler uses `Spiral\Views\View` for rendering purposes, due we already described it's abilities above we will focus mainly on compiler itself.
+Default spiral compiler uses `Spiral\Views\View` for rendering purposes, due we already described it's abilities above we will focus mainly on compiler itself. Spiral compiler represented by `Spiral\Views\Compiler` class and built on principle of view processors. Basically it will pass view source thought set of classes dedicated to 
+perform some code/source manipulations. Every processor must implement `ProcessorInterface`, let's view it's declaration:
 
+```php
+interface ProcessorInterface
+{
+    /**
+     * @param ViewManager $views
+     * @param Compiler    $compiler
+     * @param array       $options
+     */
+    public function __construct(ViewManager $views, Compiler $compiler, array $options);
+
+    /**
+     * Compile view source.
+     *
+     * @param string $source View source (code).
+     * @return string
+     * @throws CompilerException
+     * @throws \ErrorException
+     */
+    public function process($source);
+}
+```
+
+If we wish to add custom processor into our compiler we can simply modify compiler section in our view configuration:
+
+```php
+'processors' => [
+    'Spiral\Views\Processors\ExpressionsProcessor' => [],
+    'Spiral\Views\Processors\TranslateProcessor'   => [],
+    'Spiral\Views\Processors\TemplateProcessor'    => [],
+    'Spiral\Views\Processors\EvaluateProcessor'    => [],
+    'Spiral\Views\Processors\PrettifyProcessor'    => [],
+    'Spiral\Toolkit\ResourceManager'               => []
+]
+```
+
+> Every compiler class associated with it's options, default spiral processors allows you overwrite their options, hovewer we are going to skip this step for now.
+
+Let's say that we want to create simple processor to replace `{{variable}}` with `<?=e($variable)?>`, we can name it `CoolEchoProcessor`:
+
+```php
+class CoolEchoProcessor implements ProcessorInterface
+{
+    /**
+     * @param ViewManager $views
+     * @param Compiler    $compiler
+     * @param array       $options
+     */
+    public function __construct(ViewManager $views, Compiler $compiler, array $options)
+    {
+        //We have no options to be configured, so let's keep constructor empty
+    }
+
+    /**
+     * Compile view source.
+     *
+     * @param string $source View source (code).
+     * @return string
+     * @throws CompilerException
+     * @throws \ErrorException
+     */
+    public function process($source)
+    {
+        return preg_replace(
+            '/{{([^}]+)}}/',
+            '<?=e($\1)?>',
+            $source
+        );
+    }
+}
+```
+
+Now we can modify views config (to add new processor), our demo view file and see result in browser:
+
+```php
+This is demo view file: {{value}}
+
+<?php
+/**
+ * @var \Spiral\Debug\Dumper $dumper
+ */
+$dumper = $this->container->get(\Spiral\Debug\Dumper::class);
+$dumper->dump($value);
+?>
+```
+
+If you want to see how compiled view file looks like, simply open 'application/runtime/cache/views/default-demo-*.php' file:
+
+```php
+This is demo view file: <?=e($value)?>
+<?php
+/**
+ * @var \Spiral\Debug\Dumper $dumper
+ */
+$dumper = $this->container->get(\Spiral\Debug\Dumper::class);
+$dumper->dump($value);
+?>
+```
+
+Spiral Compiler ships with multiple pre-create processors used to simplify view files:
+
+| Processor                                    | Description            
+| ---                                          | ---
+| Spiral\Views\Processors\ExpressionsProcessor | Runs few expressions defined in it's options, the most notable one @{variable} will replace it's value with cache dependency (read below).
+| Spiral\Views\Processors\TranslateProcessor   | Replace `[[string]]` with their translations using active language, result are cached and depends on view cache dependencies (read below).
+| Spiral\Views\Processors\TemplateProcessor    | Spiral templates allows user to inherit view layouts, create virual tags and much more. See [Templater] (/templater/overview.md).
+| Spiral\Views\Processors\EvaluateProcessor    | Executes PHP blocks marked with #compile comment, used to perform some layout related code which does not depends on user input or view variables.
+| Spiral\Views\Processors\PrettifyProcessor    | Removes emply view lines and spaces in some tag attributes.
 
 ## Cache and Cache Dependencies
+
+
+
+
