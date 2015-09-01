@@ -459,7 +459,68 @@ Spiral Compiler ships with multiple pre-create processors used to simplify view 
 | Spiral\Views\Processors\PrettifyProcessor    | Removes emply view lines and spaces in some tag attributes.
 
 ## Cache and Cache Dependencies
+Default spiral compiler uses cache configuration declared in view config, you can disable cache in development enviroment to get view updates immidiatelly, hovewer it might slow down your application a lot (really a LOT):
 
+```php
+'cache'        => [
+    'enabled'   => true,
+    'directory' => directory("cache") . '/views'
+],
+```
 
+As mention already compiler and it's processors does not have any access to view variables and user input, hovewer `ViewManager` defines set of so called cache dependies declared in view configuration file:
 
+```php
+'dependencies' => [
+    'language' => [
+        'i18n',
+        'getLanguage'
+    ],
+    'basePath' => [
+        'http',
+        'basePath'
+    ]
+],
+```
 
+Such depencies (in our case language - linked to current language, and basePath - linked to http base path values) will be used by default Compiler to change cached filename. Such technique provides us ability to use system functions (for example translations) on compilation stage without wasting CPU resources during rendering.
+
+To demonstrate how cache dependecies work let's modify our demo view this way:
+
+```php
+[[This is demo view file:]] <?= $value ?>
+```
+
+As mention in processor section above every string embraced with `[[]]` will be automatically translated using active language, if we will open our controller action with view in browser we will see that no `[[]]` presented in output. Now, let's shitch our language and see what will happen:
+
+```php
+public function index()
+{
+    //Belarusian
+    $this->i18n->setLanguage('by');
+
+    return $this->views->render('default:demo', [
+        'value' => mt_rand(0, 1000)
+    ]);
+}
+```
+
+As you might notice page rendering took few extra milliseonds on first run, this happen because Compiler created new cached view. To make example move visual let's edit our i18n string in 'application/runtime/i18n/belarus/view-demo.php' file (we can also export language into PO file using `i18n:export` command and then import edited file back using `i18n:import`).
+
+```php
+<?php return [
+    'This is demo view file:' => 'This is demo view file specially for Belarus people:',
+];
+```
+
+Now if we will reset or disable cache our output will demonstrate new content. To see what happen inside let's open directory 'application/runtime/cache/views'. As you can see our demo view now represented by 2 filename with different postfixes, if we will compare content of such files we will see the difference:
+
+```php
+This is demo view file: <?= $value ?>
+```
+
+```php
+This is demo view file specially for Belarus people: <?= $value ?>
+```
+
+Such technique allows you to "capture" as many strings for localization as you want without paying for it with CPU resources.
