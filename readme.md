@@ -61,7 +61,7 @@
     * Compositions
     * Aggregations
     * JSON Documents (integration with ORM)
-    * UML Export
+    * [UML Export] (odm/uml.md)
 * Modules and Extensions
     * [Profiler] (modules/profiler.md)
     * Toolkit
