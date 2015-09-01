@@ -188,18 +188,166 @@ Based on given interface we can see 3 primary methods ViewManager will work with
 * compile method must process view source and preprate it for usage in renderer even if it's already cached
 * compiledFilename must return location where compiled view stored into
 
-You can put any "heavy" code in your compilers, due most of existed templating engines converts internal format into plan php files almost all of them can be mounted as compilers.
+Due most of existed templating engines converts internal format into plan php files almost all of them can be mounted as compilers.
 
-> Compiler must handle caching and cache validations by itself, hovewer i recommend you read about view cache dependecies below.
+> Compiler must handle caching and cache validations by itself, hovewer i recommend for you read about view cache dependecies below.
 
 ### View Renderer
-Second engine class declared under index 'view' must accept instance of engine compiler and render `compiledFilename()`.
+Second engine class declared under index 'view' must accept instance of engine compiler and render `compiledFilename()`. In cases when you want your view class work with compilers you have to implement `CompilerAwareInterface` which has pre-defined set of arguments for it's constructor:
+
+```php
+interface CompilerAwareInterface extends ViewInterface
+{
+    /**
+     * @param ContainerInterface $container
+     * @param CompilerInterface  $compiler
+     * @param array              $data
+     */
+    public function __construct(
+        ContainerInterface $container,
+        CompilerInterface $compiler,
+        array $data = []
+    );
+}
+```
+
+In many cases, compiler will create plain php file with placeholders for php variables, this makes us possible to use existed `Spiral\Views\View` implementation, let's looks into such implementation to understand how it works:
+
+```php
+class View extends Component implements CompilerAwareInterface
+{
+    /**
+     * For render benchmarking.
+     */
+    use BenchmarkTrait;
+
+    /**
+     * @var array
+     */
+    protected $data = [];
+
+    /**
+     * @invisible
+     * @var ContainerInterface
+     */
+    protected $container = null;
+
+    /**
+     * @invisible
+     * @var CompilerInterface
+     */
+    protected $compiler = null;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(
+        ContainerInterface $container,
+        CompilerInterface $compiler,
+        array $data = []
+    ) {
+        $this->container = $container;
+        $this->compiler = $compiler;
+        $this->data = $data;
+    }
+
+    /**
+     * Alter view parameters (should replace existed value).
+     *
+     * @param string $name
+     * @param mixed  $value
+     * @return $this
+     */
+    public function set($name, $value)
+    {
+        $this->data[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Set view rendering data. Full dataset will be replaced.
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function render()
+    {
+        $__benchmark__ = $this->benchmark(
+            'render',
+            $this->compiler->getNamespace()
+            . ViewsInterface::NS_SEPARATOR
+            . $this->compiler->getView()
+        );
+
+        $__outputLevel__ = ob_get_level();
+        ob_start();
+
+        extract($this->data, EXTR_OVERWRITE);
+        try {
+            require $this->compiler->compiledFilename();
+        } finally {
+            while (ob_get_level() > $__outputLevel__ + 1) {
+                ob_end_clean();
+            }
+
+            $this->benchmark($__benchmark__);
+        }
+
+        return ob_get_clean();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final public function __toString()
+    {
+        return $this->render();
+    }
+}
+```
+
+As you can see it utilizes classical php methodic to render php files using buffers and `extract` function.
 
 ### Compilerless Renderers
+There is scenarious when you might want to skip compilation part and work with view file directly, you can do that by by implementing `FilenameAwareInterface` in your view class. In this case additonal filename argument will be provided to your class pointing to view filename.
+
+```php
+interface FilenameAwareInterface extends ViewInterface
+{
+    /**
+     * @param ContainerInterface $container
+     * @param ViewManager        $views
+     * @param string             $namespace
+     * @param string             $view
+     * @param string             $filename
+     * @param array              $data
+     */
+    public function __construct(
+        ContainerInterface $container,
+        ViewManager $views,
+        $namespace,
+        $view,
+        $filename,
+        array $data = []
+    );
+}
+```
+
+> You still can handle caching and compilations inside your view if you want.
+
+## Spiral View Compiler
+Default spiral compiler uses `Spiral\Views\View` for rendering purposes, due we already described it's abilities above we will focus mainly on compiler itself.
+
 
 ## Cache and Cache Dependencies
-
-## Spiral View Compiler and Renderer
-
-
-
