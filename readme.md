@@ -39,7 +39,6 @@
 * Templater
     * **Basic Usage**
     * Extended Usage (virtual tags, tips and tricks)
-    * Spiral Toolkit module
 * Storage Manager
     * [**Buckets and Objects**] (storage/overview.md)
     * [Storage Servers] (storage/servers.md)
@@ -65,5 +64,6 @@
     * UML Export
 * Modules and Extensions
     * [Profiler] (modules/profiler.md)
+    * Toolkit
     * Redis
     * Images
