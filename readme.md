@@ -28,40 +28,38 @@
     * [Debug (Loggers, Benchmarks, Dumps)] (components/debug.md)
     * [Encrypter] (components/encrypter.md)
     * [Events] (components/events.md)
-    * Files
+    * [Files] (components/files.md)
     * Pagination
-    * Tokenizer
-    * Translator
-    * Validation
+    * [Tokenizer] (components/tokenizer.md)
+    * [Translator] (components/translator.md)
     * **Views**
-    * Reactor
+    * [Reactor] (components/reactor.md)
     * Modules
+    * **Validation**
 * Templater
     * **Basic Usage**
     * Extended Usage (virtual tags, tips and tricks)
+    * Spiral Toolkit module
 * Storage Manager
-    * **Overview**
-    * Buckets and Objects
+    * [**Buckets and Objects**] (storage/overview.md)
     * Storage Servers
-    * Tips and Tricks
 * Databases
     * Overview 
+    * Query Builders
     * [Schema Readers] (database/reading.md)
     * Schema Writers
-    * Query Builders
     * Migrations
 * Data Entities
     * Overview
     * Filters and Accessors
     * Validation
 * Spiral ORM
-    * **Overview**
+    * **Record Model**
     * Scaffolding
     * Relations
     * Passive/Active schemas
 * Spiral ODM
-    * Overview
-    * Scaffolding
+    * **Document Model**
     * Compositions
     * Aggregations
     * JSON Documents (integration with ORM)
