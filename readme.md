@@ -65,6 +65,6 @@
     * JSON Documents (integration with ORM)
     * UML Export
 * Modules and Extensions
-    * Profiler
+    * [Profiler] (modules/profiler.md)
     * Redis
     * Images
