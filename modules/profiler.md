@@ -2,7 +2,7 @@
 Default spiral application ships with pre-installed profiler module, if, for some reason, you don't have profiler panel installed, simply execute "composer require spiral/profiler".
 
 ## Enbable/Disable Profiler panel
-Profiler panel can work only with HttpDispatcher and treated as middleware, if you wish to enable or disable profiler globally simply edit http middleware configuration located in "application/config/http.php" file.
+Profiler panel can work only with HttpDispatcher and treated as middleware, if you wish to enable or disable profiler simply edit http middleware configuration located in "application/config/http.php" file.
 
 ```php
 'middlewares'  => [
