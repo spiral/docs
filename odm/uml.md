@@ -1,7 +1,7 @@
 # Exporting ODM schema to UML
-Due Spiral ODM based on principals of composition and aggreation it's schema can be easily exported into UML which can simplify project documentation and database analysis.
+Because Spiral's ODM is based on the principles of composition and aggreation, it's easy to export it's schema into UML, which simplifies the project documentation and analyzing the database.
 
-Let's try to build schema for given set of models:
+Let's build a schema for a given set of models:
 
 ```php
 class User extends Document
@@ -65,7 +65,7 @@ class Department extends Document
 }
 ```
 
-To export UML digram to file we have to run 'odm:uml filename' command, it will create PlantUML compatible file which we can render later. 
+To export the UML diagram to a file, we have to run the 'odm:uml filename' command. This will create a PlantUML compatible file which we can render later. 
 
 ```uml
 @startuml
@@ -132,6 +132,6 @@ abstract class "Spiral\\ORM\\Accessors\\JsonDocument" {
 @enduml
 ```
 
-Resulted image will look like:
+The resulting image will look like this:
 
 ![UML](https://raw.githubusercontent.com/spiral/guide/master/resources/uml.png)
