@@ -18,7 +18,7 @@ Profiler panel can work only with HttpDispatcher and treated as middleware, if y
 Once enabled profiler will create icon at the lower right of your screen, such icon will provide you access to various profiler panels and information about current script timing, memory consuption and response code.
 
 ## Environment Overview
-First profiler panel will give an overview of current application environment, it will proviode you information about current view namespaces, http routes, container bindings, loaded extensions and list of loaded classes. In addtion to that profiler will colozier loaded classes based on their location, for example every application class will be highlighted with blue, every vendor class will get yellow color.
+First profiler panel will give you an overview of current application environment, it will proviod information about current view namespaces, http routes, container bindings, loaded extensions and list of loaded classes. In addtion to that profiler will colozier loaded classes based on their location, for example every application class will be highlighted with blue, every vendor class will get yellow color.
 
 ![Environment](https://raw.githubusercontent.com/spiral/guide/master/resources/profiler/environment.png)
 
