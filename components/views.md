@@ -46,7 +46,7 @@ public function index()
     $view = $this->views->get('demo');
     $view->set('value', mt_rand(0, 1000));
 
-    //We can do return $view; due MiddlewarePipeline
+    //We can simply use "return $view;" due MiddlewarePipeline
     //converts every response into string
     return $view->render();
 }
@@ -103,20 +103,103 @@ As you can see, in case of soft http error system will to render view located in
 ],
 ```
 
-Let's try to alter HTTP 404 error page by creating view in 'application/views/spiral/http' directory. We are going to overwrite 'notFound' page:
+Let's try to alter HTTP 404 error page by creating view in 'application/views/spiral/http' directory. We are going to overwrite 'notFound' page. HttpDispacher will provide us "request" variable we can use in our view:
 
 ```php
-This page can not be found.
+Page not found: <?= $request->getUri() ?>
 ```
 
 > We can also simply point http to another view. :)
 
-Now, if we will cause 404 error our view file will be rendered. If you already caused 404 error before it might be already pre-compiled with original view, we can reset it by either disabling cache, flushing content of "application/runtime/cache/views" (default cache directory) or by executing command "views:compile" which will re-compile available view files.
+Now, if we will cause 404 error our view file will be rendered. If you already caused 404 error before it might be already pre-compiled with original view, we can reset it by either disabling cache, flushing content of "application/runtime/cache/views" (default cache directory) or by executing command "views:compile" (run with -v options to get more details) which will re-compile available view files.
 
 ## View Engines
+Spiral ViewManager will be useless without providing ability to create or mount your own templating engines and compilers. Before we will be doing that, let's try to understand how spiral work with view files and review configuration for default spiral engine:
 
+```php
+'engines'      => [
+    'default' => [
+        'extensions' => [
+            'php'
+        ],
+        'compiler'   => 'Spiral\Views\Compiler',
+        'view'       => 'Spiral\Views\View'
+    ]
+],
+```
 
-## Cache Dependencies
+As you can see, default engine can be associated with one of multiple filenames (we have only .php at this moment), next we are providing two classes used to describe every engine, let's focus on this classes closely.
 
+### View Compiler
+Compiler option of engine is responsible for view source pre-compilation, such operation can be done once and later be cached somewhere. Spiral ViewManager leaves cache management to Compiler class itself. Let's view CompilerInterface to see what methods are required from every compiler:
+
+```php
+interface CompilerInterface
+{
+    /**
+     * @param ViewManager $views
+     * @param FilesInterface $files
+     * @param string $namespace View namespace.
+     * @param string $view      View name.
+     * @param string $filename  View filename.
+     */
+    public function __construct(
+        ViewManager $views,
+        FilesInterface $files,
+        $namespace,
+        $view,
+        $filename
+    );
+
+    /**
+     * @return string
+     */
+    public function getNamespace();
+
+    /**
+     * @return string
+     */
+    public function getView();
+
+    /**
+     * True if view has been already compiled and cached somewhere.
+     *
+     * @return bool
+     */
+    public function isCompiled();
+    
+    /**
+     * @throws CompilerException
+     * @throws \Exception
+     */
+    public function compile();
+
+    /**
+     * View filename location (to be rendered using require + export method or similar).
+     *
+     * @return string
+     */
+    public function compiledFilename();
+}
+```
+
+Based on given interface we can see 3 primary methods ViewManager will work with:
+* isCompiler must return true if view source was already processed and stored somewhere
+* compile method must process view source and preprate it for usage in renderer even if it's already cached
+* compiledFilename must return location where compiled view stored into
+
+You can put any "heavy" code in your compilers, due most of existed templating engines converts internal format into plan php files almost all of them can be mounted as compilers.
+
+> Compiler must handle caching and cache validations by itself, hovewer i recommend you read about view cache dependecies below.
+
+### View Renderer
+Second engine class declared under index 'view' must accept instance of engine compiler and render `compiledFilename()`.
+
+### Compilerless Renderers
+
+## Cache and Cache Dependencies
 
 ## Spiral View Compiler and Renderer
+
+
+
