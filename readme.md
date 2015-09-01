@@ -42,7 +42,7 @@
     * Spiral Toolkit module
 * Storage Manager
     * [**Buckets and Objects**] (storage/overview.md)
-    * Storage Servers
+    * [Storage Servers] (storage/servers.md)
 * Databases
     * Overview 
     * Query Builders
