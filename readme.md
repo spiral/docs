@@ -39,10 +39,9 @@
 * Templater
     * **Basic Usage**
     * Extended Usage (virtual tags, tips and tricks)
-    * Spiral Toolkit module
 * Storage Manager
     * [**Buckets and Objects**] (storage/overview.md)
-    * Storage Servers
+    * [Storage Servers] (storage/servers.md)
 * Databases
     * Overview 
     * Query Builders
@@ -55,7 +54,6 @@
     * Validation
 * Spiral ORM
     * **Record Model**
-    * Scaffolding
     * Relations
     * Passive/Active schemas
 * Spiral ODM
@@ -65,6 +63,7 @@
     * JSON Documents (integration with ORM)
     * UML Export
 * Modules and Extensions
-    * Profiler
+    * [Profiler] (modules/profiler.md)
+    * Toolkit
     * Redis
     * Images
