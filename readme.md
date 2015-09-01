@@ -32,7 +32,7 @@
     * Pagination
     * [Tokenizer] (components/tokenizer.md)
     * [Translator] (components/translator.md)
-    * [**Views**] (componentns/views.md)
+    * [**Views**] (components/views.md)
     * [Reactor] (components/reactor.md)
     * Modules
     * **Validation**
