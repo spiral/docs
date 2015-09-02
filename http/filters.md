@@ -208,7 +208,7 @@ class UserRequest extends RequestFilter
 ```
 
 ## Getting request fields
-If you don't want to populate any entity you can get access to request fields directly using magic getter or `getFields` method.
+If you don't want to populate any entity you can get access to request fields directly using magic getters or `getFields` method.
 
 ```php
 public function doSomething(SomeRequest $request)
