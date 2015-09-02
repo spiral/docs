@@ -1,8 +1,8 @@
 # Views
-Spiral view manager counted as part of framework bundle and not components set. Default implementation includes support for multiple rendering engines (copiler + renerer), caching, cache dependencies and **view namespaces**.
+Spiral view manager counted as part of framework bundle and not components set. Default implementation includes support for multiple rendering engines (compiler + renerer), caching, cache dependencies and **view namespaces**.
 
 ## Examples
-Before we will start digging into features and functionality of ViewManager let's try to view few examples. First of all we have to create view file to be rendered, as in many other frameworks you can pass variables into such file, we are going to name our file "demo" and place it into "application/views" directory.
+Before we will start digging into features and functionality of ViewManager let's try to view few examples. First of all we have to create view file to be rendered, as in many other frameworks you can pass variables into such file, we are going to name our file "demo.php" and place it into "application/views" directory.
 
 ```php
 This is demo view file: <?= $value ?>

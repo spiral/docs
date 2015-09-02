@@ -1,6 +1,6 @@
 # Error Handling and Isolation
-HttpDispatcher provides ability to handle exception and convert them into valid response automatically inside middleware pipeline, this provides ability to perform some
-request without being worrying about exception happen inside perform method, i'm calling this ability "error isolation" and it can be very useful in many scenarious.
+HttpDispatcher provides the ability to handle exceptions and convert them into valid responses automatically inside the middleware pipeline, this provides the ability to perform some
+requests without worrying about exceptions happening inside the perform method. I'm calling this ability "error isolation" and it can be very useful in many scenarious.
 
 ## Turn isolation on/off
 You can turn isolation for primary request by editing http configuration file (option "isolate") or by setting parameter "isolated" for request you going to send to perform method.
@@ -9,7 +9,7 @@ You can turn isolation for primary request by editing http configuration file (o
 $this->http->perform($request->withAttribute('isolate', false));
 ```
 
-When exception happens in some code executed by middleware or pipeline target and isolation is disabled exception will be pushed up into perform method and eventually handled by general `handleException` method defined in Core.
+When an exception happens in code executed by middleware or pipeline target and isolation is disabled, the exception will be pushed up into perform method and eventually handled by general `handleException` method defined in Core.
 
 ```php
 try {
@@ -20,10 +20,10 @@ try {
 
 ```
 
-Side effect of turning isolation off is that no middleware will be able to complete it's work due chain will be broken by exception.
+A side effect of turning isolation off is that no middleware will be able to complete its work since the chain will be broken by the exception.
 
 ## Client Exceptions
-HttpDispatcher defines set of "soft" client exception you can use in your code to force some HTTP error to happen. For example:
+HttpDispatcher defines a set of "soft" client exceptions you can use in your code to force some HTTP error to happen. For example:
 
 ```php
 public function index()
@@ -32,8 +32,8 @@ public function index()
 }
 ```
 
-Exceptions like that will be handled by HttpDisaptcher and converted into response with appropriate status code. If you want to define custom view for your error,
-edit http configuration file to link error code to view name:
+Exceptions like that will be handled by HttpDisaptcher and converted into a response with an appropriate status code. If you want to define a custom view for your error,
+edit the http configuration file to link error code to view name:
 
 ```php
     'httpErrors'   => [
@@ -44,7 +44,7 @@ edit http configuration file to link error code to view name:
     ]
 ```
 
-There is few exceptions predefined by generic scenarious:
+There are a few exceptions predefined for generic scenarios:
 
 | Code | Exception class       |
 | ---  | ---                   |
@@ -55,4 +55,4 @@ There is few exceptions predefined by generic scenarious:
 | 500  | ServerErrorException  |
 
 ## Exposing errors to client
-Exceptions which are not instances of `Spiral\Http\Exception\ClientException` will be treated as server errors, handled via `SnapshotInterface` and sent to client as exception backtrace. You can disable sending trace to client and replace it with generic 500 error via editing "exposeErrors" flag in your http configuration.
+Exceptions which are not instances of `Spiral\Http\Exception\ClientException` will be treated as server errors, handled via `SnapshotInterface` and sent to client as exception backtrace. You can disable sending trace to client and replace it with generic 500 error by editing the "exposeErrors" flag in your http configuration.

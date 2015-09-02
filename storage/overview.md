@@ -1,16 +1,16 @@
 # Storage Manager
-Spiral `StorageManager` (`Spiral\Storage\StorageInterface`) component provides unified abstraction across multiple data/file storages including local harddrive (`FilesInterface` used), Amazon S3, Rackspace Files, remove server over SFTP, remote server over FTP, GridFS storage.
+The Spiral `StorageManager` (`Spiral\Storage\StorageInterface`) component provides a unified abstraction across multiple data/file storages including local harddrive (`FilesInterface` used), Amazon S3, Rackspace Files, remote server over SFTP, remote server over FTP, GridFS storage.
 
-General concept of StorageManager is to abstract stored data/files using only two primary enties: objects and **buckets** and limit set of operations as much as it can. 
+The general concept of the StorageManager is to abstract stored data/files using only two primary enties: objects and **buckets** and limit set of operations as much as it can. 
 
-> The third storage entity **server** are hidden inside buckets and not concidered as something developer should have access to.
+> The third storage entity **server** is hidden inside buckets and not concidered something the developer should have access to.
 
 In this two entities, objects (`StorageObject` or `ObjectInterface` class) are only responsible for high level abstraction including metadata wrapping and exposing set of helper methods. Buckets (`StorageBucker` or `BucketInterface`) hovewer handle all low level data operations, such as adding, removing, renaming and replacing objects in bucket or buckets.
 
-> StorageManager has deep intergration with PSR7 streams and `UploadedFileInterface`.
+> StorageManager is tightly integrated with PSR7 streams and the `UploadedFileInterface`.
 
 ## StorageInterface
-First of all, let's view our primary storage interface to understand what set of methods are available for us:
+First of all, let's view our primary storage interface to understand what methods are available to us:
 
 ```php
 interface StorageInterface
@@ -82,10 +82,10 @@ interface StorageInterface
 }
 ```
 
-As you can see StorageManager provides us ability to get specific bucket, server or object instance or create new one of each. Let's try to review buckets functionality first.
+As you can see, StorageManager provides us the ability to get a specific bucket, server or object instance or create a new one of each. Let's try to review buckets functionality first.
 
 ## Storage Buckets
-StorageManager buckets provides set of operations you might want to consider using in your application, to start let's check `BucketInterface`:
+StorageManager buckets provides set of operations you might want to consider using in your application, to start let's check the `BucketInterface`:
 
 ```php
 interface BucketInterface
@@ -262,7 +262,7 @@ One very important bucket function called located in `getOption` method, this me
 > You can read more about server specific options in [storage servers] (servers.md) section.
 
 ## Configuring StorageBuckets
-Before we will jump to some of our examples, let's try to declare and configure few buckets and related servers, we can use storage configuration file to archive that:
+Before we jump to some examples, let's try to declare and configure a few buckets and related servers. We can use a storage configuration file to do that:
 
 ```php
 return [
@@ -377,9 +377,11 @@ return [
 ];
 ```
 
-First of all, out configuration file declares 6 servers we can use to store data in, every server has it's unique name, adapter class and set of connection options, in our case we declared: local, amazon, rackspace, ftp, sftp and gridfs servers. You can read more about server configurations in dedicated configuration section.
+> Obviously, this configuration contain a lot of placeholders - remove everything you do not need to use.
 
-Next, we created few named containers each associated with unique prefix, server and server specific options, in our case we have: 
+First of all, our configuration file declares 6 servers we can use to store data in, every server has it's unique name, adapter class and set of connection options. In our case we declared: local, amazon, rackspace, ftp, sftp and gridfs servers. You can read more about server configurations in the dedicated configuration section.
+
+Next, we created a few named containers each associated with unique prefix, server and server specific options. In our case we have: 
 * **local** - will store data in local directory "application/runtime/storage" (directory will be created automatically). Work with local filesystem directly. Evert created object will gain prefix "local:" (such prefix can not be understand by frontend and expose real file location).
 * **uploads** - stores data in public directory "webroot/uploades" with prefix "/uploads/", such prefix provides us ability to send object address directory to frontend or view.
 * **amazon** - utilized Amazon S3 server storage with prefix "https://s3.amazonaws.com/my-bucket/" (such prefix provides us ability to send object address to frontend directly). As additional server options we stated that every bucket file must be public.
@@ -389,10 +391,10 @@ Next, we created few named containers each associated with unique prefix, server
 * **gridfs** - stores data in MongoDB GridFS collection "files", private prefix "gridfs:".
 
 ## Work with Storage component
-Once we have our buckets and servers configured (you must enter your own connection values in servers you wish to use) we can start working with our storage component. We are going to use provided config as example.
+Once we have our buckets and servers configured (you must enter your own connection values for servers you wish to use) we can start working with our storage component. We are going to use the provided config as example.
 
 ### Put New file into bucket
-We can put new file/data into specified bucket using `StorageManager` or `BucketInterface` put method, we are going to use `StorageManager` received using short binding "storage" in controller action:
+We can put new file/data into specified bucket using either the `StorageManager` or the `BucketInterface` put method, we are going to use `StorageManager` received using short binding "storage" in controller action:
 
 ```php
 public function index()
@@ -668,13 +670,13 @@ public function index()
     dump($object->replace('rackspace')->getAddress());
 
     //Replacing from "rackspace" to "ftp": ftp:file.txt
-    dump($object->replace('rackspace')->getAddress());
+    dump($object->replace('ftp')->getAddress());
     
     //Replacing from "ftp" to "sftp": sftp:file.txt
-    dump($object->replace('rackspace')->getAddress());
+    dump($object->replace('sftp')->getAddress());
     
     //Replacing from "sftp" to "gridfs": gridfs:file.txt
-    dump($object->replace('rackspace')->getAddress());
+    dump($object->replace('gridfs')->getAddress());
     
     //Returning to original location
     dump($object->replace('local')->getAddress());

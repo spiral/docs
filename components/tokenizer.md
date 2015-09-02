@@ -48,14 +48,13 @@ interface TokenizerInterface
 }
 ```
 
-As you see the most important part of Tokenizer component located in getClasses method. Let's try to view some examples, as in other cases we can use short core binding "tokenizer" in our Controllers and Services:
+As you see the most important part of Tokenizer component located in getClasses method. Let's try to view some examples (as in other cases we can use short core binding "tokenizer" in our Controllers and Services):
 
 ```php
 public function index()
 {
     //Find every controller class
     dump($this->tokenizer->getClasses(ControllerInterface::class));
-
 
     //Find every Record class
     dump($this->tokenizer->getClasses(Record::class));
@@ -68,7 +67,7 @@ public function index()
 }
 ```
 
-> You have to rememeber that Tokenizer `getClasses` and VERY slow method, you should never use it in runtime.
+> You have to rememeber that Tokenizer `getClasses` is VERY slow method, you should never use it in runtime.
 
 ## Default Tokenizer Implementation
 Default TokenizerInterface implementation provides few additional features which can be useful for you. First of all, we can always get every used trait for given class (including traits used by parents):
@@ -90,7 +89,7 @@ public function index()
 
     dump($reflection->getClasses());
 
-    //Will locate every "dump" function and "self::something" call and it's arguments
+    //Will locate every "dump" function, "self::something" call and it's arguments
     dump($reflection->getCalls());
 
     self::something($reflection, "string");

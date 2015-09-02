@@ -1,10 +1,10 @@
 # Directory structure
-Spiral appliction does not require any specific stucture or namespace for it's files unlil every application class can be loaded by composer, hovewer spiral
-scaffoling and cache directoring comes pre-configured. Let's review default directory structure:
+Spiral appliction does not require any specific stucture or namespace for it's files until every application class can be loaded by composer, hovewer spiral
+scaffoling and cache directories comes pre-configured. Let's review default directory structure:
 
 | Directory                         | Description                    
 | ---                               | ---       
-| /                                 | Root project directory, aliases under "root" directory and accessinble via `Core->directory()` or `directory()` functions.
+| /                                 | Root project directory, aliases under "root" and accessible via `Core->directory()` or `directory()` functions.
 | **/application/**                 | This is your based application directory with templates, classes, migrations and memory (runtime) directory, alias "application".
 | /application/classes/             | Directory to locate your application classes, by default marked as PSR4 root (no namespace).                            
 | /application/classes/Commands/    | You can create your console commands here (manually or via scaffoling) given them namespace "Commands";                            
