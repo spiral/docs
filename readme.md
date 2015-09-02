@@ -35,7 +35,7 @@
     * [**Views**] (components/views.md)
     * [Reactor] (components/reactor.md)
     * Modules
-    * **Validation**
+    * [**Validation**] (components/validation.md)
 * Templater
     * **Basic Usage**
     * Extended Usage (virtual tags, tips and tricks)

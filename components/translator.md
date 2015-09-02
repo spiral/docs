@@ -216,7 +216,7 @@ Both good and bad message can be indexed using console command without executing
 > Such technique are mainly used to specify model validation error messages.
 
 ## Localizing Views
-Spiral [ViewManager] (/components/views.php) has pre-built view source processor dedicated to automatically translate view strings, string much follow same format as in default class properties and be embraced with `[[` and `]]` symbols.
+Spiral [ViewManager] (/components/views.md) has pre-built view source processor dedicated to automatically translate view strings, string much follow same format as in default class properties and be embraced with `[[` and `]]` symbols.
 
 ```html
 <div>[[Welcome to our view!]]</div>

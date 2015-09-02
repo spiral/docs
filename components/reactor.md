@@ -473,7 +473,7 @@ In addition to low level element manipulation, Spiral provides a set of pre-crea
 | ---               | ---                                           | ---                           |
 | create:command    | Spiral\Reactor\Generators\CommandGenerator    | Generate new command.         |
 | create:controller | Spiral\Reactor\Generators\ControllerGenerator | Generate new controller.      |
-| create:document   | Spiral\Reactor\Generators\DocumentGenerator   |  Generate new ODM document.   |
+| create:document   | Spiral\Reactor\Generators\DocumentGenerator   | Generate new ODM Document.    |
 | create:middleware | Spiral\Reactor\Generators\MiddlewareGenerator | Generate new http middleware. |
 | create:migration  | Spiral\Reactor\Generators\MigrationGenerator  | Generate new migration.       |
 | create:record     | Spiral\Reactor\Generators\RecordGenerator     | Generate new ORM Record.      |
