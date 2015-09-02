@@ -516,7 +516,7 @@ Both of listed checker method has short aliases - "cardNumber" and "match" accor
 | Rule          | Parameters                    | Description              
 | ---           | ---                           | ---                      
 | email         | ---                           | Check if email is valid. 
-| url           | [requireScheme|bool - true]   | Check if URL is valid.   
+| url           | [requireScheme:bool - true]   | Check if URL is valid.   
 
 ### Number Checker (prefix "number::")
 | Rule          | Parameters             | Description           
@@ -553,7 +553,7 @@ File checker fully support filename provided in a string form or using `Uploaded
 | exists        | ---                   | Check if file exist.
 | uploaded      | ---                   | Check if file was uploaded.
 | size          | size:int              | Check if file size less that specified value in KB.
-| extension     | extensions|array      | Check if file extension in whitelist. Client name of uploaded file will be used!
+| extension     | extensions:array      | Check if file extension in whitelist. Client name of uploaded file will be used!
 
 ### Image Checker (prefix "image::")
 Image checker extends file checker and fully support it's features.
@@ -563,7 +563,7 @@ Image checker extends file checker and fully support it's features.
 | exists        | ---                     | Check if image exist.
 | uploaded      | ---                     | Check if image was uploaded.
 | size          | size:int                | Check if image size less that specified value in KB.
-| extension     | extensions|array        | Check if image extension in whitelist. Client name of uploaded file will be used!
+| extension     | extensions:array        | Check if image extension in whitelist. Client name of uploaded file will be used!
 | type          | types:array             | Check if image in a list of allowed image types.
 | valid         | ---                     | Shortcut to check if image has valid type (JPEG, PNG and GIF are allowed).
 | smaller       | width:int, [height:int] | Check if image smaller that specified rectangle (height check if optional).
