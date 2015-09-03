@@ -495,7 +495,7 @@ public function websiteLayout()
     Something about us, <?=$someVariable?>. <a href="/some-url/">Some Address</a>.
     </div>
 <div class="footer">
-    This is about us specific footer.s
+    This is about us specific footer.
 </div>
 </body>
 </html>
