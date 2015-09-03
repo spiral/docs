@@ -257,7 +257,7 @@ There is many scenarious when you would to inject child value inside html tag or
 </html>
 ```
 
-Unfortunatelly such definition is not valid as it violates html code. In such case we can use fallback Templater construction which can be injected in almost any part of your template: `${name|default value}`, let's try to utilize it:
+Unfortunatelly such definition is **not valid** as it violates html code. In such case we can use fallback Templater construction which can be injected in almost any part of your template: `${name|default value}`, let's try to utilize it:
 
 ```html
 <!DOCTYPE html>
