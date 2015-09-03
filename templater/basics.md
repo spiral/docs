@@ -229,7 +229,7 @@ Such technique provides us ability to manage set of layouts on global level with
 
 > Templates compiles views before PHP code will be executed, you are not allow to control block structures with php code. Leave it for html/frontent developers.
 
-## Event shorter block/yield definition
+## Even shorter block/yield definition
 There is many scenarious when you would to inject child value inside html tag or even php code, let's try to say that we want to be able to define custom wrapper class for different views.
 
 ```html
