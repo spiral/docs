@@ -125,6 +125,8 @@ Secondly we created html (xml) tag named "block:content" for the same purposes a
 </block:content>
 ```
 
+> Attention, ViewManager does not know about changes in parent layouts, you should either recompile your views using `views:compile` command or simply disable cache in development enviroment.
+
 ## Parent block content
 In previous example we demonstrate ability to inject desired value into parent layout, hovewer in many cases we might want to be able to rewrite specific parts of parent layout without loosing original content, we can demonstrate it by defining few new blocks in our parent layout:
 
