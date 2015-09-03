@@ -37,7 +37,7 @@
     * Modules
     * [**Validation**] (components/validation.md)
 * Templater
-    * **Basic Usage**
+    * [**Basic Usage**] (templater/basics.md)
     * Extended Usage (virtual tags, tips and tricks)
 * Storage Manager
     * [**Buckets and Objects**] (storage/overview.md)
