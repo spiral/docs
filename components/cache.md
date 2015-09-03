@@ -242,7 +242,7 @@ public function index(StoreInterface $store, FileStore $fileStore, MemcacheStore
     //Will be instance of default cache store
     dump($store);
 
-    dumP($fileStore);
+    dump($fileStore);
 
     dump($memcacheStore);
 }
