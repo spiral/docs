@@ -1,5 +1,5 @@
 # Validations
-Spiral provides simplistic way to validate incoming user data by providing user `Spiral\Validation\ValidatorInterface` interface which is bindined by default to `Spiral\Validation\Validator` class.
+Spiral provides simplistic way to validate incoming user data by providing `Spiral\Validation\ValidatorInterface` interface which is bindined by default to `Spiral\Validation\Validator` class.
 
 ## ValidatorInterface
 Before we will start working with validations let's quickly take a look at `ValidatorInterface` to see what methods are available for us.
