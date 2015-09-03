@@ -28,7 +28,7 @@ public function index(CacheInterface $cache, CacheProvider $provider)
     //True
     dump($cache === $provider);
     
-    $viaContainer = $this->container->get(CacheInterface);
+    $viaContainer = $this->container->get(CacheInterface::class);
     
     //We can also use short binding defined in default implementation of spiral Core
     //and available in every Service
