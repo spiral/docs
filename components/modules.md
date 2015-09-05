@@ -304,7 +304,7 @@ Now, after installation, we will be able to access our module using short bindin
 > You can also re-bind some system classes and [interfaces] (/framework/interfaces.md) to alter framework behaviour.
 
 ## Module Configurations
-Obviuosly no one want to create a static module without ability to configure it on project basis, spiral provides convinient way to manage module configuration files and even provides way to alter other application configurations (for example to automatically register module as middleware, cache store, add view namespaces and etc).
+Obviuosly no one want to create a static module without ability to configure it on project basis, spiral provides convinient way to manage module configuration files and even makes possible to alter other application configurations (for example to automatically register module as middleware, cache store, add view namespaces and etc).
 
 Let's try create configuration file and mount it inside our module:
 
