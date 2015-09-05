@@ -143,7 +143,7 @@ public function index($page = 1)
             $this->router->activeRoute(),               //We can use active route
             'page',                                     //Parameter for page
             $page,                                      //Parameter value
-            ['controller'=>'home','action'=>'index']    //Route options
+            ['controller'=>'home', 'action'=>'index']    //Route options
         )
     );
 
