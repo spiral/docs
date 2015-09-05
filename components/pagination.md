@@ -64,7 +64,7 @@ Default spiral paginator `Paginator` will automatically fetch count of records f
 public function index()
 {
     $selection = $this->dbal->db()->users->select('name','email');
-    dump($selection->paginate(1, 'myPage',$this->request)->getIterator());
+    dump($selection->paginate(1, 'myPage', $this->request)->getIterator());
 }
 ```
 
