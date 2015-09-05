@@ -303,7 +303,7 @@ Now, after installation, we will be able to access our module using short bindin
 > You can also re-bind some system classes and [interfaces] (/framework/interfaces.md) to alter spiral behaviour.
 
 ### Configs
-Still writing.
+Still writing...
 
 
 
