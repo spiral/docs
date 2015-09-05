@@ -34,7 +34,7 @@
     * [Translator] (components/translator.md)
     * [**Views**] (components/views.md)
     * [Reactor] (components/reactor.md)
-    * Modules
+    * [Modules] (components/modules.md)
     * [**Validation**] (components/validation.md)
 * Templater
     * [**Basic Usage**] (templater/basics.md)
