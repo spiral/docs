@@ -220,22 +220,21 @@ class JSONPaginator implements JsonSerializable
 {
     protected $select = null;
 
-    public function __construct(AbstractSelect $select)
+    public function __construct(PaginableInterface $select)
     {
-        $this->select = $select;
-
         if (!$select->isPaginated()) {
             throw new RuntimeException('Selection must be paginated.');
         }
+        
+        $this->select = $select;
     }
 
     public function jsonSerialize()
     {
-        $result = $this->select->getIterator();
         $paginator = $this->select->getPaginator();
 
         return [
-            'result'     => $result,
+            'result'     => $this->select,
             'pagination' => [
                 'count'        => $paginator->count(),
                 'page'         => $paginator->getPage(),
