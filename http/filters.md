@@ -103,7 +103,7 @@ public function createUser(UserRequest $request)
 }
 ```
 
-As you can see, we declared method dependency for our request. This will automatically allow access to InputManager and popuplate it's fields described in it's schema.
+As you can see, we declared method dependency for our request. This will automatically allow request access to InputManager and popuplate fields described in it's schema.
 
 ```php
 protected $schema = [
