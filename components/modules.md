@@ -4,7 +4,7 @@ Spiral Framework provides powerful base for writing and mounting your modules/ex
 > Disclaimer: i have to admit that "modules" is not the best name, "extension" or "packages" will be much better, hovewer a lot of legacy code already uses this name. Let's stick to name "modules" with allowance to use "extensions" periodically.
 
 ## General Princible
-Spiral modules are manager and bootloaded in runtime using ModuleManager component which is available using short binding "modules". Such component mounted in Core autoloaded list and executed before your application `bootstrap()` method. Every registered module automatically added into configuration file modules which, in usual scenario, looks like:
+Spiral modules are managed and bootloaded in runtime using ModuleManager component which is available using short binding "modules". Such component mounted in Core autoloaded list and executed before your application `bootstrap()` method. Every registered module automatically added into configuration file "modules" which, in usual scenario, looks like:
 
 ```php
 return [
@@ -244,7 +244,7 @@ Now we able to define logic required to install update our module using default 
 Fisrt of all, you might want to bootstrap your module with application, let's tell our Installer about that:
 
 ```php
-$installer->needsBootstrapping();
+$installer->requireBootstrap(true);
 ```
 
 As result module will always be constructed and method `bootstrap` will be called once we will perform extension installation (let's do it later).
@@ -288,8 +288,9 @@ class SampleModule extends Module implements SingletonInterface
         DefinitionInterface $definition
     ) {
         $installer = parent::getInstaller($container, $definition);
-        $installer->needsBootstrapping();
+        $installer->requireBootstrap(true);
 
+        //From module/public to webroot/module
         $installer->publishDirectory('public', 'module');
         $installer->addBinding('sample', self::class);
 
@@ -300,10 +301,192 @@ class SampleModule extends Module implements SingletonInterface
 
 Now, after installation, we will be able to access our module using short binding `sample`.
 
-> You can also re-bind some system classes and [interfaces] (/framework/interfaces.md) to alter spiral behaviour.
+> You can also re-bind some system classes and [interfaces] (/framework/interfaces.md) to alter framework behaviour.
 
-### Configs
-Still writing...
+## Module Configurations
+Obviuosly no one want to create a static module without ability to configure it on project basis, spiral provides convinient way to manage module configuration files and even provides way to alter other application configurations (for example to automatically register module as middleware, cache store, add view namespaces and etc).
+
+Let's try create configuration file and mount it inside our module:
+
+Configuration file (application/classes/Modules/Sample/config/vendor/module.php):
+
+```php
+<?php
+/**
+ * This is sample module configuration file.
+ */
+return [
+    'someValue' => 123
+];
+```
+
+Now we can use `ConfigurableTrait` and `ConfiguratorInterface` in our module:
+
+```php
+class SampleModule extends Module implements SingletonInterface
+{
+    use ConfigurableTrait;
+
+    /**
+     * Declaring to IoC that we are singleton.
+     */
+    const SINGLETON = self::class;
+
+    /**
+     * Configuration section to be used.
+     */
+    const CONFIG = 'vendor/module';
+
+    /**
+     * @param ConfiguratorInterface $configurator
+     */
+    public function __construct(ConfiguratorInterface $configurator)
+    {
+        $this->config = $configurator->getConfig(self::CONFIG);
+    }
+
+    public static function getInstaller(
+        ContainerInterface $container,
+        DefinitionInterface $definition
+    ) {
+        $installer = parent::getInstaller($container, $definition);
+        $installer->requireBootstrap(true);
+
+        $installer->publishDirectory('public', 'module');
+        $installer->addBinding('sample', self::class);
 
 
+        return $installer;
+    }
+}
+```
 
+> Please note that we named our configuration 'vendor/module' to prevent possible collisions.
+
+Now can tell our installer that we want to publish configuration file, we are going to achieve this goal by special class `ConfigWriter`, due this class has decent amount of dependecies we better request it using container:
+
+```php
+$installer->registerConfig($container->construct(ConfigWriter::class, [
+    'name'   => 'vendor/module',
+    'method' => ConfigWriter::MERGE_FOLLOW
+]));
+```
+
+You might notice parameter "method", such parameter tells to ConfigWriter how it must process situations where configuration already exists, in our case it will merge existed (project specific) configuration with module one on order to keep project specific values (you can also use different method to replace existed config or even create your own implementation of ConfigWriter to perfom more controllable merge).
+
+You might link your ConfigWriter to existed framework configuration to automatically alter it's values during installation, hovewer it's much more reliable to use specialized config writers, in our case let's say that our module want to make it's view files available under namespace "sample".
+
+First of all we can create our view in "application/classes/Modules/Sample/views" directory (i'v created view named "test"). Once it's done we can alter our installer and register `ViewConfig` writer. Such writer will only required us to specify base module directory and expose nice methods to manulate with namespaces:
+
+```php
+/**
+ * @var ViewConfig $viewConfig
+ */
+$viewConfig = $container->construct(ViewConfig::class, [
+    'baseDirectory' => $definition->getLocation()
+]);
+
+$viewConfig->registerNamespace('sample', 'views');
+
+//Registering view namespace
+$installer->registerConfig($viewConfig);
+```
+
+Our final code for Installer configuration looks like:
+
+```php
+public static function getInstaller(
+    ContainerInterface $container,
+    DefinitionInterface $definition
+) {
+    $installer = parent::getInstaller($container, $definition);
+    $installer->requireBootstrap(true);
+
+    $installer->publishDirectory('public', 'module');
+    $installer->addBinding('sample', self::class);
+
+    $installer->registerConfig($container->construct(ConfigWriter::class, [
+        'name'   => 'vendor/module',
+        'method' => ConfigWriter::MERGE_FOLLOW
+    ]));
+
+    /**
+     * @var ViewConfig $viewConfig
+     */
+    $viewConfig = $container->construct(ViewConfig::class, [
+        'baseDirectory' => $definition->getLocation()
+    ]);
+
+    $viewConfig->registerNamespace('sample', 'views');
+
+    //Registering view namespace
+    $installer->registerConfig($viewConfig);
+
+    return $installer;
+}
+```
+
+## Install/update time!
+We are done with our module installation configuration, now we can install it (if you module were loaded using componser spiral will do it automatically) using `modules:install vendor/sample -v` command.
+
+```
+> spiral modules:install vendor/sample -v
+[vendor/sample] Mounting configurations.
+[vendor/sample] Updating configuration 'vendor/module'.
+[vendor/sample] Updating configuration 'views'.
+[vendor/sample] Mounting migrations.
+[vendor/sample] Publishing module files.
+[vendor/sample] Publishing file '[module]module/image.jpg'.
+Module 'vendor/sample' was successfully installed.
+```
+
+> You can always re-install module to update it's bindings and configs by adding `-f` flag to command.
+
+We can jump to modules configuration file to see how it looks like:
+```php
+return [
+    'spiral/profiler' => [
+        'class'     => 'Spiral\Profiler\Profiler',
+        'bootstrap' => false,
+        'bindings'  => []
+    ],
+    'spiral/toolkit'  => [
+        'class'     => 'Spiral\Toolkit\ToolkitModule',
+        'bootstrap' => false,
+        'bindings'  => []
+    ],
+    'vendor/sample'   => [
+        'class'     => 'Modules\Sample\SampleModule',
+        'bootstrap' => true,
+        'bindings'  => [
+            'sample' => 'Modules\Sample\SampleModule'
+        ]
+    ]
+];
+```
+
+> You can also check newely created configuration file "vendor/module" and altered views config.
+
+Now our module is installed, it's bindings mouted and resources published! Let's try to do something in our controller:
+
+```php
+public function index()
+{
+    dump($this->sample);
+    dump($this->sample->config());
+
+    return $this->views->render('sample:test');
+}
+```
+
+If your module were updated and new resouce files appear (or old resouce files were changes, i'v added one more file into public module directory) we can re-publish it using `modules:update -v` command.
+
+```
+[vendor/sample] Publishing module files.
+[vendor/sample] Module file '[module]module/image.jpg' already published.
+[vendor/sample] Publishing file '[module]module/new.jpg'.
+Module 'vendor/sample' was successfully udpated.
+```
+
+## Console Commands 
+You can freely create your module specfic commands, spiral will locate and mount them automatically, if, for some reason, your command wasn't added while module instalation you can always run `console:refresh`. Only make sure your command class is loadable.
