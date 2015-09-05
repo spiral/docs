@@ -29,7 +29,7 @@
     * [Encrypter] (components/encrypter.md)
     * [Events] (components/events.md)
     * [Files] (components/files.md)
-    * Pagination
+    * [Pagination] (components/pagination.md)
     * [Tokenizer] (components/tokenizer.md)
     * [Translator] (components/translator.md)
     * [**Views**] (components/views.md)
