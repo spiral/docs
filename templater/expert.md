@@ -399,7 +399,7 @@ Due our label related code does not depends on any user argument we can try to m
 
 Now widget will decide to render or not label span during compilation, not in runtime. You can check your view cache to make sure.
 
-## Create php variables using attributes (very harder)
+## Create php variables using attributes (very hard and weird)
 There is many scenarious when you might want to pass php variable inside your widget, for example let's say that we want to create select which can accept array of it's values. The most obvsious way to that, is to create some convention variable to excange with values:
 
 ```html
