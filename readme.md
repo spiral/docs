@@ -38,7 +38,7 @@
     * [**Validation**] (components/validation.md)
 * Templater
     * [**Basic Usage**] (templater/basics.md)
-    * Extended Usage (virtual tags, tips and tricks)
+    * [Extended Usage (virtual tags, tips and tricks)] (templater/expert.md)
 * Storage Manager
     * [**Buckets and Objects**] (storage/overview.md)
     * [Storage Servers] (storage/servers.md)
