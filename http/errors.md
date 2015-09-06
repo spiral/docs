@@ -32,8 +32,7 @@ public function index()
 }
 ```
 
-Exceptions like that will be handled by HttpDisaptcher and converted into a response with an appropriate status code. If you want to define a custom view for your error,
-edit the http configuration file to link error code to view name:
+Exceptions like that will be handled by HttpDisaptcher and converted into a `ExceptionResponse` with an appropriate status code. If you want to define a custom view for your error, edit the http configuration file to link error code to view name:
 
 ```php
     'httpErrors'   => [
@@ -53,6 +52,46 @@ There are a few exceptions predefined for generic scenarios:
 | 403  | ForbiddenException    |
 | 404  | NotFoundException     |
 | 500  | ServerErrorException  |
+
+## Handling Client Exception by Middleware
+As metnion in previous section every instance of ClientException will be converted into ExceptionResponse, this makes possible to handle such response "exception like" way and redine output. For example we can create CMS middleware which it going to check for page associated with current Uri when endpoint returned NotFound Error.
+
+```php
+class CmsMiddleware extends Service implements MiddlewareInterface
+{
+    /**
+     * @param ServerRequestInterface $request
+     * @param \Closure               $next Next middleware/target. Always returns ResponseInterface.
+     * @return ResponseInterface
+     */
+    public function __invoke(ServerRequestInterface $request, \Closure $next)
+    {
+        /**
+         * @var ResponseInterface $response
+         */
+        $response = $next($request);
+
+        if (
+            $response instanceof ExceptionResponse
+            && $response->getStatusCode() == ClientException::NOT_FOUND
+        ) {
+            return $this->cmsResponse($request);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return HtmlResponse
+     */
+    private function cmsResponse(ServerRequestInterface $request)
+    {
+        //Some custom logic
+        return new HtmlResponse('This is CMS page.');
+    }
+}
+```
 
 ## Exposing errors to client
 Exceptions which are not instances of `Spiral\Http\Exception\ClientException` will be treated as server errors, handled via `SnapshotInterface` and sent to client as exception backtrace. You can disable sending trace to client and replace it with generic 500 error by editing the "exposeErrors" flag in your http configuration.

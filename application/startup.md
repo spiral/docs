@@ -68,9 +68,8 @@ public static function init(array $directories, $catchErrors = true)
      */
     $core = new static($directories + ['framework' => dirname(__DIR__)]);
 
-    if (empty(self::container())) {
-        self::setContainer($core);
-    }
+    //Initiating global/static container used by traits and some classes
+    self::staticContainer($core);
 
     $core->bindings = [
             static::class                => $core,
