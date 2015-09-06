@@ -338,9 +338,68 @@ Now, the only thing we have to do to convert our from input from input to textar
 This methodic can be very convinient when you would like to create set of similar elements for your project.
 
 ## Add intellect to your widget (hard)
+In many cases we would to give of widgets more flexibility, not only ability to replace it's blocks, we can achieve it goal by compbing our templater code with simple php, let's say that we do not want to render label span if no label value is specified. The simplified way to do that will be:
 
+```html
+<div class="form-input">
+    <label class="input-wrapper" node:attributes="prefix:label">
+        <?php
+        if (!empty("${label}")) {
+            ?><span class="item-label">${label}</span><?php
+        }
+        ?>
+        <block:input>
+            <input type="${type|text}" node:attributes="exclude:label-*"/>
+        </block:input>
+    </label>
+</div>
+```
 
-## Create php variables using attributes (even harder)
+You can check that no span is rendered if no label attribute provided to widget. Hovewer such code is not really reliable as it will fail it label will include " symbols or php code. Fortunatelly we can always use buffering:
+
+```html
+<div class="form-input">
+    <label class="input-wrapper" node:attributes="prefix:label">
+        <?php
+        ob_start(); ?>${label}<?php
+        if (!empty(ob_get_clean())) {
+            ?><span class="item-label">${label}</span><?php
+        }
+        ?>
+        <block:input>
+            <input type="${type|text}" node:attributes="exclude:label-*"/>
+        </block:input>
+    </label>
+</div>
+```
+
+In this case our code can handle any value provided for label attribute.
+
+## Using EvalutatorProcessor (hard+)
+If you remember from [views and view processors] (/components/views.md) section, you are able to use special view processor - `EvaluateProcessor`, such processor can 
+execute php blocks marked with `#compile` comment during view compilation, meaning no code will be preserved in view cache (which can speed it up).
+
+Due our label related code does not depends on any user argument we can try to mark it's code as compilable (we have to include comment into every php block):
+
+```html
+<div class="form-input">
+    <label class="input-wrapper" node:attributes="prefix:label">
+        <?php #compile
+        ob_start(); ?>${label}<?php #compile
+        if (!empty(ob_get_clean())) {
+            ?><span class="item-label">${label}</span><?php #compile
+        }
+        ?>
+        <block:input>
+            <input type="${type|text}" node:attributes="exclude:label-*"/>
+        </block:input>
+    </label>
+</div>
+```
+
+Now widget will decide to render or not label span during compilation, not in runtime. You can check your view cache to make sure.
+
+## Create php variables using attributes (very harder)
 
 
 ## Namespaces and Modules
@@ -349,4 +408,117 @@ You can locate and import your elements from any desired namespace, this can be 
 > You only have to register view namespace in your module installer.
 
 ## Spiral Toolkit
+Spiral framework application supplied with module ['spiral/toolkit'] (/modules/toolkit.md) which already aggregates set of virtual tags used to simplify loading assets, form definitions and etc. For example following code will render form, automatically connect required js libraries and style sheets to make form work over ajax and highight it's errors:
 
+```html
+<extends:spiral:layouts.html5 title="Demo View"/>
+
+<block:body>
+    <spiral:form action="/controller/doSomething">
+        <form:input label="Name:" name="name"/>
+        <form:select label="Select:" values="<?= [1 => 'A', 2 => 'B', 3 => 'C'] ?>"/>
+    </spiral:form>
+</block:body>
+```
+
+Compiled view will look like:
+
+```php
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Demo View
+    </title>
+    <?php
+    /**
+     * @var \Psr\Http\Message\ServerRequestInterface $request
+     */
+    $request = $this->container->get(\Psr\Http\Message\ServerRequestInterface::class);
+    ?>
+    <script>
+        window.csrfToken = "<?= $request->getAttribute('csrfToken') ?>";
+    </script>
+    <link rel="stylesheet" href="/resources/styles/spiral/spiral.css?1atgrq3"/>
+</head>
+<body>
+<form action="/controller/doSomething" method="post" enctype="multipart/form-data"
+      accept-charset="UTF-8" class="js-sf-form">
+    <div class="form-content">
+        <label class="item-form">
+            <span class="item-label">Name:</span>
+            <input type="text" name="name" value="" class="item-input"/>
+        </label>
+        <label class="item-form">
+            <span class="item-label">Select:</span>
+
+            <div class="form-group">
+                <select name="" class="item-select" context="">
+                    <?php $__values__ = [
+                        1 => 'A',
+                        2 => 'B',
+                        3 => 'C'
+                    ]; ?><?php $__selected__ = ''; ?>            <?php
+                    if (empty($__values__)) {
+                        $__values__ = [];
+                    }
+                    if (!is_array($__values__)) {
+                        throw new \Spiral\Core\Exceptions\RuntimeException(
+                            "Select values must be supplied as associated array."
+                        );
+                    }
+                    foreach ($__values__ as $__value__ => $__label__) {
+                        if ($__value__ == $__selected__) {
+                            ?>
+                            <option value="<?= $__value__ ?>"
+                                    selected><?= $__label__ ?></option><?php
+                        } else {
+                            ?>
+                            <option value="<?= $__value__ ?>"><?= $__label__ ?></option><?php
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </label>
+    </div>
+</form>
+<script type="text/javascript" src="/resources/scripts/spiral/sf.js?1atj8oe"></script>
+</body>
+</html>
+```
+
+> Attention, JS and CSS libraries will be conntected only it layout decalared placeholders for assets, in your applications you can simply exclude layout `spiral:layouts.html5` with pre-defined placeholders and stucture, it looks like:
+
+```html
+<templater:use bundle="spiral:bundle"/>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        <yield:title/>
+    </title>
+    <?php
+    /**
+     * @var \Psr\Http\Message\ServerRequestInterface $request
+     */
+    $request = $this->container->get(\Psr\Http\Message\ServerRequestInterface::class);
+    ?>
+    <script>
+        window.csrfToken = "<?= $request->getAttribute('csrfToken') ?>";
+    </script>
+    <block:head>
+        <resource:style href="resources/styles/spiral/spiral.css"/>
+        <yield:resources/>
+        <!--[STYLES]-->
+    </block:head>
+</head>
+<body>
+<yield:body/>
+<!--[SCRIPTS]-->
+</body>
+</html>
+```
+
+> Element "templater:use" is just an alias for short "use" tag.
