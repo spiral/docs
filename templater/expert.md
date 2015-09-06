@@ -400,7 +400,166 @@ Due our label related code does not depends on any user argument we can try to m
 Now widget will decide to render or not label span during compilation, not in runtime. You can check your view cache to make sure.
 
 ## Create php variables using attributes (very harder)
+There is many scenarious when you might want to pass php variable inside your widget, for example let's say that we want to create select which can accept array of it's values. The most obvsious way to that, is to create some convention variable to excange with values:
 
+```html
+<extends:elements.input/>
+
+<block:input>
+    <?php
+    if (empty($selectValues)) {
+        throw new RuntimeException('Variable "selectValues" not defined.');
+    }
+    ?>
+    <select node:attributes="exclude:label-*,context">
+        <?php
+        foreach ($selectValues as $name => $value) {
+            echo '<option value="' . $value . '">' . $name . '</option>';
+        }
+        ?>
+    </select>
+</block:input>
+```
+
+If we want to use such element in our form we have to declare selectValues variable first:
+
+```html
+<extends:layouts.desktop title="Demo View"/>
+<use path="elements" namespace="form"/>
+
+<block:content>
+    This is our content...
+    <br/>
+
+    <form action="/">
+        <?php
+        $selectValues = [
+            1 => 'A',
+            2 => 'B',
+            3 => 'C'
+        ];
+        ?>
+        <form:select name="select"/>
+    </form>
+</block:content>
+```
+
+This does not seems to be very useful, fortunatelly there is one (not super easy way) interesting way we can use to pass any variable to our element. First of all, let's try to declare widget specific variable to store values:
+
+```html
+<extends:elements.input/>
+
+<block:input>
+    <select node:attributes="exclude:label-*,context">
+        <?php
+        foreach ($__values__ as $name => $value) {
+            echo '<option value="' . $value . '">' . $name . '</option>';
+        }
+        ?>
+    </select>
+</block:input>
+```
+
+> We would like to name this variable some non obvious way to prevent conflicts.
+
+Next step will be to populate such variable values based on provided data. We can achieve it using special evalutator specific function `createVariable`:
+
+```html
+<extends:elements.input/>
+
+<block:input>
+    <?php #compile
+    createVariable('__values__', '${values}');
+    ?>
+    <select node:attributes="exclude:label-*,context">
+        <?php
+        foreach ($__values__ as $name => $value) {
+            echo '<option value="' . $value . '">' . $name . '</option>';
+        }
+        ?>
+    </select>
+</block:input>
+```
+
+Such function will parse value of `${values}` attribute and assign it to created __values__ array (`echo` and `<?=` code will be removed). As result we can use our element now such way:
+
+```html
+<extends:layouts.desktop title="Demo View"/>
+<use path="elements" namespace="form"/>
+
+<block:content>
+    This is our content...
+    <br/>
+
+    <form action="/">
+        <form:select name="select" values="<?= [1 => 'A', 2 => 'B', 3 => 'C'] ?>"/>
+
+        //Or even like that
+        <?php
+        $selection = [1 => 'A', 2 => 'B', 3 => 'C'];
+        ?>
+
+        <form:select name="select" values="<?= $selection ?>"/>
+    </form>
+</block:content>
+```
+
+To undestand what really happen, let's try to check cached (compiled) view source:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Demo View
+    </title>
+    <link rel="stylesheet" href="/resources/styles/website.css"/>
+</head>
+<body>
+<div class="header">
+    This is our header.
+</div>
+<div class="wrapper page">
+    This is our content...
+    <br/>
+
+    <form action="/">
+        <div class="form-input">
+            <label class="input-wrapper">
+                <?php $__values__ = [1 => 'A', 2 => 'B', 3 => 'C']; ?>
+                <select name="select">
+                    <?php
+                    foreach ($__values__ as $name => $value) {
+                        echo '<option value="' . $value . '">' . $name . '</option>';
+                    }
+                    ?>
+                </select>
+            </label>
+        </div>
+        //Or even like that
+        <?php
+        $selection = [1 => 'A', 2 => 'B', 3 => 'C'];
+        ?>
+        <div class="form-input">
+            <label class="input-wrapper">
+                <?php $__values__ = $selection; ?>
+                <select name="select">
+                    <?php
+                    foreach ($__values__ as $name => $value) {
+                        echo '<option value="' . $value . '">' . $name . '</option>';
+                    }
+                    ?>
+                </select>
+            </label>
+        </div>
+    </form>
+</div>
+<div class="footer">
+    This is our footer.
+</div>
+</body>
+</html>
+```
 
 ## Namespaces and Modules
 You can locate and import your elements from any desired namespace, this can be very useful when you would to organize your widgets into separate [module] (/components/modules.md) and connect them in multiple projects, as side effect you will be able to update visuals and source for your widges using `composer update` command. 
