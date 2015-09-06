@@ -143,7 +143,7 @@ As you can see, now we don't need to specify bundle name for `l` function as `Tr
 > Attention, both functions will access Translator instance using global container, if you don't have global container enabled (always on in spiral framework application) your code will fail.
 
 ## TranslatorTrait
-Spiral framework provide much more simplistic way to localize string inside given classes, to access such functionality we can simply need use trait `TranslatorTrait` in our class (attention, global container will be used by `TranslatorTrait`, parent class must declare static method `contrainer` which already presented in most of spiral classes).
+Spiral framework provide much more simplistic way to localize string inside given classes, to access such functionality we can simply need use trait `TranslatorTrait` in our class (attention, trait will talk to Translator instance using it's singleton and global contrainer).
 
 ```php
 class HomeController extends Controller
