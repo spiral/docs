@@ -36,6 +36,7 @@
     * [Reactor] (components/reactor.md)
     * [Modules] (components/modules.md)
     * [**Validation**] (components/validation.md)
+    * DataEntity model
 * Templater
     * [**Basic Usage**] (templater/basics.md)
     * [Extended Usage (virtual tags, tips and tricks)] (templater/expert.md)
@@ -48,10 +49,6 @@
     * [Schema Readers] (database/reading.md)
     * Schema Writers
     * Migrations
-* Data Entities
-    * Overview
-    * Filters and Accessors
-    * Validation
 * Spiral ORM
     * **Record Model**
     * Relations
