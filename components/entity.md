@@ -184,7 +184,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 
 Now, we can set entity name by entering it's value in our browser url query part. 
 
-> There is second entity property **secured** which specifies what fields are **not allowed** to be set, by default it equals to "*" - meaning no fields can be set unless specified in **fillable** property, set secured property as empty array to make every property fillable (if you really need that).
+> There is second entity property **secured** which specifies what fields are **not allowed** to be set, by default it equals to '\*' - meaning no fields can be set unless specified in **fillable** property, set secured property as empty array to make every property fillable (if you really need that).
 
 ### isFillable
 DataEntity controls mass assigment access using protected method `isFillable`, you can ovewrite it to define custom field access logic.
