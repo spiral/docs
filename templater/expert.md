@@ -1,5 +1,5 @@
 # Extended Templater Usage
-As you might assume based on this tutorial section title, basic templater features like template inheritance is only one part of templater (to be honest pretty small part of it). In additon to generic features covered in [basic templater tutorial] (basic.md) you are able to create and import so called virtual tags or widgets. Such widgets created as usual views and can be located inside your application or provided by [module] (/components/modules.md).
+As you might assume based on this tutorial section title, basic templater features like template inheritance is only one part of templater (to be honest pretty small part of it). In additon to generic features covered in [basic templater tutorial] (basics.md) you are able to create and import so called virtual tags or widgets. Such widgets created as usual views and can be located inside your application or provided by [module] (/components/modules.md).
 
 ## Widget/tag creation 
 If you rememeber based on information provided by [Basic Templater Usage] (basic.md) templater handles situation with extending parent layouts and preventing in-view includes like:
