@@ -189,7 +189,7 @@ getters    | Field getters.
 accessors  | Accessors used to mock field data and filter every request thought itself.
 fields     | Entity data.
 errors     | Validation errors.
-schema     | Used by ORM, ODM and RequestFilter entities to describe model behaviour.
+**schema** | Used by ORM, ODM and RequestFilter entities to describe model behaviour.
 indexes    | ORM and ODM only, set of indexed to be created in related table/collection.
 defaults   | ORM and ODM only, set of default values for model fields.
 database   | ORM and ODM only, daatabase name associated with model.
