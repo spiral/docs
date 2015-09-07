@@ -5,7 +5,7 @@ Most of spiral classes like ORM, ODM and HTTP request models extends one common 
 DataEntity model reponsible for mocking and providing access to array dataset - fields (associated array) using set of getters, setters and accessors. In addition to that model provides way to apply mass assigment to fields (using black/white lists), get all model fields as one array, get list of "public" fields (allowed to be send to client using whitelist) and to be converted into JSON. In addition to that model support [field validation] (validation.md) based on set of defined rules.
 
 ## Interfaces
-Due DataEntity class used widely across spiral framework you might create your own code to communicate with it. Intead of using DataEntity class itself you can stick to it's primary interface:
+Due DataEntity class used widely across spiral framework you might create your own code to communicate with it. Instead of using DataEntity class itself you can stick to it's primary interface:
 
 ```php
 interface EntityInterface extends \ArrayAccess, ValidatesInterface
