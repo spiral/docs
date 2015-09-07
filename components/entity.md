@@ -106,11 +106,10 @@ Such entity provides ability to set fields using contructor method (attention, f
 ```php
 public function index()
 {
-    $entity = new \DemoEntity([
+    $entity = new \DemoEntity([ 
         'name'    => 'value',
         'another' => 123
     ]);
-
 
     dump($entity);
 }
@@ -141,6 +140,8 @@ In many cases we would like to get every model field in array form, we can use m
 dump($entity->getFields());
 ```
 
+> Attention, resulted array will include field accessors (see below), plus every field will be passed thought it's associated getter (see below).
+
 ### Set Model field
 To set value of desired model field we can use obviously named method `setField`:
 
@@ -149,21 +150,103 @@ $entity->setField('thing', 199.00);
 dump($entity->getFields());
 ```
 
-## Mass Field assignment
+## Mass Assignment
+In many cases (almost in every case, to be honest) you will need to set multiple model fields at once. Setting fields one by one may look like an option, especially since every field will be filtered using associated setter (see below), hovewer there is much more convinient way to perform mass assignment - `setFields` method.
+Such method is allowed to use user data as source (for example directly from request POST), hovewer, entity must be configured previously to specify what fields can be set and what can not.
 
-isFillable
+```php
+//Get entity data from query
+$entity->setFields($this->input->query);
+```
+
+> Method can accept array or Traversable object (meaning you can even pass one entity as source of items for another entity - such thing used in spiral `RequestFilter->populate()` method).
+
+To configure entity and specify what fields can be set we will use specialized behaviour property **fillable**. Let's try to update our entity, to allow filling "name": 
+
+```php
+class DemoEntity extends \Spiral\Models\DataEntity
+{
+    /**
+     * @var array
+     */
+    protected $fillable = ['name'];
+
+    /**
+     * @param array $fields
+     */
+    public function __construct(array $fields)
+    {
+        //No setters/accessors will be called
+        $this->fields = $fields;
+    }
+}
+```
+
+Now, we can set entity name by entering it's value in our browser url query part. 
+
+> There is second entity property **secured** which specifies what fields are **not allowed** to be set, by default it equals to "*" - meaning no fields can be set unless specified in **fillable** property, set secured property as empty array to make every property fillable (if you really need that).
+
+### isFillable
+DataEntity controls mass assigment access using protected method `isFillable`, you can ovewrite it to define custom field access logic.
+> Tip: ORM and ODM models can inherit values of fillable and secured properties from it's parents.
 
 ## Getters
 
+
 ## Setters
 
+
 ## Accessors
+
+```php
+interface AccessorInterface extends ValueInterface, \JsonSerializable
+{
+    /**
+     * Accessors creation flow is unified and must be performed without Container for performance
+     * reasons.
+     *
+     * @param mixed  $data
+     * @param object $parent
+     * @throws AccessorExceptionInterface
+     */
+    public function __construct($data, $parent);
+
+    /**
+     * Must embed accessor to another parent model. Allowed to clone itself.
+     *
+     * @param object $parent
+     * @return static
+     * @throws AccessorExceptionInterface
+     */
+    public function embed($parent);
+
+    /**
+     * Change mocked data.
+     *
+     * @param mixed $data
+     * @throws AccessorExceptionInterface
+     */
+    public function setData($data);
+
+    /**
+     * Serialize mocked data to be stored in database or retrieved by user.
+     *
+     * @return mixed
+     * @throws AccessorExceptionInterface
+     */
+    public function serializeData();
+}
+```
+
+> Attention, ORM and ODM declares their own accessor interfaces with additional methods and features. 
+
+## Public Data
+
+## Converting Entity to JSON
 
 ## Raw Model Data
 
 ## Validations
-
-
 
 ## Magic Methods
 
@@ -197,7 +280,7 @@ table      | ORM only, table name associated with model.
 collection | ODM only, collection name associated with model.
 orm        | ORM components, only for Record models.
 odm        | ODM component, only for Document models.
-parent  | Parent Document/Composition, for ODM models only.
+parent     | Parent Document/Composition, for ODM models only.
 
 > You are still able to use `getField` and `setField` methods without limitations.
 
@@ -205,8 +288,3 @@ parent  | Parent Document/Composition, for ODM models only.
 ORM, ODM, RequestFilter
 
 ## Events
-
-## Traits
-
-## Entity Reflection
-
