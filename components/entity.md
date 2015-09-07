@@ -192,7 +192,7 @@ errors     | Validation errors.
 schema     | Used by ORM, ODM and RequestFilter entities to describe model behaviour.
 indexes    | ORM and ODM only, set of indexed to be created in related table/collection.
 defaults   | ORM and ODM only, set of default values for model fields.
-datatabe   | ORM and ODM only, daatabase name associated with model.
+database   | ORM and ODM only, daatabase name associated with model.
 table      | ORM only, table name associated with model.
 collection | ODM only, collection name associated with model.
 orm        | ORM components, only for Record models.
