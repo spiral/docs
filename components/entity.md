@@ -177,7 +177,7 @@ foreach ($entity as $field => $value) {
 ```
 
 ### Reserved Names
-Following field names are reserved for model behaviour definition and can not be accessed using magic get **inside** model:
+Following field names are reserved for model behaviour definition and can not be accessed using magic get/set **inside** model:
 
 Field      | Description 
 ---        | ---  
