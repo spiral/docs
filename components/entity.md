@@ -183,7 +183,7 @@ Field      | Description
 ---        | ---  
 hidden     | List of fields must be hidden from publicFields() method.
 fillable   | Set of fields allowed to be filled using setFields() method.
-secured    | List of fields not allowed to be filled by setFields() method. By default no fields can be set. Replace with and empty array to allow all fields.
+secured    | List of fields not allowed to be filled by setFields() method.
 setters    | Field setters.
 getters    | Field getters.
 accessors  | Accessors used to mock field data and filter every request thought itself.
