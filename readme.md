@@ -50,13 +50,13 @@
     * Schema Writers
     * Migrations
 * Spiral ORM
+    * Overview
     * **Record Model**
     * Relations
-    * Passive/Active schemas
 * Spiral ODM
+    * Overview 
     * **Document Model**
-    * Compositions
-    * Aggregations
+    * Compositions and Aggregations
     * JSON Documents (integration with ORM)
     * [UML Export] (odm/uml.md)
 * Modules and Extensions
