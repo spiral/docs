@@ -161,6 +161,7 @@ $entity->setFields($this->input->query);
 
 > Method can accept array or Traversable object (meaning you can even pass one entity as source of items for another entity - such thing used in spiral `RequestFilter->populate()` method).
 
+You have to use set field method, or static method "create" of ORM and ODM entities to create entity based on user input.
 To configure entity and specify what fields can be set we will use specialized behaviour property **fillable**. Let's try to update our entity, to allow filling "name": 
 
 ```php
@@ -199,7 +200,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
     protected $fillable = ['name'];
 
     protected $setters = [
-        'name'    => ['self', 'camelize'],
+        'name'    => ['self', 'uppercase'],
         'another' => 'intval'
     ];
 
@@ -212,7 +213,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
         $this->fields = $fields;
     }
 
-    protected function camelize($name)
+    protected function uppercase($name)
     {
         //We can use "self" keyword to call such
         //method in valid object context
@@ -245,10 +246,35 @@ public function index(Database $default)
 > Setters are extremelly halpful when you want to store your entity data with preserved field types (for example for MongoDB).
 
 ## Getters (filter functions)
+Similar to setters you can define set of filters to be executed inside `getField` and `getFields` methods. 
 
+```php
+class DemoEntity extends \Spiral\Models\DataEntity
+{
+    protected $fillable = ['name'];
 
+    protected $setters = [
+        'name' => 'strtoupper'
+    ];
 
+    protected $getters = [
+        'name' => 'strtolower'
+    ];
 
+    /**
+     * @param array $fields
+     */
+    public function __construct(array $fields)
+    {
+        //No setters/accessors will be called
+        $this->fields = $fields;
+    }
+}
+```
+
+Now our entity will store name always in uppercase form, but lowercased value will be returned when you will try to read such value.
+
+> Getters are more rare than setters, hovewer they are useful with loosely typed databases (MySQL, SQLite and etc), for example boolean value stored in MySQL will be returned as "1" (string one), using getters can help us to ensure it's always boolean.
 
 ## Accessors
 
