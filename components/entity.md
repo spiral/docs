@@ -1,11 +1,11 @@
 # DataEntity Model
-Most of spiral classes like ORM, ODM and HTTP request models extends one common parent - DataEntity model. Such class is one of the basic application cells used to provide set of wrappers and operations related to array dataset.
+Most of Spiral classes like ORM, ODM and HTTP request models extend one common parent - DataEntity model. This class is one of the basic application cells used to provide a set of wrappers and operations related to the array dataset.
 
 ## Purpose
-DataEntity model reponsible for mocking and providing access to array dataset - fields (associated array) using set of getters, setters and accessors. In addition to that model provides way to apply mass assigment to fields (using black/white lists), get all model fields as one array, get list of "public" fields (allowed to be send to client using whitelist) and to be converted into JSON. In addition to that model support [field validation] (validation.md) based on set of defined rules.
+DataEntity model is responsible for mocking up and providing access to the array dataset - fields (associated with the array) that use a set of getters, setters and accessors. In addition, this model provides a way to apply mass assigment to fields (using black/white lists), get all model fields as one array, get a list of all "public" fields (that can be sent to client using a whitelist) and to be converted into JSON. In addition, the model support [field validation] (validation.md) is based on a set of defined rules.
 
 ## Interfaces
-Due DataEntity class used widely across spiral framework you might create your own code to communicate with it. Instead of using DataEntity class itself you can stick to it's primary interface:
+Because the DataEntity class is used widely across the Spiral framework, you may want to create your own code to communicate with it. Instead of using DataEntity class by itself, you can stick with it's primary interface:
 
 ```php
 interface EntityInterface extends \ArrayAccess, ValidatesInterface
@@ -38,7 +38,7 @@ interface EntityInterface extends \ArrayAccess, ValidatesInterface
     public function getField($name, $default = null);
 
     /**
-     * Update entity fields using mass assignment. Only allowed fields must be set.
+     * Update entity fields using mass assignment. Only allowed fields should be set.
      *
      * @param array|\Traversable $fields
      * @throws EntityExceptionInterface
@@ -55,7 +55,7 @@ interface EntityInterface extends \ArrayAccess, ValidatesInterface
 }
 ```
 
-Due EntityInterface extends ValidatesInterface we better show it's content too:
+Because EntityInterface extends ValidatesInterface, we have to show it's content as well:
 
 ```php
 interface ValidatesInterface
@@ -75,7 +75,7 @@ interface ValidatesInterface
     public function hasErrors();
 
     /**
-     * List of errors associated with parent field, every field must have only one error assigned.
+     * List of errors associated with parent field. Every field can only have one error assigned.
      *
      * @param bool $reset Force re-validation.
      * @return array
@@ -85,7 +85,7 @@ interface ValidatesInterface
 ```
 
 ## Entity Fields
-Every entity must work with set of mocked fields, such fields can be represented as associated array and stored in property "fields". Knowing that we can create our simple entity used to mock some data array:
+Every entity must work with a set of mocked up fields. These fields can be represented as an associated array and stored in the property "fields". Knowing this, we can create a simple entity used to mock up some data array:
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -101,7 +101,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-Such entity provides ability to set fields using contructor method (attention, fields will be set without any filtering). Now we can use such entity somewhere in our code:
+This entity provides the ability to set fields using a contructor method (Pay attention, that the fields will be set without any filtering). Now we can use this entity somewhere in our code:
 
 ```php
 public function index()
@@ -115,10 +115,10 @@ public function index()
 }
 ```
 
-One we have our entity constructed we can walk thought set of methods designed to work with our field values.
+Once we have constructed our entity, we can walk through a set of methods designed to work with our field values.
 
 ### Check field existence
-If you want to check if desired field exists in model, you can use method `hasField`.
+If the desired field exists in model, you can use method `hasField`.
 
 ```php
 dump($entity->hasField('name'));
