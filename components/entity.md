@@ -227,7 +227,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 Now, no matter how we trying to assign value of desired field, it will always be casted to desired value:
 
 ```php
-public function index(Database $default)
+public function index()
 {
     $entity = new \DemoEntity([
         'name'    => 'value',
@@ -277,6 +277,9 @@ Now our entity will store name always in uppercase form, but lowercased value wi
 > Getters are more rare than setters, hovewer they are useful with loosely typed databases (MySQL, SQLite and etc), for example boolean value stored in MySQL will be returned as "1" (string one), using getters can help us to ensure it's always boolean.
 
 ## Accessors
+Spiral Entity provides additional way to manage field value - Accessors. Accessor is specified object which is responsible for manipulations with mocked value, the easiest example - timestamp value accessor which can represent numeric value as DataTime (spiral uses [Carbon] (https://github.com/briannesbitt/Carbon)).
+
+Accessors are not really useful outside of ORM and ODM models where we can not only control value, but also tell database how this value must be stored. Hovewer, let's check base interface:
 
 ```php
 interface AccessorInterface extends ValueInterface, \JsonSerializable
@@ -318,7 +321,102 @@ interface AccessorInterface extends ValueInterface, \JsonSerializable
 }
 ```
 
-> Attention, ORM and ODM declares their own accessor interfaces with additional methods and features. 
+> Accessor objects will be returned from getField and getFields methods instead of value.
+
+### Writing an Accessor
+To better undestand how accessor works (it will also help us with next guide sections) let's try to write our own accessor.
+
+```php
+class NameAccessor implements \Spiral\Models\AccessorInterface
+{
+    /**
+     * @var string
+     */
+    private $name = '';
+
+    public function __construct($data, $parent)
+    {
+        $this->name = $data;
+    }
+
+    public function embed($parent)
+    {
+        //We do not need to store parent in this
+        //specific accessor
+        return clone $this;
+    }
+
+    public function setData($data)
+    {
+        //Always in upper form
+        $this->name = strtoupper($data);
+    }
+
+    public function serializeData()
+    {
+        return $this->name;
+    }
+
+    /**
+     * This is why we need accessors.
+     *
+     * @return string
+     */
+    public function niceName()
+    {
+        return ucfirst(strtolower($this->name));
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->niceName();
+    }
+}
+```
+
+Now we can assign such accessor to our field.
+
+```php
+class DemoEntity extends \Spiral\Models\DataEntity
+{
+    protected $fillable = ['name'];
+
+    protected $accessors = [
+        'name' => NameAccessor::class
+    ];
+
+    /**
+     * @param array $fields
+     */
+    public function __construct(array $fields)
+    {
+        //No setters/accessors will be called
+        $this->fields = $fields;
+    }
+}
+```
+
+Let's see what value will be returned by editing code in our controller:
+
+```php
+public function index()
+{
+    $entity = new \DemoEntity([
+        'name'    => 'value',
+        'another' => 123
+    ]);
+
+    $entity->setFields($this->input->query);
+    dump($entity->getFields());
+
+    dump($entity->getField('name')->niceName());
+
+    //Using magic method
+    dump($entity->name->niceName());
+}
+```
+
+> Accessors are also involved in packing entity in json form (see below).
 
 ## Public Data
 
