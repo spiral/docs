@@ -411,7 +411,7 @@ public function index()
 
     dump($entity->getField('name')->niceName());
 
-    //Using magic method
+    //Using magic getter
     dump($entity->name->niceName());
 }
 ```
