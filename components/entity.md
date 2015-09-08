@@ -607,6 +607,9 @@ parent     | Parent Document/Composition, for ODM models only.
 > You are still able to use `getField` and `setField` methods without limitations.
 
 ## DataEntity Implementations
-ORM, ODM, RequestFilter
+As mentioned in section disclaimer DataEntity is common parent for few important spiral models, such models includes ORM `Record`, ODM `Document` and Http `RequestFilter`. As result you can apply same priciples for filtering, validations and etc for any of this model.
+
+> Attention, ORM and ODM models uses static model cache (you have to run `spiral up` to update it), as result you are able to inherit entity behaviours from it's parents including fillable, hidden fields, validations and their messages and etc. 
 
 ## Events
+Every data entity model support event dispatching associated with model class, you can find list of available events and their arguments in ORM and ODM sections.
