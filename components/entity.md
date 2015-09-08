@@ -189,7 +189,7 @@ Now, we can set entity name by entering it's value in our browser url query part
 
 ### isFillable
 DataEntity controls mass assigment access using protected method `isFillable`, you can ovewrite it to define custom field access logic.
-> Tip: ORM and ODM models can inherit values of fillable and secured properties from it's parents.
+> Tip: ORM and ODM models can inherit values of fillable and secured properties from it's parents. You can also check what fields are public and fillable in ORM and ODM models via set of inspect commands in CLI toolkit.
 
 ## Setters (filter functions)
 In many cases you might want to filter value assigned to some specified field, for example to perform type casting or some value manipulations. You can either write your own access method like "setName($name)" or use specialized entity behaviour - **setters**. Such behaviour described in setters property and applied to field inside `setField` and `setFields` method. Let's try to apply some filter for our "name" and "another" fields.
@@ -419,10 +419,73 @@ public function index()
 > Accessors are also involved in packing entity in json form (see below).
 
 ## Public Data
+Usually you might want to hide some fields from being show to user, most often scenariou when you want to send your object in JSON form. To hide some fields from being published we can use property "hidden", let's try to hide "another" field:
+
+```php
+class DemoEntity extends \Spiral\Models\DataEntity
+{
+    protected $hidden = ['another'];
+
+    protected $fillable = ['name'];
+
+    protected $accessors = [
+        'name' => NameAccessor::class
+    ];
+
+    /**
+     * @param array $fields
+     */
+    public function __construct(array $fields)
+    {
+        //No setters/accessors will be called
+        $this->fields = $fields;
+    }
+}
+```
+
+Now, we can get list of public fields by executing method `publicFields` of our entity:
+
+```php
+public function index()
+{
+    $entity = new \DemoEntity([
+        'name'    => 'value',
+        'another' => 123
+    ]);
+
+    $entity->setFields($this->input->query);
+    dump($entity->publicFields());
+}
+```
+
+> ORM and ODM models can inherit hidden fields from it's parents. You can check what fields are public and fillable in ORM and ODM models via set of inspect commands in CLI toolkit.
 
 ## Converting Entity to JSON
+Every data entity object can be freely converted into JSON, you can either pack result of `getFields` or `publicFields` into array, or try to json_encode entity itself.
+When entity beign encoded, only it's public fields will be included into resulted JSON. We are going to use ability of HttpDispatcher to convert all JsonSerializable objects into json response:
+
+```php
+public function index()
+{
+    $entity = new \DemoEntity([
+        'name'    => 'value',
+        'another' => 123
+    ]);
+
+    $entity->setFields($this->input->query);
+    
+    return $entity;
+}
+```
+
+You might notice that only name were included into json, in addition to that your name will be capitalized as it's value will be packed into json form by related accessor.
 
 ## Raw Model Data
+If you wish to get entity fields in array form bypassing all getters and accessors you can use method `serializeData`, such method widely used in ORM and ODM to send entity fields into database.
+
+```php
+dump($entity->serializeData());
+```
 
 ## Validations
 
