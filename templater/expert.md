@@ -1,15 +1,15 @@
 # Extended Templater Usage
-As you might assume based on this tutorial section title, basic templater features like template inheritance is only one part of templater (to be honest pretty small part of it). In additon to generic features covered in [basic templater tutorial] (basics.md) you are able to create and import so called virtual tags or widgets. Such widgets created as usual views and can be located inside your application or provided by [module] (/components/modules.md).
+As you might assume based on this tutorial section title, basic templater features like template inheritance are only one part of the templater (to be honest a pretty small part of it). In additon, to generic features covered in [basic templater tutorial] (basics.md) you are able to create and import so called virtual tags or widgets. Such widgets are created as normal views and can be located inside your application or provided by a [module] (/components/modules.md).
 
 ## Widget/tag creation 
-If you rememeber based on information provided by [Basic Templater Usage] (basic.md) templater handles situation with extending parent layouts and preventing in-view includes like:
+If you remember, based on information provided by [Basic Templater Usage] (basic.md) templater handles situation with extending parent layouts and preventing in-view includes like:
 
 ```php
 Some content...
 <?= $this->container->views->render('another-view', [...]) ?>
 ```
 
-This simplifies view definition when we are talking about footers, headers and navigations, hovewer there is many situations when including another view can give us benefits. For example we can create unviversal view to render some news feed or display comment and etc. Let's start with very simple example and say that we want to have view dedicated to render newsline in many different parts of website, let's try to locate such view into "application/views/elements/feed.php".
+This simplifies view definition when we are talking about footers, headers and navigations, however there is many situations when including another view can give us benefits. For example we can create unviversal view to render some news feed or display comment and etc. Let's start with very simple example and say that we want to have view dedicated to render newsline in many different parts of website, let's try to locate such view into "application/views/elements/feed.php".
 
 ```html
 <div class="news">
@@ -107,14 +107,14 @@ Attention, you you can not pass php variables into templater blocks without maki
 > You can use exacly same pricinciples of block definition and block value passing as described in Basic Templater Usage.
 
 ## Context block
-Let's try to make our example more complex, so far we was able to import existed view and pass some compilation parameters into it. Hovewer such parametes does not allow
+Let's try to make our example more complex, so far we was able to import existed view and pass some compilation parameters into it. However such parametes does not allow
 us to pass custom html code code inside our element. Let's say that we want to have special element (commonly used) to format some block of text, we can call it "elements/formatter":
 
 ```html
 <div class="${class}" style="color: ${color|red}; text-transform: capitalize">${context}</div>
 ```
 
-We can use and import such element into our demo view same way we did for news feed, hovewer in this case we are going to use long tag defintion with opening and closing parts:
+We can use and import such element into our demo view same way we did for news feed, however in this case we are going to use long tag defintion with opening and closing parts:
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
@@ -222,7 +222,7 @@ You can use other parameters for node:attribues, for example `node:attributes="i
 In many cases you might want to include multiple widgets under same name or namespaces rather that doing it for each element. Spiral provides few alternative syntaxes to do that.
 
 ### Create wigdet namespace
-We already imported our element under name "form:input", hovewer spiral provides to import every folder element under desired namespace:
+We already imported our element under name "form:input", however spiral provides to import every folder element under desired namespace:
 
 ```html
 <use path="elements" namespace="form"/>
@@ -355,7 +355,7 @@ In many cases we would to give of widgets more flexibility, not only ability to 
 </div>
 ```
 
-You can check that no span is rendered if no label attribute provided to widget. Hovewer such code is not really reliable as it will fail it label will include " symbols or php code. Fortunatelly we can always use buffering:
+You can check that no span is rendered if no label attribute provided to widget. However such code is not really reliable as it will fail it label will include " symbols or php code. Fortunatelly we can always use buffering:
 
 ```html
 <div class="form-input">

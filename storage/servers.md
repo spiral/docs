@@ -71,7 +71,7 @@ Setting "public" option to true will make every uploaded file available for acce
 > Amazon and Rackspace servers was written originally in 2011, if you wish to update their code to use official SDK - you will be much appriciated.
 
 ## Rackspace Files
-Rackspace server uses same Guzzle package to perform requests, hovewer due rackspace requires additional query to fetch available buckets and generate access token it declares additional dependency with CacheStore to be remember such token and buckets list.
+Rackspace server uses same Guzzle package to perform requests, however due rackspace requires additional query to fetch available buckets and generate access token it declares additional dependency with CacheStore to be remember such token and buckets list.
 
 Example server definition:
 

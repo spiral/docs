@@ -1,7 +1,7 @@
 # Framework Modules and Extensions
 Spiral Framework provides powerful base for writing and mounting your modules/extension packages, such packages can simply add new functionality or even signifcanlty alter framework flow using custom bindings.
 
-> Disclaimer: i have to admit that "modules" is not the best name, "extension" or "packages" will be much better, hovewer a lot of legacy code already uses this name. Let's stick to name "modules" with allowance to use "extensions" periodically.
+> Disclaimer: i have to admit that "modules" is not the best name, "extension" or "packages" will be much better, however a lot of legacy code already uses this name. Let's stick to name "modules" with allowance to use "extensions" periodically.
 
 ## General Princible
 Spiral modules are managed and bootloaded in runtime using ModuleManager component which is available using short binding "modules". Such component mounted in Core autoloaded list and executed before your application `bootstrap()` method. Every registered module automatically added into configuration file "modules" which, in usual scenario, looks like:
@@ -266,7 +266,7 @@ If you wish your module to mount some component bindings you can use installer m
 $installer->addBinding('sample', self::class);
 ```
 
-> Installer bindings support only simple string definions and mounted by ModuleManager (not by module itself), hovewer due you can implement SingletonInterface by your extension classes you can avoid using bootstrap method and make your module loaded on demand. 
+> Installer bindings support only simple string definions and mounted by ModuleManager (not by module itself), however due you can implement SingletonInterface by your extension classes you can avoid using bootstrap method and make your module loaded on demand. 
 
 ```php
 class SampleModule extends Module implements SingletonInterface
@@ -367,7 +367,7 @@ $installer->registerConfig($container->construct(ConfigWriter::class, [
 
 You might notice parameter "method", such parameter tells to ConfigWriter how it must process situations where configuration already exists, in our case it will merge existed (project specific) configuration with module one on order to keep project specific values (you can also use different method to replace existed config or even create your own implementation of ConfigWriter to perfom more controllable merge).
 
-You might link your ConfigWriter to existed framework configuration to automatically alter it's values during installation, hovewer it's much more reliable to use specialized config writers, in our case let's say that our module want to make it's view files available under namespace "sample".
+You might link your ConfigWriter to existed framework configuration to automatically alter it's values during installation, however it's much more reliable to use specialized config writers, in our case let's say that our module want to make it's view files available under namespace "sample".
 
 First of all we can create our view in "application/classes/Modules/Sample/views" directory (i'v created view named "test"). Once it's done we can alter our installer and register `ViewConfig` writer. Such writer will only required us to specify base module directory and expose nice methods to manulate with namespaces:
 

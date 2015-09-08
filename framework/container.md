@@ -59,7 +59,7 @@ public function index(UserMailer $mailer)
 > In additional to that spiral controllers and services support `init` method where you can put your dependencies without overwriting default constructor.
 
 ### Bindings
-In given example we simply constructed instance of `UserMailer` without any additional operations, hovewer in many cases (especially in spiral core components), 
+In given example we simply constructed instance of `UserMailer` without any additional operations, however in many cases (especially in spiral core components), 
 class may declare dependency with interface rather than class:
 
 ```php

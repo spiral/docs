@@ -86,7 +86,7 @@ log handlers using debug configuraion:
 ],
 ```
 
-As you can see you are able to assing handler to specific channels and log levels, hovewer this way has some limitations - all used handlers must implement instance of `HandlerInterface` in order to be properly created and configured:
+As you can see you are able to assing handler to specific channels and log levels, however this way has some limitations - all used handlers must implement instance of `HandlerInterface` in order to be properly created and configured:
 
 ```php
 interface HandlerInterface
@@ -187,7 +187,7 @@ class TestService extends Service
 
 > Attention, benchmarking will work only if `Spiral\Debug\BenchmarkerInterface` defined in your application, Profiler module will define such class automatically when being initialized.
 
-Benchmarking functionality may look not so useful, hovewer most critical part of spiral (queries, adapter creations, storage manipulations) are covered with them, as result you can use Profiler module and it's panel to view timeline of your application:
+Benchmarking functionality may look not so useful, however most critical part of spiral (queries, adapter creations, storage manipulations) are covered with them, as result you can use Profiler module and it's panel to view timeline of your application:
 
 ```php
 public function index(Database $db)

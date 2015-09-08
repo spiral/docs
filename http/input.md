@@ -11,7 +11,7 @@ public function index(ServerRequestInterface $request)
 }
 ```
 
-Hovewer, PSR7 implemetation is not very user friendly in some cases, spiral provides framework specific component `InputManager` used to simplify reading
+however, PSR7 implemetation is not very user friendly in some cases, spiral provides framework specific component `InputManager` used to simplify reading
 request properties, InputManager can be retrieved using it's class name or short binding "input". Let's rerwite previous example using input manager:
 
 ```php

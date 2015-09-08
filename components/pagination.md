@@ -2,7 +2,7 @@
 Results pagination is one of the most imporant part of any project interface. Spiral trying to clearly separate pagination process by itself and way used to represent pagination in template or page.
 
 ## Paginable Objects
-If you wish to apply pagination to your data source/object, you only have to implement `PaginableInterface` which requires few methods to be defined. In addtion to that, object must expose `count` method (hovewer this method might not be used by countless paginators):
+If you wish to apply pagination to your data source/object, you only have to implement `PaginableInterface` which requires few methods to be defined. In addtion to that, object must expose `count` method (however this method might not be used by countless paginators):
 
 ```php
 interface PaginableInterface extends \Countable
@@ -152,7 +152,7 @@ public function index($page = 1)
 ```
 
 ## Render paginator on page
-Spiral does include rendering logic into pagination class itself, you have to render page range by youself. Luckily, if you have installed module `spiral/toolkit` you can use [virtual templater tag/widget] (/templater/extended.md) for such purposes. Such widget located in 'spiral:paginator' tag and can accept both `PaginableInterface` and `PaginatorInterface` as source hovewer it can work only with default spiral `Paginator` class.
+Spiral does include rendering logic into pagination class itself, you have to render page range by youself. Luckily, if you have installed module `spiral/toolkit` you can use [virtual templater tag/widget] (/templater/extended.md) for such purposes. Such widget located in 'spiral:paginator' tag and can accept both `PaginableInterface` and `PaginatorInterface` as source however it can work only with default spiral `Paginator` class.
 
 ```php
 public function index()

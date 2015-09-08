@@ -158,7 +158,7 @@ class HomeController extends Controller
 }
 ```
 
-Given trait will declare static method "translate" available for you and similar by usage to short function `l`, hovewer class name will be used instead of default bundle.
+Given trait will declare static method "translate" available for you and similar by usage to short function `l`, however class name will be used instead of default bundle.
 Method is public and can be used outside of parent class:
 
 ```php

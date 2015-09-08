@@ -169,7 +169,7 @@ If we will try to render our about us page now (do not forget to reset cache) we
 </block:footer>
 ```
 
-This methodic can work with some simple blocks, hovewer in more complex cases it might look useless, let's try to imagine that we would to use additional CSS style for about us page. We can do that, by redefining block resources:
+This methodic can work with some simple blocks, however in more complex cases it might look useless, let's try to imagine that we would to use additional CSS style for about us page. We can do that, by redefining block resources:
 
 ```html
 <extends:layouts.basic title="About Us"/>
@@ -441,7 +441,7 @@ If already read about ViewManager, it's cache dependencies and processors, you m
 <extends view:parent="layouts/@{layout}"/>
 ```
 
-Rendered template will look exactly as before, hovewer now we can try to create different layout with new markup and resources, let's put into "layouts/mobile":
+Rendered template will look exactly as before, however now we can try to create different layout with new markup and resources, let's put into "layouts/mobile":
 
 ```html
 <!DOCTYPE html>
