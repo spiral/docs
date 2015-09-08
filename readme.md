@@ -26,6 +26,7 @@
 * Framework Components
     * [Cache] (components/cache.md)
     * [Debug (Loggers, Benchmarks, Dumps)] (components/debug.md)
+    * [**DataEntity Model**] (components/entity.md)
     * [Encrypter] (components/encrypter.md)
     * [Events] (components/events.md)
     * [Files] (components/files.md)
@@ -36,7 +37,6 @@
     * [Reactor] (components/reactor.md)
     * [Modules] (components/modules.md)
     * [**Validation**] (components/validation.md)
-    * DataEntity model
 * Templater
     * [**Basic Usage**] (templater/basics.md)
     * [Extended Usage (virtual tags, tips and tricks)] (templater/expert.md)
@@ -44,7 +44,7 @@
     * [**Buckets and Objects**] (storage/overview.md)
     * [Storage Servers] (storage/servers.md)
 * Databases
-    * Overview 
+    * Overview
     * Query Builders
     * [Schema Readers] (database/reading.md)
     * Schema Writers
