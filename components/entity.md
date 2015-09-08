@@ -190,10 +190,64 @@ Now, we can set entity name by entering it's value in our browser url query part
 DataEntity controls mass assigment access using protected method `isFillable`, you can ovewrite it to define custom field access logic.
 > Tip: ORM and ODM models can inherit values of fillable and secured properties from it's parents.
 
-## Getters
+## Setters (filter functions)
+In many cases you might want to filter value assigned to some specified field, for example to perform type casting or some value manipulations. You can either write your own access method like "setName($name)" or use specialized entity behaviour - **setters**. Such behaviour described in setters property and applied to field inside `setField` and `setFields` method. Let's try to apply some filter for our "name" and "another" fields.
+
+```php
+class DemoEntity extends \Spiral\Models\DataEntity
+{
+    protected $fillable = ['name'];
+
+    protected $setters = [
+        'name'    => ['self', 'camelize'],
+        'another' => 'intval'
+    ];
+
+    /**
+     * @param array $fields
+     */
+    public function __construct(array $fields)
+    {
+        //No setters/accessors will be called
+        $this->fields = $fields;
+    }
+
+    protected function camelize($name)
+    {
+        //We can use "self" keyword to call such
+        //method in valid object context
+        return strtoupper($name);
+    }
+}
+```
+
+> As you can see you can any valid `call_user_function` callback to descrive setters. Please note, setters is filter functions, you should not execute setField inside setter method as it can be used in many places, return filtered value instead. 
+
+Now, no matter how we trying to assign value of desired field, it will always be casted to desired value:
+
+```php
+public function index(Database $default)
+{
+    $entity = new \DemoEntity([
+        'name'    => 'value',
+        'another' => 123
+    ]);
+
+    $entity->setFields($this->input->query);
+
+    //Another can not be filled using mass assignment
+    $entity->setField('another', '12345');
+
+    dump($entity);
+}
+```
+
+> Setters are extremelly halpful when you want to store your entity data with preserved field types (for example for MongoDB).
+
+## Getters (filter functions)
 
 
-## Setters
+
 
 
 ## Accessors
