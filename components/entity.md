@@ -481,17 +481,98 @@ public function index()
 You might notice that only name were included into json, in addition to that your name will be capitalized as it's value will be packed into json form by related accessor.
 
 ## Raw Model Data
-If you wish to get entity fields in array form bypassing all getters and accessors you can use method `serializeData`, such method widely used in ORM and ODM to send entity fields into database.
+If you wish to get entity fields in array form bypassing all getters and accessors you can use method `serializeData`, such method widely used in ORM and ODM to send entity fields into database - be very careful overwriting it.
 
 ```php
 dump($entity->serializeData());
 ```
 
 ## Validations
+Every DataEntity automatically includes ability to validate it's data. Validation rules must be described in **validates** property and might also include error messages embraced with `[[]]`, such messages will be automatically localized into active translator language. Let's try to specify few validation rules for our "name" field.
+
+```php
+class DemoEntity extends \Spiral\Models\DataEntity
+{
+    protected $hidden = ['another'];
+
+    protected $fillable = ['name'];
+
+    protected $accessors = [
+        'name' => NameAccessor::class
+    ];
+
+    protected $validates = [
+        'name' => [
+            'notEmpty',
+            ['string::longer', 3, 'message' => '[[Name is too short (min 3 symbols).]]']
+        ]
+    ];
+
+    /**
+     * @param array $fields
+     */
+    public function __construct(array $fields)
+    {
+        //No setters/accessors will be called
+        $this->fields = $fields;
+    }
+}
+```
+
+Now we can check if our entity is valid and get error messages in our controller code (you can play with url query to produce different values):
+
+```php
+public function index()
+{
+    $entity = new \DemoEntity([
+        'name'    => 'value',
+        'another' => 123
+    ]);
+
+    $entity->setFields($this->input->query);
+
+    dump($entity->isValid());
+    dump($entity->getErrors());
+}
+```
+
+
+You can read more about validation rules [here] (validation.md).
+
+> There is specialized DataEntity used to validate incoming request - [RequestFilter] (/http/filters.md).
+
+### Complex validations
+If you want to perform context aware validation you can ovewrite entity method `validate` and add your own custom logic:
+
+```php
+protected function validate($reset = false)
+{
+    parent::validate($reset);
+
+    if (mt_rand(0, 1)) {
+        $this->setError('random', 'Some random error');
+    }
+}
+```
 
 ## Magic Methods
+In addition to getField/getField methods data entity exposes set of magic getters, setters and method to access your fields. For example you can read or write any entity value using `__get` or `__set` methods:
 
-In addtion to that, every data entity uses getFields method as source for array iterator, as result we can do something like that:
+```php
+$entity->name = 'new name';
+dump($entity->name->niceName());
+```
+
+Besides that, entity will use [Doctrine Inflector] (https://github.com/doctrine/inflector) to create set of magic getter and setter methods (attention, this is not the same as getter/setter filters), as result you can access to your fields like that:
+
+```php
+$entity->setName('new name');
+dump($entity->getName()->niceName());
+```
+
+> Attention, DataEntity will convert all field names into camelCase notation, however ORM will use tableize form (field_name) based on set/get function name.
+
+In addtion to that, every data entity uses `getFields` method as source for array iterator, as result we can do something like that:
 
 ```php
 foreach ($entity as $field => $value) {
