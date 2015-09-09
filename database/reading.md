@@ -1,5 +1,5 @@
 # Database / Schema Readerin
-Spiral Database layer (in future DBAL) provides ability to read and analyzie basic properties of given database or given table. In addition to providing set of values specific to analyzed database schema readers will convert DBMS specific set of types to limited set of "abstract" types available for user.
+Spiral Database layer provides ability to read and analyzie basic properties of given database or given table. In addition to providing set of values specific to analyzed database schema readers will convert DBMS specific set of types to limited set of "abstract" types available for user.
 
 ## List of database tables
 Once you received an instance of `Database` you can check if the desired table exists using the `hasTable` method.
