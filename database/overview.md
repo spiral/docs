@@ -143,7 +143,7 @@ public function index(DatabaseManager $dbal)
 ```
 
 ### Controllable Injections
-You might remember one specific feature of [Spiral IoC container] (/framework/container.md) - controllable injections. Such feature provides ability to resolve dependency in constructor and method injections based on context parameter. Database component support such feature and uses parameter name to resolve database. Such ability can simplify our code a lot and makes possible to write controller actions like:
+You might remember one specific feature of [Spiral IoC container] (/framework/container.md) - controllable injections. Such feature provides ability to resolve dependency in constructor and method injections based on context parameter. Database component support such feature and uses parameter name to resolve database. This ability can simplify our code a lot and makes possible to write controller actions like:
 
 ```php
 public function index(Database $database, Database $primary, Database $slave)
