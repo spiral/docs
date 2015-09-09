@@ -44,19 +44,19 @@
     * [**Buckets and Objects**] (storage/overview.md)
     * [Storage Servers] (storage/servers.md)
 * Databases
-    * Overview
+    * [Overview] (database/overview.md)
     * Query Builders
     * [Schema Readers] (database/reading.md)
     * Schema Writers
     * Migrations
 * Spiral ORM
+    * Overview
     * **Record Model**
     * Relations
-    * Passive/Active schemas
 * Spiral ODM
+    * Overview 
     * **Document Model**
-    * Compositions
-    * Aggregations
+    * Compositions and Aggregations
     * JSON Documents (integration with ORM)
     * [UML Export] (odm/uml.md)
 * Modules and Extensions
