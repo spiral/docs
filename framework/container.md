@@ -2,6 +2,8 @@
 Spiral provides simplistic implementation of IoC container with ability to construct requested classes, bind instance resolvers and singletons. Container fully
 support constructor and method injections and can be used in every day development.
 
+> Disclaimer: spiral mainly use container as injector and class constructor rather that container with set of bindings (even more, string bingings like `ContainerInterface->get("something")` are highly forbidden in spiral core components, only named class requests are allowed - `ContainerInterface->get(SomeService::class)`). Spiral application might perfectly work without any binding defined outside of alises and interfaces configured in default spiral core.
+
 ## Accessing Container
 You can request instance of spiral container by defining `ContainerInterface` depency in constructor of your class. If you working under spiral application
 based on framework bundle, you will be able to access global container using binding "core" or requesting instance of `Core` or `Application` due both of this classes
