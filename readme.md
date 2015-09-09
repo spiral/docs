@@ -45,9 +45,9 @@
     * [Storage Servers] (storage/servers.md)
 * Databases
     * [Overview] (database/overview.md)
-    * Query Builders
     * [Schema Readers] (database/reading.md)
     * Schema Writers
+    * Query Builders
     * Migrations
 * Spiral ORM
     * Overview
