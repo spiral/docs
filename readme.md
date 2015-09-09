@@ -44,7 +44,7 @@
     * [**Buckets and Objects**] (storage/overview.md)
     * [Storage Servers] (storage/servers.md)
 * Databases
-    * Overview
+    * [Overview] (database/overview.md)
     * Query Builders
     * [Schema Readers] (database/reading.md)
     * Schema Writers
