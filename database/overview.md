@@ -23,7 +23,7 @@ Table         | Represent table level abstraction with simplified access to Sele
 QueryBuilder  | [QueryBuilder classes] (builders.md) generate set of control tokens for query compilers, this is query level abstraction.
 QueryResult   | Wraps at top of PDOStatements and provides ability to iterate though results.
 
-Also you can find set of classes and interfaces used to describe and declare desired table schema, check schema [reading] (reading.md) and writing (syncing.md) classes.
+Also you can find set of classes and interfaces used to describe and declare desired table schema, check schema [reading] (reading.md) and [writing] (syncing.md) classes.
 
 ## Configuring
 Spiral Database Component store it's configuration in `application/config/database.php` file by default. We can alter such file to specify needed connections, databases and database aliases.
