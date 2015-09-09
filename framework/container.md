@@ -36,16 +36,16 @@ Based on provided example we can see that class requested dependendy "Mailer", w
 we can dedicate this job to container.
 
 ```php
-    $userMailer = $this->container->get(UserMailer::class);
+$userMailer = $this->container->get(UserMailer::class);
 ```
 
 Container will automatically recolse cascade of dependecies and return us valid instance of `UserMailer`. In some cases, when constructor requires set of 
 dependencies container can not handle (for example some scalar values) we can use another method `construct`:
 
 ```php
-    $userMailer = $this->container->construct(UserMailer::class, [
-        'email' => 'some@email.com'
-    ]);
+$userMailer = $this->container->construct(UserMailer::class, [
+    'email' => 'some@email.com'
+]);
 ```
 
 ### Method injections
