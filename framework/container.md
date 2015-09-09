@@ -1,15 +1,10 @@
 # Spiral IoC Container
-Spiral provides simplistic implementation of IoC container with ability to construct requested classes, bind instance resolvers and singletons. Container fully
+Spiral provides simplistic implementation of IoC container/injector with ability to construct requested classes, bind instance resolvers and singletons. Container fully
 support constructor and method injections and can be used in every day development.
 
-## Accessing Container
-You can request instance of spiral container by defining `ContainerInterface` depency in constructor of your class. If you working under spiral application
-based on framework bundle, you will be able to access global container using binding "core" or requesting instance of `Core` or `Application` due both of this classes
-extends generic container implementation.
+> Disclaimer: spiral mainly use container as injector and class constructor rather that container with set of bindings (even more, string bingings like `ContainerInterface->get("something")` are highly forbidden in spiral core components, only named class requests are allowed - `ContainerInterface->get(SomeService::class)`). Spiral application might perfectly work without any binding defined outside of alises and interfaces configured in default spiral core.
 
-> Most of spiral services, requests and controllers already have internal property "container" which you can use. In addition to that, spiral core will mount itself as global component container and can be accessible statically from any class which implements `Component` using `Component->container()` method - such method will always try to use object specific container first and only then fallback to static global one (in spiral i'm trying to minimize places where you have to use global container).
-
-### Container injection
+### Dependency Injection
 Let's say that we want to create simple class to perfom mailing operation:
 
 ```php
@@ -33,21 +28,19 @@ Based on provided example we can see that class requested dependendy "Mailer", w
 we can dedicate this job to container.
 
 ```php
-    $userMailer = $this->container->get(UserMailer::class);
+$userMailer = $this->container->get(UserMailer::class);
 ```
 
-Container will automatically recolse cascade of dependecies and return us valid instance of `UserMailer`. In some cases, when constructor requires set of 
-dependencies container can not handle (for example some scalar values) we can use another method `construct`:
+Container will automatically resolse cascade of dependecies and return us valid instance of `UserMailer`. Resolved dependencies with either come from set of bindigs (see below) or container will constuct them automatically. In some cases, when class constructor requires set of dependencies container can not handle (for example some scalar values) we can use another method `construct` to specify set of parameter passed int our class:
 
 ```php
-    $userMailer = $this->container->construct(UserMailer::class, [
-        'email' => 'some@email.com'
-    ]);
+$userMailer = $this->container->construct(UserMailer::class, [
+    'email' => 'some@email.com'
+]);
 ```
 
-### Method injections
-By default you can declare bindings in any application class which is going to be resolves using Container, in addition to that both `Controller` and `Command` support
-method injection:
+### Method Injections
+Besides using class consturtor to inject dependecies, container allow you to apply same procedute for some specified class method. Dependency injection on method pre-implemented for you in spiral `Controller` and `Command` classes:
 
 ```php
 public function index(UserMailer $mailer) 
@@ -56,7 +49,7 @@ public function index(UserMailer $mailer)
 }
 ```
 
-> In additional to that spiral controllers and services support `init` method where you can put your dependencies without overwriting default constructor.
+> In additional to that spiral controllers and [services] (application/services.md) support `init` method where you can put your dependencies without overwriting default service constructor. 
 
 ### Bindings
 In given example we simply constructed instance of `UserMailer` without any additional operations, hovewer in many cases (especially in spiral core components), 
@@ -263,5 +256,5 @@ $this->container->restore($outerBinding);
 
 > Container scoping used by `HttpDispatcher` to set active instance of `ServerRequestInterface`.
 
-## What is resolved using container?
+## What is constructed using container?
 Spiral container used to resolve every framework component, service,  controller, command or extenal module, this means you can freely declarate dependies in such classes.

@@ -112,14 +112,7 @@ interface DefinitionInterface
      * @return array
      */
     public function getDependencies();
-
-    /**
-     * Check if module class already registered in modules list (modules config file).
-     *
-     * @return array|bool
-     */
-    public function isInstalled();
-
+    
     /**
      * Module installer responsible for operations like copying resources, registering configs, view
      * namespaces and declaring that Module::bootstrap() call is required.

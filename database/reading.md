@@ -88,6 +88,20 @@ foreach ($schema->getColumns() as $column) {
 
 > Some types can be mapped incorrectly if the table was created outside migrations or ORM. For example only MySQL has native enum support, all other databases use enum constraint.
 
+You can find complete list of available abstract types [here] (syncing.md).
+
+## Interfaces
+If you want to make your code does not depend of specific implementation, you always talk to schemas using DBAL of interfaces.
+
+| Interface                                        | Description 
+| ---                                              | ---
+| Spiral\Database\DatabaseInterface                | High level abstraction used to represent single database with ability to get it's tables and run queries.
+| Spiral\Database\TableInterface                   | Table level abstraction linked to existed or not existed database table.
+| Spiral\Database\Schemas\TableInterface           | Represent table schema with it's all columns, indexes and foreign keys.
+| Spiral\Database\Schemas\ColumnInterface          | Must represent table schema column abstraction.
+| Spiral\Database\Schemas\IndexInterface           | Represent single table index associated with set of columns.
+| Spiral\Database\Schemas\ReferenceInterface       | Represents single foreign key and it's options.
+
 ## Console Commands
 You can also use console commands to get information about configured tables and their schemas:
 

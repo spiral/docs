@@ -26,6 +26,7 @@
 * Framework Components
     * [Cache] (components/cache.md)
     * [Debug (Loggers, Benchmarks, Dumps)] (components/debug.md)
+    * [**DataEntity Model**] (components/entity.md)
     * [Encrypter] (components/encrypter.md)
     * [Events] (components/events.md)
     * [Files] (components/files.md)
@@ -38,28 +39,24 @@
     * [**Validation**] (components/validation.md)
 * Templater
     * [**Basic Usage**] (templater/basics.md)
-    * Extended Usage (virtual tags, tips and tricks)
+    * [Extended Usage (virtual tags, tips and tricks)] (templater/expert.md)
 * Storage Manager
     * [**Buckets and Objects**] (storage/overview.md)
     * [Storage Servers] (storage/servers.md)
 * Databases
-    * Overview 
-    * Query Builders
+    * [Overview] (database/overview.md)
     * [Schema Readers] (database/reading.md)
     * Schema Writers
+    * Query Builders
     * Migrations
-* Data Entities
-    * Overview
-    * Filters and Accessors
-    * Validation
 * Spiral ORM
+    * Overview
     * **Record Model**
     * Relations
-    * Passive/Active schemas
 * Spiral ODM
+    * Overview 
     * **Document Model**
-    * Compositions
-    * Aggregations
+    * Compositions and Aggregations
     * JSON Documents (integration with ORM)
     * [UML Export] (odm/uml.md)
 * Modules and Extensions

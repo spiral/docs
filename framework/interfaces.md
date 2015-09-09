@@ -18,7 +18,7 @@ Spiral Framework bundle built on top of Spiral Components and provides a set of 
 | Spiral\Encrypter\EncrypterInterface              | Provides ability to encrypt, decrypt values and generate random strings.
 | Spiral\Events\DispatcherInterface                | Manages events set and event listeners. 
 | Spiral\Events\EventInterface                     | Provides infromation about event name and it's context, passed into event listeners.
-| Spiral\Session\StoreInterface                    | User session data store.
+| Spiral\Session\SessionInterface                    | User session data store.
 | Spiral\Views\ViewsInterface                      | View factory, must provide instances of `ViewInterface` (to be rendered).
 | Spiral\Views\ViewInterface                       | Declare ability to be rendered.
 | Spiral\Validation\ValidatesInterface             | Declares ability to be validated and raise error messages on failure.
