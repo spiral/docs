@@ -1,12 +1,12 @@
 # Templater Engine
-Spiral Templater engine is mouted as one of default view processors and provides very simple and powerful way to manage your website templates using html tags. Such way provides very flexible mechanism to combine multiple teams on projects and gives more power into hands on frontend/html developers to crete layouts and pages.
+The Spiral Templater engine is the default view processor and provides very simple and powerful ways to manage your website templates using html tags. Such way provides very flexible mechanism to combine multiple teams on projects and gives more power into hands on frontend/html developers to create layouts and pages.
 
-> Spiral Templater does not intended to create or replace basic control structures in your templates, if you wish to replace php as you primary templating language - you can create custom view processor and define your own language (using Twig, Smarty and etc).
+> Spiral Templater is not intended to create or replace basic control structures in your templates, if you wish to replace php as you primary templating language - you can create custom view processor and define your own language (using Twig, Smarty and etc).
 
-This specific section of documentation is mainly focused on template inheritance in your projects, if you wish to read about "virtual tags" and ability to include one template into another read [Extended Templater usage] (expert.md). Make sure that you already read about [using views] (/components/views.md) in your code.
+This specific section of documentation is mainly focused on template inheritance in your projects, if you wish to read about "virtual tags" and the ability to include one template into another read [Extended Templater usage] (expert.md). Make sure that you have already read about [using views] (/components/views.md) in your code.
 
 ## Template Inheritance
-Before we will start using Templater engine let's imagine classical situation when we have two very similar pages on your website, for example it can be about-us and contact form. 
+Before we start using Templater engine let's imagine the classical situation when we have two very similar pages on your website, for example it can be the about-us and contact form. 
 
 About Us:
 
@@ -61,7 +61,7 @@ Contact form:
 </html>
 ```
 
-As you can notice both templates uses very similar layout which differs only in it's title and page content. If we wish to simplify page creation we can try to move header and footer part of our layouts into separate views and modify our code such way:
+As you can notice, both templates use a very similar layout which differs only in it's title and page content. If we wish to simplify page creation we can try to move the header and footer sections of our layouts into separate views and modify our code like so:
 
 ```php
 <?=$this->container->views->render('header',['title'=>'About Us'])?>
@@ -69,7 +69,7 @@ As you can notice both templates uses very similar layout which differs only in 
 <?=$this->container->views->render('footer')?>
 ```
 
-Hovewer such technique has many disadvatages, fox example we can easly leave some tag unclosed and application must spend resources rendering both footer and header every time on your page. To prevent such problems we can create one universal template for our pages and extend it in our views, let's do that and place such view file into "application/views/layouts/basic.php":
+However, this technique has many disadvantages, for example we can easly leave some tag unclosed and your application must spend resources rendering both the footer and header every time your page is loaded. To prevent such problems we can create one universal template for our pages and extend it in our views, let's do that and place the view file into "application/views/layouts/basic.php":
 
 ```html
 <!DOCTYPE html>
@@ -94,7 +94,7 @@ Hovewer such technique has many disadvatages, fox example we can easly leave som
 </html>
 ```
 
-As you might notice we kept every universal html code into one file and defined two placeholders for title and content blocks. Now we can edit our about us template and utilize abilities of Templater engine:
+As you may notice we kept all of our universal html code in one file and defined two placeholders for title and content blocks. Now we can edit our about us template and utilize the abilities of the Templater engine:
 
 ```html
 <extends:layouts.basic title="About Us"/>
@@ -104,14 +104,14 @@ As you might notice we kept every universal html code into one file and defined 
 </block:content>
 ```
 
-> One of the nice side effect of using spiral Templater that any IDE or editor will treat it's tags as normal html/xml tags, as result your content will be nicely indented and mistakes highlighed. 
+> One of the nice side effects of using spiral Templater is that any IDE or editor will treat its tags as normal html/xml tags, as a result your content will be nicely indented and mistakes highlighted. 
 
-Resulted html will look exacly the same as before hovewer our view now much smaller in it's size. Let's try to walk thought our template to understand what we just did.
-First of all we declared that our view file must extend parent template "layouts.basic", due we are allowed to use path serators in html tags - "." will be replaced with "/", which will make templater to extend our desired "layouts/basic" view (current view namespace [default] will be used).
+The resulting html will look exactly the same as before, however our view is now much smaller in size. Let's try to walk through our template to understand what we just did.
+First of all we declared that our view file must extend the parent template "layouts.basic". Because we are allowed to use path seperators in html tags - "." will be replaced with "/", which will allow the templater to extend our desired "layouts/basic" view (the current view namespace [default] will be used).
 
-Next, right in extends tag we declared tag attribute "title", this definition tells parent layout to replace "title" block with given value. Such short way of block definition can be used for simple html strings and php code.
+Next, in the extends tag we declared a tag attribute "title", this definition tells the parent layout to replace the "title" block with the given value. These block definitions can be used for simple html strings and php code.
 
-Secondly we created html (xml) tag named "block:content" for the same purposes as for title. Due we want to specify content with inner html tags (in our case a) we can't use short, attribute like, definition.
+Secondly, we created an html (xml) tag named "block:content" for the same purpose as for title. Because we want to specify content with inner html tags (in our case a) we can't use short, attribute like, definitions.
 
 > Templater tokenizes html code before processing it, this means that you can not use `<` and `>` symbols in any of your tag attribute as it will be invalid html. We can always use longer blocks definition like in case of "<block:content>". We can demonstrate that both definitions are identical by rewriting our template:
 
@@ -125,10 +125,10 @@ Secondly we created html (xml) tag named "block:content" for the same purposes a
 </block:content>
 ```
 
-> Attention, ViewManager does not know about changes in parent layouts, you should either recompile your views using `views:compile` command or simply disable cache in development enviroment.
+> Attention, ViewManager does not know about changes in parent layouts, you should either recompile your views using the `views:compile` command or simply disable the cache in the development enviroment.
 
 ## Parent block content
-In previous example we demonstrate ability to inject desired value into parent layout, hovewer in many cases we might want to be able to rewrite specific parts of parent layout without loosing original content, we can demonstrate it by defining few new blocks in our parent layout:
+In our previous example we demonstrated the ability to inject the desired values into our parent layout, however in many cases we might want to be able to rewrite specific parts of parent layout without losing the original content. We can do this by defining a few new blocks in our parent layout:
 
 ```html
 <!DOCTYPE html>
@@ -169,7 +169,7 @@ If we will try to render our about us page now (do not forget to reset cache) we
 </block:footer>
 ```
 
-This methodic can work with some simple blocks, hovewer in more complex cases it might look useless, let's try to imagine that we would to use additional CSS style for about us page. We can do that, by redefining block resources:
+This methodic can work with some simple blocks, however in more complex cases it might look useless, let's try to imagine that we would to use additional CSS style for about us page. We can do that, by redefining block resources:
 
 ```html
 <extends:layouts.basic title="About Us"/>
@@ -441,7 +441,7 @@ If already read about ViewManager, it's cache dependencies and processors, you m
 <extends view:parent="layouts/@{layout}"/>
 ```
 
-Rendered template will look exactly as before, hovewer now we can try to create different layout with new markup and resources, let's put into "layouts/mobile":
+Rendered template will look exactly as before, however now we can try to create different layout with new markup and resources, let's put into "layouts/mobile":
 
 ```html
 <!DOCTYPE html>

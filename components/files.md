@@ -1,8 +1,8 @@
 # Work with local Files
-Spiral Files component and `FilesInterface` are intendend to simplify work with local harddriver rather than create universal filesystem abstraction (like [Flysystem](https://github.com/thephpleague/flysystem)). If you want to use with abstract storage and work with remote locations (like Amazon, Rackspace, FTP, SFTP, GridFS) you might need to look at spiral [Storage Manager component](/storage/overview.md) which is responsible for such abstractions. 
+Spiral Files component and `FilesInterface` are intended to simplify work with local harddrive rather than create a universal filesystem abstraction (like [Flysystem](https://github.com/thephpleague/flysystem)). If you want to use with abstract storage and work with remote locations (like Amazon, Rackspace, FTP, SFTP, GridFS) you might need to look at spiral [Storage Manager component](/storage/overview.md) which is responsible for such abstractions. 
 
 ## FilesInterface
-As any other component default imlementation of spiral FileManager is based on interface. Let's view such interface source to better understand what methods are available for us:
+Like any other component, the default implementation of spiral FileManager is based on the interface. Let's view the interface source code to better understand what methods are available:
 
 ```php
 interface FilesInterface
@@ -207,7 +207,7 @@ interface FilesInterface
 }
 ```
 
-The only notable part of FileInterface and default implementation - FileManager is ability to ensure file location (directory) with requested file mode. This functionality used all across spiral core to simplify file writing operations and be less depenendend on specific directory structure. Let's view some example (and again, we can either use FilesInterface as our dependency or short binding "files"):
+The only notable part of FileInterface and default implementation - FileManager's ability to ensure the file location (directory) with the requested file mode. This functionality is used all across the spiral core to simplify file writing operations and be less dependent on a specific directory structure. Let's look at some examples (and again, we can either use FilesInterface as our dependency or the short binding "files"):
 
 ```php
 public function index(FilesInterface $files)
@@ -224,7 +224,7 @@ public function index(FilesInterface $files)
 }
 ```
 
-Another pretty common operation is located in `getFiles` method and used to recursivelly read content of specified directory:
+Another pretty common operation is the `getFiles` method which is used to recursively read the content of the specified directory:
 
 ```php
 public function index()

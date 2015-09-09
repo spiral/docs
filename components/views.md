@@ -52,7 +52,7 @@ public function index()
 }
 ```
 
-Provided code is fully identical to short 'render' method, hovewer it gives us ability to manipulate with View class before rendering. Due spiral provides ability to register additional engines associated with specified file extension and custom view rendered such ability can be very useful in some cases.
+Provided code is fully identical to short 'render' method, however it gives us ability to manipulate with View class before rendering. Due spiral provides ability to register additional engines associated with specified file extension and custom view rendered such ability can be very useful in some cases.
 
 ## View Namespaces
 One of the core idea of ViewManager is to store view filenames into multiple locations aggregated by namespace. While rendering/compilation phase ViewManager will walk though every namespace directory until view file not found. View file identified purelly by it's name, when extension used to locate what rendering/compilation engine to be used. Let's look into our view configuration to check how namespaces defined:
@@ -190,7 +190,7 @@ Based on given interface we can see 3 primary methods ViewManager will work with
 
 Due most of existed templating engines converts internal format into plan php files almost all of them can be mounted as compilers.
 
-> Compiler must handle caching and cache validations by itself, hovewer i recommend for you read about view cache dependecies below. Compiler class does not have any access to view variables.
+> Compiler must handle caching and cache validations by itself, however i recommend for you read about view cache dependecies below. Compiler class does not have any access to view variables.
 
 ### View Renderer
 Second engine class declared under index 'view' must accept instance of engine compiler and render `compiledFilename()`. In cases when you want your view class work with compilers you have to implement `CompilerAwareInterface` which has pre-defined set of arguments for it's constructor:
@@ -385,7 +385,7 @@ If we wish to add custom processor into our compiler we can simply modify compil
 ]
 ```
 
-> Every compiler class associated with it's options, default spiral processors allows you overwrite their options, hovewer we are going to skip this step for now.
+> Every compiler class associated with it's options, default spiral processors allows you overwrite their options, however we are going to skip this step for now.
 
 Let's say that we want to create simple processor to replace `{{variable}}` with `<?=e($variable)?>`, we can name it `CoolEchoProcessor`:
 
@@ -459,7 +459,7 @@ Spiral Compiler ships with multiple pre-create processors used to simplify view 
 | Spiral\Views\Processors\PrettifyProcessor    | Removes emply view lines and spaces in some tag attributes.
 
 ## Cache and Cache Dependencies
-Default spiral compiler uses cache configuration declared in view config, you can disable cache in development enviroment to get view updates immidiatelly, hovewer it might slow down your application a lot (really a LOT):
+Default spiral compiler uses cache configuration declared in view config, you can disable cache in development enviroment to get view updates immidiatelly, however it might slow down your application a lot (really a LOT):
 
 ```php
 'cache'        => [
@@ -468,7 +468,7 @@ Default spiral compiler uses cache configuration declared in view config, you ca
 ],
 ```
 
-As mention already compiler and it's processors does not have any access to view variables and user input, hovewer `ViewManager` defines set of so called cache dependies declared in view configuration file:
+As mention already compiler and it's processors does not have any access to view variables and user input, however `ViewManager` defines set of so called cache dependies declared in view configuration file:
 
 ```php
 'dependencies' => [

@@ -5,7 +5,7 @@ The general concept of the StorageManager is to abstract stored data/files using
 
 > The third storage entity **server** is hidden inside buckets and not concidered something the developer should have access to.
 
-In this two entities, objects (`StorageObject` or `ObjectInterface` class) are only responsible for high level abstraction including metadata wrapping and exposing set of helper methods. Buckets (`StorageBucker` or `BucketInterface`) hovewer handle all low level data operations, such as adding, removing, renaming and replacing objects in bucket or buckets.
+In this two entities, objects (`StorageObject` or `ObjectInterface` class) are only responsible for high level abstraction including metadata wrapping and exposing set of helper methods. Buckets (`StorageBucker` or `BucketInterface`) however handle all low level data operations, such as adding, removing, renaming and replacing objects in bucket or buckets.
 
 > StorageManager is tightly integrated with PSR7 streams and the `UploadedFileInterface`.
 
@@ -608,7 +608,7 @@ public function index()
 }
 ```
 
-Hovewer you must know that given filename is not nesessary real filename at all, in many cases (when you working with remote servers like Amazon or Rackspace) it will look like `spiral://000000000f6cae89000000005103baf7` and only be accessible inside spiral enviroment. Such behaviour presented due spiral will create "virtual" filenames for some storages using stream wrapper instead of writing object data to real local filename.
+however you must know that given filename is not nesessary real filename at all, in many cases (when you working with remote servers like Amazon or Rackspace) it will look like `spiral://000000000f6cae89000000005103baf7` and only be accessible inside spiral enviroment. Such behaviour presented due spiral will create "virtual" filenames for some storages using stream wrapper instead of writing object data to real local filename.
 
 > Recevied local filename will be automatically descructed, do not remove it by youself.
 
@@ -686,7 +686,7 @@ public function index()
 }
 ```
 
-> Spiral will try to move and copy files in a most efficient way as possible, for example copying file from one amazon bucket to another will happen on amazon size. Hovewer in many cases (especially in cross server copying) current application memory will be used as copy/move buffer.
+> Spiral will try to move and copy files in a most efficient way as possible, for example copying file from one amazon bucket to another will happen on amazon size. however in many cases (especially in cross server copying) current application memory will be used as copy/move buffer.
 
 ## Multiple application enviroments
 One of the biggest benefits of using StorageManager is that you can point your buckets to different servers in different application enviroments. Due your StorageManager code are pretty universal you can have your bucket pointing to local hard drivr in development and, for example, to Amazon S3 in production. In addtion to that you can easity change your application storage logic at any moment by simply introducing more buckets.

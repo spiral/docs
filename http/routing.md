@@ -209,7 +209,7 @@ In addtion, you may want to state that some of your url segments are optional. F
 $this->http->route('profile[-<id:\d+>]', 'Controllers\UserController::showProfile');
 ```
 
-This route now matches urls like "profile-1" and "profile". Hovewer you have to modify your action to state the default value for id. For example null:
+This route now matches urls like "profile-1" and "profile". however you have to modify your action to state the default value for id. For example null:
 
 ```php
 public function showProfile($id = null)

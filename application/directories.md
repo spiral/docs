@@ -1,5 +1,5 @@
 # Directory structure
-Spiral appliction does not require any specific stucture or namespace for it's files until every application class can be loaded by composer, hovewer spiral
+Spiral appliction does not require any specific stucture or namespace for it's files until every application class can be loaded by composer, however spiral
 scaffoling and cache directories comes pre-configured. Let's review default directory structure:
 
 | Directory                         | Description                    

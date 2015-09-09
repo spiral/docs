@@ -93,7 +93,7 @@ interface EventInterface
 As you can see such even provides method named `context()` which will return reference to event payload information with ability to alter such structure, this gives us ability to not onbly listen to something, but modify payload and event chain result.
 
 ## Event Trait
-Spiral event component provides ability to create and maintain event dispacher on class level (meaning every class instance will utilize same dispatcher and set of listements, this is mainly done for performance reasons), hovewer raised events with become an instace of `ObjectEvent` with reference to parent. Let's use `EventsTrait` for such purposes:
+Spiral event component provides ability to create and maintain event dispacher on class level (meaning every class instance will utilize same dispatcher and set of listements, this is mainly done for performance reasons), however raised events with become an instace of `ObjectEvent` with reference to parent. Let's use `EventsTrait` for such purposes:
 
 ```php
 class HomeController extends Controller

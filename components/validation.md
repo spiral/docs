@@ -280,7 +280,7 @@ We can now register our own alias for our controller method and update validatio
 ]
 ```
 
-You can defined as many aliases as you needed, hovewer there is one easy way to create set of validation methods joined by one name without overloading validation config - checkers. You can read about checkers below.
+You can defined as many aliases as you needed, however there is one easy way to create set of validation methods joined by one name without overloading validation config - checkers. You can read about checkers below.
 
 ## Empty Validation Rules (Stoppers)
 Another section you might notice in validation config is "emptyConditions", let's check it:

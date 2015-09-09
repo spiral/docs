@@ -12,7 +12,7 @@ Before jumping to details let's review show list of features DBAL can provide us
 * Set of generic communication interfaces (DatabaseInterface, TableInterface, Schema\ColumnInterface and etc)
 * Migrations mechanism
 
-To better understand component iehahry let's try to describe it's basic DBAL classes:
+To better understand component iehahry let's try to describe basic DBAL classes:
 
 Class         | Description
 ---           | ---
@@ -23,7 +23,7 @@ Table         | Represent table level abstraction with simplified access to Sele
 QueryBuilder  | [QueryBuilder classes] (builders.md) generate set of control tokens for query compilers, this is query level abstraction.
 QueryResult   | Wraps at top of PDOStatements and provides ability to iterate though results.
 
-Also you can find set of classes and interfaces used to describe and declare desired table schema, check schema [reading] (reading.md) and writing (syncing.md) classes.
+Also you can find set of classes and interfaces used to describe and declare desired table schema, check schema [reading] (reading.md) and [writing] (syncing.md) classes.
 
 ## Configuring
 Spiral Database Component store it's configuration in `application/config/database.php` file by default. We can alter such file to specify needed connections, databases and database aliases.
@@ -143,7 +143,7 @@ public function index(DatabaseManager $dbal)
 ```
 
 ### Controllable Injections
-You might remember one specific feature of [Spiral IoC container] (/framework/container.md) - controllable injections. Such feature provides ability to resolve dependency in constructor and method injections based on context parameter, Database component support such feature and uses parameter name to resolve database. Such ability can simplify our code a lot and makes possible to write controller actions like:
+You might remember one specific feature of [Spiral IoC container] (/framework/container.md) - controllable injections. Such feature provides ability to resolve dependency in constructor and method injections based on context parameter. Database component support such feature and uses parameter name to resolve database. This ability can simplify our code a lot and makes possible to write controller actions (or init methods, or constructors) like:
 
 ```php
 public function index(Database $database, Database $primary, Database $slave)
