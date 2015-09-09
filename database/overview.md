@@ -12,7 +12,7 @@ Before jumping to details let's review show list of features DBAL can provide us
 * Set of generic communication interfaces (DatabaseInterface, TableInterface, Schema\ColumnInterface and etc)
 * Migrations mechanism
 
-To better understand component iehahry let's try to describe it's basic DBAL classes:
+To better understand component iehahry let's try to describe basic DBAL classes:
 
 Class         | Description
 ---           | ---
