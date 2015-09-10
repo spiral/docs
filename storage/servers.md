@@ -348,4 +348,4 @@ interface ServerInterface
 }
 ```
 
-Spiral StorageManager has been written originally in 2010-2011, since then there is a lot of nice libraries and new ways to store your files remotelly. One of the notable implementation is [Flysystem] (https://github.com/thephpleague/flysystem). Flysystem can be easily intergated into StorageManager due it provides much lower abstraction level than required by StorageManager, such implementation can significantly improve list of supported storages.
+Spiral StorageManager has been written originally in 2010-2011, since then there is a lot of nice libraries and new ways to store your files remotelly. One of the notable implementation is [Flysystem] (https://github.com/thephpleague/flysystem). Flysystem can be easily intergated into StorageManager due it provides much lower abstraction level than required by StorageManager, such implementation can significantly improve list of supported storages (for example if you want Dropbox support).
