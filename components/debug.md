@@ -1,11 +1,11 @@
 # Debug
-Spiral provides embedded debug component with set of classes useful in developing and debugging your application. Debug does not mean to replace existed debugging tools like XDebug and created to only simplify your application development and profiling in remote enviroments.
+Spiral provides an embedded debug component with a set of classes useful in developing and debugging your application. Debug does not replace existing debugging tools like XDebug. It was created to simplify your application development and profiling in remote enviroments.
 
 ## Loggers
-Spiral Logger class built at top of PSR3 standard and compatible with it. You can simply replace default application logger using Monolog classes and etc.
-Spiral loggers aggregate log messages using channel name, in most of cases (when LoggerTrait was used) channel name will be the same as parent class.
+The Spiral Logger class is built on top of the PSR3 standard and is compatible with it. You can simply replace the default application logger with Monolog classes and etc.
+Spiral loggers aggregate log messages using a channel name. In most cases (when the LoggerTrait was used) the channel name will be the same as the parent class.
 
-If you wish to access logger in your code (for example controller action) you can simply declare dependency:
+If you wish to access the logger in your code (for example in a controller action) you can simply declare the dependency:
 
 ```php
 public function index(Logger $logger)
@@ -17,10 +17,10 @@ public function index(Logger $logger)
 }
 ```
 
-> This code will create instance of Logger associated with global channel "@global". Spiral 
+> This code will create an instance of Logger associated with the global channel "@global". Spiral 
 
 ### Log Handlers
-Spiral provides you simplistic way to create handlers to store or send specific log messages, you can add your handler to Logger using setHandler method:
+Spiral provides a simplistic way to create handlers to store or send specific log messages. You can add your handler to Logger using the setHandler method:
 
 ```php
 public function index(Logger $logger)
@@ -29,7 +29,7 @@ public function index(Logger $logger)
 }
 ```
 
-Your handler must only define __invoke method with following arguments:
+Your handler must only define __invoke method with the following arguments:
 
 ```php
 /**
@@ -56,8 +56,8 @@ public function index(Logger $logger)
 
 > Message will come pre-interpolated into handler method.
 
-Every logger instance requested via dependency injection will receive instance of Debug component, such instance provides ability to pre-configure some 
-log handlers using debug configuraion:
+Every logger instance requested via dependency injection will receive an instance of the Debug component. This instance provides the ability to pre-configure some 
+log handlers using the debug configuraion:
 
 ```php
 'loggers'       => [
@@ -86,7 +86,7 @@ log handlers using debug configuraion:
 ],
 ```
 
-As you can see you are able to assing handler to specific channels and log levels, however this way has some limitations - all used handlers must implement instance of `HandlerInterface` in order to be properly created and configured:
+As you can see, you are able to assign handlers to specific channels and log levels. However this  has some limitations - all used handlers must implement `HandlerInterface` in order to be properly created and configured:
 
 ```php
 interface HandlerInterface
@@ -110,7 +110,7 @@ interface HandlerInterface
 }
 ```
 
-Default file handler which you can see in configuration provides following set of options you can alter or leave default:
+The default file handler which you can see in the configuration provides the following set of options you can alter or leave as the default:
 
 ```php
 /**
@@ -128,7 +128,7 @@ protected $options = [
 ```
 
 ### Logger Trait
-To simplify access to loggers spiral provides `LoggerTrait` which is compatible with `LoggerAwareInterface` but provides few additional features. Let's try to view example using some controller:
+To simplify access to the logger, Spiral provides a `LoggerTrait` which is compatible with `LoggerAwareInterface` but provides a few additional features. Let's view an example using a controller:
 
 ```php
 class HomeController extends Controller
@@ -142,18 +142,18 @@ class HomeController extends Controller
 }
 ```
 
-As you can see LoggerTrait defined helper method for us `logger()` which will create insatnce of `LoggerInterface` of us on demand, the only argument will be provided to such logger is `name` which will be equal to class name (Controllers\HomeController).
+As you can see, the LoggerTrait has a helper method for us, `logger()`, which will create an instance of the `LoggerInterface` for us on demand. The only argument will be provided to such logger is `name` which will be equal to class name (Controllers\HomeController).
 
 > By default spiral binds `LoggerInterface` to `Logger`.
 
-LoggerTrait has few abilities you might consider:
+LoggerTrait has a few abilities you might consider:
 * by default Logger instance created by logger() method will be assigned to class statically, meaning every instance of our controller will be writing to same log
 * there is additional variable in `setLogger` method - static (false by default), which provides you ability to set logger for instance or specific class
 
 ### Global log
-Spiral `Logger` class provides one extra ability which can be very useful when working with `Profiler` module - global log. Global log can be turned on and off in debug configuration, when it's turned on every raised log message will be aggreated in `Debug` component and can be analyzed later.
+The Spiral `Logger` class provides one extra ability which can be very useful when working with the `Profiler` module - a global log. The global log can be turned on and off in the debug configuration, when it's turned on every raised log message will be aggregated in the`Debug` component and can be analyzed later.
 
-Let's look into global log configuration section in our `debug.php` file:
+Let's look at the global log configuration section in our `debug.php` file:
 
 ```php
     'globalLogging' => [
@@ -162,10 +162,10 @@ Let's look into global log configuration section in our `debug.php` file:
     ],
 ```
 
-> Database component can log every made query, `Profiler` module will not only display but format and highlight this queries.
+> The database component can log every query. The `Profiler` module will not only display but format and highlight these queries.
 
 ## Benchmarks
-Spiral provides simplistic trait which can help to record and profile different parts of your application, to use benchmarks we only need to connect BenchmarkTrait to your component or service (every Controller already have `BenchmarkTrait`).
+Spiral provides a simplistic trait which can help to record and profile different parts of your application. To use benchmarks we only need to connect BenchmarkTrait to your component or service (every Controller already has a `BenchmarkTrait`).
 
 ```php
 class TestService extends Service
@@ -185,9 +185,9 @@ class TestService extends Service
 }
 ```
 
-> Attention, benchmarking will work only if `Spiral\Debug\BenchmarkerInterface` defined in your application, Profiler module will define such class automatically when being initialized.
+> Attention, benchmarking will work only if `Spiral\Debug\BenchmarkerInterface` is defined in your application. The Profiler module will define this class automatically when being initialized.
 
-Benchmarking functionality may look not so useful, however most critical part of spiral (queries, adapter creations, storage manipulations) are covered with them, as result you can use Profiler module and it's panel to view timeline of your application:
+The Benchmarking functionality may not look useful, however the most critical parts of Spiral (queries, adapter creations, storage manipulations) are covered with them, as result you can use the Profiler module and its panel to view a timeline of your application:
 
 ```php
 public function index(Database $db)
@@ -212,10 +212,10 @@ public function index(Dumper $dumper, MemcacheStore $memcacheStore)
 }
 ```
 
-Following code will dump structure of $memcacheStore into output and will look like that:
+The following code will dump the structure of $memcacheStore into output and will look like this:
 ![Dump](https://raw.githubusercontent.com/spiral/guide/master/resources/dumps.png)
 
-You can also use short "dump" function in spiral environment (your probably notice it's in my examples):
+You can also use the short "dump" function in Spiral environments (you'll probably notice it's in my examples):
 
 ```php
 public function index(MemcacheStore $memcacheStore)
@@ -224,7 +224,7 @@ public function index(MemcacheStore $memcacheStore)
 }
 ```
 
-Spiral dumper fully support `__debugInfo` [method](http://php.net/manual/en/language.oop5.magic.php) which allows you to dump only important information. In addition to than you can hide certain fields of your objects (for example container property due it's dump can be pretty bit) by adding "@invisible" annotation.
+The Spiral `Dumper` fully supports the  `__debugInfo` [method](http://php.net/manual/en/language.oop5.magic.php) which allows you to dump only important information. In addition,  you can hide certain fields of your objects (for example, the container property since its dump can be pretty big) by adding an "@invisible" annotation.
 
 ```php
 class TestService extends Service
@@ -239,7 +239,7 @@ class TestService extends Service
 }
 ```
 
-Dumper and dump method in addition to outputing content into active buffer can send dump info into different outputs:
+The Dumper and dump method, in addition to outputing content into the active buffer can send the dump info into different outputs:
 
 ```php
 public function index(MemcacheStore $memcacheStore)
@@ -260,4 +260,4 @@ public function index(MemcacheStore $memcacheStore)
 ```
 
 ## Profiler Module
-You can achieve best development beformance by enabling `Profiler` middleware in your primary middleware chain located in `application/config/http.php` profiler will display loaded classes, aplication timeline using captured benchmarks and global log messages.
+You can achieve the best development performance by enabling the `Profiler` middleware in your primary middleware chain located in `application/config/http.php`. The profiler will display loaded classes, the application timeline using captured benchmarks and global log messages.

@@ -1,10 +1,10 @@
 # Events and Event Dispatchers
-In spiral framework i tried to limit events usage as much as i can to make framework core and components to as clear as possible. At this moment events are only used in DataEntity type classes (ORM and ODM models), Core Loader and Database entity class, in every other place i'm trying to utilize interfaces and dependencies. 
+In Spiral framework I tried to limit events usage as much as possible to make the framework core and components as clear as possible. At this moment, events are only used in DataEntity type classes (ORM and ODM models), Core Loader and Database entity class, in every other place I'm trying to utilize interfaces and dependencies. 
 
-Due most of places where events are really needed has very similar requiments i managed to create very light and simple event dispatching mechanism without overcomplicating events logic.
+Because most places where events are really needed have very similar requiments I managed to create a very light and simple event dispatching mechanism without overcomplicating event logic.
 
 ## Events Dispatchers
-First of all let's take a look at class which is reposinble for raising and registering listeners to our events:
+First of all let's take a look at the class which is responsible for raising and registering listeners to our events:
 
 ```php
 interface DispatcherInterface
@@ -57,13 +57,13 @@ interface DispatcherInterface
 }
 ```
 
-Event itself will represented by simple object which must implement `EventInterface`:
+Event itself is represented by a simple object which must implement `EventInterface`:
 
 ```php
 interface EventInterface
 {
     /**
-     * Event name. Shorted for convenience. You can't change name anyway.
+     * Event name. Shortened for convenience. You can't change name anyway.
      *
      * @return string
      */
@@ -90,10 +90,10 @@ interface EventInterface
 }
 ```
 
-As you can see such even provides method named `context()` which will return reference to event payload information with ability to alter such structure, this gives us ability to not onbly listen to something, but modify payload and event chain result.
+As you can see, events have as method named `context()` which will return a reference to event payload information with the ability to alter the structure. This gives us the ability to not only listen to something, but modify the payload and event chain result.
 
 ## Event Trait
-Spiral event component provides ability to create and maintain event dispacher on class level (meaning every class instance will utilize same dispatcher and set of listements, this is mainly done for performance reasons), however raised events with become an instace of `ObjectEvent` with reference to parent. Let's use `EventsTrait` for such purposes:
+The Spiral event component provides the ability to create and maintain an event dispacher on a class level (meaning every class instance will utilize the same dispatcher and set of listements, this is mainly done for performance reasons), however raised events will become an instace of `ObjectEvent` with a reference to the parent. Let's use the `EventsTrait` to do this:
 
 ```php
 class HomeController extends Controller
@@ -112,7 +112,7 @@ class HomeController extends Controller
 }
 ```
 
-As you can see we define our event "something" (using `fire` method) in "doSomething" action. As event context we will provide our input data variable, same data will be returned when event passed thought every listener. Let's try to create some listeners
+As you can see we, define our event "something" (using the `fire` method) in the "doSomething" action. As event context we will provide our input data variable, same data will be returned when event passed thought every listener. Let's try to create some listeners
 
 ```php
 public function index()
