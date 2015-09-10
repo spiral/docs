@@ -333,7 +333,6 @@ $schema->create(function (AbstractTable $table) {
 To add new columns, indexes or references to existed table use:
 
 ```php
-
 //Such method will thrown an exception if any column or index were
 //altered (not created) inside closure
 $schema->add(function (AbstractTable $table) {
