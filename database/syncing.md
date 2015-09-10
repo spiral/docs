@@ -3,8 +3,7 @@ One of the most important part of Spiral DBAL is ability to alter database table
 
 ## Principle of Work
 Before any operation/declaration can be applied to table schema, DBAL will load currently existed structure from database and [normalize it into internal format] (reading.md). As result, you are allowed to apply modification to table schema using declarative way instead of imperative, once schema **save** are requested - DBAL will generate set of creation and altering operation based on difference between declared and existed schemas. 
-> Unfortunatelly some SQL features got simplified to fit, for example primary table key is described as column type, not index.
-> The side effect of using this methodic - you can not remove any table element like column or index by *non declaring* it.
+> Unfortunatelly some SQL features got simplified to fit, for example primary table key is described as column type, not index. Another side effect of using this methodic - you can not remove any table element like column or index by *non declaring* it.
 
 You can also use additional schema operations to remove or rename table elements.
 
@@ -125,7 +124,7 @@ tinyText    | ---                   | Tiny text, same as "text" for most of data
 longText    | ---                   | Long text, same as "text" for most of databases. Differs only in MySQL.
 double      | ---                   | [Double precision number.] (https://en.wikipedia.org/wiki/Double-precision_floating-point_format)
 float       | ---                   | Single precision number, usually mapped into "real" type in database. 
-decimal     | precision, [scale:0]  | Number with specified precision and scale.
+decimal     | precision,&nbsp;[scale:0]  | Number with specified precision and scale.
 datetime    | ---                   | To store specific date and time, DBAL will automatically force UTC timezone for such columns.
 date        | ---                   | To store date only, DBAL will automatically force UTC timezone for such columns.
 time        | ---                   | To store time only.
