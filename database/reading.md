@@ -1,4 +1,4 @@
-# Database / Schema Readerin
+# Database / Schema Reading
 Spiral Database layer (in future DBAL) provides ability to read and analyzie basic properties of given database or given table. In addition to providing set of values specific to analyzed database schema readers will convert DBMS specific set of types to limited set of "abstract" types available for user.
 
 ## List of database tables
