@@ -114,7 +114,7 @@ Rackspace buckets requires us to define region bucket located in (Rackspace has 
 > You can find bucket region in Rackspace control panel.
 
 ## FTP server
-FTP storage server provides ability to utilize FTP protocol to store files on remote machine. As in case in local server it provides ability to specify home directory for every server bucket.
+FTP storage server provides ability to utilize FTP protocol to store files on remote machine. As in case with local server it provides ability to specify home directory for every server bucket.
 
 Example server definition:
 
