@@ -686,10 +686,10 @@ public function index()
 }
 ```
 
-> Spiral will try to move and copy files in a most efficient way as possible, for example copying file from one amazon bucket to another will happen on amazon size. however in many cases (especially in cross server copying) current application memory will be used as copy/move buffer.
+> Spiral will try to move and copy files in a most efficient way as possible, for example copying file from one amazon bucket to another will happen on amazon size. However in many cases (especially in cross server copying) current application memory will be used as copy/move buffer.
 
 ## Multiple application enviroments
-One of the biggest benefits of using StorageManager is that you can point your buckets to different servers in different application enviroments. Due your StorageManager code are pretty universal you can have your bucket pointing to local hard drivr in development and, for example, to Amazon S3 in production. In addtion to that you can easity change your application storage logic at any moment by simply introducing more buckets.
+One of the biggest benefits of using StorageManager is that you can point your buckets to different servers in different application enviroments. Due your StorageManager code are pretty universal you can have your bucket pointing to local hard drive in development and, for example, to Amazon S3 in production. In addition to that you can easity change your application storage logic at any moment by simply introducing more buckets.
 
 > Tip: do not forget to handle `StorageException` when performing storage related operations.
 
