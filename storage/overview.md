@@ -377,7 +377,7 @@ return [
 ];
 ```
 
-> Obviously, this configuration contain a lot of placeholders - remove everything you do not need to use.
+> Obviously, this configuration contain a lot of placeholders - remove everything you do not want to use.
 
 First of all, our configuration file declares 6 servers we can use to store data in, every server has it's unique name, adapter class and set of connection options. In our case we declared: local, amazon, rackspace, ftp, sftp and gridfs servers. You can read more about server configurations in the dedicated configuration section.
 
@@ -423,7 +423,7 @@ public function index()
 
 > Every put operation will replace existed data.
 
-As result of such code we will get file named "file.txt" in our "application/runtime/storage" directory. In object dump you may notice that address is specified as "local:file.txt", such address is created using object name and bucket prefix and provides us ability to crealy identify file location.
+As result of such code we will get file named "file.txt" in our "application/runtime/storage" directory. In object dump you may notice that address is specified as "local:file.txt", such address is created using object name and bucket prefix and provides us ability to clearly identify file location.
 
 ### Open storage object by it's address
 Once we have data located in some bucket we only need to store generated address somewere as it's value clearly defines object name and object bucket. Let's use address from previous example and try to get some information about our object:
