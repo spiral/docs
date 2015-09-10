@@ -2,7 +2,7 @@
 Spiral StorageManager support multiple servers to be used to store you data. Every server must be configured with connection/basic options and must have correlated bucket declare few adapter specific options.
 
 ## Local Server
-Local server utilized local hard drive and `FilesInterface` to store your data. It has only one global option used to declare "home" storage directory - every bucket located will be realted to such home, bucket options must include storage directory and optional mode (by default RUNTIME - 777).
+Local server utilizes local hard drive and `FilesInterface` to store your data. It has only one global option used to declare "home" storage directory - every bucket located will be realted to such home, bucket options must include storage directory and optional mode (by default RUNTIME - 777).
 
 Example server definition:
 
