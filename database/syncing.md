@@ -267,7 +267,7 @@ $foreignKey->onUpdate(ReferenceInterface::CASCADE);
 
 Now, when record in "first" table will be removed related data from "second" table will be wiped also. You can read more about different actions [here] (https://en.wikipedia.org/wiki/Foreign_key#Referential_actions).
 
-> Please note that not every DBSM support actions outside of NO ACTION and CASCADE. In addition to that some databases (hi, Microsoft) may forbid multiple foreing keys for one table to avoid reference loop.
+> Please note that not every DBMS support actions outside of NO ACTION and CASCADE. In addition to that some databases (hi, Microsoft) may forbid multiple foreing keys with CASCADE action in one table to avoid reference loop.
 
 ## Additional Operations
 Provided declarative way does not provides any options to remove or rename existed column, index or refernce. However you can achieve such goals by using set of direct table operations. Such operations are most valuable in [migrations] (migrations.md). You still have to **save** schema after applying following operations.
