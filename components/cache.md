@@ -1,7 +1,7 @@
 # Cache
 Spiral provides easy to use access to cache implementation using the `Spiral\Cache\CacheInterface` (provider) and `Spiral\Cache\StoreInterface` interfaces. Both of this interfaces already pre-mapped in spiral to their implementations and ready to be used.
 
-## Cache Provided
+## Cache Provider
 To start let's view CacheInterface to understand how our `CacheProvider` works:
 
 ```php

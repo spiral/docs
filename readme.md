@@ -46,7 +46,7 @@
 * Databases
     * [Overview] (database/overview.md)
     * [Schema Readers] (database/reading.md)
-    * Schema Writers
+    * [Schema Writers] (database/syncing.md)
     * Query Builders
     * Migrations
 * Spiral ORM
