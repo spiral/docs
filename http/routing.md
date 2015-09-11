@@ -2,7 +2,7 @@
 Like other frameworks, Spiral provides a pre-built mechanism to manage your application's url structure. This operation is performed by the Http `Router` and `Route` classes.
 
 ## What is Router?
-Router is the default http endpoint (see Http Request Flow) which accepts `ServerRequestInterface` and applies it to a set of created routes to find match (based on Uri, method or any other request property). When the route is matched, Router will execute it by providing instances of `ServerRequestInterface` and `ContainerInterface`. The rest of the logic (what controller is called and what parameters are passed) is located in the `Route` class itself.
+Router is the default http endpoint (see Http Request Flow) which accepts `ServerRequestInterface` applies it to a set of created routes to find match (based on Uri, method or any other request property). When the route is matched, Router will execute it by providing instances of `ServerRequestInterface`, `ResponseInterface` and `ContainerInterface`. The rest of the logic (what controller is called and what parameters are passed) is located in the `Route` class itself.
 
 Let's check out the `RouterInterface` to better understand how it works:
 
@@ -19,10 +19,11 @@ interface RouterInterface
      * Valid endpoint for MiddlewarePipeline.
      *
      * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @return ResponseInterface
      * @throws ClientException
      */
-    public function __invoke(ServerRequestInterface $request);
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response);
 
     /**
      * @param RouteInterface $route
@@ -115,10 +116,11 @@ interface RouteInterface
      * Execute route on a given request. Has to be named after the match method.
      *
      * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param ContainerInterface     $container
      * @return ResponseInterface
      */
-    public function perform(ServerRequestInterface $request, ContainerInterface $container);
+    public function perform(ServerRequestInterface $request, ResponseInterface $response, ContainerInterface $container);
 
     /**
      * Generate valid route URL using the route name and a set of parameters.
