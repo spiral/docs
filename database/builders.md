@@ -69,7 +69,7 @@ $insert->run();
 ```
 
 ### Quick Inserts
-You can simplify insertion process by talking directly to table you want to add data into, in this case we can easily simplify our insertion to:
+You can simplify insertion process by talking directly to Table absraction you want to add data into, in this case our code may look like:
 
 ```php
 $table = $database->table('test');
@@ -82,11 +82,21 @@ dump($table->insert([
 ]));
 ```
 
-> Table will automatically run query and return last inserted id. You can also check `batchInsert` method of Table class.
+> Table class will automatically run query and return last inserted id. You can also check `batchInsert` method of Table class.
 
 ## Select Query Builder
 
+
 ### Where Statements
+
+### Having
+
+
+### Sorting
+
+### Grouping
+
+### Joins
 
 ## Update Query Builder
 
