@@ -2,7 +2,7 @@
 Spiral StorageManager support multiple servers to be used to store you data. Every server must be configured with connection/basic options and must have correlated bucket declare few adapter specific options.
 
 ## Local Server
-Local server utilized local hard drive and `FilesInterface` to store your data. It has only one global option used to declare "home" storage directory - every bucket located will be realted to such home, bucket options must include storage directory and optional mode (by default RUNTIME - 777).
+Local server utilizes local hard drive and `FilesInterface` to store your data. It has only one global option used to declare "home" storage directory - every bucket located will be realted to such home, bucket options must include storage directory and optional mode (by default RUNTIME - 777).
 
 Example server definition:
 
@@ -114,7 +114,7 @@ Rackspace buckets requires us to define region bucket located in (Rackspace has 
 > You can find bucket region in Rackspace control panel.
 
 ## FTP server
-FTP storage server provides ability to utilize FTP protocol to store files on remote machine. As in case in local server it provides ability to specify home directory for every server bucket.
+FTP storage server provides ability to utilize FTP protocol to store files on remote machine. As in case with local server it provides ability to specify home directory for every server bucket.
 
 Example server definition:
 
@@ -348,4 +348,4 @@ interface ServerInterface
 }
 ```
 
-Spiral StorageManager has been written originally in 2010-2011, since then there is a lot of nice libraries and new ways to store your files remotelly. One of the notable implementation is [Flysystem] (https://github.com/thephpleague/flysystem). Flysystem can be easily intergated into StorageManager due it provides much lower abstraction level than required by StorageManager, such implementation can significantly improve list of supported storages.
+Spiral StorageManager has been written originally in 2010-2011, since then there is a lot of nice libraries and new ways to store your files remotelly. One of the notable implementation is [Flysystem] (https://github.com/thephpleague/flysystem). Flysystem can be easily intergated into StorageManager due it provides much lower abstraction level than required by StorageManager, such implementation can significantly improve list of supported storages (for example if you want Dropbox support).

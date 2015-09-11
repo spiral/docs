@@ -377,7 +377,7 @@ return [
 ];
 ```
 
-> Obviously, this configuration contain a lot of placeholders - remove everything you do not need to use.
+> Obviously, this configuration contain a lot of placeholders - remove everything you do not want to use.
 
 First of all, our configuration file declares 6 servers we can use to store data in, every server has it's unique name, adapter class and set of connection options. In our case we declared: local, amazon, rackspace, ftp, sftp and gridfs servers. You can read more about server configurations in the dedicated configuration section.
 
@@ -423,7 +423,7 @@ public function index()
 
 > Every put operation will replace existed data.
 
-As result of such code we will get file named "file.txt" in our "application/runtime/storage" directory. In object dump you may notice that address is specified as "local:file.txt", such address is created using object name and bucket prefix and provides us ability to crealy identify file location.
+As result of such code we will get file named "file.txt" in our "application/runtime/storage" directory. In object dump you may notice that address is specified as "local:file.txt", such address is created using object name and bucket prefix and provides us ability to clearly identify file location.
 
 ### Open storage object by it's address
 Once we have data located in some bucket we only need to store generated address somewere as it's value clearly defines object name and object bucket. Let's use address from previous example and try to get some information about our object:
@@ -686,10 +686,10 @@ public function index()
 }
 ```
 
-> Spiral will try to move and copy files in a most efficient way as possible, for example copying file from one amazon bucket to another will happen on amazon size. however in many cases (especially in cross server copying) current application memory will be used as copy/move buffer.
+> Spiral will try to move and copy files in a most efficient way as possible, for example copying file from one amazon bucket to another will happen on amazon size. However in many cases (especially in cross server copying) current application memory will be used as copy/move buffer.
 
 ## Multiple application enviroments
-One of the biggest benefits of using StorageManager is that you can point your buckets to different servers in different application enviroments. Due your StorageManager code are pretty universal you can have your bucket pointing to local hard drivr in development and, for example, to Amazon S3 in production. In addtion to that you can easity change your application storage logic at any moment by simply introducing more buckets.
+One of the biggest benefits of using StorageManager is that you can point your buckets to different servers in different application enviroments. Due your StorageManager code are pretty universal you can have your bucket pointing to local hard drive in development and, for example, to Amazon S3 in production. In addition to that you can easity change your application storage logic at any moment by simply introducing more buckets.
 
 > Tip: do not forget to handle `StorageException` when performing storage related operations.
 
