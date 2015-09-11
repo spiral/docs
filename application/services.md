@@ -3,7 +3,7 @@ Spiral provides idea to put your application business and database logic into se
 every operation in your application related to business logic. You are not required to use services, however they may significantly simplfify definition of your controller and data entities
 and provide better base for unit testing.
 
-> Every Controller is Service.
+> Every Controller is Service. Yep.
 
 ## Scaffolding
 You can generate empty service using CLI command "create:service name", this command will allow you to define set of methods, dependecies with other services
