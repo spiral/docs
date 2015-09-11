@@ -2,7 +2,7 @@
 As many other DB layers spiral provide way to construct basic SQL queries using set of generation classes. Such classes support fluent syntax which simplifies their usage in everyday applications.
 
 ## Before we start
-Before we will start learning about diffrent query builders let's try to create a table in our database first, we are going to use controller action for that:
+Before we will start learning about different query builders let's try to create a table in our database first, we are going to use controller action for that:
 
 ```php
 public function index(Database $database)
@@ -20,10 +20,10 @@ public function index(Database $database)
 }
 ```
 
-Once such table created, we can remove schema declaration and leave only table variable (`Spiral\Database\Entities\Table`).
+Once such table created, we can remove schema declaration and leave only table variable (instance `Spiral\Database\Entities\Table` or Table abstraction).
 
 ## Insert Builder
-To get an instance of InsertBuilder (response for insertions), we can execute following code:
+To get an instance of InsertBuilder (responsible for insertions), we can execute following code:
 
 ```php
 $insert = $database->insert('test');
@@ -69,7 +69,7 @@ $insert->run();
 ```
 
 ### Quick Inserts
-You can simplify insertion process by talking directly to table you want to add data into, in this case we can easily simplify our insertion to:
+You can simplify insertion process by talking directly to Table absraction you want to add data into, in this case our code may look like:
 
 ```php
 $table = $database->table('test');
@@ -82,11 +82,21 @@ dump($table->insert([
 ]));
 ```
 
-> Table will automatically run query and return last inserted id. You can also check `batchInsert` method of Table class.
+> Table class will automatically run query and return last inserted id. You can also check `batchInsert` method of Table class.
 
 ## Select Query Builder
 
+
 ### Where Statements
+
+### Having
+
+
+### Sorting
+
+### Grouping
+
+### Joins
 
 ## Update Query Builder
 
