@@ -75,12 +75,12 @@ purposes:
 ```php
 public function start()
 {
-    //We need request to start, let's cast it
-    $request = $this->request();
-
-    //Now we can generate response using request
-    $response = $this->perform($request);
-
+   //Now we can generate response using request
+    $response = $this->perform(
+        $this->request(),
+        $this->response(),
+        $this->endpoint()
+    );
     if (!empty($response)) {
         //Sending to client
         $this->dispatch($response);
