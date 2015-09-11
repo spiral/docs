@@ -82,7 +82,7 @@ dump($table->insert([
 ]));
 ```
 
-> Table class will automatically run query and return last inserted id. You can also check `batchInsert` method of Table class.
+> Table class will automatically run query and return last inserted id. You can also check `batchInsert` method of Table abstraction.
 
 ## Select Query Builder
 
