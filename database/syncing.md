@@ -1,4 +1,4 @@
-## Schema Writing
+## Schema Writers
 One of the most important part of Spiral DBAL is ability to alter database table schema using set of schema abstractions. Such abstractions provide ability to describe desired table rather than creating it operation by operation.
 
 ## Principle of Work
