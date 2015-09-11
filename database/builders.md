@@ -2,7 +2,7 @@
 As many other DB layers spiral provide way to construct basic SQL queries using set of generation classes. Such classes support fluent syntax which simplifies their usage in everyday applications.
 
 ## Before we start
-Before we will start learning about diffrent query builders let's try to create a table in our database first, we are going to use controller action for that:
+Before we will start learning about different query builders let's try to create a table in our database first, we are going to use controller action for that:
 
 ```php
 public function index(Database $database)
@@ -20,7 +20,7 @@ public function index(Database $database)
 }
 ```
 
-Once such table created, we can remove schema declaration and leave only table variable (`Spiral\Database\Entities\Table`).
+Once such table created, we can remove schema declaration and leave only table variable (instance `Spiral\Database\Entities\Table` or Table Class).
 
 ## Insert Builder
 To get an instance of InsertBuilder (response for insertions), we can execute following code:
