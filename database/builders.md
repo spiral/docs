@@ -23,7 +23,7 @@ public function index(Database $database)
 Once such table created, we can remove schema declaration and leave only table variable (instance `Spiral\Database\Entities\Table` or Table abstraction).
 
 ## Insert Builder
-To get an instance of InsertBuilder (response for insertions), we can execute following code:
+To get an instance of InsertBuilder (responsible for insertions), we can execute following code:
 
 ```php
 $insert = $database->insert('test');
