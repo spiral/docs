@@ -1,6 +1,4 @@
 # Http Middlewares
-> Attention, middleware logic will be updated to follow default flow with request AND reponse provided into middleware.
-
 Http Middlewares is very powerful tool allowing you manipulate with application flow using PSR7 request and response. Middlewares executed using so called pipeline, 
 which will push request and response thought chain on defined middlewares.
 
