@@ -73,7 +73,7 @@ $this->container->bind(ConfiguratorInterface::class, function(ContainerInterface
 });
 ```
 
-> Container will provide itself as first argument to binded function.
+> Container will provide itself as first argument to binded function. To be changed.
 
 We can also bind one class implementation to another (make sure binded class extends target), this can allow you to mock some functionality, test or
 even change application behaviour:
