@@ -1,6 +1,6 @@
 # Http Middlewares
 Http Middlewares is very powerful tool allowing you manipulate application flow using PSR7 request and response. Middlewares executed using so called pipeline, 
-which will push request and response thought chain on defined middlewares.
+which will push request and response thought chain on defined middlewares. Make sure you read [Http Flow] (flow.md).
 
 > Disclaimer: if you want to read more about middlewares, check this [topic] (https://mwop.net/blog/2015-01-08-on-http-middleware-and-psr-7.html). 
 
