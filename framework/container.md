@@ -2,7 +2,7 @@
 Spiral provides simplistic implementation of IoC container/injector with ability to construct requested classes, bind instance resolvers and singletons. Container fully
 support constructor and method injections and can be used in every day development.
 
-> Disclaimer: spiral mainly use container as injector and class constructor rather that container with set of bindings (even more, string bingings like `ContainerInterface->get("something")` are highly forbidden in spiral core components, only named class requests are allowed - `ContainerInterface->get(SomeService::class)`). Spiral application might perfectly work without any binding defined outside of alises and interfaces configured in default spiral core.
+> Disclaimer: spiral mainly use container as injector and class constructor rather than container with set of bindings (even more, string bingings like `ContainerInterface->get("something")` are highly forbidden in spiral core components, only named class requests are allowed - `ContainerInterface->get(SomeService::class)`). Spiral application might perfectly work without any binding defined outside of alises and interfaces configured in default spiral core.
 
 ### Dependency Injection
 Let's say that we want to create simple class to perfom mailing operation:
