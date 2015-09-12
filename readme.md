@@ -47,7 +47,7 @@
     * [Overview] (database/overview.md)
     * [Schema Readers] (database/reading.md)
     * [Schema Writers] (database/syncing.md)
-    * [Query Builders] (database/builders.md)
+    * [**Query Builders**] (database/builders.md)
     * Migrations
 * Spiral ORM
     * Overview
