@@ -430,7 +430,7 @@ FROM `primary_test`
 WHERE CONCAT(`primary_test`.`id`, '-', `primary_test`.`status`) = '1-active'
 ```
 
-> Please remember that our database has table prefix "primary_", however there is high possiblity that you don't even need them ever.
+> Please remember that our database has table prefix "primary_", however there is high possiblity that you don't even need them ever. Also be careful using epressions with SQL including string constants, it will count your string as column to be quoted (such behaviour must be fixed in future).
 
 You can also use expressions and fragments as column values in insert and update statements.
 
