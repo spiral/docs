@@ -801,9 +801,62 @@ foreach ($select as $row) {
 If you have Pagination extension, you might notice that database query executed only once per 10 seconds, whan cache data expires.
 
 ## Update Query Builder
+UpdateQuery builder as it states from it's name used to update specified records in table based on provided values and where conditions (set of where methods are identical to SelectQuery builder). We only have to execute `run()` method of our builder when we ready to perform query.
 
+```php
+$update = $database->table('test')->update([
+    'name' => 'Abc'
+]);
 
+$update->where('id', '<', 10)->run();
+```
 
+Generated SQL (for MySQL) looks like:
+
+```sql
+UPDATE `primary_test`
+SET `name` = 'Anb'
+WHERE `id` < 10
+```
+
+As in cases with InsertQuery you can use `SQLExpressions` and `SQLFragments` as update values:
+
+```php
+$update = $database->table('test')->update([
+    'name' => new SQLExpression('UPPER(test.name)')
+]);
+
+$update->where('id', '<', 10)->run();
+```
+
+Result:
+
+```sql
+UPDATE `primary_test`
+SET `name` = UPPER(`primary_test`.`name`)
+WHERE `id` < 10
+```
+
+You can also use nested queries:
+
+```php
+$update = $database->table('test')->update([
+    'name' => $database->table('users')->select('name')->where('id', 1)
+]);
+
+$update->where('id', '<', 10)->run();
+```
+
+Related SQL:
+
+```sql
+UPDATE `primary_test`
+SET `name` = (SELECT
+`name`
+FROM `primary_users`
+WHERE `id` = 1)
+WHERE `id` < 10 
+```
 
 ## Delete Query Builders
 DeleteQuery builder is probably the simpliest builder you can quess, you should only specify table you want to delete data from and set of where conditions in a same form as for select and update builders. You can access delete builder using Database or Table instances.
