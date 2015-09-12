@@ -49,6 +49,8 @@
     * [Schema Writers] (database/syncing.md)
     * [**Query Builders**] (database/builders.md)
     * Migrations
+* ORM and ODM
+    * The Idea
 * Spiral ORM
     * Overview
     * **Record Model**
