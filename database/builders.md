@@ -432,6 +432,8 @@ WHERE CONCAT(`primary_test`.`id`, '-', `primary_test`.`status`) = '1-active'
 
 > Please remember that our database has table prefix "primary_", however there is high possiblity that you don't even need them ever.
 
+You can also use expressions and fragments as column values in insert and update statements.
+
 ### Table and Column aliases
 Based on previous example we found that expressions can be useful when we have to prepare complex column names, but what if we don't want to do that? In this case we can use default SQL feature - aliases. Aliases can be either applied to table or to column name and later be used in where, sorting and other statements. Spiral does not provide any special way to declare column or table alias, simply inlude "AS alias" into your column name or table. Let's try to demonstrate few examples:
 
@@ -564,6 +566,7 @@ WHERE `id` = `primary_test`.`id` AND `id` != 100) = 'Anton'
 > Obvisouly you better use **joins** (see below).
 
 ### Joins
+
 
 ### Sorting
 
