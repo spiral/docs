@@ -58,13 +58,13 @@ public function index()
 }
 ```
 
-Default spiral paginator `Paginator` will automatically fetch count of records from paginable object and set approparite limit/offset values based on provided parameters. Page pagination will be performed based on query parameter `page`. You can always ajust parameter or request paginator must follow:
+Default spiral paginator `Paginator` will automatically fetch count of records from paginable object and set approparite limit/offset values based on provided parameters. Page pagination will be performed based on query parameter `page`. You can always ajust parameter or [**request**] (/http/request.md) paginator must follow:
 
 ```php
 public function index()
 {
     $selection = $this->dbal->db()->users->select('name','email');
-    dump($selection->paginate(1, 'myPage',$this->request)->getIterator());
+    dump($selection->paginate(1, 'myPage', $this->request)->getIterator());
 }
 ```
 
