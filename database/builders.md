@@ -563,10 +563,99 @@ FROM `primary_users`
 WHERE `id` = `primary_test`.`id` AND `id` != 100) = 'Anton'
 ```
 
-> Obvisouly you better use **joins** (see below).
-
 ### Joins
+Previous example my explain you why everyone need joins. DBAL select query builer provides ability to join any desired table and specify ON and ON where statement. Let's try (i'm going to ajust way we creating our selection to make it shorter):
 
+```php
+$select = $database->table('test')->select(['test.*', 'users.name as user_name']);
+
+//Let's join table users same way as before
+$select->leftJoin('users')->on('users.id', 'test.id');
+
+foreach ($select as $row) {
+    dump($row);
+}
+```
+
+> You can also use inner, full or right joins.
+
+Result:
+
+```sql
+SELECT
+`primary_test`.*, `primary_users`.`name` as `user_name`
+FROM `primary_test`  
+LEFT JOIN `primary_users`
+    ON `primary_users`.`id` = `primary_test`.`id`
+```
+
+Method `on` works exacly as `where` except provided values treated as identifier and not as user value. As result we can use either complex `on` statements with `orOn`, `andOn` methods or array form of defining connection between tables.
+
+```php
+$select->leftJoin('users')->on('users.id', 'test.id')->orOn('users.id', 'test.balance');
+```
+
+Analog:
+
+```sql
+$select->leftJoin('users', [
+    '@or' => [
+        ['users.id' => 'test.id'],
+        ['users.id' => 'test.balance']
+    ]
+]);
+```
+
+Generated SQL:
+
+```sql
+SELECT
+`primary_test`.*, `primary_users`.`name` as `user_name`
+FROM `primary_test`  
+LEFT JOIN `primary_users`
+    ON (`primary_users`.`id` = `primary_test`.`id` OR `primary_users`.`id` = `primary_test`.`balance`)    
+```
+
+##### On Where statement
+In cases where you would like to include user value into ON statement, use methods `onWhere`, `orOnWhere` and `andOnWhere` (i'm going to change join to "inner" so we can filter our results):
+
+```php
+$select->innerJoin('users', ['users.id' => 'test.id'])->onWhere('users.name', 'Anton');
+```
+
+As result we just defined new query parameter:
+
+```sql
+SELECT
+`primary_test`.*, `primary_users`.`name` as `user_name`
+FROM `primary_test`  
+INNER JOIN `primary_users`
+    ON `primary_users`.`id` = `primary_test`.`id` AND `primary_users`.`name` = 'Anton'
+```
+
+##### Aliases
+Obviously you might want to create custom alias for your joined table, and again you can do it by simply declaring word AS (do not forget to edit your columns and conditions):
+
+```php
+$select = $database->table('test')->select(['test.*', 'uu.name as user_name']);
+
+//Let's join table users same way as before
+$select->innerJoin('users as uu', ['uu.id' => 'test.id'])->onWhere('uu.name', 'Anton');
+
+foreach ($select as $row) {
+    dump($row);
+}
+```
+
+And our final joins example looks like:
+
+```sql
+SELECT
+`primary_test`.*, `uu`.`name` as `user_name`
+FROM `primary_test`  
+INNER JOIN `primary_users` as `uu`
+    ON `uu`.`id` = `primary_test`.`id` AND `uu`.`name` = 'Anton'       
+```
 
 ### Sorting
 
@@ -575,8 +664,6 @@ WHERE `id` = `primary_test`.`id` AND `id` != 100) = 'Anton'
 ### Pagination
 
 ### Grouping and Distinct
-
-
 
 ### Aggreagations
 
