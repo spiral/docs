@@ -539,7 +539,7 @@ $select = $database->select()->from('test')->columns(['id', 'status', 'name']);
 
 $select->where(
     $database->select('name')->from('users')->where(
-        'id', new SQLExpression('test.id')
+        'id', '=', new SQLExpression('test.id')
     )->where('id', '!=', 100),
     'Anton'
 );
