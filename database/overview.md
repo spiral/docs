@@ -157,3 +157,38 @@ public function index(Database $database, Database $primary, Database $slave)
 ```
 
 > As result we can add little bit of magic to our code but make it much more readable. As you can see aliases playing a big role here due you can use then to create different variable names based on context.
+
+## Queries
+To run query against selected database or table we can use direct database methods: `query` and `execute`.
+
+```php
+public function index(Database $database)
+{
+    //Database type: MySQL, Postgres, SQLite, SQLServer
+    dump($database->getType());
+    
+    //Method will return QueryResult (row iterator)
+    dump($database->query('select * from primary_test'));
+    
+    //Result will be cached for 10 seconds
+    dump($database->cached(10, 'select * from primary_test'));
+    
+    //Method to return count of affected rows
+    dump($database->execute('delete from primary_test where id > ?', [1000]));
+}
+```
+
+> You must to remember to write your SQL for specific database type, try [Query Builders] (builders.md) to create database independent queries. In addiiton to that, direct database queries must be specified with database prefix.
+
+## Transactions
+Database abstraction provides simplistic way to manage your transactions using closure function.
+
+```php
+$database->transaction(function (Database $database) {
+    $database->execute('delete from primary_test where id > ?', [1000]);
+});
+```
+
+Such transaction will be automatically commited if every query resulted with success and rolled back in case of error or exception inside closure.
+
+> If you wish to have more control try to check methods available in database driver: `$database->driver()`.
