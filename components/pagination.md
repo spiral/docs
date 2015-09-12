@@ -58,7 +58,7 @@ public function index()
 }
 ```
 
-Default spiral paginator `Paginator` will automatically fetch count of records from paginable object and set approparite limit/offset values based on provided parameters. Page pagination will be performed based on query parameter `page`. You can always ajust parameter or [**request**] (/http/request.md) paginator must follow:
+Default spiral paginator `Paginator` will automatically fetch count of records from paginable object and set approparite limit/offset values based on provided parameters. Page pagination will be performed based on query parameter `page`. You can always ajust parameter or [**request**] (/http/flow.md) paginator must follow:
 
 ```php
 public function index()
