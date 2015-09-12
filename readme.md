@@ -49,7 +49,7 @@
     * [Schema Writers] (database/syncing.md)
     * [**Query Builders**] (database/builders.md)
     * Migrations
-* ORM and ODM
+* Schemas
     * The Idea
 * Spiral ORM
     * Overview
