@@ -563,6 +563,10 @@ FROM `primary_users`
 WHERE `id` = `primary_test`.`id` AND `id` != 100) = 'Anton'
 ```
 
+### Having
+To add having satement to your selection use methods `having`, `orHaving` and `andHaving`, their declaration and behaviour is identical to `where`.
+> Yep, it was quick.
+
 ### Joins
 Previous example my explain you why everyone need joins. DBAL select query builer provides ability to join any desired table and specify ON and ON where statement. Let's try (i'm going to ajust way we creating our selection to make it shorter):
 
@@ -658,14 +662,131 @@ INNER JOIN `primary_users` as `uu`
 ```
 
 ### Sorting
+If you wish to apply sorting to your selection it's time to use method `orderBy` which can accept column name and sorting direction or array of columns associated with their directions.
 
-### Having
+```php
+//We have a join, so table name is mandratory
+$select->orderBy('test.id', SelectQuery::SORT_DESC);
+```
 
-### Pagination
+You can all `orderBy` method multiple times or simply provide an array of columns into it:
+
+```php
+$select->orderBy(
+    'test.name', SelectQuery::SORT_DESC
+)->orderBy(
+    'test.id', SelectQuery::SORT_ASC
+);
+        
+//Analog
+ $select->orderBy([
+    'test.name' => SelectQuery::SORT_DESC,
+    'test.id'   => SelectQuery::SORT_ASC
+]);
+```
+
+Both ways will produce such SQL:
+
+```sql
+SELECT
+`primary_test`.*, `uu`.`name` as `user_name`
+FROM `primary_test`  
+INNER JOIN `primary_users` as `uu`
+    ON `uu`.`id` = `primary_test`.`id` AND `uu`.`name` = 'Anton' 
+ORDER BY `primary_test`.`name` DESC, `primary_test`.`id` ASC
+```
+
+> You can also use SQLExpression or SQLFragment instead of sorting identifiers.
 
 ### Grouping and Distinct
+If you wish to select only unique results from your selection use method `distinct`, such method will be very useful in situations where you using HAS_MANY relations in ORM to filter selection.
 
-### Aggreagations
+```php
+$select->distinct();
+```
+
+To group results (for example in combination with aggregation) you can use method `groupBy` which accepts column name or SQLExpression, let's try to count our records in test table and group them by status:
+
+```php
+$select = $database->table('test')->select(['status', 'count(*) as count'])->groupBy('status');
+
+foreach ($select as $row) {
+    dump($row);
+}
+```
+
+As you might expect produced SQL looks like:
+
+```sql
+SELECT
+`status`, count(*) as `count`
+FROM `primary_test`
+GROUP BY `status`
+```
+
+### Aggreagations and Count
+Separatelly from grouping and distinct you can use simplified aggregations which does not require you fetching result, one of them if `count`, which for many reasons will be used a lot in your application. To get result of such aggregation we only need to call method `count()`:
+
+```php
+$select = $database->table('test')->select(['id', 'name', 'status']);
+
+dump($select->count());
+foreach ($select as $row) {
+    dump($row);
+}
+```
+
+In this scenariou system will generate two separate SQL queries:
+
+```sql
+SELECT
+COUNT(*)
+FROM `primary_test`;
+
+SELECT
+`id`, `name`, `status`
+FROM `primary_test`;
+```
+
+> You can also provide column name to be counted by.
+
+Similar to `count()` SelectBuilder defines few additional methods you can use to calculate basic aggregations: `AVG`, `MAX`, `MIN` and `SUM`. You must only provide column name or expression to run aggregation by:
+
+```php
+dump($database->table('test')->sum('id'));
+dump($database->table('test')->where('id', '<', 100)->max('id*10'));
+```
+
+### Pagination
+When you working with big datasets you might want to limit amount of records to be returned, to do that you can use two simple SelectQuery methods: `limit` and `offset`
+
+```php
+$select = $database->table('test')->select(['id', 'name', 'status']);
+
+$select->limit(10)->offset(1);
+
+//Please note result of this method
+dump($select->count());
+foreach ($select as $row) {
+    dump($row);
+}
+```
+
+> Please note that count method will ignore specified LIMIT and OFFSET values by default (spiral will grant you additional parameter to avoid that in future).
+
+However, there is very small chance that you going to work with `limit` and `offset` directly in your code as spiral provides much more convinient way - [Pagination] (/components/pagination.md). You can read pagination details in related section, hovewer let's try to modify our example to limit amount of results as 10 per page:
+
+```php
+$select = $database->table('test')->select(['id', 'name', 'status']);
+
+$select->paginate(10);
+
+foreach ($select as $row) {
+    dump($row);
+}
+```
+
+> You can change query parameter "page" in your website to iterate thought set.
 
 ### Caching
 
