@@ -1,5 +1,5 @@
 # Schemas and Documenters
-Both ORM and ODM components in Spiral framework built based on same principle - cached **behaviour schemas**. Schemas concept involves memory structure which used to decribe specific aspects of every model including validations, fields, fiters and etc. 
+Both ORM and ODM components in Spiral framework built based on same principle - cached **behaviour schemas**. Schemas concept involves memory structure which used to decribe specific aspects of every daatbase entity (model) including validations, fields, fiters and etc. 
 
 ## Schemas and Memory
 Generic idea behind using schemas is ability to separate heavy analysis and inheritance operations from light and simple runtime processes. Using `HippocampusInterface`, components are able to collect and process all possible information about database models (create model reflection) in backgroud. It can create automatic data filters, synchronize databases (ORM) or even detect errors and security issues in your code. Since we don't really have limitation on time in CLI mode, our analysis can be as complex and powerful as we want (for example you can decribe model behaviour using model code itself as you would do it in other frameworks).
