@@ -50,7 +50,7 @@
     * [**Query Builders**] (database/builders.md)
     * [Migrations] (database/migrations.md)
 * Schemas
-    * Schemas and Documenters
+    * [Schemas and Documenters] (schemas.md)
 * Spiral ORM
     * Overview
     * **Record Model**
