@@ -15,6 +15,6 @@ Since every database model in spiral can be well described using it's schema (mo
 
 At this moment spiral is able to generate "virtual documentation" for PHPStorm IDE using set of "cloned" classes, such methodic is not very clean but it works and can be changed at any moment without affecting your application. If you would like to support other IDEs and editors or improve PHPStorm documenter, your help will be much appreciated.
 
-On a side note, having easy assible schema of your database level might help to create automatic project documention, check [ODM UML] (/odm/uml.md) for example.
+On a side note, having easy assible schema of your database layer might help to create automatic project documention, check [ODM UML] (/odm/uml.md) for example.
 
 > I hope one day we can define universal format (JSON or XML) to describe **project specific** structures and dependencies and adapt IDE for our application.
