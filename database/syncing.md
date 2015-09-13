@@ -270,7 +270,7 @@ Now, when record in "first" table will be removed related data from "second" tab
 > Please note that not every DBMS support actions outside of NO ACTION and CASCADE. In addition to that some databases (hi, Microsoft) may forbid multiple foreing keys with CASCADE action in one table to avoid reference loop.
 
 ## Additional Operations
-Provided declarative way does not provides any options to remove or rename existed column, index or refernce. However you can achieve such goals by using set of direct table operations. Such operations are most valuable in [migrations] (migrations.md). You still have to **save** schema after applying following operations.
+Declarative way does not provides any options to remove or rename existed column, index or refernce. However you can achieve such goals by using set of direct table operations. Such operations are most valuable in [migrations] (migrations.md). You still have to **save** schema after applying following operations.
 
 ### Remove and rename Columns
 To remove or rename column we can use `dropColumn` and `renameColumn` methods accordingly.
