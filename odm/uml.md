@@ -4,7 +4,7 @@ Because Spiral's ODM is based on the principles of composition and aggreation, i
 Let's build a schema for a given set of models:
 
 ```php
-class User extends Document
+class User extends ActiveDocument
 {
     use TimestampsTrait;
 
@@ -30,7 +30,7 @@ class Moderator extends User
 ```
 
 ```php
-class Session extends AbstractDocument
+class Session extends Document
 {
     protected $schema = [
         'timeCreated'  => 'MongoDate',
@@ -41,7 +41,7 @@ class Session extends AbstractDocument
 ```
 
 ```php
-class Profile extends AbstractDocument
+class Profile extends Document
 {
     protected $schema = [
         'biography' => 'string',
@@ -51,7 +51,7 @@ class Profile extends AbstractDocument
 ```
 
 ```php
-class Department extends Document
+class Department extends ActiveDocument
 {
     protected $schema = [
         '_id'   => 'MongoId',
@@ -60,8 +60,6 @@ class Department extends Document
     ];
 }
 ```
-
-> AbstractDocument used for documents which are not stored in collection directly but embedded in other documents (see Compositions).
 
 To export the UML diagram to a file, we have to run the 'odm:uml filename' command. This will create a PlantUML compatible file which we can render later. 
 
