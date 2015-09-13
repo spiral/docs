@@ -8,8 +8,6 @@ class User extends Document
 {
     use TimestampsTrait;
 
-    protected $collection = 'users';
-
     protected $schema = [
         '_id'          => 'MongoId',
         'name'         => 'string',
@@ -32,7 +30,7 @@ class Moderator extends User
 ```
 
 ```php
-class Session extends Document
+class Session extends AbstractDocument
 {
     protected $schema = [
         'timeCreated'  => 'MongoDate',
@@ -43,7 +41,7 @@ class Session extends Document
 ```
 
 ```php
-class Profile extends Document
+class Profile extends AbstractDocument
 {
     protected $schema = [
         'biography' => 'string',
@@ -55,8 +53,6 @@ class Profile extends Document
 ```php
 class Department extends Document
 {
-    protected $collection = 'departments';
-    
     protected $schema = [
         '_id'   => 'MongoId',
         'name'  => 'string',
