@@ -11,7 +11,7 @@ In addition to memory interface, other important piece of analysis process is `T
 You can count spiral schemas as **compilation** of your code before using it in runtime. Since compilation is required to make your models works and there is no efficient way (yet) to detect changes in model behaviours you must execute console command to update schema every time you change your database model schema (you can still freely add methods without rebuilding schema every time). Fortunatelly such command can be easy to accessed - `spiral update`, if you don't have other commands starting with "u" you can use shorter alias `spiral up`. 
 
 ## Documenters
-Since every database model in spiral can be well described using it's schema (model reflection) we are able to help IDE or editor to understand structure of project (not framework) and create set of tooltips related to application code. Tooltips might include columns names, relations and magic setters/getters methods (no one want to remember all possible table columns).
+Since every database model in spiral can be well described using it's schema (model reflection) we are able to help IDE or editor to understand structure of project (not framework) and create set of tooltips related to application code. Tooltips might include columns names, relations and magic setters/getters methods (no one want to remember all possible table columns, right?).
 
 At this moment spiral is able to generate "virtual documentation" for PHPStorm IDE using set of "cloned" classes, such methodic is not very clean but it works. If you would like to support other IDEs and editors or improve PHPStorm documenter, your help will be much appreciated.
 
