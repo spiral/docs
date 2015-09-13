@@ -70,3 +70,5 @@ Spiral provides big set of commands you might use if your application:
 | orm:schema         | Update ORM schema.                                                       |
 | views:compile      | Compile every available view file.                                       |
 | views:reset        | Clear view cache for all environments.                                   |
+
+> You can get list of currently available commands by executing: `ConsoleDisptacher->getCommands()`.

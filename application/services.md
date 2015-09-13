@@ -125,7 +125,7 @@ Following bindings will be available only when application executing inside `Htt
 > There is no static Facades in Spiral.
 
 ## Communication with DataEntities (ORM and ODM)
-In addition to generic service functionality spiral provides ability to create set of methods specific to some data entity, this can be done by providing `-e` flag
+In addition to generic service functionality spiral provides ability to create set of methods specific to some data entity (repository service), this can be done by providing `-e` flag
 to `create:service` command. Let's say that we have database entity `User`, we can generate service for such user using `create:service user -e user`:
 
 ```php

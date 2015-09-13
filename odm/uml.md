@@ -4,11 +4,9 @@ Because Spiral's ODM is based on the principles of composition and aggreation, i
 Let's build a schema for a given set of models:
 
 ```php
-class User extends Document
+class User extends ActiveDocument
 {
     use TimestampsTrait;
-
-    protected $collection = 'users';
 
     protected $schema = [
         '_id'          => 'MongoId',
@@ -53,10 +51,8 @@ class Profile extends Document
 ```
 
 ```php
-class Department extends Document
+class Department extends ActiveDocument
 {
-    protected $collection = 'departments';
-    
     protected $schema = [
         '_id'   => 'MongoId',
         'name'  => 'string',
