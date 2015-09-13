@@ -48,9 +48,9 @@
     * [Schema Readers] (database/reading.md)
     * [Schema Writers] (database/syncing.md)
     * [**Query Builders**] (database/builders.md)
-    * Migrations
+    * [Migrations] (database/migrations.md)
 * Schemas
-    * The Idea
+    * Schemas and Documenters
 * Spiral ORM
     * Overview
     * **Record Model**
