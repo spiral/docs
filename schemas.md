@@ -8,7 +8,7 @@ Since we don't really have limitation on time in CLI mode, our analysis can be a
 
 Behaviour schemas can singficantly increace amount of supported features without slowing down (sometimes even increace) performance of runtime code. [**Memory interface**] (/framework/memory.md) plays very big role in this case, as it works not as optional cache, but rather required part of component flow.
 
-In addition to memory interface, other important piece of analysis process is `TokenizerInterface` which is able to locate required classes without user intervention.
+> In addition to memory interface, other important piece of analysis process is `TokenizerInterface` which is able to locate required classes without user intervention.
 
 You can count spiral schemas as **compilation** of your code before using it in runtime. Since compilation is required to make your models works and there is no efficient way (yet) to detect changes in model behaviours you must execute console command to update schema every time you change your database model schema (you can still freely add methods without rebuilding schema every time). Fortunatelly such command can be easy to accessed - `spiral update`, if you don't have other commands starting with "u" you can use shorter alias `spiral up`. 
 
