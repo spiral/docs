@@ -4,7 +4,7 @@ Both ORM and ODM components in Spiral framework work based on same principle - c
 ## Schemas as Memory
 Generic idea behind using schemas is ability to separate heavy analysis and inheritance operations from light and simple runtime processes. Using `HippocampusInterface`, components are able to collect and process all possible information about database models (create model reflection) in backgroud. It can create automatic data filters, synchronize databases (ORM) or even detect errors and security issues in your code. Since we don't really have limitation on time in CLI mode, our analysis can be as complex and powerful as we want.
 
-Behaviour schemas can singficantly increate amount of supported features without slowing down (and sometime even increacing performance) of runtime code. [**Memory interface**] (/framework/memory.md) plays very big role in this case, as it works not as optional cache, but rather required part of component flow.
+Behaviour schemas can singficantly increace amount of supported features without slowing down (and sometime even increacing performance) of runtime code. [**Memory interface**] (/framework/memory.md) plays very big role in this case, as it works not as optional cache, but rather required part of component flow.
 
 In addition to memory interface, other important piece of analysis process is `TokenizerInterface` which is able to locate required class implementation without user intervention.
 
