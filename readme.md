@@ -57,7 +57,7 @@
     * Relations
 * Spiral ODM
     * Overview 
-    * **Document Model**
+    * **Document and ActiveDocument Models**
     * Compositions and Aggregations
     * JSON Documents (integration with ORM)
     * [UML Export] (odm/uml.md)
