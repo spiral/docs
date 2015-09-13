@@ -61,6 +61,8 @@ class Department extends Document
 }
 ```
 
+> AbstractDocument used for documents which are not stored in collection directly.
+
 To export the UML diagram to a file, we have to run the 'odm:uml filename' command. This will create a PlantUML compatible file which we can render later. 
 
 ```uml
