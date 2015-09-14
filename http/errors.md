@@ -54,7 +54,7 @@ There are a few exceptions predefined for generic scenarios:
 | 500  | ServerErrorException  |
 
 ## Handling Client Exception by Middleware
-As mention in previous section every instance of ClientException will be converted into ExceptionResponse, this makes possible to handle such response "exception like" way and redine output. For example we can create CMS middleware which it going to check for page associated with current Uri when endpoint returned NotFound Error.
+As mention in previous section every instance of ClientException will be converted into ExceptionResponse, this makes possible to handle such response "exception like" way and redifine output. For example we can create CMS middleware which it going to check for page associated with current Uri when endpoint returned NotFound Error.
 
 ```php
 class CmsMiddleware extends Service implements MiddlewareInterface
