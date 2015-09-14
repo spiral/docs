@@ -2,7 +2,7 @@
 Both the ORM and ODM components in Spiral framework are built based on the same principle - cached **behaviour schemas**. This schemas concept is based on memory structure which is used to describe the specific aspects of every database entity (model) including validations, fields, fiters etc. 
 
 ## Schemas and Memory
-The general idea regarding the use of schemas is the ability to separate out heavy analysis and inheritance operations into light and simple runtime processes. Using `HippocampusInterface`, components can collect and process all possible information about the database models (create model reflection) in the background and later share it with runtime code. It can create automatic data filters, synchronize databases (ORM) or even detect errors and security issues in your code.
+The general idea regarding the use of schemas is the ability to separate out heavy analysis and inheritance operations from light and simple runtime processes. Using `HippocampusInterface`, components can collect and process all possible information about the database models (create model reflection) in the background and later share it with runtime code. It can create automatic data filters, synchronize databases (ORM) or even detect errors and security issues in your code.
 
 Since there aren't really any limitation on time in CLI mode, we can make our analysis as complex and powerful as we want. For example, you can describe the desired model behaviour (columns, relations, compositions etc) using model code itself like in other frameworks without the need for huge configurations as we can create reflection and analyse in every existing model.
 
