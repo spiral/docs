@@ -91,5 +91,7 @@ class CmsMiddleware extends Service implements MiddlewareInterface
 }
 ```
 
+> Technically, you can simply check for response status without worrying about ExceptionResponse, it's only used to render error page on demad.
+
 ## Exposing errors to client
 Exceptions which are not instances of `Spiral\Http\Exception\ClientException` will be treated as server errors, handled via `SnapshotInterface` and sent to client as exception backtrace. You can disable sending trace to client and replace it with generic 500 error by editing the "exposeErrors" flag in your http configuration.
