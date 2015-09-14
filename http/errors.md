@@ -32,7 +32,7 @@ public function index()
 }
 ```
 
-Exceptions like that will be handled by HttpDisaptcher and converted into a `ExceptionResponse` with an appropriate status code. If you want to define a custom view for your error, edit the http configuration file to link error code to view name:
+Exceptions like that will be handled by HttpDispatcher and converted into a `ExceptionResponse` with an appropriate status code. If you want to define a custom view for your error, edit the http configuration file to link error code to view name:
 
 ```php
     'httpErrors'   => [
@@ -70,6 +70,7 @@ class CmsMiddleware extends Service implements MiddlewareInterface
         $response = $next($request);
 
         if ($response->getStatusCode() == ClientException::NOT_FOUND) {
+            //Obviously you have to check if such CMS page known to system
             return $this->cmsResponse($request);
         }
 
