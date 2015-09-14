@@ -54,6 +54,7 @@
 * Spiral ORM
     * **Record Model**
     * Relations
+    * Eager Loading
 * Spiral ODM
     * **Document and ActiveDocument Models**
     * Compositions and Aggregations
@@ -61,3 +62,4 @@
     * [UML Export] (odm/uml.md)
 * Modules and Extensions
     * [Profiler] (modules/profiler.md)
+    * Spiral Frontend Toolkit
