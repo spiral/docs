@@ -4,11 +4,11 @@ Application enterpoint located in webroot/index.php file and only performs appli
 ```php
 <?php
 /**
- * Spiral Framework, SpiralScout LLC.
+ * Spiral Framework.
  *
- * @package   spiralFramework
+ * @license   MIT
  * @author    Anton Titov (Wolfy-J)
- * @copyright ©2009-2011
+ * @copyright ©2009-2015
  */
 define('SPIRAL_INITIAL_TIME', microtime(true));
 
