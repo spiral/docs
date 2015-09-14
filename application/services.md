@@ -1,6 +1,6 @@
 # Service Classes
 Spiral provides idea to put your application business and database logic into set of specific classes called "Services", such classes can be responsible for almost
-every operation in your application. You are not required to use services, hovewer they may significantly simplfify definition of your controller and data entities
+every operation in your application. You are not required to use services, hovewer they may significantly simplfify definition of your controllers and data entities
 and provide better base for unit testing.
 
 > Every Controller is Service.
