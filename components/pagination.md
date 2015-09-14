@@ -152,7 +152,7 @@ public function index($page = 1)
 ```
 
 ## Render paginator on page
-Spiral does not include rendering logic into pagination class itself, you have to render page range by youself. Luckily, if you have installed module `spiral/toolkit` you can use [virtual templater tag/widget] (/templater/extended.md) for such purposes. Such widget located in 'spiral:paginator' tag and can accept both `PaginableInterface` and `PaginatorInterface` as source however it can work only with default spiral `Paginator` class.
+Spiral does not include rendering logic into pagination class itself, you have to render page range by youself. Luckily, if you have installed module `spiral/toolkit` you can use [virtual templater tag/widget] (/templater/expert.md) for such purposes. Such widget located in 'spiral:paginator' tag and can accept both `PaginableInterface` and `PaginatorInterface` as source however it can work only with default spiral `Paginator` class.
 
 ```php
 public function index()
