@@ -52,11 +52,9 @@
 * Schemas
     * [Schemas and Documenters] (schemas.md)
 * Spiral ORM
-    * Overview
     * **Record Model**
     * Relations
 * Spiral ODM
-    * Overview 
     * **Document and ActiveDocument Models**
     * Compositions and Aggregations
     * JSON Documents (integration with ORM)
