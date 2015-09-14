@@ -52,7 +52,7 @@
 * Schemas
     * [Schemas and Documenters] (schemas.md)
 * Spiral ORM
-    * **Record Model**
+    * **Record Model and Database Scaffolding**
     * Relations
     * Entity Cache and Eager loading
 * Spiral ODM
