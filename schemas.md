@@ -6,7 +6,7 @@ The general idea regarding the use of schemas is the ability to separate out hea
 
 Since there aren't really any limitation on time in CLI mode, we can make our analysis as complex and powerful as we want. For example, you can describe the desired model behaviour (columns, relations, compositions etc) using model code itself like in other frameworks without the need for huge configurations as we can create reflection and analyse in every existing model.
 
-Behaviour schemas can significantly increase the amount of supported features without slowing down performance of runtime code (sometimes even increase). [**Memory interface**] (/framework/memory.md) plays a very big role in this case, as it works not only as an optional cache, but instead as a required part of component flow.
+Behaviour schemas can significantly increase the amount of supported features without slowing down performance of runtime code (sometimes even increase). [**Memory interface**] (/framework/memory.md) plays a very big role in this case, as it works not only as an optional cache, but instead as a required part of component flow (the bridge).
 
 > In addition to memory interface, another important piece of analysis process is `TokenizerInterface` which can locate the required classes without user intervention.
 
