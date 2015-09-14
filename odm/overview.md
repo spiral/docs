@@ -154,11 +154,12 @@ public function index()
 }
 ```
 
-> Since we defined fillable fields, we can also use User::create(data).
+> Since we defined fillable fields, we can also use `User::create(data)`.
 
 If everything is OK you might notice that `_id` field got populated in last dump, meaning we just pushed our data into database.
 
-## Mongo Queries
+## Querying Documents
+
 
 
 
