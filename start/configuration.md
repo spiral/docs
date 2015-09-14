@@ -1,17 +1,15 @@
 # Configuring your Application
-Most of spiral components and services requires external configuration to defined it's behaviour. Configuration data 
-usually supplied in array form using `Spiral\Core\ConfiguratorInterface` instance. 
+Most of spiral components and services require external configuration to define it's behaviour and settings. Configuration data usually supplied in array form using `Spiral\Core\ConfiguratorInterface` instance. 
 
-Spiral Framework core implements such interface and uses application `config` directory to to configurations in separate
-php files, every loaded configuration file will be merged with environment specific configuration and stored in permanent cache.
+Spiral Framework core implements such interface and uses application `config` directory to store configurations in separate php files, every loaded configuration file will be merged with environment specific setttings and stored in permanent cache.
 
 ## Enviroment specific configurations
-If you want to change some section of configuration file based on active enviroment, simply create directory inside
-config folder named as your enviroment and put configuration file in it. Spiral will replace original configuration
-sections with sections provided by this file.
+If you want to change some section of configuration file based on active enviroment, simply create directory inside config folder named as your environment and put configuration file in it. Spiral will replace original configuration sections with sections provided by this file.
+
+> Configuration data will be merged using array_merge function, meaning only top level of config will be replaced.
 
 ## Examples
-Let's look into same configuration file for `ViewManager` component (`config/views.php`):
+Let's look into sample configuration file for `ViewManager` component (`config/views.php`):
 
 ```php
 <?php
@@ -71,6 +69,6 @@ return [
 ];
 ```
 
-Configuration section `cache` in original config will be replaced with new array.
+Configuration section `cache` will be replaced with enviroment specific data.
 
 > Due enviroment value is always a string you can create your own local enviroment under any name.
