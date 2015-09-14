@@ -54,10 +54,10 @@
 * Spiral ORM
     * **Record Model**
     * Relations
-    * Eager Loading
+    * Entity Cache and Eager loading
 * Spiral ODM
+    * Compositions, Aggregations, Inheritance
     * **Document and ActiveDocument Models**
-    * Compositions and Aggregations
     * JSON Documents (integration with ORM)
     * [UML Export] (odm/uml.md)
 * Modules and Extensions
