@@ -56,9 +56,8 @@
     * Relations
     * Entity Cache and Eager loading
 * Spiral ODM
-    * Compositions, Aggregations, Inheritance
-    * **Document and ActiveDocument Models**
-    * JSON Documents (integration with ORM)
+    * **Models, Compositions, Aggregations**
+    * JSON and Standalone Documents
     * [UML Export] (odm/uml.md)
 * Modules and Extensions
     * [Profiler] (modules/profiler.md)
