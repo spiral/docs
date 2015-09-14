@@ -49,7 +49,7 @@
     * [Schema Writers] (database/syncing.md)
     * [**Query Builders**] (database/builders.md)
     * [Migrations] (database/migrations.md)
-* Schemas
+* Behaviour Schemas
     * [Schemas and Documenters] (schemas.md)
 * Spiral ORM
     * **Record Model and Database Scaffolding**
