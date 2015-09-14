@@ -36,7 +36,7 @@ Application::init([
 ], true)->start();
 ```
 
-First of all we are defining helper constant 'SPIRAL_INITIAL_TIME' used by spiral Profiler module to correclty display application benchmarking. Secondly spiral will force internal encdoing to `UTF-8`, due spiral support multiple languages and databases this is required step.
+First of all we are defining helper constant 'SPIRAL_INITIAL_TIME' used by spiral Profiler module to correclty display application benchmarking. Secondly spiral will force internal encoding to `UTF-8`, due spiral support multiple languages and databases this is required step.
 
 Due spiral application requires few directory names to be defined, we can use current project root (`__DIR__`) to define our primary directory and make sure this is our 
 working directory. Right after that we can connect Composer autoloading.
