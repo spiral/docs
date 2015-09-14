@@ -56,7 +56,7 @@
     * Relations
     * Entity Cache and Eager loading
 * Spiral ODM
-    * ! [**Models, Compositions, Aggregations**] (odm/overview.md) - (i want to finish ORM first)
+    * ! [**Models, Compositions, Aggregations**] (odm/overview.md) - (ORM docs first)
     * JSON and Standalone Documents
     * [UML Export] (odm/uml.md)
 * Modules and Extensions
