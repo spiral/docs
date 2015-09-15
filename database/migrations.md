@@ -3,6 +3,7 @@ Spiral Migrations mechanism based on DBAL [schema writes] (syncing.md), this spe
 
 > Technically migrations are simple set of classes which can be executed and rolled back, spiral ORM can handle most of DB updates, hovewer migrations might help in cases where schema updates can not be handled by ORM (for example when column is removed).
 
+
 > Attention, currently migrations behave as part of DBAL component, i'm thinking to move them into separate component (should not affect your application much).
 
 ## Migrataion Creation
