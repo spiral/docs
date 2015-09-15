@@ -683,3 +683,22 @@ Services like that is the best place to locate custom selection methods (like `f
 Since Spiral ORM uses static analysis, there is no real limitation how you would like to create your models, as result you can declare **abstract** Record with it's schema, validations and etc and later extend this class in your application. This technique can be very useful while writing [modules] (/components/modules.md).
 
 > While extending, ORM will merge schemas and other properties of Record and it's parent.
+
+## Inspections
+While running shema update (spiral up) command, you might notice line which contains list of inspected entities and resulted rating. Such information provided by spiral entity inspector which analyses ORM and ODM schema to find unprotected or blacklisted fields, we can get more details by running inspection on selected entity:
+
+```
+> spiral inspect:entity Database/User
++-----------------+-----------+----------+----------+-----------+----------------+
+| Field           | Rank      | Fillable | Filtered | Validated | Hidden         |
++-----------------+-----------+----------+----------+-----------+----------------+
+| id              | Very Good | no       | yes      | no        | no             |
+| name            | Very Good | no       | yes      | yes       | no             |
+| email           | Good      | no       | yes      | yes       | no (blacklist) |
+| status          | Very Good | no       | yes      | yes       | no             |
+| balance         | Very Good | no       | yes      | no        | no             |
+| time_registered | Very Good | no       | yes      | no        | no             |
+| time_created    | Very Good | no       | yes      | no        | no             |
+| time_updated    | Very Good | no       | yes      | no        | no             |
++-----------------+-----------+----------+----------+-----------+----------------+
+```
