@@ -76,14 +76,14 @@ To provide additional type arguments, such as length, scale or enum values you c
 'status' => 'enum(active,blocked)'
 ```
 
-The only important difference between way how columns decribed in DBAL and ORM that Record model will force **NOT NULL** flag and non empty default value (to solve problems when schema changes modifies existed non empty table. If you wish to declare your column as nullable, simply add "nullable" to it's type definition.
+The only important difference between way how columns decribed in DBAL and ORM that Record model will force **NOT NULL** flag and default values for each column (to solve problems when schema changes modifies existed non empty table). If you wish to declare your column as nullable, simply add "nullable" to it's type definition.
 
 ```php
 'column' => 'string, nullable'
 ```
 
 #### Default Values
-As you already know ORM will force automatically casted set of default values for every declared column, usually such default values will be just an empty type casted value ("", 0 etc). You can declare your own default value using record property "defaults", in our case we have "enum" column, it's the best to force default value for it:
+As you already know ORM will force set of default values for every declared column, usually such default values will be just an empty type casted value ("", 0 etc). You can declare your own default value using record property "defaults", in our case we have "enum" column, it's the best to force default value for it:
 
 ```php
 protected $defaults = [
@@ -106,7 +106,7 @@ protected $indexes = [
 > You can include as many columns into index as your DBMS allows you. Simply list columns as array values.
 
 ## Schema Update and Scaffolding
-Once you done with declaring your `Record` model schema we can update ORM behaviour schema. Such operation can be achieved by running command 'spiral up'. Such command should automatically generate related table "users" for your model using declared columns and indexes. We can view content of such table by executing 'db:describe users':
+Once you done with declaring your `Record` model schema we can run ORM update. Such operation can be achieved by running command 'spiral up'. Such command should automatically generate related table "users" for your model using declared columns and indexes. We can view content of such table by executing 'db:describe users':
 
 ```
 Columns of primary.users:
