@@ -1,5 +1,5 @@
 # Migrations
-Spiral Migrations mechanism based on DBAL [schema writes] (syncing.md), this specific section only covers migration creation and flow, check previous sections to read about possible schema manipulations.
+Spiral Migrations mechanism based on DBAL [schema writers] (syncing.md), this specific section only covers migration creation and flow, check previous sections to read about possible schema manipulations.
 
 > Technically migrations are simple set of classes which can be executed and rolled back, spiral ORM can handle most of DB updates, hovewer migrations might help in cases where schema updates can not be handled by ORM (for example when column is removed).
 
