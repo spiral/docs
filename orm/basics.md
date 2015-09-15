@@ -479,6 +479,9 @@ WHERE "id" = 1
 
 > You can create your own accessors by implementing `RecordAccessorInterface`, also check [JsonDocument] (/odm/standalone.md) accessor.
 
+## Delete Records
+You can delete any existed Record by executing it's method "delete".
+
 ## Events and Traits
 As DataEntity model, Record declares few [events] (/components/events.md) which you can handle to track or handle model behaviour:
 
