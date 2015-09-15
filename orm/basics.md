@@ -702,3 +702,5 @@ While running shema update (spiral up) command, you might notice line which cont
 | time_updated    | Very Good | no       | yes      | no        | no             |
 +-----------------+-----------+----------+----------+-----------+----------------+
 ```
+
+> You can also check other inspector commands to receive list of every fillable or non hidded field in your models.
