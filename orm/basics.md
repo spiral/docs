@@ -347,7 +347,7 @@ ORDER BY "user"."balance" DESC
 
 Note that ORM Selector will automatically assigned alias to Record table which is singular model name ("user"). You can read more about aliases [here] (loading.md).
 
-## Update Record
+## Modify Record
 
 #### Dirty Fields and Solid State
 
