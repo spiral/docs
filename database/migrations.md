@@ -3,8 +3,7 @@ Spiral Migrations mechanism based on DBAL [schema writes] (syncing.md), this spe
 
 > Technically migrations are simple set of classes which can be executed and rolled back, spiral ORM can handle most of DB updates, hovewer migrations might help in cases where schema updates can not be handled by ORM (for example when column is removed).
 
-
-> Attention, currently migrations behave as part of DBAL component, i'm thinking to move them into separate component (should not affect your application much).
+**Attention, currently migrations behave as part of DBAL component, i'm thinking to move them into separate component (should not affect your application much).**
 
 ## Migrataion Creation
 The easiest way to create migration in spiral is to use console command 'create:migration'. You are able to pre-generate migration code by specifying if you need to create table using key `-c` or alter existed table using key `-a`. Our example command is 'create:migration create_sample_table -c sample'. You can locate generated migration in your migration directory (usually 'application/migrations'), it's code will look like:
