@@ -406,7 +406,7 @@ You can define setters, getters and accessors same way you would do that for Dat
 ],
 ```
 
-As you can see ORM will make sure that every column is validly type casted into scalar value while reading, this can be very useful since some DBMS returs every table value as string.
+As you can see ORM will make sure that every column is validly type casted into scalar value while reading, this can be very useful since some DBMS returтs every table value as string.
 
 #### Timestamps Accessor
 Based on provided configuration, you might notice that ORM will assign `ORMTimestamp` accessor to every timestamp or datetime field. Let's try to add such field into our table (again, avoid using timestamps):
@@ -422,7 +422,7 @@ protected $schema = [
 ];
 ```
 
-After schema is updates, we are able to use such model field as [Carbon] (https://github.com/briannesbitt/Carbon) instance.
+After schema have been updated, we are able to use such model field as [Carbon] (https://github.com/briannesbitt/Carbon) instance.
 
 ```php
 public function index()
@@ -675,6 +675,6 @@ public function index(UserService $users)
 ```
 
 ## Inheritance and Abstract Records
-Since Spiral ORM uses static analysis there is not limitation on how you would like to create your models, as result you can declare abstract Record with schema, validations and etc and later extend this class in your application. Such technique can be very useful while writing models.
+Since Spiral ORM uses static analysis, there is not limitation on how you would like to create your models, as result you can declare abstract Record with schema, validations and etc and later extend this class in your application. Such technique can be very useful while writing models.
 
 > While extending, ORM will merge schemas and other properties of Record and it's parent.
