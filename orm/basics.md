@@ -129,10 +129,10 @@ Indexes of primary.users:
 
 As you can see our table looks exacly as it should (output may differ if you using different DBMS)!
 
-> You have to execute `spiral up` every time you change any of entity or orm property of your Record to pass updates into cached behaviour schema.
+> You have to execute `spiral up` every time you change any entity or orm property of your Record to pass updates into cached behaviour schema. There is no need to run schema update if you modifying custom properties or methods.
 
 #### Adding new Columns
-Since ORM based on DBAL schema syncronization mechanism, the only thing you need to do to add new columns into related record table - declare such column in it's schema (same applied for indexes). Let's try add column balance.
+Since ORM based on DBAL syncronization mechanism, the only thing you need to do to add new columns into related record table - declare such column in model schema (same applied for indexes). Let's try add column "balance".
 
 ```php
 protected $schema = [
@@ -144,13 +144,13 @@ protected $schema = [
 ];
 ```
 
-To add such column into our table we have to execure `spiral up` again, you set verbosity flag `-v` to see what is going on:
+To add such column into our table we have to execute `spiral up` again (you cam set verbosity flag `-v` to see what is going on):
 
 ```
 > spiral up -v
 Migrator does not configured, skipping.
 
-[primary_users] Adding column [`balance` decimal (10, 2) NOT NULL DEFAULT 0.000000] into table `newprefix_users`.
+[primary_users] Adding column [`balance` decimal (10, 2) NOT NULL DEFAULT 0.000000] into table `primary_users`.
 ORM Schema has been updated: 0.494 s, found records: 1
 ODM Schema has been updated: 0.163 s, found documents: 1
 
@@ -167,6 +167,8 @@ Inspecting available DataEntities...
 
 Inspected entities 1, average rank Good (0.95).
 ```
+
+> You can use model schema only to add new columns, renaming and removing must be done via migrations, meaning removing column declaration from model will not remove such column from table.
 
 And again we can check if our table was successfully modified using command "db:describe users", this time i switched my connection to PostgresSQL:
 
@@ -191,12 +193,33 @@ Indexes of primary.users:
 ```
 
 #### Active vs Passive Schemas
+In a given we created Record which will ensure that table exists in database and has valid set of columns and indexes.ORM component does not require you to declare every table column, even more you can associate your model with existed table without even declaring schema propery. In this case model will fetch fields list and available columns with their types from table directly, in this case our model may look like:
 
-## Working with Records
+```php
+class UserPassive extends Record
+{
+    protected $table = 'users';
+}
+```
+
+However, in a next guide section, dedicated to relations, you'll find out that relations have ability to modify associated model schemas to declare needed columns and foreign keys. This is fine if we generating our database using Spiral Models, however in some cases you might want to connect Records to existed database. In this case, you can configure relations in a way to make them follow already existed structures. But, to be absolutelly sure that no relation or recor can modify our table we can delcare record constant ACTIVE_SCHEMA and set if value to false.
+
+```php
+class SomeRecord extends Record
+{
+    const ACTIVE_SCHEMA = false;
+}
+```
+
+Such constant will forbid any modifications for associated table and ensure that spiral can not touch existed table. The rest of ORM functionality such as validations, selections eager loading and realtions are still preserved.
+
+> You can also use passive models if you prefer to generate your database using migrations.
 
 ## Work with Record
 
 #### Dirty Fields and Solid State
+
+#### Validations
 
 #### Atomic Number
 
