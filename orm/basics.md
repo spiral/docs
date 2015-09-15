@@ -312,7 +312,7 @@ dump($user);
 ```
 
 #### Find
-If you want to find multiple records, or run aggregation, you can use method `find` which will return instance of `Spiral\ORM\Entities\Selector`, such class has common parent with DBAL [SelectQuery] (/database/builders.md) which makes you possible to use same methods and princiles:
+If you want to find multiple records, or run aggregation, you can use method `find` which will return instance of `Spiral\ORM\Entities\Selector`, such class has common parent with DBAL [SelectQuery] (/database/builders.md) which makes you able to use same methods and princiles:
 
 ```php
 public function index()
