@@ -217,7 +217,7 @@ Such constant will forbid any modifications for associated table and ensure that
 
 > You can also use passive models if you prefer to generate your database using migrations.
 
-## Work with Record
+## Create Record
 Once your ORm schema updated we are ready to work with our models. Since we just created our table, it's time to push some data in. Let's do such operation in a controller:
 
 ```php
@@ -237,7 +237,7 @@ You can apply any DataEntity method to your model.
 > If you working under PHPStorm, IDE will highlight all possible record fields for you.
 
 #### Validations
-Given example will raise an exception when we will try to execute it again, the reason - non unique email. Since email validation requires us to send query to database, we might want to modify our validation method (same way as in DataEntity) to add more conplex validation rule:
+Given example will raise an exception when we will try to execute it again, the reason - non unique email. Since email validation requires us to send query to database, we might want to modify our validation method (same way as in DataEntity) to add more complex validation rule:
 
 ```php
 /**
@@ -283,7 +283,7 @@ for ($i = 0; $i < 100; $i++) {
 }
 ```
 
-> Attention, `create` method will return filled Record entity, you HAVE to save such entity to database manually (simply call `save()` method).
+> Attention, `create` method will only return populated Record entity, you HAVE to save such entity to database manually (simply call `save()` method).
 
 You you wish to check what is going on with queiries to database, you can to check logging tab of spiral profiler (this is Postgres connection):
 
@@ -292,12 +292,63 @@ INSERT INTO "primary_users" ("name", "email", "status", "balance")
 VALUES ('Boris Kuhic', 'mrunte@yahoo.com', 'blocked', 386.600000) RETURNING "id"
 ```
 
-#### Selections
+## Seletions
+Once you have your table populated with records, it's time to select some of them to do something. Spiral ORM exposes 3 ActiveRecord like methods which you can use for that purposes: `find`, `findOne` and `findByPK`.
 
+#### FindOne
+To find one record based on some conditions and sorting we can use static method `findOne`, method will return **null** if it's unabled to located required record. Since ORM component based on DBAL you are able to specify needed conditions in a short array form (you need normal where statements, check `find` method below).
+
+```php
+$user = User::findOne(['status' => 'active']);
+dump($user);
+```
+
+#### FindByPK
+In cases where you would like to find your record based on it's primary key value (usually ID) we can use method `findByPK`. Method will behave same way as `findOne` if no entity can be found.
+
+```php
+$user = User::findByPK(1);
+dump($user);
+```
+
+#### Find
+If you want to find multiple records, or run aggregation, you can use method `find` which will return instance of `Spiral\ORM\Entities\Selector`, such class has common parent with DBAL [SelectQuery] (/database/builders.md) which makes you possible to use same methods and princiles:
+
+```php
+public function index()
+{
+    dump(User::find()->count());
+
+    foreach (User::find(['status' => 'active']) as $user) {
+        dump($user->name);
+    }
+
+    $selection = User::find()->where('user.balance', '>', 500)->orderBy(
+        'user.balance',
+        'DESC'
+    );
+
+    foreach ($selection as $user) {
+        dump($user);
+    }
+}
+```
+
+Let's try to check SQL statement generated for last selection:
+
+```sql
+SELECT
+*
+FROM "primary_users" AS "user"
+WHERE "user"."balance" > 500
+ORDER BY "user"."balance" DESC
+```
+
+Please note that ORM Selector will automatically assign alias to Record table which is singular model name. You can read more about aliases [here] (loading.md).
+
+## Update Record
 
 #### Dirty Fields and Solid State
-
-
 
 #### Atomic Number
 
