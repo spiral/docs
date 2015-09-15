@@ -348,16 +348,140 @@ ORDER BY "user"."balance" DESC
 Note that ORM Selector will automatically assigned alias to Record table which is singular model name ("user"). You can read more about aliases [here] (loading.md).
 
 ## Modify Record
+Once you selected needed record (for example using `findByPK`) you can modify it's fields using same way as with any other DataEntity. To save your updates into database you have to run method `save()` which will return false if model validations failed.
+
+```php
+public function index()
+{
+    $user = User::findByPK(1);
+    $user->name = 'New Name';
+
+    if (!$user->save()) {
+        dump($user->getErrors());
+    }
+}
+```
 
 #### Dirty Fields and Solid State
+If you will check SQL code generated for previous example, you might notice that it looks like:
+
+```sql
+UPDATE "primary_users"
+SET "name" = 'New Name'
+WHERE "id" = 1 
+```
+
+Record model included only modified fields into update query. Such approach can be useful in many cases, however if you wish to save your moveld into database with every declared value you can force, so called, "solid state". When model (Record) are in solid state every small update will force ORM to save whole record data.
+
+```php
+$user = User::findByPK(1);
+$user->name = 'New Name';
+
+if (!$user->solidState(true)->save()) {
+    dump($user->getErrors());
+}
+```
+
+This time our SQL will look like:
+
+```sql
+UPDATE "primary_users"
+SET "name" = 'New Name',  "email" = 'test@email.com',  "status" = 'active ',  "balance" = '0.00'
+WHERE "id" = 1
+```
+
+> If you want to keep our model in solid State by default, simply declare protected property solidState with default value `true`.
+
+#### Filters and Accessors
+You can define setters, getters and accessors same way you would do that for DataEntity. However, spiral ORM will automatically assign some getters and accessors to your record based on column type, you check check what filters will be created by default by looking into ORM configuration file:
+
+```php
+'mutators'       => [
+    'timestamp'  => ['accessor' => Accessors\ORMTimestamp::class],
+    'datetime'   => ['accessor' => Accessors\ORMTimestamp::class],
+    'php:int'    => ['setter' => 'intval', 'getter' => 'intval'],
+    'php:float'  => ['setter' => 'floatval', 'getter' => 'floatval'],
+    'php:string' => ['setter' => 'strval'],
+    'php:bool'   => ['setter' => 'boolval', 'getter' => 'boolval']
+],
+```
+
+As you can see ORM will make sure that every column is validly type casted into scalar value while reading, this can be very useful since some DBMS returs every table value as string.
+
+#### Timestamps Accessor
+Based on provided configuration, you might notice that ORM will assign `ORMTimestamp` accessor to every timestamp or datetime field. Let's try to add such field into our table (again, avoid using timestamps):
+
+```php
+protected $schema = [
+    'id'              => 'primary',
+    'time_registered' => 'datetime',
+    'name'            => 'string(64)',
+    'email'           => 'string',
+    'status'          => 'enum(active,blocked)',
+    'balance'         => 'decimal(10,2)'
+];
+```
+
+After schema is updates, we are able to use such model field as [Carbon] (https://github.com/briannesbitt/Carbon) instance.
+
+```php
+public function index()
+{
+    $user = User::findByPK(1);
+    $user->name = 'New Name';
+
+    $user->time_registered->now();
+    dump($user->time_registered);
+
+    if (!$user->solidState(true)->save()) {
+        dump($user->getErrors());
+    }
+}
+```
+
+You can also simply assign time to `time_registered` field, accessor must automatically handle it using `strtotime` function:
+
+```php
+$user->time_registered = 'next friday 10am';
+```
+
+> DBAL will convert all dates into UTC timezone.
 
 #### Atomic Number
+Field accessors in ORM may not only provide mocking functionality but declare update behaviours. One of such accessors can be very useful to manager numeric values "atomic" way. Let's try to see such accessor in action, first of all we have to declare it in our Record model and update schema after:
 
-## Events
+```php
+protected $accessors = [
+    'balance' => AtomicNumber::class
+];
+```
 
-## Timestamps Trait
+After that we can able to manipulate with field values using deltas:
 
-## Inheritance and Abstract Records
+```php
+$user = User::findByPK(1);
+$user->balance->inc(1.6);
+
+if (!$user->save()) {
+    dump($user->getErrors());
+}
+```
+
+The whole point of solid state and such accessor can be decribed using resulted update statement:
+
+```sql
+UPDATE "primary_users"
+SET "balance" = "balance" + 1.6
+WHERE "id" = 1
+```
+
+> You can create your own accessors by implementing `RecordAccessorInterface`, also check [JsonDocument] (/odm/standalone.md) accessor.
+
+## Events and Traits
+
+#### Timestamps Trait
+
 
 ## Services and Controllers
 
+## Inheritance and Abstract Records
