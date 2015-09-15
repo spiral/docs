@@ -32,7 +32,7 @@ public function index()
 }
 ```
 
-Exceptions like that will be handled by HttpDisaptcher and converted into a `ExceptionResponse` with an appropriate status code. If you want to define a custom view for your error, edit the http configuration file to link error code to view name:
+Exceptions like that will be handled by HttpDispatcher and converted into a `ExceptionResponse` with an appropriate status code. If you want to define a custom view for your error, edit the http configuration file to link error code to view name:
 
 ```php
     'httpErrors'   => [
@@ -54,7 +54,7 @@ There are a few exceptions predefined for generic scenarios:
 | 500  | ServerErrorException  |
 
 ## Handling Client Exception by Middleware
-As mention in previous section every instance of ClientException will be converted into ExceptionResponse, this makes possible to handle such response "exception like" way and redine output. For example we can create CMS middleware which it going to check for page associated with current Uri when endpoint returned NotFound Error.
+As mention in previous section every instance of ClientException will be converted into `ExceptionResponse` (such reponse only demands error page rendering), this makes possible to handle such response "exception like" way and redifine output. For example we can create CMS middleware which it going to check for page associated with current Uri when endpoint returned NotFound Error.
 
 ```php
 class CmsMiddleware extends Service implements MiddlewareInterface
@@ -69,10 +69,8 @@ class CmsMiddleware extends Service implements MiddlewareInterface
     {
         $response = $next($request);
 
-        if (
-            $response instanceof ExceptionResponse
-            && $response->getStatusCode() == ClientException::NOT_FOUND
-        ) {
+        if ($response->getStatusCode() == ClientException::NOT_FOUND) {
+            //Obviously you have to check if such CMS page known to system
             return $this->cmsResponse($request);
         }
 

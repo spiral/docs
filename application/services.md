@@ -1,9 +1,9 @@
 # Service Classes
 Spiral provides idea to put your application business and database logic into set of specific classes called "Services", such classes can be responsible for almost
-every operation in your application related to business logic. You are not required to use services, however they may significantly simplfify definition of your controller and data entities
+every operation in your application. You are not required to use services, hovewer they may significantly simplfify definition of your controllers and data entities
 and provide better base for unit testing.
 
-> Every Controller is Service. Yep.
+> Every Controller is Service.
 
 ## Scaffolding
 You can generate empty service using CLI command "create:service name", this command will allow you to define set of methods, dependecies with other services
@@ -80,7 +80,7 @@ class OtherService extends Service implements SingletonInterface
 
 ## Accessing core components
 In many cases your services might want to talk to framework components, for example databases, translator and etc. You can still request such components as init method
-dependencies, however spiral provides set of short bindings which can be resolved using short name (for example we can get instance of `HttpDispatcher` using `http` binding), such resolution can be performed via magic `__get` method.
+dependencies, hovewer spiral provides set of short bindings which can be resolved using short name (for example we can get instance of `HttpDispatcher` using `http` binding), such resolution can be performed via magic `__get` method.
 
 ```php
    public function someMethod()

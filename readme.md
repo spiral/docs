@@ -48,18 +48,17 @@
     * [Schema Readers] (database/reading.md)
     * [Schema Writers] (database/syncing.md)
     * [**Query Builders**] (database/builders.md)
-    * [Migrations] (database/migrations.md)
-* Schemas
+    * [Migrations] (database/migrations.md) (?)
+* Behaviour Schemas
     * [Schemas and Documenters] (schemas.md)
 * Spiral ORM
-    * Overview
-    * **Record Model**
+    * [**Record Model and Database Scaffolding**] (orm/basics.md)
     * Relations
+    * Entity Cache and Eager loading
 * Spiral ODM
-    * Overview 
-    * **Document and ActiveDocument Models**
-    * Compositions and Aggregations
-    * JSON Documents (integration with ORM)
+    * **Models, Compositions, Aggregations**
+    * JSON and Standalone Documents
     * [UML Export] (odm/uml.md)
 * Modules and Extensions
     * [Profiler] (modules/profiler.md)
+    * **Spiral Frontend Toolkit**
