@@ -55,7 +55,7 @@ public function index()
 The code above is exactly the same as the short 'render' method. However it gives us the ability to manipulate the View class before rendering. Spiral provides us with the ability to register additional engines associated with a specified file extension and/or custom view rendered which can be very useful in some cases.
 
 ## View Namespaces
-One of the core ideas of ViewManager is to store view filenames into multiple locations aggregated by namespace. While rendering/compilation phase ViewManager will walk though every namespace directory until view file not found. View file identified purelly by it's name, when extension used to locate what rendering/compilation engine to be used. Let's look into our view configuration to check how namespaces defined:
+One of the core tenets of ViewManager is to aggregate and store view filenames into multiple locations by namespace. rendering/compilation phase ViewManager will walk though every namespace directory until view file is not found. View file is identified only by it's name. You can use an extension to locate what rendering/compilation engine to use. Let's look at our view configuration to check how the namespaces should defined:
 
 ```php
 'namespaces'   => [
@@ -72,7 +72,7 @@ One of the core ideas of ViewManager is to store view filenames into multiple lo
 ],
 ```
 
-You can specify view name with namespace using ":" separator. If no namespace were entered "default" will be used instead, this makes us possible to rewrite first example:
+You can specify view name with a namespace using the ":" separator. If you don't enter a namespace, the "default" will be used instead. This makes it possible to rewrite the first example:
 
 ```php
 public function index()
@@ -83,7 +83,7 @@ public function index()
 }
 ```
 
-The beauty about namespaces that due ViewManager will be looking for file in order of declared directories we can change views used by other spiral components or modules. In our case let's remember http configuration:
+The great thing about namespaces is that because ViewManager will be looking for file in the order of the declared directories, we can change the views used by other spiral components or modules. In this case, let's remember http configuration:
 
 ```php
 'httpErrors'   => [
@@ -94,7 +94,7 @@ The beauty about namespaces that due ViewManager will be looking for file in ord
 ]
 ```
 
-As you can see, in case of soft http error system will to render view located in "spiral" namespace, which is associated with two directories:
+As you can see, soft http error system will render the view located in the "spiral" namespace, which is associated with two directories:
 
 ```php
 'spiral'   => [
@@ -103,7 +103,7 @@ As you can see, in case of soft http error system will to render view located in
 ],
 ```
 
-Let's try to alter HTTP 404 error page by creating view in 'application/views/spiral/http' directory. We are going to overwrite 'notFound' page. HttpDispacher will provide us "request" variable we can use in our view:
+Let's try to alter the HTTP 404 error page by creating a view in 'application/views/spiral/http' directory. We are going to overwrite the 'notFound' page. HttpDispacher will provide us a "request" variable we can use in our view:
 
 ```php
 Page not found: <?= $request->getUri() ?>
@@ -111,7 +111,7 @@ Page not found: <?= $request->getUri() ?>
 
 > We can also simply point http to another view. :)
 
-Now, if we will cause 404 error our view file will be rendered. If you already caused 404 error before it might be already pre-compiled with original view, we can reset it by either disabling cache, flushing content of "application/runtime/cache/views" (default cache directory) or by executing command "views:compile" (run with -v options to get more details) which will re-compile available view files.
+Now, if we get a 404 error, our view file will be rendered. If you already got a 404 error before it might be  pre-compiled already with the original view. We can reset it by either disabling cache, flushing the content of "application/runtime/cache/views" (default cache directory) or by executing the command "views:compile" (run with -v options to get more details) which will re-compile the available view files.
 
 ## View Engines
 Spiral ViewManager will be useless without providing ability to create or mount your own templating engines and compilers. Before we will be doing that, let's try to understand how spiral work with view files and review configuration for default spiral engine:
