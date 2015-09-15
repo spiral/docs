@@ -193,21 +193,23 @@ Indexes of primary.users:
 ```
 
 #### Active vs Passive Schemas
-In a given we created Record which will ensure that table exists in database and has valid set of columns and indexes.ORM component does not require you to declare every table column, even more you can associate your model with existed table without even declaring schema propery. In this case model will fetch fields list and available columns with their types from table directly, in this case our model may look like:
+In a given example, we created Record which will automatically ensure that table exists in database and have desired set of columns and indexes. ORM component does not require you to declare every table column, even more, you can associate your model with existed table without even creating schema propery. In this case model will fetch column list from table directly, our model may look like:
 
 ```php
-class UserPassive extends Record
+class SomeRecord extends Record
 {
-    protected $table = 'users';
+    protected $table = 'some_table';
 }
 ```
 
-However, in a next guide section, dedicated to relations, you'll find out that relations have ability to modify associated model schemas to declare needed columns and foreign keys. This is fine if we generating our database using Spiral Models, however in some cases you might want to connect Records to existed database. In this case, you can configure relations in a way to make them follow already existed structures. But, to be absolutelly sure that no relation or recor can modify our table we can delcare record constant ACTIVE_SCHEMA and set if value to false.
+However, in a next guide section dedicated to relations, you'll find out that relations have ability to modify associated model schemas to declare needed columns and foreign keys. This is fine if we generating our database using Spiral Models, however in some cases you might want to connect Records to existed database. In this case, you can configure relations in a way to make them follow already existed structures. But, to be absolutelly sure that no relation or recor can modify our table we can delcare record constant ACTIVE_SCHEMA and set if value to false.
 
 ```php
 class SomeRecord extends Record
 {
     const ACTIVE_SCHEMA = false;
+    
+    protected $table = 'some_table';
 }
 ```
 
@@ -216,12 +218,91 @@ Such constant will forbid any modifications for associated table and ensure that
 > You can also use passive models if you prefer to generate your database using migrations.
 
 ## Work with Record
+Once your ORm schema updated we are ready to work with our models. Since we just created our table, it's time to push some data in. Let's do such operation in a controller:
+
+```php
+public function index()
+{
+    $u = new User();
+    $u->name = 'Anton';
+    $u->email = 'test@email.com';
+    $u->status = 'active';
+    $u->save();
+
+    dump($u);
+}
+```
+
+You can apply any DataEntity method to your model.
+> If you working under PHPStorm, IDE will highlight all possible record fields for you.
+
+#### Validations
+Given example will raise an exception when we will try to execute it again, the reason - non unique email. Since email validation requires us to send query to database, we might want to modify our validation method (same way as in DataEntity) to add more conplex validation rule:
+
+```php
+/**
+ * @param bool|false $reset
+ * @return bool
+ */
+protected function validate($reset = false)
+{
+    parent::validate($reset);
+
+    if ($this->hasUpdates('email') && !$this->hasError('email')) {
+        //We are using array based where statement
+        $selection = $this->sourceTable()->where([
+            'email' => $this->email,
+            'id'    => ['!=' => (int)$this->id]
+        ]);
+
+        if ($selection->count() != 0) {
+            echo 1;
+            $this->setError('email', self::translate("Email must be unique."));
+        }
+    }
+
+    return false;
+}
+```
+
+Such validation method will check if email is unique but only in cases when email field has some updates (got created or changed). Now, we will get an error message associated with model field rather than exception.
+
+Before we will jump to next step, lets try to create few more users. In this case we can use static method `create` which accepts set of initial model fields. Since we have no fillable fields this method should not work in our case (so we are going to use `setFields` method with disabled access policy). In order to fill our demo entities let's connect [faker] (https://github.com/fzaninotto/Faker).
+
+```php
+for ($i = 0; $i < 100; $i++) {
+    $user = User::create()->setFields([
+        'name'    => $faker->name,
+        'email'   => $faker->email,
+        'balance' => $faker->randomFloat(2, 0, 999),
+        'status'  => $faker->randomElement(['active', 'blocked'])
+    ], true);
+
+    //Saving user to database
+    $user->save();
+}
+```
+
+> Attention, `create` method will return filled Record entity, you HAVE to save such entity to database manually (simply call `save()` method).
+
+You you wish to check what is going on with queiries to database, you can to check logging tab of spiral profiler (this is Postgres connection):
+
+```sql
+INSERT INTO "primary_users" ("name", "email", "status", "balance")
+VALUES ('Boris Kuhic', 'mrunte@yahoo.com', 'blocked', 386.600000) RETURNING "id"
+```
+
+#### Selections
+
 
 #### Dirty Fields and Solid State
 
-#### Validations
+
 
 #### Atomic Number
+
+
+## Services
 
 ## Timestamps Trait
 
