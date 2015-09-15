@@ -1,5 +1,5 @@
 # Spiral ORM, Basics
-Spiral Framework provide simple but yet powerful ORM engine you can use in everyday developlment. Spiral ORM provides ability to work with multiple databases, automatically scaffold tables and define set of realtions which can be requested on demand or pre-loaded with parent entity. 
+Spiral Framework provide simple but yet powerful ORM engine you can use in everyday development. Spiral ORM provides ability to work with multiple databases, automatically scaffold tables and define set of realtions which can be requested on demand or pre-loaded with parent entity. 
 
 Spiral ORM model **Record** are based on [DataEntity] (/components/entity.md), so it will be the best to read about it first. In addition check this [behaviour schema] (/schemas.md) concept which used as base for ORM component.
 
