@@ -448,7 +448,7 @@ $user->time_registered = 'next friday 10am';
 > DBAL will convert all dates into UTC timezone.
 
 #### Atomic Number
-Field accessors in ORM may not only provide mocking functionality but declare update behaviours. One of such accessors can be very useful to manager numeric values "atomic" way. Let's try to see such accessor in action, first of all we have to declare it in our Record model and update schema after:
+Field accessors in ORM may not only provide mocking functionality but declare update behaviours. One of such accessors can be very useful to manage numeric values "atomic" way. Let's try to see such accessor in action, first of all we have to declare it in our Record model and update schema after:
 
 ```php
 protected $accessors = [
@@ -502,7 +502,7 @@ deleted                 | -                                         | -      | A
 In most of cases you don't need to handle any of event as `save` and `delete` methods can be easily overwriten. However events can be very useful to create set of traits used to modify Record schema and save behaviour (see next).
 
 #### Timestamps Trait
-One of the most common Record trait you might want to use - TimestampsTrait. Such trait handles events "saving", "updatings" and "describe" to alter Record schema and update two "magic" column "time_created" and "time_updated", both have type - datetime. Such trait will automatically set and update values of this columns when model is saved (created) or updated. Our final demo Record User might look like:
+One of the most common Record trait you might want to use - TimestampsTrait. Such trait handle events "saving", "updating" and "describe" to alter Record columns and update two "magic" column "time_created" and "time_updated" (datetime). Our final demo Record User might look like:
 
 ```php
 class User extends Record
@@ -586,7 +586,7 @@ class User extends Record
 ```
 
 ## Services and Controllers
-While working with models you can call `find` and `save` methods inside your controllers freely. However spiral provides ability to pre-generate specific class - [Service] (/application/services.md), which can help you to abstract model specific operations from your controllers code. You can scaffold such class using console command "create:service user -e user", resulted code may look like:
+While working with ORM models you are able to call `find`, `findByPK` and `save` methods inside your controllers directly. However spiral provides ability to pre-generate specific [Service] (/application/services.md) which can help you to abstract database specific operations from your controllers code. You can scaffold such class using console command "create:service user -e user", resulted code may look like:
 
 ```php
 class UserService extends Service  implements SingletonInterface
@@ -674,7 +674,9 @@ public function index(UserService $users)
 }
 ```
 
+Services like that is the best place to locate custom selection methods (like `findActive`) or even alter delete method to implement "soft deletes".
+
 ## Inheritance and Abstract Records
-Since Spiral ORM uses static analysis, there is not limitation on how you would like to create your models, as result you can declare abstract Record with schema, validations and etc and later extend this class in your application. Such technique can be very useful while writing models.
+Since Spiral ORM uses static analysis, there is no real limitation how you would like to create your models, as result you can declare **abstract** Record with it's schema, validations and etc and later extend this class in your application. This technique can be very useful while writing [modules] (/components/modules.md).
 
 > While extending, ORM will merge schemas and other properties of Record and it's parent.
