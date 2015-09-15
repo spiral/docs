@@ -56,18 +56,20 @@ class User extends Record
 }
 ```
 
-As you can see most of Record properties are really similar to `DataEntity` as can be configured same way, however we have few additional properties we have to remember.
+As you can see most of Record properties are really similar to `DataEntity` as can be configured same way, however we have few additional things we have to remember.
 
 #### Schema
 The most important part of any Record models is it's schema. Schema declares what columns you would like to see in associated table and, in addition to that, contains set of record [relations] (relations.md). In this tutorial we are going to stick to columns only.
 
-Since we are creating model for new (non existed table) we would need to declare primary key, we can do it same way as in DBAL Schema Writers by assigning type "primary" or "bigPrimary". Spiral ORM will detect your primary key name automatically so you don't nesessary need to use "id".
+Since we are creating model for new (non existed table) we would need to declare primary key, we can do it same way as in DBAL Schema Writers by assigning type "primary" or "bigPrimary".
 
 ```php
 'id'     => 'primary',
 ```
 
-To provide additional type arguments, such as length, scale or enum values you can simply use braces as you would call `AbstractTable` method.
+>  Spiral ORM will detect your primary key name automatically so you don't nesessary need to use "id".
+
+To provide additional type arguments, such as length, scale or enum values you can simply use braces as you would call `AbstractColumn` method.
 
 ```php
 'name'   => 'string(64)',
