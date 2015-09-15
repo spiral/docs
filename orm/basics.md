@@ -456,7 +456,7 @@ protected $accessors = [
 ];
 ```
 
-After that we can able to manipulate with field values using deltas:
+Now we are able to manipulate with field values using deltas:
 
 ```php
 $user = User::findByPK(1);
@@ -466,6 +466,8 @@ if (!$user->save()) {
     dump($user->getErrors());
 }
 ```
+
+> You can use accessor method `setData` to specify new balance value without deltas. Use `serializeData()` to get mocked accessor value.
 
 The whole point of solid state and such accessor can be decribed using resulted update statement:
 
@@ -478,10 +480,201 @@ WHERE "id" = 1
 > You can create your own accessors by implementing `RecordAccessorInterface`, also check [JsonDocument] (/odm/standalone.md) accessor.
 
 ## Events and Traits
+As DataEntity model, Record declares few [events] (/components/events.md) which you can handle to track or handle model behaviour:
+
+Event                   | Context                                   | Return | Description
+---                     | ---                                       | ---    | ---
+setFields               | $fields                                   | *      | Called inside `setFields` method.
+publicFields            | $fields                                   | *      | Called before return in `publicFields` method.
+jsonSerialize           | $publicFields                             | *      | Called while packing model into json.
+validation              | -                                         | -      | Before validation.
+validated               | $errors                                   | *      | After validation.
+**describe** (static)   | [$property, $value, EntitySchema $schema] | value  | Called while model analysis. Such evet can be used to redefine or alter schema, validations, mutators etc.
+created                 | -                                         | -      | Called inside static method "create" after assigning model fields.
+selector                | Selector $selector                        | *      | Called by "find" and other selection methods.
+saving                  | -                                         | -      | Before model data saved into database (model is only created). 
+saved                   | -                                         | -      | After model data saved into database.
+updating                | -                                         | -      | Before model data updated in database (model already exist).
+updated                 | -                                         | -      | After model data updated in database.
+deleting                | -                                         | -      | Before model deleted from database.
+deleted                 | -                                         | -      | After model deleted from database.
+
+In most of cases you don't need to handle any of event as `save` and `delete` methods can be easily overwriten. However events can be very useful to create set of traits used to modify Record schema and save behaviour (see next).
 
 #### Timestamps Trait
+One of the most common Record trait you might want to use - TimestampsTrait. Such trait handles events "saving", "updatings" and "describe" to alter Record schema and update two "magic" column "time_created" and "time_updated", both have type - datetime. Such trait will automatically set and update values of this columns when model is saved (created) or updated. Our final demo Record User might look like:
 
+```php
+class User extends Record
+{
+    use TimestampsTrait;
+
+    /**
+     * Entity schema.
+     *
+     * @var array
+     */
+    protected $schema = [
+        'id'              => 'primary',
+        'time_registered' => 'datetime',
+        'name'            => 'string(64)',
+        'email'           => 'string',
+        'status'          => 'enum(active,blocked)',
+        'balance'         => 'decimal(10,2)'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $accessors = [
+        'balance' => AtomicNumber::class
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'name'   => [
+            'notEmpty'
+        ],
+        'email'  => [
+            'notEmpty'
+        ],
+        'status' => [
+            'notEmpty'
+        ]
+    ];
+
+    /**
+     * @var array
+     */
+    protected $defaults = [
+        'status' => 'active'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $indexes = [
+        [self::UNIQUE, 'email']
+    ];
+
+    /**
+     * @param bool|false $reset
+     * @return bool
+     */
+    protected function validate($reset = false)
+    {
+        parent::validate($reset);
+
+        if ($this->hasUpdates('email') && !$this->hasError('email')) {
+            //Let's try to check if email is unique
+            $selection = $this->sourceTable()->where([
+                'email' => $this->email,
+                'id'    => ['!=' => (int)$this->id]
+            ]);
+
+            if ($selection->count() != 0) {
+                echo 1;
+                $this->setError('email', self::translate("Email must be unique."));
+            }
+        }
+
+        return false;
+    }
+}
+```
 
 ## Services and Controllers
+While working with models you can call `find` and `save` methods inside your controllers freely. However spiral provides ability to pre-generate specific class - [Service] (/application/services.md), which can help you to abstract model specific operations from your controllers code. You can scaffold such class using console command "create:service user -e user", resulted code may look like:
+
+```php
+class UserService extends Service  implements SingletonInterface
+{
+    /**
+     * Declares to IoC container that class must be treated as Singleton.
+     */
+    const SINGLETON = self::class;
+
+    /**
+     * Create new blank User. You must save entity using save method.
+     * 
+     * @param array|\Traversable $fields Initial set of fields.
+     * @return User
+     */
+    public function create($fields = [])
+    {
+        return User::create($fields);
+    }
+
+    /**
+     * Save User instance.
+     * 
+     * @param User $user
+     * @param bool  $validate
+     * @param array $errors Will be populated if save fails.
+     * @return bool
+     */
+    public function save(User $user, $validate = true, &$errors = NULL)
+    {
+        if ($user->save($validate)) {
+            return true;
+        }
+        
+        $errors = $user->getErrors();
+        
+        return false;
+    }
+
+    /**
+     * Delete User.
+     * 
+     * @param User $user
+     */
+    public function delete(User $user)
+    {
+        $user->delete();
+    }
+
+    /**
+     * Find User it's primary key.
+     * 
+     * @param mixed $primaryKey
+     * @return User|null
+     */
+    public function findByPK($primaryKey)
+    {
+        return User::findByPK($primaryKey);
+    }
+
+    /**
+     * Find User using set of where conditions.
+     * 
+     * @param array $where
+     * @return User[]|Selector
+     */
+    public function find(array $where = [])
+    {
+        return User::find($where);
+    }
+}
+```
+
+Now you can use such service inside you controllers avoiding static methods of Record model (they can always be removed from service also):
+
+```php
+public function index(UserService $users)
+{
+    $user = $users->findByPK(1);
+    $user->balance->inc(1.6);
+
+    if (!$users->save($user)) {
+        dump($user->getErrors());
+    }
+}
+```
 
 ## Inheritance and Abstract Records
+Since Spiral ORM uses static analysis there is not limitation on how you would like to create your models, as result you can declare abstract Record with schema, validations and etc and later extend this class in your application. Such technique can be very useful while writing models.
+
+> While extending, ORM will merge schemas and other properties of Record and it's parent.
