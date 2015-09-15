@@ -345,7 +345,7 @@ WHERE "user"."balance" > 500
 ORDER BY "user"."balance" DESC
 ```
 
-Please note that ORM Selector will automatically assign alias to Record table which is singular model name. You can read more about aliases [here] (loading.md).
+Note that ORM Selector will automatically assign alias to Record table which is singular model name. You can read more about aliases [here] (loading.md).
 
 ## Update Record
 
