@@ -296,7 +296,7 @@ VALUES ('Boris Kuhic', 'mrunte@yahoo.com', 'blocked', 386.600000) RETURNING "id"
 Once you have your table populated with records, it's time to select some of them to do something. Spiral ORM exposes 3 ActiveRecord like methods which you can use for that purposes: `find`, `findOne` and `findByPK`.
 
 #### FindOne
-To find one record based on some conditions and sorting we can use static method `findOne`, method will return **null** if it's unabled to located required record. Since ORM component based on DBAL you are able to specify needed conditions in a short array form (you need normal where statements, check `find` method below).
+To find one record based on some conditions and sorting we can use static method `findOne`, method will return **null** if it's unabled to locate required record. Since ORM component based on DBAL you are able to specify needed conditions in a short array form (if you need normal where statements, check `find` method below).
 
 ```php
 $user = User::findOne(['status' => 'active']);
@@ -318,6 +318,7 @@ If you want to find multiple records, or run aggregation, you can use method `fi
 public function index()
 {
     dump(User::find()->count());
+    dump(User::find()->sum('user.balance'));
 
     foreach (User::find(['status' => 'active']) as $user) {
         dump($user->name);
@@ -352,9 +353,11 @@ Please note that ORM Selector will automatically assign alias to Record table wh
 
 #### Atomic Number
 
-
-## Services
+## Events
 
 ## Timestamps Trait
 
 ## Inheritance and Abstract Records
+
+## Services and Controllers
+
