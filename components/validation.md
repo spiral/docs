@@ -1,8 +1,8 @@
 # Validations
-Spiral provides simplistic way to validate incoming user data by providing `Spiral\Validation\ValidatorInterface` interface which is bindined by default to `Spiral\Validation\Validator` class.
+Spiral provides a simple way to validate incoming user data by providing an `Spiral\Validation\ValidatorInterface` interface which is attached by default to the `Spiral\Validation\Validator` class.
 
 ## ValidatorInterface
-Before we will start working with validations let's quickly take a look at `ValidatorInterface` to see what methods are available for us.
+Before we start working with validations, let's quickly take a look at `ValidatorInterface` to see what methods are available to us.
 
 ```php
 interface ValidatorInterface
@@ -39,7 +39,7 @@ interface ValidatorInterface
     public function isValid();
 
     /**
-     * Evil tween of isValid() method should return true if context data is not valid.
+     * Evil twin of isValid() method should return true if context data is not valid.
      *
      * @return bool
      * @throws ValidationException
@@ -47,7 +47,7 @@ interface ValidatorInterface
     public function hasErrors();
 
     /**
-     * List of errors associated with parent field, every field should have only one error assigned.
+     * List of errors associated with parent field. Every field can only have one error assigned.
      *
      * @return array
      */
@@ -55,13 +55,13 @@ interface ValidatorInterface
 }
 ```
 
-As you can see validator requires only 2 primary sets:
-* data is arrays of fields to be validated
+As you can see, validator requires 2 primary sets:
+* data is an array of fields to be validated
 * rules is set of validation rules to be applied to every data field
 
-> Default spiral implementation `Validator` requires instances of `ContainerInterface` and `ValidationProvider` instances (to provide list of available validations), this means that you have to request validator instance using container to ensure that it's configured correctly. 
+> The default spiral implementation `Validator` requires instances of `ContainerInterface` and `ValidationProvider` (to provide a list of available validations). This means that you have to request the validator instance using the  container to ensure that it's configured correctly. 
 
-We now can create sample validator in our controller action:
+Now we can create a sample validator in our controller action:
 
 ```php
 public function index(ValidatorInterface $validator)
@@ -76,7 +76,7 @@ public function index(ValidatorInterface $validator)
 }
 ```
 
-We can also create validator using container and defined data and rules while class construction:
+We can also create a validator using container and defined data and create rules while class is constructed:
 
 ```php
 public function index()
@@ -100,10 +100,10 @@ public function index()
 > Both declarations are identical.
 
 ## Validator Data
-Validator data set can be represented by any associated array where key is treated as field name, and value and data to be validated. In our example we defined only one field named "name" and associated it with value fetched from query. By default validation will fail with error "This field is required." associated with "name" field, you can alter website url and include query "?name=something" to pass example validation.
+Validator data set can be represented by any associated array where the key is treated as a field name that needs value and data to be validated. In our example, we defined only one field called "name" and associated it with a value fetched from a query. By default, the validation will fail with the error message "This field is required." associated with the "name" field. You can alter the website url and include query "?name=something" to pass the example validation.
 
 ## Validation Errors
-Before we will jump into format required to defined validation rules let's take a look at error generated in our case, error array will look like:
+Before we move to the format required to define validation rules, let's take a look at the error generated in our case. The error array will look like the following:
 
 ```php
 [
@@ -111,11 +111,11 @@ Before we will jump into format required to defined validation rules let's take 
 ]
 ```
 
-Such errors can be sent directly to frontend to be displayed near input field or joined as array of errors.
-> Spiral Validators must perform **linear field validation**, this means that only one error can be raised for one field. When multiple rules associated with one field - first failed rule error message will be used (other validation methods will be skipped), such technique used to ensure that every rule will receive value already passed previous validations (for example we can have rules like: notEmpty, string, string::regexp which will check that field is not empty, than that value is string and only after regexp expression will be executed).
+Such errors can be sent directly to the frontend and be displayed near the input field or joined as an array of errors.
+> Spiral Validators must perform **linear field validation**. This means that only one error can be shown in one field. When there are multiple rules associated with one field - the first failed error message will be used for that rule (other validation methods will be skipped). This approach is used to make sure that every rule will receive a value already passed through previous validations (for example we can have rules like: notEmpty, string, string::regexp which will make sure that field is not empty. Than that value is a string and only after regexp expression will it be executed).
 
 ## Validation Rules and Messages
-As stated in previous section we can defined multiple validation rules for one field, let's try to modify our example and include email check into it:
+We can define multiple validation rules for one field. Let's try to modify our example and include an email check into it:
 
 ```php
 public function index()
@@ -130,7 +130,7 @@ public function index()
         'rules' => [
             'name' => [
                 'notEmpty',
-                'email'     //We want our name field to contain valid email address
+                'email'     //We want our name field to contain a valid email address
             ]
         ]
     ]);
@@ -139,8 +139,8 @@ public function index()
 }
 ```
 
-### What is Validation rule?
-In general sense validation rule is a simple function or function alias which must accept value to be validated first and return bool or typecasted bool as result. Let's try to add few php functions as data validations:
+### What is a Validation rule?
+Generally speaking, a validation rule is a simple function or function alias which must accept a value to be validated first and then return bool or typecasted bool as a result. Let's try to add a few php functions as data validations:
 
 ```php
 'rules' => [
@@ -151,7 +151,7 @@ In general sense validation rule is a simple function or function alias which mu
 ]
 ```
 
-Now, our validation will fail in name will contain non numeric value, validator will raise defailt error message in this case:
+Now, our validation fails in the name because it contains a non numeric value. The Validator will show a default error message in this case:
 
 ```php
 [
@@ -160,7 +160,7 @@ Now, our validation will fail in name will contain non numeric value, validator 
 ```
 
 ### Validation Messages and Complex Rule Definition
-As you can see based on given example validator will create default error message if some condition will fail. We can provide custom error message by switch rule definition from simple to complex form, for this purposes our rule must be defined as array and declare additional key "message":
+Based on the given example, validator will create a default error message if some condition fails. We can provide a custom error message by switching the rule definition from a simple to complex form. For this purpose, our rule must be defined as an array and must declare an additional key "message":
 
 ```php
 'rules' => [
@@ -171,7 +171,7 @@ As you can see based on given example validator will create default error messag
 ]
 ```
 
-Every existed rule can be declared in complex form by putting it's name into array, let's rewrite our rules to demonstrate that:
+Every existing rule can be declared in a complex form by putting it's name into an array. Let's rewrite our rules to demonstrate that:
 
 ```php
 'rules' => [
@@ -182,10 +182,10 @@ Every existed rule can be declared in complex form by putting it's name into arr
 ]
 ```
 
-> You can only use simple rule definition form when you want to use default error message without any rule parameters (see below). Validator will perform automatic translation only for default error messages!
+> You can only use a simple rule definition form when you want to use a default error message without any rule parameters (see below). Validator performs an automatic translation only for default error messages!
 
 ### Rule parameters
-As mention in a previous paragraph complex form provides you ability not only to set custom error message but provide set of arguments to be passed into validation method, we can do that by listing needed arguments after rule name/function, let's try to use 'in_array' function for example:
+It was mentioned before that the complex form lets you set custom error message and provide a set of arguments to be passed into your validation method. We can perform that by listing the necessary arguments after the rule name/function. Let's try to use the 'in_array' function for example:
 
 ```php
 'rules' => [
@@ -196,7 +196,7 @@ As mention in a previous paragraph complex form provides you ability not only to
 ]
 ```
 
-> You can use any function as validation rule including your own method declared in a form "Class::method", the only requiment that value will come as first argument.
+> You can use any function as a validation rule, including your own method declared in a form "Class::method". The only requirement is that value needs to be the first argument.
 
 Let's try to create our own validation method in our controller or service.
 
@@ -227,7 +227,7 @@ public function validate($value, $compare)
 }
 ```
 
-> As you can see we declared our method as non static, this is possible due Validator will resolve rule class using container, this provides us ability to create specialized services to perform logical validation (for example ensure that outer record exists by it's ID) and much more.
+> As you can see, we declared our method as non static. This is because Validator will resolve the rule class using container. This allows us to create specialized services to perform logical validations (for example ensure that outer record exists by it's ID) and much more.
 
 ### Rule aliases
 Default spiral Validation provides ability to define set of alises associated with different validation functions, such aliases defined in `application/config/validation.php` file and provided to validator using `ValidationProvider` dependency. Let's check list of available validation aliases:
