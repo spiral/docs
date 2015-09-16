@@ -251,7 +251,7 @@ Compared to HAS_ONE relation we have only new option we can use WHERE, such opti
 
 > Please note that we declaring posts column name using `{@}` prefix, such prefix will be automatically replaced with valid posts table alias based on contex. You must always include it into your code.
 
-The easies way to assign post to user will be using in inversed relation (for example author), however for now let's use create method of relation (attention, WHERE condition will NOT populate post model): 
+The easies way to assign post to user will be using in inversed BELONGS_TO relation (for example author), however for now let's use create method of relation (attention, WHERE condition will NOT populate post model): 
 
 ```php
 public function index()
