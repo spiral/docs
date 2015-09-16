@@ -170,6 +170,123 @@ dump($user->profile()->findOne());
 > Accessing relation data using magic property is very useful in combination with [eager loading] (loading.md).
 
 ## Has Many Relation
+Has Many relation is very similar to has one, however it is not embedded to it's parent by default and it provides us ability to specify set of where conditions to link two tables together. Before we will start, let's create new Record Post: "create:record post -f id:primary -f published:bool -f title:string -f content:text"
+
+```php
+class Post extends Record 
+{
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        
+    ];
+
+    /**
+     * Entity schema.
+     * 
+     * @var array
+     */
+    protected $schema = [
+        'id'        => 'primary',
+        'published' => 'bool',
+        'title'     => 'string',
+        'content'   => 'text'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'title'     => [
+            'notEmpty'
+        ],
+        'content'   => [
+            'notEmpty'
+        ]
+    ];
+}
+```
+
+> Do not forget to remove validation for `published` field.
+
+To state that user has many posts, we can declare HAS_MANY relation in User model:
+
+```php
+protected $schema = [
+    'id'              => 'primary',
+    'time_registered' => 'datetime',
+    'name'            => 'string(63)',
+    'email'           => 'string',
+    'status'          => 'enum(active,blocked)',
+    'balance'         => 'decimal(11,2)',
+    'profile'         => [self::HAS_ONE => Profile::class],
+    'posts'           => [self::HAS_MANY => Post::class]
+];
+```
+
+After schema update, our post table will look pretty similar to profiles one, so we may skip checking it. As in case with HAS_ONE there is many additional options you might check and define:
+
+Option            | Default                             | Description
+---               | ---                                 | ---
+INNER_KEY         | {record:primaryKey}                 | Outer key will be based on parent record role and inner key name (**id**).
+OUTER_KEY         | {record:role}_{definition:innerKey} | Outer key will be based on parent record role and inner key name (**user**_**id**).
+CONSTRAINT        | true                                | Set constraints (foreign keys) by default.
+CONSTRAINT_ACTION | CASCADE                             | [https://en.wikipedia.org/wiki/Foreign_key](https://en.wikipedia.org/wiki/Foreign_key)
+CREATE_INDEXES    | true                                | Relation allowed to create indexes in outer table.
+NULLABLE          | false                               | Has one counted as not nullable by default .
+EMBEDDED_RELATION | true                                | Embedded relations are validated and saved with parent model and can accept values using setFields.
+**WHERE**         | []                                  | HasMany allow us to define default WHERE statement for relation in a simplified array form.
+
+Compared to HAS_ONE relation we have only new option we can use WHERE, such option provides us alibity to specify loading conditions for our records, let's try to use it.
+
+```php
+'publishedPosts'  => [
+    self::HAS_MANY => Post::class,
+    Post::WHERE    => [
+        '{@}.published' => true
+    ]
+]
+```
+
+> Please note that we declaring posts column name using `{@}` prefix, such prefix will be automatically replaced with valid posts table alias based on contex. You must always include it into your code.
+
+The easies way to assign post to user will be using in inversed relation (for example author), however for now let's use create method of relation (attention, WHERE condition will NOT populate post model): 
+
+```php
+public function index()
+{
+    $faker = Factory::create();
+
+    $user = User::findByPK(1);
+
+    $post = $user->posts()->create();
+    $post->title = $faker->text(50);
+    $post->content = $faker->text;
+    $post->published = $faker->boolean();
+    $post->save();
+}
+```
+
+Now we are able to use such relation in our code, again we can either use simplfied property access or relation method with additional conditions:
+
+```php
+$user = User::findByPK(1);
+
+//Cached
+foreach ($user->posts as $post) {
+    dump($post->title);
+}
+
+//Cached
+foreach ($user->publishedPosts as $post) {
+    dump($post->title);
+}
+
+foreach ($user->posts()->find()->where('post.published', false) as $post) {
+    dump($post);
+}
+```
 
 ## Belongs To Relation
 
