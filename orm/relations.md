@@ -880,7 +880,49 @@ PIVOT_COLUMNS     | []                                      | Additional set of 
 PIVOT_DEFAULTS    | []                                      | Set of default values to be used for pivot table columns.
 WHERE_PIVOT       | []                                      | Where statement in a form of simplified array definition to be applied to pivot table data.
 
+ManyToMany morphed relation differs from other relations and does not provide you access to data directly, you have to specifically select what type of records you want to receive, let's check an example:
 
+```php
+$tag = new Tag();
+$tag->name = 'First';
+$tag->save();
+
+$tag->tagged()->link(User::findOne());
+$tag->tagged()->link(Post::findOne());
+```
+
+> Attention, link() method of ManyToMorphed relation can only accept one `Record` model.
+
+To get access to relation data, we should only specify what type of Records we want to receive (simply used pluralized model name, IDE must help you):
+
+```php
+$tag = Tag::findOne();
+
+
+dump($tag->tagged->users);
+dump($tag->tagged->posts);
+```
+
+Technically, ManyToMorphed relation simply aggregates set of ManyToMany relations, meaning you can always get access to inner sub relation using such code:
+
+```php
+$tag = Tag::findOne();
+
+$tag->tagged->users()->sync([1, 2, 3, 4]);
+```
+
+As before, since we declared INVERSE key we can get access to our tags using "tag" property of method in models User and Post.
+
+```php
+$user = User::findByPK(1);
+
+foreach ($user->tags as $tag) {
+    dump($tag);
+}
+```
 
 ## Other Relations
-WRITE ABOUT INTERFACES
+Spiral ORM relationsip mechanism based on 3 primary interfaces:
+* `Spiral\ORM\RelationInterface` is responsible for providing access to pre-loaded data in your Record model.
+* `Spiral\ORM\LoaderInterface` used to execute eager loading while record selection (see [eager loading](loading.md)).
+* `Spiral\ORM\RelationSchemaInterface` called while schema building and used to alter related models schemas and prepare relation data to be used by related `RelationInterface` and `LoaderInterface` clases. 
