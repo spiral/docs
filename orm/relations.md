@@ -392,9 +392,9 @@ dumP($postA->author === $postB->author);
 > Such ability can be very useful if you want to overwrite `save()` or `delete()` functions of your entities and touch/update parent inside them.
 
 #### Belongs To Morphed
-Spiral ORM declares another relation type very similar to BELONGS_TO - BELONGS_TO_MORPHED. Such relation provides ability to assign model to various parents based on morhp key value. Morphed relations can be declared exacly same wasy a BELONGS_TO, however you must link your relation to an **interface** rather than specific model.
+Spiral ORM provides another relation type very similar to BELONGS_TO - BELONGS_TO_MORPHED. Such relation gives ability to assign model to various parents based on morph key value. Morphed relations can be declared exacly same wasy a BELONGS_TO, however you must link your relation to an **interface** rather than specific model.
 
-> Disclaimer: polymorphic relations must be used only when you absolutelly sure about it, avoid using such relations as much as you can. Fyi, you are not able to pre-load morphed relations.
+> Disclaimer: polymorphic relations must be used only when you absolutelly sure about it, avoid using BELONGS_TO_MORPHED as much as you can. Fyi, you are not able to pre-load morphed relations.
 
 Let's try to create new ORM entity Photo which we would like to assign to User or Post models: "create:record photo -f id:primary -f imageURL:string"
 
