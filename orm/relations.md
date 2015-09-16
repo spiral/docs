@@ -157,7 +157,7 @@ $user->save();
 dump($user->getErrors());
 ```
 
-Please note that you can access relation using magic property, such property will cache Profile model, meaning it will create database query one of first call. If you wish to talk to relation class closely or even create custom query (which does not have too much sense for HAS_ONE) you can access such relation using `relation()` method of Record model or magic method:
+Please note that you can access relation using magic property, such property will cache `Profile` model, meaning it will create database query one of first call. If you wish to talk to relation class closely or even create custom query (which does not have too much sense for HAS_ONE) you can access such relation using `relation()` method of Record model or magic method:
 
 ```php
 dump($user->relation('profile'));
@@ -168,6 +168,7 @@ dump($user->profile()->findOne());
 ```
 
 > Accessing relation data using magic property is very useful in combination with [eager loading] (loading.md).
+> To remember, calling relation using **property** will only give you access to pre-loaded and cached realtion data, calling relation using **method** will give you access to relation query, pivot tables and etc. Basically you have to READ using property and WRITE or use CUSTOM SELECT QUERIES using method way.
 
 ## Has Many Relation
 Has Many relation is very similar to has one, however it is not embedded to it's parent by default and it provides us ability to specify set of where conditions to link two tables together. Before we will start, let's create new Record Post: "create:record post -f id:primary -f published:bool -f title:string -f content:text"
@@ -592,6 +593,96 @@ Foreign keys of primary.role_user_map:
 | primary_role_user_map_foreign_role_id_55f99aaf99710 | role_id | primary_roles  | id              | CASCADE    | CASCADE    |
 +-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
 ```
+
+Such table will be used to link our User and Role models together. Now we can link two models together by simply calling method `link()` or ManyToMany relation in User Record. We are able to provide Role model or Role id into such method:
+
+```php
+$user = User::findByPK(1);
+
+$user->roles()->link(1);
+$user->roles()->link(Role::findByPK(2));
+```
+
+We can also provide array of ids or models into such method:
+
+```php
+$user->roles()->link([1, 2]);
+$user->roles()->link([Role::findByPK(2), Role::findByPK(1)]);
+```
+
+> Attention, you have to call `link()` method using relation method not property as it affets pivot table, not pre-loaded/cached relation data.
+
+In addition to `link()` you are able to use similar method `sync()`, the only difference that sync() method will remove every connection which was not specified in it's arguments:
+
+```php
+//Connection with Role::2 will be removed
+$user->roles()->sync(1);
+
+//Link only with Role::1 and Role::2
+$user->roles()->sync([Role::findByPK(2), Role::findByPK(1)]);
+```
+
+> Attention, calling method `link()` or `sync()` will not affect already loaded relation data!
+
+To unlink records you can user methods `unlink` or `unlinkAll`.
+
+#### Fetching Linked Models
+After linking our models togther we fetch them using either propery (pre-loaded/cached) or method way:
+
+```php
+$user = User::findByPK(1);
+
+//Cached
+foreach ($user->roles as $role) {
+    dump($role);
+}
+
+//New query every time
+foreach ($user->roles()->find(['name' => 'admin']) as $role) {
+    dump($role);
+}
+```
+
+#### ManyToMany Options
+MANY_TO_MANY relation defined a lot of options we can use, let's check them all:
+
+Option | Default | Description
+--- | --- | ---
+INNER_KEY         | {record:primaryKey}                     | Inner key of parent record will be used to fill "THOUGHT_INNER_KEY" in pivot table. (**role.id**)
+OUTER_KEY         | {outer:primaryKey}                      | We are going to use primary key of outer table to fill "THOUGHT_OUTER_KEY" in pivot table. This is technically "inner" key of outer record, we will name it "outer key" for simplicity. (**user.id**)
+THOUGHT_INNER_KEY | {record:role}_{definition:innerKey}     | Name of field where parent record inner key will be stored in pivot table, role + innerKey by default. (**role_id**).
+THOUGHT_OUTER_KEY | {outer:role}_{definition:outerKey}      | Name field where inner key of outer record (outer key) will be stored in pivot table, role + outerKey by default (**user_id**).
+CONSTRAINT        | true                                    | Relations will set constraints in pivot table (foreign keys).
+CONSTRAINT_ACTION | CASCADE                                 | [https://en.wikipedia.org/wiki/Foreign_key](https://en.wikipedia.org/wiki/Foreign_key)
+CREATE_INDEXES    | true                                    | Relation is allowed to create indexes in pivot table
+PIVOT_TABLE       | null                                    | Name of pivot table to be declared, default value is not stated as it will be generated based on roles of inner and outer records (**role_user_map**).
+CREATE_PIVOT      | true                                    | Relation allowed to create pivot table.
+PIVOT_COLUMNS     | []                                      | Additional set of columns to be added into pivot table, you can use same column definition type as you using for your records.
+PIVOT_DEFAULTS    | []                                      | Set of default values to be used for pivot table columns.
+WHERE_PIVOT       | []                                      | Where statement in a form of simplified array definition to be applied to pivot table data.
+WHERE             | []                                      | Where statement to be applied for data in outer data while loading relation data can not be inversed. Attention, WHERE conditions not used in has(), link() and sync() methods.
+
+#### Pivot Table Columns
+
+
+
+
+
+#### Where and Where Pivot Conditions
+
+
+
+
+#### Check Link Status
+To check if two models already link together we can use method `has`, method can accept both model itself, model outer key or array or models/keys.
+
+> Please note, `has` method will ignore conditions specified in WRERE option.
+
+
+
+
+
+#### Sync Connection
 
 
 #### Many To Many Morphed
