@@ -787,7 +787,100 @@ You can also specify WHERE conditions same way as for HAS_MANY, however such con
 > You can still use `has` method of relation data (using property) as in this case check will me performed using already selected data.
 
 #### Many To Many Morphed
-IN PROGRESS
+As in case with BELONGS_TO you are able to define polymorphic many to many connection. To define such connection we can simply link our realtion to an **interface**. Let's try to do an example using Tags. Again, to create our Tag model "create:record tag -f id:primary -f name:string":
+
+```php
+class Tag extends Record
+{
+    /**
+     * @var array
+     */
+    protected $fillable = [
+
+    ];
+
+    /**
+     * Entity schema.
+     *
+     * @var array
+     */
+    protected $schema = [
+        'id'   => 'primary',
+        'name' => 'string'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'name' => [
+            'notEmpty'
+        ]
+    ];
+}
+```
+
+Now, we are going to link tag with `TaggableInterface` (empty) and implement such interface in User and Post models:
+
+```php
+protected $schema = [
+    'id'     => 'primary',
+    'name'   => 'string',
+    'tagged' => [
+        self::MANY_TO_MANY => TaggableInterface::class,
+        self::INVERSE      => 'tags'
+    ]
+];
+```
+
+As before, the best way to create realtion from User and Post to Tags - use INVERSE option. We can now update ORM schema and check pivot table created for our purposes, this time pivot table follow relation name so it named "tagged_map":
+
+```
+Columns of primary.tagged_map:
++-------------+------------------------+----------------+-----------+----------------+
+| Column:     | Database Type:         | Abstract Type: | PHP Type: | Default Value: |
++-------------+------------------------+----------------+-----------+----------------+
+| tag_id      | integer                | integer        | int       | ---            |
+| tagged_type | character varying (32) | string         | string    | ---            |
+| tagged_id   | integer                | integer        | int       | ---            |
++-------------+------------------------+----------------+-----------+----------------+
+
+Indexes of primary.tagged_map:
++-----------------------------------------------+--------------+--------------------------------+
+| Name:                                         | Type:        | Columns:                       |
++-----------------------------------------------+--------------+--------------------------------+
+| primary_tagged_map_index_tag_id_55f9c032ee81f | INDEX        | tag_id                         |
+| 6ec6a75196a6baf6b0c43f00b500c35b              | UNIQUE INDEX | tag_id, tagged_type, tagged_id |
++-----------------------------------------------+--------------+--------------------------------+
+
+Foreign keys of primary.tagged_map:
++-------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| Name:                                           | Column: | Foreign Table: | Foreign Column: | On Delete: | On Update: |
++-------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| primary_tagged_map_foreign_tag_id_55f9c032edecc | tag_id  | primary_tags   | id              | CASCADE    | CASCADE    |
++-------------------------------------------------+---------+----------------+-----------------+------------+------------+
+```
+
+As in case with BELONGS_TO_MPRHED you can observe morphed key in our pivot table. To better understand how such table is created we can check relation options wich are very similar to MANY_TO_MANY:
+
+Option            | Default                                 | Description
+---               | ---                                     | ---
+MORPHED_ALIASES   | []                                      | Association list between tables and roles, internal.
+PIVOT_TABLE       | {name:singular}_map                     | Pivot table name will be generated based on singular relation name and _map postfix (**tagger_map**).
+INNER_KEY         | {record:primaryKey}                     | Inner key of parent record will be used to fill "THOUGHT_INNER_KEY" in pivot table. (**tag.id**)
+OUTER_KEY         | {outer:primaryKey}                      | We are going to use primary key of outer table to fill "THOUGHT_OUTER_KEY" in pivot table. This is technically "inner" key of outer record, we will name it "outer key" for simplicity. (**id**)
+MORPH_KEY         | {name:singular}_type                    | Declares what specific record pivot record linking to (**tagged_type**).
+THOUGHT_INNER_KEY | {record:role}_{definition:innerKey}     | Linking pivot table and parent record (**tag_id**).
+THOUGHT_OUTER_KEY | {outer:role}_{definition:outerKey}      | Linking pivot table and outer records (**tagged_id**).
+CONSTRAINT        | true                                    | Relations will set constraints in pivot table (foreign keys).
+CONSTRAINT_ACTION | CASCADE                                 | [https://en.wikipedia.org/wiki/Foreign_key](https://en.wikipedia.org/wiki/Foreign_key)
+CREATE_INDEXES    | true                                    | Relation is allowed to create indexes in pivot table
+CREATE_PIVOT      | true                                    | Relation allowed to create pivot table.
+PIVOT_COLUMNS     | []                                      | Additional set of columns to be added into pivot table, you can use same column definition type as you using for your records.
+PIVOT_DEFAULTS    | []                                      | Set of default values to be used for pivot table columns.
+WHERE_PIVOT       | []                                      | Where statement in a form of simplified array definition to be applied to pivot table data.
+
+
 
 ## Other Relations
 WRITE ABOUT INTERFACES
