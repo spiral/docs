@@ -145,7 +145,29 @@ $user->profile = (new Profile())->setBiography('New biography.');
 $user->save();
 ```
 
-> Attention, previously assigned Profile will get "user_id" key set as `null`.
+> Attention, previously assigned Profile "user_id" key will be set as `null`.
+
+Since Profile stated as embedded model, it will be saved and validated with it's parent User, we can demonstrate then using code:
+
+```php
+$user = User::findByPK(1);
+$user->profile->biography = '';
+$user->save();
+
+dump($user->getErrors());
+```
+
+Please note that you can access relation using magic property, such property will cache Profile model, meaning it will create database query one of first call. If you wish to talk to relation class closely or even create custom query (which does not have too much sense for HAS_ONE) you can access such relation using `relation()` method of Record model or magic method:
+
+```php
+dump($user->relation('profile'));
+
+//Relation mocks Selector instance
+dump($user->profile()->count());
+dump($user->profile()->findOne());
+```
+
+> Accessing relation data using magic property is very useful in combination with [eager loading] (loading.md).
 
 ## Has Many Relation
 
