@@ -275,6 +275,7 @@ Now we are able to use such relation in our code, again we can either use simplf
 
 ```php
 $user = User::findByPK(1);
+dump($users->posts->count());
 
 //Cached
 foreach ($user->posts as $post) {
@@ -290,6 +291,8 @@ foreach ($user->posts()->find()->where('post.published', false) as $post) {
     dump($post);
 }
 ```
+
+> Attention, removing or adding new Post model associated with user WILL NOT affect cached relation data.
 
 ## Belongs To Relation
 Another powerful relation you might need to use is BELONGS_TO. Such realtion is opposite to HAS_ONE and HAS_MANY by it's idea. Since in most of cases we would need both HAS_* and BELONGS_TO relations, it's the best to declare it as inversed.
