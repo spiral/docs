@@ -7,4 +7,4 @@ Both [ORM] (/orm/basics.md) and ODM entities provides `ActiveRecord` like behavi
 
 ## What is DataEntity
 Generic purposes of any entity is to provide access to its data using set of getters, setters and accessors. In addition to that spiral count that every entity model
-can and must be validated before any storage related operations. You can read more about base DataEntity (which used as base for both ORM and ODM) [here] (/entities/overview.md).
+can and must be validated before any storage related operations. You can read more about base DataEntity (which used as base for both ORM and ODM) [here] (/components/entity.md).
