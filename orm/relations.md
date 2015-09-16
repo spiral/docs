@@ -626,6 +626,25 @@ $user->roles()->sync([Role::findByPK(2), Role::findByPK(1)]);
 
 To unlink records you can user methods `unlink` or `unlinkAll`.
 
+#### Check Link Status
+To check if two models already link together we can use method `has`, method can accept both model itself, model outer key or array or models/keys.
+
+```php
+dump($user->roles()->has(1));
+dump($user->roles()->has([1, 2]));
+dump($user->roles()->has(Role::findByPK(1));
+```
+
+Such method will run query againts pivot_table (with WHERE_PIVOT conditions if specified). You can use similar method via propert based access, in this case no additional queries will be created (except loading relation data):
+
+```php
+dump($user->roles->has(1));
+dump($user->roles->has([1, 2]));
+dump($user->roles->has(Role::findByPK(1));
+```
+
+> Please note, `has` method will ignore conditions specified in WRERE option.
+
 #### Fetching Linked Models
 After linking our models togther we fetch them using either propery (pre-loaded/cached) or method way:
 
@@ -663,27 +682,109 @@ WHERE_PIVOT       | []                                      | Where statement in
 WHERE             | []                                      | Where statement to be applied for data in outer data while loading relation data can not be inversed. Attention, WHERE conditions not used in has(), link() and sync() methods.
 
 #### Pivot Table Columns
+As you might notice from ManyToMany options, you are able to specify set of columns and their default values to be added into pivot table. Let's try to declare two columns for our purposes:
 
+```php
+'roles' => [
+    self::MANY_TO_MANY   => Role::class,
+    self::PIVOT_COLUMNS  => [
+        'time_assigned' => 'datetime',
+        'status'        => 'enum(active,disabled)'
+    ],
+    self::PIVOT_DEFAULTS => [
+        'status' => 'active'
+    ]
+]
+```
 
+> I declared such options in User model, however it will be the best to move relations like that into Role model instead and inverse it.
 
+Once schema is syncronized our pivot table will look like that:
 
+```
+Columns of primary.role_user_map:
++---------------+-----------------------------+----------------+-----------+---------------------+
+| Column:       | Database Type:              | Abstract Type: | PHP Type: | Default Value:      |
++---------------+-----------------------------+----------------+-----------+---------------------+
+| role_id       | integer                     | integer        | int       | ---                 |
+| user_id       | integer                     | integer        | int       | ---                 |
+| time_assigned | timestamp without time zone | timestamp      | string    | 1970-01-01 00:00:00 |
+| status        | character (8)               | enum           | string    | active              |
++---------------+-----------------------------+----------------+-----------+---------------------+
+
+Indexes of primary.role_user_map:
++-----------------------------------------------------------+--------------+------------------+
+| Name:                                                     | Type:        | Columns:         |
++-----------------------------------------------------------+--------------+------------------+
+| primary_role_user_map_index_user_id_role_id_55f99aaf99ecd | UNIQUE INDEX | user_id, role_id |
++-----------------------------------------------------------+--------------+------------------+
+
+Foreign keys of primary.role_user_map:
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| Name:                                               | Column: | Foreign Table: | Foreign Column: | On Delete: | On Update: |
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| primary_role_user_map_foreign_user_id_55f99aaf99704 | user_id | primary_users  | id              | CASCADE    | CASCADE    |
+| primary_role_user_map_foreign_role_id_55f99aaf99710 | role_id | primary_roles  | id              | CASCADE    | CASCADE    |
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+```
+
+Now, we can use additional arguments and input formats in `link` and `sync` to specify set of pivot table data:
+
+```php
+$user = User::findByPK(1);
+
+$user->roles()->sync(Role::findByPK(1), [
+    'time_assigned' => new \DateTime(),
+    'status'        => 'active'
+]);
+```
+
+We can also use shorter verion when pivot columns are associated with outer model id:
+
+```php
+$user->roles()->sync([
+    1 => [
+        'time_assigned' => new \DateTime(),
+        'status'        => 'active'
+    ]
+]);
+```
+
+Since we have our pivot columns populated we get access to them in our queries (check [eager loading] (loading.md)) or from our code using method `pivotData()`:
+
+```php
+$user = User::findByPK(1);
+
+foreach ($user->roles as $role) {
+    dump($role->getPivot()['status']);
+    dump($role);
+}
+```
 
 #### Where and Where Pivot Conditions
+Since we are able to specify pivot columns, we can also use WHERE_PIVOT conditions:
 
+```php
+'roles'           => [
+    self::MANY_TO_MANY   => Role::class,
+    self::PIVOT_COLUMNS  => [
+        'time_assigned' => 'datetime',
+        'status'        => 'enum(active,disabled)'
+    ],
+    self::PIVOT_DEFAULTS => [
+        'status' => 'active'
+    ],
+    self::WHERE_PIVOT    => [
+        '{@}.status' => 'active'
+    ]
+]
+```
 
+> Again, notice that we are using {@} as table alias.
 
+You can also specify WHERE conditions same way as for HAS_MANY, however such condition will only be used for selection, `has` method will work ignoring it.
 
-#### Check Link Status
-To check if two models already link together we can use method `has`, method can accept both model itself, model outer key or array or models/keys.
-
-> Please note, `has` method will ignore conditions specified in WRERE option.
-
-
-
-
-
-#### Sync Connection
-
+> You can still use `has` method of relation data (using property) as in this case check will me performed using already selected data.
 
 #### Many To Many Morphed
 IN PROGRESS
