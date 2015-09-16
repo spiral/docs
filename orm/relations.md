@@ -23,7 +23,7 @@ Most of relations have a lot of additional parameters you can customize, for exa
 You can check list of available relation options below.
 
 #### Relation Inversion
-One very importan relation option which you might use a lot - INVERSION. Such option will be used by Spiral ORM to automatically create relation in related model. For example, when we have HAS_ONE relation, we can declate it's inversion - BELONGS_TO.
+One very importan relation option which you might use a lot - INVERSION. Such option will be used by Spiral ORM to automatically create relation in outer model. For example, when we have HAS_ONE relation, we can declate it's inversion - BELONGS_TO.
 
 ```php
 'posts' => [
