@@ -420,7 +420,7 @@ class CoolEchoProcessor implements ProcessorInterface
 }
 ```
 
-Now we can modify views config (to add new processor), our demo view file and see result in browser:
+Now we can modify the views config (to add a new processor). Lets look at the results in our browser:
 
 ```php
 This is demo view file: {{value}}
@@ -434,10 +434,10 @@ $dumper->dump($value);
 ?>
 ```
 
-If you want to see how compiled view file looks like, simply open 'application/runtime/cache/views/default-demo-*.php' file:
+If you want to see what the compiled view file looks like, simply open the 'application/runtime/cache/views/default-demo-*.php' file:
 
 ```php
-This is demo view file: <?=e($value)?>
+This is a demo view file: <?=e($value)?>
 <?php
 /**
  * @var \Spiral\Debug\Dumper $dumper
@@ -447,18 +447,18 @@ $dumper->dump($value);
 ?>
 ```
 
-Spiral Compiler ships with multiple pre-create processors used to simplify view files:
+Spiral Compiler comes with multiple pre-created processors which can be used to simplify the view files:
 
 | Processor                                    | Description            
 | ---                                          | ---
 | Spiral\Views\Processors\ExpressionsProcessor | Runs few expressions defined in it's options, the most notable one @{variable} will replace it's value with cache dependency (read below).
-| Spiral\Views\Processors\TranslateProcessor   | Replace `[[string]]` with their translations using active language, result are cached and depends on view cache dependencies (read below).
+| Spiral\Views\Processors\TranslateProcessor   | Replace `[[string]]` with their translations using active language, result are cached and depend on view cache dependencies (read below).
 | Spiral\Views\Processors\TemplateProcessor    | Spiral templates allows user to inherit view layouts, create virual tags and much more. See [Templater] (/templater/overview.md).
 | Spiral\Views\Processors\EvaluateProcessor    | Executes PHP blocks marked with #compile comment, used to perform some layout related code which does not depends on user input or view variables.
 | Spiral\Views\Processors\PrettifyProcessor    | Removes emply view lines and spaces in some tag attributes.
 
 ## Cache and Cache Dependencies
-Default spiral compiler uses cache configuration declared in view config, you can disable cache in development enviroment to get view updates immidiatelly, however it might slow down your application a lot (really a LOT):
+The default spiral compiler uses a cache configuration declared in the view config. You can disable the cache in your development environment to see view updates immediately. However, it might drastically slow down your application:
 
 ```php
 'cache'        => [
@@ -467,7 +467,7 @@ Default spiral compiler uses cache configuration declared in view config, you ca
 ],
 ```
 
-As mention already compiler and it's processors does not have any access to view variables and user input, however `ViewManager` defines set of so called cache dependies declared in view configuration file:
+As mentioned previously, compiler and it's processors do not have access to the view variables and user input However `ViewManager` defines a set of so called cache dependies declared in view configuration file:
 
 ```php
 'dependencies' => [
@@ -482,15 +482,15 @@ As mention already compiler and it's processors does not have any access to view
 ],
 ```
 
-Such depencies (in our case language - linked to current language, and basePath - linked to http base path values) will be used by default Compiler to change cached filename. Such technique provides us ability to use system functions (for example translations) on compilation stage without wasting CPU resources during rendering.
+Such depencies (in our case language - linked to current language, and basePath - linked to http base path values) are used by the default Compiler to change the cached filename. This allows us to use the system functions (for example translations) on the compilation stage without wasting CPU resources during the rendering.
 
-To demonstrate how cache dependecies work let's modify our demo view this way:
+To demonstrate how cache dependencies work, let's modify our demo view this way:
 
 ```php
 [[This is demo view file:]] <?= $value ?>
 ```
 
-As mention in processor section above every string embraced with `[[]]` will be automatically translated using active language, if we will open our controller action with view in browser we will see that no `[[]]` presented in output. Now, let's shitch our language and see what will happen:
+As mentioned before in the processor section, every string surrounded by an `[[]]` will be automatically translated using the active language. If we open our controller action with the view in browser, we will see that no `[[]]` is shown in the output. Now, let's change our language and see what happens:
 
 ```php
 public function index()
@@ -504,11 +504,11 @@ public function index()
 }
 ```
 
-As you might notice page rendering took few extra milliseonds on first run, this happen because Compiler created new cached view. To make example move visual let's edit our i18n string in 'application/runtime/i18n/belarus/view-demo.php' file (we can also export language into PO file using `i18n:export` command and then import edited file back using `i18n:import`).
+As you may have noticed, the page rendering took a few extra milliseonds on the first run. This happens because Compiler created a new cached view. To make this example more visual, let's edit our i18n string in 'application/runtime/i18n/belarus/view-demo.php' file (we can also export language into a PO file using the  `i18n:export` command and then import the edited file back in using `i18n:import`).
 
 ```php
 <?php return [
-    'This is demo view file:' => 'This is demo view file specially for Belarus people:',
+    'This is a demo view file:' => 'This is a demo view file specially for German speakers:',
 ];
 ```
 
@@ -519,7 +519,7 @@ This is demo view file: <?= $value ?>
 ```
 
 ```php
-This is demo view file specially for Belarus people: <?= $value ?>
+This is demo view file specially for German speakers: <?= $value ?>
 ```
 
 Such technique allows you to "capture" as many strings for localization as you want without paying for it with CPU resources.
