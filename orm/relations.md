@@ -493,6 +493,23 @@ NULLABLE          | true                                  | Nullable by default.
 
 > No foreign keys are created for BELONGS_TO_MORPHED relation.
 
+Now we can operate with our model same way as in case with BELONG_TO relation:
+
+```php
+$photo = new Photo();
+$photo->imageURL = 'some-url';
+$photo->parent = User::findOne();
+$photo->save();
+
+//We can change parent to post at any moment
+$post = Post::findOne();
+
+$photo->parent = $post;
+$photo->save();
+
+dump($post->photo);
+```
+
 ## Many To Many
 
 #### Many To Many Morphed
