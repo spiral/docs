@@ -114,7 +114,7 @@ Page not found: <?= $request->getUri() ?>
 Now, if we get a 404 error, our view file will be rendered. If you already got a 404 error before it might be  pre-compiled already with the original view. We can reset it by either disabling cache, flushing the content of "application/runtime/cache/views" (default cache directory) or by executing the command "views:compile" (run with -v options to get more details) which will re-compile the available view files.
 
 ## View Engines
-Spiral ViewManager will be useless without providing ability to create or mount your own templating engines and compilers. Before we will be doing that, let's try to understand how spiral work with view files and review configuration for default spiral engine:
+Spiral ViewManager would be useless if you didn't have the ability to create or mount your own templating engines and compilers. Before we do that, let's check out how spiral work swith view files and review configuration for the default spiral engine:
 
 ```php
 'engines'      => [
@@ -128,10 +128,10 @@ Spiral ViewManager will be useless without providing ability to create or mount 
 ],
 ```
 
-As you can see, default engine can be associated with one of multiple filenames (we have only .php at this moment), next we are providing two classes used to describe every engine, let's focus on this classes closely.
+The default engine can be associated with one of many filenames (we only use .php at the moment). Next we provide two classes used to describe every engine. Let's focus on these classes closely.
 
 ### View Compiler
-Compiler option of engine is responsible for view source pre-compilation, such operation can be done once and later be cached somewhere. Spiral ViewManager leaves cache management to Compiler class itself. Let's view CompilerInterface to see what methods are required from every compiler:
+The engine's Compiler option is responsible for the view source pre-compilation. This operation is done once and cached somewhere later. Spiral ViewManager leaves the cache management to Compiler class. Let's view CompilerInterface to see what methods are required from every compiler:
 
 ```php
 interface CompilerInterface
@@ -162,7 +162,7 @@ interface CompilerInterface
     public function getView();
 
     /**
-     * True if view has been already compiled and cached somewhere.
+     * True if view has been compiled and cached somewhere already.
      *
      * @return bool
      */
@@ -183,17 +183,17 @@ interface CompilerInterface
 }
 ```
 
-Based on given interface we can see 3 primary methods ViewManager will work with:
-* isCompiler must return true if view source was already processed and stored somewhere
+Based on the given interface, we can see 3 primary methods ViewManager works with:
+* isCompiler must return true if view source was processed and stored somewhere already
 * compile method must process view source and preprate it for usage in renderer even if it's already cached
-* compiledFilename must return location where compiled view stored into
+* compiledFilename must return location where compiled view are stored in it
 
-Due most of existed templating engines converts internal format into plan php files almost all of them can be mounted as compilers.
+Because most of the existing templating engines convert internal format into plain php files almost all of them can be mounted as compilers.
 
-> Compiler must handle caching and cache validations by itself, however i recommend for you read about view cache dependecies below. Compiler class does not have any access to view variables.
+> Compiler must handle caching and cache validations by itself. However it is recommended that you read about view cache dependecies below. Compiler class doesn't have access to view variables.
 
 ### View Renderer
-Second engine class declared under index 'view' must accept instance of engine compiler and render `compiledFilename()`. In cases when you want your view class work with compilers you have to implement `CompilerAwareInterface` which has pre-defined set of arguments for it's constructor:
+The second engine class declared under index 'view' must accept the instance of engine compiler and render `compiledFilename()`. When you want your view class to work with compilers, you have to implement `CompilerAwareInterface` which has a pre-defined set of arguments for it's constructor:
 
 ```php
 interface CompilerAwareInterface extends ViewInterface
@@ -211,7 +211,7 @@ interface CompilerAwareInterface extends ViewInterface
 }
 ```
 
-In many cases, compiler will create plain php file with placeholders for php variables, this makes us possible to use existed `Spiral\Views\View` implementation, let's looks into such implementation to understand how it works:
+In many cases, compiler will create a simple php file with placeholders for php variables. This makes it possible for us to use the existing `Spiral\Views\View` implementation. Let's looks into an implementation like this to understand how it works:
 
 ```php
 class View extends Component implements CompilerAwareInterface
@@ -252,7 +252,7 @@ class View extends Component implements CompilerAwareInterface
     }
 
     /**
-     * Alter view parameters (should replace existed value).
+     * Alter view parameters (should replace existing value).
      *
      * @param string $name
      * @param mixed  $value
@@ -266,7 +266,7 @@ class View extends Component implements CompilerAwareInterface
     }
 
     /**
-     * Set view rendering data. Full dataset will be replaced.
+     * Set view rendering data. This will replace the full dataset.
      *
      * @param array $data
      * @return $this
@@ -317,10 +317,10 @@ class View extends Component implements CompilerAwareInterface
 }
 ```
 
-As you can see it utilizes classical php methodic to render php files using buffers and `extract` function.
+As you can see, this utilizes classical php methods to render the php files using buffers and the `extract` function.
 
 ### Compilerless Renderers
-There is scenarious when you might want to skip compilation part and work with view file directly, you can do that by by implementing `FilenameAwareInterface` in your view class. In this case additonal filename argument will be provided to your class pointing to view filename.
+There are scenarious where you might want to skip the compilation part and work with the view file directly. You can do that by implementing `FilenameAwareInterface` into your view class. In this case, additonal filename arguments will be provided to your class and point to view filename.
 
 ```php
 interface FilenameAwareInterface extends ViewInterface
@@ -344,11 +344,10 @@ interface FilenameAwareInterface extends ViewInterface
 }
 ```
 
-> You still can handle caching and compilations inside your view if you want.
+> If you want, you can still handle caching and compilations inside your view.
 
 ## Spiral View Compiler
-Default spiral compiler uses `Spiral\Views\View` for rendering purposes, due we already described it's abilities above we will focus mainly on compiler itself. Spiral compiler represented by `Spiral\Views\Compiler` class and built on principle of view processors. Basically it will pass view source thought set of classes dedicated to 
-perform some code/source manipulations. Every processor must implement `ProcessorInterface`, let's view it's declaration:
+The default spiral compiler uses `Spiral\Views\View` for rendering purposes. Previously we discussed it's abilities so we will focus mainly on the compiler itself. The spiral compiler is represented by the `Spiral\Views\Compiler` class and built on the principles of the view processors. Essentially, it will pass view source through a set of classes dedicated to perform some code/source manipulations. Every processor must implement `ProcessorInterface`. Let's check out it's declaration:
 
 ```php
 interface ProcessorInterface
@@ -372,7 +371,7 @@ interface ProcessorInterface
 }
 ```
 
-If we wish to add custom processor into our compiler we can simply modify compiler section in our view configuration:
+If we wanted to add a custom processor into our compiler, all we need to do is modify the compiler section in our view configuration:
 
 ```php
 'processors' => [
@@ -385,9 +384,9 @@ If we wish to add custom processor into our compiler we can simply modify compil
 ]
 ```
 
-> Every compiler class associated with it's options, default spiral processors allows you overwrite their options, however we are going to skip this step for now.
+> Every compiler class is associated with it's options. The default spiral processors lets you overwrite their options. We will skip this step for now.
 
-Let's say that we want to create simple processor to replace `{{variable}}` with `<?=e($variable)?>`, we can name it `CoolEchoProcessor`:
+Let's say that we want to create simple processor to replace `{{variable}}` with `<?=e($variable)?>`. We can name it `CoolEchoProcessor`:
 
 ```php
 class CoolEchoProcessor implements ProcessorInterface
@@ -399,7 +398,7 @@ class CoolEchoProcessor implements ProcessorInterface
      */
     public function __construct(ViewManager $views, Compiler $compiler, array $options)
     {
-        //We have no options to be configured, so let's keep constructor empty
+        //We don't have any options to be configured, so let's keep constructor empty
     }
 
     /**
