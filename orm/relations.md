@@ -392,10 +392,105 @@ dumP($postA->author === $postB->author);
 > Such ability can be very useful if you want to overwrite `save()` or `delete()` functions of your entities and touch/update parent inside them.
 
 #### Belongs To Morphed
+Spiral ORM declares another relation type very similar to BELONGS_TO - BELONGS_TO_MORPHED. Such relation provides ability to assign model to various parents based on morhp key value. Morphed relations can be declared exacly same wasy a BELONGS_TO, however you must link your relation to an **interface** rather than specific model.
 
+> Disclaimer: polymorphic relations must be used only when you absolutelly sure about it, avoid using such relations as much as you can. Fyi, you are not able to pre-load morphed relations.
 
+Let's try to create new ORM entity Photo which we would like to assign to User or Post models: "create:record photo -f id:primary -f imageURL:string"
 
-> Disclaimer: polymorphic relations must be used only when you absolutelly sure about it, avoid using such relations if you unsure about their purpose.
+```php
+class Photo extends Record 
+{
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        
+    ];
+
+    /**
+     * Entity schema.
+     * 
+     * @var array
+     */
+    protected $schema = [
+        'id'       => 'primary',
+        'imageURL' => 'string'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'imageURL' => [
+            'notEmpty'
+        ]
+    ];
+}
+```
+
+Before declaring our relation we would have to create an internal to link our model to:
+
+```php
+interface PhotoHolderInterface
+{
+
+}
+```
+
+Now we can declare our relation in Photo model, since we want both Post and User get inverted relations we will declare INVERSE option.
+
+```php
+protected $schema = [
+    'id'       => 'primary',
+    'imageURL' => 'string',
+    'parent'   => [
+        self::BELONGS_TO => PhotoHolderInterface::class,
+        self::INVERSE    => [self::HAS_ONE, 'photo']
+    ]
+];
+```
+
+The only thing we have to do to let our User and Post model have photo - implement `PhotoHolderInterface`, inverse relation in this case will be cretaed automatically.
+
+```php
+class User extends Record implements PhotoHolderInterface
+{
+    ...
+```
+
+Now we can run schema update and check our "photos" table:
+
+```
+Columns of primary.photos:
++-------------+-------------------------+----------------+-----------+--------------------------------------------+
+| Column:     | Database Type:          | Abstract Type: | PHP Type: | Default Value:                             |
++-------------+-------------------------+----------------+-----------+--------------------------------------------+
+| id          | serial                  | primary        | int       | nextval('primary_photos_id_seq'::regclass) |
+| imageURL    | character varying (255) | string         | string    | ---                                        |
+| parent_type | character varying (32)  | string         | string    | ---                                        |
+| parent_id   | integer                 | integer        | int       | ---                                        |
++-------------+-------------------------+----------------+-----------+--------------------------------------------+
+
+Indexes of primary.photos:
++----------------------------------------------------------+-------+------------------------+
+| Name:                                                    | Type: | Columns:               |
++----------------------------------------------------------+-------+------------------------+
+| primary_photos_index_parent_type_parent_id_55f98f146672f | INDEX | parent_type, parent_id |
++----------------------------------------------------------+-------+------------------------+
+```
+
+As you can see relation created compound index using inner and morph keys "parent_id" and "parent_type". Both keys can be configured using relation options:
+
+//----------------
+Option            | Default                               | Description
+---               | ---                                   | ---
+INNER_KEY         | {name:singular}_{definition:outerKey}                    | Outer key is primary key of related record by default (user.**id**).
+OUTER_KEY         | {outer:primaryKey} | Inner key will be based on singular name of relation and outer key name (**author**_**id**).
+CREATE_INDEXES    | true                                  | Relation allowed to create indexes in outer table.
+NULLABLE          | false                                 | Nullable by default.
+
+> No foreign keys are created for BELONGS_TO_MORPHED relation.
 
 ## Many To Many
 
