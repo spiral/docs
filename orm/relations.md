@@ -486,7 +486,7 @@ As you can see relation created compound index using inner and morph keys "paren
 Option            | Default                               | Description
 ---               | ---                                   | ---
 OUTER_KEY         | {outer:primaryKey}                    | By default, we are looking for primary key in our outer records, outer key must present in every outer record and be consistent (**id**).
-INNER_KEY         | {name:singular}_{definition:outerKey} | Inner key name will be created based on singular relation name and outer key namet (user.**id**).
+INNER_KEY         | {name:singular}_{definition:outerKey} | Inner key name will be created based on singular relation name and outer key namet (`parent_id`).
 MORPH_KEY         | {name:singular}_type                  | Morph key created based on singular relation name and postfix _type (`parent_type`).
 CREATE_INDEXES    | true                                  | Relation allowed to create indexes in outer table.
 NULLABLE          | true                                  | Nullable by default.
