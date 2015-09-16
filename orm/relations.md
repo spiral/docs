@@ -510,6 +510,8 @@ $photo->save();
 dump($post->photo);
 ```
 
+> Simple declare HAS_MANY inversion to link multiple photos to morphed parent.
+
 ## Many To Many
 
 #### Many To Many Morphed
