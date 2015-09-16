@@ -238,7 +238,7 @@ NULLABLE          | false                               | Has one counted as not
 EMBEDDED_RELATION | true                                | Embedded relations are validated and saved with parent model and can accept values using setFields.
 **WHERE**         | []                                  | HasMany allow us to define default WHERE statement for relation in a simplified array form.
 
-Compared to HAS_ONE relation we have only new option we can use WHERE, such option provides us alibity to specify loading conditions for our records, let's try to use it.
+Compared to HAS_ONE relation we have only one new option we can use WHERE, such option provides us alibity to specify loading conditions for our records, let's try to use it.
 
 ```php
 'publishedPosts'  => [
