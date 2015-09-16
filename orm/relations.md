@@ -926,4 +926,4 @@ foreach ($user->tags as $tag) {
 Spiral ORM relationsip mechanism based on 3 primary interfaces:
 * `Spiral\ORM\RelationInterface` is responsible for providing access to pre-loaded data in your Record model.
 * `Spiral\ORM\LoaderInterface` used to execute eager loading while record selection (see [eager loading](loading.md)).
-* `Spiral\ORM\RelationSchemaInterface` called while schema building and used to alter related models schemas and prepare relation data to be used by related `RelationInterface` and `LoaderInterface` clases. 
+* `Spiral\ORM\RelationSchemaInterface` called while schema building and used to alter related models schemas and prepare relation data to be used by associated `RelationInterface` and `LoaderInterface` clases. 
