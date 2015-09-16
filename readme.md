@@ -51,9 +51,9 @@
     * [Migrations] (database/migrations.md) (?)
 * Behaviour Schemas
     * [Schemas and Documenters] (schemas.md)
-* Spiral ORM
-    * [**Record Model and Database Scaffolding**] (orm/basics.md)
-    * [**Relations**] (orm/relations.md)
+* **Spiral ORM**
+    * [Record Model and Database Scaffolding] (orm/basics.md)
+    * [Relations] (orm/relations.md)
     * Entity Cache and Eager loading
 * Spiral ODM
     * **Models, Compositions, Aggregations**
