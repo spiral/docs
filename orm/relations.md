@@ -4,13 +4,13 @@ The whole power of relational databases and ORMs comes when we are talking about
 At this moment spiral support following relationships: has one, has many, belongs to parent, many to many, belongs to morphed parent, many to many morphed. Let's try to walk thought every relation, it's definition and abilities.
 
 ## Relation Definition
-Relation defintion does not require to create any additional structure of method, you are able to locate such relation directly in record schema. In most of cases you can relay on relation itself to create all required columns, indexes and foreign keys, in such case they the only thing you have to do to link 2 tables together - declare relation type and outer model.
+Relation defintion does not require to create any additional structure or method, you are able to locate such relation directly in record schema. In most of cases you can relay on relation itself to create all required columns, indexes and foreign keys, in such case they the only thing you have to do to link 2 tables together - declare relation type and outer model.
 
 ```php
 'relation' => [self::HAS_ONE => OuterRecord::class]
 ```
 
-Most of relations have a lot of additional parameters you can customize, for example you can decide if you want to create foreign key or select different inner/outer key (rather then letting relation to do that), to specify additional realtion parameters simply include them into it's definition:
+Most of relations have a lot of additional parameters you can customize, for example you can decide if you want to create foreign key or select different inner/outer key (rather then letting relation to use primary key), to specify additional realtion parameters simply include them into it's definition:
 
 ```php
 'relation' => [
@@ -23,7 +23,7 @@ Most of relations have a lot of additional parameters you can customize, for exa
 You can check list of available relation options below.
 
 #### Relation Inversion
-One very importan relation option which you might use a lot - INVERSION. Such option will be used by Spiral ORM to automatically create relation in outer model. For example, when we have HAS_ONE relation, we can declate it's inversion - BELONGS_TO.
+One very importan relation option which you might use a lot - INVERSE. Such option used by Spiral ORM to automatically create relation in outer model. For example, if we have HAS_ONE relation, we can declare it's inversion - BELONGS_TO.
 
 ```php
 'posts' => [
@@ -34,7 +34,7 @@ One very importan relation option which you might use a lot - INVERSION. Such op
 ```
 
 ## Has One Relation
-One of the most common and useful relation you might use - HAS_ONE. Such relation links to records together and inversed into BELONGS_TO. Classical example - User has one Profile. To demonstrate such relation and it's behaviour let's create new Record - Profile using scaffolding: 'create:record profile -f id:primary -f biography:text'
+One of the most common and useful relation you might use - HAS_ONE. Such relation links two records together and inversed into BELONGS_TO. Classical example - User has one Profile. To demonstrate such relation and it's behaviour let's create new Record - Profile using scaffolding: 'create:record profile -f id:primary -f biography:text'
 
 ```php
 class Profile extends Record
@@ -129,7 +129,7 @@ You can redefine any of this option. In addition you can declare relation invers
 ]
 ```
 
-Once done, you can get access to such relation using __get method of User model, relation will automatically construct instance of Profile if it does not exists. In addition you can notice that HAS_ONE is stated as EMBEDDED_RELATION by default, this means that when such relation is loaded Record will validate and save with it's parent, as result we can do that:
+Once done, you can get access to such relation using `__get` method of User model, relation will automatically construct instance of Profile if it does not exists. In addition you can notice that HAS_ONE is stated as EMBEDDED_RELATION by default, this means that such relation will validated and saved with it's parent (if it was previously loaded), as result we can do that:
 
 ```php
 $user = User::findByPK(1);
@@ -147,7 +147,7 @@ $user->save();
 
 > Attention, previously assigned Profile "user_id" key will be set as `null`.
 
-Since Profile stated as embedded model, it will be saved and validated with it's parent User, we can demonstrate then using code:
+Since Profile stated as embedded model, it will be also be validated with parent User, we can demonstrate that using code:
 
 ```php
 $user = User::findByPK(1);
@@ -171,7 +171,7 @@ dump($user->profile()->findOne());
 > To remember, calling relation using **property** will only give you access to pre-loaded and cached realtion data, calling relation using **method** will give you access to relation query, pivot tables and etc. Basically you have to READ using property and WRITE or use CUSTOM SELECT QUERIES using method way.
 
 ## Has Many Relation
-Has Many relation is very similar to has one, however it is not embedded to it's parent by default and it provides us ability to specify set of where conditions to link two tables together. Before we will start, let's create new Record Post: "create:record post -f id:primary -f published:bool -f title:string -f content:text"
+Has Many relation is very similar to has one, however it is not embedded to it's parent by default and it provides us ability to specify set of where conditions to link two tables together. Before we will start, let's create new Record - Post: "create:record post -f id:primary -f published:bool -f title:string -f content:text"
 
 ```php
 class Post extends Record 
@@ -255,7 +255,7 @@ Compared to HAS_ONE relation we have only one new option we can use WHERE, such 
 
 > Please note that we declaring posts column name using `{@}` prefix, such prefix will be automatically replaced with valid posts table alias based on contex. You must always include it into your code.
 
-The easies way to assign post to user will be using in inversed BELONGS_TO relation (for example author), however for now let's use create method of relation (attention, WHERE condition will NOT populate post model): 
+The easies way to assign post to user will be using in inversed BELONGS_TO relation (for example author), however, for now, let's use `create` method of relation (attention, WHERE condition will NOT populate post model): 
 
 ```php
 public function index()
@@ -325,7 +325,7 @@ CONSTRAINT_ACTION | CASCADE                               | [https://en.wikipedi
 CREATE_INDEXES    | true                                  | Relation allowed to create indexes in outer table.
 NULLABLE          | true                                  | Nullable by default.
 
-BELONGS_TO relation can be inversed, however since ORM does not know if such relation must be inversed into HAS_ONE or HAS_MANY you have to clearly state that:
+BELONGS_TO relation can be inversed, however, since ORM does not know if relation must be inversed into HAS_ONE or HAS_MANY, you have to clearly state that using provided form:
 
 ```php
 'author'    => [
@@ -334,9 +334,7 @@ BELONGS_TO relation can be inversed, however since ORM does not know if such rel
 ]
 ```
 
-> You don't need to do it in our case.
-
-Once you have such relation declared in your model, you can use to assign or deassign parent to your record:
+Once you have such relation declared in your model, you can use it to assign or de-assign parent to your record:
 
 ```php
 public function index()
@@ -393,9 +391,10 @@ dumP($postA->author === $postB->author);
 > Such ability can be very useful if you want to overwrite `save()` or `delete()` functions of your entities and touch/update parent inside them.
 
 #### Belongs To Morphed
-Spiral ORM provides another relation type very similar to BELONGS_TO - BELONGS_TO_MORPHED. Such relation gives ability to assign model to various parents based on morph key value. Morphed relations can be declared exacly same wasy a BELONGS_TO, however you must link your relation to an **interface** rather than specific model.
+Spiral ORM provides another relation type very similar to BELONGS_TO - BELONGS_TO_MORPHED. This relation gives ability to assign model to various parents based on morph key value. Morphed relations can be declared exacly same wasy a BELONGS_TO, however you must link your relation to an **interface** rather than specific model.
 
-> Disclaimer: polymorphic relations must be used only when you absolutelly sure about it, avoid using BELONGS_TO_MORPHED as much as you can. Fyi, you are not able to pre-load morphed relations.
+> Disclaimer: polymorphic relations must be used only when you absolutelly sure about it, avoid using BELONGS_TO_MORPHED as much as you can. 
+> Fyi, you are not able to pre-load morphed relations.
 
 Let's try to create new ORM entity Photo which we would like to assign to User or Post models: "create:record photo -f id:primary -f imageURL:string"
 
@@ -430,7 +429,7 @@ class Photo extends Record
 }
 ```
 
-Before declaring our relation we would have to create an internal to link our model to:
+Before declaring our relation we would have to create an interface to link our model to:
 
 ```php
 interface PhotoHolderInterface
@@ -439,7 +438,7 @@ interface PhotoHolderInterface
 }
 ```
 
-Now we can declare our relation in Photo model, since we want both Post and User get inverted relations we will declare INVERSE option.
+Now we can describe our relation in Photo model, since we want both Post and User get inverted relations we will declare INVERSE option.
 
 ```php
 protected $schema = [
@@ -494,7 +493,7 @@ NULLABLE          | true                                  | Nullable by default.
 
 > No foreign keys are created for BELONGS_TO_MORPHED relation.
 
-Now we can operate with our model same way as in case with BELONG_TO relation:
+WE can operate with our model same way as in case with BELONG_TO relation:
 
 ```php
 $photo = new Photo();
@@ -514,7 +513,7 @@ dump($post->photo);
 > Simply declare HAS_MANY inversion to link multiple photos to morphed parent.
 
 ## Many To Many
-One of the most powerful ORM relations MANY_TO_MANY provides you ability to link many records from different tables using pivot table. Such relation can automatically scaffold such pivot table with or withour custom user columns. In addition to that you are able to set WHERE and WHERE_PIVOT conditions to customize your relations.
+One of the most powerful and complex ORM relations MANY_TO_MANY provides you ability to link many records from different tables using pivot table. Such relation can automatically scaffold needed pivot table with or withour custom user columns. In addition, you are able to set WHERE and WHERE_PIVOT conditions to customize your relations.
 
 To define MANY_TO_MANY relation, first of all let's create new model `Role` using CLI command "spiral create:record role -f id:primary -f name:string":
 
@@ -594,7 +593,7 @@ Foreign keys of primary.role_user_map:
 +-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
 ```
 
-Such table will be used to link our User and Role models together. Now we can link two models together by simply calling method `link()` or ManyToMany relation in User Record. We are able to provide Role model or Role id into such method:
+Such table will be used to link our User and Role models together. To link models simply call method `link()` of ManyToMany relation in User Record. We are able to provide `Role` model or `Role` id as input into such method:
 
 ```php
 $user = User::findByPK(1);
@@ -603,16 +602,16 @@ $user->roles()->link(1);
 $user->roles()->link(Role::findByPK(2));
 ```
 
-We can also provide array of ids or models into such method:
+We can also provide array of ids or models as argument:
 
 ```php
 $user->roles()->link([1, 2]);
 $user->roles()->link([Role::findByPK(2), Role::findByPK(1)]);
 ```
 
-> Attention, you have to call `link()` method using relation method not property as it affets pivot table, not pre-loaded/cached relation data.
+> Attention, you have to call `link()` method using **relation method** not property as it affets pivot table, not pre-loaded/cached relation data.
 
-In addition to `link()` you are able to use similar method `sync()`, the only difference that sync() method will remove every connection which was not specified in it's arguments:
+In addition to `link()` you are able to use similar method `sync()`, the only difference that `sync()` will remove every connection which was not specified in it's arguments:
 
 ```php
 //Connection with Role::2 will be removed
@@ -622,12 +621,12 @@ $user->roles()->sync(1);
 $user->roles()->sync([Role::findByPK(2), Role::findByPK(1)]);
 ```
 
-> Attention, calling method `link()` or `sync()` will not affect already loaded relation data!
+> Attention, calling method `link()` or `sync()` **will not** affect already loaded relation data!
 
 To unlink records you can user methods `unlink` or `unlinkAll`.
 
 #### Check Link Status
-To check if two models already link together we can use method `has`, method can accept both model itself, model outer key or array or models/keys.
+To check if two models already link together use method `has`, method can accept both model itself, model outer key or array or models/keys.
 
 ```php
 dump($user->roles()->has(1));
@@ -635,7 +634,7 @@ dump($user->roles()->has([1, 2]));
 dump($user->roles()->has(Role::findByPK(1));
 ```
 
-Such method will run query againts pivot_table (with WHERE_PIVOT conditions if specified). You can use similar method via propert based access, in this case no additional queries will be created (except loading relation data):
+Such method will run query againts pivot_table (with WHERE_PIVOT conditions if specified). You can use similar method via property based access, in this case no additional queries will be created (except loading relation data):
 
 ```php
 dump($user->roles->has(1));
@@ -643,10 +642,10 @@ dump($user->roles->has([1, 2]));
 dump($user->roles->has(Role::findByPK(1));
 ```
 
-> Please note, `has` method will ignore conditions specified in WRERE option.
+> Please note, `has` method **will ignore** conditions specified in WRERE option.
 
 #### Fetching Linked Models
-After linking our models togther we fetch them using either propery (pre-loaded/cached) or method way:
+After linking our models together we can fetch them using either propery (pre-loaded/cached) or method way:
 
 ```php
 $user = User::findByPK(1);
@@ -739,7 +738,7 @@ $user->roles()->sync(Role::findByPK(1), [
 ]);
 ```
 
-We can also use shorter verion when pivot columns are associated with outer model id:
+We can also use shorter version when pivot columns are associated with outer model id:
 
 ```php
 $user->roles()->sync([
@@ -750,7 +749,7 @@ $user->roles()->sync([
 ]);
 ```
 
-Since we have our pivot columns populated we get access to them in our queries (check [eager loading] (loading.md)) or from our code using method `pivotData()`:
+Since we have our pivot columns populated we can get access to them in our queries (check [eager loading] (loading.md)) or from our code using method `pivotData()`:
 
 ```php
 $user = User::findByPK(1);
@@ -782,12 +781,12 @@ Since we are able to specify pivot columns, we can also use WHERE_PIVOT conditio
 
 > Again, notice that we are using {@} as table alias.
 
-You can also specify WHERE conditions same way as for HAS_MANY, however such condition will only be used for selection, `has` method will work ignoring it.
+You can also specify WHERE conditions same way as for HAS_MANY, however such option will only be used for **selection**, `has` method will ignore it (use `$user->tags->has()` instead of `$user->tags()->has()`).
 
 > You can still use `has` method of relation data (using property) as in this case check will me performed using already selected data.
 
 #### Many To Many Morphed
-As in case with BELONGS_TO you are able to define polymorphic many to many connection. To define such connection we can simply link our realtion to an **interface**. Let's try to do an example using Tags. Again, to create our Tag model "create:record tag -f id:primary -f name:string":
+As in case with BELONGS_TO you are able to define polymorphic many to many connection. To define such connection we can simply link our relation to an **interface**. Let's try to do an example using model Tag. Again, to create our Tag model - "create:record tag -f id:primary -f name:string":
 
 ```php
 class Tag extends Record
@@ -833,7 +832,7 @@ protected $schema = [
 ];
 ```
 
-As before, the best way to create realtion from User and Post to Tags - use INVERSE option. We can now update ORM schema and check pivot table created for our purposes, this time pivot table follow relation name so it named "tagged_map":
+As before, the best way to create relation from `User` and `Post` to Tags - use INVERSE option. After updating ORM schema let's check pivot table, this time our table follow relation name (not as in previous case "role_user_map") so it named "tagged_map":
 
 ```
 Columns of primary.tagged_map:
@@ -861,7 +860,7 @@ Foreign keys of primary.tagged_map:
 +-------------------------------------------------+---------+----------------+-----------------+------------+------------+
 ```
 
-As in case with BELONGS_TO_MPRHED you can observe morphed key in our pivot table. To better understand how such table is created we can check relation options wich are very similar to MANY_TO_MANY:
+As in case with BELONGS_TO_MPRHED you can observe morphed key in our pivot table. To better understand how such table is created we can check relation options which are very similar to MANY_TO_MANY:
 
 Option            | Default                                 | Description
 ---               | ---                                     | ---
@@ -880,7 +879,7 @@ PIVOT_COLUMNS     | []                                      | Additional set of 
 PIVOT_DEFAULTS    | []                                      | Set of default values to be used for pivot table columns.
 WHERE_PIVOT       | []                                      | Where statement in a form of simplified array definition to be applied to pivot table data.
 
-ManyToMany morphed relation differs from other relations and does not provide you access to data directly, you have to specifically select what type of records you want to receive, let's check an example:
+As in case with original MANY_TO_MANY we can link models together:
 
 ```php
 $tag = new Tag();
@@ -893,7 +892,7 @@ $tag->tagged()->link(Post::findOne());
 
 > Attention, link() method of ManyToMorphed relation can only accept one `Record` model.
 
-To get access to relation data, we should only specify what type of Records we want to receive (simply used pluralized model name, IDE must help you):
+To get access to relation data, we should specify what type of Records we want to receive (simply used pluralize model name, IDE must help you):
 
 ```php
 $tag = Tag::findOne();
@@ -903,6 +902,8 @@ dump($tag->tagged->users);
 dump($tag->tagged->posts);
 ```
 
+> If you want to change names used to get access to data, check MORPHED_ALIASES option.
+
 Technically, ManyToMorphed relation simply aggregates set of ManyToMany relations, meaning you can always get access to inner sub relation using such code:
 
 ```php
@@ -911,7 +912,7 @@ $tag = Tag::findOne();
 $tag->tagged->users()->sync([1, 2, 3, 4]);
 ```
 
-As before, since we declared INVERSE key we can get access to our tags using "tag" property of method in models User and Post.
+As before, since we declared INVERSE key, we can get access to our tags using "tags" property of method in models User and Post.
 
 ```php
 $user = User::findByPK(1);
