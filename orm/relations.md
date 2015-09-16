@@ -513,7 +513,86 @@ dump($post->photo);
 > Simply declare HAS_MANY inversion to link multiple photos to morphed parent.
 
 ## Many To Many
-IN PROGRESS
+One of the most powerful ORM relations MANY_TO_MANY provides you ability to link many records from different tables using pivot table. Such relation can automatically scaffold such pivot table with or withour custom user columns. In addition to that you are able to set WHERE and WHERE_PIVOT conditions to customize your relations.
+
+To define MANY_TO_MANY relation, first of all let's create new model `Role` using CLI command "spiral create:record role -f id:primary -f name:string":
+
+```php
+class Role extends Record
+{
+    /**
+     * @var array
+     */
+    protected $fillable = [
+
+    ];
+
+    /**
+     * Entity schema.
+     *
+     * @var array
+     */
+    protected $schema = [
+        'id'        => 'primary',
+        'name'      => 'string'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'name' => [
+            'notEmpty'
+        ]
+    ];
+}
+```
+
+We can create few roles right in our controller to have some data to work with:
+
+```php
+$role = new Role();
+$role->name = 'admin';
+$role->save();
+
+$role = new Role();
+$role->name = 'moderator';
+$role->save();
+```
+
+Now we are able to define our MANY_TO_MANY relation, as before it can be done by a simple array in User model:
+
+```php
+'roles' => [self::MANY_TO_MANY => Role::class]
+```
+
+Once schema executed we will get 2 new tables - roles and pivot table "role_user_map", let's check it structure:
+
+```
+Columns of primary.role_user_map:
++---------+----------------+----------------+-----------+----------------+
+| Column: | Database Type: | Abstract Type: | PHP Type: | Default Value: |
++---------+----------------+----------------+-----------+----------------+
+| role_id | integer        | integer        | int       | ---            |
+| user_id | integer        | integer        | int       | ---            |
++---------+----------------+----------------+-----------+----------------+
+
+Indexes of primary.role_user_map:
++-----------------------------------------------------------+--------------+------------------+
+| Name:                                                     | Type:        | Columns:         |
++-----------------------------------------------------------+--------------+------------------+
+| primary_role_user_map_index_user_id_role_id_55f99aaf99ecd | UNIQUE INDEX | user_id, role_id |
++-----------------------------------------------------------+--------------+------------------+
+
+Foreign keys of primary.role_user_map:
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| Name:                                               | Column: | Foreign Table: | Foreign Column: | On Delete: | On Update: |
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| primary_role_user_map_foreign_user_id_55f99aaf99704 | user_id | primary_users  | id              | CASCADE    | CASCADE    |
+| primary_role_user_map_foreign_role_id_55f99aaf99710 | role_id | primary_roles  | id              | CASCADE    | CASCADE    |
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+```
+
 
 #### Many To Many Morphed
 IN PROGRESS
