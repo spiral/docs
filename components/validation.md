@@ -230,7 +230,7 @@ public function validate($value, $compare)
 > As you can see, we declared our method as non static. This is because Validator will resolve the rule class using container. This allows us to create specialized services to perform logical validations (for example ensure that outer record exists by it's ID) and much more.
 
 ### Rule aliases
-Default spiral Validation provides ability to define set of alises associated with different validation functions, such aliases defined in `application/config/validation.php` file and provided to validator using `ValidationProvider` dependency. Let's check list of available validation aliases:
+Default Spiral Validation provides the ability to define a set of aliases associated with different validation functions. These aliases are defined in the `application/config/validation.php` file and sent to validator using `ValidationProvider` dependency. Let's check the list of available validation aliases:
 
 ```php
 'aliases'         => [
@@ -265,7 +265,7 @@ Default spiral Validation provides ability to define set of alises associated wi
 ]
 ```
 
-We can now register our own alias for our controller method and update validation rules:
+We can now register our own controller method alias and update the validation rules:
 
 ```php
     'valueMatcher' => 'Controllers\HomeController::validate'
@@ -280,10 +280,10 @@ We can now register our own alias for our controller method and update validatio
 ]
 ```
 
-You can defined as many aliases as you needed, however there is one easy way to create set of validation methods joined by one name without overloading validation config - checkers. You can read about checkers below.
+You can define as many aliases as needed. There is one easy way to create a set of validation methods attached to one name without overloading your validation config - checkers. You can read about checkers below.
 
 ## Empty Validation Rules (Stoppers)
-Another section you might notice in validation config is "emptyConditions", let's check it:
+Another section you may notice in validation config is "emptyConditions". Let's check it out:
 
 ```php
 'emptyConditions' => [
@@ -301,7 +301,7 @@ Another section you might notice in validation config is "emptyConditions", let'
 ],
 ```
 
-Empty conditions is set of rules dedicated to ensure that field value is set. Generally speaking you have to include one of this rules into field validations if you do not want to leave field empty. Let's try to demonstrate it on example:
+Empty conditions are a set of rules make sure that a field value is set. Generally speaking, you have to include one of these rules into the field validations if you do not want to leave the field empty. Let's try to demonstrate it below:
 
 ```php
 public function index()
@@ -329,14 +329,14 @@ public function index()
 }
 ```
 
-In given example validation for field "email" will not happen and not fail if field value is empty, only when field value is set "email" rule will be applied. In opposite case, "name" field has one of "empty conditions", such condition will fail and create error message if value not set.
+Validation for the field "email" won't happen and fail if field value is empty. Once you set the field value the "email" rule will be applied. Said differently, if the "name" field has one "empty condition", this condition will fail and create an error message if the value is not set.
 
-Spiral Validator provides additional way to skip field validations based on return response of validation rule. Simply make your rule return `Validator::STOP_VALIDATION` and field validation will be stopped without raising any error message, we will demonstrate such thing in next section.
+Spiral Validator provides an additional way to skip the field validations based on the validation rule return response. Make your rule return `Validator::STOP_VALIDATION` and the field validation will be stopped without showing an error message. We will demonstrate such an example in the next section.
 
 ## Checkers
-In some cases you may want to create set of rules with predefined error messages and skip step when you have to create an alias for every rule. For such purposes spiral Validator provides ability to create your own `Checker` class. Checkers are dedicated to organize set of validation rules with their error messages and provide access to such validations using simple prefix.
+In some cases, you may want to create a set of rules with predefined error messages and skip the step where you have to create an alias for every rule. For such purposes, the spiral Validator lets you create your own `Checker` class. Checkers are dedicated to organizing a set of validation rules with their error messages and provide access to such validations using a simple prefix.
 
-If you will check validation configuration file, you will see some checker already presented:
+If you check the validation configuration file, you will see some checkers already present:
 
 ```php
 'checkers'        => [
@@ -351,7 +351,7 @@ If you will check validation configuration file, you will see some checker alrea
 ],
 ```
 
-Every checker must has it's own name, such name can be used as prefix (using :: separator) while defining validation rules, for example StringChecker provides method named "regexp" with ability to apply regular expression to field value, lets use it:
+Every checker must has it's own name. This name can be used as prefix (using :: separator) while defining the validation rules. For example, StringChecker provides a method named "regexp" that has the ability to apply regular expression to a field value. Lets try it:
 
 ```php
 /**
@@ -376,7 +376,7 @@ public function regexp($string, $expression)
 ]
 ```
 
-As you might notice default error message will look like "Your value does not match required pattern.", this is possible due Checkers are allowed to define their own default messages. Let's try to create our own checker (every Checker has Translation support by default):
+As you may have noticed, the default error message will look something like "Your value does not match the required pattern.". This is possible because Checkers allow us to define their own default messages. Let's try to create our own Checker (every Checker has Translation support by default):
 
 ```php
 class MyChecker extends Checker
@@ -397,9 +397,9 @@ class MyChecker extends Checker
 }
 ```
 
-> You might notice that error message for method check is embraced with `[[]]`, such technique allows spiral Translator to index and pre-cache checker translations. Read more about in guide section dedicated to Translator.
+> You may notice that the error message for method check is surrounded by `[[]]`. This technique allows spiral Translator to index and pre-cache checker translations. Read more about it in the section dedicated to Translator.
 
-Now we can register our checker in validation config under name "my" and use it our rules:
+Now we can register our checker in the validation config under the name "my" and use it our rules:
 
 ```php
 'rules' => [
@@ -412,7 +412,7 @@ Now we can register our checker in validation config under name "my" and use it 
 
 > You can create aliases for checker methods.
 
-Besides ability to aggregate many validation methods under one roof, Checkers has little bit closer integration with Validator than usual validation functions. We can demonstrate such ability by accessing validator instance from inside of our checker method:
+Besides the ability to aggregate many validation methods under one roof, Checkers is more similar with integration with Validator than the usual validation functions. We can demonstrate such ability by accessing the validator instance from the inside of our checker method:
 
 ```php
 class MyChecker extends Checker
@@ -439,7 +439,7 @@ class MyChecker extends Checker
 }
 ```
 
-We can now modify our validation code in controller:
+We can now modify our validation code within controller:
 
 ```php
 public function index()
@@ -468,10 +468,10 @@ public function index()
 }
 ```
 
-As result we have method which will check two validation fields.
+As result, we have a method that will check two validation fields.
 
 ## Available validation Checkers
-Following validation Checkers are available to be used.
+The following validation Checkers can be used.
 
 ### Type Checker (prefix "type::")
 | Rule          | Parameters         | Description         
@@ -484,10 +484,10 @@ Following validation Checkers are available to be used.
 ### Required Checker (prefix "required::")
 | Rule          | Parameters            | Description    
 | ---           | ---                   | ---  
-| with          | with:array            | Check if field not empty but only if any of listed fields presented or not empty.
-| withAll       | with:array            | Check if field not empty but only if all of listed fields presented and not empty.
-| without       | without:array         | Check if field not empty but only if one of listed fields missing or empty.
-| withoutAll    | without:array         | Check if field not empty but only if all of listed fields missing or empty.
+| with          | with:array            | Check if field is not empty but only if any of listed fields presented or not empty.
+| withAll       | with:array            | Check if field is not empty but only if all of listed fields presented and not empty.
+| without       | without:array         | Check if field is not empty but only if one of listed fields missing or empty.
+| withoutAll    | without:array         | Check if field is not empty but only if all of listed fields missing or empty.
 
 Examples:
 
@@ -510,7 +510,7 @@ Examples:
 | cardNumber    | ---                                 | Check credit card passed by Luhn algorithm.      
 | match         | field:string, [strict:bool - false] | Check if value matches value from another field. 
 
-Both of listed checker method has short aliases - "cardNumber" and "match" accordingly.
+Both of the listed checker methods have short aliases - "cardNumber" and "match" accordingly.
 
 ### Address Checker (prefix "address::")
 | Rule          | Parameters                    | Description              
@@ -521,18 +521,18 @@ Both of listed checker method has short aliases - "cardNumber" and "match" accor
 ### Number Checker (prefix "number::")
 | Rule          | Parameters             | Description           
 | ---           | ---                    | ---                   
-| range         | begin:float, end:float | Check if number in specified range.
-| higher        | limit:float            | Check if value is bigger or equal that specified.
-| lower         | limit:float            | Check if value smaller of equal that specified.
+| range         | begin:float, end:float | Check if the number is in a specified range.
+| higher        | limit:float            | Check if the value is bigger or equal to that which is specified.
+| lower         | limit:float            | Check if the value is smaller or equal to that which is specified.
 
 ### String Checker (prefix "string::")
 | Rule          | Parameters            | Description           
 | ---           | ---                   | ---                   
 | regexp        | expression:string     | Check string using regexp.                  
 | shorter       | length:int            | Check if string length is shorter or equal that specified value.              
-| longer        | length:int            | Check if string length is longer or equal that specified value.                
-| length        | length:int            | Check if string length are equal to specified value.               
-| range         | left:int, right:int   | Check if string length are fits in specified range.                  
+| longer        | length:int            | Check if the string length is longer or equal to that specified value.                
+| length        | length:int            | Check if the string length is equal to specified value.               
+| range         | left:int, right:int   | Check if the string length fits within the specified range.                  
 
 Examples:
 
@@ -546,7 +546,7 @@ Examples:
 ```
 
 ### File Checker (prefix "file::")
-File checker fully support filename provided in a string form or using `UploadedFileInterface`, this makes this checker very useful for file uploades.
+File checker fully supports the filename provided in a string form or using `UploadedFileInterface`. This makes the checker very useful for uploading files.
 
 | Rule          | Parameters            | Description           
 | ---           | ---                   | ---                   
@@ -556,21 +556,21 @@ File checker fully support filename provided in a string form or using `Uploaded
 | extension     | extensions:array      | Check if file extension in whitelist. Client name of uploaded file will be used!
 
 ### Image Checker (prefix "image::")
-Image checker extends file checker and fully support it's features.
+Image checker extends the file checker and fully supports it's features.
 
 | Rule          | Parameters              | Description           |
 | ---           | ---                     | ---                   |
 | exists        | ---                     | Check if image exist.
 | uploaded      | ---                     | Check if image was uploaded.
-| size          | size:int                | Check if image size less that specified value in KB.
-| extension     | extensions:array        | Check if image extension in whitelist. Client name of uploaded file will be used!
-| type          | types:array             | Check if image in a list of allowed image types.
-| valid         | ---                     | Shortcut to check if image has valid type (JPEG, PNG and GIF are allowed).
-| smaller       | width:int, [height:int] | Check if image smaller that specified rectangle (height check if optional).
-| bigger        | width:int, [height:int] | Check if image is bigger that specified rectangle (height check is optional).
+| size          | size:int                | Check if image size is less than specified value in KB.
+| extension     | extensions:array        | Check if image extension is in whitelist. Client name of uploaded file will be used!
+| type          | types:array             | Check if image is within a list of allowed image types.
+| valid         | ---                     | Shortcut to check if the image has a valid type (JPEG, PNG and GIF are allowed).
+| smaller       | width:int, [height:int] | Check if image is smaller than a specified shape (height check if optional).
+| bigger        | width:int, [height:int] | Check if image is bigger than a specified shape (height check is optional).
 
 ## Example of Validator usage
-In most of cases you don't need to create validator manually. Validation component provides `ValidatesInterface` and it's related trait `ValidatorTrait` which provides ability to embedd field based validation into your models.
+In most of cases, you don't need to create a validator manually. The Validation component provides `ValidatesInterface`.  `ValidatorTrait` provides the ability to embed a field based validation into your models.
 
 ```php
 interface ValidatesInterface
@@ -590,7 +590,7 @@ interface ValidatesInterface
     public function hasErrors();
 
     /**
-     * List of errors associated with parent field, every field must have only one error assigned.
+     * List of errors associated with parent field. Every field must have only one error assigned.
      *
      * @param bool $reset Clean errors after receiving every message.
      * @return array
@@ -599,7 +599,7 @@ interface ValidatesInterface
 }
 ```
 
-Such interface and trait already implemenet by base spiral model - DataEntity. As result, you are recommended to validate incoming user requests using http [RequestFilters] (/http/filters.md). Let's try to write an example to demonstrate usage of image/file checker using RequestFilter:
+This interface and trait are already implemented in the base spiral model - DataEntity. As a result, it is recommendeded that you validate incoming user requests using http [RequestFilters] (/http/filters.md). Let's try to write an example that demonstrates the usage of image/file checker using the RequestFilter:
 
 ```php
 /**
@@ -629,7 +629,7 @@ class UploadRequest extends RequestFilter
 }
 ```
 
-Our controller code will look like:
+Our controller code will look like this:
 
 ```php
 public function index(UploadRequest $request)
