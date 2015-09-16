@@ -363,7 +363,7 @@ public function index()
 > You can only de-assign parent if relation is nullable.
 
 #### Entity Cache
-BELONGS_TO relation has one interesting feature, available when you linking your parent based on it primary key (default behaviour). In this case relation will try to locate parent model using [entity cache] (loading.md) (if it's enabled) as result you can avoid additonal queries, let's try to demonstrate that:
+BELONGS_TO relation has one interesting feature, available when you are linking parent record based on it primary key (default behaviour). In this case relation will try to locate parent model using [entity cache] (loading.md) (if it's enabled) as result you can avoid additonal queries, let's try to demonstrate that:
 
 ```php
 public function index()
