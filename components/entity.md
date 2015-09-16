@@ -118,7 +118,7 @@ public function index()
 Once we have constructed our entity, we can walk through a set of methods designed to work with our field values.
 
 ### Check field existence
-If the desired field exists in model, you can use method `hasField`.
+If the desired field exists in your model, you can use the method `hasField`.
 
 ```php
 dump($entity->hasField('name'));
@@ -126,7 +126,7 @@ dump($entity->hasField('undefined'));
 ```
 
 ### Get individual field
-To get value of individual field let's try method `getField`. Method can accept second parameter to specify default value if field does not exists.
+To get the value of an individual field, let's try the method `getField`. This Method can accept the second parameter to specify the default value if the field doesn't exist.
 
 ```php
 dump($entity->getField('name'));
@@ -134,16 +134,16 @@ dump($entity->getField('undefined', 'DEFAULT VALUE'));
 ```
 
 ### Get all Entity fields
-In many cases we would like to get every model field in array form, we can use method `getFields` for such purposes:
+In many cases, we would like to get every model field in an array form. We can use the method `getFields` for these purposes:
 
 ```php
 dump($entity->getFields());
 ```
 
-> Attention, resulted array will include field accessors (see below), plus every field will be passed thought it's associated getter (see below).
+> The resulting array will include the field accessors (see below). Plus every field will be passed through it's associated getter (see below).
 
 ### Set Model field
-To set value of desired model field we can use obviously named method `setField`:
+To set the value of a desired model field, we can use `setField`:
 
 ```php
 $entity->setField('thing', 199.00);
@@ -151,18 +151,18 @@ dump($entity->getFields());
 ```
 
 ## Mass Assignment
-In many cases (almost in every case, to be honest) you will need to set multiple model fields at once. Setting fields one by one may look like an option, especially since every field will be filtered using associated setter (see below), hovewer there is much more convinient way to perform mass assignment - `setFields` method.
-Such method is allowed to use user data as source (for example directly from request POST), hovewer, entity must be configured previously to specify what fields can be set and what can not.
+In almost all cases, you will need to set up multiple model fields at once. Setting fields one by one may look like an option, especially since every field will be filtered using associated setter (see below), but there is much easier way to perform mass assignment - the `setFields` method.
+This method lets you use user data as a source (for example, directly from request POST). Hovewer, the entity must be previously configured to specify what fields can and can't be set.
 
 ```php
 //Get entity data from query
 $entity->setFields($this->input->query);
 ```
 
-> Method can accept array or Traversable object (meaning you can even pass one entity as source of items for another entity - such thing used in spiral `RequestFilter->populate()` method).
+> Method can accept an array or Traversable object (meaning you can even pass one entity as a source of items for another entity - this is used in spiral `RequestFilter->populate()` method).
 
-You have to use set field method, or static method "create" of ORM and ODM entities to create entity based on user input.
-To configure entity and specify what fields can be set we will use specialized behaviour property **fillable**. Let's try to update our entity, to allow filling "name": 
+You have to use a set field method or a static method "create" of ORM and ODM entities in order to create an entity based on user input.
+To configure, this entity and specify what fields can be set, we will use the specialized behaviour property **fillable**. Let's try to update our entity, to allow to fill in "name": 
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -183,16 +183,16 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-Now, we can set entity name by entering it's value in our browser url query part. 
+Now, we can set the entity name by entering it's value in our browser window. 
 
-> There is second entity property **secured** which specifies what fields are **not allowed** to be set, by default it equals to '\*' - meaning no fields can be set unless specified in **fillable** property, set secured property as empty array to make every property fillable (if you really need that).
+> There is a second entity property **secured** which specifies what fields are **not allowed** to be set. By default, this is equal to '\*' - meaning that no fields are set unless specified in **fillable** property. 
 
 ### isFillable
-DataEntity controls mass assigment access using protected method `isFillable`, you can ovewrite it to define custom field access logic.
-> Tip: ORM and ODM models can inherit values of fillable and secured properties from it's parents. You can also check what fields are public and fillable in ORM and ODM models via set of inspect commands in CLI toolkit.
+DataEntity controls the mass assigment access using the protected method `isFillable`. You can ovewrite it to define a custom field access logic.
+> Tip: ORM and ODM models can inherit values of fillable and secured properties from it's parents. You can also check what fields are public and fillable in ORM and ODM models via a set of inspect commands in CLI toolkit.
 
 ## Setters (filter functions)
-In many cases you might want to filter value assigned to some specified field, for example to perform type casting or some value manipulations. You can either write your own access method like "setName($name)" or use specialized entity behaviour - **setters**. Such behaviour described in setters property and applied to field inside `setField` and `setFields` method. Let's try to apply some filter for our "name" and "another" fields.
+You might want to filter the value assigned to some specific field, for example, to perform type casting or some value manipulations. You can either write your own access method like "setName($name)" or use specialized entity behaviour - **setters**. Such behaviour is described in the setters property and applied to field inside `setField` and `setFields` method. Let's try to apply some filter for our "name" and "another" fields.
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -222,9 +222,9 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-> As you can see you can any valid `call_user_function` callback to descrive setters. Please note, setters is filter functions, you should not execute setField inside setter method as it can be used in many places, return filtered value instead. 
+> You can use any valid `call_user_function` callback to describe setters. Please note, setters is a filter function. You should not execute setField inside setter method as it can be used in many places. Use the return filtered value instead. 
 
-Now, no matter how we trying to assign value of desired field, it will always be casted to desired value:
+Now, no matter how we try to assign value of desired field, it will always be set to desired value:
 
 ```php
 public function index()
@@ -243,10 +243,10 @@ public function index()
 }
 ```
 
-> Setters are extremelly halpful when you want to store your entity data with preserved field types (for example for MongoDB).
+> Setters are extremely helpful when you want to store your entity data with preserved field types (for example for MongoDB).
 
 ## Getters (filter functions)
-Similar to setters you can define set of filters to be executed inside `getField` and `getFields` methods. 
+Similar to setters you can define a set of filters to be executed inside `getField` and `getFields` methods. 
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -272,9 +272,9 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-Now our entity will store name always in uppercase form, but lowercased value will be returned when you will try to read such value.
+Now our entity will alway store name in uppercase form, but you will see a lowercase value returned when you read such a value.
 
-> Getters are more rare than setters, hovewer they are useful with loosely typed databases (MySQL, SQLite and etc), for example boolean value stored in MySQL will be returned as "1" (string one), using getters can help us to ensure it's always boolean.
+> Getters are more rare than setters. Hovewer they are very useful with loosely typed databases (MySQL, SQLite etc). For example, boolean value stored in MySQL will be returned as "1" (string one). Using getters can help us to ensure it's always boolean.
 
 ## Accessors
 Spiral Entity provides additional way to manage field value - Accessors. Accessor is specified object which is responsible for manipulations with mocked value, the easiest example - timestamp value accessor which can represent numeric value as DataTime (spiral uses [Carbon] (https://github.com/briannesbitt/Carbon)).
