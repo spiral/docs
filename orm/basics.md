@@ -1,14 +1,16 @@
 # Spiral ORM, Basics
-Spiral Framework provide simple but yet powerful ORM engine you can use in everyday development. Spiral ORM provides ability to work with multiple databases, automatically scaffold tables and define set of realtions which can be requested on demand or pre-loaded with parent entity. 
+Spiral Framework provide simple but yet powerful ORM engine you can use in everyday development. Spiral ORM is able work multiple databases, automatically scaffold tables and columns, define set of realtions and pre-load them on demand later. 
 
-Spiral ORM model **Record** are based on [DataEntity] (/components/entity.md) class, so it will be the best to read about it first. In addition check this [behaviour schema] (/schemas.md) concept which used as base for ORM component.
+ORM model **Record** are based on the [DataEntity] (/components/entity.md) class, it will be the best to read about such component first. In addition, check this [behaviour schema] (/schemas.md) concept which used as base for ORM component.
 
 ## Record
-Spiral ORM component does not require any configuration rather than making sure that [DBAL] (/database/overview.md) has valid database connections. The only thing you have to do to that using ORM is to create or generate desired **Record** model.
+Spiral ORM component does not require any configuration rather than making sure that [DBAL] (/database/overview.md) has valid database connections. The only thing you have to do to start using ORM is to create or generate desired **Record** model.
 
-Such model must include property **schema** which is going to describe needed table colums and record relationships. Since ORM component uses DBAL as it's backbone, you can declare set of desired columns in a similar format as [schema writers] (/database/syncing.md).
+Such model must includes property **schema** which is going to describe needed table colums and record relationships. Since ORM component uses DBAL as it's backbone, you can declare set of desired columns in a similar format as [schema writers] (/database/syncing.md).
 
-Record generation command accept pre-defined set of fields using key `-f`, let's try to generate our first model: 'create:record user -d -f id:primary -f name:string(64) -f email:string -f status:enum(active,blocked)', we are using key `-d` to generate "defaults" property (see next). Resulted entity will be generated in `application/classes/Database/User.php`:
+The easies way to create new ORM models is to use CLI toolkit, record generation command accept pre-defined set of fields using key `-f`, we can try to generate our first database entity: 'create:record user -d -f id:primary -f name:string(64) -f email:string -f status:enum(active,blocked)', note that we are using key `-d` to create "defaults" property (see next).
+
+Resulted entity will be located in `application/classes/Database/User.php`:
 
 ```php
 class User extends Record 
@@ -56,12 +58,12 @@ class User extends Record
 }
 ```
 
-As you can see most of Record properties are really similar to `DataEntity` as can be configured same way, however we have few additional things we have to remember.
+As you can see most of the Record properties are really similar to `DataEntity` as can be configured same way, however we have few additional things we have to remember.
 
 #### Schema
-The most important part of any Record models is it's schema. Schema declares what columns you would like to see in associated table and, in addition to that, contains set of record [relations] (relations.md). In this tutorial we are going to stick to columns only.
+The most important part of any Record model is it's schema property. Schema declares what columns you would like to see in associated table and, in addition to that, defines set of record [relations] (relations.md). In this tutorial we are going to stick to columns only.
 
-Since we are creating model for new (non existed table) we would need to declare primary key, we can do it same way as in DBAL Schema Writers by assigning type "primary" or "bigPrimary".
+Since we are creating model for new (non existed table) we would need to declare table primary key, we can do it same way as in DBAL Schema Writers by assigning type "primary" or "bigPrimary".
 
 ```php
 'id'     => 'primary',
@@ -69,21 +71,21 @@ Since we are creating model for new (non existed table) we would need to declare
 
 >  Spiral ORM will detect your primary key name automatically so you don't nesessary need to use "id".
 
-To provide additional type arguments, such as length, scale or enum values you can simply use braces as you would call `AbstractColumn` method.
+To provide additional type arguments, such as length, scale or enum values you can simply use braces as you would call `AbstractColumn` methods.
 
 ```php
 'name'   => 'string(64)',
 'status' => 'enum(active,blocked)'
 ```
 
-The only important difference between way how columns decribed in DBAL and ORM that Record model will force **NOT NULL** flag and default values for each column (to solve problems when schema changes modifies existed non empty table). If you wish to declare your column as nullable, simply add "nullable" to it's type definition.
+The only important difference between way how columns decribed in DBAL and ORM that Record model will force **NOT NULL** flag and default value for each column (to solve problems when schema changes modifies existed non empty table). If you wish to declare your column as nullable, simply add "nullable" to it's type definition.
 
 ```php
 'column' => 'string, nullable'
 ```
 
 #### Default Values
-As you already know ORM will force set of default values for every declared column, usually such default values will be just an empty type casted value ("", 0 etc). You can declare your own default value using record property "defaults", in our case we have "enum" column, it's the best to force default value for it:
+As you already know ORM will force set of default values for every declared column, usually such default values will be just an empty type casted value ("", 0 etc). To declare your own default value using record property "defaults", in our case we have "enum" column, it's the best to force specific value for it:
 
 ```php
 protected $defaults = [
@@ -92,10 +94,12 @@ protected $defaults = [
 ```
 
 #### Associated Table and Database
-By default spiral will associte your Record model with default DBAL database and table which name are generated based on class name (in our case User => users). You can alter both of this values by declaring non empty properties `database` and `table`.
+By default spiral will associate your Record model with the default DBAL database and table which name are generated based on class name (in our case User => users). You can alter both of this values by declaring non empty properties `database` and `table`.
+
+> If you unsure what table will be generated based on model name - simply force table for every Record, it's not going to harm anyone but will make your code more readable.
 
 #### Indexes
-In many cases you might want to declare indexes to be created in associated table, you can esily do it in your Record via propery `indexes`. Every index information must be located in a sub array of such property and include index type (self::INDEX or self::UNIQUE), let's try to add unique index on our `email` column.
+To declare indexes to be created in associated table, you can easily do it in your Record via propery `indexes`. Every index information must be located in a sub array of such property to include index type (self::INDEX or self::UNIQUE) and column(s) index based on, let's try to add unique index on our `email` column.
 
 ```php
 protected $indexes = [
@@ -106,7 +110,7 @@ protected $indexes = [
 > You can include as many columns into index as your DBMS allows you. Simply list columns as array values.
 
 ## Schema Update and Scaffolding
-Once you done with declaring your `Record` model schema we can run ORM update. Such operation can be achieved by running command 'spiral up'. Such command should automatically generate related table "users" for your model using declared columns and indexes. We can view content of such table by executing 'db:describe users':
+Once you done with declaring your `Record` model schema we can run ORM schema update. Such operation can be performed by executing command 'spiral up'. The update will automatically generate related table "users" for your model using declared columns and indexes. We can view content of such table by running CLI 'db:describe users':
 
 ```
 Columns of primary.users:
@@ -132,7 +136,7 @@ As you can see our table looks exacly as it should (output may differ if you usi
 > You have to execute `spiral up` every time you change any entity or orm property of your Record to pass updates into cached behaviour schema. There is no need to run schema update if you modifying custom properties or methods.
 
 #### Adding new Columns
-Since ORM based on DBAL syncronization mechanism, the only thing you need to do to add new columns into related record table - declare such column in model schema (same applied for indexes). Let's try add column "balance".
+Since ORM based on DBAL syncronization mechanism, the only thing you need to do to add new columns into related Record table - declare such column in model schema (same applied for indexes). Let's try add column "balance".
 
 ```php
 protected $schema = [
@@ -144,7 +148,7 @@ protected $schema = [
 ];
 ```
 
-To add such column into our table we have to execute `spiral up` again (you cam set verbosity flag `-v` to see what is going on):
+To add such column into our table we have to execute `spiral up` again (set verbosity flag `-v` to see what is going on):
 
 ```
 > spiral up -v
@@ -168,7 +172,8 @@ Inspecting available DataEntities...
 Inspected entities 1, average rank Good (0.95).
 ```
 
-> You can use model schema only to add new columns, renaming and removing must be done via migrations, meaning removing column declaration from model will not remove such column from table.
+> You can use model schema only to add new columns, renaming and removing must be done via migrations - meaning removing column declaration from model will not remove such column from table.
+> Due migrations are mounted right before schema update, you are able to use them as part of ORM flow.
 
 And again we can check if our table was successfully modified using command "db:describe users", this time i switched my connection to PostgresSQL:
 
@@ -192,8 +197,10 @@ Indexes of primary.users:
 +-----------------------------------------+--------------+----------+
 ```
 
+> You might notice that there is no enum type in Postgres, it will be emulated using constrained string.
+
 #### Active vs Passive Schemas
-In a given example, we created Record which will automatically ensure that table exists in database and have desired set of columns and indexes. ORM component does not require you to declare every table column, even more, you can associate your model with existed table without even creating schema propery. In this case model will fetch column list from table directly, our model may look like:
+In a given example, we created Record which automatically ensures that table exists in database and have desired structure. ORM component does not require you to declare every table column, even more, you can associate your model with existed table without declaring schema propery. In this case model will fetch columns list from table directly, our model may look like:
 
 ```php
 class SomeRecord extends Record
@@ -202,7 +209,7 @@ class SomeRecord extends Record
 }
 ```
 
-However, in a next guide section dedicated to relations, you'll find out that relations have ability to modify associated model schemas to declare needed columns and foreign keys. This is fine if we generating our database using Spiral Models, however in some cases you might want to connect Records to existed database. In this case, you can configure relations in a way to make them follow already existed structures. But, to be absolutelly sure that no relation or recor can modify our table we can delcare record constant ACTIVE_SCHEMA and set if value to false.
+However, in a next guide section dedicated to relations, you'll find out that relations have ability to modify associated model schemas to declare needeed columns and foreign keys. This is fine if we generating our database using Spiral, but in some cases you might want to connect Records to existed database without letting spiral do modify it. In this case, we can configure relations in a way to make them follow already existed structures, but, to be absolutelly sure that no relation or record can modify our table we can declare Record constant **ACTIVE_SCHEMA** and set if value to `false`.
 
 ```php
 class SomeRecord extends Record
@@ -213,12 +220,12 @@ class SomeRecord extends Record
 }
 ```
 
-Such constant will forbid any modifications for associated table and ensure that spiral can not touch existed table. The rest of ORM functionality such as validations, selections eager loading and realtions are still preserved.
+Such constant will forbid *any modifications* in associated table and ensure that spiral can not touch existed structure. The rest of ORM functionality such as validations, selections eager loading and realtions are still preserved.
 
-> You can also use passive models if you prefer to generate your database using migrations.
+> You can use passive models if you prefer to generate your database using migrations. ORM in this case will thrown an schema exception if some column is requied for relation but missed from schema. You can also use passive models to validate auto generated structure before doing real update.
 
 ## Create Record
-Once your ORm schema updated we are ready to work with our models. Since we just created our table, it's time to push some data in. Let's do such operation in a controller:
+Once your ORM schema has been updated we are ready to work with our model. Since we just created our table, it's time to push some data in. Let's do such operation in a controller:
 
 ```php
 public function index()
@@ -233,11 +240,12 @@ public function index()
 }
 ```
 
-You can apply any DataEntity method to your model.
 > If you working under PHPStorm, IDE will highlight all possible record fields for you.
 
+You can use every `DataEntity` method to populate your model, such as setFields, setField or even set of magic methods - setName, setEmail, etc.
+
 #### Validations
-Given example will raise an exception when we will try to execute it again, the reason - non unique email. Since email validation requires us to send query to database, we might want to modify our validation method (same way as in DataEntity) to add more complex validation rule:
+Given example will raise an exception when we will try to execute it again, the reason - non unique email. Since email validation requires us to send query to database, we might want to modify our validation method (same way as in `DataEntity` examples) to add more complex validation rule:
 
 ```php
 /**
@@ -249,14 +257,14 @@ protected function validate($reset = false)
     parent::validate($reset);
 
     if ($this->hasUpdates('email') && !$this->hasError('email')) {
+    
         //We are using array based where statement
         $selection = $this->sourceTable()->where([
             'email' => $this->email,
-            'id'    => ['!=' => (int)$this->id]
+            'id'    => ['!=' => $this->id]
         ]);
 
         if ($selection->count() != 0) {
-            echo 1;
             $this->setError('email', self::translate("Email must be unique."));
         }
     }
@@ -265,9 +273,11 @@ protected function validate($reset = false)
 }
 ```
 
-Such validation method will check if email is unique but only in cases when email field has some updates (got created or changed). Now, we will get an error message associated with model field rather than exception.
+Such validation method will check if email is unique but only in cases when email field has some updates (got created or changed). Now, we will get an error message associated with model field rather than database exception.
 
-Before we will jump to next step, lets try to create few more users. In this case we can use static method `create` which accepts set of initial model fields. Since we have no fillable fields this method should not work in our case (so we are going to use `setFields` method with disabled access policy). In order to fill our demo entities let's connect [faker] (https://github.com/fzaninotto/Faker).
+Before we will jump to next step, lets try to create few more users. In this case we can use static method `create` which accepts set of initial model fields.
+
+Since we have no fillable fields this method should not work in our case (so we are going to use `setFields` method with disabled access policy -  by setting second argument as `true`). In order to fill our demo entities let's connect [faker] (https://github.com/fzaninotto/Faker) package.
 
 ```php
 for ($i = 0; $i < 100; $i++) {
@@ -283,36 +293,69 @@ for ($i = 0; $i < 100; $i++) {
 }
 ```
 
-> Attention, `create` method will only return populated Record entity, you HAVE to save such entity to database manually (simply call `save()` method).
+> Attention, `create` method will only return populated Record entity, you **have** to save such entity to database manually (simply call `save()` method).
 
-You you wish to check what is going on with queiries to database, you can to check logging tab of spiral profiler (this is Postgres connection):
+> Even more, every DataEntity including ORM Records and ODM Documents must be populated from outside, meaning there is no database related code in entity constuctor, if you wish to create entity based on existed array of data (skipping setters) simply pass such array as constructor argument `new User([...])`.
+
+To check what is going on with queries to database, let to check logging tab of spiral [Profiler] (/modules/profiler.md) (this is Postgres connection):
 
 ```sql
 INSERT INTO "primary_users" ("name", "email", "status", "balance")
 VALUES ('Boris Kuhic', 'mrunte@yahoo.com', 'blocked', 386.600000) RETURNING "id"
 ```
 
+> All characters appearing in this work are fictitious. Any resemblance to real persons, living or dead, is purely coincidental.
+
 ## Seletions
-Once you have your table populated with records, it's time to select some of them to do something. Spiral ORM exposes 3 ActiveRecord like methods which you can use for that purposes: `find`, `findOne` and `findByPK`.
+Once you have your table populated with data, it's time to select some of them to do something. Spiral ORM exposes 3 ActiveRecord *like* methods which you can use for that purposes: `find`, `findOne` and `findByPK`.
+
+> There is 4th method which used inside every find method - `ormSelector`, you can use it to get access to Selector class associated with our record. You can also get associated selector by calling method `selector` of ORM component. 
 
 #### FindOne
-To find one record based on some conditions and sorting we can use static method `findOne`, method will return **null** if it's unabled to locate required record. Since ORM component based on DBAL you are able to specify needed conditions in a short array form (if you need normal where statements, check `find` method below).
+To find one record based on some conditions and sorting we can use static method `findOne`, method will return **null** if it's unabled to locate required record. Since ORM component based on DBAL you are able to specify needed conditions in a short array form (if you want normal where statements, check `find` method below).
 
 ```php
-$user = User::findOne(['status' => 'active']);
+//Don't worry about second argument yet, it's about pre-loading
+$user = User::findOne(['status' => 'active'], [], ['id' => 'DESC']);
 dump($user);
 ```
 
 #### FindByPK
-In cases where you would like to find your record based on it's primary key value (usually ID) we can use method `findByPK`. Method will behave same way as `findOne` if no entity can be found.
+In cases where you would like to find your record based on it's primary key value (usually "id") we can use method `findByPK`. Method will behave same way as `findOne` if no entity can be found.
 
 ```php
 $user = User::findByPK(1);
 dump($user);
 ```
 
+The most often option is to find model based on provided primary key or return client exception on failure, spiral does not embedds any application specific logic into ORM component so you have to raise an exception by your own, fortunatelly it's pretty easy to do:
+
+```php
+public function index($id)
+{
+    if (empty($user = User::findByPK((int)$id))) {
+        throw new NotFoundException('No such user');
+    }
+
+    dump($user);
+}
+```
+
+Or using entity service:
+
+```php
+public function index(UserService $users, $id)
+{
+    if (empty($user = $users->findByPK((int)$id))) {
+        throw new NotFoundException('No such user');
+    }
+
+    dump($user);
+}
+```
+
 #### Find
-If you want to find multiple records, or run aggregation, you can use method `find` which will return instance of `Spiral\ORM\Entities\Selector`, such class has common parent with DBAL [SelectQuery] (/database/builders.md) which makes you able to use same methods and princiles:
+To find multiple Records or run aggregation, let's use method `find` which will return instance of `Spiral\ORM\Entities\Selector`, such class has common parent with DBAL [SelectQuery] (/database/builders.md) and makes you able to use same methods and princiles:
 
 ```php
 public function index()
@@ -345,10 +388,12 @@ WHERE "user"."balance" > 500
 ORDER BY "user"."balance" DESC
 ```
 
-Note that ORM Selector will automatically assigned alias to Record table which is singular model name ("user"). You can read more about aliases [here] (loading.md).
+Note that ORM Selector will automatically assign **alias for associated table** which is singular model name ("user"). You can read more about aliases [here] (loading.md).
+
+> To find one record using normal where conditions, try variant `User::find()->where(...)->findOne()`
 
 ## Modify Record
-Once you selected needed record (for example using `findByPK`) you can modify it's fields using same way as with any other DataEntity. To save your updates into database you have to run method `save()` which will return false if model validations failed.
+Once you selected needed record (for example using `findByPK`) you can modify it's fields using same way as with any other DataEntity. To save your updates into database you have to run method `save()`, method returns false if model validations failed.
 
 ```php
 public function index()
@@ -363,7 +408,7 @@ public function index()
 ```
 
 #### Dirty Fields and Solid State
-If you will check SQL code generated for previous example, you might notice that it looks like:
+If you will check SQL code generated for previous example, you might notice that it looks like that:
 
 ```sql
 UPDATE "primary_users"
@@ -371,7 +416,7 @@ SET "name" = 'New Name'
 WHERE "id" = 1 
 ```
 
-Record model included only modified fields into update query. Such approach can be useful in many cases, however if you wish to save your moveld into database with every declared value you can force, so called, "solid state". When model (Record) are in solid state every small update will force ORM to save whole record data.
+Record model included *only modified* fields into update query. Such approach can be useful in many cases when data is updated from many places, however if you wish to save your entity data into database as solid dataset you can force entity "solid state". When model (Record) are in solid state every small update will cause full dataset update.
 
 ```php
 $user = User::findByPK(1);
@@ -390,10 +435,10 @@ SET "name" = 'New Name',  "email" = 'test@email.com',  "status" = 'active ',  "b
 WHERE "id" = 1
 ```
 
-> If you want to keep our model in solid State by default, simply declare protected property solidState with default value `true`.
+> If you want to keep our model in solid state by default, you can call such method in overwritten model constructor.
 
 #### Filters and Accessors
-You can define setters, getters and accessors same way you would do that for DataEntity. However, spiral ORM will automatically assign some getters and accessors to your record based on column type, you check check what filters will be created by default by looking into ORM configuration file:
+You can define setters, getters and accessors same way you would do that for `DataEntity`. However, spiral ORM can automatically assign some getters and accessors to your record based on column type, you check check what filters will be created by default by looking into ORM configuration file:
 
 ```php
 'mutators'       => [
@@ -406,7 +451,7 @@ You can define setters, getters and accessors same way you would do that for Dat
 ],
 ```
 
-As you can see ORM will make sure that every column is validly type casted into scalar value while reading, this can be very useful since some DBMS returтs every table value as string.
+As you can see ORM will make sure that every column is validly type casted into scalar value while reading (this can be very useful since some DBMS returns column values as strings only).
 
 #### Timestamps Accessor
 Based on provided configuration, you might notice that ORM will assign `ORMTimestamp` accessor to every timestamp or datetime field. Let's try to add such field into our table (again, avoid using timestamps):
@@ -422,7 +467,7 @@ protected $schema = [
 ];
 ```
 
-After schema have been updated, we are able to use such model field as [Carbon] (https://github.com/briannesbitt/Carbon) instance.
+After schema have been updated, we are able to use that field as [Carbon] (https://github.com/briannesbitt/Carbon) instance.
 
 ```php
 public function index()
@@ -439,16 +484,16 @@ public function index()
 }
 ```
 
-You can also simply assign time to `time_registered` field, accessor must automatically handle it using `strtotime` function:
+You can also simply assign time to `time_registered` field, as accessor must automatically handle it using `strtotime` function:
 
 ```php
 $user->time_registered = 'next friday 10am';
 ```
 
-> DBAL will convert all dates into UTC timezone.
+> Attentio, DBAL will convert and fetch all dates using UTC timezone!
 
 #### Atomic Number
-Field accessors in ORM may not only provide mocking functionality but declare update behaviours. One of such accessors can be very useful to manage numeric values "atomic" way. Let's try to see such accessor in action, first of all we have to declare it in our Record model and update schema after:
+Field accessors in ORM may not only provide mocking functionality but declare update behaviours. One of such accessors can be very useful to manage numeric values in "atomic" way. Let's try to see such accessor in action, first of all we have to declare it in our Record model and update schema after:
 
 ```php
 protected $accessors = [
@@ -480,10 +525,10 @@ WHERE "id" = 1
 > You can create your own accessors by implementing `RecordAccessorInterface`, also check [JsonDocument] (/odm/standalone.md) accessor.
 
 ## Delete Records
-You can delete any existed Record by executing it's method "delete".
+You can delete any existed Record by executing it's method "delete". There is not much to talk about it.
 
 ## Events and Traits
-As DataEntity model, Record declares few [events] (/components/events.md) which you can handle to track or handle model behaviour:
+As DataEntity model, Record declares few [events] (/components/events.md) which you can handle to track or change model behaviour:
 
 Event                   | Context                                   | Return | Description
 ---                     | ---                                       | ---    | ---
@@ -502,10 +547,10 @@ updated                 | -                                         | -      | A
 deleting                | -                                         | -      | Before model deleted from database.
 deleted                 | -                                         | -      | After model deleted from database.
 
-In most of cases you don't need to handle any of event as `save` and `delete` methods can be easily overwriten. However events can be very useful to create set of traits used to modify Record schema and save behaviour (see next).
+In most cases you don't need to handle any of event as `save` and `delete` methods can be easily overwriten. However events can be very useful to create set of traits used to modify Record schema and update/save behaviour (see next).
 
 #### Timestamps Trait
-One of the most common Record trait you might want to use - TimestampsTrait. Such trait handle events "saving", "updating" and "describe" to alter Record columns and update two "magic" column "time_created" and "time_updated" (datetime). Our final demo Record User might look like:
+One of the most common Record trait you might want to use - `TimestampsTrait`. Such trait handle events "saving", "updating" and "describe" to alter Record columns and update two "magic" fields "time_created" and "time_updated" (both type datetime). Our final demo Record User might look like:
 
 ```php
 class User extends Record
@@ -524,6 +569,20 @@ class User extends Record
         'email'           => 'string',
         'status'          => 'enum(active,blocked)',
         'balance'         => 'decimal(10,2)'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $defaults = [
+        'status' => 'active'
+    ];
+    
+    /**
+     * @var array
+     */
+    protected $indexes = [
+        [self::UNIQUE, 'email']
     ];
 
     /**
@@ -549,20 +608,6 @@ class User extends Record
     ];
 
     /**
-     * @var array
-     */
-    protected $defaults = [
-        'status' => 'active'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $indexes = [
-        [self::UNIQUE, 'email']
-    ];
-
-    /**
      * @param bool|false $reset
      * @return bool
      */
@@ -571,14 +616,14 @@ class User extends Record
         parent::validate($reset);
 
         if ($this->hasUpdates('email') && !$this->hasError('email')) {
+
             //Let's try to check if email is unique
             $selection = $this->sourceTable()->where([
                 'email' => $this->email,
-                'id'    => ['!=' => (int)$this->id]
+                'id'    => ['!=' => $this->id]
             ]);
 
             if ($selection->count() != 0) {
-                echo 1;
                 $this->setError('email', self::translate("Email must be unique."));
             }
         }
@@ -589,7 +634,9 @@ class User extends Record
 ```
 
 ## Services and Controllers
-While working with ORM models you are able to call `find`, `findByPK` and `save` methods inside your controllers directly. However spiral provides ability to pre-generate specific [Service] (/application/services.md) which can help you to abstract database specific operations from your controllers code. You can scaffold such class using console command "create:service user -e user", resulted code may look like:
+While working with ORM models you are able to call `find`, `findByPK` and `save` methods inside your controllers directly. However spiral provides ability to pre-generate specific [Service] (/application/services.md) which can help you to abstract database specific operations from your controllers code. 
+
+You can scaffold such class using console command "create:service user -e user", resulted code may look like:
 
 ```php
 class UserService extends Service  implements SingletonInterface
@@ -663,7 +710,7 @@ class UserService extends Service  implements SingletonInterface
 }
 ```
 
-Now you can use such service inside you controllers avoiding static methods of Record model (they can always be removed from service also):
+As result you can use such service inside you controllers avoiding static methods of Record model (they can always be removed from service also):
 
 ```php
 public function index(UserService $users)
@@ -679,13 +726,15 @@ public function index(UserService $users)
 
 Services like that is the best place to locate custom selection methods (like `findActive`) or even alter delete method to implement "soft deletes".
 
-## Inheritance and Abstract Records
-Since Spiral ORM uses static analysis, there is no real limitation how you would like to create your models, as result you can declare **abstract** Record with it's schema, validations and etc and later extend this class in your application. This technique can be very useful while writing [modules] (/components/modules.md).
+> You can also generate CRUD controller to work with existed entity service using command 'create:controller name -s service'.
 
-> While extending, ORM will merge schemas and other properties of Record and it's parent.
+## Inheritance and Abstract Records
+Since Spiral ORM uses static analysis, there is no real limitation how you would like to create your models, as result you can declare **abstract** Record with it's schema, validations and etc and later extend this class in your application models. This technique can be very useful while writing [modules] (/components/modules.md).
+
+> While extending, ORM will merge schemas and other properties of Record and it's parent. Attention, ORM does not provide table inheritance.
 
 ## Inspections
-While running shema update (spiral up) command, you might notice line which contains list of inspected entities and resulted rating. Such information provided by spiral entity inspector which analyses ORM and ODM schema to find unprotected or blacklisted fields, we can get more details by running inspection on selected entity:
+While running shema update (spiral up) command, you might notice text which contains list of inspected entities and resulted rating. Such information provided by spiral **Entity Inspector** which analyses ORM and ODM schemas to find unprotected or blacklisted fields, we can get more details by running inspection on selected entity:
 
 ```
 > spiral inspect:entity Database/User
