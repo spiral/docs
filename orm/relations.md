@@ -237,7 +237,7 @@ OUTER_KEY         | {record:role}_{definition:innerKey} | Outer key will be base
 CONSTRAINT        | true                                | Set constraints (foreign keys) by default.
 CONSTRAINT_ACTION | CASCADE                             | [https://en.wikipedia.org/wiki/Foreign_key](https://en.wikipedia.org/wiki/Foreign_key)
 CREATE_INDEXES    | true                                | Relation allowed to create indexes in outer table.
-NULLABLE          | false                               | Has one counted as not nullable by default .
+NULLABLE          | true                                | Has many counted as nullable by default .
 **WHERE**         | []                                  | HasMany allow us to define default WHERE statement for relation in a simplified array form.
 
 Compared to HAS_ONE relation we have only one new option we can use WHERE, such option provides us alibity to specify loading conditions for our records, let's try to use it.
@@ -322,7 +322,7 @@ OUTER_KEY         | {name:singular}_{definition:outerKey} | Inner key will be ba
 CONSTRAINT        | true                                  | Set constraints (foreign keys) by default.
 CONSTRAINT_ACTION | CASCADE                               | [https://en.wikipedia.org/wiki/Foreign_key](https://en.wikipedia.org/wiki/Foreign_key)
 CREATE_INDEXES    | true                                  | Relation allowed to create indexes in outer table.
-NULLABLE          | false                                 | Nullable by default.
+NULLABLE          | true                                  | Nullable by default.
 
 BELONGS_TO relation can be inversed, however since ORM does not know if such relation must be inversed into HAS_ONE or HAS_MANY you have to clearly state that:
 
@@ -482,13 +482,14 @@ Indexes of primary.photos:
 
 As you can see relation created compound index using inner and morph keys "parent_id" and "parent_type". Both keys can be configured using relation options:
 
-//----------------
+
 Option            | Default                               | Description
 ---               | ---                                   | ---
-INNER_KEY         | {name:singular}_{definition:outerKey}                    | Outer key is primary key of related record by default (user.**id**).
-OUTER_KEY         | {outer:primaryKey} | Inner key will be based on singular name of relation and outer key name (**author**_**id**).
+OUTER_KEY         | {outer:primaryKey}                    | By default, we are looking for primary key in our outer records, outer key must present in every outer record and be consistent (**id**).
+INNER_KEY         | {name:singular}_{definition:outerKey} | Inner key name will be created based on singular relation name and outer key namet (user.**id**).
+MORPH_KEY         | {outer:primaryKey} | Morph key created based on singular relation name and postfix _type (**parent**_**type**).
 CREATE_INDEXES    | true                                  | Relation allowed to create indexes in outer table.
-NULLABLE          | false                                 | Nullable by default.
+NULLABLE          | true                                  | Nullable by default.
 
 > No foreign keys are created for BELONGS_TO_MORPHED relation.
 
