@@ -393,6 +393,10 @@ dumP($postA->author === $postB->author);
 
 #### Belongs To Morphed
 
+
+
+> Disclaimer: polymorphic relations must be used only when you absolutelly sure about it, avoid using such relations if you unsure about their purpose.
+
 ## Many To Many
 
 #### Many To Many Morphed
