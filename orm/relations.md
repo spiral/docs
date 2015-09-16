@@ -3,6 +3,8 @@ The whole power of relational databases and ORMs comes when we are talking about
 
 At this moment spiral support following relationships: has one, has many, belongs to parent, many to many, belongs to morphed parent, many to many morphed. Let's try to walk thought every relation, it's definition and abilities.
 
+> Make sure you already read [ORM Basics](basics.md).
+
 ## Relation Definition
 Relation defintion does not require to create any additional structure or method, you are able to locate such relation directly in record schema. In most of cases you can relay on relation itself to create all required columns, indexes and foreign keys, in such case they the only thing you have to do to link 2 tables together - declare relation type and outer model.
 
