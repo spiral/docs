@@ -157,7 +157,7 @@ $user->save();
 dump($user->getErrors());
 ```
 
-Please note that you can access relation using magic property, such property will cache Profile model, meaning it will create database query one of first call. If you wish to talk to relation class closely or even create custom query (which does not have too much sense for HAS_ONE) you can access such relation using `relation()` method of Record model or magic method:
+Please note that you can access relation using magic property, such property will cache `Profile` model, meaning it will create database query one of first call. If you wish to talk to relation class closely or even create custom query (which does not have too much sense for HAS_ONE) you can access such relation using `relation()` method of Record model or magic method:
 
 ```php
 dump($user->relation('profile'));
@@ -168,6 +168,7 @@ dump($user->profile()->findOne());
 ```
 
 > Accessing relation data using magic property is very useful in combination with [eager loading] (loading.md).
+> To remember, calling relation using **property** will only give you access to pre-loaded and cached realtion data, calling relation using **method** will give you access to relation query, pivot tables and etc. Basically you have to READ using property and WRITE or use CUSTOM SELECT QUERIES using method way.
 
 ## Has Many Relation
 Has Many relation is very similar to has one, however it is not embedded to it's parent by default and it provides us ability to specify set of where conditions to link two tables together. Before we will start, let's create new Record Post: "create:record post -f id:primary -f published:bool -f title:string -f content:text"
@@ -513,10 +514,415 @@ dump($post->photo);
 > Simply declare HAS_MANY inversion to link multiple photos to morphed parent.
 
 ## Many To Many
-IN PROGRESS
+One of the most powerful ORM relations MANY_TO_MANY provides you ability to link many records from different tables using pivot table. Such relation can automatically scaffold such pivot table with or withour custom user columns. In addition to that you are able to set WHERE and WHERE_PIVOT conditions to customize your relations.
+
+To define MANY_TO_MANY relation, first of all let's create new model `Role` using CLI command "spiral create:record role -f id:primary -f name:string":
+
+```php
+class Role extends Record
+{
+    /**
+     * @var array
+     */
+    protected $fillable = [
+
+    ];
+
+    /**
+     * Entity schema.
+     *
+     * @var array
+     */
+    protected $schema = [
+        'id'        => 'primary',
+        'name'      => 'string'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'name' => [
+            'notEmpty'
+        ]
+    ];
+}
+```
+
+We can create few roles right in our controller to have some data to work with:
+
+```php
+$role = new Role();
+$role->name = 'admin';
+$role->save();
+
+$role = new Role();
+$role->name = 'moderator';
+$role->save();
+```
+
+Now we are able to define our MANY_TO_MANY relation, as before it can be done by a simple array in User model:
+
+```php
+'roles' => [self::MANY_TO_MANY => Role::class]
+```
+
+Once schema executed we will get 2 new tables - roles and pivot table "role_user_map", let's check it structure:
+
+```
+Columns of primary.role_user_map:
++---------+----------------+----------------+-----------+----------------+
+| Column: | Database Type: | Abstract Type: | PHP Type: | Default Value: |
++---------+----------------+----------------+-----------+----------------+
+| role_id | integer        | integer        | int       | ---            |
+| user_id | integer        | integer        | int       | ---            |
++---------+----------------+----------------+-----------+----------------+
+
+Indexes of primary.role_user_map:
++-----------------------------------------------------------+--------------+------------------+
+| Name:                                                     | Type:        | Columns:         |
++-----------------------------------------------------------+--------------+------------------+
+| primary_role_user_map_index_user_id_role_id_55f99aaf99ecd | UNIQUE INDEX | user_id, role_id |
++-----------------------------------------------------------+--------------+------------------+
+
+Foreign keys of primary.role_user_map:
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| Name:                                               | Column: | Foreign Table: | Foreign Column: | On Delete: | On Update: |
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| primary_role_user_map_foreign_user_id_55f99aaf99704 | user_id | primary_users  | id              | CASCADE    | CASCADE    |
+| primary_role_user_map_foreign_role_id_55f99aaf99710 | role_id | primary_roles  | id              | CASCADE    | CASCADE    |
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+```
+
+Such table will be used to link our User and Role models together. Now we can link two models together by simply calling method `link()` or ManyToMany relation in User Record. We are able to provide Role model or Role id into such method:
+
+```php
+$user = User::findByPK(1);
+
+$user->roles()->link(1);
+$user->roles()->link(Role::findByPK(2));
+```
+
+We can also provide array of ids or models into such method:
+
+```php
+$user->roles()->link([1, 2]);
+$user->roles()->link([Role::findByPK(2), Role::findByPK(1)]);
+```
+
+> Attention, you have to call `link()` method using relation method not property as it affets pivot table, not pre-loaded/cached relation data.
+
+In addition to `link()` you are able to use similar method `sync()`, the only difference that sync() method will remove every connection which was not specified in it's arguments:
+
+```php
+//Connection with Role::2 will be removed
+$user->roles()->sync(1);
+
+//Link only with Role::1 and Role::2
+$user->roles()->sync([Role::findByPK(2), Role::findByPK(1)]);
+```
+
+> Attention, calling method `link()` or `sync()` will not affect already loaded relation data!
+
+To unlink records you can user methods `unlink` or `unlinkAll`.
+
+#### Check Link Status
+To check if two models already link together we can use method `has`, method can accept both model itself, model outer key or array or models/keys.
+
+```php
+dump($user->roles()->has(1));
+dump($user->roles()->has([1, 2]));
+dump($user->roles()->has(Role::findByPK(1));
+```
+
+Such method will run query againts pivot_table (with WHERE_PIVOT conditions if specified). You can use similar method via propert based access, in this case no additional queries will be created (except loading relation data):
+
+```php
+dump($user->roles->has(1));
+dump($user->roles->has([1, 2]));
+dump($user->roles->has(Role::findByPK(1));
+```
+
+> Please note, `has` method will ignore conditions specified in WRERE option.
+
+#### Fetching Linked Models
+After linking our models togther we fetch them using either propery (pre-loaded/cached) or method way:
+
+```php
+$user = User::findByPK(1);
+
+//Cached
+foreach ($user->roles as $role) {
+    dump($role);
+}
+
+//New query every time
+foreach ($user->roles()->find(['name' => 'admin']) as $role) {
+    dump($role);
+}
+```
+
+#### ManyToMany Options
+MANY_TO_MANY relation defined a lot of options we can use, let's check them all:
+
+Option | Default | Description
+--- | --- | ---
+INNER_KEY         | {record:primaryKey}                     | Inner key of parent record will be used to fill "THOUGHT_INNER_KEY" in pivot table. (**role.id**)
+OUTER_KEY         | {outer:primaryKey}                      | We are going to use primary key of outer table to fill "THOUGHT_OUTER_KEY" in pivot table. This is technically "inner" key of outer record, we will name it "outer key" for simplicity. (**user.id**)
+THOUGHT_INNER_KEY | {record:role}_{definition:innerKey}     | Name of field where parent record inner key will be stored in pivot table, role + innerKey by default. (**role_id**).
+THOUGHT_OUTER_KEY | {outer:role}_{definition:outerKey}      | Name field where inner key of outer record (outer key) will be stored in pivot table, role + outerKey by default (**user_id**).
+CONSTRAINT        | true                                    | Relations will set constraints in pivot table (foreign keys).
+CONSTRAINT_ACTION | CASCADE                                 | [https://en.wikipedia.org/wiki/Foreign_key](https://en.wikipedia.org/wiki/Foreign_key)
+CREATE_INDEXES    | true                                    | Relation is allowed to create indexes in pivot table
+PIVOT_TABLE       | null                                    | Name of pivot table to be declared, default value is not stated as it will be generated based on roles of inner and outer records (**role_user_map**).
+CREATE_PIVOT      | true                                    | Relation allowed to create pivot table.
+PIVOT_COLUMNS     | []                                      | Additional set of columns to be added into pivot table, you can use same column definition type as you using for your records.
+PIVOT_DEFAULTS    | []                                      | Set of default values to be used for pivot table columns.
+WHERE_PIVOT       | []                                      | Where statement in a form of simplified array definition to be applied to pivot table data.
+WHERE             | []                                      | Where statement to be applied for data in outer data while loading relation data can not be inversed. Attention, WHERE conditions not used in has(), link() and sync() methods.
+
+#### Pivot Table Columns
+As you might notice from ManyToMany options, you are able to specify set of columns and their default values to be added into pivot table. Let's try to declare two columns for our purposes:
+
+```php
+'roles' => [
+    self::MANY_TO_MANY   => Role::class,
+    self::PIVOT_COLUMNS  => [
+        'time_assigned' => 'datetime',
+        'status'        => 'enum(active,disabled)'
+    ],
+    self::PIVOT_DEFAULTS => [
+        'status' => 'active'
+    ]
+]
+```
+
+> I declared such options in User model, however it will be the best to move relations like that into Role model instead and inverse it.
+
+Once schema is syncronized our pivot table will look like that:
+
+```
+Columns of primary.role_user_map:
++---------------+-----------------------------+----------------+-----------+---------------------+
+| Column:       | Database Type:              | Abstract Type: | PHP Type: | Default Value:      |
++---------------+-----------------------------+----------------+-----------+---------------------+
+| role_id       | integer                     | integer        | int       | ---                 |
+| user_id       | integer                     | integer        | int       | ---                 |
+| time_assigned | timestamp without time zone | timestamp      | string    | 1970-01-01 00:00:00 |
+| status        | character (8)               | enum           | string    | active              |
++---------------+-----------------------------+----------------+-----------+---------------------+
+
+Indexes of primary.role_user_map:
++-----------------------------------------------------------+--------------+------------------+
+| Name:                                                     | Type:        | Columns:         |
++-----------------------------------------------------------+--------------+------------------+
+| primary_role_user_map_index_user_id_role_id_55f99aaf99ecd | UNIQUE INDEX | user_id, role_id |
++-----------------------------------------------------------+--------------+------------------+
+
+Foreign keys of primary.role_user_map:
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| Name:                                               | Column: | Foreign Table: | Foreign Column: | On Delete: | On Update: |
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| primary_role_user_map_foreign_user_id_55f99aaf99704 | user_id | primary_users  | id              | CASCADE    | CASCADE    |
+| primary_role_user_map_foreign_role_id_55f99aaf99710 | role_id | primary_roles  | id              | CASCADE    | CASCADE    |
++-----------------------------------------------------+---------+----------------+-----------------+------------+------------+
+```
+
+Now, we can use additional arguments and input formats in `link` and `sync` to specify set of pivot table data:
+
+```php
+$user = User::findByPK(1);
+
+$user->roles()->sync(Role::findByPK(1), [
+    'time_assigned' => new \DateTime(),
+    'status'        => 'active'
+]);
+```
+
+We can also use shorter verion when pivot columns are associated with outer model id:
+
+```php
+$user->roles()->sync([
+    1 => [
+        'time_assigned' => new \DateTime(),
+        'status'        => 'active'
+    ]
+]);
+```
+
+Since we have our pivot columns populated we get access to them in our queries (check [eager loading] (loading.md)) or from our code using method `pivotData()`:
+
+```php
+$user = User::findByPK(1);
+
+foreach ($user->roles as $role) {
+    dump($role->getPivot()['status']);
+    dump($role);
+}
+```
+
+#### Where and Where Pivot Conditions
+Since we are able to specify pivot columns, we can also use WHERE_PIVOT conditions:
+
+```php
+'roles'           => [
+    self::MANY_TO_MANY   => Role::class,
+    self::PIVOT_COLUMNS  => [
+        'time_assigned' => 'datetime',
+        'status'        => 'enum(active,disabled)'
+    ],
+    self::PIVOT_DEFAULTS => [
+        'status' => 'active'
+    ],
+    self::WHERE_PIVOT    => [
+        '{@}.status' => 'active'
+    ]
+]
+```
+
+> Again, notice that we are using {@} as table alias.
+
+You can also specify WHERE conditions same way as for HAS_MANY, however such condition will only be used for selection, `has` method will work ignoring it.
+
+> You can still use `has` method of relation data (using property) as in this case check will me performed using already selected data.
 
 #### Many To Many Morphed
-IN PROGRESS
+As in case with BELONGS_TO you are able to define polymorphic many to many connection. To define such connection we can simply link our realtion to an **interface**. Let's try to do an example using Tags. Again, to create our Tag model "create:record tag -f id:primary -f name:string":
+
+```php
+class Tag extends Record
+{
+    /**
+     * @var array
+     */
+    protected $fillable = [
+
+    ];
+
+    /**
+     * Entity schema.
+     *
+     * @var array
+     */
+    protected $schema = [
+        'id'   => 'primary',
+        'name' => 'string'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'name' => [
+            'notEmpty'
+        ]
+    ];
+}
+```
+
+Now, we are going to link tag with `TaggableInterface` (empty) and implement such interface in User and Post models:
+
+```php
+protected $schema = [
+    'id'     => 'primary',
+    'name'   => 'string',
+    'tagged' => [
+        self::MANY_TO_MANY => TaggableInterface::class,
+        self::INVERSE      => 'tags'
+    ]
+];
+```
+
+As before, the best way to create realtion from User and Post to Tags - use INVERSE option. We can now update ORM schema and check pivot table created for our purposes, this time pivot table follow relation name so it named "tagged_map":
+
+```
+Columns of primary.tagged_map:
++-------------+------------------------+----------------+-----------+----------------+
+| Column:     | Database Type:         | Abstract Type: | PHP Type: | Default Value: |
++-------------+------------------------+----------------+-----------+----------------+
+| tag_id      | integer                | integer        | int       | ---            |
+| tagged_type | character varying (32) | string         | string    | ---            |
+| tagged_id   | integer                | integer        | int       | ---            |
++-------------+------------------------+----------------+-----------+----------------+
+
+Indexes of primary.tagged_map:
++-----------------------------------------------+--------------+--------------------------------+
+| Name:                                         | Type:        | Columns:                       |
++-----------------------------------------------+--------------+--------------------------------+
+| primary_tagged_map_index_tag_id_55f9c032ee81f | INDEX        | tag_id                         |
+| 6ec6a75196a6baf6b0c43f00b500c35b              | UNIQUE INDEX | tag_id, tagged_type, tagged_id |
++-----------------------------------------------+--------------+--------------------------------+
+
+Foreign keys of primary.tagged_map:
++-------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| Name:                                           | Column: | Foreign Table: | Foreign Column: | On Delete: | On Update: |
++-------------------------------------------------+---------+----------------+-----------------+------------+------------+
+| primary_tagged_map_foreign_tag_id_55f9c032edecc | tag_id  | primary_tags   | id              | CASCADE    | CASCADE    |
++-------------------------------------------------+---------+----------------+-----------------+------------+------------+
+```
+
+As in case with BELONGS_TO_MPRHED you can observe morphed key in our pivot table. To better understand how such table is created we can check relation options wich are very similar to MANY_TO_MANY:
+
+Option            | Default                                 | Description
+---               | ---                                     | ---
+MORPHED_ALIASES   | []                                      | Association list between tables and roles, internal.
+PIVOT_TABLE       | {name:singular}_map                     | Pivot table name will be generated based on singular relation name and _map postfix (**tagger_map**).
+INNER_KEY         | {record:primaryKey}                     | Inner key of parent record will be used to fill "THOUGHT_INNER_KEY" in pivot table. (**tag.id**)
+OUTER_KEY         | {outer:primaryKey}                      | We are going to use primary key of outer table to fill "THOUGHT_OUTER_KEY" in pivot table. This is technically "inner" key of outer record, we will name it "outer key" for simplicity. (**id**)
+MORPH_KEY         | {name:singular}_type                    | Declares what specific record pivot record linking to (**tagged_type**).
+THOUGHT_INNER_KEY | {record:role}_{definition:innerKey}     | Linking pivot table and parent record (**tag_id**).
+THOUGHT_OUTER_KEY | {outer:role}_{definition:outerKey}      | Linking pivot table and outer records (**tagged_id**).
+CONSTRAINT        | true                                    | Relations will set constraints in pivot table (foreign keys).
+CONSTRAINT_ACTION | CASCADE                                 | [https://en.wikipedia.org/wiki/Foreign_key](https://en.wikipedia.org/wiki/Foreign_key)
+CREATE_INDEXES    | true                                    | Relation is allowed to create indexes in pivot table
+CREATE_PIVOT      | true                                    | Relation allowed to create pivot table.
+PIVOT_COLUMNS     | []                                      | Additional set of columns to be added into pivot table, you can use same column definition type as you using for your records.
+PIVOT_DEFAULTS    | []                                      | Set of default values to be used for pivot table columns.
+WHERE_PIVOT       | []                                      | Where statement in a form of simplified array definition to be applied to pivot table data.
+
+ManyToMany morphed relation differs from other relations and does not provide you access to data directly, you have to specifically select what type of records you want to receive, let's check an example:
+
+```php
+$tag = new Tag();
+$tag->name = 'First';
+$tag->save();
+
+$tag->tagged()->link(User::findOne());
+$tag->tagged()->link(Post::findOne());
+```
+
+> Attention, link() method of ManyToMorphed relation can only accept one `Record` model.
+
+To get access to relation data, we should only specify what type of Records we want to receive (simply used pluralized model name, IDE must help you):
+
+```php
+$tag = Tag::findOne();
+
+
+dump($tag->tagged->users);
+dump($tag->tagged->posts);
+```
+
+Technically, ManyToMorphed relation simply aggregates set of ManyToMany relations, meaning you can always get access to inner sub relation using such code:
+
+```php
+$tag = Tag::findOne();
+
+$tag->tagged->users()->sync([1, 2, 3, 4]);
+```
+
+As before, since we declared INVERSE key we can get access to our tags using "tag" property of method in models User and Post.
+
+```php
+$user = User::findByPK(1);
+
+foreach ($user->tags as $tag) {
+    dump($tag);
+}
+```
 
 ## Other Relations
-WRITE ABOUT INTERFACES
+Spiral ORM relationsip mechanism based on 3 primary interfaces:
+* `Spiral\ORM\RelationInterface` is responsible for providing access to pre-loaded data in your Record model.
+* `Spiral\ORM\LoaderInterface` used to execute eager loading while record selection (see [eager loading](loading.md)).
+* `Spiral\ORM\RelationSchemaInterface` called while schema building and used to alter related models schemas and prepare relation data to be used by related `RelationInterface` and `LoaderInterface` clases. 
