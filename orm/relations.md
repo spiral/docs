@@ -137,7 +137,7 @@ $user->profile->biography = 'This is some biography';
 $user->save();
 ```
 
-If you wish to change user profile, you can simply assign new model to it:
+If you wish to change user profile entitelly, you can simply assign new model to it:
 
 ```php
 $user = User::findByPK(1);
