@@ -221,7 +221,10 @@ protected $schema = [
     'status'          => 'enum(active,blocked)',
     'balance'         => 'decimal(11,2)',
     'profile'         => [self::HAS_ONE => Profile::class],
-    'posts'           => [self::HAS_MANY => Post::class]
+    'posts'           => [
+        self::HAS_MANY => Post::class,
+        Post::OUTER_KEY => 'author_id'
+    ]
 ];
 ```
 
@@ -235,7 +238,6 @@ CONSTRAINT        | true                                | Set constraints (forei
 CONSTRAINT_ACTION | CASCADE                             | [https://en.wikipedia.org/wiki/Foreign_key](https://en.wikipedia.org/wiki/Foreign_key)
 CREATE_INDEXES    | true                                | Relation allowed to create indexes in outer table.
 NULLABLE          | false                               | Has one counted as not nullable by default .
-EMBEDDED_RELATION | true                                | Embedded relations are validated and saved with parent model and can accept values using setFields.
 **WHERE**         | []                                  | HasMany allow us to define default WHERE statement for relation in a simplified array form.
 
 Compared to HAS_ONE relation we have only one new option we can use WHERE, such option provides us alibity to specify loading conditions for our records, let's try to use it.
@@ -243,6 +245,7 @@ Compared to HAS_ONE relation we have only one new option we can use WHERE, such 
 ```php
 'publishedPosts'  => [
     self::HAS_MANY => Post::class,
+    Post::OUTER_KEY => 'author_id'
     Post::WHERE    => [
         '{@}.published' => true
     ]
@@ -289,6 +292,101 @@ foreach ($user->posts()->find()->where('post.published', false) as $post) {
 ```
 
 ## Belongs To Relation
+Another powerful relation you might need to use is BELONGS_TO. Such realtion is opposite to HAS_ONE and HAS_MANY by it's idea. Since in most of cases we would need both HAS_* and BELONGS_TO relations, it's the best to declare it as inversed.
+
+```php
+ 'posts' => [
+    self::HAS_MANY  => Post::class,
+    Post::OUTER_KEY => 'author_id',
+    Post::INVERSE   => 'author'
+],
+```
+
+> Relation does not support WHERE conditions.
+
+You can always declare such relation in your outer model directly (Post):
+
+```php
+'author'    => [self::BELONGS_TO => User::class]
+```
+
+Let's try to check relation options:
+
+Option            | Default                               | Description
+---               | ---                                   | ---
+INNER_KEY         | {outer:primaryKey}                    | Outer key is primary key of related record by default (user.**id**).
+OUTER_KEY         | {name:singular}_{definition:outerKey} | Inner key will be based on singular name of relation and outer key name (**author**_**id**).
+CONSTRAINT        | true                                  | Set constraints (foreign keys) by default.
+CONSTRAINT_ACTION | CASCADE                               | [https://en.wikipedia.org/wiki/Foreign_key](https://en.wikipedia.org/wiki/Foreign_key)
+CREATE_INDEXES    | true                                  | Relation allowed to create indexes in outer table.
+NULLABLE          | false                                 | Nullable by default.
+
+BELONGS_TO relation can be inversed, however since ORM does not know if such relation must be inversed into HAS_ONE or HAS_MANY you have to clearly state that:
+
+```php
+'author'    => [
+    self::BELONGS_TO => User::class,
+    User::INVERSE    => [User::HAS_MANY, 'posts']
+]
+```
+
+> You don't need to do it in our case.
+
+Once you have such relation declared in your model, you can use to assign or deassign parent to your record:
+
+```php
+public function index()
+{
+    $faker = Factory::create();
+
+    $user = User::findByPK(1);
+
+    $post = new Post();
+    $post->title = $faker->text(50);
+    $post->content = $faker->text;
+
+    //Assigning parent user
+    $post->author = $user;
+    $post->save();
+
+    dump($post->author);
+
+    //De-assigning
+    $post->author = null;
+    $post->save();
+}
+```
+
+> You can only de-assign parent if relation is nullable.
+
+#### Entity Cache
+BELONGS_TO relation has one interesting feature, available when you linking your parent based on it primary key (default behaviour). In this case relation will try to locate parent model using [entity cache] (loading.md) (if it's enabled) as result you can avoid additonal queries, let's try to demonstrate that:
+
+```php
+public function index()
+{
+    $post = Post::findOne();
+
+    //Will produce SQL query
+    dump($post->author);
+
+    foreach (Post::find() as $post) {
+        //Since we have only one user no query will be produced here
+        dump($post->author);
+    }
+}
+```
+
+Even more, entity cache will share instance of User between multiple posts, meaning:
+
+```php
+$postA = Post::findOne(['author_id' => 1]);
+$postB = Post::findOne(['author_id' => 1, 'id' => ['!=' => $postA->id]]);
+
+dumP($postA->author === $postB->author);
+```
+
+> Such ability can be very useful if you want to overwrite `save()` or `delete()` functions of your entities and touch/update parent inside them.
 
 #### Belongs To Morphed
 
