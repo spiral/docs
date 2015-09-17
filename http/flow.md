@@ -39,6 +39,15 @@ public function index(ResponseInterface $response)
 
 In addition to that, spiral allows you to return strings and arrays from your actions and enpoits (see below), such data will be written into active response body.
 
+Technically, since both response and request are available via container you can count your Controllers as middleware:
+
+```php
+public function myAction(ServerRequestInterface $request, ResponseInterface $response)
+{
+
+}
+```
+
 ## Middleware pipeline and endpoint (target)
 Before request and response can be accessed inside controllers and other application services it will be passed thought set of [Http Middlewares] (middlewares.md) which can apply custom logic to filter request/response or even halt execution if some condition met (see `CsrfFilter` middleware).
 
