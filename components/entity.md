@@ -277,7 +277,7 @@ Now our entity will alway store name in uppercase form, but you will see a lower
 > Getters are more rare than setters. Hovewer they are very useful with loosely typed databases (MySQL, SQLite etc). For example, boolean value stored in MySQL will be returned as "1" (string one). Using getters can help us to ensure it's always boolean.
 
 ## Accessors
-Spiral Entity provides additional way to manage field value - Accessors. Accessor is specified object which is responsible for manipulations with mocked value, the easiest example - timestamp value accessor which can represent numeric value as DataTime (spiral uses [Carbon] (https://github.com/briannesbitt/Carbon)).
+The Spiral Entity provides additional way to manage field value - Accessors. Accessor is specified object which is responsible for manipulations with mocked value, the easiest example - timestamp value accessor which can represent numeric value as DataTime (spiral uses [Carbon] (https://github.com/briannesbitt/Carbon)).
 
 Accessors are not really useful outside of ORM and ODM models where we can not only control value, but also tell database how this value must be stored. Hovewer, let's check base interface:
 
