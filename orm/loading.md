@@ -180,7 +180,7 @@ $selection->where(
 Such code will generate following query:
 
 ```sql
-SELECT  DISTINCT
+SELECT DISTINCT
 `user`.`id` AS `c1`, `user`.`name` AS `c2`, `user`.`email` AS `c3`, `user`.`status` AS `c4`, `user`.`balance` AS `c5`, `user`.`time_registered` AS `c6`, `user`.`time_created` AS
 `c7`, `user`.`time_updated` AS `c8`
 FROM `primary_users` AS `user`  
