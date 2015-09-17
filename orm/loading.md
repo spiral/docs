@@ -242,7 +242,7 @@ As stated before, you are able to combine pre-loading and query filtering, let's
 
 ```php
 $selection->with('roles', ['where' => ['{@}.name' => 'admin']])
-           ->load('roles');
+          ->load('roles');
 ```
 
 And again, system will produce two SQL queries indendend of each other:
