@@ -67,7 +67,7 @@ To get list of exucuted and outstanding migrations use command 'migrate:status',
 To run, rollback or replace migrations check commands 'migrate', 'migrate:rollback' and 'migrate:replay' accordingly. 
 
 ## Registering Migrations
-In some cases (usually for modules) you might pre-create migration classes. To add such migration into queue we might use migrator method `registerMigration`, component will copy class source into migrations directory and execute it when appropriate console command will be runned. Migration component can be retrieved using dependency `MigratorInterface` in your code.
+In some cases (usually for modules) you might pre-create migration classes. To add such migration into queue we can use migrator method `registerMigration`, component will copy class source into migrations directory and execute it when appropriate console command will be runned. Migration component can be retrieved using dependency `MigratorInterface` in your code.
 
 ```php
 public function index(MigratorInterface $migrator)
