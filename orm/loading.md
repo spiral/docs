@@ -194,6 +194,8 @@ FROM `primary_posts` AS `post`
 WHERE `post`.`author_id` = `user`.`id`) > 5
 ```
 
+> Avoid using sub queries if you can.
+
 ## Pre-Loading Related Data
 
 
