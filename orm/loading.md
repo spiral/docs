@@ -295,7 +295,7 @@ FROM `primary_posts` AS `d1`
 WHERE `d1`.`published` = true AND `d1`.`author_id` IN (1, 2, 3, 4, ...)
 ```
 
-After that, accessing realtion data in User model will give us only published posts.
+After that, accessing relation data in User model will give us only published posts.
 
 > Attention, it's much more reliable to define more specific realtions for such purposes like "publishedPosts".
 
