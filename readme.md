@@ -54,7 +54,7 @@
 * **Spiral ORM**
     * [Record Model and Database Scaffolding] (orm/basics.md)
     * [Relations] (orm/relations.md)
-    * Entity Cache and Eager loading
+    * ! [Entity Cache and Eager loading] (orm/loading.md)
 * Spiral ODM
     * **Models, Compositions, Aggregations**
     * JSON and Standalone Documents
