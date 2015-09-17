@@ -7,7 +7,7 @@ Make sure you already read about [ORM Basics] (basics.md) and [ORM Relations] (r
 Based on previous guide sections we know that ORM can used samy syntax as DBAL Query Builders to select records from database:
 
 ```php
-$selector = User::find()->where('user.name', '!=', '');
+$selection = User::find()->where('user.name', '!=', '');
 ```
 
 However in many cases we would need to filter our results based on values stored in related data, in this case we can use special method `with()` which can accept relation name or names to inlude outer tables into our statement:
