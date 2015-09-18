@@ -98,7 +98,7 @@ dump($this->container->configurator);
 ```
 
 ### Singletons
-There is a lot of scenarious where some instance must be preserved across application, this can be archied using `bindSingleton` method:
+There are a lot of scenarios where some instance must be preserved across application, this can be archied using the `bindSingleton` method:
 
 ```php
 $this->container->bindSingleton(ConfiguratorInterface::class, function(ContainerInterface $container) {
