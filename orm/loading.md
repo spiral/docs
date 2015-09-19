@@ -1,5 +1,5 @@
 # Entity Cache and Eager Loading
-One of them most important part of Spiral ORM is ability to use Record relations in conditional selections and pre-load such relations using eager loading.
+One of them most important part of Spiral ORM is ability to use Record relations in conditional selections and pre-load such relation data using eager loading.
 
 Make sure you already read about [ORM Basics] (basics.md) and [ORM Relations] (relations.md).
 
@@ -300,3 +300,4 @@ After that, accessing relation data in User model will give us only published po
 > Attention, it's much more reliable to define more specific realtions for such purposes like "publishedPosts".
 
 ## Entity Cache
+Spiral ORM has ability to keep loaded entities in application memory, this feature can significatly iprove application performace and handle some pre-loading aspects (see examples). Entity cache, however, will increate memory consuption.
