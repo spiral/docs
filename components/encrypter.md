@@ -1,5 +1,5 @@
 # Encrypter
-One of generic spiral components provides generic functionality to encrypt and decrypt your application data. Spiral uses so called application key which is stored in 
+One of generic spiral components provides functionality to encrypt and decrypt your application data. Spiral uses so called application key which is stored in 
 `application/config/encrypter.php` configuration file. You can always set new encrypt key value by using CLI command `app:key`.
 
 > Key will be set automatically during installation.
