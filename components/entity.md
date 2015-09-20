@@ -288,11 +288,11 @@ interface AccessorInterface extends ValueInterface, \JsonSerializable
      * Accessors creation flow is unified and must be performed without Container for performance
      * reasons.
      *
-     * @param mixed  $data
+     * @param mixed           $data
      * @param EntityInterface $parent
      * @throws AccessorExceptionInterface
      */
-    public function __construct($data, $parent);
+    public function __construct($data, EntityInterface $parent);
 
     /**
      * Must embed accessor to another parent model. Allowed to clone itself.
@@ -301,7 +301,7 @@ interface AccessorInterface extends ValueInterface, \JsonSerializable
      * @return static
      * @throws AccessorExceptionInterface
      */
-    public function embed($parent);
+    public function embed(EntityInterface $parent);
 
     /**
      * Change mocked data.
@@ -334,12 +334,12 @@ class NameAccessor implements \Spiral\Models\AccessorInterface
      */
     private $name = '';
 
-    public function __construct($data, $parent)
+    public function __construct($data, EntityInterface $parent)
     {
         $this->name = $data;
     }
 
-    public function embed($parent)
+    public function embed(EntityInterface $parent)
     {
         //We do not need to store parent in this
         //specific accessor
