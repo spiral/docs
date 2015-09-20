@@ -289,10 +289,10 @@ interface AccessorInterface extends ValueInterface, \JsonSerializable
      * reasons.
      *
      * @param mixed  $data
-     * @param object $parent
+     * @param EntityInterface $parent
      * @throws AccessorExceptionInterface
      */
-    public function __construct($data, $parent);
+    public function __construct($data, EntityInterface $parent);
 
     /**
      * Must embed accessor to another parent model. Allowed to clone itself.
