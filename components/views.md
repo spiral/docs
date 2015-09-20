@@ -114,7 +114,7 @@ Page not found: <?= $request->getUri() ?>
 Now, if we get a 404 error, our view file will be rendered. If you already got a 404 error before it might be  pre-compiled already with the original view. We can reset it by either disabling cache, flushing the content of "application/runtime/cache/views" (default cache directory) or by executing the command "views:compile" (run with -v options to get more details) which will re-compile the available view files.
 
 ## View Engines
-Spiral ViewManager would be useless if you didn't have the ability to create or mount your own templating engines and compilers. Before we do that, let's check out how spiral work swith view files and review configuration for the default spiral engine:
+Spiral ViewManager would be useless if you didn't have the ability to create or mount your own templating engines and compilers. Before we do that, let's check out how spiral works with view files and review configuration for the default spiral engine:
 
 ```php
 'engines'      => [
