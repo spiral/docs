@@ -297,11 +297,11 @@ interface AccessorInterface extends ValueInterface, \JsonSerializable
     /**
      * Must embed accessor to another parent model. Allowed to clone itself.
      *
-     * @param object $parent
+     * @param EntityInterface $parent
      * @return static
      * @throws AccessorExceptionInterface
      */
-    public function embed($parent);
+    public function embed(EntityInterface $parent);
 
     /**
      * Change mocked data.
@@ -334,12 +334,12 @@ class NameAccessor implements \Spiral\Models\AccessorInterface
      */
     private $name = '';
 
-    public function __construct($data, $parent)
+    public function __construct($data, EntityInterface $parent)
     {
         $this->name = $data;
     }
 
-    public function embed($parent)
+    public function embed(EntityInterface $parent)
     {
         //We do not need to store parent in this
         //specific accessor
