@@ -84,7 +84,7 @@ public function index(MigratorInterface $migrator)
     foreach ($migrator->getMigrations() as $migration) {
         //Status is an object with name, status, creation and execution time,
         //not string
-        dump($migration->getStatus());
+        dump($migration->getState());
     }
 }
 ```
