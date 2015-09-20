@@ -122,7 +122,7 @@ Following bindings will be available only when application executing inside `Htt
 | request   | Psr\Http\Message\ServerRequestInterface |
 | input     | Spiral\Http\InputManager                |
 
-> There is no static Facades in Spiral.
+> You can count short bindings as set of shared components since there is no static Facades in Spiral.
 
 ## Communication with DataEntities (ORM and ODM)
 In addition to generic service functionality spiral provides ability to create set of methods specific to some data entity (repository like), this can be done by providing `-e` flag
