@@ -10,7 +10,7 @@ Based on previous guide sections we know that ORM can used samy syntax as DBAL Q
 $selection = User::find()->where('user.name', '!=', '');
 ```
 
-However in many cases we would need to filter our results based on values stored in related data, in this case we can use special method `with()` which can accept relation name or names to inlude outer tables into our statement:
+However in many cases we would need to filter our results based on values stored in related data. We can try to join related manually in this case or use special method `with()` which can accept relation name or names to include outer tables into our statement:
 
 ```php
 $selection->with('profile');
@@ -28,7 +28,7 @@ INNER JOIN `primary_profiles` AS `profile`
 WHERE `user`.`name` != ''            
 ```
 
-> Since there is multiple tables involved, ORM will generate all needed table aliases.
+> Since there is multiple tables involved, ORM will generate all needed table and column aliases to prevent possible collision.
 
 You are able to include any declared relations into your statement except polymorphic relations (you are still can use inversed polymorphic relations), for example we can try to find Users who has Profile and at least one published post:
 
@@ -39,7 +39,7 @@ $selection->distinct()->with('profile')->with('publishedPosts');
 Resulted SQL will include both "profiles" and "posts" tables into our query (including relation WHERE conditions):
 
 ```sql
-SELECT  DISTINCT
+SELECT DISTINCT
 `user`.`id` AS `c1`, `user`.`name` AS `c2`, `user`.`email` AS `c3`, `user`.`status` AS `c4`, `user`.`balance` AS `c5`, `user`.`time_registered` AS `c6`, `user`.`time_created` AS
 `c7`, `user`.`time_updated` AS `c8`
 FROM `primary_users` AS `user`  
@@ -50,10 +50,10 @@ INNER JOIN `primary_posts` AS `publishedPosts`
 WHERE `user`.`name` != ''
 ```
 
-Since we using relation which can produce many results, we have to set DISTINCT flag, in opposite case we will not be able to use pagination and limiting methods.
+Since we using relation which can produce many results, we have to set **DISTINCT** flag, in opposite case we will not be able to use pagination and limiting methods.
 
 #### Sub Relations
-In addition of including Record realtion we are able to include relations which belongs to outer Record, for example let's try to find all Users who has at least one published post with at least one tag, we only have to separate our relations using dot symbol.
+In addition of including Record realation we are able to include relations which belongs to outer Record, for example let's try to find all Users who has at least one published post with at least one tag, we only have to separate our relations using dot symbol.
 
 ```php
 $selection->with('publishedPosts.tags');
@@ -62,7 +62,7 @@ $selection->with('publishedPosts.tags');
 Resulted SQL:
 
 ```sql
-SELECT  DISTINCT
+SELECT DISTINCT
 `user`.`id` AS `c1`, `user`.`name` AS `c2`, `user`.`email` AS `c3`, `user`.`status` AS `c4`, `user`.`balance` AS `c5`, `user`.`time_registered` AS `c6`, `user`.`time_created` AS
 `c7`, `user`.`time_updated` AS `c8`
 FROM `primary_users` AS `user`  
@@ -91,7 +91,7 @@ $selection->with('roles')->where('roles.name', 'admin');
 Resulted SQL:
 
 ```sql
-SELECT  DISTINCT
+SELECT DISTINCT
 `user`.`id` AS `c1`, `user`.`name` AS `c2`, `user`.`email` AS `c3`, `user`.`status` AS `c4`, `user`.`balance` AS `c5`, `user`.`time_registered` AS `c6`, `user`.`time_created` AS
 `c7`, `user`.`time_updated` AS `c8`
 FROM `primary_users` AS `user`  
@@ -104,13 +104,13 @@ WHERE `user`.`name` != '' AND `roles`.`name` = 'admin'
 
 > You can set conditions on any of joined relation. Same way we can set conditions on pivot tables.
 
-If you wish to change table alias to be used in query, you can provide additional argument into `with()` method - options, in our case we can declate joined table alias by using option "alias".
+If you wish to change table alias to be used in query, you can provide additional argument into `with()` method - options, in our case we can declare joined table alias by using option "alias".
 
 ```php
 $selection->with('roles', ['alias' => 'user_roles'])->where('user_roles.name', 'admin');
 ```
 
-Many to many relations, in addition, provides you ability to specify alias for pivot table using "pivotAlias":
+Many to many relations provide you ability to specify alias for pivot table using "pivotAlias":
 
 ```php
 $selection->with('roles', [
@@ -122,7 +122,7 @@ $selection->with('roles', [
 SQL statement will include both of them:
 
 ```sql
-SELECT  DISTINCT
+SELECT DISTINCT
 `user`.`id` AS `c1`, `user`.`name` AS `c2`, `user`.`email` AS `c3`, `user`.`status` AS `c4`, `user`.`balance` AS `c5`, `user`.`time_registered` AS `c6`, `user`.`time_created` AS
 `c7`, `user`.`time_updated` AS `c8`
 FROM `primary_users` AS `user`  
@@ -157,12 +157,12 @@ $selection->with([
 ]);
 ```
 
-Such form can be easier to remember and it has it's own benefits and compatible with data pre-loading (see `load` method next).
+Such form can be easier to remember and it has it's own benefits as it's compatible with data pre-loading (see `load` method next). Selection will automatically replace "{@}" with required table or pivot table alias.
 
 > You can use "wherePivot" for pivot conditions as well.
 
 ## Sub Queries
-In some rare scenarious, you might want to include sub query into your selection, for example if you want to find users who has more that 5 posts. Since ORM Selectors are compatible with DBAL SelectQuery builder you can use same tecnique:
+In some rare scenarious, you might want to include sub query into your selection, for example if you want to find admins who has more that 5 posts. Since ORM Selectors are compatible with DBAL SelectQuery builder you can use same technique:
 
 ```php
 $selection = User::find()->distinct()->where('user.name', '!=', '');
@@ -197,9 +197,9 @@ WHERE `post`.`author_id` = `user`.`id`) > 5
 > Avoid using sub queries if you can.
 
 ## Pre-Loading Related Data
-Spiral ORM provides you ability to solve N+1 problem using data preloading. In addition to that you are able to pre-load onle specific part of realted data using addinal where statemens.
+Spiral ORM provides you ability to solve N+1 problem using data preloading. Additionally you are able to pre-load onle specific part of realted data using where statemens.
 
-Spiral provides only one method to be used - `load`. Such method can be combined with joined table conditions without causing collisions of confisuon. Even more, load method are fully compatibly by it's syntax with `with` method so you can pre-load many relations at once, specify where conditions and pre-load nested relations using dot separator.
+To make pre-loading you will need only one method - `load`. Such method can be combined with joined table conditions without causing collisions of confusion, even more, `load` method are fully compatibly by it's syntax with `with` method so you can pre-load many relations at once, specify where conditions and pre-load nested relations using dot separator.
 
 To start, let's try to load every User and pre-load it's profile and roles:
 
@@ -234,9 +234,9 @@ INNER JOIN `primary_role_user_map` AS `d2_pivot`
 WHERE `d2_pivot`.`user_id` IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 ```
 
-As you can see, spiral produced two SQL queries, profile data was joined to user data using LEFT JOIN and roles were loaded using addional query. 
+As you can see, spiral produced two SQL queries, profile data was joined to user data using LEFT JOIN (as it was the most optimal way for HAS_ONE) and roles were loaded using addional query. 
 
-> This time table aliases are not so predictable and you are forbidden to use them in normal where conditions.
+> This time table aliases are not so predictable and you are forbidden to use them in normal where conditions. You are also able to specify alias for pre-loaded data table and even force it to be loaded using JOINS rather than separate queries (option `method` -  Loader::INLOAD, LOADER::POSTLOAD).
 
 As stated before, you are able to combine pre-loading and query filtering, let's try to select every user who has admin role and load ALL user roles:
 
@@ -245,7 +245,7 @@ $selection->with('roles', ['where' => ['{@}.name' => 'admin']])
           ->load('roles');
 ```
 
-And again, system will produce two SQL queries indendend of each other:
+And again, system will produce two SQL queries:
 
 ```sql
 SELECT
@@ -271,7 +271,7 @@ WHERE `d1_pivot`.`user_id` IN (1)
 
 > Pivot table data are pre-loaded as well.
 
-As in case with query filters we can specify conditions and pivot conditions to pre-load only specific portion of data. Let's try to load every user and all his public posts, we are going to ignore already exists relation "publishedPosts":
+As in case with query filters we can specify conditions and pivot conditions to pre-load only specific portion of data. Let's try to load every user and all his public posts (we are going to ignore already exists relation "publishedPosts"):
 
 ```php
 $selection = User::find()->where('user.name', '!=', '');
@@ -300,4 +300,42 @@ After that, accessing relation data in User model will give us only published po
 > Attention, it's much more reliable to define more specific realtions for such purposes like "publishedPosts".
 
 ## Entity Cache
-Spiral ORM has ability to keep loaded entities in application memory, this feature can significatly iprove application performace and handle some pre-loading aspects (see examples). Entity cache, however, will increate memory consuption.
+To optimize model creation Spiral ORM uses internal entity cache, such cache based on model primary key value and provides ability to pass same entity to multiple parts of your application. It can be easily demonstrated using such example:
+
+```php
+$user = User::findByPK(1);
+
+$post = new Post();
+$post->author = $user;
+$post->save();
+
+$postB = Post::findByPK($post->id);
+
+dump($post === $postB);
+dump($post->author === $postB->author);
+```
+
+Entity cache is very useful in cases when system need to process nested relations and their preloading, for example it gives you ability to talk to Record parent (BELONGS_TO) without worrying to cause new query every time. However, entity cache will increate your application memory consumption. If you wish to process many Record in "streaming" mode, you might want to disable entity cache, in this case every created Record (even with same ids) will be represented by separate instance.
+
+To configure cache globally you can check ORM configuration section 'entityCache':
+
+```php
+'entityCache'    => [
+    'enabled' => true,
+    'maxSize' => 10000
+],
+```
+
+> It's not recomended to disable entity cache globally, unless you have very specific reasons for that.
+
+If you want to disable/enable cache locally, you can use ORM method `entityCache`:
+
+```php
+//Disable entity cache
+$this->orm->entityCache(false);
+
+//Set of operations with big amount of records
+
+//Enabling cache back
+$this->orm->entityCache(true);
+```
