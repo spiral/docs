@@ -99,6 +99,8 @@ Another part of DBAL config may look confising, but it will have much more sence
 
 In given example we selected default database under name "default", which is an alias for database "primary". Aliases can be useful in situation when you might want to separate data locations/ids without creating different physical sources.
 
+> Idea behind aliases can help you to modularize development using muiltiple internal databases (which physically can be in one place) used to keep different content in different places since spiral ORM does not allow interaction between dbs. 
+
 ## Check connections
 Once you done with DBAL configuration you can check if spiral can connect to listed databases using console command "db:list", such command will provide you list of databases, their prefixes, tables and table sizes. It may looks like:
 
