@@ -8,6 +8,29 @@ orm and odm schema, loadmap, console commands and tokenizer cache; it can also b
 
 So to simply state the purpose of the `HippocampusInterface` let's say it's very expensive to store information in, and very quick to retrieve it back.
 
+```php
+interface HippocampusInterface
+{
+    /**
+     * Read data from long memory cache. Must return exacts same value as saved or null.
+     *
+     * @param string $name
+     * @param string $location Specific memory location.
+     * @return string|array|null
+     */
+    public function loadData($name, $location = null);
+
+    /**
+     * Put data to long memory cache. No inner references or closures are allowed.
+     *
+     * @param string       $name
+     * @param string|array $data
+     * @param string       $location Specific memory location.
+     */
+    public function saveData($name, $data, $location = null);
+}
+```
+
 ## Memory usage example
 Let's view an example of a service which needs to index available classes and generate set of operations based on it:
 
