@@ -86,3 +86,5 @@ public function index(MigratorInterface $migrator)
     }
 }
 ```
+
+> Since most of migration functionality are located in DBAL schemas, migrations itself are very light, you can use them for any sort of one-time operations required in your application.
