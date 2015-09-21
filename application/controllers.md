@@ -1,5 +1,5 @@
 # Controllers
-Controllers as it stated in their name are responsinble for controlling application flow, they usually can access user request, different models (services) and provid content to be sent to client using JSON arrays or view component. Basic controller example may look like (default controller action is 'index'):
+Controllers as it stated in their name are responsinble for controlling application flow, they usually can access user request, different models (services) and provide content to be sent to client using JSON arrays or view component. Basic controller example may look like (default controller action is 'index'):
 
 ```php
 class HomeController extends Controller
