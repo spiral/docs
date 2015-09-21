@@ -210,3 +210,16 @@ public function index(UserService $users)
 ```
 
 > Such class can be the best place to add custom selections like "findPublic" and etc.
+
+## Shared Services
+As in case with spiral components you can make your service be available in every other serverive using short binding, to do that simply create binding in your application bootstrap method:
+
+```php
+$this->bind('myService', MyService::class);
+```
+
+Now you are able to access such service from every controller or other service:
+
+```php
+$this->myService->someMethod();
+```
