@@ -3,6 +3,8 @@ Spiral Framework provide simple but yet powerful ORM engine you can use in every
 
 ORM model **Record** are based on the [DataEntity] (/components/entity.md) class, it will be the best to read about such component first. In addition, check this [behaviour schema] (/schemas.md) concept which used as base for ORM component.
 
+> Technically Spiral ORM is hybrid between DataMapper and ActiveRecord, in a short plans to keep same functionality but make it more universal and give ability to create your own entity models based on interface rather that parent Record class.
+
 ## Record
 Spiral ORM component does not require any configuration rather than making sure that [DBAL] (/database/overview.md) has valid database connections. The only thing you have to do to start using ORM is to create or generate desired **Record** model.
 
