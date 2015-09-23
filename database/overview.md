@@ -1,24 +1,24 @@
 # Database Abstraction Layer (DBAL)
-Spiral provides simple but yet powerful way to manage connections and operations realated to multiple database sources. DBAL mainly focuses on unification between databases rather that trying to get 100% of DBMS specific feature set, however you can always use direct queries to bypass spiral abstractions and talk to database directly.
-As this moment Spiral DBAL support MySQL, SQLite, PostgresSQL and SQLServer (Windows) databases.
+Spiral provides a simple but powerful way to manage connections and operations related to multiple database sources. The DBAL focuses mainly on unifying databases rather than trying to get 100% of the specific DBMS feature set. However, you can always use direct queries to bypass the spiral abstractions and speak directly to the database.
+At this moment, Spiral DBAL supports MySQL, SQLite, PostgresSQL and SQLServer (Windows) databases.
 
 ## Principle of Work and Abstractions Overview
-Before jumping to details let's review show list of features DBAL can provide us:
+Before jumping into the details, let's review the list of features DBAL allows us to do:
 * Abstractions for Database, Driver, Table, Column, Index and Foreign Key entities
 * Ability to read Database/Table schemas including columns, indexes, foreign keys
-* Ability to write Database/Table schemas using declarative way (including columns, foreign keys and indexes syncing)
-* Query builders for Select, Update, Delete and Insert queries with fluent syntax (we all love it)
+* Ability to write Database/Table schemas using declarative way (including columns, foreign keys and indices syncing)
+* Query builders for Select, Update, Delete and Insert queries with fluent syntax (you know, everyone loves it)
 * Ability to cache select queries using [StoreInterface] (/components/cache.md)
 * Set of generic communication interfaces (DatabaseInterface, TableInterface, Schema\ColumnInterface and etc)
 * Migrations mechanism
 
-To better understand component iehahry let's try to describe basic DBAL classes:
+To better understand component hierarchy let's describe the basic DBAL classes:
 
 Class         | Description
 ---           | ---
-Driver        | Responsible for DBMS specific set of functions and used by Databases to hide implementation specific functionality. Represent PDO connection.
-QueryCompiler | Responsible for conversion of set of query parameters (where tokens, table names and etc) into sql to be send into specific Driver.
-Database      | High level abstraction at top of Driver. Multiple databases can use same driver but different by table prefix. Databases usually linked to real database or logical portion of database (filtered by prefix).
+Driver        | Responsible for specific set of DBMS functions and used by Databases to hide specific implementation functionality. Represents PDO connection.
+QueryCompiler | Responsible for the conversion of any set of query parameters (where tokens, table names, etc) into sql to be sent to a specific Driver.
+Database      | High level abstraction at the top of Driver. Multiple databases can use same driver but different table prefix. Databases are usually linked to real database or logical portion of database (filtered by prefix).
 Table         | Represent table level abstraction with simplified access to SelectQuery associated with such table.
 QueryBuilder  | [QueryBuilder classes] (builders.md) generate set of control tokens for query compilers, this is query level abstraction.
 QueryResult   | Wraps at top of PDOStatements and provides ability to iterate though results.
@@ -99,8 +99,6 @@ Another part of DBAL config may look confising, but it will have much more sence
 
 In given example we selected default database under name "default", which is an alias for database "primary". Aliases can be useful in situation when you might want to separate data locations/ids without creating different physical sources.
 
-> Idea behind aliases can help you to modularize development using muiltiple internal databases (which physically can be in one place) used to keep different content in different places since spiral ORM does not allow interaction between dbs. 
-
 ## Check connections
 Once you done with DBAL configuration you can check if spiral can connect to listed databases using console command "db:list", such command will provide you list of databases, their prefixes, tables and table sizes. It may looks like:
 
@@ -159,38 +157,3 @@ public function index(Database $database, Database $primary, Database $slave)
 ```
 
 > As result we can add little bit of magic to our code but make it much more readable. As you can see aliases playing a big role here due you can use then to create different variable names based on context.
-
-## Queries
-To run query against selected database or table we can use direct database methods: `query` and `execute`.
-
-```php
-public function index(Database $database)
-{
-    //Database type: MySQL, Postgres, SQLite, SQLServer
-    dump($database->getType());
-    
-    //Method will return QueryResult (row iterator)
-    dump($database->query('select * from primary_test'));
-    
-    //Result will be cached for 10 seconds
-    dump($database->cached(10, 'select * from primary_test'));
-    
-    //Method to return count of affected rows
-    dump($database->execute('delete from primary_test where id > ?', [1000]));
-}
-```
-
-> You must to remember to write your SQL for specific database type, try [Query Builders] (builders.md) to create database independent queries. In addiiton to that, direct database queries must be specified with database prefix.
-
-## Transactions
-Database abstraction provides simplistic way to manage your transactions using closure function.
-
-```php
-$database->transaction(function (Database $database) {
-    $database->execute('delete from primary_test where id > ?', [1000]);
-});
-```
-
-Such transaction will be automatically commited if every query resulted with success and rolled back in case of error or exception inside closure.
-
-> If you wish to have more control try to check methods available in database driver: `$database->driver()`.
