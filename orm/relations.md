@@ -147,7 +147,7 @@ $user->profile = (new Profile())->setBiography('New biography.');
 $user->save();
 ```
 
-> Attention, previously assigned Profile "user_id" key will be set as `null`.
+> Attention, you have to deassociate previous Record before assigning new one!
 
 Since Profile stated as embedded model, it will be also be validated with parent User, we can demonstrate that using code:
 
