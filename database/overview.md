@@ -21,15 +21,15 @@ QueryCompiler | Responsible for the conversion of any set of query parameters (w
 Database      | High level abstraction at the top of Driver. Multiple databases can use same driver but different table prefix. Databases are usually linked to real database or logical portion of database (filtered by prefix).
 Table         | Represent table level abstraction with simplified access to SelectQuery associated with such table.
 QueryBuilder  | [QueryBuilder classes] (builders.md) generate set of control tokens for query compilers, this is query level abstraction.
-QueryResult   | Wraps at top of PDOStatements and provides ability to iterate though results.
+QueryResult   | Wraps at top of PDOStatements and provides the ability to iterate through results.
 
-Also you can find set of classes and interfaces used to describe and declare desired table schema, check schema [reading] (reading.md) and [writing] (syncing.md) classes.
+Also you can find a set of classes and interfaces used to describe and declare desired table schema. Check the schema [reading] (reading.md) and [writing] (syncing.md) classes.
 
 ## Configuring
-Spiral Database Component store it's configuration in `application/config/database.php` file by default. We can alter such file to specify needed connections, databases and database aliases.
+The Spiral Database Component stores it's configuration in the `application/config/database.php` file by default. We can alter this file to specify any needed connections, databases and database aliases.
 
 ### Connection
-Before creating our first database we have to specify database connection. Connection usually described using PDO DNS, driver class related to specific DBMS and other options. Let's try to review examples of default connections to all 4 spiral databases:
+Before creating our first database, we have to specify the database connection. The Connection is usually described using PDO DNS, the driver class related to a specific DBMS or some other options. Let's review examples of default connections to all 4 Spiral databases:
 
 ```php
 'mysql'     => [
@@ -66,12 +66,12 @@ Before creating our first database we have to specify database connection. Conne
 ]
 ```
 
-As you can see all connections has specified name and self explanatory set of options. Please note that "profiling" will enable query logging and benchmarking on connection level.
+As you can see, all connections have a specified name and self explanatory set of options. Please note that "profiling" will enable query logging and benchmarking on connection level.
 
 > Options key "options" (yep) contains PDO specific connection options.
 
 ### Databases
-Once you have your connections set up, you can create set of databases to be reading and writing data using such connection, every database must have unique name and be associated with one of connections (you can associate multiple databases with one connection). Additionally you can specify table prefix on database level, such thing will automatically modify table names in queries generated using query builders and provide you ability to create logical databases using one physical source.
+Once you have your connections set up, you can create a set of databases to be reading and writing data using such connection. Every database must have a unique name and be associated with one of the connections (you can associate multiple databases with one connection). Additionally, you can specify table prefix on the database level. This  will automatically modify the table names in the queries generated using query builders and lets you create a logical database using one physical source.
 
 ```php
 'primary'     => [
@@ -85,7 +85,7 @@ Once you have your connections set up, you can create set of databases to be rea
 ```
 
 ### Aliases
-Another part of DBAL config may look confising, but it will have much more sence once we will jump to examples. Such part are responsible for specifying default database name and set of name aliases which can point to itself or to specific database name, let's try to view an example:
+This area is responsible for specifying the default database name and the set of name aliases which can point to itself or to specific database name. Let's check out the example below:
 
 ```php
 'default'     => 'default',
@@ -97,10 +97,10 @@ Another part of DBAL config may look confising, but it will have much more sence
 ],
 ```
 
-In given example we selected default database under name "default", which is an alias for database "primary". Aliases can be useful in situation when you might want to separate data locations/ids without creating different physical sources.
+In the example we showed, we named the the default database "default", which is an alias for the database "primary". Aliases can be useful in situation where you might want to separate data locations/ids without creating different physical sources.
 
 ## Check connections
-Once you done with DBAL configuration you can check if spiral can connect to listed databases using console command "db:list", such command will provide you list of databases, their prefixes, tables and table sizes. It may looks like:
+Once you're done with the DBAL configuration you can make sure that spiral can connect to your listed databases using the console command "db:list". This command will provide you list of databases, their prefixes, tables and table sizes. It could look like:
 
 ```
 +------------+-----------+----------+------------+-----------+------------------+----------------+
@@ -123,7 +123,7 @@ Once you done with DBAL configuration you can check if spiral can connect to lis
 ```
 
 ## Access the Database
-After we made sure that spiral can talk to our databases we can start working with our component, first step will be to receive an instance of Database. We can achieve this goal by getting instance of `DatabasesInterface` or `DatabaseManager` (provider) first. Database component can also be retrived using short binding "dbal" (avaiable in application services including controllers and commands).
+After we make sure that Spiral can talk to our databases, we can start working with our component. The first step will be to get an instance of Database. We can do this first by getting an instance of `DatabasesInterface` or `DatabaseManager` (provider). Database component can also be retrieved using the short binding "dbal" (avaiable in application services including controllers and commands).
 
 ```php
 public function index(DatabaseManager $dbal)
@@ -143,7 +143,7 @@ public function index(DatabaseManager $dbal)
 ```
 
 ### Controllable Injections
-You might remember one specific feature of [Spiral IoC container] (/framework/container.md) - controllable injections. Such feature provides ability to resolve dependency in constructor and method injections based on context parameter. Database component support such feature and uses parameter name to resolve database. This ability can simplify our code a lot and makes possible to write controller actions (or init methods, or constructors) like:
+You might remember the one specific feature of [Spiral IoC container] (/framework/container.md) - controllable injections. This feature lets us resolve the dependency in constructor and method injections based on a context parameter. The Database component supports this feature and uses the parameter name to resolve the database. This simplifies our code and makes it possible to write controller actions (or init methods, or constructors) such as:
 
 ```php
 public function index(Database $database, Database $primary, Database $slave)
@@ -156,4 +156,4 @@ public function index(Database $database, Database $primary, Database $slave)
 }
 ```
 
-> As result we can add little bit of magic to our code but make it much more readable. As you can see aliases playing a big role here due you can use then to create different variable names based on context.
+> As result we can add a touch of magic to our code but make it much more readable. As you can see, aliases play a big role here because you can use them to create different variable names based on context.
