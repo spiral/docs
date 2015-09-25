@@ -18,7 +18,7 @@ class HomeController extends Controller
 your controllers.
 
 ## Dependency Injection
-Controllers with definatelly need some extrernal classes like views, services and etc to operate. Due every `Controller` is instance of `Service` you can use `init`
+Controllers with definitely need some extrernal classes like views, services and etc to operate. Due every `Controller` is instance of `Service` you can use `init`
 method and short bindings for core components.
 
 ```php
