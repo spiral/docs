@@ -66,7 +66,7 @@ class OtherService extends Service implements SingletonInterface
     /**
      * @param SomeService $some
      */
-    public function init(SomeService $some)
+    protected function init(SomeService $some)
     {
         $this->some = $some;
     }
@@ -97,10 +97,10 @@ Check this list of default component bindings:
 | ---       | ---                                     |
 | core      | Spiral\Core\Core or Application         |
 | loader    | Spiral\Core\Components\Loader           |
-| modules   |  Spiral\Modules\ModuleManager           |
+| modules   | Spiral\Modules\ModuleManager           |
 | debugger  | Spiral\Debug\Debugger                   |
 | console   | Spiral\Console\ConsoleDispatcher        |
-| http      |   Spiral\Http\HttpDispatcher            |
+| http      | Spiral\Http\HttpDispatcher            |
 | cache     | Spiral\Cache\CacheProvider              |
 | dbal      | Spiral\Database\DatabaseProvider        |
 | encrypter | 'Spiral\Encrypter\Encrypter             |
