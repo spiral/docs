@@ -30,7 +30,8 @@ class Moderator extends User
 ```
 
 ```php
-class Session extends SimpleDocument
+//To be embedded
+class Session extends DocumentEntity
 {
     protected $schema = [
         'timeCreated'  => 'MongoDate',
@@ -41,7 +42,8 @@ class Session extends SimpleDocument
 ```
 
 ```php
-class Profile extends SimpleDocument
+//To be embedded
+class Profile extends DocumentEntity
 {
     protected $schema = [
         'biography' => 'string',
