@@ -209,7 +209,7 @@ public function index(UserService $users)
 }
 ```
 
-> Such class can be the best place to add custom selections like "findPublic" and etc.
+> Such class can be the best place to add custom selections like "findPublic" and etc. You can also rename it into "UserRepository" if you wish to keep it for database operations only.
 
 ## Shared Services
 As in case with spiral components you can make your service be available in every other service using short binding, to do that simply create binding in your application bootstrap method:
