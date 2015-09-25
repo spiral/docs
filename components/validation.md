@@ -227,7 +227,7 @@ public function validate($value, $compare)
 }
 ```
 
-> As you can see, we declared our method as non static. This is because Validator will resolve the rule class using container. This allows us to create specialized services to perform logical validations (for example ensure that outer record exists by it's ID) and much more.
+> As you can see, we declared our method as non static. This is because Validator will resolve the rule class using container. This allows us to create specialized services to perform logical validations (for example ensure that outer record exists by it's ID) and much more (technically you can use something like that UserService::findByPK to validate foreign key value).
 
 ### Rule aliases
 Default Spiral Validation provides the ability to define a set of aliases associated with different validation functions. These aliases are defined in the `application/config/validation.php` file and sent to validator using `ValidationProvider` dependency. Let's check the list of available validation aliases:
