@@ -138,7 +138,8 @@ If you want to include multiple relations into your selection you can use array 
 
 ```php
 $selection->with([
-    'roles' => [
+    'profile' => [],
+    'roles'   => [
         'alias'      => 'user_roles',
         'pivotAlias' => 'roles_map'
     ]
