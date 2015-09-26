@@ -4,7 +4,7 @@ One of them most important part of Spiral ORM is ability to use Record relations
 Make sure you already read about [ORM Basics] (basics.md) and [ORM Relations] (relations.md).
 
 ## Join Relation table into selection
-Based on previous guide sections we know that ORM can used samy syntax as DBAL Query Builders to select records from database:
+Based on previous guide sections we know that ORM can used same syntax as DBAL Query Builders to select records from database:
 
 ```php
 $selection = User::find()->where('user.name', '!=', '');
