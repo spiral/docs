@@ -1,12 +1,12 @@
 # Templater Engine
-The Spiral Templater engine is the default view processor and provides very simple and powerful ways to manage your website templates using html tags. Such way provides very flexible mechanism to combine multiple teams on projects and gives more power into hands on frontend/html developers to create layouts and pages.
+The Spiral Templater engine is the default view processor and provides very simple and powerful ways to manage your website templates using html tags. This provides a very flexible mechanism to add multiple teams to projects and places more power into the hands of your frontend/html developers to create layouts and pages.
 
-> Spiral Templater is not intended to create or replace basic control structures in your templates, if you wish to replace php as you primary templating language - you can create custom view processor and define your own language (using Twig, Smarty and etc).
+> Spiral Templater isn't intended to create or replace basic control structures in your templates. If you want to replace PHP as you primary templating language - you can create a custom view processor and define your own language (for example using Twig, Smarty etc).
 
-This specific section of documentation is mainly focused on template inheritance in your projects, if you wish to read about "virtual tags" and the ability to include one template into another read [Extended Templater usage] (expert.md). Make sure that you have already read about [using views] (/components/views.md) in your code.
+This section of the documentation focuses mainly on the template inheritance in your projects. If you want to read about "virtual tags" and the ability to include one template into another, please read [Extended Templater usage] (expert.md). Make sure to read about [using views] (/components/views.md) in your code.
 
 ## Template Inheritance
-Before we start using Templater engine let's imagine the classical situation when we have two very similar pages on your website, for example it can be the about-us and contact form. 
+Before we start using the Templater engine, let's imagine the common situation where we have two very similar pages on your website. For example an about-us page and a contact us page with form. 
 
 About Us:
 
@@ -61,7 +61,7 @@ Contact form:
 </html>
 ```
 
-As you can notice, both templates use a very similar layout which differs only in it's title and page content. If we wish to simplify page creation we can try to move the header and footer sections of our layouts into separate views and modify our code like so:
+As you see, both templates use a very similar layout that are only different in the title and content on page. If we want to simplify the page creation, we can try to move the header and footer sections of our layouts into separate views and modify our code like this:
 
 ```php
 <?=$this->container->views->render('header',['title'=>'About Us'])?>
@@ -69,7 +69,7 @@ As you can notice, both templates use a very similar layout which differs only i
 <?=$this->container->views->render('footer')?>
 ```
 
-However, this technique has many disadvantages, for example we can easly leave some tag unclosed and your application must spend resources rendering both the footer and header every time your page is loaded. To prevent such problems we can create one universal template for our pages and extend it in our views, let's do that and place the view file into "application/views/layouts/basic.php":
+However, this technique has a lot of disadvantages. For example, we can easily leave a tag unclosed and your application may spend extra resources rendering both the footer and header every time your page is loaded. To prevent such problems we can create one universal template for our pages and extend it in our views, let's do that and place the view file into "application/views/layouts/basic.php":
 
 ```html
 <!DOCTYPE html>
