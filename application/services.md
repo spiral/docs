@@ -78,6 +78,8 @@ class OtherService extends Service implements SingletonInterface
 }
 ```
 
+> If you don't like using `init` method, you can simply overwrite class constructor, but in such case you have to always pass container instance into parent constructor, in other scenario you will not be able to use shared components.
+
 ## Accessing core components
 In many cases your services might want to talk to framework components, for example databases, translator and etc. You can still request such components as init method
 dependencies, hovewer spiral provides set of short bindings which can be resolved using short name (for example we can get instance of `HttpDispatcher` using `http` binding), such resolution can be performed via magic `__get` method.
