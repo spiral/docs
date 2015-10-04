@@ -3,6 +3,7 @@
     *  [**Installation and Requiments**] (start/installation.md)
     *  [Configuration]  (start/configuration.md)
 * Framework Overview
+    * The Design 
     * [**IoC Container**] (framework/container.md)
     * [Application Memory (&#1000;)] (framework/memory.md)
     * [Framework Interfaces] (framework/interfaces.md)
