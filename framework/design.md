@@ -10,6 +10,8 @@ Usually such approach is implemented using component interfaces which can repres
 
 Generally speaking, functionality of other component must be requested using methods `get` and `create` of container.
 
+> Check classes located in namespace `Spiral\Core` to find spiral components foundation.
+
 ## Memory
 
 
