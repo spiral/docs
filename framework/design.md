@@ -6,7 +6,7 @@ One of the primary spiral parts is it's container, such module used as glue betw
 
 In general case this means that no component is allowed to request and instance or functionality of other component bypassing container (if you see such violation inside spiral components please open an issue).
 
-Usually such approach is implemented using component interfaces which can represent generic component functionality, in some cases, especially when one component is purelly based on functionality of other component (for example ORM and DBAL) commucation is allowed using lower level abstractitions or even specific classes since mapping every possible functionality into interfaces will create implementation constraints and take long time.
+Usually such approach is implemented using component interfaces which can represent generic component functionality, in some cases, especially when one component is purelly based on functionality of other component (for example ORM and DBAL) commucation is allowed using lower level abstractitions or even specific classes since mapping every possible functionality into interfaces might create implementation constraints (aka overcomplexity) or take long time.
 
 Generally speaking, functionality of other component must be requested using methods `get` and `create` of container.
 
