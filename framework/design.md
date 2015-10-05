@@ -2,7 +2,7 @@
 Spiral framework use well known design approach used to develop it's components and share them to your application in a modular way.
 
 ## Container and Components
-One of the primary spiral parts is it's container, such module used as glue between various components and provides ability to communicate between modules without linking source code to specific implementation.
+One of the primary spiral parts is it's container, such module used as glue between various modules and provides ability to communicate between components without linking source code to specific implementation.
 
 In general case this means that no component is allowed to request and instance or service of other component bypassing container.
 
