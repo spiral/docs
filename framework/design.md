@@ -4,7 +4,7 @@ Spiral framework use well known design approach used to develop it's components 
 ## Container and Components
 One of the primary spiral parts is it's container, such module used as glue between various modules and provides ability to communicate between components without linking source code to a specific implementation.
 
-In general case this means that no component is allowed to request and instance or service of other component bypassing container.
+In general case this means that no component is allowed to request and instance or functionality of other component bypassing container (if you see such violations inside spiral components please open an issue).
 
 Usually such approach is implemented using component interfaces which can represent generic component functionality, in some cases, especially when one component is purelly based on functionality of other component (for example ORM and DBAL) commucation is allowed using high level abstractictions or specific classes since mapping every possible functionality into interfaces will create implementation constraints and take long time.
 
