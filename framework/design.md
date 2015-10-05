@@ -13,6 +13,13 @@ Generally speaking, functionality of other component must be requested using met
 > Check classes located in namespace `Spiral\Core` to find spiral components foundation.
 
 ## Memory
+[Application memory](memory.md) component or `HippocampusInterface` does not dictas internal component design but provides ability to split heavy analysis/compiation code from it's runtime part. Such component used to cache configs, support ORM and ODM schema behavious and etc.
 
+Technically, application memory provides support for [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming).
 
 ## Application Design
+Application design is not nessesary must follow framework design and can create it's own communication techniques between it's pieces (for example Singleton class which shares information between application business logic pieces), however default application bundle provides following ideas:
+  * Separation of view and controller logic using ViewManager and Templater component 
+  * Separation of database logic and business logic using Services and DataEntities
+  * Light controllers and hight testability using Services to keep abstract application logic
+  * Segregation between application core and flow dispatcher (i.e. HttpDispatcher and ConsoleDispatcher)
