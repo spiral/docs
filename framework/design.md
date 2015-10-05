@@ -1,5 +1,5 @@
 # The Desing
-Spiral framework provides specific design approach used to develop it's components and share them to your application.
+Spiral framework use well known design approach used to develop it's components and share them to your application in a modular way.
 
 ## Container and Components
 One of the primary spiral part is it's container, such module used as glue between various components and provides ability to communicate between modules without linking source code to specific implementation.
