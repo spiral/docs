@@ -41,7 +41,7 @@ public function __construct(ContainerInterface $container)
 Technically, application memory provides support for [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming).
 
 ## Application Design
-Application design must not nessesary follow framework design and can create it's own communication techniques between it's business ogic (for example Singleton class which shares some information, user session and etc.), however default application bundle provides following ideas:
+Application design must not nessesary follow framework design and can create it's own communication techniques between it's business ogic (for example Singleton class which shares some information, user session and etc.), however default application bundle provides following well known concepts:
   * Separation of view and controller logic using ViewManager and Templater component 
   * Separation of database logic and business logic using Services and DataEntities
   * Light controllers and hight testability using Services to keep abstract application logic
