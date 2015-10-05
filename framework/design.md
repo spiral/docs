@@ -8,9 +8,32 @@ In general case this means that no component is allowed to request and instance 
 
 Usually such approach is implemented using component interfaces which can represent generic component functionality, in some cases, especially when one component is purelly based on functionality of other component (for example ORM and DBAL) commucation is allowed using lower level abstractitions or even specific classes since mapping every possible functionality into interfaces might create implementation constraints (aka overcomplexity) or take long time.
 
-Generally speaking, functionality of other component must be requested using methods `get` and `create` of container.
+Practically speaking, functionality of other component must be requested using methods `get` and `create` of container.
 
 > Check classes located in namespace `Spiral\Core` to find spiral components foundation.
+
+One of the side effects of such approach is forbiddance of using non implementation related component aliases as it will create hidden dependencies and require non obvious configuration.
+
+Example:
+
+```php
+//Such approach is allowed
+public function __construct(HttpDispatcher $http)
+{
+   //...
+   $this->component = $container->get(SomeInterface::class);
+}
+```
+
+```php
+//Such appoach is forbidden in core components but allowed
+public function __construct(ContainerInterface $container)
+{
+    $this->http = $container->get('http');
+}
+```
+
+> You can use component aliases and short binding in your application design to speed up development or switch to the same model as core components to get more unification.
 
 ## Memory
 [Application memory](memory.md) component or `HippocampusInterface` does not dictas internal component design but provides ability to split heavy analysis/compiation code from it's runtime part. Such component used to cache configs, support ORM and ODM schema behavious and etc.
