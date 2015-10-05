@@ -44,5 +44,5 @@ Technically, application memory provides support for [Metaprogramming](https://e
 Application design must not nessesary follow framework design and can create it's own communication techniques between it's business ogic (for example Singleton class which shares some information, user session and etc.), however default application bundle provides following well known concepts:
   * Separation of view and controller logic using ViewManager and Templater component 
   * Separation of database logic and business logic using Services and DataEntities
-  * Light controllers and hight testability using Services to keep abstract application logic
+  * Light controllers and hight testability using Services to keep generic application logic
   * Segregation between application core and flow dispatcher (i.e. HttpDispatcher and ConsoleDispatcher)
