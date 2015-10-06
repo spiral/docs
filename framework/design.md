@@ -36,7 +36,7 @@ public function __construct(ContainerInterface $container)
 > You can use component aliases and short binding in your application design to speed up development or switch to the same model as core components to get more unification.
 
 ## Memory
-[Application memory](memory.md) component or `HippocampusInterface` does not dictas internal component design but provides ability to split heavy analysis/compiation code from it's runtime part. Such component used to cache configs, support ORM and ODM schema behavious and etc.
+[Application memory](memory.md) component or `HippocampusInterface` does not dictates internal component design but provides ability to split heavy analysis/compiation code from it's runtime part. Such component used to cache configs, support ORM and ODM schema behavious and etc.
 
 Technically, application memory provides support for [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming).
 
