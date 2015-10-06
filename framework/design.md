@@ -26,7 +26,7 @@ public function __construct(HttpDispatcher $http)
 ```
 
 ```php
-//Such appoach is forbidden in core components but allowed
+//Such appoach is forbidden in core components
 public function __construct(ContainerInterface $container)
 {
     $this->http = $container->get('http');
