@@ -131,7 +131,7 @@ We can use and import this element into our demo view the same way we did for th
 The templater will pass the source declared between the opening and closing widget tags as **context** block. This feature can be very useful in a few different cases. You can freely use other imports inside this use case.
 
 ## Dynamic attributes (hard)
-One of most useful part of imports that can help us is to mock existed elements, let's say that our website has universal form element definition which includes input, input label and some wrapper classes. If we don't want to write all this wrappers every time we can locate our input code inside widget, let's try to do that (i'm not an html expert):
+One of most useful part of imports is that it can help us mocking up existing elements. Let's say that our website has a universal form element definition which includes some input, input label and some wrapper classes. If we don't want to write each of these wrappers every time, we can locate our input code inside our widget. Let's try this (done by an non-html expert):
 
 ```html
 <div class="form-input">
@@ -142,7 +142,7 @@ One of most useful part of imports that can help us is to mock existed elements,
 </div>
 ```
 
-Now we can use such input tag exact same way as normal inputs, except we don't need to write all wrappers:
+Now we can use this input tag exactly the same way as normal inputs, except we don't need to write all the wrappers:
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
@@ -159,7 +159,7 @@ Now we can use such input tag exact same way as normal inputs, except we don't n
 </block:content>
 ```
 
-In following situation we one little problem, we are not allowed to add more input attributes without specifically listing them in our element, for example if we wish to add inline style for our input - we have to previously modify our widget. This problem can be solved using attribute exporters:
+In following situation we have a tiny problem. We aren't allowed to add any more input attributes without specifically listing them in our element. For example, if we wish to add an inline style for our input - we have to previously modify our widget. This problem can be solved using attribute exporters:
 
 ```html
 <div class="form-input">
@@ -198,7 +198,7 @@ We can use "node:attributes" in multiple places of our widget and separate their
 </div>
 ```
 
-Now we created ability to pass attributes to our widget using prefix "label-", such attributes will appear in our label div.
+Now we have created the ability to pass attributes to our widget using prefix "label-". These attributes will appear in our label div.
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
@@ -215,26 +215,26 @@ Now we created ability to pass attributes to our widget using prefix "label-", s
 </block:content>
 ```
 
-You can use other parameters for node:attribues, for example `node:attributes="include:id,name;exclude:placeholder"` will fetch only id and name, placeholder value will not be included into such export even if it was provided (we can put in some other place using `node:attributes="include:placeholder"`).
+You can use other parameters for node:attribues. For example `node:attributes="include:id,name;exclude:placeholder"` will fetch only id and name. The placeholder value will not be included into such export even if it was provided (we can add in some other place using `node:attributes="include:placeholder"`).
 
 ## Importing multiple virtual tags at once
-In many cases you might want to include multiple widgets under same name or namespaces rather that doing it for each element. Spiral provides few alternative syntaxes to do that.
+In many cases, you might want to include multiple widgets under the same name or namespaces rather that doing it for each element. Spiral provides a few alternative syntaxes to do that.
 
 ### Create wigdet namespace
-We already imported our element under name "form:input", however spiral provides to import every folder element under desired namespace:
+We already imported our element under the name "form:input". However, Spiral lets us import every folder element under a desired namespace:
 
 ```html
 <use path="elements" namespace="form"/>
 ```
 
-You can also import set of elements from desired namespace:
+You can also import a set of elements from a desired namespace:
 
 ```html
 <use path="default:elements" namespace="form"/>
 ```
 
 ### Disable import
-If for some reason you would to disable element import we can declare "stop" use.
+If for some reason you would like to disable element import we can declare a "stop" use.
 
 ```html
 <use stop="form:input"/>
@@ -243,14 +243,14 @@ If for some reason you would to disable element import we can declare "stop" use
 Now, every `form:input` tag will be preserved as it is.
 
 ### Bundle import
-There is few scenarious, when you might want to create many different elements (for example in separate module), if your module decalres multiple elements namespaces importing such namespaces one by one can be not very optimal, spiral provides you ability to move desired imports into separate view file called bundle, let's create such file in "elements/bundle" view:
+There are a few scenarious where you may want to create many different elements (for example in separate module). If your module declares multiple element namespaces, importing such namespaces one by one isn't very optimal. Spiral provides you the ability to move the desired imports into a separate view file called bundle. Let's create a file in "elements/bundle" view:
 
 ```html
 <use path="default:elements" namespace="form"/>
 <use path="default:elements/input" as="form.input"/>
 ```
 
-As you can see you can conbine multiple use tags in one file, such file will never be included into your template so you can even leave comments for your imports:
+You can now combine multiple use tags in one file. This file won't be included in your template, so you can even leave comments for your imports:
 
 ```html
 <!--This is default namespace for form elements.-->
@@ -260,26 +260,26 @@ As you can see you can conbine multiple use tags in one file, such file will nev
 <use path="default:elements/input" as="form.input"/>
 ```
 
-To import bundle to your view or layout simple write:
+To import your bundle into your view or layout, simply write:
 
 ```html
 <use bundle="elements/bundle"/>
 ```
 
-Now all elements will be automatically imported based on desired namespaces.
+Now all the elements will be automatically imported based on the desired namespaces.
 
-> Do not forget that you can declare use tags in parent view layout, it will inherit all parent uses.
+> Don't forget that you can declare use tags in parent view layout. They will inherit all parent uses.
 
 ## Overwriting default html tags (danger!)
-Information in this section is for **educational purposes only**, do not ovewrite default html tags as might cause any set of unpredicable problems in future.
+Information in this section is for **educational purposes only**. Do not ovewrite the default HTML tags as this might cause any set of unpredicable scenarios in the future.
 
-As you already found, we can create your widgets using dynamic attributes and context block to make them behave as normal html tags, as result combining this knowlege with alis based import you can overwrite existed html tag (but you should't). Let's try to create our tag to replace "a" element ("elements/a.php" view).
+As you already seen, we can create your widgets using dynamic attributes and context block to make them behave as normal HTML tags. As a result, combining this knowledge with an alias based import, you can overwrite an existing HTML tag (but you should't). Let's try to create our tag to replace "a" element ("elements/a.php" view).
 
 ```html
 <a class="custom-class ${class}" node:attributes>${context}</a>
 ```
 
-Now we can use such tag in our view:
+Now we can use this tag in our view:
 
 ```html
 <use path="elements/a" as="a"/>
@@ -287,12 +287,12 @@ Now we can use such tag in our view:
 Some simple text. <a href="/some-url">link</a>.
 ```
 
-As result default link will be replaced with our widged and forced class value.
+As result, the default link will be replaced with our widget and forced class value.
 
-> The only real use for such things if when you creating views for your emails due you have to embedd styles inline. But remember: with great power comes great responsibility.
+> The only real use for this is if you are creating views for your emails and you have to embedd styles inline. But remember: with great power comes great responsibility.
 
 ## Inheritance
-You can freely inheric one widget from another same way as you can inherit layouts. Let's try to modify existed input widget and create new widget for text area based on it:
+You can freely inherit one widget from another much the same way as you can inherit layouts. Let's try to modify existing input widget and create a new widget for a text area based on it:
 
 ```html
 <div class="form-input">
@@ -305,7 +305,7 @@ You can freely inheric one widget from another same way as you can inherit layou
 </div>
 ```
 
-Now we can create view "elements/textarea" and inheir our input:
+Now we can create a view "elements/textarea" and inherit our input:
 
 ```html
 <extends:elements.input/>
