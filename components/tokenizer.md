@@ -36,17 +36,16 @@ interface TokenizerInterface
      *      'abstract' => 'ABSTRACT_BOOL'
      * ]
      *
-     * @param mixed  $parent    Class, interface or trait parent. By default - null (all classes).
-     *                          Parent (class) will also be included to classes list as one of
-     *                          results.
-     * @param string $namespace Only classes in this namespace will be retrieved, empty by default
-     *                          (all namespaces).
-     * @param string $postfix   Only classes with such postfix will be analyzed, empty by default.
+     * @param mixed $parent  Class, interface or trait parent. By default - null (all classes).
+     *                       Parent (class) will also be included to classes list as one of
+     *                       results.
      * @return array
      */
-    public function getClasses($parent = null, $namespace = '', $postfix = '');
+    public function getClasses($parent = null);
 }
 ```
+
+> In spiral such interface implemented by class `Spiral\Tokenizer\Tokenizer` which provides few additional features including ability to find only classes from specific namespace and specific postfix in `getClasses` method.
 
 As you see the most important part of Tokenizer component located in getClasses method. Let's try to view some examples (as in other cases we can use short core binding "tokenizer" in our Controllers and Services):
 
