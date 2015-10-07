@@ -1,20 +1,20 @@
-# The Desing
-Spiral framework use well known design approach used to develop it's components and share them to your application in a modular way.
+# The Design
+The Spiral framework uses well-known design techniques to develop it's components and share them to your application in a modular way.
 
 ## Container and Components
-One of the primary spiral parts is it's container, such module used as glue between various modules and provides ability to communicate between components without linking source code to a specific implementation.
+One of the primary Spiral features is it's container. This module is the glue between the different modules and provides the ability to communicate between components without linking the source code to a specific implementation.
 
-In general case this means that no component is allowed to request and instance or functionality of other component bypassing container (if you see such violation inside spiral components please open an issue).
+Generally speaking, no component can request an instance or functionality from another component via bypassing a container (if you see a violation like this inside any spirals components, please open an issue).
 
-Usually such approach is implemented using component interfaces which can represent generic component functionality, in some cases, especially when one component is purelly based on functionality of other component (for example ORM and DBAL) commucation is allowed using lower level abstractitions or even specific classes since mapping every possible functionality into interfaces might create implementation constraints (aka overcomplexity) or take long time.
+Usually this approach requires using component interfaces which represents generic component functionality. In some cases, especially when one component is purely based on the functionality of another component (for example ORM and DBAL), this communication is allowed using lower level abstractions or even specific classes. This is because mapping every possible functionality into the interfaces could create implementation constraints (aka overcomplexity) or take a long time.
 
-Practically speaking, functionality of other component must be requested using methods `get` and `create` of container.
+Practically speaking, functionality of other component must be requested using the methods `get` and `create` of container.
 
-> Check classes located in namespace `Spiral\Core` to find spiral components foundation.
+> Check the classes located in the namespace `Spiral\Core` to find the Spiral components foundation.
 
-One of the side effects of such approach is forbiddance of using non implementation related component aliases as it will create hidden dependencies and require non obvious configuration.
+One of the side effects of this approach, forbids you from using non implementation related component aliases as it will create hidden dependencies and require configuration that is not obvious.
 
-Example:
+For example:
 
 ```php
 //Such approach is allowed
@@ -33,16 +33,16 @@ public function __construct(ContainerInterface $container)
 }
 ```
 
-> You can use component aliases and short binding in your application design to speed up development or switch to the same model as core components to get more unification.
+> You can use the component aliases and short binding in your application design to speed up development or switch to the same model as the core components to get more unification.
 
 ## Memory
-[Application memory](memory.md) component or `HippocampusInterface` does not dictates internal component design but provides ability to split heavy analysis/compiation code from it's runtime part. Such component used to cache configs, support ORM and ODM schema behavious and etc.
+[Application memory](memory.md) component or `HippocampusInterface` does not dictate internal component design but provides the ability to split heavy analysis/compilation code from it's runtime part. This component is used to cache configs, support ORM and ODM schema behavious, etc.
 
-Technically, application memory provides support for [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming).
+Technically, the application memory provides support for [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming).
 
 ## Application Design
-Application design might not nessesary follow framework design and can create it's own communication techniques between it's business ogic (for example Singleton class which shares some information, user session and etc.), however default application bundle provides following well known concepts:
+The application design doesn't need to necessarily follow the framework design and can create it's own communication techniques between it's business logic (for example, the Singleton class, which shares some information, user session, etc.). However, the default application bundle provides the following well-known concepts:
   * Separation of view and controller logic using ViewManager and Templater component 
   * Separation of database logic and business logic using Services and DataEntities
-  * Light controllers and hight testability using Services to keep generic application logic
+  * Light controllers and high testability using Services to keep generic application logic
   * Segregation between application core and flow dispatcher (i.e. HttpDispatcher and ConsoleDispatcher)
