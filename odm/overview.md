@@ -3,6 +3,8 @@ Spiral ODM component has some similaries to ORM engine as them both based on [Da
 
 Spiral ODM does not have entity cache like ORM, instead of they you are given with "streaming like" functionality which can be used to process huge massives of data using Document models.
 
+**LISTED CLASSES NAMES WERE ALTERED, THIS IS DRAFT DOC**
+
 ## Mongo Connection and Databases
 As in case with ORM you are not required to spend fortune of time to configure ODM component, the only thing you have to make sure (in case if you want to store your data in MongoDB) is that mongo connection is properly configured, to do that simply check configuration file "odm.php":
 
