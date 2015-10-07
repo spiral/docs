@@ -1,15 +1,15 @@
 # Extended Templater Usage
-As you might assume based on this tutorial section title, basic templater features like template inheritance are only one part of the templater (to be honest a pretty small part of it). In additon, to generic features covered in [basic templater tutorial] (basics.md) you are able to create and import so called virtual tags or widgets. Such widgets are created as normal views and can be located inside your application or provided by a [module] (/components/modules.md).
+As you might expect based on the title, the basic templater features (like template inheritance) are only one part of the templater (honestly, a very small part of it). In additon to generic features covered in [basic templater tutorial] (basics.md), you can create and import so called virtual tags or widgets. These widgets are created as normal views and can be located inside your application or provided by a [module] (/components/modules.md).
 
 ## Widget/tag creation 
-If you remember, based on information provided by [Basic Templater Usage] (basic.md) templater handles situation with extending parent layouts and preventing in-view includes like:
+If you remember, the information provided by the [Basic Templater Usage] (basic.md) templater handles situation with extending the parent layouts and preventing in-view like:
 
 ```php
 Some content...
 <?= $this->container->views->render('another-view', [...]) ?>
 ```
 
-This simplifies view definition when we are talking about footers, headers and navigations, however there is many situations when including another view can give us benefits. For example we can create unviversal view to render some news feed or display comment and etc. Let's start with very simple example and say that we want to have view dedicated to render newsline in many different parts of website, let's try to locate such view into "application/views/elements/feed.php".
+This simplifies the view definition when we are talking about footers, headers and navigations. However there are many situations where including another view is more beneficial. For example, we can create a unviversal view to render some newsfeed or display a comment among other things. Let's start with a very simple example where we have a view dedicated to render a newsline in many different areas of your website. Let's try to locate this view in "application/views/elements/feed.php".
 
 ```html
 <div class="news">
@@ -22,7 +22,7 @@ This simplifies view definition when we are talking about footers, headers and n
 </div>
 ```
 
-We now can create demo view and render news feed inside it (we are going to use layouts created in previous section).
+We now can create a demo view and render the newsfeed inside it (we are going to use the layouts created in a previous section).
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
@@ -61,12 +61,12 @@ Such view will generate cached output like:
 </html>
 ```
 
-As you can see Spiral will be rendering news feed every time someone want to dispalay "demo" view. Fortunatelly, Templater provides way to include content of external view file at compilation stage and avoid unnesessary rendering calls. Let's jump to next section to see how we can do it.
+As you can see, Spiral will render the newsfeed every time someone wants to dispalay the "demo" view. Fortunately, the Templater provides a way to include the content of an external view file during the compilation stage and avoids unnesessary rendering calls. Let's jump to the next section to see how we can do this.
 
-> Including view source using `views->render()` method has it's own benefits, such as isolation and separation of cache.
+> Including the view source using the `views->render()` method has it's own pros, such as isolation and the separation of cache.
 
 ## Imporing widged/tag into view
-If we want to include desired view into our code, first of all we have to declare use tag to link view location (we might include namespace) and virtual tag we want to use to represent such view. Our content can be simplified such way:
+If we want to include the desired view into our code, first we have to declare the use tag to link the view location (we might include namespace) and the virtual tag we want to use to represent that view. Our content can be simplified like this:
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
@@ -79,12 +79,12 @@ If we want to include desired view into our code, first of all we have to declar
 </block:content>
 ```
 
-This time feed source will be included to cache without any additional `render()` method calls. Such technique in spiral Templater called virtual-tags (due you can represent your import as tag) or widgets. Let's check other sections of this tutorial to find better ways to import and define your widgets.
+This time the feed source will be included to cache without any additional `render()` method calls. This technique in the spiral Templater is called virtual-tags (since you can represent your import as a tag) or widgets. Let's check another section of this tutorial to find other smart ways to import and define your widgets.
 
-> You can define "use" tag(s) in parent view (in our case "layouts.desktop"), all child views will inherit such use (with ability to redefine it at any moment). 
+> You can define the "use" tag(s) in the parent view (in our case "layouts.desktop"). All child views will inherit this use (with the ability to redefine it at any moment). 
 
 ## Widget attributes
-First of all, we can see that switching from render method to templater created problem linked to unability to provide variables and options into our importer view. We can solve such problem by defining set of blocks in our new feed excact same way we will do it parent layouts. In my scenariou i would like to define feed class.
+First, we can realize that switching from the render method to templater created a problem linked to the inability to provide variables and options into our importer view. We can solve this problem by defining a set of blocks in our newsfeed exactly the same way we do it in the parent layouts. Below we would like to define the feed class.
 
 ```html
 <div class="news ${class}">
@@ -97,24 +97,23 @@ First of all, we can see that switching from render method to templater created 
 </div>
 ```
 
-Now we can import such widget with additional parameters similar to how we extending parent layout:
+Now we can import this widget with the additional parameters similar to how we extend the parent layout:
 
 ```html
 <elements:feed class="my-class" previewSize="16"/>
 ```
 
-Attention, you you can not pass php variables into templater blocks without making additional manipulations and verifications, this part is covered below.
-> You can use exacly same pricinciples of block definition and block value passing as described in Basic Templater Usage.
+Be careful that you don't pass the php variables into the templater blocks without making any additional manipulations and verifications .See below.
+> You can use exacly the same pricinciples of block definition and block value passing that is described in the Basic Templater Usage section.
 
 ## Context block
-Let's try to make our example more complex, so far we was able to import existed view and pass some compilation parameters into it. However such parametes does not allow
-us to pass custom html code code inside our element. Let's say that we want to have special element (commonly used) to format some block of text, we can call it "elements/formatter":
+Let's make our example more complex. So far we were able to import the existing view and pass some compilation parameters into it. However, these parameters do not allow us to pass a custom HTML code into our element. Let's say that we want to have a special element (commonly used) to format some block of text. We can call it "elements/formatter":
 
 ```html
 <div class="${class}" style="color: ${color|red}; text-transform: capitalize">${context}</div>
 ```
 
-We can use and import such element into our demo view same way we did for news feed, however in this case we are going to use long tag defintion with opening and closing parts:
+We can use and import this element into our demo view the same way we did for the newsfeed. However, in this case, we are going to use the long tag defintion with opening and closing parts:
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
@@ -124,15 +123,15 @@ We can use and import such element into our demo view same way we did for news f
     This is our content...
     <br/>
     <elements:formatter color="blue">
-        Some text we want to be formatted...
+        Some text we want formatted...
     </elements:formatter>
 </block:content>
 ```
 
-Templater will pass source declared between opening and closing widget tags as **context** block, such feature can be very useful in different cases. You can freely use other imports inside such context.
+The templater will pass the source declared between the opening and closing widget tags as **context** block. This feature can be very useful in a few different cases. You can freely use other imports inside this use case.
 
 ## Dynamic attributes (hard)
-One of most useful part when imports can help us is to mock existed elements, let's say that our website has universal form element definition which includes input, input label and some wrapper classes. If we don't want to write all this wrappers every time we can locate our input code inside widget, let's try to do that (i'm not an html expert):
+One of most useful part of imports that can help us is to mock existed elements, let's say that our website has universal form element definition which includes input, input label and some wrapper classes. If we don't want to write all this wrappers every time we can locate our input code inside widget, let's try to do that (i'm not an html expert):
 
 ```html
 <div class="form-input">
