@@ -16,6 +16,11 @@ interface PaginableInterface extends \Countable
     public function limit($limit = 0);
 
     /**
+     * @return int
+     */
+    public function getLimit();
+    
+    /**
      * Set selection offset.
      *
      * @param int $offset
@@ -23,6 +28,11 @@ interface PaginableInterface extends \Countable
      */
     public function offset($offset = 0);
 
+    /**
+     * @return int
+     */
+    public function getOffset();
+    
     /**
      * Manually set paginator instance for specific object.
      *
