@@ -69,7 +69,7 @@ As you see, both templates use a very similar layout that are only different in 
 <?=$this->container->views->render('footer')?>
 ```
 
-However, this technique has a lot of disadvantages. For example, we can easily leave a tag unclosed and your application may spend extra resources rendering both the footer and header every time your page is loaded. To prevent such problems we can create one universal template for our pages and extend it in our views, let's do that and place the view file into "application/views/layouts/basic.php":
+However, this technique has some disadvantages. For example, if you leave a tag unclosed, your application could easily spend extra resources rendering both the footer and header every time your page loads. To prevent these problems, we can create one universal template for our pages and extend it in our views. Let's try that and place the view file into "application/views/layouts/basic.php":
 
 ```html
 <!DOCTYPE html>
@@ -94,7 +94,7 @@ However, this technique has a lot of disadvantages. For example, we can easily l
 </html>
 ```
 
-As you may notice we kept all of our universal html code in one file and defined two placeholders for title and content blocks. Now we can edit our about us template and utilize the abilities of the Templater engine:
+You might notice that we kept all of our universal HTML code in a single file and defined two placeholders for the title and content blocks. Now, we can edit our about us template and utilize the abilities of the Templater engine:
 
 ```html
 <extends:layouts.basic title="About Us"/>
@@ -104,16 +104,16 @@ As you may notice we kept all of our universal html code in one file and defined
 </block:content>
 ```
 
-> One of the nice side effects of using spiral Templater is that any IDE or editor will treat its tags as normal html/xml tags, as a result your content will be nicely indented and mistakes highlighted. 
+> One of the nicer side effects of using the spiral Templater is that any IDE or editor will treat its' tags as normal html/xml tags. As a result, your content will be nicely indented and any mistakes will be highlighted. 
 
-The resulting html will look exactly the same as before, however our view is now much smaller in size. Let's try to walk through our template to understand what we just did.
-First of all we declared that our view file must extend the parent template "layouts.basic". Because we are allowed to use path seperators in html tags - "." will be replaced with "/", which will allow the templater to extend our desired "layouts/basic" view (the current view namespace [default] will be used).
+The resulting HTML will look exactly the same as before. However, our view is now much smaller in size. Let's examine our template to understand what we just did.
+First of all, we declared that our view file must extend the parent template "layouts.basic". Because we are allowed to use the path seperators in html tags the - "." will be replaced with "/", which allows the templater to extend our desired "layouts/basic" view (the current view namespace [default] will be used).
 
-Next, in the extends tag we declared a tag attribute "title", this definition tells the parent layout to replace the "title" block with the given value. These block definitions can be used for simple html strings and php code.
+Next, in the extends tag, we declared a tag attribute "title". This definition tells the parent layout to replace the "title" block with the given value. These block definitions can be used for simple html strings and php code.
 
-Secondly, we created an html (xml) tag named "block:content" for the same purpose as for title. Because we want to specify content with inner html tags (in our case a) we can't use short, attribute like, definitions.
+Then, we created an html (xml) tag named "block:content" for the same purpose as our title. Because we want to specify the content with inner html tags (in our case a) we can't use short, attribute like, definitions.
 
-> Templater tokenizes html code before processing it, this means that you can not use `<` and `>` symbols in any of your tag attribute as it will be invalid html. We can always use longer blocks definition like in case of "<block:content>". We can demonstrate that both definitions are identical by rewriting our template:
+> Templater tokenizes html code before processing it. This means that you can not use `<` and `>` symbols in any of your tag attribute as it create invalid html. We can always use longer blocks definition for example like "<block:content>". We can demonstrate that both definitions are identical by rewriting our template:
 
 ```html
 <extends:layouts.basic/>
@@ -128,7 +128,7 @@ Secondly, we created an html (xml) tag named "block:content" for the same purpos
 > Attention, ViewManager does not know about changes in parent layouts, you should either recompile your views using the `views:compile` command or simply disable the cache in the development enviroment.
 
 ## Parent block content
-In our previous example we demonstrated the ability to inject the desired values into our parent layout, however in many cases we might want to be able to rewrite specific parts of parent layout without losing the original content. We can do this by defining a few new blocks in our parent layout:
+In our previous example, we showed the ability to inject the desired values into our parent layout. However in many cases, we may want to rewrite specific parts of the parent layout without losing the original content. We can do this by defining a few new blocks in our parent layout:
 
 ```html
 <!DOCTYPE html>
@@ -155,7 +155,7 @@ In our previous example we demonstrated the ability to inject the desired values
 </html>
 ```
 
-If we will try to render our about us page now (do not forget to reset cache) we will notice no difference as no replacements come for newly created blocks. Let's try to overwrite value of layout footer:
+If we try to render our about us page now (do not forget to re-set your cache) you will notice there is no difference since there isn't any replacement for newly created blocks. Let's try to overwrite the value of layout footer:
 
 ```html
 <extends:layouts.basic title="About Us"/>
@@ -165,11 +165,11 @@ If we will try to render our about us page now (do not forget to reset cache) we
 </block:content>
 
 <block:footer>
-    This is about us specific footer.
+    This is the about us specific footer.
 </block:footer>
 ```
 
-This methodic can work with some simple blocks, however in more complex cases it might look useless, let's try to imagine that we would to use additional CSS style for about us page. We can do that, by redefining block resources:
+This method works using some simple blocks. However, in more complex cases, it might appear useless. Let's try to imagine that we used an additional CSS style for the about us page. We can do that, by redefining block resources:
 
 ```html
 <extends:layouts.basic title="About Us"/>
@@ -188,7 +188,7 @@ This methodic can work with some simple blocks, however in more complex cases it
 </block:footer>
 ```
 
-Now we have a small problem, every time we would like to add new content into parent block we have to carry into content with us which can lead to some problems when new resources mounted to parent layout. We can solve this issue by injecting value of parent block into it's redefinition:
+Now we encounter a small problem. Every time we'd like to add new content into the parent block, we have to carry the content with us. This can lead to some problems when new resources are mounted to the parent layout. We can solve this issue by injecting the value of the parent block into it's re-definition:
 
 ```html
 <extends:layouts.basic title="About Us"/>
@@ -203,11 +203,11 @@ Now we have a small problem, every time we would like to add new content into pa
 </block:content>
 
 <block:footer>
-    This is about us specific footer.
+    This is the about us specific footer.
 </block:footer>
 ```
 
-We can inject parent block content into any place of re-definition, before, after or even in a middle of new content:
+We can inject the parent block content into any place of re-definition before, after or even in a middle of the new content:
 
 ```html
 <extends:layouts.basic title="About Us"/>
@@ -223,16 +223,16 @@ We can inject parent block content into any place of re-definition, before, afte
 </block:content>
 
 <block:footer>
-    This is about us specific footer.
+    This is the about us specific footer.
 </block:footer>
 ```
 
-Such technique provides us ability to manage set of layouts on global level with ability to add/replace needed assets on page template level.
+This technique lets us manage the set of layouts on a global level with the ability to add/replace the needed assets on the page template level.
 
-> Templates compiles views before PHP code will be executed, you are not allow to control block structures with php code. Leave it for html/frontent developers.
+> The templates will compile views before the PHP code is executed. You are not allowed to control the block structures with PHP code. Leave this for html/frontend developers.
 
 ## Even shorter block/yield definition
-There is many scenarious when you would to inject child value inside html tag or even php code, let's try to say that we want to be able to define custom wrapper class for different views.
+There are many scenarios where you will want to inject a child value inside an HTML tag or even php code. Let's say that we want to be able to define a custom wrapper class for different views.
 
 ```html
 <!DOCTYPE html>
@@ -259,7 +259,7 @@ There is many scenarious when you would to inject child value inside html tag or
 </html>
 ```
 
-Unfortunatelly such definition is **not valid** as it violates html standards. In such case we can use fallback Templater construction which can be injected in almost any part of your template: `${name|default value}`, let's try to utilize it:
+Unfortunately, this definition is **not valid** as it violates the HTML standards. In this case, we can use a fallback Templater construction that can be injected into almost any part of your template: `${name|default value}`. Let's use it:
 
 ```html
 <!DOCTYPE html>
@@ -286,7 +286,7 @@ Unfortunatelly such definition is **not valid** as it violates html standards. I
 </html>
 ```
 
-Now we have an ability to set custom wrapper class from our templates:
+Now we have the ability to set a custom wrapper class using our templates:
 
 ```html
 <extends:layouts.basic title="About Us" wrapper-class="about-us"/>
@@ -302,11 +302,11 @@ Now we have an ability to set custom wrapper class from our templates:
 </block:content>
 
 <block:footer>
-    This is about us specific footer.
+    This is the about us specific footer.
 </block:footer>
 ```
 
-As in case with normal block definitions we always use parent block value, let's try to add our class without removing parent one using `${name}` like syntax:
+Using this example with normal block definitions, we can always use parent block values. Let's try to add our class without removing the parent one using `${name}` something like syntax:
 
 ```html
 <extends:layouts.basic title="About Us" wrapper-class="${wrapper-class} about-us"/>
@@ -322,12 +322,12 @@ As in case with normal block definitions we always use parent block value, let's
 </block:content>
 
 <block:footer>
-    This is about us specific footer.
+    This is the about us specific footer.
 </block:footer>
 ```
 
 ## Multiple inheritance
-Templater does not have any limitations (except memory :)) on how many times template can be extended, as result we are able to multiple website layouts, for example let's say that we want to create new layout with navigation, first of all, let's modify our basic layout to provide such ability:
+The templater does not have any limitations (except memory :)) on how many times the template can be extended. As a result, we are able to create multiple website layouts. For example, we can create a new layout with navigation. To start, let's modify our basic layout to see what that does:
 
 ```html
 <!DOCTYPE html>
@@ -356,7 +356,7 @@ Templater does not have any limitations (except memory :)) on how many times tem
 </html>
 ```
 
-We can now create new layout with navigation realted html, we can call it "layouts/navigation":
+Now we can create  new layout with navigation related to the html. We can call it "layouts/navigation":
 
 ```html
 <extends:layouts.basic/>
@@ -369,7 +369,7 @@ We can now create new layout with navigation realted html, we can call it "layou
 </block:wrapper>
 ```
 
-To apply new layout to our about-us page let's simply change it's extends tag:
+To apply the new layout to our about-us page, let's simply change it's extends tag:
 
 ```html
 <extends:layouts.navigation title="About Us" wrapper-class="${wrapper-class} about-us"/>
@@ -385,18 +385,18 @@ To apply new layout to our about-us page let's simply change it's extends tag:
 </block:content>
 
 <block:footer>
-    This is about us specific footer.
+    This is the about us specific footer.
 </block:footer>
 ```
 
-As result we managed to change page layout using only one line of code.
+As a result, we managed to change the page layout using only one line of code.
 
-> Templater fully supports view namespaces, as result we can define our extends tag in a form: `<extends:default:layouts.navigation/>`
+> The templater fully supports view namespaces. Thus, we can define our extends tag in a form: `<extends:default:layouts.navigation/>`
 
 ## Switching layouts
-Even if you are not allowed to control Templater structures and inheritance using PHP code - you achieve goal of switching between different templates by using view processors which are executed about Templater. 
+Even if you aren't allowed to control the Templater structures and inheritance using PHP code - you can achieve your goal of switching between different templates by using the view processors which are executed by the Templater. 
 
-First of all let's try to create new view dependency to declare if we using mobile or desktop version of website, to do that we have to modify view configuration:
+Let's try to create a new view dependency to declare if we are using a mobile or desktop version of a website. To do this, we have to modify the view configuration:
 
 ```php
  'dependencies' => [
@@ -415,7 +415,7 @@ First of all let's try to create new view dependency to declare if we using mobi
     ],
 ```
 
-Inside our application we have to create method `websiteLayout`:
+Inside our application we have to create the method `websiteLayout`:
 
 ```php
 /**
@@ -429,19 +429,19 @@ public function websiteLayout()
 }
 ```
 
-Now, we can use alternative syntax to define extends tag which gives us ability to provide parent layout name in attribute form (use view:namespace to change parent layout namespace same way):
+Now, we can use the alternative syntax to define the extends tag which give us the ability to provide the parent layout name in the attribute form (use view:namespace to change parent layout namespace the same way):
 
 ```html
 <extends view:parent="layouts/desktop"/>
 ```
 
-If already read about ViewManager, it's cache dependencies and processors, you might remember that you can inject value of cache dependency into html using `@{name}` syntax, such injection will happen before Tempalter will start processing our views as result we can rewrite our extends tag to follow value declared in such dependency:
+If you have already read about the ViewManager, it's cache dependencies and processors, you might remember that you can inject the cache value dependency into html using `@{name}` syntax. This injection will happen before the Tempalter will start processing our views and as result, we can rewrite our extends tag to follow the value declared in this dependency:
 
 ```html
 <extends view:parent="layouts/@{layout}"/>
 ```
 
-Rendered template will look exactly as before, however now we can try to create different layout with new markup and resources, let's put into "layouts/mobile":
+The rendered template will look exactly the same as before. However we can now try to create a different layout with new markup and resources. Let's put this into "layouts/mobile":
 
 ```html
 <!DOCTYPE html>
@@ -462,7 +462,7 @@ Rendered template will look exactly as before, however now we can try to create 
 </html>
 ```
 
-Now, the only thing we have to do to change website/page layout is provide different value from our `Application->websiteLayout` method.
+Now, the only thing we have left to do to change the website/page layout is to provide a different value from our `Application->websiteLayout` method.
 
 ```php
 /**
@@ -476,7 +476,7 @@ public function websiteLayout()
 }
 ```
 
-> Interesting side effect of using cache dependencies to switch layouts, that such switch will happen on compilation stage, as result you will get different template cache versions for different values of `websiteLayout` method. We can always go into "application/runtime/cache/views" folder and locate two diffent files related to our page.
+> An interesting side effect of using cache dependencies to switch layouts is that this switch will happen during the compilation stage. As a result, you will get a different template cache versions for different values of the `websiteLayout` method. We can always go into the "application/runtime/cache/views" folder and locate the two different files related to our page.
 
 ```html
 <!DOCTYPE html>
@@ -497,7 +497,7 @@ public function websiteLayout()
     Something about us, <?=$someVariable?>. <a href="/some-url/">Some Address</a>.
     </div>
 <div class="footer">
-    This is about us specific footer.
+    This is the about us specific footer.
 </div>
 </body>
 </html>
@@ -522,4 +522,4 @@ public function websiteLayout()
 </html>
 ```
 
-> You can move `websiteLayout` method to any of desired class including services and controllers.
+> You can move the `websiteLayout` method to any of the desired class including services and controllers.
