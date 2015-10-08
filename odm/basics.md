@@ -1,4 +1,4 @@
-## ODM Component Overview
+## ODM Component, Basics
 Spiral ODM component has some similaries to [ORM engine] (/orm/basics.md) as they both based on [DataEntity] (/components/entity.md) model and [Behaviour Schemas] (/schemas.md). However ODM removes termin "relation" and replaces it with classical [compositions and aggregations] (https://en.wikipedia.org/wiki/Object_composition) temninalogy. In addition, ODM classes support inheritance and also can be embedded into ORM as JSON objects. 
 
 ODM component was mainly designed to work with MongoDB database including support of atomic operations, however `DocumentEntity` class and it's compositions can be used outside of Mongo to create OOP data representation of various structures (XML files, API responses, etc).
@@ -37,11 +37,9 @@ public function index(MongoDatabase $database, ODM $odm)
 }
 ```
 
-## Document and DocumentEntity models
+#### DocumentEntity
+The base class of ODM component which provides support for inheritance and compositions is `DocumentEntity`, such class does not have ActiveRecord functionality and mainly used 
 
-
-
-#### Document
 You can create Document model by simply extending `Spiral\ODM\Document` class and via defining model behaviour using protected property "schema". To simplfy model creation, you can also use console command "create:embeddable name -f field:type ...". We can pre-create our fist model using command "create:embed data -f name:string -f value:int -f time:MongoDate", as result we will get our class in "application/classes/Database" folder.
 
 ```php
