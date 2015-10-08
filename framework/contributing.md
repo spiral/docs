@@ -8,6 +8,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 
 ## Help Needed
 * Test coverage of existed functionality
+* Organizational questions
 * Spelling fixes in comments
 * Functionality proposals
 * Questionable code improvements
