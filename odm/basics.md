@@ -37,7 +37,7 @@ public function index(MongoDatabase $database, ODM $odm)
 }
 ```
 
-#### DocumentEntity
+## DocumentEntity
 The base class of ODM component which provides support for inheritance and compositions is `DocumentEntity`, such class does not have ActiveRecord functionality and mainly used 
 
 You can create Document model by simply extending `Spiral\ODM\Document` class and via defining model behaviour using protected property "schema". To simplfy model creation, you can also use console command "create:embeddable name -f field:type ...". We can pre-create our fist model using command "create:embed data -f name:string -f value:int -f time:MongoDate", as result we will get our class in "application/classes/Database" folder.
@@ -124,6 +124,9 @@ public function index()
 
 > You might notice that every value got type casted, this is required since MongoDB needs string types.
 
+#### Compositions
+TODO
+
 ## Document
 ActiveDocument models are almost identical in it's definition to Document one, it only provides two additional properties "collection" and "database" which you can define to specify where your model data must be stored into. By default spiral will generate collection name based on class and use default database. To generate ActiveModel class we have to run command 'create:document'. Since our documents are going to be stored in MongoDB we have to specify `_id` field. Let's try to execute command "create:document user -f id:MongoId -f name:string -f email:string -f balance:float", as result:
 
@@ -190,22 +193,20 @@ public function index()
 If everything is OK you might notice that `_id` field got populated in last dump, meaning we just pushed our data into database.
 
 ## Querying Documents
-
-
-
+mongo db stuff, datetime replacement
 
 ## Atomic Operations and Solid State
-
+solid state
 
 ### Scalar Arrays
+[string]
 
 
 ## Inheritance and Class Definition
+in compositions and collections
 
-
-
-## Compositions
 
 ## Aggregations
 You are able to define outer document composition in your Document (not DocumentEntity) models, to do that simply declare .
 
+self key, dot notation
