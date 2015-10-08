@@ -207,4 +207,5 @@ If everything is OK you might notice that `_id` field got populated in last dump
 ## Compositions
 
 ## Aggregations
+You are able to define outer document composition in your Document (not DocumentEntity) models, to do that simply declare .
 
