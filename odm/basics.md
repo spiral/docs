@@ -1,15 +1,20 @@
 ## ODM Component Overview
-Spiral ODM component has some similaries to ORM engine as them both based on [DataEntity] (/components/entity.md) models and [Behaviour Schemas] (/schemas.md). However ODM removes termin "relation" and replaces it with classical [compositions and aggregations] (https://en.wikipedia.org/wiki/Object_composition). In addition, ODM classes support inheritance and also can be embedded into ORM as JSON objects. ODM mainly designed to work with MongoDB database including support of atomic operations, however `SimpleDocument` class and it's compositions can be used outside of Mongo to create OOP data representation of various structures (XML files, API responses, etc).
+Spiral ODM component has some similaries to [ORM engine] (/orm/basics.md) as they both based on [DataEntity] (/components/entity.md) model and [Behaviour Schemas] (/schemas.md). However ODM removes termin "relation" and replaces it with classical [compositions and aggregations] (https://en.wikipedia.org/wiki/Object_composition) temninalogy. In addition, ODM classes support inheritance and also can be embedded into ORM as JSON objects. 
 
-Spiral ODM does not have entity cache like ORM, instead of they you are given with "streaming like" functionality which can be used to process huge massives of data using Document models.
+ODM component was mainly designed to work with MongoDB database including support of atomic operations, however `DocumentEntity` class and it's compositions can be used outside of Mongo to create OOP data representation of various structures (XML files, API responses, etc).
 
-**LISTED CLASS NAMES WERE ALTERED, THIS IS DRAFT DOC**
+Spiral ODM does not use entity cache, instead of you are given with "streaming like" functionality which can be used to process huge massives of data using Document models.
 
 ## Mongo Connection and Databases
 As in case with ORM you are not required to spend fortune of time to configure ODM component, the only thing you have to make sure (in case if you want to store your data in MongoDB) is that mongo connection is properly configured, to do that simply check configuration file "odm.php":
 
 ```php
 'default'   => 'default',
+'aliases'   => [
+    'database' => 'default',
+    'db'       => 'default',
+    'mongo'    => 'default'
+],
 'databases' => [
     'default' => [
         'server'    => 'mongodb://localhost:27017',
@@ -20,23 +25,19 @@ As in case with ORM you are not required to spend fortune of time to configure O
         ]
     ]
 ],
-'aliases'   => [
-    'database' => 'default',
-    'db'       => 'default',
-    'mongo'    => 'default'
-],
 ```
 
-Configration is very similar to [DBAL] (/databases/overview.md) and fully support database aliases and controllable injections. If you wish to get direct access to MongoDatabase in your controller simple request it using `ODM->db()` factory method or via `MongoDatabase` dependency using database alias:
+Configration is very similar to [DBAL] (/databases/overview.md) and fully support database aliases and controllable/contextual injections. If you wish to get direct access to MongoDatabase in your controller simple request it using `ODM->db()` factory method or via `MongoDatabase` dependency using database alias:
 
 ```php
-public function index(MongoDatabase $database)
+public function index(MongoDatabase $database, ODM $odm)
 {
     dump($database->getCollectionNames());
+    dump($odm->db('default'));
 }
 ```
 
-## Document and SimpleDocument models
+## Document and DocumentEntity models
 
 
 
