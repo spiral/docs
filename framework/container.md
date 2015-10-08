@@ -155,7 +155,7 @@ words - every class extends singleton will become singleton to replace it's pare
 
 > You can always disable singleton behaviour by inheriting class and defining SINGLETON constant as `null`.
 
-### Controllable Injections
+### Controllable/Contextual Injections
 Spiral Container supports injection feature which might significanlty simplify access to some component instances (databases, cache adapters, storage buckets) in constructor and methods injections (however it will add little bit "magic" in your code):
 
 
