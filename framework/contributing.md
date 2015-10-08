@@ -10,4 +10,5 @@ Feel free to contribute to framework or components development. I will glaldy ac
 * Test coverage of existed functionality
 * Spelling fixes in comments
 * Functionality proposals
+* Questionable code impovements
 * Objective critics
