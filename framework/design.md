@@ -35,6 +35,8 @@ public function __construct(ContainerInterface $container)
 
 > You can use the component aliases and short binding in your application design to speed up development or switch to the same model as the core components to get more unification.
 
+Default component implementations are allowed to talk to it's classes avoiding usage of container for performance reasons.
+
 ## Memory
 [Application memory](memory.md) component or `HippocampusInterface` does not dictate internal component design but provides the ability to split heavy analysis/compilation code from it's runtime part. This component is used to cache configs, support ORM and ODM schema behavious, etc.
 
