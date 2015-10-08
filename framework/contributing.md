@@ -3,6 +3,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 
 ## Requiments
 * PSR-2 codestyle
+* Every method or class MUST have doc comment describing it's functionality
 * No design violation
 * Test coverage of new functionality
 
