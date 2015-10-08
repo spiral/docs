@@ -196,9 +196,9 @@ When injector will look like:
 ```php
 class Injector implements InjectorInterface
 {
-    public function createInjection(\ReflectionClass $class, \ReflectionParameter $parameter)
+    public function createInjection(\ReflectionClass $class, $context)
     {
-        return new Name($parameter->getName());
+        return new Name($context);
     }
 }
 ```
@@ -214,6 +214,12 @@ public function method(Name $john, Name $bob)
 ```
 
 > Attention, i think this feature is cool, but you must be accurate using it.
+
+You can also use controllable injections in combination with default container implementation this way:
+
+```php
+$this->container->get(DatabaseInterface::class, 'default');
+```
 
 ### Additional Container methods
 There is few additional methods in Container you might consider using.
