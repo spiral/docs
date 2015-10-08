@@ -45,4 +45,4 @@ The application design doesn't need to necessarily follow the framework design a
   * Separation of view and controller logic using [ViewManager](/components/views.md) and [Templater](/templater/basics.md) component 
   * Separation of database logic and business logic using [Services](/application/services.md) and [DataEntities](/components/entity.md)
   * Light controllers and high testability using [Services](/application/services.md) to keep generic application logic
-  * Segregation between [application core and flow dispatcher](/application/startup.md) (i.e. [HttpDispatcher](/http/flow.md) and [ConsoleDispatcher](/console/overview.md))
+  * Segregation between [application core and flow dispatcher](/application/startup.md) (i.e. [HttpDispatcher](/http/flow.md) and [ConsoleDispatcher](/console/commands.md))
