@@ -1,5 +1,5 @@
 ## ODM Component, Basics
-Spiral ODM component has some similaries to [ORM engine] (/orm/basics.md) as they both based on [DataEntity] (/components/entity.md) model and [Behaviour Schemas] (/schemas.md). However ODM removes termin "relation" and replaces it with classical [compositions and aggregations] (https://en.wikipedia.org/wiki/Object_composition) temninalogy. In addition, ODM classes support inheritance and also can be embedded into ORM as JSON objects. 
+Spiral ODM component has some similaries to [ORM engine] (/orm/basics.md) as they both based on [**DataEntity**] (/components/entity.md) model and [Behaviour Schemas] (/schemas.md). However ODM removes termin "relation" and replaces it with classical [compositions and aggregations] (https://en.wikipedia.org/wiki/Object_composition) temninalogy. In addition, ODM classes support inheritance and also can be embedded into ORM as JSON objects. 
 
 ODM component was mainly designed to work with MongoDB database including support of atomic operations, however `DocumentEntity` class and it's compositions can be used outside of Mongo to create OOP data representation of various structures (XML files, API responses, etc).
 
@@ -37,7 +37,7 @@ public function index(MongoDatabase $database, ODM $odm)
 }
 ```
 
-## DocumentEntity
+#### DocumentEntity
 The base class of ODM component which provides support for inheritance and compositions is `DocumentEntity`, such class does not have ActiveRecord functionality and mainly used 
 
 You can create Document model by simply extending `Spiral\ODM\Document` class and via defining model behaviour using protected property "schema". To simplfy model creation, you can also use console command "create:embeddable name -f field:type ...". We can pre-create our fist model using command "create:embed data -f name:string -f value:int -f time:MongoDate", as result we will get our class in "application/classes/Database" folder.
@@ -67,15 +67,9 @@ class Data extends DocumentEntity
      * @var array
      */
     protected $validates = [
-        'name'  => [
-            'notEmpty'
-        ],
-        'value' => [
-            'notEmpty'
-        ],
-        'time'  => [
-            'notEmpty'
-        ]
+        'name'  => ['notEmpty'],
+        'value' => ['notEmpty'],
+        'time'  => ['notEmpty']
     ];
 }
 ```
@@ -124,11 +118,6 @@ public function index()
 
 > You might notice that every value got type casted, this is required since MongoDB needs string types.
 
-#### Compositions
-one or many
-Document::class
-[Document::class]
-
 ## Document
 ActiveDocument models are almost identical in it's definition to Document one, it only provides two additional properties "collection" and "database" which you can define to specify where your model data must be stored into. By default spiral will generate collection name based on class and use default database. To generate ActiveModel class we have to run command 'create:document'. Since our documents are going to be stored in MongoDB we have to specify `_id` field. Let's try to execute command "create:document user -f id:MongoId -f name:string -f email:string -f balance:float", as result:
 
@@ -160,15 +149,9 @@ class User extends Document
      * @var array
      */
     protected $validates = [
-        'name'    => [
-            'notEmpty'
-        ],
-        'email'   => [
-            'notEmpty'
-        ],
-        'balance' => [
-            'notEmpty'
-        ]
+        'name'    => ['notEmpty'],
+        'email'   => ['notEmpty'],
+        'balance' => ['notEmpty']
     ];
 }
 ```
@@ -195,20 +178,21 @@ public function index()
 If everything is OK you might notice that `_id` field got populated in last dump, meaning we just pushed our data into database.
 
 ## Querying Documents
-mongo db stuff, datetime replacement
+
+
+
 
 ## Atomic Operations and Solid State
-solid state
+
 
 ### Scalar Arrays
-[string]
 
 
 ## Inheritance and Class Definition
-in compositions and collections
 
+
+
+## Compositions
 
 ## Aggregations
-You are able to define outer document composition in your Document (not DocumentEntity) models, to do that simply declare .
 
-self key, dot notation
