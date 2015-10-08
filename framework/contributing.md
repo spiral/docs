@@ -3,7 +3,7 @@ Feel free to contribute to framework or components development.
 
 ## Requiments
 * PSR-2 codestyle
-* No design violations
+* No design violation
 * Test coverage of new functionality
 
 ## Help Needed
