@@ -9,3 +9,5 @@ Feel free to contribute to framework or components development.
 ## Help Needed
 * Test coverage of existed functionality
 * Spelling fixes in comments
+* Functionality proposals
+* Objective critics
