@@ -54,7 +54,7 @@ $post = new Post([], null, $odm);
 $post = new Post();
 ```
 
-Since this is only one global instance you are still able (theorecially) to isolate multiple applications in one shared memory by swapping global container before executing application enterpoint (attention, `staticContainer()` method is protected for `Component` members only):
+Since this is only one global instance you are still able (theorecially) to isolate multiple applications in one shared memory by swapping global container before executing application enterpoint (attention, `staticContainer()` method is protected for `Component` members only so you will need something like `ContainerCapsule`):
 
 ```php
 self::staticContainer($applicationA);
