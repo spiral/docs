@@ -18,7 +18,7 @@ For example:
 
 ```php
 //Such approach is allowed
-public function __construct(HttpDispatcher $http)
+public function __construct(ContainerInterface $container, HttpDispatcher $http)
 {
    //...
    $this->component = $container->get(SomeInterface::class);
