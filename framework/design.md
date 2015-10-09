@@ -37,7 +37,13 @@ public function __construct(ContainerInterface $container)
 
 Default component implementations are allowed to talk to it's classes avoiding usage of container for performance reasons.
 
-## Static/global Container
+## Memory
+[Application memory](memory.md) component or `HippocampusInterface` does not dictate internal component design but provides the ability to split heavy analysis/compilation code from it's runtime part. This component is used to cache configs, support ORM and ODM schema behavious, etc.
+
+Technically, the application memory provides support for [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming).
+
+
+## Static/Global Container
 Spiral trying to avoid using static code (there is no Facades) and global shared instances except one - `ContainerInterface`. Such instance can be requested using `Component` method `container()` or requested statically via `staticContainer()` method. Global container does not requeired for core components (they can behave OK without it), hovewer it allows us to bring set of development sugar to your applications:
 
 ```php
@@ -56,11 +62,6 @@ $applicationA->start();
 ```
 
 > The only one core functionality directly depends on staticContainer - TranslatorTrait.
-
-## Memory
-[Application memory](memory.md) component or `HippocampusInterface` does not dictate internal component design but provides the ability to split heavy analysis/compilation code from it's runtime part. This component is used to cache configs, support ORM and ODM schema behavious, etc.
-
-Technically, the application memory provides support for [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming).
 
 ## Application Design
 The application design doesn't need to necessarily follow the framework design and can create it's own communication techniques between it's business logic (for example, the Singleton class, which shares some information, user session, etc.). However, the default application bundle provides the following well-known concepts:
