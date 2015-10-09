@@ -44,7 +44,7 @@ Technically, the application memory provides support for [Metaprogramming](https
 
 
 ## Static/Global Container
-Spiral trying to avoid using static code (there is no Facades) and global shared instances except only one - `ContainerInterface`. Such instance can be requested using `Component` method `container()` or requested statically via `staticContainer()` method. Global container does not required for core components (they can behave OK without it), hovewer it allows us to bring set of development sugar to your applications:
+Spiral is trying to avoid using static code (there is no Facades) and global shared instances except only one - `ContainerInterface`. Such instance can be requested using `Component` method `container()` or requested statically via `staticContainer()` method. Global container does not required for core components (they can behave OK without it), hovewer it allows us to bring set of development sugar to your applications:
 
 ```php
 //Without global container
