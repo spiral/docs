@@ -37,6 +37,26 @@ public function __construct(ContainerInterface $container)
 
 Default component implementations are allowed to talk to it's classes avoiding usage of container for performance reasons.
 
+## Static/global Container
+Spiral trying to avoid using static code (there is no Facades) and global shared instances except one - `ContainerInterface`. Such instance can be requested using `Component` method `container()` or requested statically via `staticContainer()` method. Global container does not requeired for core components (they can behave OK without it), hovewer it allows us to bring set of development sugar to your applications:
+
+```php
+//Without global container
+$post = new Post([], null, $odm);
+
+//With global container
+$post = new Post();
+```
+
+Since this is only one global instance you are still able to isolate multiple applications in one shared memory by swapping global container before calling it (attention, `staticContainer()` method is protected for `Component` members only):
+
+```php
+self::staticContainer($applicationA);
+$applicationA->start();
+```
+
+> The only one core functionality directly depends on staticContainer - TranslatorTrait.
+
 ## Memory
 [Application memory](memory.md) component or `HippocampusInterface` does not dictate internal component design but provides the ability to split heavy analysis/compilation code from it's runtime part. This component is used to cache configs, support ORM and ODM schema behavious, etc.
 
