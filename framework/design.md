@@ -40,7 +40,7 @@ Default component implementations are allowed to talk to it's classes avoiding u
 ## Memory
 [Application memory](memory.md) component or `HippocampusInterface` does not dictate internal component design but provides the ability to split heavy analysis/compilation code from it's runtime part. This component is used to cache configs, support ORM and ODM schema behavious, etc.
 
-Technically, the application memory provides support for [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming).
+Technically, the application memory provides support for [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming) like features.
 
 
 ## Static/Global Container
