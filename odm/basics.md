@@ -487,10 +487,66 @@ You can also simply assign time to "timeRegistered" field, as accessor must auto
 $user->timeRegistered = 'next friday 10am';
 ```
 
+##### Scalar Array Accessor
+ODM component provides one accessor which is intented to simplify operations with hard types scalar array and add atomics support for such fields. To declare that field is scalar array, simple declare it in a form of "[type]":
 
-//ARRAYS
+```php
+protected $schema = [
+    'id'             => 'MongoId',
+    'name'           => 'string',
+    'email'          => 'string',
+    'balance'        => 'float',
+    'timeRegistered' => 'MongoDate',
+    'tags'           => ['string']
+];
+```
 
+ODM component will automatically assign accessor `Spiral\ODM\Accessors\ScalarArray` to such field. Accessor will automatically filter array values and ensure that they all in a same type, accessor support following types:
+* int
+* float
+* string
+* MongoId
 
+Once your schema is updated you are able to work with such field as with regular array:
+
+```php
+$user = User::findOne();
+$user->tags[] = 'new';
+
+echo $user->tags->count();
+
+foreach ($user->tags as $tag) {
+    dump($tag);
+}
+```
+
+The most important part of ScalarArray functionality and ability to use mongo atomic opeations for it's values. However, but default ScalarArray is always in **solidState**, so if you wish to apply atomic opeations to it's fields you have to reset such state first. For example we can push new value into our array:
+
+```php
+$user = User::findOne();
+$user->tags->solidState(false)->push('new tag');
+dump($user);
+```
+
+Model atomic operations will looks like:
+
+```
+atomics:dynamic = array(2)
+(
+·    ['$push'] = array(1)
+·    (
+·    ·    ['tags'] = array(1)
+·    ·    (
+·    ·    ·    ['$each'] = array(1)
+·    ·    ·    (
+·    ·    ·    ·    [0] = string(7) new tag
+·    ·    ·    )
+·    ·    )
+·    )
+)
+```
+
+> There is also `pull`, `addToSet` operations.
 
 ## Delete Documents
 You can delete any existed Document by executing it's method "delete". There is not much to talk about it.
