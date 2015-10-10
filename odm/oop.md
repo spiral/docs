@@ -92,3 +92,95 @@ $post->userId = $user->_id;
 $post->content = 'Some content';
 $post->save();
 ```
+
+## Compositions
+Compositions is one of the most powerful featured of ODM component, such thing provides ability to nest multiple models inside each other. It can also be combined with inheritance and atomic operations.
+
+#### DocumentEntity
+Before we will jump to compositions, let's review class `DocumentEntity`, such class is very similar to Document (in a fact it's Document parent) but it does not provide ActiveRecord functionality, which makes it perfect candicate to be embedded. To create DocumentEntity model, let's try to execute command "create:entity profile -f biography:text -f facebookUID:int", generated entity looks exacly the same as other Documents and can be configured same way, however it does not have associated collection.
+
+```php
+class Profile extends DocumentEntity
+{
+    /**
+     * @var array
+     */
+    protected $fillable = [
+
+    ];
+
+    /**
+     * Entity schema.
+     *
+     * @var array
+     */
+    protected $schema = [
+        'biography'   => 'text',
+        'facebookUID' => 'int'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'biography'   => ['notEmpty'],
+        'facebookUID' => ['notEmpty']
+    ];
+}
+```
+
+#### Singural Composition
+To composite one document inside another, you are simply need to declare field in your schema linked to composited document class, for example let's say that every user has one profile:
+
+```php
+protected $schema = [
+    '_id'            => 'MongoId',
+    'name'           => 'string',
+    'email'          => 'string',
+    'balance'        => 'float',
+    'timeRegistered' => 'MongoDate',
+    'tags'           => ['string'],
+    'profile'        => Profile::class,
+    //Aggregations
+    'posts'          => [
+        self::MANY => Post::class,
+        ['userId' => 'self::_id']
+    ]
+];
+```
+
+Once schema is updates, you are able to user User profile in your code:
+
+```php
+$user = User::findOne();
+$user->profile->biography = 'some bio';
+$user->profile->facebookUID = 2345678;
+
+dump($user);
+```
+
+As in other cases DocumentEntity data will set using atomic operataions:
+
+```
+atomics:dynamic = array(1)
+(
+·    ['$set'] = array(4)
+·    (
+·    ·    ['profile.biography'] = string(8) some bio
+·    ·    ['profile.facebookUID'] = integer(7) 2345678
+·    )
+)
+```
+
+You can also assign new instance of Profile to your User at any moment:
+
+```php
+$user = User::findOne();
+$user->profile = new Profile([
+    'biography'   => 'Some biography.',
+    'facebookUID' => 4567890
+]);
+
+dump($user);
+$user->save();
+```
