@@ -101,8 +101,6 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-> To be changed to parent::__construct(), $this->fields will be private.
-
 This entity provides the ability to set fields using a contructor method (Pay attention, that the fields will be set without any filtering). Now we can use this entity somewhere in our code:
 
 ```php
