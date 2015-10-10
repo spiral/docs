@@ -184,3 +184,104 @@ $user->profile = new Profile([
 dump($user);
 $user->save();
 ```
+
+#### Multiple Composition
+You can also create array compositions of documents. To start, let's create a simple `DocumentEntity` we would to store inside the user "session -f timeCreated:MongoDate -f accessToken:string":
+
+```php
+class Session extends DocumentEntity
+{
+    /**
+     * @var array
+     */
+    protected $fillable = [
+
+    ];
+
+    /**
+     * Entity schema.
+     *
+     * @var array
+     */
+    protected $schema = [
+        'timeCreated' => 'MongoDate',
+        'accessToken' => 'string'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'timeCreated' => ['notEmpty'],
+        'accessToken' => ['notEmpty']
+    ];
+}
+```
+
+Now we only need to modify user schema and include our composited model name as array element (same way as for ScalarArray):
+
+```php
+protected $schema = [
+    '_id'            => 'MongoId',
+    'name'           => 'string',
+    'email'          => 'string',
+    'balance'        => 'float',
+    'timeRegistered' => 'MongoDate',
+    'tags'           => ['string'],
+    'profile'        => Profile::class,
+    'sessions'       => [Session::class],
+    //Aggregations
+    'posts'          => [
+        self::MANY => Post::class,
+        ['userId' => 'self::_id']
+    ]
+];
+```
+
+After schema update we able to manipulate with array of sessions. Such array will be represented by ODM class `Spiral\ODM\Entities\Compositor`:
+
+```php
+$user = User::findOne();
+
+$user->sessions[] = new Session([
+    'timeCreated' => new \MongoDate(),
+    'accessToken' => 'random'
+]);
+
+dump($user);
+$user->save();
+```
+
+You can also iterate thought such array:
+
+```php
+$user = User::findOne();
+
+foreach ($user->sessions as $session) {
+    dumP($session->accessToken);
+}
+```
+
+In addition to that, Compositor provides simplistic method `find` and `findOne` which can be used to locate composited object by it's field value(s):
+
+```php
+dump($user->sessions->findOne(['accessToken' => 'random']));
+```
+
+> Method will return `null` if no objects can be fond. Attention, method can only access array of fields associated values, no mongo query like system can be supported here.
+
+#### Atomic Operations
+As in case with `ScalarArray`, `Compositor` are stated as **solid** by default, if you wish to apply atomic operations to it's documents you have to reset this state first:
+
+```php
+$user = User::findOne();
+$user->sessions->solidState(false);
+$user->sessions->push(new Session([
+    'timeCreated' => new \MongoDate(),
+    'accessToken' => 'newrandom'
+]));
+
+dump($user);
+$user->save();
+```
+
