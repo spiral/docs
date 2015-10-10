@@ -1,4 +1,4 @@
-# Contribution
+# Contributing
 Feel free to contribute to framework or components development. I will glaldy accept your pull requests if it does match provided requiments.
 
 ## Requiments
