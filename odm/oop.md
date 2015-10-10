@@ -270,7 +270,7 @@ dump($user->sessions->findOne(['accessToken' => 'random']));
 
 > Method will return `null` if no objects can be fond. Attention, method can only access array of fields associated values, no mongo query like system can be supported here.
 
-#### Atomic Operations
+##### Atomic Operations
 As in case with `ScalarArray`, `Compositor` are stated as **solid** by default, if you wish to apply atomic operations to it's documents you have to reset this state first:
 
 ```php
