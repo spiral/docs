@@ -450,3 +450,39 @@ atomics:dynamic = array(1)
 
 #### Filters and Accessors
 As in case with ORM or regular DataEntity class you are able to assign setters, getters and accessors to your fields. ODM component has two notable accessor we might need to check: `MongoTimestamp` and `ScalarArrar`.
+
+##### MongoTimestamp Accessor
+Based on provided configuration, you might notice that ODM will assign MongoTimestamp accessor to every timestamp or "MongoDate" field. Let's try to add such fields into our model:
+
+```php
+protected $schema = [
+    'id'             => 'MongoId',
+    'name'           => 'string',
+    'email'          => 'string',
+    'balance'        => 'float',
+    'timeRegistered' => 'MongoDate'
+];
+```
+
+After schema have been updated, we are able to use that field as Carbon instance.
+
+```php
+public function index()
+{
+    $user = User::findOne();
+    $user->name = 'New Name';
+
+    $user->timeRegistered->setDateTime(2015, 1, 1, 12, 0, 0);
+    dump($user);
+
+    if (!$user->solidState(true)->save()) {
+        dump($user->getErrors());
+    }
+}
+```
+
+You can also simply assign time to "timeRegistered" field, as accessor must automatically handle it using strtotime function:
+
+```php
+$user->timeRegistered = 'next friday 10am';
+```
