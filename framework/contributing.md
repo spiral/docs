@@ -2,7 +2,7 @@
 Feel free to contribute to framework or components development. I will glaldy accept your pull requests if it does match provided requiments.
 
 ## Requiments
-* PSR-2 codestyle, line width 100
+* PSR-1, PSR-2, PSR-4, line width 100
 * Every method or class MUST have doc comment describing it's functionality/purpose
 * No design violations
 * Test coverage of new functionality
