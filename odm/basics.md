@@ -728,7 +728,7 @@ As a result, you can use this service inside your controllers to avoid the stati
 public function index(UserService $users)
 {
     $user = $users->findByPK(1);
-    $user->balance->inc(1.6);
+    $user->inc('balance', 1.6);
 
     if (!$users->save($user)) {
         dump($user->getErrors());
