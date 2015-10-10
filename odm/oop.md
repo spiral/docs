@@ -93,6 +93,15 @@ $post->content = 'Some content';
 $post->save();
 ```
 
+Singilar aggreations will return outer Document or null if nothing can be found:
+
+```php
+dump($post->author());
+
+//Alternative
+dump($post->aggregation('author'));
+```
+
 ## Compositions
 Compositions is one of the most powerful featured of ODM component, such thing provides ability to nest multiple models inside each other. It can also be combined with inheritance and atomic operations.
 
