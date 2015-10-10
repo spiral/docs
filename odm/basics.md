@@ -5,6 +5,8 @@ ODM component was mainly designed to work with MongoDB database including suppor
 
 Spiral ODM does not use entity cache like in ORM, instead you are given with "streaming like" functionality which can be used to process huge massives of data using Document models.
 
+Check extened usage about DocumentEntity, Compompositions, Aggreagations and Inheritance [here] (oop.md).
+
 ## Mongo Connection and Databases
 As in case with ORM you are not required to spend fortune of time to configuring ODM component, the only thing you have to make sure (in case if you want to store your data in MongoDB) is that mongo connection is properly set, to do that simply check configuration file "odm.php" located inside your "applicatio/config" directory:
 
@@ -40,7 +42,7 @@ public function index(MongoDatabase $database, ODM $odm)
 > `MongoDatabase` class extends original `MongoDB` class so you can use it as regular mongo database.
 
 ## Document
-To define your first model related to MongoDB collection we only have to create/generate declaration of Document class whith desired set of fields listed in model **schema**. We can either create such model manually or generate it using console command "create:document", let's create our first model User, as in case with ORM we are able to pre-define set of desired fields: "create:document user -f id:MongoId -f name:string -f email:string -f balance:float". Resulted entity will be located in application/classes/Database/User.php:
+To define your first model related to MongoDB collection we only have to create/generate declaration of `Document` class whith desired set of fields listed in model **schema**. We can either create such model manually or generate it using console command "create:document", let's create our first model User, as in case with ORM we are able to pre-define set of desired fields: "create:document user -f id:MongoId -f name:string -f email:string -f balance:float". Resulted entity will be located in application/classes/Database/User.php:
 
 ```php
 class User extends Document 
@@ -79,7 +81,7 @@ You might notice that declaration is very similar to ORM Record, hovewer ODM com
 > You can read more about entity configuration (fillable, hidden, secured and validates properties) in a section declared to [DataEntity] (components/entity.md).
 
 #### Schema
-ODM classes Document (and DocumentEntity, see next) will only allow you to manipulate with set of fields described in model schema. Declaration of field can be performed by simply creating associated array between field name and it's type. 
+ODM classes Document (and `DocumentEntity`, see in extended usage) will only allow you to manipulate with set of fields described in model schema. Declaration of field can be performed by simply creating associated array between field name and it's type. 
 
 ```php
 protected $schema = [
@@ -160,3 +162,233 @@ protected $schema = [
     'data'    => 'string'
 ];
 ```
+
+## Create Document
+Once your ODM schema has been updated we are ready to work with our models, to save some data into our users collection let's create our first entity in our controller method:
+
+```php
+public function index()
+{
+    $u = new User();
+    $u->name = 'Anton';
+    $u->email = 'test@email.com';
+    $u->balance = 99;
+    $u->save();
+
+    dump($u);
+}
+```
+
+> If you working under PHPStorm, IDE will highlight all possible record fields for you.
+
+![Tooltips](https://raw.githubusercontent.com/spiral/guide/master/resources/tooltips.png)
+
+You can also create your entity using static method create which will respect fillable and secured fields.
+
+```php
+$u = User::create($request);
+```
+
+>Attention, create method will only return populated entity! You have to save it by it youself!
+
+#### Validations
+Document model fully follow principles of validations descibed in `DataEntity` model. If you wish to create more complex validation based on some external state you can redefine `validate` method:
+
+```php
+/**
+ * @param bool|false $reset
+ * @return bool
+ */
+protected function validate($reset = false)
+{
+    parent::validate($reset);
+
+    if ($this->hasUpdates('email') && !$this->hasError('email')) {
+        //We are using array based where statement
+        $selection = $this->odmCollection()->where([
+            'email' => $this->email,
+            '_id'    => ['$ne' => $this->_id]
+        ]);
+
+        if ($selection->count() != 0) {
+            $this->setError('email', self::translate("Email must be unique."));
+        }
+    }
+
+    return false;
+}
+```
+
+Now our controller code will be giving us error related to email field:
+
+```php
+$user = new User();
+$user->name = 'Anton';
+$user->email = 'test@email.com';
+$user->balance = 99;
+if (!$user->save()) {
+    dump($user->getErrors());
+}
+```
+
+Such validation method will check if email is unique but only in cases when email field has some updates (got created or changed). Now, we will get an error message associated with model field.
+
+Before we will jump to next step, lets try to create few more users. In this case we can use static method create which accepts set of initial model fields.
+
+Since we have no fillable fields, this method should not work in our case (so we are going to use setFields method with disabled access policy - by setting second argument as true). In order to fill our demo entities let's connect faker package.
+
+for ($i = 0; $i < 100; $i++) {
+    $user = User::create()->setFields([
+        'name'    => $faker->name,
+        'email'   => $faker->email,
+        'balance' => $faker->randomFloat(2, 0, 999)
+    ], true);
+
+    //Saving user to database
+    $user->save();
+}
+
+> Attention, create method will only return populated Document entity, you have to save such entity to database manually (simply call save() method).
+
+## Seletions
+Once you have your collection populated with data, it's time to select some of the Users to do something. Spiral ODM exposes 3 ActiveRecord like methods which you can use for that purposes: `find`, `findOne` and `findByPK`.
+
+There is 4th method which used inside every find method - `odmCollection`, you can use it to get access to `Collection` class associated with our document. You can also get associated collecion by calling method `odmCollection` of ODM component.
+
+#### FindOne
+To find one document based on some conditions and sorting we can use static method `findOne`, method will return null if it's unabled to locate required document. 
+ODM component does not provide any query wrapper at top of MongoDB so you are able to use pure mongo queries for your requsstes:
+
+```php
+//Don't worry about second argument yet, it's about pre-loading
+$user = User::findOne(['email' => 'test@email.com'];
+dump($user);
+```
+
+> ODM provides only one feature of automatic convertion of `DateTime` classes in your queries into instance of `MongoDate`.
+
+#### FindByPK
+In cases where you would like to find your document based on it's primary key value (MongoId in "_id" field) we can use method `findByPK`. Method will behave same way as `findOne` if no entity can be found.
+
+```php
+$user = User::findByPK($mongoID);
+dump($user);
+```
+
+> Method can accept mboth `MongoId` and string which will be automatically casted to valid id instance.
+
+The most often option is to find model based on provided primary key or return client exception on failure, spiral does not embedds any application specific logic into ODM component so you have to raise an exception by your own, fortunatelly it's pretty easy to do:
+
+```php
+public function index($id)
+{
+    if (empty($user = User::findByPK((int)$id))) {
+        throw new NotFoundException('No such user');
+    }
+
+    dump($user);
+}
+```
+
+Or using entity service:
+
+```
+public function index(UserService $users, $id)
+{
+    if (empty($user = $users->findByPK((int)$id))) {
+        throw new NotFoundException('No such user');
+    }
+
+    dump($user);
+}
+```
+
+#### Find and Working with Collection
+To find one or multiple document instances from desired collection, first of all we have to get associated instance of `Collecion`, as stated before we can do that using ODM component method `odmCollection` or via static function `find` of our User model.
+
+```php
+$collection = User::find();
+```
+
+Class is built at top of MongoCollection and decorates some of it's functions, you are able to set or clarify selection query using methods `query` or `where`:
+
+```php
+$collection = User::find()->where([
+    'email' => new \MongoRegex('/test@email.com/')
+]);
+
+dump($collection->count());
+```
+
+In addition to that you are able to paginate your result using same techniques described in [Pagination] (/components/pagination.md) component:
+
+```php
+$collection = User::find()->paginate(10);
+```
+
+> Check other Collection methods, such as limit, offset (skip) and sortBy.
+
+##### Fetching Documents
+Once you configured your Collection selection with desirec query you can fetch found document by simply iterating over collection, or explicitly calling method `getIterator` which will return an instance of `DocumentCursor`:
+
+```php
+foreach (User::find()->paginate(10) as $user) {
+    dump($user);
+}
+```
+
+```php
+$cursor = User::find()->sortBy(['name' => 1])->paginate(10)->getCursor();
+
+/**
+ * @var DocumentCursor $cursor
+ */
+foreach ($cursor as $user) {
+    dump($user);
+}
+```
+
+> You can also use method `getCursor` of your collection to make
+
+##### DocumentCursor
+Provided instance of `DocumentCursor` wraps at top of `MongoCursor` and provides support for lazy creation of collection documents (no entity cache used), as result you can iterate over huge amount of Documents without any significant memory usage. In addition, you can access to `MongoCursor` functionality:
+
+```php
+$cursor = User::find()->sortBy(['name' => 1])->paginate(10)->getCursor();
+
+/**
+ * @var DocumentCursor $cursor
+ * @var User           $user
+ */
+while ($user = $cursor->getNext()) {
+    dump($user);
+    dump($cursor->dead());
+}
+
+dump($cursor->info());
+```
+
+##### Fetching Fields
+If you wish to fetch only specified set of fields from your collection simply specify their names in a form of array into `fetchFields` method:
+
+```php
+foreach (User::find()->fetchFields(['name']) as $data) {
+    dump($data);
+}
+```
+
+Such methods will read all desired fields and return them in a form of array, you can also read them in a streaming mode by utilizing `fields` method of your `DocumentCursor`:
+
+```php
+$cursor = User::find()->getCursor()->fields([
+    'email' => true
+]);
+
+while ($data = $cursor->getNext()) {
+    dumP($data);
+}
+
+dumP($cursor->info());
+```
+
+> Attention, format in this case follows [offical documentation] (http://php.net/manual/ru/mongocursor.fields.php)!
