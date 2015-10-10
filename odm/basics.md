@@ -29,7 +29,7 @@ With ORM, you are not required to spend a ton of time trying to configure your O
 ],
 ```
 
-Configration is very similar to the [DBAL] (/databases/overview.md) and fully supports database aliases and controllable/contextual injections. If you want to get direct access to the `MongoDatabase` in your controller, simply request it using `ODM->db()` factory method or via `MongoDatabase` dependency using a database alias:
+Configration is very similar to the [DBAL] (/database/overview.md) and fully supports database aliases and controllable/contextual injections. If you want to get direct access to the `MongoDatabase` in your controller, simply request it using `ODM->db()` factory method or via `MongoDatabase` dependency using a database alias:
 
 ```php
 public function index(MongoDatabase $database, ODM $odm)
