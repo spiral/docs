@@ -743,7 +743,7 @@ Services like this are the best place to locate custom selection methods (like `
 ## Inheritance and Abstract Documents
 Since Spiral ODM uses static analysis, there are no real limitations on how you can create your models. As a result you can declare the **abstract** Document with it's schema, validations etc and later extend this class in your application models. This technique can be very useful when writing [modules] (/components/modules.md).
 
-> When extending, ORM will merge schemas and other properties of the Document and it's parent. Pay attention that ODM does not provide table inheritance.
+> When extending, ODM will merge schemas and other properties of the Document and it's parent.
 
 **You can also use the data driven model inheritance, check [this article] (oop.md).**
 
