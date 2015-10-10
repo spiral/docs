@@ -3,8 +3,8 @@ Feel free to contribute to framework or components development. I will glaldy ac
 
 ## Requiments
 * PSR-1, PSR-2, PSR-4, line width 100
-* Every method or class MUST have doc comment describing it's functionality/purpose
-* No design violations
+* Every method or class MUST have doc comment describing it's functionality/purpose return value and parameters
+* No design violations (i love crazy ideas, but consult first :))
 * Test coverage of new functionality
 
 ## Help Needed In
