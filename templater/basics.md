@@ -107,7 +107,7 @@ You might notice that we kept all of our universal HTML code in a single file an
 > One of the nicer side effects of using the spiral Templater is that any IDE or editor will treat its' tags as normal html/xml tags. As a result, your content will be nicely indented and any mistakes will be highlighted. 
 
 The resulting HTML will look exactly the same as before. However, our view is now much smaller in size. Let's examine our template to understand what we just did.
-First of all, we declared that our view file must extend the parent template "layouts.basic". Because we are allowed to use the path seperators in html tags the - "." will be replaced with "/", which allows the templater to extend our desired "layouts/basic" view (the current view namespace [default] will be used).
+First of all, we declared that our view file must extend the parent template "layouts.basic". Because we are not allowed to use the path seperators in html tags the - "." will be replaced with "/", which allows the templater to extend our desired "layouts/basic" view (the current view namespace [default] will be used).
 
 Next, in the extends tag, we declared a tag attribute "title". This definition tells the parent layout to replace the "title" block with the given value. These block definitions can be used for simple html strings and php code.
 
