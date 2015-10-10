@@ -745,7 +745,7 @@ Since Spiral ODM uses static analysis, there are no real limitations on how you 
 
 > When extending, ORM will merge schemas and other properties of the Document and it's parent. Pay attention that ODM does not provide table inheritance.
 
-**You can also use the data driven model inheritance, check [this article] (opp.md).**
+**You can also use the data driven model inheritance, check [this article] (oop.md).**
 
 ## Inspections
 While running the schema update (spiral up) command, you might notice text which contains a list of the inspected entities and resulting rating. This information provided by spiral **Entity Inspector** analyses ORM and ODM schemas to find unprotected or blacklisted fields. We can get more details by running inspection on selected entity:
