@@ -40,15 +40,9 @@ class User extends Record
      * @var array
      */
     protected $validates = [
-        'name'   => [
-            'notEmpty'
-        ],
-        'email'  => [
-            'notEmpty'
-        ],
-        'status' => [
-            'notEmpty'
-        ]
+        'name'   => ['notEmpty'],
+        'email'  => ['notEmpty'],
+        'status' => ['notEmpty']
     ];
 
     /**
