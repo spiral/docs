@@ -8,7 +8,7 @@
     * [Application Memory (&#1000;)] (framework/memory.md)
     * [Framework Interfaces] (framework/interfaces.md)
     * [Roadmap] (framework/roadmap.md) 
-    * [**Contribution**] (framework/contributing.md)
+    * [**Contributing**] (framework/contributing.md)
 * Application
     * [**Directory structure**] (application/directories.md)
     * [Startup Flow] (application/startup.md)
