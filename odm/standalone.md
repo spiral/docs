@@ -1,8 +1,8 @@
 # Standalone Usage
-Even if ODM component provides deep integration with MongoDB database, it's not required to use such database as data source. Due all ODM models can accept input data as constructor argument you are able to use them to mock or validate any type of data in your application.
+Even if ODM component provides deep integration with MongoDB database, it's not required to use such database as data source. Due all ODM models can accept input data in constructor argument you are able to use them to mock or validate any type of data in your application.
 
 ## Standalone example
-Let's try to create simple example of array data structure we would like to handle:
+Let's try to create simple example of data structure we would like to handle:
 
 ```php
 $data = [
@@ -15,7 +15,7 @@ $data = [
 ];
 ```
 
-To handle such data we will need two DocumentEntity models - Data and Element, let's create them:
+To handle such data we will need two `DocumentEntity` models - Data and Element, let's create them:
 
 ```php
 class Element extends DocumentEntity
@@ -64,12 +64,15 @@ dump($model->name);
 foreach ($model->elements as $element) {
     dump($element->name);
 }
+
+//Pack to array
+dump($model->serializeData());
 ```
 
 > Standalone ODM usage can be useful to validate complex data.
 
 ## Json Documents
-One potential options how ODM component can be used in application without connection to MongoDB databases is using `JsonDocument`. Such class extends `DocumentEntity` and implements ORM `ActiveAccessorInterface`. As result this object can be used to represent structured json data in your ORM Records:
+One potential option how ODM component can be used in application without connection to MongoDB databases is using `JsonDocument`. Such class extends `DocumentEntity` and implements ORM `ActiveAccessorInterface`. As result this object can be used to represent structured json data in your ORM Records:
 
 ```php
 class Data extends Record
@@ -94,6 +97,7 @@ class Data extends Record
 ```
 
 Json accessor:
+
 ```php
 class JsonData extends JsonDocument
 {
@@ -139,3 +143,5 @@ $data = Data::findOne();
 $data->data->field = '';
 dump($data->getErrors());
 ```
+
+> You can use json data in SQL queries whily working with PostgresSQL.
