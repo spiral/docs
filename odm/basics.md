@@ -8,7 +8,7 @@ Spiral ODM does not use entity cache like in ORM, instead you are given with "st
 Check extened usage about DocumentEntity, Compompositions, Aggreagations and Inheritance [here] (oop.md).
 
 ## Mongo Connection and Databases
-As in case with ORM you are not required to spend fortune of time to configuring ODM component, the only thing you have to make sure (in case if you want to store your data in MongoDB) is that mongo connection is properly set, to do that simply check configuration file "odm.php" located inside your "applicatio/config" directory:
+As in case with ORM you are not required to spend fortune of time to configuring ODM component, the only thing you have to make sure (in case if you want to store your data in MongoDB) is that mongo connection is properly set, to do that simply check configuration file "odm.php" located inside your "application/config" directory:
 
 ```php
 'default'   => 'default',
@@ -42,7 +42,7 @@ public function index(MongoDatabase $database, ODM $odm)
 > `MongoDatabase` class extends original `MongoDB` class so you can use it as regular mongo database.
 
 ## Document
-To define your first model related to MongoDB collection we only have to create/generate declaration of `Document` class whith desired set of fields listed in model **schema**. We can either create such model manually or generate it using console command "create:document", let's create our first model User, as in case with ORM we are able to pre-define set of desired fields: "create:document user -f id:MongoId -f name:string -f email:string -f balance:float". Resulted entity will be located in application/classes/Database/User.php:
+To define your first model related to MongoDB collection we only have to create/generate declaration of `Document` class whith desired set of fields listed in model **schema**. We can either create such model manually or generate it using console command "create:document", let's create our first model User, as in case with ORM we are able to pre-define set of desired fields: "create:document user -f _id:MongoId -f name:string -f email:string -f balance:float". Resulted entity will be located in application/classes/Database/User.php:
 
 ```php
 class User extends Document 
@@ -59,7 +59,7 @@ class User extends Document
      * @var array
      */
     protected $schema = [
-        'id'      => 'MongoId',
+        '_id'     => 'MongoId',
         'name'    => 'string',
         'email'   => 'string',
         'balance' => 'float'
@@ -85,7 +85,7 @@ ODM classes Document (and `DocumentEntity`, see in extended usage) will only all
 
 ```php
 protected $schema = [
-    'id'      => 'MongoId',
+    '_id'     => 'MongoId',
     'name'    => 'string',
     'email'   => 'string',
     'balance' => 'float'
@@ -155,7 +155,7 @@ Since ODM schema does not stored in database it can be efficiently updated witho
 
 ```php
 protected $schema = [
-    'id'      => 'MongoId',
+    '_id'     => 'MongoId',
     'name'    => 'string',
     'email'   => 'string',
     'balance' => 'float',
@@ -439,7 +439,6 @@ atomics:dynamic = array(1)
 ·    ['$set'] = array(4)
 ·    (
 ·    ·    ['balance'] = double(5) 27.920000000000002
-·    ·    ['id'] = null(0) 
 ·    ·    ['name'] = string(8) New Name
 ·    ·    ['email'] = string(22) klangworth@hotmail.com
 ·    )
@@ -456,7 +455,7 @@ Based on provided configuration, you might notice that ODM will assign MongoTime
 
 ```php
 protected $schema = [
-    'id'             => 'MongoId',
+    '_id'            => 'MongoId',
     'name'           => 'string',
     'email'          => 'string',
     'balance'        => 'float',
@@ -492,7 +491,7 @@ ODM component provides one accessor which is intented to simplify operations wit
 
 ```php
 protected $schema = [
-    'id'             => 'MongoId',
+    '_id'            => 'MongoId',
     'name'           => 'string',
     'email'          => 'string',
     'balance'        => 'float',
@@ -594,7 +593,7 @@ class User extends Document
      * @var array
      */
     protected $schema = [
-        'id'             => 'MongoId',
+        '_id'            => 'MongoId',
         'name'           => 'string',
         'email'          => 'string',
         'balance'        => 'float',
@@ -755,7 +754,7 @@ While running shema update (spiral up) command, you might notice text which cont
 +-----------------+-----------+----------+----------+-----------+----------------+
 | Field           | Rank      | Fillable | Filtered | Validated | Hidden         |
 +-----------------+-----------+----------+----------+-----------+----------------+
-| id              | Very Good | no       | yes      | no        | no             |
+| _id             | Very Good | no       | yes      | no        | no             |
 | name            | Very Good | no       | yes      | yes       | no             |
 | email           | Good      | no       | yes      | yes       | no (blacklist) |
 | balance         | Very Good | no       | yes      | no        | no             |
