@@ -392,3 +392,61 @@ dumP($cursor->info());
 ```
 
 > Attention, format in this case follows [offical documentation] (http://php.net/manual/ru/mongocursor.fields.php)!
+
+## Modify Document
+Once you selected needed document (for example using `findByPK`) you can modify it's fields using same way as with any other `DataEntity`. To save your updates into database you have to run method save(), method returns false if model validations failed.
+
+```php
+public function index($id)
+{
+    $user = User::findByPK($id);
+    $user->name = 'New Name';
+
+    if (!$user->save()) {
+        dump($user->getErrors());
+    }
+}
+```
+
+#### Dirty Fields and Solid State
+If you will dump User models before saving it into database you will see property "atomics" which demonstrates what query will be sent to MongoDB to perform requested updated. 
+
+```
+atomics:dynamic = array(1)
+(
+·    ['$set'] = array(1)
+·    (
+·    ·    ['name'] = string(8) New Name
+·    )
+)
+```
+
+As you might notice, Document sends only chaged values of name field using atomic operation set. Such approach can be useful in many cases when data is updated from many places, however if you wish to save your entity data into database as solid dataset you can force entity "solid state". When model (Document) are in solid state every small update will cause full dataset update.
+
+```php
+$user = User::findByPK($id);
+$user->name = 'New Name';
+
+$user->solidState(true);
+dump($user);
+```
+
+Now our atomic operation will look like:
+
+```
+atomics:dynamic = array(1)
+(
+·    ['$set'] = array(4)
+·    (
+·    ·    ['balance'] = double(5) 27.920000000000002
+·    ·    ['id'] = null(0) 
+·    ·    ['name'] = string(8) New Name
+·    ·    ['email'] = string(22) klangworth@hotmail.com
+·    )
+)
+```
+
+> If you want to keep our model in solid state by default, you can call such method in overwritten model constructor. SolidState automatically applied to every newly created model.
+
+#### Filters and Accessors
+As in case with ORM or regular DataEntity class you are able to assign setters, getters and accessors to your fields. ODM component has two notable accessor we might need to check: `MongoTimestamp` and `ScalarArrar`.
