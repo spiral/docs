@@ -362,3 +362,37 @@ $user->sessions[] = new SuperSession([
 $user->save();
 ```
 
+#### How Inheritance Work
+Every time Compositor or Collection trying to create `Document` or `DocumentEntity` entity data will be passed to ODM component method `document`. Such method will analyze provided data, and, based on presented fields select specific class to be used as data representer. Such methodic automatically adds contrain to your code - no entity can be extended without adding unique fields into it's schema.
+
+#### Logical Class Definition
+In some cases you might want to control which class being selected for data array manually. To do that you have to switch inheritance logic for your entity to LOGICAL_DEFINTIION, to do that simply declare constant DEFINITION.
+
+```php
+class User extends Document
+{
+    use TimestampsTrait;
+
+    /**
+     * Indication to ODM component of method to resolve Document class using it's fieldset. This
+     * constant is required due Document can inherit another Document.
+     */
+    const DEFINITION = self::DEFINITION_LOGICAL;
+
+    ...
+```
+
+Now, every time when ODM will try to constuct instance of User it will be previously try to find appropriate class by calling User static method `defineClass`, let's try to write such method in a way to emulate default inheritance logic:
+
+```php
+public static function defineClass(array $fields, ODM $odm)
+{
+    if (array_key_exists('moderates', $fields)) {
+        return Moderator::class;
+    }
+
+    return self::class;
+}
+```
+
+> You can obviosuly use more complex logic.
