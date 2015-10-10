@@ -20,7 +20,7 @@ class Post extends Document
      * @var array
      */
     protected $schema = [
-        '_id'      => 'MongoId',
+        '_id'     => 'MongoId',
         'userId'  => 'MongoId',
         'title'   => 'string',
         'content' => 'string'
@@ -40,7 +40,7 @@ To create composition of posts in our User model, we have to modify it's schema 
 
 ```php
 protected $schema = [
-    '_id'             => 'MongoId',
+    '_id'            => 'MongoId',
     'name'           => 'string',
     'email'          => 'string',
     'balance'        => 'float',
@@ -58,7 +58,7 @@ We can also create reverted relation in our `Post` model:
 
 ```php
 protected $schema = [
-    '_id'      => 'MongoId',
+    '_id'     => 'MongoId',
     'userId'  => 'MongoId',
     'title'   => 'string',
     'content' => 'string',
@@ -282,6 +282,83 @@ $user->sessions->push(new Session([
 ]));
 
 dump($user);
+$user->save();
+```
+
+## Inheritance
+In addition to aggregation and composition ODM engine provides ability to store Document and it's childs in a same collection/composition. At moment of class creation ODM will automatically resolve what class has to be used to represent such data. We can demonsrate such functionality using following example:
+
+```php
+class Moderator extends User
+{
+    /**
+     * Entity schema.
+     *
+     * @var array
+     */
+    protected $schema = [
+        'moderates' => ['string']
+    ];
+}
+```
+
+Now we can simply create our Moderator and save it in a same collection as user:
+
+```php
+$user = new Moderator();
+$user->name = 'Moderator';
+$user->email = 'moderator@email.com';
+$user->balance = 99;
+$user->moderates = ['a', 'b', 'c'];
+
+//Required
+$user->profile = new Profile([
+    'biography'   => 'Some biography.',
+    'facebookUID' => 4532467890
+]);
+
+if (!$user->save()) {
+    dump($user->getErrors());
+}
+```
+
+Now, we can iterate thought our users and at one moment entity will be represented as `Moderator`:
+
+```php
+foreach (User::find() as $user) {
+    dump($user);
+
+    if ($user instanceof Moderator) {
+        echo 'Found it!';
+    }
+}
+```
+
+> One of the effects of multiple types stored in one collection - you have to verify class types supplied by find, findOne and findByPK methods, as calling this method in Moderator can return instance of User in some cases (i'm thinking about doing this check automatically in `findOne` and `findByPK` methods, but not in `find`).
+
+You can also assign Document or DocumentEtity childs to compositions, for example:
+
+```php
+class SuperSession extends Session
+{
+    protected $schema = [
+        'superKey' => 'string'
+    ];
+}
+```
+
+And in your code:
+
+```php
+$user = User::findOne();
+dump($user->sessions->all());
+
+$user->sessions[] = new SuperSession([
+    'timeCreated' => new \MongoDate(),
+    'accessToken' => 'random',
+    'superKey'    => 'some value'
+]);
+
 $user->save();
 ```
 
