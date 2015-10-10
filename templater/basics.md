@@ -306,7 +306,7 @@ Now we have the ability to set a custom wrapper class using our templates:
 </block:footer>
 ```
 
-Using this example with normal block definitions, we can always use parent block values. Let's try to add our class without removing the parent one using `${name}` something like syntax:
+Using this example with normal block definitions, we can always use parent block values. Let's try to add our class without removing the parent one using `${name|default}` like syntax:
 
 ```html
 <extends:layouts.basic title="About Us" wrapper-class="${wrapper-class} about-us"/>
