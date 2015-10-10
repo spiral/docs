@@ -60,7 +60,8 @@
     * [Relations] (orm/relations.md)
     * [Entity Cache and Eager loading] (orm/loading.md)
 * Spiral ODM
-    * [Documents, Compositions and Aggregations] (odm/basics.md)
+    * [Documents and Databases] (odm/basics.md)
+    * Compositions, Aggreagations, Inheritance
     * JSON and Standalone Documents
     * [UML Export] (odm/uml.md)
 * Modules and Extensions
