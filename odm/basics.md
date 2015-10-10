@@ -250,7 +250,7 @@ for ($i = 0; $i < 100; $i++) {
 
 > Attention, create method will only return populated Document entity, you have to save such entity to database manually (simply call save() method).
 
-## Seletions
+## Selections
 Once you have your collection populated with data, it's time to select some of the Users to do something. Spiral ODM exposes 3 ActiveRecord like methods which you can use for that purposes: `find`, `findOne` and `findByPK`.
 
 There is 4th method which used inside every find method - `odmCollection`, you can use it to get access to `Collection` class associated with our document. You can also get associated collecion by calling method `odmCollection` of ODM component.
