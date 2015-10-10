@@ -125,6 +125,8 @@ $data->data->field = 'abc';
 $data->save();
 ```
 
+Generated SQL query for Postgres database:
+
 ```sql
 INSERT INTO "abc_datas" ("data")
 VALUES ('{"field":"abc"}') RETURNING "id"
