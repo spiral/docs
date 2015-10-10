@@ -1,12 +1,12 @@
 ## ODM Component, Basics
 Spiral ODM component has some similaries to [ORM engine] (/orm/basics.md) as they both based on [**DataEntity**] (/components/entity.md) model and [Behaviour Schemas] (/schemas.md). However ODM removes termin "relation" and replaces it with classical [compositions and aggregations] (https://en.wikipedia.org/wiki/Object_composition) temninalogy. In addition, ODM classes support inheritance and also can be embedded into ORM as JSON objects. 
 
-ODM component was mainly designed to work with MongoDB database including support of atomic operations, however `DocumentEntity` class and it's compositions can be used outside of Mongo to create OOP data representation of various structures (XML files, API responses, etc).
+ODM component was mainly designed to work with MongoDB database including support of atomic operations, however `DocumentEntity` class and it's compositions can be used outside of Mongo scope to create OOP data representation of various structures (XML files, API responses, etc).
 
-Spiral ODM does not use entity cache, instead you are given with "streaming like" functionality which can be used to process huge massives of data using Document models.
+Spiral ODM does not use entity cache like in ORM, instead you are given with "streaming like" functionality which can be used to process huge massives of data using Document models.
 
 ## Mongo Connection and Databases
-As in case with ORM you are not required to spend fortune of time to configure ODM component, the only thing you have to make sure (in case if you want to store your data in MongoDB) is that mongo connection is properly configured, to do that simply check configuration file "odm.php":
+As in case with ORM you are not required to spend fortune of time to configuring ODM component, the only thing you have to make sure (in case if you want to store your data in MongoDB) is that mongo connection is properly set, to do that simply check configuration file "odm.php" located inside your "applicatio/config" directory:
 
 ```php
 'default'   => 'default',
@@ -15,7 +15,7 @@ As in case with ORM you are not required to spend fortune of time to configure O
     'db'       => 'default',
     'mongo'    => 'default'
 ],
-'databases' => [
+'databases' => [ 
     'default' => [
         'server'    => 'mongodb://localhost:27017',
         'profiling' => MongoDatabase::PROFILE_SIMPLE,
@@ -27,7 +27,7 @@ As in case with ORM you are not required to spend fortune of time to configure O
 ],
 ```
 
-Configration is very similar to [DBAL] (/databases/overview.md) and fully support database aliases and controllable/contextual injections. If you wish to get direct access to MongoDatabase in your controller simple request it using `ODM->db()` factory method or via `MongoDatabase` dependency using database alias:
+Configration is very similar to [DBAL] (/databases/overview.md) and fully support database aliases and controllable/contextual injections. If you wish to get direct access to `MongoDatabase` in your controller simply request it using `ODM->db()` factory method or via `MongoDatabase` dependency using database alias:
 
 ```php
 public function index(MongoDatabase $database, ODM $odm)
@@ -37,89 +37,10 @@ public function index(MongoDatabase $database, ODM $odm)
 }
 ```
 
-#### DocumentEntity
-The base class of ODM component which provides support for inheritance and compositions is `DocumentEntity`, such class does not have ActiveRecord functionality and mainly used 
-
-You can create Document model by simply extending `Spiral\ODM\Document` class and via defining model behaviour using protected property "schema". To simplfy model creation, you can also use console command "create:embeddable name -f field:type ...". We can pre-create our fist model using command "create:embed data -f name:string -f value:int -f time:MongoDate", as result we will get our class in "application/classes/Database" folder.
-
-```php
-class Data extends DocumentEntity 
-{
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        
-    ];
-
-    /**
-     * Entity schema.
-     * 
-     * @var array
-     */
-    protected $schema = [
-        'name'  => 'string',
-        'value' => 'int',
-        'time'  => 'MongoDate'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $validates = [
-        'name'  => ['notEmpty'],
-        'value' => ['notEmpty'],
-        'time'  => ['notEmpty']
-    ];
-}
-```
-
-You can edit desired fillable, validations or schema property to add more field. Once you satified with your model, you can generate behaviour schema by running command "spiral update". ODM component will analyse your model and automatically create set of setters, getters and accessors based on component configuration, we can check such configuration (config/odm.php):
-
-```php
-'schemas'   => [
-    'mutators'       => [
-        'int'       => ['setter' => 'intval'],
-        'float'     => ['setter' => 'floatval'],
-        'string'    => ['setter' => 'strval'],
-        'bool'      => ['setter' => 'boolval'],
-        'MongoId'   => ['setter' => [ODM::class, 'mongoID']],
-        'array'     => ['accessor' => ScalarArray::class],
-        'MongoDate' => ['accessor' => Accessors\ODMTimestamp::class],
-        'timestamp' => ['accessor' => Accessors\ODMTimestamp::class],
-        'storage'   => ['accessor' => Accessors\StorageAccessor::class]
-    ],
-    'mutatorAliases' => [
-    ]
-]
-```
-
-You can correlate field types you declated in your model with set of default mutators. Once schema is updated, spiral will generate set of IDE tooltips (PHPStorm support only for now), which will help you to remember what fields and accessors you have in your model.
-
-> Document model still uses mongo atomic operations, you can change such behaviour or ignore it.
-
-We are ready use such model in our code, since there is Mongo Collection associated to it (we need ActiveDocument for that) we can use our entity as usual DataEntity class.
-
-```php
-public function index()
-{
-    $model = new Data();
-
-    $model->name = 900;
-    $model->setValue('12');
-
-    //Since ODM gave us time accessor we can do that:
-    $model->time->setTimezone('America/Los_Angeles');
-    $model->time = 'tomorrow 10am';
-
-    dump($model);
-}
-```
-
-> You might notice that every value got type casted, this is required since MongoDB needs string types.
+> `MongoDatabase` class extends original `MongoDB` class so you can use it as regular mongo database.
 
 ## Document
-ActiveDocument models are almost identical in it's definition to Document one, it only provides two additional properties "collection" and "database" which you can define to specify where your model data must be stored into. By default spiral will generate collection name based on class and use default database. To generate ActiveModel class we have to run command 'create:document'. Since our documents are going to be stored in MongoDB we have to specify `_id` field. Let's try to execute command "create:document user -f id:MongoId -f name:string -f email:string -f balance:float", as result:
+To define your first model related to MongoDB collection we only have to create/generate declaration of Document class whith desired set of fields listed in model **schema**. We can either create such model manually or generate it using console command "create:document", let's create our first model User, as in case with ORM we are able to pre-define set of desired fields: "create:document user -f id:MongoId -f name:string -f email:string -f balance:float". Resulted entity will be located in application/classes/Database/User.php:
 
 ```php
 class User extends Document 
@@ -128,9 +49,6 @@ class User extends Document
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
-        'balance'
     ];
 
     /**
@@ -156,43 +74,89 @@ class User extends Document
 }
 ```
 
-> You can use same validation principles as in ORM.
+You might notice that declaration is very similar to ORM Record, hovewer ODM component does not affect MongoDB schema, but rather stores it in your application. 
 
-And again, you will have to run command "spiral update" to register such entity in ODM component. In my case i'v specified what fields can be fillable. Once done, we can try to create our first document and store it into Mongo collection ("users").
+> You can read more about entity configuration (fillable, hidden, secured and validates properties) in a section declared to [DataEntity] (components/entity.md).
+
+#### Schema
+ODM classes Document (and DocumentEntity, see next) will only allow you to manipulate with set of fields described in model schema. Declaration of field can be performed by simply creating associated array between field name and it's type. 
 
 ```php
-public function index()
-{
-    $user = new User();
-    $user->name = 'Anton';
-    $user->email = 'test@email.com';
-    $user->balance = mt_rand(0, 10000) / 100;
-    $user->save();
-
-    dump($user);
-}
+protected $schema = [
+    'id'      => 'MongoId',
+    'name'    => 'string',
+    'email'   => 'string',
+    'balance' => 'float'
+];
 ```
 
-> Since we defined fillable fields, we can also use `User::create(data)`.
+You can associate your field with any desired type, however, since MongoDB does not allow dynamic typing we have to make sure that every value listed in schema is always typecased into specified type. You can solve such problem by utilizing model getters and setters or simply using set of pre-declared types, check ODM config:
 
-If everything is OK you might notice that `_id` field got populated in last dump, meaning we just pushed our data into database.
+```php
+'schemas'   => [
+    'mutators'       => [
+        'int'       => ['setter' => 'intval'],
+        'float'     => ['setter' => 'floatval'],
+        'string'    => ['setter' => 'strval'],
+        'bool'      => ['setter' => 'boolval'],
+        'MongoId'   => ['setter' => [ODM::class, 'mongoID']],
+        'array'     => ['accessor' => ScalarArray::class],
+        'MongoDate' => ['accessor' => Accessors\ODMTimestamp::class],
+        'timestamp' => ['accessor' => Accessors\ODMTimestamp::class],
+        'storage'   => ['accessor' => Accessors\StorageAccessor::class]
+    ],
+    'mutatorAliases' => [
+    ]
+]
+```
 
-## Querying Documents
+As you can see, every string field will automatically get associated setter `setval` while schema update.
 
+> Schema can also contain aggregations and compositions, you can read about it below.
 
+#### Default Values
+ODM will automatically force default values based on typecasted null value (string => "", int => 0), you can set your own default values using model property "defaults":
 
+```php
+protected $defaults = [
+    'balance' => 100.00    
+];
+```
 
-## Atomic Operations and Solid State
+#### Associated Collection and Database
+By default spiral will associate your `Document` model with the default ODM database and collection which name are generated based on class name (in our case User => users). You can alter both of this values by declaring non empty properties `database` and `collection`.
 
+> If you unsure what collection will be used based on model name - simply force `collection` for every Document, it's not going to harm anyone but will make your code more readable.
 
-### Scalar Arrays
+#### Indexes
+To declare indexes to be created in associated collection simply declare them in `indexes` property of your Document. Declaration form is similar to MongoCollection
+ensureIndexes method. Indexes will be created as moment of schema update (see next).
 
+```php
+protected $indexes = [
+    ['email' => 1, '@options' => ['unique' => true]],
+    ['name' => 1, 'balance' => -1]
+];
+```
 
-## Inheritance and Class Definition
+> Use "@options" key to specify index options.
 
+## Schema Update
+Once you created your first Document or Documents, you have to register them inside your ODM component schema. Such operation called "schema update" and does not require any operation rather then rutting console command "spiral update" or "spiral up". Schema update will automatically located all your Document and DocumentEntity models, analyze them, create automatic set of mutators and store information about compiled behaviours inside application memory.
 
+The only database related operation performed while schema update - ensuring that requested indexes exists in associated collection.
 
-## Compositions
+> Spiral Framework in addion will generate virtual documentation for your models, so you IDE will highligt every aviable field and composition.
 
-## Aggregations
+#### Modifying Documents schema
+Since ODM schema does not stored in database it can be efficiently updated without any storage change, as result you are able to add new columns, compositions and etc into your Documents at any moment - simply declare them in your model schema and update ODM after.
 
+```php
+protected $schema = [
+    'id'      => 'MongoId',
+    'name'    => 'string',
+    'email'   => 'string',
+    'balance' => 'float',
+    'data'    => 'string'
+];
+```
