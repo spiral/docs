@@ -69,7 +69,7 @@ As you see, both templates use a very similar layout that are only different in 
 <?=$this->container->views->render('footer')?>
 ```
 
-However, this technique has some disadvantages. For example, if you leave a tag unclosed, your application could easily spend extra resources rendering both the footer and header every time your page loads. To prevent these problems, we can create one universal template for our pages and extend it in our views. Let's try that and place the view file into "application/views/layouts/basic.php":
+However, this technique has some disadvantages. For example, can you leave a tag unclosed, plus your application could easily spend extra resources rendering both the footer and header every time your page loads. To prevent these problems, we can create one universal template for our pages and extend it in our views. Let's try that and place the view file into "application/views/layouts/basic.php":
 
 ```html
 <!DOCTYPE html>
