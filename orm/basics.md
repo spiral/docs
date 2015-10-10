@@ -240,6 +240,14 @@ public function index()
 
 You can use every `DataEntity` method to populate your model, such as setFields, setField or even set of magic methods - setName, setEmail, etc.
 
+You can also create your entity using static method `create` which will respect fillable and secured fields.
+
+```php
+$u = User::create($request);
+```
+
+> Attention, `create` method will only return populated entity! You have to save it by it youself!
+
 #### Validations
 Given example will raise an exception when we will try to execute it again, the reason - non unique email. Since email validation requires us to send query to database, we might want to modify our validation method (same way as in `DataEntity` examples) to add more complex validation rule:
 
