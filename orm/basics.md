@@ -479,7 +479,7 @@ public function index()
     $user = User::findByPK(1);
     $user->name = 'New Name';
 
-    $user->time_registered->now();
+    $user->time_registered->setDateTime(2015, 1, 1, 12, 0, 0);
     dump($user->time_registered);
 
     if (!$user->solidState(true)->save()) {
