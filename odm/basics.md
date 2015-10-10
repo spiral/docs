@@ -486,3 +486,227 @@ You can also simply assign time to "timeRegistered" field, as accessor must auto
 ```php
 $user->timeRegistered = 'next friday 10am';
 ```
+
+
+//ARRAYS
+
+
+
+## Delete Documents
+You can delete any existed Document by executing it's method "delete". There is not much to talk about it.
+
+## Events and Traits
+As DataEntity model, Document declares few [events] (/components/events.md) which you can handle to track or change model behaviour:
+
+Event                   | Context                                   | Return | Description
+---                     | ---                                       | ---    | ---
+setFields               | $fields                                   | *      | Called inside `setFields` method.
+publicFields            | $fields                                   | *      | Called before return in `publicFields` method.
+jsonSerialize           | $publicFields                             | *      | Called while packing model into json.
+validation              | -                                         | -      | Before validation.
+validated               | $errors                                   | *      | After validation.
+**describe** (static)   | [$property, $value, EntitySchema $schema] | value  | Called while model analysis. Such evet can be used to redefine or alter schema, validations, mutators etc.
+created                 | -                                         | -      | Called inside static method "create" after assigning model fields.
+collection              | Collection $selector                      | *      | Called by "find" and other selection methods.
+saving                  | -                                         | -      | Before model data saved into database (model is only created). 
+saved                   | -                                         | -      | After model data saved into database.
+updating                | -                                         | -      | Before model data updated in database (model already exist).
+updated                 | -                                         | -      | After model data updated in database.
+deleting                | -                                         | -      | Before model deleted from database.
+deleted                 | -                                         | -      | After model deleted from database.
+
+In most cases you don't need to handle any of event as `save` and `delete` methods can be easily overwriten. However events can be very useful to create set of traits used to modify Document schema and update/save behaviour (see next).
+
+#### Timestamps Trait
+One of the most common Document trait you might want to use - `TimestampsTrait`. Such trait handle events "saving", "updating" and "describe" to alter Document schema  and update two "magic" fields "timeCreated" and "timeUpdated" (both type MongoDate). Our final demo Document `User` might look like:
+
+```php
+class User extends Document
+{
+    use TimestampsTrait;
+    
+    /**
+     * @var array
+     */
+    protected $fillable = [
+
+    ];
+
+    /**
+     * Entity schema.
+     *
+     * @var array
+     */
+    protected $schema = [
+        'id'             => 'MongoId',
+        'name'           => 'string',
+        'email'          => 'string',
+        'balance'        => 'float',
+        'timeRegistered' => 'MongoDate'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'name'    => [
+            'notEmpty'
+        ],
+        'email'   => [
+            'notEmpty'
+        ],
+        'balance' => [
+            'notEmpty'
+        ]
+    ];
+
+    protected $defaults = [
+        'balance' => 100.00
+    ];
+
+    /**
+     * @param bool|false $reset
+     * @return bool
+     */
+    protected function validate($reset = false)
+    {
+        parent::validate($reset);
+
+        if ($this->hasUpdates('email') && !$this->hasError('email')) {
+            //We are using array based where statement
+            $selection = $this->odmCollection()->where([
+                'email' => $this->email,
+                '_id'   => ['$ne' => $this->_id]
+            ]);
+
+            if ($selection->count() != 0) {
+                $this->setError('email', self::translate("Email must be unique."));
+            }
+        }
+
+        return false;
+    }
+}
+```
+
+## Services and Controllers
+While working with ODM models you are able to call `find`, `findByPK` and `save` methods inside your controllers directly. However spiral provides ability to pre-generate specific [Service] (/application/services.md) which can help you to abstract database specific operations from your controllers code. 
+
+You can scaffold such class using console command "create:service user -e user", resulted code may look like:
+
+```php
+class UserService extends Service  implements SingletonInterface
+{
+    /**
+     * Declares to IoC container that class must be treated as Singleton.
+     */
+    const SINGLETON = self::class;
+
+    /**
+     * Create new blank User. You must save entity using save method.
+     * 
+     * @param array|\Traversable $fields Initial set of fields.
+     * @return User
+     */
+    public function create($fields = [])
+    {
+        return User::create($fields);
+    }
+
+    /**
+     * Save User instance.
+     * 
+     * @param User $user
+     * @param bool  $validate
+     * @param array $errors Will be populated if save fails.
+     * @return bool
+     */
+    public function save(User $user, $validate = true, &$errors = NULL)
+    {
+        if ($user->save($validate)) {
+            return true;
+        }
+        
+        $errors = $user->getErrors();
+        
+        return false;
+    }
+
+    /**
+     * Delete User.
+     * 
+     * @param User $user
+     */
+    public function delete(User $user)
+    {
+        $user->delete();
+    }
+
+    /**
+     * Find User it's primary key.
+     * 
+     * @param mixed $primaryKey
+     * @return User|null
+     */
+    public function findByPK($primaryKey)
+    {
+        return User::findByPK($primaryKey);
+    }
+
+    /**
+     * Find User using set of where conditions.
+     * 
+     * @param array $where
+     * @return User[]|Selector
+     */
+    public function find(array $where = [])
+    {
+        return User::find($where);
+    }
+}
+```
+
+As result you can use such service inside you controllers avoiding static methods of Document model (they can always be removed from service also):
+
+```php
+public function index(UserService $users)
+{
+    $user = $users->findByPK(1);
+    $user->balance->inc(1.6);
+
+    if (!$users->save($user)) {
+        dump($user->getErrors());
+    }
+}
+```
+
+Services like that is the best place to locate custom selection methods (like `findActive`) or even alter delete method to implement "soft deletes".
+
+> You can also generate CRUD controller to work with existed entity service using command 'create:controller name -s service'.
+
+## Inheritance and Abstract Documents
+Since Spiral ODM uses static analysis, there is no real limitation how you would like to create your models, as result you can declare **abstract** Document with it's schema, validations and etc and later extend this class in your application models. This technique can be very useful while writing [modules] (/components/modules.md).
+
+> While extending, ORM will merge schemas and other properties of Document and it's parent. Attention, ODM does not provide table inheritance.
+
+**You can also use data driven model inheritance, check [this article] (opp.md).**
+
+## Inspections
+While running shema update (spiral up) command, you might notice text which contains list of inspected entities and resulted rating. Such information provided by spiral **Entity Inspector** which analyses ORM and ODM schemas to find unprotected or blacklisted fields, we can get more details by running inspection on selected entity:
+
+```
+> spiral inspect:entity Database/User
++-----------------+-----------+----------+----------+-----------+----------------+
+| Field           | Rank      | Fillable | Filtered | Validated | Hidden         |
++-----------------+-----------+----------+----------+-----------+----------------+
+| id              | Very Good | no       | yes      | no        | no             |
+| name            | Very Good | no       | yes      | yes       | no             |
+| email           | Good      | no       | yes      | yes       | no (blacklist) |
+| balance         | Very Good | no       | yes      | no        | no             |
+| timeRegistered  | Very Good | no       | yes      | no        | no             |
+| timeCreated     | Very Good | no       | yes      | no        | no             |
+| timeCpdated     | Very Good | no       | yes      | no        | no             |
++-----------------+-----------+----------+----------+-----------+----------------+
+```
+
+> You can also check other inspector commands to receive list of every fillable or non hidded field in your models.
