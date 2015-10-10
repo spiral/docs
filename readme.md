@@ -62,7 +62,7 @@
 * Spiral ODM
     * [Documents and Databases] (odm/basics.md)
     * [Compositions, Aggreagations, Inheritance] (odm/oop.md)
-    * JSON and Standalone Documents
+    * [JSON and Standalone Documents] (odm/standalone.md)
     * [UML Export] (odm/uml.md)
 * Modules and Extensions
     * [Profiler] (modules/profiler.md)
