@@ -331,7 +331,7 @@ $collection = User::find()->paginate(10);
 > Check other Collection methods, such as limit, offset (skip) and sortBy.
 
 ##### Fetching Documents
-Once you've configured your Collection selection with desired query, you can fetch the found document by simply iterating over collection or explicitly calling the method `getIterator`, which will return an instance of `DocumentCursor`:
+Once you've configured your Collection selection with desired query, you can fetch the found document by simply iterating over collection or explicitly calling the method `getIterator`/`getCursor`, which will return an instance of `DocumentCursor`:
 
 ```php
 foreach (User::find()->paginate(10) as $user) {
