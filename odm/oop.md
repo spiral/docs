@@ -1,5 +1,5 @@
 # Compositions, Aggreagations, Inheritance
-ODM component does not use terming relation(s) to describe it's functionality but switches to OOP definitions of [Composition, Aggregration] (https://en.wikipedia.org/wiki/Object_composition) and Inheritance (please try to avoid using word relation while working with MongoDB, this is first step on getting in trouble). 
+ODM component does not use terming relation(s) to describe it's functionality but switches to OOP definitions of [Composition, Aggregration] (https://en.wikipedia.org/wiki/Object_composition) and Inheritance (please try to avoid using word relation while working with MongoDB, this is the first step on getting in trouble). 
 
 Make sure you already read about [ODM Basics] (basics.md).
 
