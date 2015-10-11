@@ -350,8 +350,6 @@ foreach ($cursor as $user) {
 }
 ```
 
-> You can also use method `getCursor` of your collection to make
-
 ##### DocumentCursor
 The provided instance of `DocumentCursor` wraps the top of the `MongoCursor` and provides support for lazy creation of the collection documents (no entity cache is used). As a result, you can iterate over a huge amount of Documents without any significant memory usage. Also you can access the `MongoCursor` functionality:
 
