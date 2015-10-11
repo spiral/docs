@@ -116,7 +116,7 @@ class "Database\\User" {
 
 "Database\\User" --* "Database\\Profile":profile
 
-"Database\\User" ..*"Database\\Session":sessions
+"Database\\User" ..* "Database\\Session":sessions
 
 "Database\\User" --o "Database\\Department":department
 
