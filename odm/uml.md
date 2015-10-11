@@ -15,7 +15,7 @@ class User extends Document
         'departmentID' => 'MongoId',
         'profile'      => Profile::class,
         'sessions'     => [Session::class],
-        'department'   => [self::ONE => Department::class, ['_id' => 'key::departmentID']]
+        'department'   => [self::ONE => Department::class, ['_id' => 'self::departmentID']]
     ];
 }
 ```
@@ -58,7 +58,7 @@ class Department extends Document
     protected $schema = [
         '_id'   => 'MongoId',
         'name'  => 'string',
-        'users' => [self::MANY => User::class, ['departmentID' => 'key::_id']]
+        'users' => [self::MANY => User::class, ['departmentID' => 'self::_id']]
     ];
 }
 ```
