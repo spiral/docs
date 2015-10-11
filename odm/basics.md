@@ -439,7 +439,6 @@ atomics:dynamic = array(1)
 ·    ['$set'] = array(4)
 ·    (
 ·    ·    ['balance'] = double(5) 27.920000000000002
-·    ·    ['id'] = null(0) 
 ·    ·    ['name'] = string(8) New Name
 ·    ·    ['email'] = string(22) klangworth@hotmail.com
 ·    )
