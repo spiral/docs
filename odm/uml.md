@@ -1,5 +1,5 @@
 # Exporting ODM schema to UML
-Because Spiral's ODM is based on the principles of composition and aggreation, it's easy to export it's schema into UML, which simplifies the project documentation and analyzing the database.
+Because Spiral's ODM is based on the principles of composition and aggreation, it's easy to export it's schema into UML which simplifies the project documentation and analyzing the database.
 
 Let's build a schema for a given set of models:
 
