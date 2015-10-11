@@ -237,6 +237,7 @@ Before we jump to the next step, lets try to create a few more users. In this ca
 
 Since we have no fillable fields, this method should not work in our case (we will use the setFields method with disabled access policy - by setting the second argument as true). In order to fill our demo entities let's connect faker package.
 
+```php
 for ($i = 0; $i < 100; $i++) {
     $user = User::create()->setFields([
         'name'    => $faker->name,
@@ -247,6 +248,7 @@ for ($i = 0; $i < 100; $i++) {
     //Saving user to database
     $user->save();
 }
+```
 
 > Create method will only return the populated Document entity. You have to save this entity to the database manually (simply call save() method).
 
