@@ -42,7 +42,7 @@ public function index(MongoDatabase $database, ODM $odm)
 > `MongoDatabase` class extends original `MongoDB` class so you can use it as regular mongo database.
 
 ## Document
-To define your first model related to MongoDB collection, we only have to create/generate a declaration of `Document` class with the desired set of fields listed in the model **schema**. We can either create this model manually or generate it using the console command "create:document". Let's create our first model User. Using  ORM we are able to pre-define a set of desired fields: "create:document user -f id:MongoId -f name:string -f email:string -f balance:float". The resulting entity will be located in the application/classes/Database/User.php:
+To define your first model related to MongoDB collection, we only have to create/generate a declaration of `Document` class with the desired set of fields listed in the model **schema**. We can either create this model manually or generate it using the console command "create:document". Let's create our first model User. Using  ODM we are able to pre-define a set of desired fields: "create:document user -f id:MongoId -f name:string -f email:string -f balance:float". The resulting entity will be located in the application/classes/Database/User.php:
 
 ```php
 class User extends Document 
