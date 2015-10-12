@@ -3,6 +3,8 @@ ODM component does not use terming relation(s) to describe it's functionality bu
 
 Make sure you already read about [ODM Basics] (basics.md).
 
+> You can also refresh your memory about [Composited Types](https://en.wikipedia.org/wiki/Composite_data_type)
+
 ## Aggregations
 Aggregations is probably the closest to classical ORM relations as they define rule to create selection of outer models, as in case with classical relationships, agregations can reference to one or multiple models. First of all, let's try to create document our User can reference to "create:document post -f _id:MongoId -f userId:MongoId -f title:string -f content:string":
 
