@@ -8,7 +8,7 @@ The Spiral ODM does not use entity cache like in ORM. Instead it uses "streaming
 Check extended usage for DocumentEntity, Compompositions, Aggreagations and Inheritance [here] (oop.md).
 
 ## Mongo Connection and Databases
-With ORM, you are not required to spend a ton of time trying to configure your ODM component. The only thing you have to make sure of (if you want to store your data in MongoDB) is that the Mongo connection is properly set. To ensure that, simply check the configuration file "odm.php" located inside your "applicatio/config" directory:
+With ODM, you are not required to spend a ton of time trying to configure your ODM component. The only thing you have to make sure of (if you want to store your data in MongoDB) is that the Mongo connection is properly set. To ensure that, simply check the configuration file "odm.php" located inside your "applicatio/config" directory:
 
 ```php
 'default'   => 'default',
