@@ -110,7 +110,7 @@ dump($post->aggregation('author'));
 Compositions is one of the most powerful features within the ODM component. This functionality provides the ability to nest multiple models inside each other. It can also be combined with inheritance and atomic operations.
 
 #### DocumentEntity
-Before we will jump to compositions, let's review class `DocumentEntity`, such class is very similar to `Document` by it's definition (in a fact, it's `Document` parent) but it does not provide ActiveRecord like functionality which makes it perfect candicate to be embedded. To create `DocumentEntity` model, we have to execute command "create:entity profile -f biography:text -f facebookUID:int", generated entity looks exacly the same as other Documents and can be configured same way:
+Before we jump to compositions, let's first review the class `DocumentEntity`. This class is very similar to `Document` (in fact, it's `Document` parent) but it does not provide the ActiveRecord like functionality which makes it perfect a candicate to be embedded. To create the `DocumentEntity` model, we have to execute the command "create:entity profile -f biography:text -f facebookUID:int". The generated entity looks exactly the same as the other Documents and can be configured the same way:
 
 ```php
 class Profile extends DocumentEntity
@@ -143,7 +143,7 @@ class Profile extends DocumentEntity
 ```
 
 #### Singural Composition
-To composite one document inside another, you are simply required to declare field in your schema linked to composited document class, for example let's say that every user has one profile:
+To composite a document inside another, you just need to declare the field in your schema that is linked to the composited document class. For example let's say that every user has one profile:
 
 ```php
 protected $schema = [
@@ -162,7 +162,7 @@ protected $schema = [
 ];
 ```
 
-Once schema is updated, you are able to use User profile in your code:
+Once the schema is updated, you can use the User profile in your code:
 
 ```php
 $user = User::findOne();
@@ -172,7 +172,7 @@ $user->profile->facebookUID = 2345678;
 dump($user);
 ```
 
-As in other cases DocumentEntity data will be set using atomic operataions:
+DocumentEntity data will be set up using atomic operations:
 
 ```
 atomics:dynamic = array(1)
@@ -185,7 +185,7 @@ atomics:dynamic = array(1)
 )
 ```
 
-You can also assign new instance of Profile to your User at any moment:
+You can also assign new instances of Profile to your User at any moment:
 
 ```php
 $user = User::findOne();
@@ -199,7 +199,7 @@ $user->save();
 ```
 
 #### Multiple Composition
-In many cases you will need an array compositions of documents. To start, let's create a simple `DocumentEntity` we would to store inside the User - "create:entity session -f timeCreated:MongoDate -f accessToken:string":
+In many cases, you will need an array compositions of the documents. To start, let's create a simple `DocumentEntity` that we store inside the User - "create:entity session -f timeCreated:MongoDate -f accessToken:string":
 
 ```php
 class Session extends DocumentEntity
@@ -231,7 +231,7 @@ class Session extends DocumentEntity
 }
 ```
 
-Now we only need to modify user schema and include our composited model name as array element (same way as for ScalarArray):
+Now we can modify the user schema and include our composited model name as an array element (the same way as ScalarArray):
 
 ```php
 protected $schema = [
@@ -251,7 +251,7 @@ protected $schema = [
 ];
 ```
 
-After schema update we able to manipulate with array of sessions. Such array are represented by ODM class `Spiral\ODM\Entities\Compositor`:
+After the schema updates, we are able to manipulate with an array of sessions. This array is represented by the ODM class `Spiral\ODM\Entities\Compositor`:
 
 ```php
 $user = User::findOne();
@@ -265,7 +265,7 @@ dump($user);
 $user->save();
 ```
 
-You can also iterate thought such array:
+You can also iterate though this array:
 
 ```php
 $user = User::findOne();
@@ -275,16 +275,16 @@ foreach ($user->sessions as $session) {
 }
 ```
 
-Additionally, Compositor provides simplistic methods `find` and `findOne` which can be used to locate composited object by it's field value(s):
+Additionally, Compositor provides the easy to use methods `find` and `findOne`, which can locate composited objects by it's field value(s):
 
 ```php
 dump($user->sessions->findOne(['accessToken' => 'random']));
 ```
 
-> Method will return `null` if no objects can be found. Attention, method can only access array of fields associated values, no mongo query like system can be supported here.
+> Method will return `null` if no objects are found. Attention, method can only access an array of fields associated values. There isn't a mongo query like system supported here.
 
 ##### Atomic Operations
-As in case with `ScalarArray`, `Compositor` are stated as **solid** by default, if you wish to apply atomic operations to it's documents you have to reset this state first:
+Just like `ScalarArray`, `Compositor` is **solid** by default. If you want to apply atomic operations to its' documents, you have to reset this state first:
 
 ```php
 $user = User::findOne();
@@ -299,7 +299,7 @@ $user->save();
 ```
 
 ## Inheritance
-In addition to aggregation and composition ODM engine provides ability to store Document and it's childs in a same location. At moment of class creation ODM will automatically resolve what instance has to be used to represent such data. We can demonsrate this functionality using following example:
+In addition to aggregation and composition, the ODM engine provides the ability to store Document and it's children in the same location. When class is created, ODM will automatically resolve what instance has to be used to represent such data. We can demonsrate this functionality using the following example:
 
 ```php
 class Moderator extends User
@@ -315,7 +315,7 @@ class Moderator extends User
 }
 ```
 
-Now we can create our Moderator and save it in a same collection as user (you can also redefine collection property):
+Now we can create our Moderator and save it in the same collection as User (you can also re-define the collection property):
 
 ```php
 $user = new Moderator();
@@ -335,7 +335,7 @@ if (!$user->save()) {
 }
 ```
 
-While iteration thought our users and at one moment entity will be represented as `Moderator`:
+Iteration through our users and entity will be represented as `Moderator`:
 
 ```php
 foreach (User::find() as $user) {
@@ -347,9 +347,9 @@ foreach (User::find() as $user) {
 }
 ```
 
-> One of the side effects of multiple types stored in one collection - you have to verify class type supplied by `find`, `findOne` and `findByPK` methods, as calling this method in Moderator can and will return instance of User in some cases (i'm thinking about doing this check automatically in `findOne` and `findByPK` methods, but not in `find`).
+> One of the side effects of using multiple types stored in one collection is that you have to verify the class type supplied by `find`, `findOne` and `findByPK` methods. Calling this method in Moderator can and will return an instance of User in some cases (This could be checked automatically in `findOne` and `findByPK` methods, but not in `find`).
 
-You can also assign Document or DocumentEtity childs to compositions, for example:
+You can also assign Document or DocumentEtity children to compositions, for example:
 
 ```php
 class SuperSession extends Session
@@ -376,10 +376,10 @@ $user->save();
 ```
 
 #### How Inheritance Work
-Every time Compositor or Collection trying to create `Document` or `DocumentEntity` entity data passed to ODM component method `document`. Such method will analyze provided data, and, based on presented fields select specific class to be used as data representer. Such methodic automatically adds constrain to your code - no entity can be extended without adding unique fields into it's schema.
+Every time Compositor or Collection tries to create `Document` or `DocumentEntity`, entity data passed to ODM component method `document`. This method will analyze the provided data and based on the shown fields, select the specific class to be used as a data representer. This method automatically adds constraints to your code. No entity can be extended without adding unique fields into it's schema.
 
 #### Logical Class Definition
-In some cases you might want to control which class being selected for data array manually. To do that you have to switch inheritance logic for your entity to `DEFINITION_LOGICAL` - declare constant `DEFINITION`.
+In some cases you might want to manually control which class is selected for the data array. To do this, you have to switch inheritance logic for your entity to `DEFINITION_LOGICAL` and declare constant `DEFINITION`.
 
 ```php
 class User extends Document
@@ -388,14 +388,14 @@ class User extends Document
 
     /**
      * Indication to ODM component of method to resolve Document class using it's fieldset. This
-     * constant is required due Document can inherit another Document.
+     * constant is required since Document can inherit another Document.
      */
     const DEFINITION = self::DEFINITION_LOGICAL;
 
     ...
 ```
 
-Now, every time when ODM will try to constuct instance of User it will previously try to find appropriate class by calling static method `defineClass` or User model, let's try to write such method in a way to emulate default inheritance logic:
+Now, every time ODM will constucts an instance of User, it will try to find the appropriate class by calling the static method `defineClass` or the User model. Let's try to write this method in a way to emulate the default inheritance logic:
 
 ```php
 public static function defineClass(array $fields, ODM $odm)
