@@ -1,8 +1,8 @@
 # Standalone Usage
-Even if ODM component provides deep integration with MongoDB database, it's not required to use such database as data source. Due all ODM models can accept input data in constructor argument you are able to use them to mock or validate any type of data in your application.
+Even if the ODM component integrates deeply with your MongoDB database, it's not required to use this database as your data source. Since all the ODM models can accept input data in your constructor argument, you are able to use them to mock up or validate any type of data in your application.
 
 ## Standalone example
-Let's try to create simple example of data structure we would like to handle:
+Let's try to create a simple example of data structure that we would like to handle:
 
 ```php
 $data = [
@@ -15,7 +15,7 @@ $data = [
 ];
 ```
 
-To handle such data we will need two `DocumentEntity` models - Data and Element, let's create them:
+To handle this data, we will need two `DocumentEntity` models - Data and Element. Let's create them:
 
 ```php
 class Element extends DocumentEntity
@@ -46,7 +46,7 @@ class Data extends DocumentEntity
 }
 ```
 
-Now we only need to feed our data into model constructor (do not forget to update ODM schema):
+Now we only need to feed our data into the model constructor (do not forget to update the ODM schema):
 
 ```php
 $data = [
@@ -69,10 +69,10 @@ foreach ($model->elements as $element) {
 dump($model->serializeData());
 ```
 
-> Standalone ODM usage can be useful to validate complex data.
+> Standalone ODM usage can be useful when validating complex data.
 
 ## Json Documents
-One potential option how ODM component can be used in application without connection to MongoDB databases is using `JsonDocument`. Such class extends `DocumentEntity` and implements ORM `ActiveAccessorInterface`. As result this object can be used to represent structured json data in your ORM Records:
+One potential option for how the ODM component can be used in your application without a connection to MongoDB databases is by using `JsonDocument`. This class extends the `DocumentEntity` and implements the ORM `ActiveAccessorInterface`. As a result, this object can be used to represent the structured json data in your ORM Records:
 
 ```php
 class Data extends Record
@@ -121,7 +121,7 @@ class JsonData extends JsonDocument
 }
 ```
 
-Now you can use such accessor in your code as composited field:
+Now you can use this accessor in your code as a composited field:
 
 ```php
 $data = new Data();
@@ -129,14 +129,14 @@ $data->data->field = 'abc';
 $data->save();
 ```
 
-Generated SQL query for Postgres database:
+The generated SQL query for a Postgres database:
 
 ```sql
 INSERT INTO "abc_datas" ("data")
 VALUES ('{"field":"abc"}') RETURNING "id"
 ```
 
-As in case with composited documents you will not be able to save parent document/record if json data is invalid:
+As is the case with composited documents, you will not be able to save the parent document/record if your json data is invalid:
 
 ```php
 $data = Data::findOne();
@@ -144,4 +144,4 @@ $data->data->field = '';
 dump($data->getErrors());
 ```
 
-> You can use json data in SQL queries whily working with PostgresSQL.
+> You can use json data in SQL queries while working with PostgresSQL.
