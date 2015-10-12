@@ -1,12 +1,12 @@
 # Compositions, Aggreagations, Inheritance
-ODM component does not use terming relation(s) to describe it's functionality but switches to OOP definitions of [Composition, Aggregration] (https://en.wikipedia.org/wiki/Object_composition) and Inheritance (please try to avoid using word relation while working with MongoDB, this is the first step on getting in trouble). 
+The ODM component does not use terming relation(s) to describe it's functionality but switches to the OOP definitions for [Composition, Aggregration] (https://en.wikipedia.org/wiki/Object_composition) and Inheritance (Please try to avoid using word relation while working with MongoDB. This can lead to problems down the road). 
 
-Make sure you already read about [ODM Basics] (basics.md).
+Please make sure that you have already read about [ODM Basics] (basics.md).
 
-> You can also refresh your memory about [Composited Types](https://en.wikipedia.org/wiki/Composite_data_type).
+> You can also refresh your memory with regards to [Composited Types](https://en.wikipedia.org/wiki/Composite_data_type).
 
 ## Aggregations
-Aggregations is probably the closest to classical ORM relations as they define rule to create selection of outer models, as in case with classical relationships, agregations can reference to one or multiple models. First of all, let's try to create document our User can reference to "create:document post -f _id:MongoId -f userId:MongoId -f title:string -f content:string":
+Aggregations is probably the closest thing to classical ORM relations since they define the rule to create the selection of outer models. Just like with classical relationships, agregations can reference one or multiple models. First of all, let's try to create a document that our User can reference to "create:document post -f _id:MongoId -f userId:MongoId -f title:string -f content:string":
 
 ```php
 class Post extends Document
@@ -40,7 +40,7 @@ class Post extends Document
 }
 ```
 
-To create composition of posts in our User model, we have to modify it's schema in such way:
+To create the composition of posts in our User model, we have to modify it's schema like this:
 
 ```php
 protected $schema = [
@@ -58,7 +58,7 @@ protected $schema = [
 ];
 ```
 
-We can also create reverted relation in our `Post` model:
+We can also create a reverted relation in our `Post` model:
 
 ```php
 protected $schema = [
@@ -73,9 +73,9 @@ protected $schema = [
 ];
 ```
 
-After schema update we are able to use such aggreation using `Document` method `aggregation` or magic `__call` function. Aggregation of many models (posts) will return us pre-configured instance of `Spiral\ODM\Entities\Collection` where query will be based on second element of our aggregation array.
+Once the schema updates, we are able to use this aggreation via the `Document` method `aggregation` or magic `__call` function. Aggregation of many models (posts) will return a pre-configured instance of `Spiral\ODM\Entities\Collection` where the query will be based on the second element of our aggregation array.
 
-You can specify aggregation query in any form supported by MongoDB including keywords `$or`, `$in` and etc. At moment of aggeration request, Document will replace constructions like "self::key" with appropriate field value (you are able to use dot notation to get values of composited models "self::author.id", see next).
+You can also specify the aggregation query in any form supported by MongoDB including keywords `$or`, `$in`, etc. Once the aggeration request is sent, the Document will replace the constructions like "self::key" with appropriate field value (You are able to use the dot notation to get the values of the composited models "self::author.id". See next).
 
 ```php
 $user = User::findOne();
@@ -87,7 +87,7 @@ foreach ($user->posts() as $post) {
 }
 ```
 
-Aggreations are differs from ORM relations as they **can not be cached** or automatically linked, meaning you have to configure every outer model manually:
+Aggregations differ from ORM relations because they **can't be cached** or automatically linked. This means that you have to configure every outer model manually:
 
 ```php
 $post = new Post();
@@ -97,7 +97,7 @@ $post->content = 'Some content';
 $post->save();
 ```
 
-Singilar aggregations will return outer Document or `null` if nothing can be found:
+Singular aggregations will return the outer Document or `null` if nothing is found:
 
 ```php
 dump($post->author());
@@ -107,7 +107,7 @@ dump($post->aggregation('author'));
 ```
 
 ## Compositions and Complex Types
-Compositions is one of the most powerful features of ODM component, such functionality provides ability to nest multiple models inside each other. It can also be combined with inheritance and atomic operations.
+Compositions is one of the most powerful features within the ODM component. This functionality provides the ability to nest multiple models inside each other. It can also be combined with inheritance and atomic operations.
 
 #### DocumentEntity
 Before we will jump to compositions, let's review class `DocumentEntity`, such class is very similar to `Document` by it's definition (in a fact, it's `Document` parent) but it does not provide ActiveRecord like functionality which makes it perfect candicate to be embedded. To create `DocumentEntity` model, we have to execute command "create:entity profile -f biography:text -f facebookUID:int", generated entity looks exacly the same as other Documents and can be configured same way:
