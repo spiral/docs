@@ -106,7 +106,7 @@ dump($post->author());
 dump($post->aggregation('author'));
 ```
 
-## Compositions
+## Compositions and Complex Types
 Compositions is one of the most powerful features of ODM component, such functionality provides ability to nest multiple models inside each other. It can also be combined with inheritance and atomic operations.
 
 #### DocumentEntity
