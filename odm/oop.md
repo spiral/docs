@@ -119,7 +119,7 @@ class Profile extends DocumentEntity
      * @var array
      */
     protected $fillable = [
-
+        'biography'
     ];
 
     /**
