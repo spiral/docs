@@ -294,7 +294,7 @@ public function index($id)
 
 Or using entity service:
 
-```
+```php
 public function index(UserService $users, $id)
 {
     if (empty($user = $users->findByPK((int)$id))) {
