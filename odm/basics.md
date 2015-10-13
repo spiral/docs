@@ -81,7 +81,7 @@ You might notice that the declaration is very similar to ORM Record. However, th
 > You can read more about entity configuration (fillable, hidden, secured and validates properties) in the section declared to [DataEntity] (components/entity.md).
 
 #### Schema
-The ODM classes Document (and `DocumentEntity`, see in extended usage) only lets you manipulate a set of fields described in the model schema. The declaration of fields can be performed by simply creating an associated array between the field name and it's type. 
+The ODM classes Document (and `DocumentEntity`, see in extended usage) only lets you manipulate a set of fields described in the model schema. The declaration of fields can be performed by simply creating an associated array between the field name and it's **type**. 
 
 ```php
 protected $schema = [
