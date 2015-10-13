@@ -202,6 +202,10 @@ $user->save();
 ODM engine provides you ability to set cascade data using setFields method of top model, to do that you have to ensure that your composited document are listed in **fillable** fields.
 
 ```php
+protected $fillable = ['profile'];
+```
+
+```php
 $user->setFields([
     'profile' => [
         'biography' => 'Some bio'
