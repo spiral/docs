@@ -198,6 +198,17 @@ dump($user);
 $user->save();
 ```
 
+##### Mass Assignment
+ODM engine provides you ability to set cascade data using setFields method of top model, to do that you have to ensure that your composited document are listed in **fillable** fields.
+
+```php
+$user->setFields([
+    'profile' => [
+        'biography' => 'Some bio'
+    ]
+]);
+```
+
 #### Multiple Composition
 In many cases, you will need an array compositions of the documents. To start, let's create a simple `DocumentEntity` that we store inside the User - "create:entity session -f timeCreated:MongoDate -f accessToken:string":
 
