@@ -377,6 +377,14 @@ foreach (User::find()->fetchFields(['name']) as $data) {
 }
 ```
 
+> Attention, fetchFields() will return one big array for whole selection, do not use it for big datasets. Use alternative curson configuration:
+
+```php
+foreach (User::find()->getCursor()->fields(['name' => true]) as $data) {
+    dump($data);
+}
+```
+
 This methods will read all the desired fields and return them in the form of an array. You can also read them in a streaming mode by utilizing the `fields` method of your `DocumentCursor`:
 
 ```php
