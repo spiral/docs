@@ -69,7 +69,7 @@ foreach ($model->elements as $element) {
 dump($model->serializeData());
 ```
 
-> Standalone ODM usage can be useful when validating complex data.
+> Standalone ODM usage can be useful when validating complex data, you only have to use create or setFields method to populate your entity.
 
 ## Json Documents
 One potential option for how the ODM component can be used in your application without a connection to MongoDB databases is by using `JsonDocument`. This class extends the `DocumentEntity` and implements the ORM `ActiveAccessorInterface`. As a result, this object can be used to represent the structured json data in your ORM Records:
