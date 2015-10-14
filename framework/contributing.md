@@ -14,6 +14,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 * Functionality proposals
 * Questionable code improvements and lookup
 * Objective critics
+* Identify what parts of framework can be swapped with Symfony, Zend components without breaking internal interfaces
 
 ## Documentation Improvements
 If you found any issue which is better to be covered in documentation please open related issue. Since i'm not native english speaker feel free to create pull requests for any typo also.
