@@ -315,9 +315,9 @@ Now we can create a view "elements/textarea" and inherit our input:
 </block:input>
 ```
 
-> Please note i removed name attribute since it will be added automatically using `node:attributes`.
+> Please note I removed the name attribute since it will be added automatically using the `node:attributes`.
 
-Now, the only thing we have to do to convert our from input from input to textarea is to change it's name:
+Now, the only thing we have to do to is convert our from input from input to textarea by changing it's name:
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
@@ -334,10 +334,10 @@ Now, the only thing we have to do to convert our from input from input to textar
 </block:content>
 ```
 
-This methodic can be very convinient when you would like to create set of similar elements for your project.
+This method can be very convenient when you would like to create a set of similar elements for your project.
 
 ## Add intellect to your widget (hard)
-In many cases we would to give of widgets more flexibility, not only ability to replace it's blocks, we can achieve it goal by compbing our templater code with simple php, let's say that we do not want to render label span if no label value is specified. The simplified way to do that will be:
+In many cases, we want to give the widgets more flexibility. This includes not only the ability to replace it's blocks. We can do this by combining our templater code with simple php. Let's say that we don't want to render  the label span if no label value is specified. The simplified way to do this is:
 
 ```html
 <div class="form-input">
@@ -354,7 +354,7 @@ In many cases we would to give of widgets more flexibility, not only ability to 
 </div>
 ```
 
-You can check that no span is rendered if no label attribute provided to widget. However such code is not really reliable as it will fail it label will include " symbols or php code. Fortunatelly we can always use buffering:
+You can see that no span is rendered if no label attribute is provided to your widget. However, this code is not really reliable as it will fail if the label includes " symbols or php code. Fortunately, we can always use buffering:
 
 ```html
 <div class="form-input">
@@ -372,13 +372,12 @@ You can check that no span is rendered if no label attribute provided to widget.
 </div>
 ```
 
-In this case our code can handle any value provided for label attribute.
+In this case, our code can handle any value provided for the label attribute.
 
 ## Using EvalutatorProcessor (hard+)
-If you remember from [views and view processors] (/components/views.md) section, you are able to use special view processor - `EvaluateProcessor`, such processor can 
-execute php blocks marked with `#compile` comment during view compilation, meaning no code will be preserved in view cache (which can speed it up).
+If you remember from the [views and view processors] (/components/views.md) section, you can use the special view processor - `EvaluateProcessor`. This processor can execute PHP blocks marked with a `#compile` comment during the view compilation. This means that no code is preserved in the view cache (which will speed it up).
 
-Due our label related code does not depends on any user argument we can try to mark it's code as compilable (we have to include comment into every php block):
+Since our label related code does not depend on any user argument, we can try to mark it's code as compilable (we have to include a comment into every php block):
 
 ```html
 <div class="form-input">
@@ -396,10 +395,10 @@ Due our label related code does not depends on any user argument we can try to m
 </div>
 ```
 
-Now widget will decide to render or not label span during compilation, not in runtime. You can check your view cache to make sure.
+Now your widget will decide whether it will render the label span or not during compilation and not during runtime. You can also check your view cache to make sure.
 
 ## Create php variables using attributes (hard++)
-There is many scenarious when you might want to pass php variable inside your widget, for example let's say that we want to create select which can accept array of it's values. The most obvsious way to that, is to create some convention variable to excange with values:
+There are many scenarios where you might want to pass the php variable inside your widget. For example, if we want to create a select which can accept an array of it's values. The most obvious way to this is to create some convention variable to excange with values:
 
 ```html
 <extends:elements.input/>
@@ -420,7 +419,7 @@ There is many scenarious when you might want to pass php variable inside your wi
 </block:input>
 ```
 
-If we want to use such element in our form we have to declare selectValues variable first:
+If we want to use this element in our form, we have to first declare the selectValues variable:
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
@@ -443,7 +442,7 @@ If we want to use such element in our form we have to declare selectValues varia
 </block:content>
 ```
 
-This does not seems to be very useful, fortunatelly there is one (not super easy way) interesting way we can use to pass any variable to our element. First of all, let's try to declare widget specific variable to store values:
+This doesn't appear to be very useful. Fortunatelly, there is one interesting way we can use to pass any variable to our element (non-trivial). First of all, let's try to declare your widget specific variable to store values:
 
 ```html
 <extends:elements.input/>
@@ -459,9 +458,9 @@ This does not seems to be very useful, fortunatelly there is one (not super easy
 </block:input>
 ```
 
-> We would like to name this variable some non obvious way to prevent conflicts.
+> We would like to name this variable in a non obvious way to prevent any conflicts.
 
-Next step will be to populate such variable values based on provided data. We can achieve it using special evalutator specific function `createVariable`:
+The next step will be to populate these variable values based on the provided data. We can achieve this using special evalutator specific function `createVariable`:
 
 ```html
 <extends:elements.input/>
@@ -480,7 +479,7 @@ Next step will be to populate such variable values based on provided data. We ca
 </block:input>
 ```
 
-Such function will parse value of `${values}` attribute and assign it to created __values__ array (`echo` and `<?=` code will be removed). As result we can use our element now such way:
+This function will parse the value of `${values}` attribute and assign it to the created __values__ array (`echo` and `<?=` code will be removed). As result, we can now use our element in this way:
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
@@ -503,7 +502,7 @@ Such function will parse value of `${values}` attribute and assign it to created
 </block:content>
 ```
 
-To undestand what really happen, let's try to check cached (compiled) view source:
+To understand what happened, let's try to check the cached (compiled) view source:
 
 ```html
 <!DOCTYPE html>
@@ -561,12 +560,12 @@ To undestand what really happen, let's try to check cached (compiled) view sourc
 ```
 
 ## Namespaces and Modules
-You can locate and import your elements from any desired namespace, this can be very useful when you would to organize your widgets into separate [module] (/components/modules.md) and connect them in multiple projects, as side effect you will be able to update visuals and source for your widges using `composer update` command. 
+You can locate and import your elements from any desired namespace. This can be very useful when you want to organize your widgets into separate [module] (/components/modules.md) and connect them in multiple projects. As a side effect, you will be able to update the visuals and source for your widges using the `composer update` command. 
 
-> You only have to register view namespace in your module installer.
+> You only have to register the view namespace in your module installer.
 
 ## Spiral Toolkit
-Spiral framework application supplied with module ['spiral/toolkit'] (/modules/toolkit.md) which already aggregates set of virtual tags used to simplify loading assets, form definitions and etc. For example following code will render form, automatically connect required js libraries and style sheets to make form work over ajax and highight it's errors:
+The Spiral framework application, which includes the module ['spiral/toolkit'] (/modules/toolkit.md), already aggregates a set of virtual tags used to simplify loading assets, form definitions and etc. For example, the following code will render a form, automatically connect the required js libraries and style sheets to make the form work over ajax and highight it's errors:
 
 ```html
 <extends:spiral:layouts.html5 title="Demo View"/>
@@ -579,7 +578,7 @@ Spiral framework application supplied with module ['spiral/toolkit'] (/modules/t
 </block:body>
 ```
 
-Compiled view will look like:
+Compiled view will look like this:
 
 ```php
 <!DOCTYPE html>
@@ -646,7 +645,7 @@ Compiled view will look like:
 </html>
 ```
 
-> Attention, JS and CSS libraries will be conntected only it layout decalared placeholders for assets, in your applications you can simply exclude layout `spiral:layouts.html5` with pre-defined placeholders and stucture, it looks like:
+> Attention, JS and CSS libraries will be only be connected to the layout decalared in placeholders for assets. In your application, you can simply exclude the layout `spiral:layouts.html5` with pre-defined placeholders and stucture. It will looks like this:
 
 ```html
 <templater:use bundle="spiral:bundle"/>
