@@ -1,8 +1,8 @@
 # DataEntity Model
-Most of Spiral classes like ORM, ODM and HTTP request models extend one common parent - DataEntity model. This class is one of the basic application cells used to provide a set of wrappers and operations related to the array dataset.
+Most of Spiral's classes like ORM, ODM and HTTP request models extend one common parent - the DataEntity model. This class is one of the most basic application cells used to provide a set of wrappers and operations related to the array dataset.
 
 ## Purpose
-DataEntity model is responsible for mocking up and providing access to the array dataset - fields (associated with the array) that use a set of getters, setters and accessors. In addition, this model provides a way to apply mass assigment to fields (using black/white lists), get all model fields as one array, get a list of all "public" fields (that can be sent to client using a whitelist) and to be converted into JSON. In addition, the model support [field validation] (validation.md) is based on a set of defined rules.
+DataEntity model is responsible for mocking up and providing access to the array dataset - fields (associated with the array) that use a set of getters, setters and accessors. In addition, this model provides a way to apply a mass assign to fields (using black/white lists), get all model fields as one array, get a list of all "public" fields (that can be sent to client using a whitelist) and can be converted into JSON. In addition, the model support [field validation] (validation.md) is based on a set of defined rules.
 
 ## Interfaces
 Because the DataEntity class is used widely across the Spiral framework, you may want to create your own code to communicate with it. Instead of using DataEntity class by itself, you can stick with it's primary interface:
@@ -85,7 +85,7 @@ interface ValidatesInterface
 ```
 
 ## Entity Fields
-Every entity must work with a set of mocked up fields. These fields can be represented as an associated array and stored in the property "fields". Knowing this, we can create a simple entity used to mock up some data array:
+Every entity must work with a set of mocked up fields. These fields are represented as an associated array and stored in the property "fields". Knowing this, we can create a simple entity used to mock up some data array:
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -101,7 +101,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-This entity provides the ability to set fields using a contructor method (Pay attention, that the fields will be set without any filtering). Now we can use this entity somewhere in our code:
+This entity sets the fields using a contructor method (Pay attention, that the fields will be set without any filtering). Now we can use this entity in our code:
 
 ```php
 public function index()
@@ -126,7 +126,7 @@ dump($entity->hasField('undefined'));
 ```
 
 ### Get individual field
-To get the value of an individual field, let's try the method `getField`. This Method can accept the second parameter to specify the default value if the field doesn't exist.
+To get the value of an individual field, let's use the method `getField`. This method can accept the second parameter to specify the default value if the field doesn't exist.
 
 ```php
 dump($entity->getField('name'));
@@ -134,7 +134,7 @@ dump($entity->getField('undefined', 'DEFAULT VALUE'));
 ```
 
 ### Get all Entity fields
-In many cases, we would like to get every model field in an array form. We can use the method `getFields` for these purposes:
+In many cases, we would like to get every model field in an array form. We can use the method `getFields` to do this:
 
 ```php
 dump($entity->getFields());
@@ -151,18 +151,18 @@ dump($entity->getFields());
 ```
 
 ## Mass Assignment
-In almost all cases, you will need to set up multiple model fields at once. Setting fields one by one may look like an option, especially since every field will be filtered using associated setter (see below), but there is much easier way to perform mass assignment - the `setFields` method.
-This method lets you use user data as a source (for example, directly from request POST). Hovewer, the entity must be previously configured to specify what fields can and can't be set.
+In almost all cases, you will need to set up multiple model fields at once. Setting fields one by one may look like an option, especially since every field will be filtered using associated setter (see below), but there is a much easier way to perform mass assignment - the `setFields` method.
+This method uses user data as a source (for example, directly from request POST). However, the entity must be previously configured to specify what fields can and/or can't be set.
 
 ```php
 //Get entity data from query
 $entity->setFields($this->input->query);
 ```
 
-> Method can accept an array or Traversable object (meaning you can even pass one entity as a source of items for another entity - this is used in spiral `RequestFilter->populate()` method).
+> Method can accept an array or Traversable object (meaning you can even pass one entity as a source of items for another entity - this is used in the spiral `RequestFilter->populate()` method).
 
-You have to use a set field method or a static method "create" of ORM and ODM entities in order to create an entity based on user input.
-To configure, this entity and specify what fields can be set, we will use the specialized behaviour property **fillable**. Let's try to update our entity, to allow to fill in "name": 
+To create an entity based on user input, you have to use the set field method or the static method "create" of ORM and ODM entities.
+To configure, this entity and specify what fields are set, we will use the specialized behaviour property **fillable**. Let's update our entity, to let it fill in "name": 
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -185,14 +185,14 @@ class DemoEntity extends \Spiral\Models\DataEntity
 
 Now, we can set the entity name by entering it's value in our browser window. 
 
-> There is a second entity property **secured** which specifies what fields are **not allowed** to be set. By default, this is equal to '\*' - meaning that no fields are set unless specified in **fillable** property. 
+> There is a second entity property **secured** which specifies what fields are **not allowed** to be set. By default, this is equal to '\*' - meaning that no fields are set unless specified in the **fillable** property. 
 
 ### isFillable
-DataEntity controls the mass assigment access using the protected method `isFillable`. You can ovewrite it to define a custom field access logic.
-> Tip: ORM and ODM models can inherit values of fillable and secured properties from it's parents. You can also check what fields are public and fillable in ORM and ODM models via a set of inspect commands in CLI toolkit.
+DataEntity controls the mass assigment access using the protected method `isFillable`. You can overwrite it to define a custom field access logic.
+> Tip: ORM and ODM models can inherit the values of fillable and secured properties from it's parents. You can also check what fields are public and fillable in the ORM and ODM models via a set of inspect commands in the CLI toolkit.
 
 ## Setters (filter functions)
-You might want to filter the value assigned to some specific field, for example, to perform type casting or some value manipulations. You can either write your own access method like "setName($name)" or use specialized entity behaviour - **setters**. Such behaviour is described in the setters property and applied to field inside `setField` and `setFields` method. Let's try to apply some filter for our "name" and "another" fields.
+You might want to filter the value assigned to some specific field. For example, when you perform type casting or some value manipulations. You can either write your own access method like "setName($name)" or use a specialized entity behaviour - **setters**. This behaviour is described in the setters property and applied to the field inside `setField` and `setFields` method. Let's try to apply some filter for our "name" and "another" field.
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -222,9 +222,9 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-> You can use any valid `call_user_function` callback to describe setters. Please note, setters is a filter function. You should not execute setField inside setter method as it can be used in many places. Use the return filtered value instead. 
+> You can use any valid `call_user_function` callback to describe setters. Please note, setters is a filter function. You should not execute setField inside the setter method as it can be used in many places. Instead use the return filtered value. 
 
-Now, no matter how we try to assign value of desired field, it will always be set to desired value:
+Now, no matter how we try to assign the value of a desired field, it will always be set to a desired value:
 
 ```php
 public function index()
@@ -243,10 +243,10 @@ public function index()
 }
 ```
 
-> Setters are extremely helpful when you want to store your entity data with preserved field types (for example for MongoDB).
+> Setters are extremely helpful when you want to store your entity data with a preserved field types (for example for MongoDB).
 
 ## Getters (filter functions)
-Similar to setters you can define a set of filters to be executed inside `getField` and `getFields` methods. 
+Similar to setters, you can define a set of filters that can be executed inside the `getField` and `getFields` methods. 
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -272,14 +272,14 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-Now our entity will alway store name in uppercase form, but you will see a lowercase value returned when you read such a value.
+Now our entity will always store the name in uppercase form. Note that you will see a lowercase value returned when you read such a value.
 
-> Getters are more rare than setters. Hovewer they are very useful with loosely typed databases (MySQL, SQLite etc). For example, boolean value stored in MySQL will be returned as "1" (string one). Using getters can help us to ensure it's always boolean.
+> Getters are more rare than setters. However, they are very useful with loosely typed databases (MySQL, SQLite etc). For example, any boolean value stored in MySQL will be returned as "1" (string one). Using getters can help us to ensure it's always boolean.
 
 ## Accessors
-The Spiral Entity provides additional way to manage field value - Accessors. Accessor is specified object which is responsible for manipulations with mocked value, the easiest example - timestamp value accessor which can represent numeric value as DataTime (spiral uses [Carbon] (https://github.com/briannesbitt/Carbon)).
+The Spiral Entity provides an additional way to manage field value - Accessors. Accessor is a specified object which is responsible for manipulations with a mocked value. The most simple to understand example is the timestamp value accessor which can represent a numeric value as DataTime (spiral uses [Carbon] (https://github.com/briannesbitt/Carbon)).
 
-Accessors are not really useful outside of ORM and ODM models where we can not only control value, but also tell database how this value must be stored. Hovewer, let's check base interface:
+Accessors are not really useful outside of the ORM and ODM models, where we can't control value or tell the database how this value must be stored. Hovewer, let's check the base interface:
 
 ```php
 interface AccessorInterface extends ValueInterface, \JsonSerializable
@@ -295,7 +295,7 @@ interface AccessorInterface extends ValueInterface, \JsonSerializable
     public function __construct($data, EntityInterface $parent);
 
     /**
-     * Must embed accessor to another parent model. Allowed to clone itself.
+     * Must embed the accessor to another parent model. Can clone itself.
      *
      * @param EntityInterface $parent
      * @return static
@@ -324,7 +324,7 @@ interface AccessorInterface extends ValueInterface, \JsonSerializable
 > Accessor objects will be returned from getField and getFields methods instead of value.
 
 ### Writing an Accessor
-To better undestand how accessor works (it will also help us with next guide sections) let's try to write our own accessor.
+To better undestand how accessor works (it will also help us with next guide sections), let's try to write our own accessor.
 
 ```php
 class NameAccessor implements \Spiral\Models\AccessorInterface
@@ -374,7 +374,7 @@ class NameAccessor implements \Spiral\Models\AccessorInterface
 }
 ```
 
-Now we can assign such accessor to our field.
+Now we can assign this accessor to our field.
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -396,7 +396,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-Let's see what value will be returned by editing code in our controller:
+Let's see what value will be returned by editing the code in our controller:
 
 ```php
 public function index()
@@ -419,7 +419,7 @@ public function index()
 > Accessors are also involved in packing entity in json form (see below).
 
 ## Public Data
-Usually you might want to hide some fields from being show to user, most often scenariou when you want to send your object in JSON form. To hide some fields from being published we can use property "hidden", let's try to hide "another" field:
+Usually you might want to hide some fields from being shown to user. Most often you would do this when you want to send your object in JSON form. To hide some fields from being shown we can use the property "hidden". Let's try to hide "another" field:
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -443,7 +443,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-Now, we can get list of public fields by executing method `publicFields` of our entity:
+Now, we can get a list of public fields by executing method `publicFields` of our entity:
 
 ```php
 public function index()
@@ -458,11 +458,11 @@ public function index()
 }
 ```
 
-> ORM and ODM models can inherit hidden fields from it's parents. You can check what fields are public and fillable in ORM and ODM models via set of inspect commands in CLI toolkit.
+> ORM and ODM models can inherit the hidden fields from it's parents. You can check what fields are public and fillable in ORM and ODM models via sa et of inspect commands in CLI toolkit.
 
 ## Converting Entity to JSON
-Every data entity object can be freely converted into JSON, you can either pack result of `getFields` or `publicFields` into array, or try to json_encode entity itself.
-When entity beign encoded, only it's public fields will be included into resulted JSON. We are going to use ability of HttpDispatcher to convert all JsonSerializable objects into json response:
+Every data entity object can be freely converted into JSON. You can either a pack result of `getFields` or `publicFields` into array, or try to json_encode the entity itself.
+When the entity starts to encode, only it's public fields will be included into the resulting JSON. We are going to use HttpDispatcher to convert all JsonSerializable objects into json response:
 
 ```php
 public function index()
@@ -478,17 +478,17 @@ public function index()
 }
 ```
 
-You might notice that only name were included into json, in addition to that your name will be capitalized as it's value will be packed into json form by related accessor.
+You might notice that only the name was included into the json. In addition, your name will be capitalized as it's value will be packed into json form by related accessor.
 
 ## Raw Model Data
-If you wish to get entity fields in array form bypassing all getters and accessors you can use method `serializeData`, such method widely used in ORM and ODM to send entity fields into database - be very careful overwriting it.
+If you want to get the entity fields in an array form, bypassing all getters and accessors, you can use the method `serializeData`. This method is widely used in ORM and ODM to send the entity fields into database. Be VERY careful overwriting it.
 
 ```php
 dump($entity->serializeData());
 ```
 
 ## Validations
-Every DataEntity automatically includes ability to validate it's data. Validation rules must be described in **validates** property and might also include error messages embraced with `[[]]`, such messages will be automatically localized into active translator language. Let's try to specify few validation rules for our "name" field.
+Every DataEntity automatically includes the ability to validate it's data. Validation rules must be described in the **validates** property and might also include error messages embraced with `[[]]`. These messages will be automatically localized into the active translator language. Let's try to specify a few validation rules for our "name" field.
 
 ```php
 class DemoEntity extends \Spiral\Models\DataEntity
@@ -519,7 +519,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
-Now we can check if our entity is valid and get error messages in our controller code (you can play with url query to produce different values):
+Now we can check if our entity is valid and get an error messages in our controller code (you can play with the url query to produce different values):
 
 ```php
 public function index()
@@ -539,10 +539,10 @@ public function index()
 
 You can read more about validation rules [here] (validation.md).
 
-> There is specialized DataEntity used to validate incoming request - [RequestFilter] (/http/filters.md).
+> There is a specialized DataEntity used to validate incoming request - [RequestFilter] (/http/filters.md).
 
 ### Complex validations
-If you want to perform context aware validation you can ovewrite entity method `validate` and add your own custom logic:
+If you want to perform context aware validation, you can ovewrite the entity method `validate` and add your own custom logic:
 
 ```php
 protected function validate($reset = false)
@@ -556,23 +556,23 @@ protected function validate($reset = false)
 ```
 
 ## Magic Methods
-In addition to getField/getField methods data entity exposes set of magic getters, setters and method to access your fields. For example you can read or write any entity value using `__get` or `__set` methods:
+In addition to getField/getField methods, data entity exposes set of magic getters, setters and method to access your fields. For example, you can read or write any entity value using the `__get` or `__set` methods:
 
 ```php
 $entity->name = 'new name';
 dump($entity->name->niceName());
 ```
 
-Besides that, entity will use [Doctrine Inflector] (https://github.com/doctrine/inflector) to create set of magic getter and setter methods (attention, this is not the same as getter/setter filters), as result you can access to your fields like that:
+Besides the above, entity will use the [Doctrine Inflector] (https://github.com/doctrine/inflector) to create a set of magic getter and setter methods (Attention, this is not the same as getter/setter filters). As a result, you can get access to your fields like this:
 
 ```php
 $entity->setName('new name');
 dump($entity->getName()->niceName());
 ```
 
-> Attention, DataEntity will convert all field names into camelCase notation, however ORM will use tableize form (field_name) based on set/get function name.
+> Attention, DataEntity will convert all field names into camelCase notation. However ORM will use tableize form (field_name) based on the set/get function name.
 
-In addtion to that, every data entity uses `getFields` method as source for array iterator, as result we can do something like that:
+In addition, every data entity uses the `getFields` method as  source for array iterator. As a result, we can do the following:
 
 ```php
 foreach ($entity as $field => $value) {
@@ -582,34 +582,34 @@ foreach ($entity as $field => $value) {
 ```
 
 ### Reserved Names
-Following field names are reserved for model behaviour definition and can not be accessed using magic get/set **inside** model:
+The following field names are reserved for model behaviour definition and can not be accessed using magic get/set **inside** model:
 
 Field      | Description 
 ---        | ---  
 hidden     | List of fields must be hidden from publicFields() method.
-fillable   | Set of fields allowed to be filled using setFields() method.
-secured    | List of fields not allowed to be filled by setFields() method.
+fillable   | Set of fields that can be filled using setFields() method.
+secured    | List of fields that can't be filled by setFields() method.
 setters    | Field setters.
 getters    | Field getters.
-accessors  | Accessors used to mock field data and filter every request thought itself.
+accessors  | Accessors used to mock field data and filter every request through itself.
 fields     | Entity data.
 errors     | Validation errors.
-**schema** | Used by ORM, ODM and RequestFilter entities to describe model behaviour.
-indexes    | ORM and ODM only, set of indexed to be created in related table/collection.
+**schema** | Used by ORM, ODM and RequestFilter entities to describe your model behaviour.
+indexes    | ORM and ODM only, set of indexes to be created in related table/collection.
 defaults   | ORM and ODM only, set of default values for model fields.
-database   | ORM and ODM only, daatabase name associated with model.
-table      | ORM only, table name associated with model.
-collection | ODM only, collection name associated with model.
+database   | ORM and ODM only, database name associated with your model.
+table      | ORM only, table name associated with your model.
+collection | ODM only, collection name associated with your model.
 orm        | ORM components, only for Record models.
 odm        | ODM component, only for Document models.
 parent     | Parent Document/Composition, for ODM models only.
 
-> You are still able to use `getField` and `setField` methods without limitations.
+> You can still use the `getField` and `setField` methods without any limitations.
 
 ## DataEntity Implementations
-As mentioned in section disclaimer DataEntity is common parent for few important spiral models, such models includes ORM `Record`, ODM `Document` and Http `RequestFilter`. As result you can apply same priciples for filtering, validations and etc for any of this model.
+As mentioned earlier in the section disclaimer, DataEntity is the common parent for few important spiral models. These models includes ORM `Record`, ODM `Document` and Http `RequestFilter`. As a result, you can apply the same priciples for filtering, validations etc. for any of these models.
 
-> Attention, ORM and ODM models uses static model cache (you have to run `spiral up` to update it), as result you are able to inherit entity behaviours from it's parents including fillable, hidden fields, validations and their messages and etc. 
+> Attention, the ORM and ODM models use a static model cache (you have to run `spiral up` to update it). As a result, you can inherit the entity behaviours from it's parents including fillable, hidden fields, validations and their messages etc. 
 
 ## Events
-Every data entity model support event dispatching associated with model class, you can find list of available events and their arguments in ORM and ODM sections.
+Every data entity model supports event dispatching associated with the model class. You can find a list of available events and their arguments in ORM and ODM sections.
