@@ -3,7 +3,7 @@ Spiral Files component and `FilesInterface` are intended to simplify work with l
 
 > Attention, FilesInterface will be replaced or will extend Symfony\Filesystem.
 
-If you want to use with abstract storage and work with remote locations (like Amazon, Rackspace, FTP, SFTP, GridFS) you might need to look at spiral [Storage Manager component](/storage/overview.md) which is responsible for such abstractions. 
+If you want to use abstract storage and work with remote locations (like Amazon, Rackspace, FTP, SFTP, GridFS) you might need to look at spiral [Storage Manager component](/storage/overview.md) which is responsible for such abstractions. 
 
 ## FilesInterface
 Like any other component, the default implementation of spiral FileManager is based on the interface. Let's view the interface source code to better understand what methods are available:
