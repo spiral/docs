@@ -2,7 +2,7 @@
 Most of Spiral's classes like ORM, ODM and HTTP request models extend one common parent - the DataEntity model. This class is one of the most basic application cells used to provide a set of wrappers and operations related to the array dataset.
 
 ## Purpose
-DataEntity model is responsible for mocking up and providing access to the array hash - fields (associated with the array) that use a set of getters, setters and accessors. In addition, this model provides a way to apply a mass assign to fields (using black/white lists), get all model fields as one array, get a list of all "public" fields (that can be sent to client using a whitelist) and can be converted into JSON. In addition, the model support [field validation] (validation.md) is based on a set of defined rules.
+DataEntity model is responsible for mocking up and providing access to the array hash - fields that use a set of getters, setters and accessors. In addition, this model provides a way to apply a mass assign to fields (using black/white lists), get all model fields as one array, get a list of all "public" fields (that can be sent to client using a whitelist) and can be converted into JSON. In addition, the model support [field validation] (validation.md) is based on a set of defined rules.
 
 ## Interfaces
 Because the DataEntity class is used widely across the Spiral framework, you may want to create your own code to communicate with it. Instead of using DataEntity class by itself, you can stick with it's primary interface:
