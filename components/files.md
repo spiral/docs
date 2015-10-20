@@ -1,7 +1,7 @@
 # Work with local Files
 Spiral Files component and `FilesInterface` are intended to simplify work with local harddrive rather than create a universal filesystem abstraction (like [Flysystem](https://github.com/thephpleague/flysystem)). 
 
-> Attention, FilesInterface will be replaces with Symfony\Filesystem
+> Attention, FilesInterface will be replaces with Symfony\Filesystem.
 
 If you want to use with abstract storage and work with remote locations (like Amazon, Rackspace, FTP, SFTP, GridFS) you might need to look at spiral [Storage Manager component](/storage/overview.md) which is responsible for such abstractions. 
 
