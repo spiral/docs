@@ -8,6 +8,15 @@
 
 ## Simple Grids
 
+```html
+<spiral:grid source="<?= $uploads ?>" as="upload">
+    <grid:cell value="<?= $upload->getId() ?>"/>
+    <grid:cell value="<?= e($upload->getName()) ?>"/>
+    
+    <grid:cell><a href="#">Download</a></grid:cell>
+</spiral:grid>
+```
+
 ## Caching
 
 ```html
