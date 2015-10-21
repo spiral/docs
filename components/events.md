@@ -1,6 +1,8 @@
 # Events and Event Dispatchers
 In Spiral framework I tried to limit events usage as much as possible to make the framework core and components as clear as possible. At this moment, events are only used in DataEntity type classes (ORM and ODM models), Core Loader and Database entity class, in every other place I'm trying to utilize interfaces and dependencies. 
 
+> Spiral event interfaces might be implemented using Symfony\Events in future.
+
 Because most places where events are really needed have very similar requiments I managed to create a very light and simple event dispatching mechanism without overcomplicating event logic.
 
 ## Events Dispatchers
