@@ -297,17 +297,17 @@ In many cases, you may want to generate a URL specific to some route without loc
 
 ```php
 //routeName = 'profile[/<id>]'
-dump($this->router->createUri('routeName', 'id' => $user->id)); // profile/ID
+dump($this->router->createUri('routeName', ['id' => $user->id])); // profile/ID
 ```
 
 You should only provide a route name and set of parameters to be interpolated into URL. If route does not have all of the provided parameters in it's pattern, such parameters will be added into query string:
 
 ```php
 //routeName = 'profile[/<id>]'
-dump($this->router->createUri('routeName', 'id' => $user->id, 'success' => 'yes')); // /profile/ID?success=yes
+dump($this->router->createUri('routeName', ['id' => $user->id, 'success' => 'yes'])); // /profile/ID?success=yes
 ```
 
 Additionally, you can specify the route name in a format "controller::action", so that the name will be interpolated into a pattern defined in the default route:
 ```php
-dump($this->router->createUri('users::edit', 'id' => $user->id, 'success' => 'yes')); // /users/edit/ID?success=yes
+dump($this->router->createUri('users::edit', ['id' => $user->id, 'success' => 'yes'])); // /users/edit/ID?success=yes
 ```
