@@ -6,6 +6,6 @@
 
 ## Embedded Layouts
 
-## Grids
+## Simple Grids
 
 ## Miscellaneous
