@@ -26,3 +26,5 @@ Spiral framework supports scaffolding for your application parts.
 ##### Controller with Service and RequestFilter
 
 ## Migration
+
+## Blank View
