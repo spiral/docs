@@ -67,4 +67,4 @@
     * [UML Export] (odm/uml.md)
 * Modules and Extensions
     * [Profiler] (modules/profiler.md)
-    * **Spiral Frontend Toolkit**
+    * !UNF [**Spiral Frontend Toolkit**] (modules/toolkit.md)
