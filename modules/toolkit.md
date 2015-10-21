@@ -8,4 +8,6 @@
 
 ## Simple Grids
 
+## Caching
+
 ## Miscellaneous
