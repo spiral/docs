@@ -42,7 +42,7 @@
     * [Reactor] (components/reactor.md)
     * [Modules] (components/modules.md)
     * [**Validation**] (components/validation.md)
-* Templater
+* **Templater**
     * [**Basic Usage**] (templater/basics.md)
     * [Extended Usage (virtual tags, tips and tricks)] (templater/expert.md)
 * Storage Manager
