@@ -1,5 +1,5 @@
 # Storage Manager
-The Spiral `StorageManager` (`Spiral\Storage\StorageInterface`) component provides a unified abstraction layer across multiple data/file storages including local harddrive (`FilesInterface` used), Amazon S3, Rackspace Files, remote server over SFTP, remote server over FTP, GridFS storage.
+The Spiral `StorageManager` (`Spiral\Storage\StorageInterface`) component provides a unified abstraction layer (SAL) across multiple data/file storages including local harddrive (`FilesInterface` used), Amazon S3, Rackspace Files, remote server over SFTP, remote server over FTP, GridFS storage.
 
 The general concept of the StorageManager is to abstract stored data/files using only two primary enties: objects and **buckets** and limit set of operations as much as it can. 
 
