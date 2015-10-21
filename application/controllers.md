@@ -89,6 +89,8 @@ default route.
 
 If controller action missing parameter(s), or method does not exsists - `ControllerException` will be thrown.
 
+> You can also request outer controller as dependency, hovewer RBAC controllers require their actions to be called using method `callAction`, in other scenario you will bypass permissions control layer. 
+
 ## Scaffolding
 You can generate needed controllers using `create:controller name` command. While generation you can specify services controller depends on, pre-generate some methods or even link controller to existed data entity service which will generate set of methods to retrieve, save and delete entities. Let's use our `UserService` from previous section - `create:controller users -s user`:
 
