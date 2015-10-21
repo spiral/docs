@@ -1,6 +1,8 @@
 # The Design
 The Spiral framework uses well-known design techniques to develop it's components and share them to your application in a modular way.
 
+Conceptually spiral is following KISS principle to simplify learning curve and provide more flexibility for project growing.
+
 ## Container and Components
 One of the primary Spiral features is it's container. This module is the glue between the different modules and provides the ability to communicate between components without linking the source code to a specific implementation.
 
