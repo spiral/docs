@@ -10,4 +10,10 @@
 
 ## Caching
 
+```html
+<spiral:cache lifetime=60>
+  Some long code...
+</spiral:cache>
+```
+
 ## Miscellaneous
