@@ -86,7 +86,7 @@ class UseryRequest extends RequestFilter
             return false;
         }
 
-        return $entity->isValid();
+        return $this->isValid();
     }
 }
 ```
@@ -143,7 +143,7 @@ protected $schema = [
 **Other sources you can use:** uri (UriInterface), path (PAGE URI PATH), method (HTTP METHOD), isSecure (bool), isAjax (bool), isJsonExpected (bool), remoteAddress (string), header:origin, data:origin, post:origin, query:origin, cookie:origin, file:origin, server:origin, attribute:origin.
 
 ## Populating target Entity
-Once the request is generated, you can map it's values to approprate fields to populate some database entity. You can either do it manually via get/setFields or use request `populate` method which will copy fields from request to target entity and validate it to make sure that everything is ok.
+Once the request is generated, you can map it's values to approprate fields to populate some database entity. You can either do it manually via get/setFields or use request `populate` method which will copy fields from request to target entity and perform additional operations.
 
 You can put your custom logic into your populate method to handle more complex scenarious. For example, within file uploads. 
 
@@ -201,8 +201,7 @@ class UserRequest extends RequestFilter
         //Doing something with image
         $this->image->moveTo('...');
 
-
-        return $entity->isValid();
+        return $this->isValid();
     }
 }
 ```
