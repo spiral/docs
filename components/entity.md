@@ -558,7 +558,7 @@ protected function validate($reset = false)
 ```
 
 ## Magic Methods
-In addition to getField/getField methods, data entity exposes set of magic getters, setters and method to access your fields. For example, you can read or write any entity value using the `__get` or `__set` methods:
+In addition to getField/setField methods, data entity exposes set of magic getters, setters and method to access your fields. For example, you can read or write any entity value using the `__get` or `__set` methods:
 
 ```php
 $entity->name = 'new name';
