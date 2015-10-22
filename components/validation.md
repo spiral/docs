@@ -111,7 +111,7 @@ Before we move to the format required to define validation rules, let's take a l
 ]
 ```
 
-Such errors can be sent directly to the frontend and be displayed near the input field or joined as an array of errors.
+Such errors can be sent directly to the frontend and be displayed near the input field (see [Spiral Frontent Toolkit](../modules/toolkit.md)) or joined as an array of errors.
 > Spiral Validators must perform **linear field validation**. This means that only one error can be shown in one field. When there are multiple rules associated with one field - the first failed error message will be used for that rule (other validation methods will be skipped). This approach is used to make sure that every rule will receive a value already passed through previous validations (for example we can have rules like: notEmpty, string, string::regexp which will make sure that field is not empty. Than that value is a string and only after regexp expression will it be executed).
 
 ## Validation Rules and Messages
