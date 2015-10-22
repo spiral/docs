@@ -519,6 +519,8 @@ class DemoEntity extends \Spiral\Models\DataEntity
 }
 ```
 
+> You can also use key "error" instead of "message".
+
 Now we can check if our entity is valid and get an error messages in our controller code (you can play with the url query to produce different values):
 
 ```php
