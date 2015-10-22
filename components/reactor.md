@@ -1,6 +1,8 @@
 # Reactor
 Reactor component is not considered a part of Spiral components and exists only in the Spiral framework bundle. This component provides the ability to generate classes with any desired structure and functionality using logical definitions and avoiding the use of templates. The ability to do this provides a more flexible way to create scaffolding functionality for different framework parts.
 
+> This component can be replaced by [Zend Code Generator](http://framework.zend.com/manual/current/en/modules/zend.code.generator.examples.html).
+
 Reactor can be separated into two general pieces: elements and generators.
 
 ## Reactor Elements
