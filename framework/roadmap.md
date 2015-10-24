@@ -6,6 +6,7 @@ Following steps are currently in a pipeline:
 * Few tutorials and quick start videos
 * Authorization module with integration with ORM (and maybe ODM), i'm still thinking about the most optimal implementation (heading to RBAC with NIST model level 2b)
 * Universal administration panel with flexible design, RBAC (NIST) and set of generators - http://prntscr.com/8cwddl
+* Initial release
 * Tests coverage
 
 Feel free to propose your help or suggestions.
