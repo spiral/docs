@@ -142,6 +142,8 @@ protected $schema = [
 ];
 ```
 
+> Modifications which might change application flow on existed projects is more reliable to duplicate/move to migration scripts.
+
 To add this, we have to execute `spiral up` again (you can set the verbosity flag `-v` to see what is happening here):
 
 ```
