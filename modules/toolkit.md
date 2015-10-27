@@ -10,7 +10,7 @@
 
 ```html
 <spiral:grid source="<?= $uploads ?>" as="upload">
-    <grid:cell value="<?= $upload->getId() ?>"/>
+    <grid:cell value="<?= $upload->getId() ?>" style="font-weight: bold"/>
     <grid:cell value="<?= e($upload->getName()) ?>"/>
     
     <grid:cell><a href="#">Download</a></grid:cell>
