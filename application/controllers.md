@@ -34,8 +34,9 @@ class HomeController extends Controller
      */
     public function __construct(ContainerInterface $container, UserService $users)
     {
-        //For shared bindings
+        //For shared bindings ($this->dbal->...)
         parent::__construct($container);
+        
         $this->users = $users;
     }
 
