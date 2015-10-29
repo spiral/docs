@@ -18,8 +18,7 @@ class HomeController extends Controller
 your controllers.
 
 ## Dependency Injection
-Controllers with definitely need some extrernal classes like views, services and etc to operate. Due every `Controller` is instance of `Service` you can use `init`
-method and short bindings for core components.
+Controllers with definitely need some extrernal classes like views, services and etc to operate. You can simply redefie controller contstuctor to define required dependecies.
 
 ```php
 class HomeController extends Controller
@@ -30,10 +29,13 @@ class HomeController extends Controller
     protected $users = null;
 
     /**
+     * @param ContainerInterface $container
      * @param UserService $users
      */
-    public function init(UserService $users)
+    public function __construct(ContainerInterface $container, UserService $users)
     {
+        //For shared bindings
+        parent::__construct($container);
         $this->users = $users;
     }
 
@@ -108,10 +110,13 @@ class UsersController extends Controller
     protected $users = null;
 
     /**
+     * @param ContainerInterface $container
      * @param UserService $users
      */
-    public function init(UserService $users)
+    public function __construct(ContainerInterface $container, UserService $users)
     {
+        //For shared bindings
+        parent::__construct($container);
         $this->users = $users;
     }
 
