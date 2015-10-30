@@ -6,8 +6,6 @@ Conceptually spiral is trying to follow KISS principle to simplify learning curv
 ## Container and Components
 One of the primary Spiral features is it's container. This module is the glue between the different modules and provides the ability to communicate between components without linking the source code to a specific implementation.
 
-Generally speaking, no component can request an instance or functionality from another component via bypassing a container (if you see a violation like this inside any spirals components, please open an issue).
-
 Usually this approach requires using component interfaces which represents generic component functionality. In some cases, especially when one component is purely based on the functionality of another component (for example ORM and DBAL), this communication is allowed using lower level abstractions or even specific classes. This is because mapping every possible functionality into the interfaces could create implementation constraints (aka overcomplexity) or take a long time.
 
 Practically speaking, functionality of other component must be requested using the methods `get` and `create` of container.
