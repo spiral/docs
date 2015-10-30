@@ -17,7 +17,7 @@ interface ValidatorInterface
      * Update validation data (context).
      *
      * @param array|\ArrayAccess $data
-     * @return self
+     * @return selfp
      * @throws ValidationException
      */
     public function setData($data);
@@ -59,7 +59,7 @@ As you can see, validator requires 2 primary sets:
 * data is an array of fields to be validated
 * rules is set of validation rules to be applied to every data field
 
-> The default spiral implementation `Validator` requires instances of `ContainerInterface` and `ValidationProvider` (to provide a list of available validations). This means that you have to request the validator instance using the  container to ensure that it's configured correctly. 
+> The default spiral implementation `Validator` requires instances of `ContainerInterface` and `ConfiguratorInterface` (to provide a list of available validations using section "validation"). This means that you have to request the validator instance using the  container to ensure that it's configured correctly. 
 
 Now we can create a sample validator in our controller action:
 
