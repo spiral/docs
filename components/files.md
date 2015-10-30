@@ -214,7 +214,7 @@ interface FilesInterface
 The only notable part of FileInterface and default implementation - FileManager's ability to ensure the file location (directory) with the requested file mode. This functionality is used all across the spiral core to simplify file writing operations and be less dependent on a specific directory structure. Let's look at some examples (and again, we can either use FilesInterface as our dependency or the short binding "files"):
 
 ```php
-public function index(FilesInterface $files)
+protected function indexAction(FilesInterface $files)
 {
     //Directory runtime/folder will be automatically created with RUNTIME (777) mode
     $files->write(
@@ -231,7 +231,7 @@ public function index(FilesInterface $files)
 Another pretty common operation is the `getFiles` method which is used to recursively read the content of the specified directory:
 
 ```php
-public function index()
+protected function indexAction()
 {
     dump($this->files->getFiles(directory('runtime'), 'php'));
 }

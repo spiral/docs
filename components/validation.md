@@ -64,7 +64,7 @@ As you can see, validator requires 2 primary sets:
 Now we can create a sample validator in our controller action:
 
 ```php
-public function index(ValidatorInterface $validator)
+protected function indexAction(ValidatorInterface $validator)
 {
     $validator->setData([
         'name' => $this->input->query('name')
@@ -79,7 +79,7 @@ public function index(ValidatorInterface $validator)
 We can also create a validator using container and defined data and create rules while class is constructed:
 
 ```php
-public function index()
+protected function indexAction()
 {
     /**
      * @var ValidatorInterface $validator
@@ -118,7 +118,7 @@ Such errors can be sent directly to the frontend and be displayed near the input
 We can define multiple validation rules for one field. Let's try to modify our example and include an email check into it:
 
 ```php
-public function index()
+protected function indexAction()
 {
     /**
      * @var ValidatorInterface $validator
@@ -201,7 +201,7 @@ It was mentioned before that the complex form lets you set custom error message 
 Let's try to create our own validation method in our controller or service.
 
 ```php
-public function index()
+protected function indexAction()
 {
     /**
      * @var ValidatorInterface $validator
@@ -304,7 +304,7 @@ Another section you may notice in validation config is "emptyConditions". Let's 
 Empty conditions are a set of rules make sure that a field value is set. Generally speaking, you have to include one of these rules into the field validations if you do not want to leave the field empty. Let's try to demonstrate it below:
 
 ```php
-public function index()
+protected function indexAction()
 {
     /**
      * @var ValidatorInterface $validator
@@ -442,7 +442,7 @@ class MyChecker extends Checker
 We can now modify our validation code within controller:
 
 ```php
-public function index()
+protected function indexAction()
 {
     /**
      * @var ValidatorInterface $validator
@@ -632,7 +632,7 @@ class UploadRequest extends RequestFilter
 Our controller code will look like this:
 
 ```php
-public function index(UploadRequest $request)
+protected function indexAction(UploadRequest $request)
 {
     if (!$request->isValid()) {
         //errors

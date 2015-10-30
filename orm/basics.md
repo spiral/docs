@@ -224,7 +224,7 @@ This constant will forbid *any modifications* to an associated table and ensure 
 Once your ORM schema has been updated, we are ready to work with our model. Since we just created our table, it's time to push some data to it. Let's do this operation in a controller:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $u = new User();
     $u->name = 'Anton';
@@ -335,7 +335,7 @@ dump($user);
 The most common option is to find the model based on the provided primary key or return client exception on failure. Spiral does not embed any application specific logic into the ORM component, so you have to raise an exception on your own. This is pretty easy to do:
 
 ```php
-public function index($id)
+protected function indexAction($id)
 {
     if (empty($user = User::findByPK((int)$id))) {
         throw new NotFoundException('No such user');
@@ -348,7 +348,7 @@ public function index($id)
 Or using the entity service:
 
 ```php
-public function index(UserService $users, $id)
+protected function indexAction(UserService $users, $id)
 {
     if (empty($user = $users->findByPK((int)$id))) {
         throw new NotFoundException('No such user');
@@ -362,7 +362,7 @@ public function index(UserService $users, $id)
 To find multiple Records or run aggregation, let's use the method `find`, which will return an instance of `Spiral\ORM\Entities\Selector`. This class has a common parent with DBAL [SelectQuery] (/database/builders.md) and lets you use the same methods and principles:
 
 ```php
-public function index()
+protected function indexAction()
 {
     dump(User::find()->count());
     dump(User::find()->sum('user.balance'));
@@ -400,7 +400,7 @@ Note that the ORM Selector will automatically assign the **alias for associated 
 Once you've selected the necessary record (for example using `findByPK`), you can modify it's fields using the same way as any other DataEntity. To save your updates into the database, you have to run the method `save()`. This method returns false if the model validations failed.
 
 ```php
-public function index()
+protected function indexAction()
 {
     $user = User::findByPK(1);
     $user->name = 'New Name';
@@ -474,7 +474,7 @@ protected $schema = [
 After the schema updates, we can use that field as a [Carbon] (https://github.com/briannesbitt/Carbon) instance.
 
 ```php
-public function index()
+protected function indexAction()
 {
     $user = User::findByPK(1);
     $user->name = 'New Name';
@@ -717,7 +717,7 @@ class UserService extends Service  implements SingletonInterface
 You can use this service inside your controllers. This avoids the static methods of the Record model (they can always be removed from service as well):
 
 ```php
-public function index(UserService $users)
+protected function indexAction(UserService $users)
 {
     $user = $users->findByPK(1);
     $user->balance->inc(1.6);

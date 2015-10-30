@@ -12,7 +12,7 @@ simplify that command to `spiral {command}` or `./spiral {command}`.
 As in case with HttpDispatcher you can get access to ConsoleDispather and it's commands at any moment, let's try to execute 'help' command from our controller:
 
 ```php
-public function index()
+protected function indexAction()
 {
     dump($this->console->command('help'));
 }

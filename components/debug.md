@@ -8,7 +8,7 @@ Spiral loggers aggregate log messages using a channel name. In most cases (when 
 If you wish to access the logger in your code (for example in a controller action) you can simply declare the dependency:
 
 ```php
-public function index(Logger $logger)
+protected function indexAction(Logger $logger)
 {
     $logger->alert('abc!');
     
@@ -23,7 +23,7 @@ public function index(Logger $logger)
 Spiral provides a simplistic way to create handlers to store or send specific log messages. You can add your handler to Logger using the setHandler method:
 
 ```php
-public function index(Logger $logger)
+protected function indexAction(Logger $logger)
 {
     $logger->setHandler(Logger::ERROR, new MyHandler());
 }
@@ -45,7 +45,7 @@ public function __invoke($level, $message, array $context = []);
 If you wish your handler to log every log message (every level) you can assing it to `Logger::ALL`:
 
 ```php
-public function index(Logger $logger)
+protected function indexAction(Logger $logger)
 {
     $logger->setHandler(Logger::ALL, function ($level, $messsage, array $context) {
         dump($level);
@@ -135,7 +135,7 @@ class HomeController extends Controller
 {
     use LoggerTrait;
 
-    public function index()
+    protected function indexAction()
     {
         $this->logger()->alert('test');
     }
@@ -190,7 +190,7 @@ class TestService extends Service
 The Benchmarking functionality may not look useful, however the most critical parts of Spiral (queries, adapter creations, storage manipulations) are covered with them, as result you can use the Profiler module and its panel to view a timeline of your application:
 
 ```php
-public function index(Database $db)
+protected function indexAction(Database $db)
 {
     foreach ($db->getTables() as $table) {
         foreach ($table->schema()->getColumns() as $column) {
@@ -206,7 +206,7 @@ public function index(Database $db)
 One additional feature can help you to view content of objects or variables without launching XCache, for this feature we will need instance of `Dumper`:
 
 ```php
-public function index(Dumper $dumper, MemcacheStore $memcacheStore)
+protected function indexAction(Dumper $dumper, MemcacheStore $memcacheStore)
 {
     $dumper->dump($memcacheStore);
 }
@@ -218,7 +218,7 @@ The following code will dump the structure of $memcacheStore into output and wil
 You can also use the short "dump" function in Spiral environments (you'll probably notice it's in my examples):
 
 ```php
-public function index(MemcacheStore $memcacheStore)
+protected function indexAction(MemcacheStore $memcacheStore)
 {
     dump($memcacheStore);
 }
@@ -242,7 +242,7 @@ class TestService extends Service
 The Dumper and dump method, in addition to outputing content into the active buffer can send the dump info into different outputs:
 
 ```php
-public function index(MemcacheStore $memcacheStore)
+protected function indexAction(MemcacheStore $memcacheStore)
 {
     //Output buffer
     dump($memcacheStore, Dumper::OUTPUT_ECHO);

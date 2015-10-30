@@ -69,7 +69,7 @@ interface TranslatorInterface
 As you can see, interface declares only few methods without creating overcomplicated flow, let's try to demostrate few translator abilities using controller action:
 
 ```php
-public function index()
+protected function indexAction()
 {
     //Current language code
     dump($this->i18n->getLanguage());
@@ -126,7 +126,7 @@ return [
 In many cases you might wish to translate or pluralize string without specifying bundle, for this purposes you can use 2 short function `l` and `p`. Now we can rewrite our controller code to use such functions:
 
 ```php
-public function index()
+protected function indexAction()
 {
     //Current language code
     dump($this->i18n->getLanguage());
@@ -150,7 +150,7 @@ class HomeController extends Controller
 {
     use TranslatorTrait;
 
-    public function index()
+    protected function indexAction()
     {
         //We are going to use current class name as bundle name
         dump(self::translate('Welcome to HomeController, {name}.', ['name' => 'User']));
@@ -168,7 +168,7 @@ TranslatorTrait already used by DataEntities (ORM and ODM) and Validator checker
 One of the important parts of Translator component is ability to index strings without executing target code or manually editing bundle files. This funationality has only one limitation - only static methods or short functions can be indexed and only in case when their string argument are constant. Let's view example of what specific parts of our code can be indexed:
 
 ```php
-public function index()
+protected function indexAction()
 {
     //Can be indexed
     self::translate('Welcome to HomeController, {name}.', ['name' => 'Anton']);
@@ -195,7 +195,7 @@ class HomeController extends Controller
         'bad'  => '[[Bad!]]'
     ];
 
-    public function index()
+    protected function indexAction()
     {
         $this->translate($this->strings['good']);
         $this->translate($this->strings['bad']);

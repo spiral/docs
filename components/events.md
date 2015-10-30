@@ -100,7 +100,7 @@ class HomeController extends Controller
 {
     use EventsTrait;
 
-    public function index() 
+    protected function indexAction()
     {
         dump($this->doSomething('abc'));
     }
@@ -115,7 +115,7 @@ class HomeController extends Controller
 As you can see we, define our event "something" (using the `fire` method) in the "doSomething" action. As event context we will provide our input data variable, same data will be returned when event passed thought every listener. Let's try to create some listeners
 
 ```php
-public function index()
+protected function indexAction()
 {
     self::events()->listen('something', function (ObjectEvent $event) {
         dump($event->context());
@@ -129,7 +129,7 @@ public function index()
 Now we have event listener which will dump our context data (["abc"]) and object which raised an event, if we wish to modify our context we can create different listener:
 
 ```php
-public function index()
+protected function indexAction()
 {
     self::events()->listen('something', function (ObjectEvent $event) {
         dump($event->parent());
@@ -148,7 +148,7 @@ public function index()
 Result of our `doSomething` method now will be modified (['abc', 'cba']). If you wish to stop every other listener from performing, you can call stopPropagnation() method of provided event object:
 
 ```php
-public function index()
+protected function indexAction()
 {
     self::events()->listen('something', function (ObjectEvent $event) {
         $event->stopPropagation();

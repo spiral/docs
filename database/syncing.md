@@ -11,7 +11,7 @@ You can also use additional schema operations to remove or rename table elements
 To get instance of TableSchema which we can manipulate with, we can use similar way described in [Schema Readers (make sure your read them first)] (reading.md). The only difference - we don't need to check table existence. We are going to use controller actions as example:
 
 ```php
-public function index(Database $database)
+protected function indexAction(Database $database)
 {
     //Attention, database will add it's prefix to final table name
     $schema = $database->table('new_table')->schema();

@@ -463,7 +463,7 @@ return [
 Now our module is installed, it's bindings mouted and resources published! Let's try to do something in our controller:
 
 ```php
-public function index()
+protected function indexAction()
 {
     dump($this->sample);
     dump($this->sample->config());

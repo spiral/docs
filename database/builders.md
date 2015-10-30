@@ -5,7 +5,7 @@ As many other DB layers spiral provide way to construct basic SQL queries using 
 Before we will start learning about different query builders let's try to create a table in our database first, we are going to use controller action for that:pa
 
 ```php
-public function index(Database $database)
+protected function indexAction(Database $database)
 {
     $table = $database->table('test');
 
@@ -88,7 +88,7 @@ dump($table->insert([
 SelectQuery builder can be retrieved two very similar ways, you can either get it from database or from table abstractions, let's try to show both examples (result are identical):
 
 ```php
-public function index(Database $database)
+protected function indexAction(Database $database)
 {
     $table = $database->table('test');
 
@@ -140,7 +140,7 @@ Obvisously, no query can useful if we can not specify where conditions. SeletQue
 Let's add simple condition on `status` column of our table:
 
 ```php
-public function index(Database $database)
+protected function indexAction(Database $database)
 {
     $select = $database->select()->from('test')->columns(['id', 'status', 'name']);
 

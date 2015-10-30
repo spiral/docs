@@ -3,7 +3,7 @@ As mentioned in [Http Flow] (flow.md) you can access incoming request in your co
 Let's view some example (every listed request recieve method is idential to each other) in a context of application Controller:
 
 ```php
-public function index(ServerRequestInterface $request)
+protected function indexAction(ServerRequestInterface $request)
 {
     dump($request->getQueryParams());
     dump($this->request->getQueryParams());
@@ -15,7 +15,7 @@ however, PSR7 implemetation is not very user friendly in some cases, spiral prov
 request properties, InputManager can be retrieved using it's class name or short binding "input". Let's rerwite previous example using input manager:
 
 ```php
-public function index(InputManager $input)
+protected function indexAction(InputManager $input)
 {
     dump($input->cookies->all());
     dump($input->query->all());

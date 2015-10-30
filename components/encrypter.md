@@ -65,7 +65,7 @@ You can see we can encrypt, decrypt, generate random set of bytes and change enc
 If you wish to get access to encrypter in your code - use IoC container, depencency injections or short binding "encrypter" (as usual we are giving example using Controller action).
 
 ```php
-public function index(EncrypterInterface $encrypter)
+protected function indexAction(EncrypterInterface $encrypter)
 {
     //Don't ever do that
     dumP($encrypter->getKey());

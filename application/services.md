@@ -26,7 +26,7 @@ If you wish to make mortal service, simply run command with flag `--mortal` or `
 as class or method dependency.
 
 ```php
-public function index(SomeService $some)
+protected function indexAction(SomeService $some)
 {
     $some->doSomething();
     //...
@@ -204,7 +204,7 @@ class UserService extends Service implements SingletonInterface
 Now you can use this service in your controller to find, fetch save and delete entities of `User`, for example:
 
 ```php
-public function index(UserService $users)
+protected function indexAction(UserService $users)
 {
     dump($users->find()->count());
     dump($users->find()->findOne());

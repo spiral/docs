@@ -104,7 +104,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 This entity sets the fields using a contructor method (Pay attention, that the fields will be set without any filtering). Now we can use this entity in our code:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $entity = new \DemoEntity([ 
         'name'    => 'value',
@@ -227,7 +227,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 Now, no matter how we try to assign the value of a desired field, it will always be set to a desired value:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $entity = new \DemoEntity([
         'name'    => 'value',
@@ -399,7 +399,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 Let's see what value will be returned by editing the code in our controller:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $entity = new \DemoEntity([
         'name'    => 'value',
@@ -446,7 +446,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 Now, we can get a list of public fields by executing method `publicFields` of our entity:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $entity = new \DemoEntity([
         'name'    => 'value',
@@ -465,7 +465,7 @@ Every data entity object can be freely converted into JSON. You can either a pac
 When the entity starts to encode, only it's public fields will be included into the resulting JSON. We are going to use HttpDispatcher to convert all JsonSerializable objects into json response:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $entity = new \DemoEntity([
         'name'    => 'value',
@@ -524,7 +524,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 Now we can check if our entity is valid and get an error messages in our controller code (you can play with the url query to produce different values):
 
 ```php
-public function index()
+protected function indexAction()
 {
     $entity = new \DemoEntity([
         'name'    => 'value',

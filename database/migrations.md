@@ -68,7 +68,7 @@ To run, rollback or replace migrations check commands 'migrate', 'migrate:rollba
 In some cases (usually for modules) you might pre-create migration classes. To add such migration into queue we can use migrator method `registerMigration`, component will copy class source into migrations directory and execute it when appropriate console command will be runned. Migration component can be retrieved using dependency `MigratorInterface` in your code.
 
 ```php
-public function index(MigratorInterface $migrator)
+protected function indexAction(MigratorInterface $migrator)
 {
     $migrator->registerMigration('my_migration', \MyMigration::class);
 }
@@ -77,7 +77,7 @@ public function index(MigratorInterface $migrator)
 You can also get list of currently available migrations and their statuses using method `getMigrations`.
 
 ```php
-public function index(MigratorInterface $migrator)
+protected function indexAction(MigratorInterface $migrator)
 {
     foreach ($migrator->getMigrations() as $migration) {
         //Status is an object with name, status, creation and execution time,

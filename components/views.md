@@ -11,7 +11,7 @@ This is a demo view file: <?= $value ?>
 Next, we can render this file using `ViewsInterface` dependency or short binding "views" (we are going to work inside controller):
 
 ```php
-public function index()
+protected function indexAction()
 {
     return $this->views->render('demo', [
         'value' => mt_rand(0, 1000)
@@ -38,7 +38,7 @@ $dumper->dump($value);
 In addition, we can use the 'get' method of our ViewManager to receive an instance of View and, if we wanted to, configure it before rendering:
 
 ```php
-public function index()
+protected function indexAction()
 {
     /**
      * @var View $view
@@ -75,7 +75,7 @@ One of the core tenets of ViewManager is to aggregate and store view filenames i
 You can specify view name with a namespace using the ":" separator. If you don't enter a namespace, the "default" will be used instead. This makes it possible to rewrite the first example:
 
 ```php
-public function index()
+protected function indexAction()
 {
     return $this->views->render('default:demo', [
         'value' => mt_rand(0, 1000)
@@ -493,7 +493,7 @@ To demonstrate how cache dependencies work, let's modify our demo view this way:
 As mentioned before in the processor section, every string surrounded by an `[[]]` will be automatically translated using the active language. If we open our controller action with the view in browser, we will see that no `[[]]` is shown in the output. Now, let's change our language and see what happens:
 
 ```php
-public function index()
+protected function indexAction()
 {
     //Belarusian
     $this->i18n->setLanguage('by');

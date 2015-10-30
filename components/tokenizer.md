@@ -50,7 +50,7 @@ interface TokenizerInterface
 As you see the most important part of Tokenizer component located in getClasses method. Let's try to view some examples (as in other cases we can use short core binding "tokenizer" in our Controllers and Services):
 
 ```php
-public function index()
+protected function indexAction()
 {
     //Find every controller class
     dump($this->tokenizer->getClasses(ControllerInterface::class));
@@ -72,7 +72,7 @@ public function index()
 Default TokenizerInterface implementation provides few additional features which can be useful for you. First of all, we can always get every used trait for given class (including traits used by parents):
 
 ```php
-public function index()
+protected function indexAction()
 {
     dump($this->tokenizer->getTraits(self::class));
 }
@@ -82,7 +82,7 @@ Second feature must be treated as experimental (spiral might migrate to PHPParse
 information about classes, interfaces, traits and function declared in given file and, in addition, allow you to located function calls (this feature used by Translator to index your i18n function usages):
 
 ```php
-public function index()
+protected function indexAction()
 {
     $reflection = $this->tokenizer->fileReflection(__FILE__);
 

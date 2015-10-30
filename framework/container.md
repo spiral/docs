@@ -41,7 +41,7 @@ $userMailer = $this->container->construct(UserMailer::class, [
 Besides using class consturtor to inject dependecies, container allow you to apply same procedute for some specified class method. Dependency injection on method pre-implemented for you in spiral `Controller` and `Command` classes:
 
 ```php
-public function index(UserMailer $mailer) 
+protected function indexAction(UserMailer $mailer)
 {
     //...
 }
@@ -136,7 +136,7 @@ $this->container->bindSingleton(MyService::class, new MyService(...));
 This implementation provides us ability to avoid setting up singleton bindings in application bootstrap which can significantly improve performance.
 
 ```php
-public function index(MyService $service)
+protected function indexAction(MyService $service)
 {
     dump($this->container->hasInstance(MyService::class));
     dump($service === $this->container->get(MyService::class));
@@ -160,7 +160,7 @@ Spiral Container supports injection feature which might significanlty simplify a
 
 
 ```php
-public function index(Database $primary, Database $secondary)
+protected function indexAction(Database $primary, Database $secondary)
 {
     dump($primary);
     dump($secondary);

@@ -12,7 +12,7 @@ Reactor element provides light abstraction at the top of any PHP OOP stucture su
 Before we review how classes, their methods and properties are generated, let's take a look at FileElement as this is neccessary in order to write the generated code into a file. FileElement has only one important element we must provide - `FilesInterface`. All given examples use service/controller methods.
 
 ```php
-public function index()
+protected function indexAction()
 {
     //We are going to create a file element with primary
     //file namespace "MyNamespace"
@@ -70,7 +70,7 @@ class MyClass
 The most important reactor element which aggregates much of its functionality is located in ClassElement class. We can use this element to describe the structure we need. Let's try to modify the previous example first so we can easily add this functionality to our class:
 
 ```php
-public function index()
+protected function indexAction()
 {
     //We are going to create file element with primary
     //file namespace "MyNamespace"
@@ -372,7 +372,7 @@ class MyClass extends Component  implements Countable
 The resulting code which was needed to generate such a class will be fairly large but easy to make modular:
 
 ```php
-public function index()
+protected function indexAction()
 {
     //We are going to create file element with primary
     //file namespace "MyNamespace"

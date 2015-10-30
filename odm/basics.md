@@ -32,7 +32,7 @@ With ODM, you are not required to spend a ton of time trying to configure your O
 Configration is very similar to the [DBAL] (/database/overview.md) and fully supports database aliases and controllable/contextual injections. If you want to get direct access to the `MongoDatabase` in your controller, simply request it using `ODM->db()` factory method or via `MongoDatabase` dependency using a database alias:
 
 ```php
-public function index(MongoDatabase $database, ODM $odm)
+protected function indexAction(MongoDatabase $database, ODM $odm)
 {
     dump($database->getCollectionNames());
     dump($odm->db('default'));
@@ -167,7 +167,7 @@ protected $schema = [
 Once your ODM schema has been updated, we are ready to work with our models. To save some data into our users collection let's create our first entity in our controller method:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $u = new User();
     $u->name = 'Anton';
@@ -282,7 +282,7 @@ dump($user);
 The most common option is to find the model based on the provided primary key or return client exception on failure. Spiral does not embed any application specific logic into the ODM component so you have to raise an exception on your own. This is easy to do:
 
 ```php
-public function index($id)
+protected function indexAction($id)
 {
     if (empty($user = User::findByPK((int)$id))) {
         throw new NotFoundException('No such user');
@@ -295,7 +295,7 @@ public function index($id)
 Or using entity service:
 
 ```php
-public function index(UserService $users, $id)
+protected function indexAction(UserService $users, $id)
 {
     if (empty($user = $users->findByPK((int)$id))) {
         throw new NotFoundException('No such user');
@@ -405,7 +405,7 @@ dumP($cursor->info());
 Once you've selected the neccesary document (for example using `findByPK`), you can modify it's fields the same way as any other `DataEntity`. To save your updates into the database, you have to run the method save(). This method returns false if the model validations fail.
 
 ```php
-public function index($id)
+protected function indexAction($id)
 {
     $user = User::findByPK($id);
     $user->name = 'New Name';
@@ -474,7 +474,7 @@ protected $schema = [
 After the schema is updated, we are able to use that field as a Carbon instance.
 
 ```php
-public function index()
+protected function indexAction()
 {
     $user = User::findOne();
     $user->name = 'New Name';
@@ -732,7 +732,7 @@ class UserService extends Service  implements SingletonInterface
 As a result, you can use this service inside your controllers to avoid the static methods of Document model (they can always be removed from the service too):
 
 ```php
-public function index(UserService $users)
+protected function indexAction(UserService $users)
 {
     $user = $users->findByPK(1);
     $user->inc('balance', 1.6);

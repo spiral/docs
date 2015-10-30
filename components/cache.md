@@ -23,7 +23,7 @@ interface CacheInterface
 As you can see, provider declares only one method related to creating needed cache store by it's name and configuration options (optional), you can skip store name - in this case you will get default adapter. Inside our code (use Controller action as example) we can get access to cache provider using three different bindings:
 
 ```php
-public function index(CacheInterface $cache, CacheProvider $provider)
+protected function indexAction(CacheInterface $cache, CacheProvider $provider)
 {
     //True
     dump($cache === $provider);
@@ -185,7 +185,7 @@ interface StoreInterface
 Based on following methods can perform different operations:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $store = $this->cache->store();
     
@@ -237,7 +237,7 @@ As mention in IoC guide some of spiral classes and interfaces support so called 
 cache adapter without calling provider every time. CacheProvider will use requested store class to provide you valid instance, let's look at example in controller action (can also be used in constructors or init methods):
 
 ```php
-public function index(StoreInterface $store, FileStore $fileStore, MemcacheStore $memcacheStore)
+protected function indexAction(StoreInterface $store, FileStore $fileStore, MemcacheStore $memcacheStore)
 {
     //Will be instance of default cache store
     dump($store);

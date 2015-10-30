@@ -397,7 +397,7 @@ Once we have our buckets and servers configured (you must enter your own connect
 We can put new file/data into specified bucket using either the `StorageManager` or the `BucketInterface` put method, we are going to use `StorageManager` received using short binding "storage" in controller action:
 
 ```php
-public function index()
+protected function indexAction()
 {
     //We can put data into bucket using filename
     $object = $this->storage->put('local', 'file.txt', __FILE__);
@@ -429,7 +429,7 @@ As result of such code we will get file named "file.txt" in our "application/run
 Once we have data located in some bucket we only need to store generated address somewere as it's value clearly defines object name and object bucket. Let's use address from previous example and try to get some information about our object:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $address = 'local:file.txt';
     $object = $this->storage->open($address);
@@ -557,7 +557,7 @@ interface ObjectInterface extends StreamableInterface
 Now we can modify our code to read object properties without being worrying where object is stored into:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $address = 'local:file.txt';
     $object = $this->storage->open($address);
@@ -579,7 +579,7 @@ From given methods let's focus on two most important: `getStream` and `localFile
 Storage component will be useless without providing you ability to read data of stored object. Right now you have 2 methods use can use your our application:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $address = 'local:file.txt';
     $object = $this->storage->open($address);
@@ -598,7 +598,7 @@ First of all, `localFilename` method will return filename which must never be us
 filename in copy, read and other file operations like in provided example:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $address = 'local:file.txt';
     $object = $this->storage->open($address);
@@ -616,7 +616,7 @@ however you must know that given filename is not nesessary real filename at all,
 We can easily rename of our storage object using method `rename`:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $address = 'local:file.txt';
     $object = $this->storage->open($address);
@@ -628,7 +628,7 @@ public function index()
 All storage servers support ability to automatically create directory for storage objects, meaning we can include our folder into object name:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $address = 'local:file.txt';
     $object = $this->storage->open($address);
@@ -641,7 +641,7 @@ public function index()
 Any storage object can be deleted at any moment using `delete` method:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $address = 'local:file.txt';
     $object = $this->storage->open($address);
@@ -653,7 +653,7 @@ public function index()
 One of them most poweverful features of storage manager is ability to copy or move storage object into specified bucket without worrying about how it will be done. Object address will be corrected based on it's parent bucket: 
 
 ```php
-public function index()
+protected function indexAction()
 {
     $address = 'local:file.txt';
     $object = $this->storage->open($address);

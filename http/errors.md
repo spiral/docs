@@ -26,7 +26,7 @@ A side effect of turning isolation off is that no middleware will be able to com
 HttpDispatcher defines a set of "soft" client exceptions you can use in your code to force some HTTP error to happen. For example:
 
 ```php
-public function index()
+protected function indexAction()
 {
      throw new ClientException(ClientException::NOT_FOUND);
 }

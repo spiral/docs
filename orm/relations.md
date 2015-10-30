@@ -260,7 +260,7 @@ Compared to HAS_ONE relation we have only one new option we can use WHERE, such 
 The easies way to assign post to user will be using in inversed BELONGS_TO relation (for example author), however, for now, let's use `create` method of relation (attention, WHERE condition will NOT populate post model): 
 
 ```php
-public function index()
+protected function indexAction()
 {
     $faker = Factory::create();
 
@@ -339,7 +339,7 @@ BELONGS_TO relation can be inversed, however, since ORM does not know if relatio
 Once you have such relation declared in your model, you can use it to assign or de-assign parent to your record:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $faker = Factory::create();
 
@@ -367,7 +367,7 @@ public function index()
 BELONGS_TO relation has one interesting feature, available when you are linking parent record based on it primary key (default behaviour). In this case relation will try to locate parent model using [entity cache] (loading.md) first (if it's enabled) as result you can avoid additonal queries, let's try to demonstrate that:
 
 ```php
-public function index()
+protected function indexAction()
 {
     $post = Post::findOne();
 
