@@ -8,7 +8,7 @@ One of the primary Spiral features is it's container. This module is the glue be
 
 Usually this approach requires using component interfaces which represents generic component functionality. In some cases, especially when one component is purely based on the functionality of another component (for example ORM and DBAL), this communication is allowed using lower level abstractions or even specific classes. This is because mapping every possible functionality into the interfaces could create implementation constraints (aka overcomplexity) or take a long time.
 
-Practically speaking, functionality of other component must be requested using the methods `get` and `create` of container.
+Practically speaking, functionality of other component must be requested using the methods `get` and `construct` of container.
 
 > Check the classes located in the namespace `Spiral\Core` to find the Spiral components foundation.
 
