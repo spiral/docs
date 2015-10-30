@@ -53,41 +53,6 @@ There are a few exceptions predefined for generic scenarios:
 | 404  | NotFoundException     |
 | 500  | ServerErrorException  |
 
-## Handling Client Exception by Middleware
-As mention in previous section every instance of ClientException will be converted into `ExceptionResponse` (such reponse only demands error page rendering), this makes possible to handle such response "exception like" way and redifine output. For example we can create CMS middleware which it going to check for page associated with current Uri when endpoint returned NotFound Error.
-
-```php
-class CmsMiddleware extends Service implements MiddlewareInterface
-{
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param \Closure               $next Next middleware/target. Always returns ResponseInterface.
-     * @return ResponseInterface
-     */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, \Closure $next)
-    {
-        $response = $next($request);
-
-        if ($response->getStatusCode() == ClientException::NOT_FOUND) {
-            //Obviously you have to check if such CMS page known to system
-            return $this->cmsResponse($request);
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param ServerRequestInterface $request
-     * @return HtmlResponse
-     */
-    private function cmsResponse(ServerRequestInterface $request)
-    {
-        //Some custom logic
-        return new HtmlResponse('This is CMS page.');
-    }
-}
-```
 
 ## Exposing errors to client
 Exceptions which are not instances of `Spiral\Http\Exception\ClientException` will be treated as server errors, handled via `SnapshotInterface` and sent to client as exception backtrace. You can disable sending trace to client and replace it with generic 500 error by editing the "exposeErrors" flag in your http configuration.
