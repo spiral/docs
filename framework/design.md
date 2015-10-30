@@ -64,7 +64,7 @@ $applicationA->start();
 > The only one core functionality directly depends on staticContainer - TranslatorTrait.
 
 ## Application Design
-The application design doesn't need to necessarily follow the framework design and can create it's own communication techniques between it's business logic (for example, the Singleton class, which shares some information, user session, etc.). However, the default application bundle provides the following well-known concepts:
+The application design doesn't need to necessarily follow the framework design and can create it's own communication techniques between it's business logic, however, the default application bundle provides the following well-known concepts:
   * Separation of view and controller logic using [ViewManager](/components/views.md) and [Templater](/templater/basics.md) component 
   * Separation of database logic and business logic using [Services](/application/services.md) and [DataEntities](/components/entity.md)
   * Light controllers and high testability using [Services](/application/services.md) to keep generic application logic
