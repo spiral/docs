@@ -172,9 +172,7 @@ $selection->with([
 ]);
 
 $selection->where(
-    Post::find()->columns('COUNT(*)')->where('post.author_id', new SQLExpression('user.id')),
-    '>',
-    5
+    Post::find()->columns('COUNT(*)')->where('post.author_id', new SQLExpression('user.id')), '>', 5
 );
 ```
 
