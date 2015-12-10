@@ -12,7 +12,7 @@ scaffoling and cache directories comes pre-configured. Let's review default dire
 | /app/classes/Database/    | Database entities (ORM and ODM) or data models, default namespace "Database".                          
 | /app/classes/Middlewares/ | Application specific HttpDispatcher middlewares, default namespace "middlewares". Do not forget to register middleware in http config.
 | /app/classes/Requests/    | RequestFilters used to read request data, validate it and map it into appropriate data entity field. Default namespace "Requests".    
-| /app/classes/Services/    | Service layer classes, used to manage you data entities creation, saving and fetching and much more, namespace "Services".       
+| /app/classes/Models/    | Service layer classes, used to manage you data entities creation, saving and fetching and much more, namespace "Services".       
 | **/app/config/**          | Configuration files used by components.                           
 | /app/migrations/          | Default location for migrations                            
 | /app/runtime/             | Application data directory, can be created automatically via `configure` command and store dynamic data, aliases as "runtime".
