@@ -51,7 +51,7 @@
 * Databases
     * [Overview] (database/overview.md)
     * [Schema Readers] (database/reading.md)
-    * [Schema Writers] (database/syncing.md)
+    * [Schema Syncronization] (database/syncing.md)
     * [**Query Builders**] (database/builders.md)
 * Behaviour Schemas
     * [Schemas and Documenters] (schemas.md)
