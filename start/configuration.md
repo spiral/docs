@@ -1,4 +1,7 @@
 # Configuring your Application
+
+**OUTDATED**
+
 Most of spiral components and services require external configuration to define it's behaviour and settings. Configuration data usually supplied in array form using `Spiral\Core\ConfiguratorInterface` instance. 
 
 Spiral Framework core implements such interface and uses application `config` directory to store configurations in separate php files, every loaded configuration file will be merged with environment specific setttings and stored in permanent cache.
