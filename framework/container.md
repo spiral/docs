@@ -49,6 +49,14 @@ protected function indexAction(UserMailer $mailer)
 
 > In additional to that spiral controllers and [services] (/application/services.md) support `init` method where you can put your dependencies without overwriting default service constructor. 
 
+### Shared bindings
+Shared bindings provide you ability to use any system component by requesting it like a class property:
+
+![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/autocomplete.gif)
+
+
+TODO update docs
+
 ### Bindings
 In given example we simply constructed instance of `UserMailer` without any additional operations, however in many cases (especially in spiral core components), 
 class may declare dependency with interface rather than class:
