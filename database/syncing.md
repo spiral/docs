@@ -1,4 +1,4 @@
-## Schema Syncronization
+## Schema Syncronization  - REQUIRES UPDATE
 One of the most important part of Spiral DBAL is ability to alter database table schema using set of entity abstractions. Such abstractions provide ability to describe desired table rather than create it operation by operation.
 
 ## Principle of Work
