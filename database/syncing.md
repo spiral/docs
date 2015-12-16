@@ -2,7 +2,7 @@
 One of the most important part of Spiral DBAL is ability to alter database table schema using set of entity abstractions. Such abstractions provide ability to describe desired table rather than create it operation by operation.
 
 ## Principle of Work
-Before any operation/declaration can be applied to table schema, DBAL will load currently existed structure from database and [normalize it into internal format] (reading.md). As result, you are allowed to apply modification to table schema using declarative way instead of imperative, once schema **save** are requested - DBAL will generate set of creation and altering operation based on difference between declared and existed schemas. 
+Before any operation/declaration can be applied to table schema, DBAL will load currently existed structure from database and [normalize it into internal format] (reading.md). As result, you are allowed to apply modification to table schema using declarative way instead of imperative, once schema **save** are requested - DBAL will generate set of creation and altering operations based on difference between declared and existed schemas. 
 > Unfortunatelly some SQL features got simplified to fit, for example primary table key is described as column type, not index. Another side effect of using this methodic - you can not remove any table element like column or index by *non declaring* it.
 
 You can also use additional schema operations to remove or rename table elements.
