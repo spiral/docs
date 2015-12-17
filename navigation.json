@@ -16,7 +16,7 @@
       "framework-bootloaders": "<s>Bootloaders</s>",
       "framework-memory": "<s>Application Memory</s>",
       "framework-interfaces": "<s>Core Interfaces</s>",
-      "framework-schemas": "<s>Behaviour Schemas</s>"
+      "framework-schemas": "Behaviour Schemas"
     }
   },
   {
