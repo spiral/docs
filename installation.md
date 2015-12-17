@@ -62,4 +62,4 @@ return [
 
 If you wish to make your configuration be dependend on enviroment settings, simply use function `env(key, default)`.
 
-> Attention, your configuration files are cached relatively to current enviroment, you should not inlude any code which does not depend of `env` values.
+> Attention, your configuration files will be cached relatively to current enviroment, you should not inlude any code which does not depend of `env` values.
