@@ -14,20 +14,29 @@ interface HippocampusInterface
     /**
      * Read data from long memory cache. Must return exacts same value as saved or null.
      *
-     * @param string $name
+     * @param string $section  Non case sensitive.
      * @param string $location Specific memory location.
      * @return string|array|null
      */
-    public function loadData($name, $location = null);
+    public function loadData($section, $location = null);
 
     /**
      * Put data to long memory cache. No inner references or closures are allowed.
      *
-     * @param string       $name
+     * @param string       $section  Non case sensitive.
      * @param string|array $data
      * @param string       $location Specific memory location.
      */
-    public function saveData($name, $data, $location = null);
+    public function saveData($section, $data, $location = null);
+
+    /**
+     * Get all memory sections belongs to given memory location (default location to be used if
+     * none specified).
+     *
+     * @param string $location
+     * @return array
+     */
+    public function getSections($location = null);
 }
 ```
 
@@ -43,29 +52,45 @@ abstract class Operation
     abstract public function perform($request);
 }
 
-class OperationService 
+class OperationService
 {
     /**
      * List of operation associated with thier class.
      */
     protected $operations = [];
 
-    public function __construct(HippocampusInterface $memory, TokenizerInterface $tokenizer)
+    /**
+     * OperationService constructor.
+     *
+     * @param HippocampusInterface  $memory
+     * @param ClassLocatorInterface $locator
+     */
+    public function __construct(HippocampusInterface $memory, ClassLocatorInterface $locator)
     {
-        if(is_null($this->operations = $memory->loadData('operations')) {
-            $this->operations = $this->locateOperations($tokenizer);
-            
-            //We now can store data into long time memory
-            $memory->saveData('operations', $this->operations); 
+        $this->operations = $memory->loadData('operations');
+
+        if (is_null($this->operations)) {
+            $this->operations = $this->locateOperations($locator);
         }
+
+        //We now can store data into long time memory
+        $memory->saveData('operations', $this->operations);
     }
 
+    /**
+     * @param string $operation
+     * @param mixed  $request
+     */
     public function run($operation, $request)
     {
         //Perform operation based on $operations property
     }
-    
-    protected function locateOperations(TokenizerInterface $tokenizer)
+
+    /**
+     * @param ClassLocatorInterface $locator
+     * @return array
+     */
+    protected function locateOperations(ClassLocatorInterface $locator)
     {
         //Generate list of available operations via scanning every available class
     }
@@ -74,12 +99,12 @@ class OperationService
 
 > You can only store arrays and scalar values in long term memory.
 
-`HippocampusInterface` is implemented in spiral bundle using `Core` and `Application` classes, which lets you access it's functions using short 'core' binding in your services or controllers.
+`HippocampusInterface` is implemented in spiral bundle using `Memory` class, which lets you access it's functions using short 'memory' binding in your services or controllers.
 
 ```php
 public function doSomething()
 {
-    dump($this->core->loadData('something'));
+    dump($this->memory->loadData('something'));
 }
 ```
 
