@@ -108,8 +108,7 @@
   {
     "title": "Modules and Extensions",
     "links": {
-      "modules-profiler": "<s>Profiler</s>",
-      "modules-toolkit": "<s>Spiral Toolkit</s>"
+      "modules-profiler": "<s>Profiler</s>"
     }
   }
 ]
