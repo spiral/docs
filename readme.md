@@ -39,12 +39,10 @@
     * [Tokenizer] (components/tokenizer.md)
     * [Translator] (components/translator.md)
     * [**Views**] (components/views.md)
-    * [Reactor] (components/reactor.md)
-    * [Modules] (components/modules.md)
     * [**Validation**] (components/validation.md)
 * **Stempler**
-    * [**Basic Usage**] (templater/basics.md)
-    * [Extended Usage (virtual tags, tips and tricks)] (templater/expert.md)
+    * [**Basic Usage**] (stempler/basics.md)
+    * [Extended Usage (virtual tags, tips and tricks)] (stempler/expert.md)
 * Storage Manager
     * [**Buckets and Objects**] (storage/overview.md)
     * [Storage Servers] (storage/servers.md)
