@@ -19,11 +19,12 @@
 * Http Dispatcher
     * [Request Flow](http/flow.md)
     * [Request and InputManager](http/input.md)
-    * Cookies
+    * Responses
     * [Middlewares](http/middlewares.md)
+    * Cookies
     * [**Routing**](http/routing.md)
     * [Request Filters](http/filters.md)
-    * [Error Handling and Isolation](http/errors.md)
+    * [Http Errors](http/errors.md)
 * Console and CLI mode
     * [Overview](console/commands.md)
     * [Custom Commands](console/scaffolding.md)
