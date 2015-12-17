@@ -1,6 +1,6 @@
 # Configuring your Application
 
-**OUTDATED**
+**BADLY OUTDATED**
 
 Most of spiral components and services require external configuration to define it's behaviour and settings. Configuration data usually supplied in array form using `Spiral\Core\ConfiguratorInterface` instance. 
 
