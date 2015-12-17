@@ -4,9 +4,9 @@
     "links": {
       "readme": "<s>Table of Contents</s>",
       "installation": "Installation and Configuration",
-      "framework-about": "<s>About</s>",
-      "framework-roadmap": "<s>Roadmap</s>",
-      "framework-contributing": "<s>Contributing</s>"
+      "overview-about": "<s>About</s>",
+      "overview-roadmap": "<s>Roadmap</s>",
+      "overview-contributing": "<s>Contributing</s>"
     }
   },
   {
@@ -15,8 +15,8 @@
       "framework-container": "<s>Container, Factory, DI</s>",
       "framework-bootloaders": "<s>Bootloaders</s>",
       "framework-memory": "<s>Application Memory</s>",
-      "schemas": "<s>Behaviour Schemas</s>",
-      "framework-interfaces": "<s>Core Interfaces</s>"
+      "framework-interfaces": "<s>Core Interfaces</s>",
+      "framework-schemas": "<s>Behaviour Schemas</s>"
     }
   },
   {
