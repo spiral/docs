@@ -1,4 +1,6 @@
 # Table of Contents
+> Please let me know if you found any of many typos or wrong statements in this docmentation. You can either shoot me an email at wolfy.jd@gmail.com or fork guide [repository](https://github.com/spiral/guide).
+
 * [**Installation and Configuration**] (installation.md)
 * Overview
     * [About](overview/about.md)
@@ -62,5 +64,3 @@
     * [UML Export](odm/uml.md)
 * Modules and Extensions
     * [Profiler](modules/profiler.md)
-
-> Please let me know if you found any of many typos or wrong statements in this configuration. You can either shoot me an email at wolfy.jd@gmail.com or fork guide [repository](https://github.com/spiral/guide).
