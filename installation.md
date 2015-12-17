@@ -27,12 +27,12 @@ Make sure that `spiral` has right execute permissions (`chmod +x spiral`).
 
 > You can run comment with increaced verbosity to get more details.
 
-# Enviroment settings
+## Enviroment settings
 Default spiral application and framework core utilize [dotenv package](https://github.com/vlucas/phpdotenv) which provides you ability to enter your enviroment specific settings into `.env` file.
 
 > Enviroment file `.env` will be automatically created and pre-configured as moment of application installation, however in a future you have to manage file creation manually (you can simply copy or rename `.env.sample` and later run `spiral app:key` to ensure that unique encryption key were set).
 
-# Configuration
+## Configuration
 Your application confuration files are located in `app/config` directory, you can alter it's values to mount additional extensions or change some of application workflow.
 
 Every configuration configuration file are represented by a simple PHP script which has to return array as it's result:
