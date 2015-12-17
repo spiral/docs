@@ -1,16 +1,16 @@
 [
   {
-    "title": "General",
+    "title": "Overview",
     "links": {
       "readme": "<s>Table of Contents</s>",
+      "installation": "Installation and Configuration",
       "framework-about": "<s>About</s>",
       "framework-roadmap": "<s>Roadmap</s>",
-      "framework-contributing": "<s>Contributing</s>",
-      "start-installation": "Installation and Configuration",
+      "framework-contributing": "<s>Contributing</s>"
     }
   },
   {
-    "title": "Overview",
+    "title": "Framework",
     "links": {
       "framework-container": "<s>Container, Factory, DI</s>",
       "framework-bootloaders": "<s>Bootloaders</s>",
