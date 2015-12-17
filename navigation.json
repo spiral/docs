@@ -32,10 +32,11 @@
   {
     "title": "Http Dispatcher",
     "links": {
-      "http-directories": "<s>Request Flow</s>",
-      "http-startup": "<s>Request and InputManager</s>",
-      "http-cookies": "<s>Cookies</s>",
+      "http-flow": "<s>Request Flow</s>",
+      "http-request": "<s>Request and InputManager</s>",
+      "http-responses": "<s>Responses</s>",
       "http-middlewares": "<s>Middlewares</s>",
+      "http-cookies": "<s>Cookies</s>",
       "http-routing": "<s>Routing</s>",
       "http-filters": "<s>Request Filters</s>",
       "http-errors": "<s>Http Errors</s>"
