@@ -6,7 +6,7 @@
     * [**Contributing**] (overview/contributing.md)
 * Framework
     * [**IoC Container**] (framework/container.md)
-    * [Application Memory (&#1000;)] (framework/memory.md)
+    * [Application Memory] (framework/memory.md)
     * [Framework Interfaces] (framework/interfaces.md)
 * Application
     * [**Directory structure**] (application/directories.md)
