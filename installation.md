@@ -15,9 +15,9 @@ One of fastest ways to install a fresh spiral application is to use the composer
 php composer.phar create-project spiral/application
 ```
 
-Initial application installation will automatically start framework configuration using console command `configure`, this command will that all nesessary directories have the correct permissions and are available for application, also it will perform translator indexation and view compilation (you can register you own commands in configure sequence, see [**Console Dispatcher**](/console/commands.md)).
+Initial application installation will automatically configure framework and enviroment to ensure that all nesessary directories have the correct permissions and are available for application, also it will perform translator indexation and view compilation (you can register you own commands in configure sequence, see [**Console Dispatcher**](/console/commands.md)).
 
-You can run application configuration at any moment, simply execute:
+You can configure your application at any moment, by simply executing:
 
 ```
 ./spiral configure
