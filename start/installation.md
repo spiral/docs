@@ -1,19 +1,33 @@
 # Installation and Requiments
-Spiral Framework uses **Composer** to resolve dependencies and components. You can check how to install composer [here] (https://getcomposer.org/download/).
+Spiral Framework uses **Composer** to resolve dependencies and install required components. You can check how to install composer [here](https://getcomposer.org/download/).
 
-## Requiments
-Spiral Framework has the following server requirements:
+## Server Requiments
+Make sure that your server is configured with following PHP version and extensions:
 * PHP 5.5+
 * OpenSSL Extension
 * MbString Extension
 * Tokenizer Extension
 
 ## Installation
-One of fastest ways to install a fresh spiral application is to use the composer command: `php composer.phar create-project spiral/application`
+One of fastest ways to install a fresh spiral application is to use the composer command:
 
-Right after installation, the Spiral framework will execute the console command `configure` to ensure that all nesessary directories have the correct permissions and are available for application (you can register you own commands in configure sequence, see [**Console and CLI Mode**](/console/commands.md)).
+```
+php composer.phar create-project spiral/application
+```
 
-## Environment
-By default, the Spiral application defines it's enviroment name using php code located in "application/runtime/enviroment.php" file (default application logic will use enviroment value to alter component configuration files to define different behaviours). 
+Initial application installation will automatically start framework configuration using console command `configure`, this command will that all nesessary directories have the correct permissions and are available for application, also it will perform translator indexation and view compilation (you can register you own commands in configure sequence, see [**Console Dispatcher**](/console/commands.md)).
 
-When this file isn't set or the application is just installed, spiral will force "development" mode. To change enviroment simply execute `spiral environment {VALUE}` command.
+You can run application configuration at any moment, simply execute:
+
+```
+./spiral configure
+```
+
+Make sure that `spiral` has right execute permissions (`chmod +x spiral`).
+
+> You can run comment with increaced verbosity to get more details.
+
+# Enviroment settings
+Default spiral application and framework core utilize [dotenv package](https://github.com/vlucas/phpdotenv) which provides you ability to enter your enviroment specific settings into `.env` file.
+
+> Enviroment file `.env` will be automatically created and pre-configured as moment of application installation, however in a future you have to manage file creation manually (you can simply copy or rename `.env.sample` and later run `spiral app:key` to ensure that unique encryption key were set).

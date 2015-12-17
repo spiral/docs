@@ -1,0 +1,116 @@
+[
+  {
+    "title": "General",
+    "links": {
+      "readme": "<s>Table of Contents</s>",
+      "framework-about": "<s>About</s>",
+      "framework-roadmap": "<s>Roadmap</s>",
+      "framework-contributing": "<s>Contributing</s>",
+      "start-installation": "Installation and Configuration",
+    }
+  },
+  {
+    "title": "Overview",
+    "links": {
+      "framework-container": "<s>Container, Factory, DI</s>",
+      "framework-bootloaders": "<s>Bootloaders</s>",
+      "framework-memory": "<s>Application Memory</s>",
+      "schemas": "<s>Behaviour Schemas</s>",
+      "framework-interfaces": "<s>Core Interfaces</s>"
+    }
+  },
+  {
+    "title": "Application",
+    "links": {
+      "application-directories": "<s>Directory Structure</s>",
+      "application-startup": "<s>Startup Flow</s>",
+      "application-errors": "<s>Error Handling</s>",
+      "application-entities": "<s>Database and Data Entities</s>",
+      "application-services": "<s>Models and Services</s>",
+      "application-controllers": "<s>Controllers</s>"
+    }
+  },
+  {
+    "title": "Http Dispatcher",
+    "links": {
+      "http-directories": "<s>Request Flow</s>",
+      "http-startup": "<s>Request and InputManager</s>",
+      "http-cookies": "<s>Cookies</s>",
+      "http-middlewares": "<s>Middlewares</s>",
+      "http-routing": "<s>Routing</s>",
+      "http-filters": "<s>Request Filters</s>",
+      "http-errors": "<s>Http Errors</s>"
+    }
+  },
+  {
+    "title": "Console Dispatcher",
+    "links": {
+      "console-overview": "<s>Overview</s>",
+      "http-scaffolding": "<s>Custom Commands</s>"
+    }
+  },
+  {
+    "title": "Components",
+    "links": {
+      "components-cache": "<s>Cache</s>",
+      "components-debug": "<s>Debug</s>",
+      "components-entity": "<s>DataEntity Model</s>",
+      "components-encrypter": "<s>Encrypter</s>",
+      "components-files": "<s>Files</s>",
+      "components-pagination": "<s>Pagination</s>",
+      "components-tokenizer": "<s>Tokenizer</s>",
+      "components-translator": "<s>Translator</s>",
+      "components-views": "<s>Views</s>",
+      "components-validation": "<s>Validation</s>",
+      "components-reactor": "<s>Reactor</s>",
+      "components-modules": "<s>Modules</s>"
+    }
+  },
+  {
+    "title": "Stempler",
+    "links": {
+      "stempler-basics": "<s>Basic Usage</s>",
+      "stempler-expert": "<s>Extended Usage</s>"
+    }
+  },
+  {
+    "title": "Storage Manager",
+    "links": {
+      "storage-overview": "<s>Buckets and Objects</s>",
+      "storage-servers": "<s>Storage Servers</s>"
+    }
+  },
+  {
+    "title": "Databases",
+    "links": {
+      "database-overview": "<s>Overview</s>",
+      "database-introspection": "<s>Schema Introspection</s>",
+      "database-declaration": "<s>Schema Declaration</s>",
+      "database-builders": "<s>Query Builders</s>"
+    }
+  },
+  {
+    "title": "Spiral ORM",
+    "links": {
+      "orm-basics": "<s>Records and Scaffolding</s>",
+      "orm-relations": "<s>Relations</s>",
+      "orm-loading": "<s>Entity Cache and Eager loading</s>"
+    }
+  },
+  {
+    "title": "Spiral ODM",
+    "links": {
+      "odm-basics": "<s>Documents and Databases</s>",
+      "odm-oop": "<s>Compositions, Aggregations, Inheritance</s>",
+      "odm-standalone": "<s>JSON and Standalone Documents</s>",
+      "odm-uml": "<s>UML Export</s>"
+    }
+  },
+  {
+    "title": "Modules and Extensions",
+    "links": {
+      "modules-profiler": "<s>Profiler</s>",
+      "modules-toolkit": "<s>Spiral Toolkit</s>"
+    }
+  }
+]
