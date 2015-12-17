@@ -1,6 +1,5 @@
 # Spiral Framework, Table of Contents
-* Let's start
-    *  [**Installation and Configuration**] (installation.md)
+* [**Installation and Configuration**] (installation.md)
 * Framework Overview
     * [The Design] (framework/design.md) 
     * [**IoC Container**] (framework/container.md)
