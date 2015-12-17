@@ -1,4 +1,4 @@
-# Spiral Framework, Table of Contents
+# Table of Contents
 * [**Installation and Configuration**] (installation.md)
 * Overview
     * [About] (overview/about.md)
