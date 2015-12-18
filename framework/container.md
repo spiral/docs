@@ -27,7 +27,7 @@ public function indexAction(ViewsInterface $views)
 > Attention, a lot of people do not reccomend to use Service Locators/Container in your code and switch purelly for Dependecy Injection, it is going to be very important for you to understand [proc and cons of both methodics](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability). You can read about how to make container bindings and bootload your application [here](/framework/bootloaders.md).
 
 ## Default bindings (shared components)
-Your application comes pre-configured with some commonly used binging.
+Your application comes pre-configured with some commonly used bingings which are configured in bundle and application bootloaders.
 
 #### Binded in AppBootload (your application code)
 
