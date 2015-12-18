@@ -24,7 +24,9 @@ public function indexAction(ViewsInterface $views)
 }
 ```
 
-> Attention, a lot of people do not recommend to use Service Locators/Container in your code blindly, it is very important to understand [the difference between them](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability). You can read about how to make container bindings and bootload your application [here](/framework/bootloaders.md).
+> Attention, a lot of people do not recommend to use Service Locators/Container in your code blindly, it is very important to understand [the difference between them](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability). 
+
+You can read about how to make container bindings and bootload your application [here](/framework/bootloaders.md).
 
 ## Shared/Global container
 Spiral framework components and bundle can work (however some functiality like shared loggers, easy pagination will be disabled) using only given dependency injections, however in some cases it's easier to construct your application when you have one global instance of container for your enviroment. Such container is automatically set at moment of core initialization and can be used in your code (for example in views) using such options:
