@@ -38,7 +38,7 @@ Framework components and bundle can work using only given dependency injections 
 spiral('views')->render(...);
 ```
 
-> In default application flow shared container are identical to container which can be requested by interface using DI. If you can use DI istead of statically accessed instance - do that as.
+> In default application flow shared container are identical to container which can be requested by interface using DI. If you can use DI istead of statically accessed instance - do that.
 
 ## Default bindings (shared components)
 Your application comes pre-configured with some commonly used bingings which are set in framework and application bootloaders.
@@ -90,14 +90,17 @@ public function indexAction()
 }
 ```
 
-Spiral framework provides special trait which can be used to bypass container property and access required binding directly using class `__get` method:
+As alternative framework provides special trait which can be used to bypass container property and access required binding directly using class `__get` method:
 
 ```php
 //Already used by Command, Service and Controllers
 use SharedTrait;
 
-public function indexAction()
+public function indexAction(ViewsInterface $views)
 {
+    dump($this->views === $this->container->get('views'));
+    dump($this->views === $views);
+    
     echo $this->views->render(...);
 }
 ```
