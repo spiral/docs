@@ -56,6 +56,7 @@ faker         | Faker\Generator
 Binding/Alias   | Compoment                               
 ---             | ---      
 memory          | Spiral\Core\HippocampusInterface
+memory          | Spiral\Core\ContainerInterface *(Factory + Interop Container)*
 debugger        | Spiral\Debug\Debugger
 console         | Spiral\Console\ConsoleDispatcher
 http            | Spiral\Http\HttpDispatcher  
@@ -167,10 +168,23 @@ At any moment in future, you can simply create needed property in your class and
 > Note, there is no static profixes/facades in default framework bundle.
 
 ## FactoryInterface
+In some cases you might need to construct needed class without specifying each of it's dependencies, in this case you can use specific interface `FactoryInterface` which can help you to handle this task:
 
+```php
+public function indexAction(FactoryInterface $factory)
+{
+    dump($factory->make(MyClass::class, [
+        'parameter' => 'value'
+    ]); 
+}
+```
+
+Factory will automatically construct needed class by injecting given parameters into it's constructor and filling missing parameters with other depencies (which provides you ability to modify your class constructor by declaring more depencies without breaking application code).
+
+> Factory classes widely used inside spiral to construct different adapters and databases, since factory merged with container in default implementation you can even bind your own factory methods or replace one class with another. Always prefer DI over factory.
 
 ## Dependency Injection
-Let's say that we want to create simple class to perfom mailing operation:
+As any other framework spiral support dependecy injection in constucted classes, we can demonstrate following principle using this code:
 
 ```php
 class UserMailer
@@ -189,23 +203,21 @@ class UserMailer
 }
 ```
 
-Based on provided example we can see that class requested dependendy "Mailer", we can either construct this class manually using existed instance of Mailer, or
-we can dedicate this job to container.
+Based on provided example we can see that class requests dependendy "Mailer", we can either construct it manually using existed instance of Mailer or dedicate this job to factory or DI.
 
 ```php
+$userMailer = $factory->make(UserMailer::class);
+
+//Due auto-wiring principles of spiral you can use this alternative
 $userMailer = $this->container->get(UserMailer::class);
 ```
 
-Container will automatically resolse cascade of dependecies and return us valid instance of `UserMailer`. Resolved dependencies with either come from set of bindigs (see below) or container will constuct them automatically. In some cases, when class constructor requires set of dependencies container can not handle (for example some scalar values) we can use another method `construct` to specify set of parameter passed int our class:
+Container will automatically resolse cascade of dependecies and return us valid instance of `UserMailer`. 
 
-```php
-$userMailer = $this->container->construct(UserMailer::class, [
-    'email' => 'some@email.com'
-]);
-```
+> Attention, default spiral container is ment to be fully autowiring (see below) container and all framework code can work without setting up every needed injection, if you really need to use strict wiring - try to replace container by implementing `Spiral\Core\ContainerInterface`.
 
 ### Method Injections
-Besides using class consturtor to inject dependecies, container allow you to apply same procedute for some specified class method. Dependency injection on method pre-implemented for you in spiral `Controller` and `Command` classes:
+Besides using class consturtor to inject dependecies, container allow you to apply same procedute for some specified class method. Dependency injection on method pre-implemented for you in spiral `Controller`, `Command` and `Bootloader` classes:
 
 ```php
 protected function indexAction(UserMailer $mailer)
@@ -214,80 +226,23 @@ protected function indexAction(UserMailer $mailer)
 }
 ```
 
-> In additional to that spiral controllers and [services] (/application/services.md) support `init` method where you can put your dependencies without overwriting default service constructor. 
-
-### Shared bindings
-Shared bindings provide you ability to use any system component by requesting it like a class property:
-
-
-
-TODO update docs
-
-### Bindings
-In given example we simply constructed instance of `UserMailer` without any additional operations, however in many cases (especially in spiral core components), 
-class may declare dependency with interface rather than class:
+### Autowiring
+Spiral container and DI trying to be as ivisible for your code as it possible, some applications can be written with zero configuration. By default spiral will resolve only class constructor arguments based on their declared type, scalar arguments can not be resolved without using `FactoryInterface` hovewer container might use argument default value if it presented.
 
 ```php
-public function __construct(ConfiguratorInterface $configurator, ...)
+class SampleClass
+{
+    public function __construct(OtherClass $class, $value = '', AnotherClass $classB = null)
+    {
+        //Both class and classB will be delivered by container
+    }
+}
 ```
 
-In such scenario we can use container to create implementation binding (link interface and it's realization), for example:
-
-```php
-$this->container->bind(ConfiguratorInterface::class, MyConfigurator::class);
-```
-
-You can also bind closure functions to be used to resolve needed instance:
-
-```php
-$this->container->bind(ConfiguratorInterface::class, function(ContainerInterface $container) {
-    return new MyConfigurator('...');
-});
-```
-
-> Container will provide itself as first argument to binded function. To be changed.
-
-We can also bind one class implementation to another (make sure binded class extends target), this can allow you to mock some functionality, test or
-even change application behaviour:
-
-```php
-$this->container->bind(ConfiguratorInterface::class, MyConfigurator::class);
-//...
-$this->container->bind(MyConfigurator::class, NewConfigurator::class);
-```
-
-Based on such binding every requested `MyConfigurator` or `ConfiguratorInterface` going to be resovled using `NewConfigurator` instance.
-> You can bind not only one class name to another, but class name to some string binding, this might simplify some services access.
-
-```php
-$this->container->bind('configurator', NewConfigurator::class);
-```
-
-As before we can request needed instance using `get`, `construct` method or via magic `__get`:
-```php
-dump($this->container->get('configurator'));
-dump($this->container->configurator);
-```
+> Attention, spiral will try to resolve EVERY constructor/method argument even if it's stated as optional!
 
 ### Singletons
-There are a lot of scenarios where some instance must be preserved across application, this can be archied using the `bindSingleton` method:
-
-```php
-$this->container->bindSingleton(ConfiguratorInterface::class, function(ContainerInterface $container) {
-    return new MyConfigurator('...');
-});
-```
-
-In this case `ConfiguratorInterface` will be constructed only once and resolved as instance of MyConfigurator for every requested dependency.
-You can also bing already constructed instance to become a singleton:
-
-```php
-$this->container->bindSingleton(ConfiguratorInterface::class, $this);
-```
-
-### Declarative Singleton binding and SINGLETON constant
-Spiral Container provides internal contract which allow to state that class must be a singleton using class declaration. To mark your class
-as singleton simple define "SINGLETON constant" and implement `SingletonInterface`:
+In many cases you might want to use only one instance of your class across application, you can either configure container with singleton binding (see below), or simply state your class as singleton by declaring `SINGLETON` constant and implementing `SingletonInterface`:
 
 ```php
 class MyService implements SingletonInterface
@@ -301,37 +256,25 @@ class MyService implements SingletonInterface
 }
 ```
 
-SINGLETON constant must be pointing to binding to store constructed instance, by default we are going to use class name, which is identical to:
+`SINGLETON` constant must be pointing to the binding, id or alias which has to be used in container to store constructed instance, usualy you can use class name by itself as such alias as in given example.
 
-```php
-$this->container->bindSingleton(MyService::class, new MyService(...));
-```
-
-This implementation provides us ability to avoid setting up singleton bindings in application bootstrap which can significantly improve performance.
+This implementation provides us ability to avoid setting up singleton bindings in application bootstrap which can significantly improve performance (both application and yours :)).
 
 ```php
 protected function indexAction(MyService $service)
 {
-    dump($this->container->hasInstance(MyService::class));
-    dump($service === $this->container->get(MyService::class));
+    dump($this->container->get(MyService::class) === $service);
 }
 ```
 
-> Most of spiral components has defined SINGLETON constant.
+> Most of spiral components has defined SINGLETON constant. You can always disable singleton behaviour by inheriting class and defining SINGLETON constant as `null`.
 
-As in other cases you can replace exsited singleton realization with custom classes:
-```php
-  $this->container->hasInstance(MyService::class, NewService::class);
-```
+You can freely extend singleton classes or even replace one implementation with another by creating container binding (see below).
 
-Once MyServive will be requested, Container will route request to `NewService` implementation and store it under binging defined in `MyService` class. In other
-words - every class extends singleton will become singleton to replace it's parent.
-
-> You can always disable singleton behaviour by inheriting class and defining SINGLETON constant as `null`.
+> Attention, declarative singletons are not real singletons as you can drop them from container at any moment, plus you have to remember that other containers you might use possibly ignore such contant and force you to declare singleton explicitly. 
 
 ### Controllable/Contextual Injections
-Spiral Container supports injection feature which might significanlty simplify access to some component instances (databases, cache adapters, storage buckets) in constructor and methods injections (however it will add little bit "magic" in your code):
-
+Spiral Container in addition to regular method injections provides ability to create more intelligent contextual injections. Such technique provide us ability to request multiple databases using following statement:
 
 ```php
 protected function indexAction(Database $primary, Database $secondary)
@@ -340,6 +283,7 @@ protected function indexAction(Database $primary, Database $secondary)
     dump($secondary);
 }
 
+//You can also request different cache instance (lazy creation)
 public function cached(CacheStore $storeA, MemcacheStore $storeB)
 {
     dump($storeA);
@@ -347,13 +291,14 @@ public function cached(CacheStore $storeA, MemcacheStore $storeB)
 }
 ```
 
-Both of this examples (this is controller code) demonstrates principal of controllable injections which based on dedicating class injection to it's factory using context.
+Both of this examples demonstrates principal of controllable injections which based on dedicating class injection to it's factory using context.
 
-Let's view how our class may look like to defined it's own injectable:
+Let's view how our class may look like to define it's own as injectable:
 
 ```php
 class Name implements InjectableInterface
 {
+    //Binding name/alias
     const INJECTOR = Injector::class;
     
     //This argument can not be automatically set by Container if we trying to resolve
@@ -387,16 +332,96 @@ public function method(Name $john, Name $bob)
 }
 ```
 
-> Attention, i think this feature is cool, but you must be accurate using it.
+> Also, there going to be as alternative way of creating and using contextual injections by declaring special variable in your factory method or class arguments (come in future releases).
 
-You can also use controllable injections in combination with default container implementation this way:
+## Bindings (see `Spiral\Core\ContainerInterface`)
+As you might notice in a previos sections, there is a lot of mentions for so called bindings. Bindings provide you alibity to link short alias with specific class name or factory, also it can be used to redefine exsited implementation or interface.
+
+The simpliest example of using bindings might look like:
 
 ```php
-$this->container->get(DatabaseInterface::class, 'default');
+$this->container->bind(SomeInterface::class, MyConfigurator::class);
+```
+
+You can also bind closure functions to be used to resolve needed instance:
+
+```php
+$this->container->bind(SomeInterface::class, function(ContainerInterface $container) {
+    return new MyClass('...');
+});
+```
+
+Or point your container to factory which is going to be resolved on demand:
+
+```php
+$this->container->bind(SomeInterface::class, [MyFactory::class, 'someClass']);
+```
+
+Where MyFactory is:
+
+```php
+class MyFactory 
+{
+    public function someClass(... factory dependencies ...)
+    {
+        return new SomeClass(...);
+    }
+}
+```
+
+We can also bind one class implementation to another (make sure binded class extends target), this can allow you to mock some functionality, test or even change application behaviour:
+
+```php
+$this->container->bind(MyInterface::class, MyClass::class);
+//...
+$this->container->bind(MyClass::class, NewClass::class);
+```
+
+Based on such binding every requested `MyClass` or `MyInterface` going to be resovled using `NewConfigurator` instance. You wish to create short/virtual bindings described above, use following code:
+
+```php
+$this->container->bind('myClass', NewClass::class);
+```
+
+```php
+public function indexAction()
+{
+    dump($this->myClass);
+}
+```
+
+> You can also bind one singleton class to another which will automatically replace original class.
+
+```php
+class MyClass implements SingletonInterface 
+{
+    const SINGLETON = self::class;
+}
+```
+
+```php
+class OtherClass extends MyClass
+{
+    
+}
+```
+
+```php
+$container->bing(MyClass::class, OtherClass::class);
+```
+
+Let's check our bindings:
+
+```php
+public function indexAction(MyClass $class, OtherClass $otherClass)
+{
+    dump($class instanceof OtherClass);
+    dump($class === $otherClass);
+}
 ```
 
 ### Additional Container methods
-There is few additional methods in Container you might consider using.
+There is few additional methods in `Spiral\Core\ContainerInterface` you might consider using.
 
 #### Check if Container has given binding
 To check if container has specified binding, let's use `has` method:
@@ -405,7 +430,7 @@ To check if container has specified binding, let's use `has` method:
 dump($this->container->has(MyService::class));
 ```
 
-#### Check if Container has binded singleton
+#### Check if Container has binded instance
 To check if container has binded instance (singleton) we can use `hasInstance` method.
 
 ```php
@@ -421,20 +446,15 @@ $this->container->removeBinding(MyService::class);
 ```
 
 ### Scoping
-There is few scenarious when you might want to create some binding only for specific part of code.
+There is few scenarious when you might want to create some binding only for specific part of code. Such way used a lot inside `HttpDispatcher` and it's middlewares as it provides ability to isolate application request:
 
 ```php
 $outerBinding = $this->container->replace(SomeClass::class, new SomeClassB());
 
+try {
 //Every dependency of `SomeClass` will be resolved with SomeClassB
-
-//We can now restore original binding (if any)
-$this->container->restore($outerBinding);
+} finally {
+    //We can now restore original binding (if any)
+    $this->container->restore($outerBinding);
+}
 ```
-
-> Container scoping used by `HttpDispatcher` to set active instance of `ServerRequestInterface`.
-
-## What is constructed using container?
-Spiral container used to resolve every framework component, service,  controller, command or extenal module, this means you can freely declarate dependies in such classes.
-
-> Spiral mainly use container as injector and class constructor rather than container with set of bindings (even more, string bingings like `ContainerInterface->get("something")` are highly forbidden in spiral core components, only named class requests are allowed - `ContainerInterface->get(SomeService::class)`). Spiral application might perfectly work without any binding defined outside of alises and interfaces configured in default spiral core.
