@@ -158,6 +158,7 @@ trait SharedTrait
 ```
 
 Following methodic can work very well in combination with good IDE and provides very sufficient way to write or prototype your code:
+
 ![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
 
 At any moment in future, you can simply create needed property in your class and set it's value using dependency injection (see below).
