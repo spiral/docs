@@ -420,24 +420,24 @@ public function indexAction(MyClass $class, OtherClass $otherClass)
 }
 ```
 
-### Additional Container methods
+## Additional Container methods
 There is few additional methods in `Spiral\Core\ContainerInterface` you might consider using.
 
-#### Check if Container has given binding
+### Check if Container has given binding
 To check if container has specified binding, let's use `has` method:
 
 ```php
 dump($this->container->has(MyService::class));
 ```
 
-#### Check if Container has binded instance
+### Check if Container has binded instance
 To check if container has binded instance (singleton) we can use `hasInstance` method.
 
 ```php
 dump($this->container->hasInstance(MyService::class));
 ```
 
-#### Remove container binding
+### Remove container binding
 If you want to remove existed container binding you can do it using `removeBinding` method, this will automatically destroy any class or singleton associated
 with such binding if no other references for class instance exists.
 
