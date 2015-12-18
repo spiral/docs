@@ -54,16 +54,16 @@ storage         | Spiral\Storage\StorageManager
 dbal            | Spiral\Database\DatabaseManager 
 odm             | Spiral\ODM\ODM
 orm             | Spiral\ORM\ORM
-cache           | Spiral\Cache\CacheStore (default cache store)
-db              | Spiral\Database\Entities\Database (default database)
-mongo           | Spiral\ODM\Entities\MongoDatabase (default database)
-request         | Psr\Http\Message\ServerRequestInterface (only in http scope)
-route           | Spiral\Http\Routing\RouteInterface (featched from scoped request attribute)
-session         | Spiral\Session\SessionStore (featched from scoped request attribute)
-input           | Spiral\Http\Input\InputManage (only in http scope)
-cookies         | Spiral\Http\Cookies\CookieManager (only in http scope)
-router          | Spiral\Http\Routing\Router (only in http scope)
-responses       | Spiral\Http\Responses\Responder  (only in http scope)
+cache           | Spiral\Cache\CacheStore *(default cache store)*
+db              | Spiral\Database\Entities\Database *(default database)*
+mongo           | Spiral\ODM\Entities\MongoDatabase *(default database)*
+request         | Psr\Http\Message\ServerRequestInterface *(only in http scope)*
+route           | Spiral\Http\Routing\RouteInterface *(featched from scoped request attribute)*
+session         | Spiral\Session\SessionStore *(featched from scoped request attribute)*
+input           | Spiral\Http\Input\InputManage *(only in http scope)*
+cookies         | Spiral\Http\Cookies\CookieManager *(only in http scope)*
+router          | Spiral\Http\Routing\Router *(only in http scope)*
+responses       | Spiral\Http\Responses\Responder  *(only in http scope)*
 
 ### Short/Virtual Bindings (sugar)
 In many cases, especially in your services and controllers you might to use shared components a lot (for example to render views). In our case we can achive that by using constructor injection:
