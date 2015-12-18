@@ -29,7 +29,7 @@ public function indexAction(ViewsInterface $views)
 You can read about how to make container bindings and bootload your application [here](/framework/bootloaders.md).
 
 ## Shared/Global container
-Spiral framework components and bundle can work using only given dependency injections (however some functiality like shared loggers, easy pagination will be disabled), but in some cases it's easier to construct your application when you have one global instance of container for your enviroment. Such container is automatically set at moment of core initialization and can be used in your code (for example in views) using such options:
+Spiral framework components and bundle can work using only given dependency injections (however some functionality like shared loggers, easy pagination will be disabled), but in some cases it's easier to construct your application when you have one global instance of container for your enviroment. Such container is automatically set at moment of core initialization and can be used in your code (for example in views) using such options:
 
 ```php
 \App::sharedContainer()->get('views')->render(...);
@@ -102,7 +102,7 @@ public function indexAction()
 }
 ```
 
-> Attention, SharedTrait only requires method `container()` to be defined. Most of spiral classes extends `Spiral\Core\Component` which provides ability to route container request to local container (property `container`) first and then to global/shared container.
+> Attention, `SharedTrait` only requires method `container()` to be defined. Most of spiral classes extends `Spiral\Core\Component` which provides ability to route container request to local container (property `container`) first and then to global/shared container.
 
 ```php
 protected function container()
@@ -120,7 +120,7 @@ protected function container()
 }
 ```
 
-> Try to make sure that every class which uses SharedTrait declares and sets `container` property.
+> Try to make sure that every class which uses SharedTrait declares and sets `container` property so you can easily test it.
 
 To better understand how SharedTrait works let look at it source code which might look obvious:
 
