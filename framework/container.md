@@ -91,7 +91,7 @@ public function indexAction()
 }
 ```
 
-As alternative framework provides special trait which can be used to bypass container property and access required binding directly using class `__get` method:
+As alternative, framework provides special trait which can be used to bypass container property and access required binding directly using class `__get` method:
 
 ```php
 //Already used by Command, Service and Controllers
