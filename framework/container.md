@@ -24,7 +24,7 @@ public function indexAction(ViewsInterface $views)
 }
 ```
 
-> Attention, a lot of people do not reccomend to use Service Locators/Container in your code and switch purelly for Dependecy Injection, it is going to be very important for you to understand [proc and cons of both methodics](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability). You can read about how to make container bindings and bootloading your application [here](/framework/bootloaders.md).
+> Attention, a lot of people do not reccomend to use Service Locators/Container in your code and switch purelly for Dependecy Injection, it is going to be very important for you to understand [proc and cons of both methodics](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability). You can read about how to make container bindings and bootload your application [here](/framework/bootloaders.md).
 
 Check this list of default spiral and application component bindings:
 
