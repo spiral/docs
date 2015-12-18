@@ -67,7 +67,7 @@ router          | Spiral\Http\Routing\Router *(only in http scope)*
 responses       | Spiral\Http\Responses\Responder  *(only in http scope)*
 
 ### Short/Virtual Bindings (sugar)
-Using following statement to get access to one of such bindings is possible in any of your service, controller or command which does have property 'container' (this classes already delcared constructor injector)
+Following statement is possible in any of your service, controller or command which does have property 'container' (this classes already delcared constructor injector)
 
 ```php
 public function indexAction()
@@ -87,6 +87,26 @@ public function indexAction()
     echo $this->views->render(...);
 }
 ```
+
+> Attention, SharedTrait only requires method `container()` to be defined. Most of spiral classes extends `Spiral\Core\Component` which provides ability to route container request to local container (property `container`) first and then to global/shared container.
+
+```php
+protected function container()
+{
+    if (
+        property_exists($this, 'container')
+        && isset($this->container)
+        && $this->container instanceof ContainerInterface
+    ) {
+        return $this->container;
+    }
+
+    //Fallback!
+    return self::$staticContainer;
+}
+```
+
+> Try to make sure that every class which uses SharedTrait declares and sets `container` property.
 
 Following methodic in combination with good IDE provides very sufficient way to write your code:
 ![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
