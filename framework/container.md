@@ -163,7 +163,7 @@ Following methodic can work very well in combination with good IDE and provides 
 
 At any moment in future, you can simply create needed property in your class and set it's value using dependency injection (see below).
 
-> Attention, you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.), try to avoid using SharedTrait and it's virtual bindings/propertis for business logic or your service models (unless it's reasonable), use DI instead.
+> Attention, ideally you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.) and DI for your business logic.
 
 ## FactoryInterface
 
