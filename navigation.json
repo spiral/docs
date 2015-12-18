@@ -13,8 +13,7 @@
       "framework-container": "Container, Factory, DI",
       "framework-bootloaders": "<s>Bootloaders</s>",
       "framework-memory": "Application Memory",
-      "framework-schemas": "Behaviour Schemas",
-      "framework-interfaces": "<s>Core Interfaces</s>"
+      "framework-schemas": "Behaviour Schemas"
     }
   },
   {
