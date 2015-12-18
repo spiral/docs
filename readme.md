@@ -1,15 +1,15 @@
 # Table of Contents
 > Please let us know if you find any typos or issues within this docmentation. You can an email to wolfy.jd@gmail.com or create PR for guide [repository](https://github.com/spiral/guide).
 
-* [**Installation and Configuration**] (installation.md)
-* [**Contributing**](contributing.md)
+* [Installation and Configuration](installation.md)
+* [Contributing](contributing.md)
 * Framework
-    * [**Container, Factory, DI**](framework/container.md)
+    * [Container, Factory, DI](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
     * [Application Memory](framework/memory.md)
     * [Behaviour Schemas](framework/schemas.md)
 * Application
-    * [**Directory structure**](application/directories.md)
+    * [Directory structure](application/directories.md)
     * [Startup Flow](application/startup.md)
     * [Error Handling](application/errors.md)
     * [Database and Data Entities](application/entities.md)
@@ -18,10 +18,10 @@
 * Http Dispatcher
     * [Request Flow](http/flow.md)
     * [Request and InputManager](http/input.md)
-    * Responses
+    * [Responses](http/responses.md)
     * [Middlewares](http/middlewares.md)
-    * Cookies
-    * [**Routing**](http/routing.md)
+    * [Cookies](http/cookies.md)
+    * [Routing](http/routing.md)
     * [Request Filters](http/filters.md)
     * [Http Errors](http/errors.md)
 * Console and CLI mode
