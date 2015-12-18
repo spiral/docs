@@ -227,7 +227,7 @@ protected function indexAction(UserMailer $mailer)
 ```
 
 ### Autowiring
-Spiral container and DI trying to be as ivisible for your code as it possible, some applications can be written with zero configuration. By default spiral will resolve only class constructor arguments based on their declared type, scalar arguments can not be resolved without using `FactoryInterface` hovewer container might use argument default value if it presented.
+Spiral container and DI trying to be as ivisible for your code as it possible (some applications can be written with zero configuration). By default spiral will resolve only class constructor arguments based on their declared type, scalar arguments can not be resolved without using `FactoryInterface` hovewer container might use argument default value if it presented.
 
 ```php
 class SampleClass
