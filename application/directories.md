@@ -22,3 +22,5 @@ scaffoling and cache directories comes pre-configured. Let's review default dire
 | /app/views/               | View templates used by ViewManager to generate View instances. Just views.                           
 | /vendor/                          | Composer vendor directory, aliased under "libraries" directory.              
 | **/webroot/**                     | Application public directory, application enterpoint (index.php) located here as any other public asset file. Aliased as "public" directory.
+
+> You can overwrite directories at moment of core initialization. If you wish to add more class "types" to your application be free to create directories and namespaces in "app/classes" as it marked as PSR4 root and spiral does not force any of default namespaces except for http routing (see AppBootloader to change that).
