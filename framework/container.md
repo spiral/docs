@@ -22,9 +22,7 @@ public function indexAction(ViewsInterface $views)
 }
 ```
 
-> Attention, a lot of people do not reccomend to use Service Locators/Container in your code and switch purelly for Dependecy Injection, it is going to be very important for you to understand [proc and cons of both methodics](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability).
-
-> You can read about how to make container bindings and bootloading your application [here](/framework/bootloaders.md).
+> Attention, a lot of people do not reccomend to use Service Locators/Container in your code and switch purelly for Dependecy Injection, it is going to be very important for you to understand [proc and cons of both methodics](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability). You can read about how to make container bindings and bootloading your application [here](/framework/bootloaders.md).
 
 ### Short/Virtual Bindings (sugar)
 In many cases, especially in your services and controllers you might to use shared components a lot (for example to render views). In our case we can achive that by using constructor injection:
