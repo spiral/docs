@@ -15,7 +15,7 @@ public function indexAction()
 
 > We will explain how to bind your own services in container below.
 
-This code is identical to method or constructor injection and only used to get shortcut to the most "popular" framework components, it still possible to avoid using it:
+This code is identical to method or constructor injection and only used to get shortcut to the most commonly used framework components and interfaces, it still possible to avoid using it:
 
 ```php
 public function indexAction(ViewsInterface $views)
@@ -25,6 +25,18 @@ public function indexAction(ViewsInterface $views)
 ```
 
 > Attention, a lot of people do not recommend to use Service Locators/Container in your code and switch purelly for Dependecy Injection, it is going to be very important for you to understand [proc and cons of both methodics](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability). You can read about how to make container bindings and bootload your application [here](/framework/bootloaders.md).
+
+## Shared/Global container
+Spiral framework components and bundle can work (however some functiality like shared loggers, easy pagination will be disabled) using only given dependency injections, however in some cases it's easier to construct your application when you have one global instance of container for your enviroment. Such container is automatically set at moment of core initialization and can be used in your code (for example in views) using such options:
+
+```php
+\App::sharedContainer()->get('views')->render(...);
+
+//Alternative
+spiral('views')->render(...);
+```
+
+> In default application flow shared container are identical to container which can be requested by interface using DI. If you can use DI istead of statically accessed instance - do that as.
 
 ## Default bindings (shared components)
 Your application comes pre-configured with some commonly used bingings which are set in framework and application bootloaders.
@@ -76,7 +88,7 @@ public function indexAction()
 }
 ```
 
-Spiral framework provides special trait which can be used to bypass container property and access required binding directly using class __get method:
+Spiral framework provides special trait which can be used to bypass container property and access required binding directly using class `__get` method:
 
 ```php
 //Already used by Command, Service and Controllers
@@ -108,12 +120,44 @@ protected function container()
 
 > Try to make sure that every class which uses SharedTrait declares and sets `container` property.
 
-Following methodic in combination with good IDE provides very sufficient way to write your code:
+To better understand how SharedTrait works let look at it source code which might look obvious:
+
+```php
+trait SharedTrait
+{
+    /**
+     * Shortcut to Container get method.
+     *
+     * @see ContainerInterface::get()
+     * @param string $alias
+     * @return mixed|null|object
+     * @throws AutowireException
+     * @throws SugarException
+     */
+    public function __get($alias)
+    {
+        if ($this->container()->has($alias)) {
+            return $this->container()->get($alias);
+        }
+
+        throw new SugarException("Unable to get property binding '{$alias}'.");
+
+        //no parent call, too dangerous
+    }
+
+    /**
+     * @return InteropContainer
+     */
+    abstract protected function container();
+}
+```
+
+Following methodic can work very well in combination with good IDE and provides very sufficient way to write or prototype your code:
 ![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
 
 At any moment in future, you can simply create needed property in your class and set it's value using dependency injection (see below).
 
-> Attention, you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.), try to avoid using SharedTrait and it's virtual bindings/propertis for business logic or your service models, use DI instead.
+> Attention, you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.), try to avoid using SharedTrait and it's virtual bindings/propertis for business logic or your service models (unless it's reasonable), use DI instead.
 
 ## FactoryInterface
 
