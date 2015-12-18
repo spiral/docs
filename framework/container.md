@@ -1,5 +1,5 @@
 # Container, Factory, DI
-Spiral framework interfaces and components are mostly (but not entirelly) build around constructor, method injections and universal factories, however to provide better development evrioment you are able to use functionality of Service Locator or Container. Spiral utilizes [Interop/Container](https://github.com/container-interop/container-interop) agreement for that.
+Spiral framework interfaces and components are mostly (but not entirelly) build around constructor, method injections and universal factories, however to provide you better development envrioment you are able to use functionality of Service Locator or Container. Spiral utilizes [Interop/Container](https://github.com/container-interop/container-interop) agreement for that.
 
 ## Container (Service Locator)
 Classical container example can be examplained using following code:
