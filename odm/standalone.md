@@ -1,5 +1,7 @@
 # Standalone Usage
-Even if the ODM component integrates deeply with your MongoDB database, it's not required to use this database as your data source. Since all the ODM models can accept input data in your constructor argument, you are able to use them to mock up or validate any type of data in your application.
+Even if the ODM component integrates deeply with your MongoDB database and it's atomic updates, it's not required to use this database as your data source at all. Since all the ODM models can accept input data in your constructor argument, you are able to use them to mock up or validate any type of data in your application.
+
+> One day ODM models will be splitted from MongoDB funtionality to provide more univernal component to be used as basement for various tree sets or NoSQL databases.
 
 ## Standalone example
 Let's try to create a simple example of data structure that we would like to handle:
@@ -72,7 +74,7 @@ dump($model->serializeData());
 > Standalone ODM usage can be useful when validating complex data, you only have to use create or setFields method to populate your entity.
 
 ## Json Documents
-One potential option for how the ODM component can be used in your application without a connection to MongoDB databases is by using `JsonDocument`. This class extends the `DocumentEntity` and implements the ORM `ActiveAccessorInterface`. As a result, this object can be used to represent the structured json data in your ORM Records:
+One other potential option for how the ODM component can be used in your application without a connection to MongoDB databases is by using `JsonDocument`. This class extends the `DocumentEntity` and implements the ORM `RecordAccessorInterface`. As a result, this object can be used to represent the structured json data in your ORM Records:
 
 ```php
 class Data extends Record
@@ -129,6 +131,8 @@ $data->data->field = 'abc';
 $data->save();
 ```
 
+> Use good IDE like NetBeans (ide integration help needed) or PHPStorm to enable autocomplete for your models.
+
 The generated SQL query for a Postgres database:
 
 ```sql
@@ -144,4 +148,4 @@ $data->data->field = '';
 dump($data->getErrors());
 ```
 
-> You can use json data in SQL queries while working with PostgresSQL.
+> You can use json data in SQL queries while working with PostgresSQL. :)
