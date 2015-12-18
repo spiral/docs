@@ -393,7 +393,7 @@ public function indexAction()
 You can also use alternative method `bingSingleton` which is identical to `bind` by syntax but only resolves dependency once.
 
 ```php
-$container->bindSingleton('binding', function (){
+$container->bindSingleton('binding', function () {
     return new SomeClass();
 });
 ```
