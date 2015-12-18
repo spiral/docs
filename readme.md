@@ -6,9 +6,11 @@
     * [About](overview/about.md)
     * [**Contributing**](overview/contributing.md)
 * Framework
-    * [**IoC Container**](framework/container.md)
+    * [**Container, Factory, DI**](framework/container.md)
+    * [Bootloaders](framework/bootloaders.md)
     * [Application Memory](framework/memory.md)
-    * [Framework Interfaces](framework/interfaces.md)
+    * [Behaviour Schemas](framework/schemas.md)
+    * [Core and Framework Interfaces](framework/interfaces.md)
 * Application
     * [**Directory structure**](application/directories.md)
     * [Startup Flow](application/startup.md)
