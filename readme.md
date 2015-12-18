@@ -2,7 +2,7 @@
 > Please let us know if you find any typos or issues within this docmentation. You can an email to wolfy.jd@gmail.com or create PR for guide [repository](https://github.com/spiral/guide).
 
 * [**Installation and Configuration**] (installation.md)
-* [**Contributing**](overview/contributing.md)
+* [**Contributing**](contributing.md)
 * Framework
     * [**Container, Factory, DI**](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
