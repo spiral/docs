@@ -30,15 +30,15 @@
 * Components
     * [Cache](components/cache.md)
     * [Debug (Loggers, Benchmarks, Dumps)](components/debug.md)
-    * [**DataEntity Model**](components/entity.md)
+    * [DataEntity Model](components/entity.md)
     * [Encrypter](components/encrypter.md)
     * [Events](components/events.md)
     * [Files](components/files.md)
     * [Pagination](components/pagination.md)
     * [Tokenizer](components/tokenizer.md)
     * [Translator](components/translator.md)
-    * [**Views**](components/views.md)
-    * [**Validation**](components/validation.md)
+    * [Views](components/views.md)
+    * [Validation](components/validation.md)
 * **Stempler**
     * [Basic Usage](stempler/basics.md)
     * [Extended Usage (virtual tags, tips and tricks)](stempler/expert.md)
