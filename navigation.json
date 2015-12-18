@@ -11,7 +11,7 @@
   {
     "title": "Framework",
     "links": {
-      "framework-container": "<s>Container, Factory, DI</s>",
+      "framework-container": "Container, Factory, DI",
       "framework-bootloaders": "<s>Bootloaders</s>",
       "framework-memory": "Application Memory",
       "framework-schemas": "Behaviour Schemas",
