@@ -340,13 +340,13 @@ As you might notice in a previos sections, there is a lot of mentions for so cal
 The simpliest example of using bindings might look like:
 
 ```php
-$this->container->bind(SomeInterface::class, MyConfigurator::class);
+$container->bind(SomeInterface::class, MyConfigurator::class);
 ```
 
 You can also bind closure functions to be used to resolve needed instance:
 
 ```php
-$this->container->bind(SomeInterface::class, function(ContainerInterface $container) {
+$container->bind(SomeInterface::class, function(ContainerInterface $container) {
     return new MyClass('...');
 });
 ```
@@ -354,7 +354,7 @@ $this->container->bind(SomeInterface::class, function(ContainerInterface $contai
 Or point your container to factory which is going to be resolved on demand:
 
 ```php
-$this->container->bind(SomeInterface::class, [MyFactory::class, 'someClass']);
+$container->bind(SomeInterface::class, [MyFactory::class, 'someClass']);
 ```
 
 Where MyFactory is:
@@ -372,15 +372,15 @@ class MyFactory
 We can also bind one class implementation to another (make sure binded class extends target), this can allow you to mock some functionality, test or even change application behaviour:
 
 ```php
-$this->container->bind(MyInterface::class, MyClass::class);
+$container->bind(MyInterface::class, MyClass::class);
 //...
-$this->container->bind(MyClass::class, NewClass::class);
+$container->bind(MyClass::class, NewClass::class);
 ```
 
 Based on such binding every requested `MyClass` or `MyInterface` going to be resovled using `NewConfigurator` instance. You wish to create short/virtual bindings described above, use following code:
 
 ```php
-$this->container->bind('myClass', NewClass::class);
+$container->bind('myClass', NewClass::class);
 ```
 
 ```php
@@ -390,7 +390,19 @@ public function indexAction()
 }
 ```
 
-> You can also bind one singleton class to another which will automatically replace original class.
+You can also use alternative method `bingSingleton` which is identical to `bind` by syntax but only resolves dependency once.
+
+```php
+$container->bindSingleton('binding', function (){
+    return new SomeClass();
+});
+```
+
+```php
+assert($container->get('binding') === $container->make('binding'));
+```
+
+> You can also bind one singleton class (with SINGLETON constant) to another which will automatically replace original class.
 
 ```php
 class MyClass implements SingletonInterface 
@@ -419,6 +431,8 @@ public function indexAction(MyClass $class, OtherClass $otherClass)
     dump($class === $otherClass);
 }
 ```
+
+> Try to avoid usage of `bind` or `bindSingleton`
 
 ## Additional Container methods
 There is few additional methods in `Spiral\Core\ContainerInterface` you might consider using.
