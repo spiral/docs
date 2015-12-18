@@ -1,8 +1,47 @@
-# Spiral IoC Container
-Spiral provides simplistic implementation of IoC container/injector with ability to construct requested classes, bind instance resolvers and singletons. Container fully
-support constructor and method injections and can be used in every day development.
+# Container, Factory, DI
+Spiral framework interfaces and components are mostly (but not entirelly) build around constructor, method injections and universal factories, however to provide better development evrioment you are able to use functionality of Service Locator or Container. Spiral utilizes [Interop/Container](https://github.com/container-interop/container-interop) agreement for that.
 
-### Dependency Injection
+## Container (Service Locator)
+Classical container example can be examplained using following code:
+
+```php
+public function indexAction()
+{
+    echo $this->container->get('views')->render(...);
+}
+```
+
+> We will explain how to bind your own services in container below.
+
+Following code is identical to method or constructor injection and only used to get shortcut to the most "popular" framework components, it still possible to avoid using it:
+
+```php
+public function indexAction(ViewsInterface $views)
+{
+    echo $views->render(...);
+}
+```
+
+> Attention, a lot of people do not reccomend to use Service Locators/Container in your code and switch purelly for Dependecy Injection, it is going to be very important for you to understand [proc and cons of both methodics](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability).
+
+> You can read about how to make container bindings and bootloading your application [here](/framework/bootloaders.md).
+
+### Short/Virtual Bindings (sugar)
+In many cases, especially in your services and controllers you might to use shared components a lot (for example to render views). In our case we can achive that by using constructor injection:
+
+
+
+![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
+
+> Attention, you should only use short bindings for set of components which are stated as supportive (i.e. twig, faker, views etc.), try to avoid using this methodic for business logic or your service model, use DI instead.
+
+#### Refactoring and Decoupling Code
+
+
+## FactoryInterface
+
+
+## Dependency Injection
 Let's say that we want to create simple class to perfom mailing operation:
 
 ```php
@@ -52,7 +91,6 @@ protected function indexAction(UserMailer $mailer)
 ### Shared bindings
 Shared bindings provide you ability to use any system component by requesting it like a class property:
 
-![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/autocomplete.gif)
 
 
 TODO update docs
