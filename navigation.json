@@ -24,7 +24,7 @@
       "application-directories": "<s>Directory Structure</s>",
       "application-startup": "<s>Startup Flow</s>",
       "application-errors": "<s>Error Handling</s>",
-      "application-entities": "<s>Database and Data Entities</s>",
+      "application-entities": "<s>Sources and Data Entities</s>",
       "application-services": "<s>Models and Services</s>",
       "application-controllers": "<s>Controllers</s>"
     }
