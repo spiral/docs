@@ -26,6 +26,45 @@ public function indexAction(ViewsInterface $views)
 
 > Attention, a lot of people do not reccomend to use Service Locators/Container in your code and switch purelly for Dependecy Injection, it is going to be very important for you to understand [proc and cons of both methodics](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability). You can read about how to make container bindings and bootloading your application [here](/framework/bootloaders.md).
 
+Check this list of default spiral and application component bindings:
+
+#### Binded in AppBootload (your application code)
+
+Binding/Alias | Compoment                               
+---           | ---                                     
+twig          | Twig_Environment                       
+app           | App                                    
+faker         | Faker\Generator             
+ 
+#### Binded in SpiralBootloader (framework bundle)
+
+Binding/Alias   | Compoment                               
+---             | ---      
+memory          | Spiral\Core\HippocampusInterface
+debugger        | Spiral\Debug\Debugger
+console         | Spiral\Console\ConsoleDispatcher
+http            | Spiral\Http\HttpDispatcher  
+encrypter       | Spiral\Encrypter\Encrypter
+files           | Spiral\Files\FileManager
+tokenizer       | Spiral\Tokenizer\Tokenizer
+locator         | Spiral\Tokenizer\ClassLocator 
+translator      | Spiral\Translator\Translator
+views           | Spiral\Views\ViewManager 
+storage         | Spiral\Storage\StorageManager  
+dbal            | Spiral\Database\DatabaseManager 
+odm             | Spiral\ODM\ODM
+orm             | Spiral\ORM\ORM
+cache           | Spiral\Cache\CacheStore (default cache store)
+db              | Spiral\Database\Entities\Database (default database)
+mongo           | Spiral\ODM\Entities\MongoDatabase (default database)
+request         | Psr\Http\Message\ServerRequestInterface (only in http scope)
+route           | Spiral\Http\Routing\RouteInterface (featched from scoped request attribute)
+session         | Spiral\Session\SessionStore (featched from scoped request attribute)
+input           | Spiral\Http\Input\InputManage (only in http scope)
+cookies         | Spiral\Http\Cookies\CookieManager (only in http scope)
+router          | Spiral\Http\Routing\Router (only in http scope)
+responses       | Spiral\Http\Responses\Responder  (only in http scope)
+
 ### Short/Virtual Bindings (sugar)
 In many cases, especially in your services and controllers you might to use shared components a lot (for example to render views). In our case we can achive that by using constructor injection:
 
