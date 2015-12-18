@@ -42,6 +42,7 @@
 * **Stempler**
     * [Basic Usage](stempler/basics.md)
     * [Extended Usage (virtual tags, tips and tricks)](stempler/expert.md)
+    * [Dark Syntax](stempler/dark.md)
 * Storage Manager
     * [Buckets and Objects](storage/overview.md)
     * [Storage Servers](storage/servers.md)
