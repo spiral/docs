@@ -452,7 +452,7 @@ There is few scenarious when you might want to create some binding only for spec
 $outerBinding = $this->container->replace(SomeClass::class, new SomeClassB());
 
 try {
-//Every dependency of `SomeClass` will be resolved with SomeClassB
+    //Every dependency of `SomeClass` will be resolved with SomeClassB
 } finally {
     //We can now restore original binding (if any)
     $this->container->restore($outerBinding);
