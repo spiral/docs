@@ -2,9 +2,9 @@
   {
     "title": "Overview",
     "links": {
-      "readme": "<s>Table of Contents</s>",
+      "readme": "Table of Contents",
       "installation": "Installation and Configuration",
-      "overview-contributing": "Contributing"
+      "contributing": "Contributing"
     }
   },
   {
