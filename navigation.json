@@ -95,7 +95,7 @@
       "orm-basics": "<s>Records and Scaffolding</s>",
       "orm-relations": "<s>Relations</s>",
       "orm-loading": "<s>Eager loading</s>",
-      "orm-loading": "<s>Entity Cache</s>"
+      "orm-cache": "<s>Entity Cache</s>"
     }
   },
   {
