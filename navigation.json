@@ -26,8 +26,8 @@
       "application-errors": "<s>Error Handling</s>",
       "application-entities": "<s>Sources and Data Entities</s>",
       "application-services": "<s>Models and Services</s>",
-      "application-controllers": "<s>Controllers</s>",
-      "application-views": "<s>Views</s>"
+      "application-views": "<s>Views</s>",
+      "application-controllers": "<s>Controllers</s>"
     }
   },
   {
