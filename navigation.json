@@ -102,7 +102,7 @@
     "links": {
       "odm-basics": "<s>Documents and Databases</s>",
       "odm-oop": "<s>Compositions, Aggregations, Inheritance</s>",
-      "odm-standalone": "<s>JSON and Standalone Documents</s>",
+      "odm-standalone": "JSON and Standalone Documents",
       "odm-uml": "<s>UML Export</s>"
     }
   },
