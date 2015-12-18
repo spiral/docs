@@ -1,7 +1,7 @@
 # Container, Factory, DI
 Spiral framework interfaces and components are mostly (but not entirelly) build around constructor, method injections and universal factories, however to provide you better development environment (and, in some cases, for performance reasons) you are able to use functionality of Service Locator or Container. Spiral utilizes [Interop/Container](https://github.com/container-interop/container-interop) agreement for that.
 
-> Spiral framework internally joins all tree interfaces together: ContainerInterface, FactoryInterface and ResolverInterface (resolves arguments for given method/constructor/closure reflection, see below). However, you are still recommended to request each of this interfaces separatelly if you can.
+> Framework internally joins all tree interfaces together: ContainerInterface, FactoryInterface and ResolverInterface (resolves arguments for given method/constructor/closure reflection, see below). However, you are still recommended to request each of this interfaces separatelly if you can.
 
 ## Container (Service Locator)
 Classical container example can be explained using following code:
