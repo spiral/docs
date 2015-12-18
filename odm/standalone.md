@@ -1,7 +1,7 @@
 # Standalone Usage
 Even if the ODM component integrates deeply with your MongoDB database and it's atomic updates, it's not required to use this database as your data source at all. Since all the ODM models can accept input data in your constructor argument, you are able to use them to mock up or validate any type of data in your application.
 
-> One day ODM models will be splitted from MongoDB funtionality to provide more univernal component to be used as basement for various tree sets or NoSQL databases.
+> One day ODM models will be splitted from MongoDB funtionality to provide more universal component to be used as basement for various tree sets or NoSQL databases.
 
 ## Standalone example
 Let's try to create a simple example of data structure that we would like to handle:
