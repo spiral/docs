@@ -1,10 +1,10 @@
 # Container, Factory, DI
-Spiral framework interfaces and components are mostly (but not entirelly) build around constructor, method injections and universal factories, however to provide you better development environment (or for performance reasons) you are able to use functionality of Service Locator or Container. Spiral utilizes [Interop/Container](https://github.com/container-interop/container-interop) agreement for that.
+Spiral framework interfaces and components are mostly (but not entirelly) build around constructor, method injections and universal factories, however to provide you better development environment (and, in some cases, for performance reasons) you are able to use functionality of Service Locator or Container. Spiral utilizes [Interop/Container](https://github.com/container-interop/container-interop) agreement for that.
 
-> Spiral framework internally joins all tree interfaces together: ContainerInterface, FactoryInterface and ResolverInterface (resolves arguments for given method reflection, see below). However you are still recommended to request each of them separatelly if you can.
+> Spiral framework internally joins all tree interfaces together: ContainerInterface, FactoryInterface and ResolverInterface (resolves arguments for given method/constructor/closure reflection, see below). However, you are still recommended to request each of this interfaces separatelly if you can.
 
 ## Container (Service Locator)
-Classical container example can be examplained using following code:
+Classical container example can be explained using following code:
 
 ```php
 public function indexAction()
@@ -15,7 +15,7 @@ public function indexAction()
 
 > We will explain how to bind your own services in container below.
 
-Following code is identical to method or constructor injection and only used to get shortcut to the most "popular" framework components, it still possible to avoid using it:
+This code is identical to method or constructor injection and only used to get shortcut to the most "popular" framework components, it still possible to avoid using it:
 
 ```php
 public function indexAction(ViewsInterface $views)
@@ -24,10 +24,10 @@ public function indexAction(ViewsInterface $views)
 }
 ```
 
-> Attention, a lot of people do not reccomend to use Service Locators/Container in your code and switch purelly for Dependecy Injection, it is going to be very important for you to understand [proc and cons of both methodics](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability). You can read about how to make container bindings and bootload your application [here](/framework/bootloaders.md).
+> Attention, a lot of people do not recommend to use Service Locators/Container in your code and switch purelly for Dependecy Injection, it is going to be very important for you to understand [proc and cons of both methodics](https://www.google.com/search?q=service+locator+vs+dependency+injection) (especially code testability). You can read about how to make container bindings and bootload your application [here](/framework/bootloaders.md).
 
 ## Default bindings (shared components)
-Your application comes pre-configured with some commonly used bingings which are configured in bundle and application bootloaders.
+Your application comes pre-configured with some commonly used bingings which are set in framework and application bootloaders.
 
 #### Binded in AppBootload (your application code)
 
@@ -67,16 +67,33 @@ router          | Spiral\Http\Routing\Router *(only in http scope)*
 responses       | Spiral\Http\Responses\Responder  *(only in http scope)*
 
 ### Short/Virtual Bindings (sugar)
-In many cases, especially in your services and controllers you might to use shared components a lot (for example to render views). In our case we can achive that by using constructor injection:
+Using following statement to get access to one of such bindings is possible in any of your service, controller or command which does have property 'container' (this classes already delcared constructor injector)
 
+```php
+public function indexAction()
+{
+    echo $this->container->get('views')->render(...);
+}
+```
 
+Spiral framework provides special trait which can be used to bypass container property and access required binding directly using class __get method:
 
+```php
+//Already used by Command, Service and Controllers
+use SharedTrait;
+
+public function indexAction()
+{
+    echo $this->views->render(...);
+}
+```
+
+Following methodic in combination with good IDE provides very sufficient way to write your code:
 ![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
 
-> Attention, you should only use short bindings for set of components which are stated as supportive (i.e. twig, faker, views etc.), try to avoid using this methodic for business logic or your service model, use DI instead.
+At any moment in future, you can simply create needed property in your class and set it's value using dependency injection (see below).
 
-#### Refactoring and Decoupling Code
-
+> Attention, you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.), try to avoid using SharedTrait and it's virtual bindings/propertis for business logic or your service models, use DI instead.
 
 ## FactoryInterface
 
