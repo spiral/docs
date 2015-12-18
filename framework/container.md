@@ -164,6 +164,7 @@ Following methodic can work very well in combination with good IDE and provides 
 At any moment in future, you can simply create needed property in your class and set it's value using dependency injection (see below).
 
 > Attention, ideally you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.) and DI for your business logic.
+> Note, there is no static profixes/facades in default framework bundle.
 
 ## FactoryInterface
 
