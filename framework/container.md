@@ -4,7 +4,7 @@ Spiral framework interfaces and components are mostly (but not entirelly) build 
 > Framework internally joins all tree interfaces together: ContainerInterface, FactoryInterface and ResolverInterface (resolves arguments for given method/constructor/closure reflection, see below). However, you are still recommended to request each of this interfaces separatelly if you can.
 
 ## Container (Service Locator)
-Classical container example can be explained using following code:
+Classic container example can be explained using following code:
 
 ```php
 public function indexAction()
