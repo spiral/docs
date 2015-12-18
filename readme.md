@@ -24,10 +24,10 @@
     * [Routing](http/routing.md)
     * [Request Filters](http/filters.md)
     * [Http Errors](http/errors.md)
-* Console and CLI mode
+* Console Dispatcher
     * [Overview](console/commands.md)
     * [Custom Commands](console/scaffolding.md)
-* Framework Components
+* Components
     * [Cache](components/cache.md)
     * [Debug (Loggers, Benchmarks, Dumps)](components/debug.md)
     * [**DataEntity Model**](components/entity.md)
@@ -40,16 +40,16 @@
     * [**Views**](components/views.md)
     * [**Validation**](components/validation.md)
 * **Stempler**
-    * [**Basic Usage**](stempler/basics.md)
+    * [Basic Usage](stempler/basics.md)
     * [Extended Usage (virtual tags, tips and tricks)](stempler/expert.md)
 * Storage Manager
-    * [**Buckets and Objects**](storage/overview.md)
+    * [Buckets and Objects](storage/overview.md)
     * [Storage Servers](storage/servers.md)
 * Databases
     * [Overview](database/overview.md)
-    * [Schema Readers](database/reading.md)
-    * [Schema Syncronization](database/syncing.md)
-    * [**Query Builders**](database/builders.md)
+    * [Schema Interospection](database/introspection.md)
+    * [Schema Declaration](database/declaration.md)
+    * [Query Builders](database/builders.md)
 * Behaviour Schemas
     * [Schemas and Documenters](schemas.md)
 * **Spiral ORM**
@@ -58,7 +58,8 @@
     * [Entity Cache and Eager loading](orm/loading.md)
 * Spiral ODM
     * [Documents and Databases](odm/basics.md)
-    * [**Compositions, Aggreagations, Inheritance**](odm/oop.md)
+    * [Compositions, Aggreagations](odm/oop.md)
+    * [Inheritance](odm/inheritance.md)
     * [JSON and Standalone Documents](odm/standalone.md)
     * [UML Export](odm/uml.md)
 * Modules and Extensions
