@@ -1,5 +1,5 @@
 # Table of Contents
-> Please let us know if you find any typos or issues within this documentation. You can email to wolfy.jd@gmail.com or create PR for guide [repository](https://github.com/spiral/guide).
+> Please let us know if you find any typos or issues within this documentation. You can email to [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com) or create PR for guide [repository](https://github.com/spiral/guide).
 
 * Overview
     * [Installation and Configuration](installation.md)
