@@ -94,14 +94,16 @@
     "links": {
       "orm-basics": "<s>Records and Scaffolding</s>",
       "orm-relations": "<s>Relations</s>",
-      "orm-loading": "<s>Entity Cache and Eager loading</s>"
+      "orm-loading": "<s>Eager loading</s>",
+      "orm-loading": "<s>Entity Cache</s>"
     }
   },
   {
     "title": "Spiral ODM",
     "links": {
       "odm-basics": "<s>Documents and Databases</s>",
-      "odm-oop": "<s>Compositions, Aggregations, Inheritance</s>",
+      "odm-oop": "<s>Compositions, Aggregations</s>",
+      "odm-inheritance": "<s>Inheritance</s>",
       "odm-standalone": "Standalone Usage",
       "odm-uml": "<s>UML Export</s>"
     }
