@@ -16,7 +16,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 * Objective critics
 
 ## Guide Improvement
-If you feel like some "sugar" functionality (like shared bindings, constructor saturation or autowiring) can cause potential issues in future please let me know so i can update guide and mention about potential architecture decigions. 
+If you feel like some "sugar" functionality (like shared bindings, constructor saturation or autowiring) can cause potential issues in future or reduce code testability please let me know so i can update guide and mention about potential architecture decigions or workarounds.
 
 ## Documentation Improvements
 If you found any issue which is better to be covered in documentation please open related issue. Since i'm not native english speaker feel free to create pull requests for any typo also.
