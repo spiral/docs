@@ -2,6 +2,27 @@
 Spiral appliction does not require any specific stucture or namespace for it's files until every application class can be loaded by composer, however spiral
 scaffoling and cache directories comes pre-configured. Let's review default directory structure:
 
+* app
+  * classes
+    * Bootloaders
+    * Commands
+    * Controllers
+    * Database
+    * Models
+    * Middlewares
+    * Requests
+  * config
+  * runtime
+    * cache
+    * logs
+    * snapshots
+    * i18n
+  * views
+* tests
+* webroot
+
+You can find directory descriptions in following table:
+
 | Directory                         | Description                    
 | ---                               | ---       
 | /                                 | Root project directory, aliases under "root" and accessible via `Core->directory()` or `directory()` functions.
