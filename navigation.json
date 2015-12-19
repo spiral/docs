@@ -19,7 +19,7 @@
   {
     "title": "Application",
     "links": {
-      "application-directories": "<s>Directory Structure</s>",
+      "application-directories": "Directory Structure",
       "application-startup": "<s>Startup Flow</s>",
       "application-errors": "<s>Error Handling</s>",
       "application-entities": "<s>Sources and Data Entities</s>",
