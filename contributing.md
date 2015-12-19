@@ -10,7 +10,6 @@ Feel free to contribute to framework or components development. I will glaldy ac
 
 ## Help Needed In
 * Test coverage of existed functionality
-* Spelling fixes in comments
 * Functionality proposals
 * Questionable code improvements and lookup
 * Critics
