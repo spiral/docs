@@ -52,8 +52,6 @@
     * [Schema Interospection](database/introspection.md)
     * [Schema Declaration](database/declaration.md)
     * [Query Builders](database/builders.md)
-* Behaviour Schemas
-    * [Schemas and Documenters](schemas.md)
 * **Spiral ORM**
     * [Record Model and Database Scaffolding](orm/basics.md)
     * [Relations](orm/relations.md)
