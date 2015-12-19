@@ -432,8 +432,6 @@ public function indexAction(MyClass $class, OtherClass $otherClass)
 }
 ```
 
-> Try to avoid usage of `bind` or `bindSingleton`
-
 ## Additional Container methods
 There is few additional methods in `Spiral\Core\ContainerInterface` you might consider using.
 
