@@ -14,7 +14,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 * Spelling fixes in comments
 * Functionality proposals
 * Questionable code improvements and lookup
-* Objective critics
+* Critics
 * Automatic splitting components [repository](https://github.com/spiral/components)
 
 ## Guide Improvements
