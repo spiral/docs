@@ -23,7 +23,7 @@ Now we can use SomeInterface in our constructor and methods injections. Let's tr
 ```php
 class SomeBootloader extends Bootloader
 {
-    protected $bindings= [
+    protected $bindings = [
         SomeInterface::class => SomeClass::class
     ];
     
