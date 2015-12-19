@@ -648,7 +648,7 @@ Compiled view will look like this:
 > Attention, JS and CSS libraries will be only be connected to the layout decalared in placeholders for assets. In your application, you can simply exclude the layout `spiral:layouts.html5` with pre-defined placeholders and stucture. It will looks like this:
 
 ```html
-<templater:use bundle="spiral:bundle"/>
+<dark:use bundle="spiral:bundle"/>
 
 <!DOCTYPE html>
 <html>
@@ -678,4 +678,4 @@ Compiled view will look like this:
 </html>
 ```
 
-> Element "templater:use" is just an alias for short "use" tag.
+> Element "dark:use" is just an alias for short "use" tag.
