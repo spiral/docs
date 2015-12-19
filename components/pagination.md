@@ -217,9 +217,7 @@ There is few scenarious when you would like to include pagination data into resu
 ```php
 protected function indexAction()
 {
-    $selection = $this->dbal->db()->users->select('name', 'email')->paginate(2);
-
-    return $selection;
+    return $this->db->users->select('name', 'email')->paginate(2);
 }
 ```
 
