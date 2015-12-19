@@ -4,19 +4,19 @@ scaffoling and cache directories comes pre-configured. Let's review default dire
 
 * app
   * classes
-    * Bootloaders
-    * Commands
-    * Controllers
-    * Database
-    * Models
-    * Middlewares
-    * Requests
+     * Bootloaders
+     * Commands
+     * Controllers
+     * Database
+     * Models
+     * Middlewares
+     * Requests
   * config
   * runtime
-    * cache
-    * logs
-    * snapshots
-    * i18n
+     * cache
+     * logs
+     * snapshots
+     * i18n
   * views
 * tests
 * webroot
