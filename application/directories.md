@@ -5,7 +5,8 @@ Directory                         | Description
 ---                               | ---       
 /                                 | Base project directory (alias **root**).
 **/app/**                         | This is your base application directory with templates, classes, runtime cache and etc (alias **application**)
-/app/classes/                     | This directory mounted as PSR4 root in your application composer file.                       
+/app/classes/                     | This directory mounted as PSR4 root in your application composer file.               
+/app/classes/Bootloaders/         | You can locate your application and service bootloaders here if you wish.
 /app/classes/Commands/            | Custom commands can be located here.   
 /app/classes/Controllers/         | Application conbtrollers can be located here.          
 /app/classes/Database/            | Database entities (ORM and ODM) and sources can be placed in this directory.                       
