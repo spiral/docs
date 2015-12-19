@@ -22,8 +22,6 @@ Directory                         | Description
 /vendor/                          | Composer vendor directory, aliased under "libraries" directory.              
 **/webroot/**                     | Application public directory, application enterpoint (index.php) located here as any other public asset file. Aliased as "public" directory.
 
-> You can overwrite directories at moment of core initialization. If you wish to add more class "types" to your application be free to create directories and namespaces in "app/classes" as it marked as PSR4 root. 
-
 > Spiral Framework bundle does not force any of default application namespaces except for http routing (see AppBootloader to change that), meaning you can construct your application way you want it.
 
 ## Accessing directory aliases
@@ -39,3 +37,5 @@ public function indexAction(DirectoriesInterface $directories)
    dump(directory('resources'));
 }
 ```
+
+> You can overwrite directories at moment of core initialization. If you wish to add more class "types" to your application be free to create directories and namespaces in "app/classes" as it marked as PSR4 root.
