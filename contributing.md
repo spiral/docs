@@ -15,7 +15,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 * Functionality proposals
 * Questionable code improvements and lookup
 * Critics
-* Automatic splitting components [repository](https://github.com/spiral/components)
+* Automatic splitting for components [repository](https://github.com/spiral/components)
 
 ## Guide Improvements
 If you feel like some "sugar" functionality (like shared bindings, constructor saturation or autowiring) can cause potential issues in future or reduce code testability please let me know so i can update guide and mention about potential architecture decigions or workarounds.
