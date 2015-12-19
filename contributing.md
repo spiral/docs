@@ -6,7 +6,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 * Every method must have doc comment describing return value and parameters
 * No design and concept violations (i love crazy ideas, but please let's talk first :))
 * Test coverage of new functionality
-* Default application must be configured without any error ([example](https://travis-ci.org/spiral/application/jobs/97466657))
+* Defaul application configuration and tests must not fail ([example](https://travis-ci.org/spiral/application))
 
 ## Help Needed In
 * Test coverage of existed functionality
