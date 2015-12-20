@@ -40,7 +40,7 @@
     * [Translator](components/translator.md)
     * [Views](components/views.md)
     * [Validation](components/validation.md)
-* **Stempler**
+* Stempler
     * [Basic Usage](stempler/basics.md)
     * [Extended Usage (virtual tags, tips and tricks)](stempler/expert.md)
     * [Dark Syntax](stempler/dark.md)
@@ -52,7 +52,7 @@
     * [Schema Interospection](database/introspection.md)
     * [Schema Declaration](database/declaration.md)
     * [Query Builders](database/builders.md)
-* **Spiral ORM**
+* Spiral ORM
     * [Record Model and Database Scaffolding](orm/basics.md)
     * [Relations](orm/relations.md)
     * [Entity Cache and Eager loading](orm/loading.md)
