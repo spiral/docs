@@ -50,7 +50,7 @@
     }
   },
   {
-    "title": "Components",
+    "title": "Embedded Components",
     "links": {
       "components-cache": "<s>Cache</s>",
       "components-debug": "<s>Debug</s>",
