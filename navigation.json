@@ -62,8 +62,7 @@
       "components-translator": "<s>Translator</s>",
       "components-views": "<s>Views</s>",
       "components-validation": "<s>Validation</s>",
-      "components-reactor": "<s>Reactor</s>",
-      "components-modules": "<s>Modules</s>"
+      "components-reactor": "<s>Reactor</s>"
     }
   },
   {
