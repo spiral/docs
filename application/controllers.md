@@ -7,7 +7,7 @@ class HomeController extends Controller
     /**
      * indexAction.
      */
-    protection function indexAction()
+    protected function indexAction()
     {
         return 'hello world';
     }
