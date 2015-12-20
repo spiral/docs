@@ -6,7 +6,7 @@ In many cases, when you would like to move or split your code from application f
 ## What is bootloader
 Bootloader is special class which used to declare needed container bindings and factory methods to make your component operate well. On other hand you can use bootloader to exectute some code at moment when your environment is loading.
 
-## Bootloader bindings
+## Booting bindings
 Let's try to imagine situation when your code provides set of interfaces and default implementation for them. To make sure that your interfaces work in code you have to configure container first, this can be done in App bootstrap method:
 
 ```php
@@ -64,7 +64,7 @@ Once done you will be able to use declared bindings and factories in your applic
 > Framework bundle caches bootloader bindings so there is no need to load such classes on every request, this means that any modifications in already registred bootloaders has to be declared to application using console command "app:reload". On other 
 hand, bootloading cache provides ability to connect multiple extensions or modules without getting much performance penalty on that.
 
-## Booting
+## Booting code
 Often you might want to excute your code at moment of application bootloading, you can do that by simply declaring specific constant in your bootloader `BOOT` and creating boot method with supported method injection:
 
 ```php
