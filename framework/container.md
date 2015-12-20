@@ -240,7 +240,7 @@ protected function indexAction(MyService $service)
 
 You can freely extend singleton classes or even replace one implementation with another by creating container binding (see below).
 
-> Attention, declarative singletons are not real singletons as you can drop them from container at any moment, plus you have to remember that other containers you might use possibly ignore such contant and force you to declare singleton explicitly. 
+> Attention, declarative singletons are not real singletons as you can drop them from container at any moment (plus it's development sugar), you have to remember that other containers you might use - possibly ignore such constant and force you to declare singleton explicitly. 
 
 ### Controllable/Contextual Injections
 Spiral Container in addition to regular method injections provides ability to create more intelligent contextual injections. Such technique provide us ability to request multiple databases using following statement:
