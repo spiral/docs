@@ -12,7 +12,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 * Test coverage of existed functionality
 * Functionality proposals
 * Questionable code improvements and lookup
-* Critics
+* Critics and Improvement proposals
 * Automatic splitting for components [repository](https://github.com/spiral/components)
 * Flexibility proposals (so far there almost no events in framework and i'm too afraid to add any at this moment)
 * Something important missing in this guide? Let me know! 
