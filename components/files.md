@@ -241,8 +241,6 @@ interface FilesInterface
 }
 ```
 
-> Inteface is missing deleteDirectory method which is going to be added soon.
-
 The only notable part of FileInterface and it's default implementation - FileManager's ability to ensure the file location (directory) with the requested file mode. This functionality is used all across the spiral core to simplify file writing operations and be less dependent on a specific directory structure. Let's look at some examples (and again, we can either use FilesInterface as our dependency or the short binding "files"):
 
 ```php
