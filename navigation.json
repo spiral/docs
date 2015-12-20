@@ -56,7 +56,7 @@
       "components-debug": "<s>Debug</s>",
       "components-entity": "<s>DataEntity Model</s>",
       "components-encrypter": "Encrypter",
-      "components-files": "<s>Files</s>",
+      "components-files": "Files",
       "components-pagination": "<s>Pagination</s>",
       "components-tokenizer": "<s>Tokenizer</s>",
       "components-translator": "<s>Translator</s>",
