@@ -15,6 +15,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 * Critics
 * Automatic splitting for components [repository](https://github.com/spiral/components)
 * Flexibility proposals (so far there almost no events in framework but i'm not sure if any required)
+* Something important missing in this guide? Let me know! 
 
 ## Guide Improvements
 If you feel like some "sugar" functionality (like shared bindings, constructor saturation or autowiring) can cause potential issues in future or reduce code testability please let me know so i can update guide and mention about potential architecture decigions or workarounds.
