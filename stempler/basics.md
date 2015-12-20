@@ -216,7 +216,7 @@ We can inject the parent block content into any place of re-definition before, a
 <extends:layouts.basic title="About Us"/>
 
 <block:resources>
-    <link rel="stylesheet" href="/resources/styles/weird.css"/>
+   <link rel="stylesheet" href="/resources/styles/weird.css"/>
    <block:resources/>
    <link rel="stylesheet" href="/resources/styles/aboutus.css"/>
 </block:resources>
@@ -297,7 +297,7 @@ Now we have the ability to set a custom wrapper class using our templates:
 <extends:layouts.basic title="About Us" wrapper-class="about-us"/>
 
 <block:resources>
-    <link rel="stylesheet" href="/resources/styles/weird.css"/>
+   <link rel="stylesheet" href="/resources/styles/weird.css"/>
    <block:resources/>
    <link rel="stylesheet" href="/resources/styles/aboutus.css"/>
 </block:resources>
@@ -317,7 +317,7 @@ As in examples with normal block definitions, we can always use parent block val
 <extends:layouts.basic title="About Us" wrapper-class="${wrapper-class} about-us"/>
 
 <block:resources>
-    <link rel="stylesheet" href="/resources/styles/weird.css"/>
+   <link rel="stylesheet" href="/resources/styles/weird.css"/>
    <block:resources/>
    <link rel="stylesheet" href="/resources/styles/aboutus.css"/>
 </block:resources>
