@@ -1,8 +1,7 @@
 # Encrypter
-One of generic spiral components provides functionality to encrypt and decrypt your application data. Spiral uses so called application key which is stored in 
-`application/config/encrypter.php` configuration file. You can always set new encrypt key value by using CLI command `app:key`.
+One of generic spiral components provides functionality to encrypt and decrypt your application data. Spiral uses encyption key and cipher are defined in `app/config/encrypter.php` configuration file (key value usually comes from `.env` file). You can always set new encrypt key value by using CLI command `app:key`.
 
-> Key will be set automatically during installation.
+> Key will be set automatically during application installation.
 
 ## EncrypterInterface
 To better understand what type of functionalites available for us let's take a look at `EncrypterInterface`:
@@ -60,15 +59,15 @@ interface EncrypterInterface
 }
 ```
 
-You can see we can encrypt, decrypt, generate random set of bytes and change encryption keys our of the box. By default spiral will bind `EncrypterInterface` to `Spiral\Encrypter\Encrypter` class which utilized OpenSSL extensions for such operation. Due interal implementation will pack your data using `serialize` method you can encrypt any serializable data set (for example arrays).
+You can see we can encrypt, decrypt, generate random set of bytes and change encryption keys our of the box. By default spiral will bind `EncrypterInterface` to `Spiral\Encrypter\Encrypter` class which utilized OpenSSL extensions for such operation. Due interal implementation will pack your data using `json_encide` method you can encrypt any serializable data set (for example arrays).
 
 If you wish to get access to encrypter in your code - use IoC container, depencency injections or short binding "encrypter" (as usual we are giving example using Controller action).
 
 ```php
 protected function indexAction(EncrypterInterface $encrypter)
 {
-    //Don't ever do that
-    dumP($encrypter->getKey());
+    //Never expose encryption key to website users
+    dump($encrypter->getKey());
 
     dump($payload = $encrypter->encrypt(['abc']));
     dump($encrypter->decrypt($payload));
@@ -78,4 +77,11 @@ protected function indexAction(EncrypterInterface $encrypter)
 }
 ```
 
-You can change your runtime encryption method at any moment, only make sure it has valid length and security.
+You can change your runtime encryption cipher at any moment, only make sure that encryption key has valid length and security.
+
+## Standalone
+If you wish to use encrypter separatelly, or construct manually simply provide key and cipher values into Encrypter constructor:
+
+```php
+$encypter = new Encrypter('my-key'); //Cipher is optional and set to 'aes-256-cbc' by default
+```
