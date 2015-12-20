@@ -91,6 +91,14 @@ interface FilesInterface
      */
     public function delete($filename);
 
+   /**
+     * Delete directory all content in it.
+     *
+     * @param string $directory
+     * @param bool   $contentOnly
+     */
+    public function deleteDirectory($directory, $contentOnly = false);
+
     /**
      * Move file from one location to another. Location must exist.
      *
