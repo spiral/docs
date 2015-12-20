@@ -85,7 +85,6 @@ class AppBootloader extends Bootloader
     }
 
     /**
-     * @param DirectoriesInterface $directories
      * @param HttpDispatcher       $http
      */
     public function boot(HttpDispatcher $http)
