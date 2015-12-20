@@ -161,3 +161,5 @@ trait SharedTrait
     //...
 }
 ```
+
+> You can treat shortcuts as inline functions in C.
