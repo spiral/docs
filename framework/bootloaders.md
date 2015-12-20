@@ -65,7 +65,7 @@ Once done you will be able to use declared bindings and factories in your applic
 hand, bootloading cache provides ability to connect multiple extensions or modules without getting much performance penalty on that.
 
 ## Booting code
-Often you might want to excute your code at moment of application bootloading, you can do that by simply declaring specific constant in your bootloader `BOOT` and creating boot method with supported method injection:
+Often you might want to execute your code at moment of application bootloading, you can do that by simply declaring specific constant in your bootloader `BOOT` and creating boot method with supported method injection:
 
 ```php
 class AppBootloader extends Bootloader 
@@ -116,7 +116,7 @@ public function indexAction()
 > Attention, this bootloaded will not be cached in memory by default.
 
 ## Short bindings and Shortcuts
-Pretty often you might to have simplified access to some of your code, for example database or specific part of request. As you might notice in [Container, Factory, DI](/framework/cotainer.md) section you can create short bindings for some of you classes and services.
+Sometimes you might need to have simplified access to some of your code, for example database or specific part of request. As you might notice in [Container, Factory, DI](/framework/cotainer.md) section you can create short bindings for some of you classes and services.
 
 However in some cases we can additionally combine short binding with factory methods in Bootloader:
 
