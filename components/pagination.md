@@ -152,8 +152,7 @@ protected function indexAction($page = 1)
         new MyPaginator(
             $this->router->activeRoute(),               //We can use active route
             'page',                                     //Parameter for page
-            $page,                                      //Parameter value
-            ['controller'=>'home', 'action'=>'index']    //Route options
+            $page                                       //Parameter value
         )
     );
 
