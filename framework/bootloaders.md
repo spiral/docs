@@ -38,7 +38,7 @@ class SomeBootloader extends Bootloader
     ];
     
     //Only constructed once
-    protection $singletons = [
+    protected $singletons = [
         OtherInterface::class => [self::class, 'createOther']
     ];
     
@@ -74,7 +74,7 @@ class AppBootloader extends Bootloader
         SomeInterface::class => SomeClass::class
     ];
     
-    protection $singletons = [
+    protected $singletons = [
         OtherInterface::class => [self::class, 'createOther']
     ];
     
