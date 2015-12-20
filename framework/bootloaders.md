@@ -114,3 +114,49 @@ public function indexAction()
 ```
 
 > Attention, this bootloaded will not be cached in memory by default.
+
+## Short bindings and Shortcuts
+Pretty often you might to have simplified access to some of your code, for example database or specific part of request. As you might notice in [Container, Factory, DI](/framework/cotainer.md) section you can create short bindings for some of you classes and services.
+
+However in some cases we can additionally combine short binding with factory methods in Bootloader:
+
+```php
+class MyBootloader extends Bootloader
+{
+    /**
+     * @return array
+     */
+    protected $bindings = [
+        'someTable' => [self::class, 'someTable']
+    ];
+
+    /**
+     * @param DatabaseManager $databases
+     * @return \Spiral\Database\Entities\Table
+     */
+    public function someTable(DatabaseManager $databases)
+    {
+        return $databases->database('default')->table('some');
+    }
+}
+```
+
+Now you can use such table shortcut in your controllers and services:
+
+```php
+public function indexAction()
+{
+    dump($this->someTable);
+}
+```
+
+If you would like to get automatic toolpits for such shortcut you can simply add comment into SharedTrait twin which you can put into your module or find one in app/classes/Bootloaders/Virtual:
+
+```php
+/**
+ * @property-read \Spiral\Databases\Entities\Table $someTable Binded in MyBootloader
+ */
+trait SharedTrait 
+{
+//...
+```
