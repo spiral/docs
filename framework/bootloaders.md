@@ -150,7 +150,7 @@ public function indexAction()
 }
 ```
 
-If you would like to get automatic toolpits for such shortcut you can simply add comment into SharedTrait twin which you can put into your module or find one in app/classes/Bootloaders/Virtual:
+If you would like to get automatic tooltips in your IDE for such shortcut - simply add comment into SharedTrait twin which you can put into your module or find one in app/classes/Bootloaders/Virtual:
 
 ```php
 /**
