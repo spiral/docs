@@ -91,7 +91,7 @@
     }
   },
   {
-    "title": "Spiral ORM",
+    "title": "ORM Engine",
     "links": {
       "orm-basics": "<s>Records and Scaffolding</s>",
       "orm-relations": "<s>Relations</s>",
@@ -100,7 +100,7 @@
     }
   },
   {
-    "title": "Spiral ODM",
+    "title": "ODM Engine",
     "links": {
       "odm-basics": "<s>Documents and Databases</s>",
       "odm-oop": "<s>Compositions, Aggregations</s>",
