@@ -158,5 +158,6 @@ If you would like to get automatic tooltips in your IDE for such shortcut - simp
  */
 trait SharedTrait 
 {
-//...
+    //...
+}
 ```
