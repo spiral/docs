@@ -53,4 +53,52 @@ Once done you will be able to use declared bindings and factories in your applic
 > Framework bundle caches bootloader bindings so there is no need to load such classes on every request, this means that any modifications in already registred bootloaders has to be decalread to application using console command "app:reload". On other bootloading cache provides ability to connect multiple extensions or modules without getting much performance penalty on that.
 
 ## Booting
-TODO
+In some cases you might want to excute your code at moment of application bootloading, you can do that by simply declaring specific constant in your bootloader `BOOT` and creating boot method with supported method injection:
+
+```php
+class AppBootloader extends Bootloader 
+{
+    protected $bindings = [
+        SomeInterface::class => SomeClass::class
+    ];
+    
+    protection $singletons = [
+        OtherInterface::class => [self::class, 'createOther']
+    ];
+    
+    //Automatically resolved by container
+    public function createOther(SomeInterface $class, ...)
+    {
+        return new OtherClass($class);
+    }
+
+    /**
+     * @param DirectoriesInterface $directories
+     * @param HttpDispatcher       $http
+     */
+    public function boot(HttpDispatcher $http)
+    {
+        $http->addRoute(new Route(
+            'route', 'route/<section:[a-z\-]*>', 'Vendor\Controllers\SomeController::action'
+        ));
+    }
+}
+```
+
+Given bootload will automatically register http route at moment of application initialization. You can declare any needed depencies in your boot method. 
+
+> Attention, booted Bootloaders are not cached. If you want to add boot method to existed bootloaded - do not forget to execture 'app:reload' after doing that.
+
+## Bootloading outside of core
+As you see in default application using $load property is not only way to mount your bootloaders as you can get access to BootloadManager at any moment:
+
+```php
+public function indexAction()
+{
+    $this->app->bootloader()->bootload([
+        \Vendor\Module\VendorBootloader::class
+    ]);
+}
+```
+
+> Attention, this bootloaded will not be cached in memory by default.
