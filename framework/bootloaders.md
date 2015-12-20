@@ -102,7 +102,7 @@ Given Bootloader will automatically register http route at moment of application
 > Attention, booted Bootloaders are not cached. If you want to add boot method to existed bootloaded - do not forget to execture 'app:reload' after doing that.
 
 ## Bootloading outside of core
-As you see in default application, using $load property is not only way to mount your bootloaders as you can get access to BootloadManager at any moment:
+As you see in default application, using `$load` property is not the only way to mount your bootloaders as you can get access to BootloadManager at any moment:
 
 ```php
 public function indexAction()
