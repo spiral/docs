@@ -14,7 +14,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 * Questionable code improvements and lookup
 * Critics
 * Automatic splitting for components [repository](https://github.com/spiral/components)
-* Flexibility proposals (so far there almost no events in framework but i'm not sure if any required)
+* Flexibility proposals (so far there almost no events in framework and i'm too afraid to add any at this moment)
 * Something important missing in this guide? Let me know! 
 
 ## Guide Improvements
