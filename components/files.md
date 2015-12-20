@@ -242,13 +242,13 @@ protected function indexAction(FilesInterface $files)
 {
     //Directory runtime/folder will be automatically created with RUNTIME (777) mode
     $files->write(
-        directory('runtime') . '/folder/file.txt',
+        directory('runtime') . 'folder/file.txt',
         'data',
         FilesInterface::RUNTIME,
         true
     );
 
-    dump($this->files->read(directory('runtime') . '/folder/file.txt'));
+    dump($this->files->read(directory('runtime') . 'folder/file.txt'));
 }
 ```
 
