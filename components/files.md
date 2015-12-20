@@ -1,4 +1,4 @@
-# Work with local Files
+# Work with Files
 Spiral Files component and `FilesInterface` are intended to simplify work with local harddrive rather than create a universal filesystem abstraction (like [Flysystem](https://github.com/thephpleague/flysystem)). 
 
 If you want to use abstract storage and work with remote locations (like Amazon, Rackspace, FTP, SFTP, GridFS) you might need to look at spiral [Storage Manager component](/storage/overview.md) which is responsible for such abstractions or install already mentioned Flysystem. 
