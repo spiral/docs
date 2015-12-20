@@ -23,7 +23,7 @@ Directory                         | Description
 /vendor/                          | Composer vendor directory, aliased under "libraries" directory.              
 **/webroot/**                     | Application public directory, application enterpoint (index.php) located here as any other public asset file. Aliased as "public" directory.
 
-> Spiral Framework bundle does not force any of default application namespaces except for http routing (see AppBootloader to change that), meaning you can construct your application way you want it.
+> Spiral Framework bundle does not force any of default application namespaces except for http routing (see AppBootloader to change that), meaning you can construct your application way you want it. For example you can easily create ViewModels without any help from framework.
 
 ## Accessing directory aliases
 As mention in directories description many of listed paths can be accessed using aliases, you can get directory alias using two similar methods:
