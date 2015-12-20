@@ -13,7 +13,7 @@ Let's try to imagine situation when your code provides set of interfaces and def
 $this->container->bind(SomeInterface::class, SomeClass::class);
 
 //or if concrete object needed
-$this->container->bind(SomeInterface::class, function(...){
+$this->container->bind(SomeInterface::class, function(...) {
     return new SomeClass(...);
 });
 ```
