@@ -102,7 +102,7 @@
     "title": "ODM Engine",
     "links": {
       "odm-basics": "<s>Documents and Databases</s>",
-      "odm-oop": "<s>Compositions, Aggregations</s>",
+      "odm-oop": "<s>Composite and Aggregate</s>",
       "odm-inheritance": "<s>Inheritance</s>",
       "odm-standalone": "Standalone Usage",
       "odm-uml": "<s>UML Export</s>"
