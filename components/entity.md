@@ -274,7 +274,7 @@ class DemoEntity extends \Spiral\Models\DataEntity
 
 Now our entity will always store the name in uppercase form. Note that you will see a lowercase value returned when you read such a value.
 
-> Getters are more rare than setters. However, they are very useful with loosely typed PDO responses (MySQL, SQLite etc). For example, any boolean value stored in MySQL will be returned as "1" (string one). Using getters can help us to ensure it's always boolean.
+> Getters are more rare than setters. However, they are very useful with loosely typed PDO responses (MySQL, SQLite etc). For example, any boolean value stored in MySQL will be returned as "1" (string one, exactly). Using getters can help us to ensure it's always boolean.
 
 ## Accessors
 The Spiral Entity provides an additional way to manage field value - Accessors. Accessor is a specified object which is responsible for manipulations with a mocked value. The most simple to understand example is the timestamp value accessor which can represent a numeric value as DataTime (spiral uses [Carbon] (https://github.com/briannesbitt/Carbon)).
