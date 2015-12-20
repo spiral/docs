@@ -4,10 +4,10 @@ In many cases, when you would like to move or split your code from application f
 > Make sure you read about [container and di](/framework/container.md).
 
 ## What is bootloader
-Bootloader is special class which used to declare needed container bindings and factory method. On other hand you can use bootloader to exectute some code at moment when your environment is loading.
+Bootloader is special class which used to declare needed container bindings and factory methods to make your component operate well. On other hand you can use bootloader to exectute some code at moment when your environment is loading.
 
 ## Bootloader bindings
-Let's try to image situation that your code provides set of interfaces and default implementation for them. To make your interfaces work in code you have to configure container first, this can be done in App bootstrap method:
+Let's try to imagine situation when your code provides set of interfaces and default implementation for them. To make sure that your interfaces work in code you have to configure container first, this can be done in App bootstrap method:
 
 ```php
 $this->container->bind(SomeInterface::class, SomeClass::class);
@@ -18,7 +18,17 @@ $this->container->bind(SomeInterface::class, function(...){
 });
 ```
 
-Now we can use SomeInterface in our constructor and methods injections. Let's try to archieve same goal using bootloader:
+Now we can use SomeInterface in our constructor and methods injections.
+
+```php
+public function indexAction(SomeInterface $some)
+{
+    dump($some);
+    assert($some instanceof SomeClass);
+}
+```
+
+Let's try to archieve same goal using bootloader (this is only example code):
 
 ```php
 class SomeBootloader extends Bootloader
@@ -27,6 +37,7 @@ class SomeBootloader extends Bootloader
         SomeInterface::class => SomeClass::class
     ];
     
+    //Only constructed once
     protection $singletons = [
         OtherInterface::class => [self::class, 'createOther']
     ];
@@ -39,7 +50,7 @@ class SomeBootloader extends Bootloader
 }
 ```
 
-The only thing we have to do now is add such bootloader class into our application, you can simply modify property $load in your App class.
+The only thing we have to do now is to add such bootloader class into our application, you can simply modify property `$load` in your App class.
 
 ```php
 protected $load = [
@@ -50,10 +61,11 @@ protected $load = [
 
 Once done you will be able to use declared bindings and factories in your application. 
 
-> Framework bundle caches bootloader bindings so there is no need to load such classes on every request, this means that any modifications in already registred bootloaders has to be decalread to application using console command "app:reload". On other bootloading cache provides ability to connect multiple extensions or modules without getting much performance penalty on that.
+> Framework bundle caches bootloader bindings so there is no need to load such classes on every request, this means that any modifications in already registred bootloaders has to be declared to application using console command "app:reload". On other 
+hand, bootloading cache provides ability to connect multiple extensions or modules without getting much performance penalty on that.
 
 ## Booting
-In some cases you might want to excute your code at moment of application bootloading, you can do that by simply declaring specific constant in your bootloader `BOOT` and creating boot method with supported method injection:
+Often you might want to excute your code at moment of application bootloading, you can do that by simply declaring specific constant in your bootloader `BOOT` and creating boot method with supported method injection:
 
 ```php
 class AppBootloader extends Bootloader 
@@ -85,12 +97,12 @@ class AppBootloader extends Bootloader
 }
 ```
 
-Given bootload will automatically register http route at moment of application initialization. You can declare any needed depencies in your boot method. 
+Given Bootloader will automatically register http route at moment of application initialization. You can declare any needed depencies in your boot method arguments.
 
 > Attention, booted Bootloaders are not cached. If you want to add boot method to existed bootloaded - do not forget to execture 'app:reload' after doing that.
 
 ## Bootloading outside of core
-As you see in default application using $load property is not only way to mount your bootloaders as you can get access to BootloadManager at any moment:
+As you see in default application, using $load property is not only way to mount your bootloaders as you can get access to BootloadManager at any moment:
 
 ```php
 public function indexAction()
