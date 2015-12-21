@@ -179,3 +179,5 @@ $app->http->start();
 > You can easily redefine start() method in your `App` class to use your custom dispatcher.
 
 Read [this section](/http/flow.md) to know how HttpDispather work.
+
+> You can also set your own dispatched in App `bootstrap` method.
