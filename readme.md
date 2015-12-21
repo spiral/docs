@@ -9,6 +9,7 @@
     * [Bootloaders](framework/bootloaders.md)
     * [Application Memory](framework/memory.md)
     * [Behaviour Schemas](framework/schemas.md)
+    * [Making Modules](framework/modules.md)
 * Application
     * [Directory structure](application/directories.md)
     * [Startup Flow](application/startup.md)
