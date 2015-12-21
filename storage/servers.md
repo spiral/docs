@@ -22,7 +22,7 @@ Example bucket definition:
     'server'  => 'local',
     'prefix'  => 'local:',
     'options' => [
-        'directory' => '/application/runtime/storage/'
+        'directory' => '/app/runtime/storage/'
     ]
 ],
 ```
@@ -193,11 +193,14 @@ protected $options = [
     'methods'    => [],
     'port'       => 22,
     'home'       => '/',
+    
     //Authorization method and username
     'authMethod' => 'password',
     'username'   => '',
+    
     //Used with "password" authorization
     'password'   => '',
+    
     //User with "pubkey" authorization
     'publicKey'  => '',
     'privateKey' => '',
@@ -260,7 +263,7 @@ interface ServerInterface
      * @throws ServerException
      */
     public function exists(BucketInterface $bucket, $name);
-
+    
     /**
      * Get object size in specified bucket or return false.
      *
@@ -270,7 +273,7 @@ interface ServerInterface
      * @throws ServerException
      */
     public function size(BucketInterface $bucket, $name);
-
+    
     /**
      * Put object data into specified bucket under given name, must replace existed data.
      *
@@ -281,7 +284,7 @@ interface ServerInterface
      * @throws ServerException
      */
     public function put(BucketInterface $bucket, $name, $source);
-
+    
     /**
      * Must return filename which is valid in associated FilesInterface instance. Must trow an
      * exception if object does not exists. Filename can be temporary and should not be used
@@ -289,11 +292,11 @@ interface ServerInterface
      *
      * @param BucketInterface $bucket
      * @param string          $name
-     * @return string|bool
+     * @return string
      * @throws ServerException
      */
     public function allocateFilename(BucketInterface $bucket, $name);
-
+    
     /**
      * Return PSR7 stream associated with bucket object content or trow and exception.
      *
@@ -303,7 +306,7 @@ interface ServerInterface
      * @throws ServerException
      */
     public function allocateStream(BucketInterface $bucket, $name);
-
+    
     /**
      * Delete bucket object if it exists.
      *
@@ -312,7 +315,7 @@ interface ServerInterface
      * @throws ServerException
      */
     public function delete(BucketInterface $bucket, $name);
-
+    
     /**
      * Rename storage object without changing it's bucket.
      *
@@ -323,7 +326,7 @@ interface ServerInterface
      * @throws ServerException
      */
     public function rename(BucketInterface $bucket, $oldname, $newname);
-
+    
     /**
      * Copy storage object to another bucket. Both buckets must belong to same server.
      *
@@ -334,7 +337,7 @@ interface ServerInterface
      * @throws ServerException
      */
     public function copy(BucketInterface $bucket, BucketInterface $destination, $name);
-
+    
     /**
      * Move storage object data to another bucket. Both buckets must belong to same server.
      *
@@ -348,4 +351,6 @@ interface ServerInterface
 }
 ```
 
-Spiral StorageManager has been written originally in 2010-2011, since then there is a lot of nice libraries and new ways to store your files remotelly. One of the notable implementation is [Flysystem] (https://github.com/thephpleague/flysystem). Flysystem can be easily intergated into StorageManager due it provides much lower abstraction level than required by StorageManager, such implementation can significantly improve list of supported storages (for example if you want Dropbox support).
+Spiral StorageManager has been written originally in 2010-2011, since then many nice libraries and new ways to store your files remotelly got created.
+
+One of the notable implementation is [Flysystem](https://github.com/thephpleague/flysystem). Flysystem can be easily intergated into StorageManager (or used as directly) due it provides much lower abstraction level than required by StorageManager, such implementation can significantly improve list of supported storages (for example if you want Dropbox support).
