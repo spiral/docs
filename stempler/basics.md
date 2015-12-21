@@ -490,7 +490,7 @@ public function websiteLayout()
     This is our header.
 </div>
     <div class="wrapper page about-us">
-    Something about us, <?=$someVariable?>. <a href="/some-url/">Some Address</a>.
+    Something about us, <?= $someVariable ?>. <a href="/some-url/">Some Address</a>.
     </div>
 <div class="footer">
     This is the about us specific footer.
@@ -512,7 +512,7 @@ public function websiteLayout()
 </head>
 <body>
 <div class="mobile">
-    Something about us, <?=$someVariable?>. <a href="/some-url/">Some Address</a>.
+    Something about us, <?= $someVariable ?>. <a href="/some-url/">Some Address</a>.
 </div>
 </body>
 </html>
