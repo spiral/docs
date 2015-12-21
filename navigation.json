@@ -76,8 +76,8 @@
   {
     "title": "Storage Manager",
     "links": {
-      "storage-overview": "<s>Buckets and Objects</s>",
-      "storage-servers": "<s>Storage Servers</s>"
+      "storage-overview": "Buckets and Objects",
+      "storage-servers": "Storage Servers"
     }
   },
   {
