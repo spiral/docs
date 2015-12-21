@@ -136,7 +136,7 @@ public static function init(
 ```
 
 Let's try to give short description of what is going on in this method:
-* First we have to create an instance of container if none was provided from outside, by default spiral will use it's own containter implementation with prepared interface bindings and autowiring abilities.
+* First we have to create an instance of container if none was provided from outside (`Spiral\Core\ContainerInterface`, not Interop), by default spiral will use it's own containter implementation with prepared interface bindings and autowiring abilities.
 * Once container is created we have to set it as shared container to make all sugar functionality work in our application (potentially shared container might we set using scoping methodics similar to http requests).
 * Now we can create our core which in this case will be based on App class.
 * Created core implements some basic interfaces such as DirectoriesInterface, CoreInterface and etc, so we are going to configure container for that.
