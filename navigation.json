@@ -21,7 +21,7 @@
     "title": "Application",
     "links": {
       "application-directories": "Directory Structure",
-      "application-startup": "<s>Startup Flow</s>",
+      "application-startup": "Startup Flow",
       "application-errors": "<s>Error Handling</s>",
       "application-entities": "<s>Sources and Data Entities</s>",
       "application-services": "<s>Models and Services</s>",
