@@ -39,18 +39,128 @@ Public method in your module are responsible for moving and publishing files int
  */
 public function publish(PublisherInterface $publisher, DirectoriesInterface $directories)
 {
-  $publisher->publish(__DIR__ . 'configs/config.php', $directories->directory('config'));
+    $publisher->publish(__DIR__ . 'configs/config.php', $directories->directory('config'));
 
-  //You can either publish whole directory content
-  $publisher->publishDirectory(
-    __DIR__ . '../resources/',
-    $directories->directory('webroot') . 'resources/'
-  );
+    //You can either publish whole directory content
+    $publisher->publishDirectory(
+        __DIR__ . '../resources/',
+        $directories->directory('webroot') . 'resources/'
+    );
 }
 ```
 
-## Installing, Registering and Publishing your module
-i'm writing it
+### Register method
+If you already checked sample spiral application you might notice set of weird comments located all across configuration files:
 
+```php
+'namespaces'  => [
+    /*
+     * This is default application namespace which can be used without any prefix.
+     */
+    'default'  => [
+        directory("application") . 'views/',
+        /*{{namespaces.default}}*/
+    ],
+    /*
+     * This namespace contain few framework views like http error pages and exception view
+     * used in snapshots. In addition, same namespace used by Toolkit module to share it's
+     * views and widgets.
+     */
+    'spiral'   => [
+        directory("libraries") . 'spiral/framework/source/views/',
+        directory('libraries') . 'spiral/toolkit/source/views/',
+        /*{{namespaces.spiral}}*/
+    ],
+    'profiler' => [
+        directory('libraries') . 'spiral/profiler/source/views/',
+        /*{{namespaces.profiler}}*/
+    ],
+    /*{{namespaces}}*/
+],
+```
+
+Such placeholders provide an ability to you module to write some strings or code into configuration files (based on your approval), the most common example is situation when module wants to register it's own view namespace, this can be achived by following code in register method:
+
+```php
+public function register(RegistratorInterface $registrator)
+{
+    $registrator->configure('views', 'namespaces', 'vendor/my-module', [
+        "'my-module' => [",
+        "   directory('libraries') . 'vendor/my-module/source/views/',",
+        "]"
+    ]);
+}
+```
+
+Now, you can register this module in your system which will automatically alter views config (if allowed) and publish all nesessary resources.
+
+> Attention, **do not** alter configs using absolute paths, only use directory based [aliases](/application/directories.md) if you want your module work in any environment.
+
+## Installing, Registering and Publishing your module
+Registering and publishing modules can be done using simple console commands 'register {module}' and 'publish {module}'. Commands will automatically resolve your module class by converting given name into namespace and added postfix "Module". 
+
+For example, if we created module class which are named like `Vendor\CoolModule`, we register such extension using following command:
+
+```
+spiral register vendor/cool
+```
+
+You can also publish module files:
+
+```
+spiral register vendor/cool
+```
+
+### Registering command
+When you run register command with your module specified, all configuration sections will be highlighted for you and your confirmation will be requested:
+
+```
+> spiral register spiral/toolkit
+Module requests following configs to be altered:
++--------+-------------------+--------------------------------------------------------------------------------------+
+| Config | Section           | Added Lines                                                                          |
++--------+-------------------+--------------------------------------------------------------------------------------+
+| views  | namespaces.spiral | directory('libraries') . 'spiral/toolkit/source/views/',                             |
+| views  | dark.processors   | //Provides ability to automatically include js and css requested by widgets and tags |
+|        |                   | Spiral\Toolkit\AssetManager::class,                                                  |
++--------+-------------------+--------------------------------------------------------------------------------------+
+
+Confirm module registration (y/n)
+```
+
+You can either say "no" and alter configuration files manually or accept modification which will modify and validate (at this moment only syntaxt validation) altered files:
+
+```
+> spiral register spiral/toolkit -vv
+Module requests following configs to be altered:
++--------+-------------------+--------------------------------------------------------------------------------------+
+| Config | Section           | Added Lines                                                                          |
++--------+-------------------+--------------------------------------------------------------------------------------+
+| views  | namespaces.spiral | directory('libraries') . 'spiral/toolkit/source/views/',                             |
+| views  | dark.processors   | //Provides ability to automatically include js and css requested by widgets and tags |
+|        |                   | Spiral\Toolkit\AssetManager::class,                                                  |
++--------+-------------------+--------------------------------------------------------------------------------------+
+
+Confirm module registration (y/n) y
+
+[Registrator] Syntax of config 'views' has been checked.
+[Registrator] Config 'views' were updated with new content.
+Module 'Spiral\ToolkitModule' has been successfully registered.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/scripts/spiral/bundle.js' already published and latest version.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/scripts/spiral/bundle.js.map' already published and latest version.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/scripts/spiral/sf.js' already published and latest version.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/scripts/spiral/sf.js.map' already published and latest version.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/styles/spiral/blank.css' already published and latest version.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/styles/spiral/blank.less' already published and latest version.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/styles/spiral/lock.less' already published and latest version.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/styles/spiral/mixins.less' already published and latest version.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/styles/spiral/spiral.css' already published and latest version.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/styles/spiral/spiral.less' already published and latest version.
+[Publisher] File 'vendor/spiral/toolkit/source/../resources/styles/spiral/variables.less' already published and latest version.
+Module 'Spiral\ToolkitModule' has been successfully published.
+```
+
+### Publish command
+Publish command does not require any confirmation and usually used when module gets updated resources such as assets, images and etc.
 
 > Check spiral [toolkit](https://github.com/spiral/toolkit) or [profiler](https://github.com/spiral/profiler) repositories to get some examples.
