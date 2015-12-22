@@ -32,7 +32,7 @@ Default spiral application and framework core utilize [dotenv package](https://g
 
 > Enviroment file `.env` will be automatically created and pre-configured as moment of application installation, however in a future you have to manage file creation manually (you can simply copy or rename `.env.sample` and later run `spiral app:key` to ensure that unique encryption key were set).
 
-**Always make sure that you have .env file in your root directory (or create it using `copy .env.sample .env`).**
+**Always make sure that you have .env file in your root directory (or create it using `cp .env.sample .env`).**
 
 ## Configuration
 Your application confuration files are located in `app/config` directory, you can alter it's values to mount additional extensions or change some of application workflow.
