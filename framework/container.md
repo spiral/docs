@@ -127,7 +127,6 @@ protected function container()
 ```
 
 > Try to make sure that every class which uses SharedTrait declares and sets `container` property so you can easily test it.
-> Attention, container method code is changed in a future update (branch isolate-container) in order to simplify container access and unify code.
 
 Following methodic can work very well in combination with good IDE and provides very sufficient way to write or prototype your code:
 
