@@ -2,7 +2,7 @@
 Spiral Database layer provides the ability to read and analyze basic properties of a given database or given table. In addition to that, the DBAL contains a mechanism used to convert sets of column types specific to some DBMS into a limited set of "abstract" types available for the user.
 
 ## List of database tables
-Once you have received an instance of `Database` you can check if the desired table exists using the `hasTable` method.
+Once you have received an instance of `DatabaseInterface` you can check if the desired table exists using the `hasTable` method.
 
 ```php
 if ($database->hasTable('users')) {
@@ -10,7 +10,9 @@ if ($database->hasTable('users')) {
 }
 ```
 
-In some cases you want to receive all database tables (array of `Spiral\Database\Table`):
+> Read how to get access to database instances [here](/databases/overview.md).
+
+In some cases you want to receive all database tables (array of `Spiral\Database\TableInterface`):
 
 ```php
 foreach ($database->getTables() as $table) {
@@ -107,8 +109,8 @@ You can also use console commands to get information about configured tables and
 
 Command           | Description 
 ---               | ---
-dbal:list       | Get list of databases, their tables and records count.
-dbal:describe  | View table schema of default or specific database.
+dbal:list         | Get list of databases, their tables and records count.
+dbal:describe     | View table schema of default or specific database.
 
 ```
 > ./spiral.cli dbal:table people --database=postgres
