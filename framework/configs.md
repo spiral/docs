@@ -75,4 +75,4 @@ public function getOption()
 }
 ```
 
-> There is many configs across spiral which you can use in your code, for example HttpConfig. Since Configurator will cache already loaded decorators in memory there no much performance drop on requesting config dependency in multiple places.
+> There is many configs across spiral which you can use in your code, for example HttpConfig. Since Configurator will cache already loaded decorators in memory there no much performance drop on requesting config dependency in multiple places. And yes, you can bind config in container, extend config class, resolve instance using factory or bootloader, convert to singleton and do other crazy things.
