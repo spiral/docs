@@ -15,7 +15,7 @@ You can now get access to configuration file by requesting ConfiguratorInterface
 ```php
 public function indexAction(ConfiguratorInterface $configurator)
 {
-    dump($configurator->getConfig('my-config'));
+    dump($configurator->getConfig('my-config')['option']);
 }
 ```
 
