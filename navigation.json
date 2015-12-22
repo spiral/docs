@@ -85,7 +85,7 @@
     "title": "Databases",
     "links": {
       "database-overview": "<s>Overview</s>",
-      "database-introspection": "<s>Schema Introspection</s>",
+      "database-introspection": "Schema Introspection",
       "database-declaration": "<s>Schema Declaration</s>",
       "database-builders": "<s>Query Builders</s>"
     }
