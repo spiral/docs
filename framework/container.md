@@ -439,3 +439,5 @@ try {
     $this->container->restore($outerBinding);
 }
 ```
+
+> Almost every framework components/class created using DI or factory, please **do not construct** framework classes directly in your application, use factory/DI instead (to prevent BS changed in future).
