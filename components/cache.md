@@ -8,22 +8,21 @@ To start let's view CacheInterface to understand how our `CacheProvider` works:
 interface CacheInterface
 {
     /**
-     * Create specified or default cache adapter. This function will load cache adapter if it
+     * Create specified or default cache store. This function will load cache adapter if it
      * was not initiated, or fetch it from memory.
      *
-     * @param string $store   Keep null, empty or not specified to get default cache adapter.
-     * @param array  $options Custom store options to set or replace.
+     * @param string $store Keep null, empty or not specified to get default cache adapter.
      * @return StoreInterface
      * @throws CacheException
      */
-    public function store($store = null, array $options = []);
+    public function store($store = null);
 }
 ```
 
 As you can see, provider declares only one method related to creating needed cache store by it's name and configuration options (optional), you can skip store name - in this case you will get default adapter. Inside our code (use Controller action as example) we can get access to cache provider using three different bindings:
 
 ```php
-protected function indexAction(CacheInterface $cache, CacheProvider $provider)
+protected function indexAction(CacheInterface $cache, CacheManager $provider)
 {
     //True
     dump($cache === $provider);
@@ -36,35 +35,46 @@ protected function indexAction(CacheInterface $cache, CacheProvider $provider)
 }
 ```
 
-You can check configuration of cache component and it's adapters in `application/config/cache.php` file:
+You can check configuration of cache component and it's adapters in `app/config/cache.php` file:
 
 ```php
 use Spiral\Cache\Stores;
 
 return [
-    'store'  => 'file',
+    /*
+     * Class name of default cache store to be used by application. You can all request specific
+     * store class in your dependencies.
+     */
+    'store'  => env('CACHE_STORE', 'files'),
     'stores' => [
-        'file'     => [
+        /*
+         * Slow cache store to be used in develop environments.
+         */
+        'files'    => [
             'class'     => Stores\FileStore::class,
-            'directory' => directory('cache'),
+            'directory' => directory('runtime') . 'cache/',
             'extension' => 'cache'
         ],
         'xcache'   => [
             'class'  => Stores\XCacheStore::class,
             'prefix' => 'spiral:'
+
         ],
         'apc'      => [
             'class'  => Stores\APCStore::class,
             'prefix' => 'spiral:'
+
         ],
         'memcache' => [
             'class'   => Stores\MemcacheStore::class,
             'prefix'  => 'spiral:',
             'options' => [],
             'servers' => [
-                ['host' => 'localhost', 'port' => 11211, 'persistent' => true]
+                ['host' => 'localhost', 'port' => 11211, 'persistent' => true],
+                /*{{memcache.servers}}*/
             ]
-        ]
+        ],
+        /*{{stores}}*/
     ]
 ];
 ```
@@ -141,7 +151,7 @@ interface StoreInterface
      * @return int
      * @throws StoreException
      */
-    public function increment($name, $delta = 1);
+    public function inc($name, $delta = 1);
 
     /**
      * Decrement numeric value stored in cache. Must return decremented value.
@@ -151,7 +161,7 @@ interface StoreInterface
      * @return int
      * @throws StoreException
      */
-    public function decrement($name, $delta = 1);
+    public function dec($name, $delta = 1);
 
     /**
      * Read item from cache and delete it afterwards.
@@ -202,10 +212,10 @@ protected function indexAction()
     $store->forever('nameB', 1);
 
     //Increment stored value by 2
-    $store->increment('nameB', 2);
+    $store->inc('nameB', 2);
     
     //Decrement stored value by 2
-    $store->decrement('nameB', 2);
+    $store->dec('nameB', 2);
     
     //Fetch value from cache and remove it after
     dump($store->pull('nameB'));
@@ -222,30 +232,25 @@ protected function indexAction()
 ## Supported Cache Stores
 At this moment spiral support 4 different cache adapters by default and one adapter provided by external module (Redis):
 
-| Adapter        | Description           |
-| ---            | ---                   |
-| FileStore      | Default cache using serialized files to store data, you should be using this store only in development.                                  |
-| MemcacheStore  | Memcache store can work with both "memcache" and "memcached" extensions using set of defined servers. Memcahe is preffered extension.    |
-| APCStore       | Utilizes APC to store data, might be limited in memory.                                                                                  |
-| XCacheStore    | Utilizes XCache to store data, might be limited in memory.                                                                               |
-| RedisStore     | Available only with Redis extension, will use defined predis client to store data into.                                                  |
+Adapter        | Description           
+---            | ---                   
+FileStore      | Default cache using serialized files to store data, you should be using this store only in development.            
+MemcacheStore  | Memcache store can work with both "memcache" and "memcached" extensions using set of defined servers. Memcahe is preffered extension.    
+APCStore       | Utilizes APC to store data, might be limited in memory.                                                               
+XCacheStore    | Utilizes XCache to store data, might be limited in memory.                                                            
+RedisStore     | Available only with Redis extension, will use defined predis client to store data into.                               
 
-> Spiral does not support tagged cache at this moment.
+> Spiral does not support tagged cache at this moment (be free to propose your ideas).
 
 ## Controllable Injections
-As mention in IoC guide some of spiral classes and interfaces support so called controllable injections, such injenctions provides you ability to request specific
-cache adapter without calling provider every time. CacheProvider will use requested store class to provide you valid instance, let's look at example in controller action (can also be used in constructors or init methods):
+As mention in IoC guide some of spiral classes and interfaces support so called controllable injections, such injenctions provides you ability to request specific cache adapter without calling provider every time. CacheProvider will use requested store class to provide you valid instance, let's look at example in controller action (can also be used in constructors or init methods):
 
 ```php
 protected function indexAction(StoreInterface $store, FileStore $fileStore, MemcacheStore $memcacheStore)
 {
     //Will be instance of default cache store
     dump($store);
-
     dump($fileStore);
-
     dump($memcacheStore);
 }
 ```
-
-> Attention, this is magic.
