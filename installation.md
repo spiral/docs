@@ -7,6 +7,8 @@ Make sure that your server is configured with following PHP version and extensio
 * OpenSSL Extension
 * MbString Extension
 * Tokenizer Extension
+* PDO Extension with desired database drivers
+* MongoDB extension (optional)
 
 ## Installation
 One of fastest ways to install a fresh spiral application is to use the composer command:
