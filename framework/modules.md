@@ -165,4 +165,4 @@ Module 'Spiral\ToolkitModule' has been successfully published.
 ### Publish command
 Publish command does not require any confirmation and usually used when module gets updated resources such as assets, images and etc.
 
-> Check spiral [toolkit](https://github.com/spiral/toolkit) or [profiler](https://github.com/spiral/profiler) repositories to get some examples.
+> Check spiral [toolkit](https://github.com/spiral/toolkit/blob/master/source/ToolkitModule.php) or [profiler](https://github.com/spiral/profiler/blob/master/source/ProfilerModule.php) repositories to get some examples.
