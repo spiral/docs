@@ -74,3 +74,5 @@ public function getOption()
     return $this->config['option'];
 }
 ```
+
+> There is many configs across spiral which you can use in your code, for example HttpConfig. Since Configurator will cache already loaded configs in memory there no much performance drop on requesting config dependency in multiple places.
