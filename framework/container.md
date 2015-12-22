@@ -62,10 +62,10 @@ console         | Spiral\Console\ConsoleDispatcher
 http            | Spiral\Http\HttpDispatcher  
 encrypter       | Spiral\Encrypter\EncrypterInterface
 files           | Spiral\Files\FilesInterface
-tokenizer       | Spiral\Tokenizer\Tokenizer
+tokenizer       | Spiral\Tokenizer\TokenizerInterface
 locator         | Spiral\Tokenizer\ClassLocatorInterface
 translator      | Spiral\Translator\TranslatorInterface
-views           | Spiral\Views\ViewManager 
+views           | Spiral\Views\ViewManager
 storage         | Spiral\Storage\StorageInterface 
 dbal            | Spiral\Database\DatabaseManager 
 odm             | Spiral\ODM\ODM
@@ -80,6 +80,8 @@ input           | Spiral\Http\Input\InputManager *(only in http scope)*
 cookies         | Spiral\Http\Cookies\CookieManager *(only in http scope)*
 router          | Spiral\Http\Routing\RouterInterface *(only in http scope)*
 responses       | Spiral\Http\Responses\Responder  *(only in http scope)*
+
+> Attention, some bindings are pointing to concrete implementations!
 
 ### Short/Virtual Bindings (sugar)
 Following statement is possible in any of your service, controller or command which does have property 'container' (this classes already delcared constructor injector)
