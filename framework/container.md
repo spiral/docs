@@ -60,13 +60,13 @@ memory          | Spiral\Core\ContainerInterface *(Factory + Interop Container)*
 debugger        | Spiral\Debug\Debugger
 console         | Spiral\Console\ConsoleDispatcher
 http            | Spiral\Http\HttpDispatcher  
-encrypter       | Spiral\Encrypter\Encrypter
-files           | Spiral\Files\FileManager
+encrypter       | Spiral\Encrypter\EncrypterInterface
+files           | Spiral\Files\FilesInterface
 tokenizer       | Spiral\Tokenizer\Tokenizer
-locator         | Spiral\Tokenizer\ClassLocator 
-translator      | Spiral\Translator\Translator
+locator         | Spiral\Tokenizer\ClassLocatorInterface
+translator      | Spiral\Translator\TranslatorInterface
 views           | Spiral\Views\ViewManager 
-storage         | Spiral\Storage\StorageManager  
+storage         | Spiral\Storage\StorageInterface 
 dbal            | Spiral\Database\DatabaseManager 
 odm             | Spiral\ODM\ODM
 orm             | Spiral\ORM\ORM
@@ -75,10 +75,10 @@ db              | Spiral\Database\Entities\Database *(default database)*
 mongo           | Spiral\ODM\Entities\MongoDatabase *(default database)*
 request         | Psr\Http\Message\ServerRequestInterface *(only in http scope)*
 route           | Spiral\Http\Routing\RouteInterface *(featched from scoped request attribute)*
-session         | Spiral\Session\SessionStore *(featched from scoped request attribute)*
-input           | Spiral\Http\Input\InputManage *(only in http scope)*
+session         | Spiral\Session\SessionInterface *(featched from scoped request attribute)*
+input           | Spiral\Http\Input\InputManager *(only in http scope)*
 cookies         | Spiral\Http\Cookies\CookieManager *(only in http scope)*
-router          | Spiral\Http\Routing\Router *(only in http scope)*
+router          | Spiral\Http\Routing\RouterInterface *(only in http scope)*
 responses       | Spiral\Http\Responses\Responder  *(only in http scope)*
 
 ### Short/Virtual Bindings (sugar)
