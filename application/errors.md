@@ -108,7 +108,7 @@ class Whoops extends QuickSnapshot
      */
     public function render()
     {
-        $whoops = new \Whoops\Run;
+        $whoops = new \Whoops\Run();
         $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
         return $whoops->handleException($this->exception());
     }
