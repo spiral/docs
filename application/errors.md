@@ -71,14 +71,12 @@ class Whoops extends QuickSnapshot
     {
         $whoops = new \Whoops\Run;
         $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
-
-        //Simple example
         return $whoops->handleException($this->exception());
     }
 }
 ```
 
-To make this snapshot work we only have to bind our class to SnaphotInterface, we can do it in App class:
+To make this snapshot work we only have to bind our class to `SnaphotInterface`, we can do it in App class:
 
 ```php
 //$this->container->bind(Debug\SnapshotInterface::class, Debug\Snapshot::class);
