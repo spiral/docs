@@ -23,7 +23,7 @@ You can also configure your application at any moment, by simply executing:
 ./spiral configure
 ```
 
-Make sure that `spiral` has right execute permissions (`chmod +x spiral`).
+Make sure that `spiral` has right execute permissions (`chmod +x spiral`, btw you can rename `spiral` and `spiral.cli` to any name you want).
 
 > You can run command(s) with increaced verbosity to get more details.
 
