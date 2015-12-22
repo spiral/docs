@@ -1,17 +1,17 @@
 # DataEntity Model
-Most of Spiral's classes like ORM, ODM and HTTP request models extend one common parent - the DataEntity model. This class is one of the most basic application cells used to provide a set of wrappers and operations related to the array dataset.
+Most of Spiral's classes like ORM, ODM and HTTP request models extend one common parent - the `DataEntity` model. This class is one of the most basic application cells used to provide a set of wrappers and operations related to the array dataset.
 
 ## Purpose
-DataEntity model is responsible for mocking up and providing access to the array hash - fields that use a set of getters, setters and accessors. In addition, this model provides a way to apply a mass assign to fields (using black/white lists), get all model fields as one array, get a list of all "public" fields (that can be sent to client using a whitelist) and can be converted into JSON. In addition, the model support [field validation] (validation.md) is based on a set of defined rules.
+DataEntity model is responsible for mocking up and providing access to the array hash - fields that use a set of getters, setters and accessors. In addition, this model provides a way to apply a mass assign to fields (using black/white lists), get all model fields as one array, get a list of all "public" fields (that can be sent to client using a whitelist) and can be converted into JSON. In addition, the model support [field validation](/components/validation.md) is based on a set of defined rules.
 
 ## Interfaces
 Because the DataEntity class is used widely across the Spiral framework, you may want to create your own code to communicate with it. Instead of using DataEntity class by itself, you can stick with it's primary interface:
 
 ```php
-interface EntityInterface extends \ArrayAccess, ValidatesInterface
+interface EntityInterface extends ValidatesInterface
 {
     /**
-     * Check if entity has field by it's name.
+     * Check if field known to entity, field value can be null!
      *
      * @param string $name
      * @return bool
@@ -38,7 +38,7 @@ interface EntityInterface extends \ArrayAccess, ValidatesInterface
     public function getField($name, $default = null);
 
     /**
-     * Update entity fields using mass assignment. Only allowed fields should be set.
+     * Update entity fields using mass assignment. Only allowed fields must be set.
      *
      * @param array|\Traversable $fields
      * @throws EntityExceptionInterface
@@ -75,7 +75,7 @@ interface ValidatesInterface
     public function hasErrors();
 
     /**
-     * List of errors associated with parent field. Every field can only have one error assigned.
+     * List of errors associated with parent field, every field must have only one error assigned.
      *
      * @param bool $reset Force re-validation.
      * @return array
@@ -85,28 +85,12 @@ interface ValidatesInterface
 ```
 
 ## Entity Fields
-Every entity must work with a set of mocked up fields. These fields are represented as an associated array and stored in the property "fields". Knowing this, we can create a simple entity used to mock up some data array:
-
-```php
-class DemoEntity extends \Spiral\Models\DataEntity
-{
-    /**
-     * @param array $fields
-     */
-    public function __construct(array $fields)
-    {
-        //No setters/accessors will be called
-        $this->fields = $fields;
-    }
-}
-```
-
-This entity sets the fields using a contructor method (Pay attention, that the fields will be set without any filtering). Now we can use this entity in our code:
+Every entity must work with a set of mocked up fields. These fields are represented as an associated array and stored in the protected (potentially private) property "fields". Knowing this, we can create a simple entity used to mock up some data array:
 
 ```php
 protected function indexAction()
 {
-    $entity = new \DemoEntity([ 
+    $entity = new DataEntity([ 
         'name'    => 'value',
         'another' => 123
     ]);
@@ -152,6 +136,7 @@ dump($entity->getFields());
 
 ## Mass Assignment
 In almost all cases, you will need to set up multiple model fields at once. Setting fields one by one may look like an option, especially since every field will be filtered using associated setter (see below), but there is a much easier way to perform mass assignment - the `setFields` method.
+
 This method uses user data as a source (for example, directly from request POST). However, the entity must be previously configured to specify what fields can and/or can't be set.
 
 ```php
@@ -171,15 +156,6 @@ class DemoEntity extends \Spiral\Models\DataEntity
      * @var array
      */
     protected $fillable = ['name'];
-
-    /**
-     * @param array $fields
-     */
-    public function __construct(array $fields)
-    {
-        //No setters/accessors will be called
-        $this->fields = $fields;
-    }
 }
 ```
 
@@ -203,15 +179,6 @@ class DemoEntity extends \Spiral\Models\DataEntity
         'name'    => ['self', 'uppercase'],
         'another' => 'intval'
     ];
-
-    /**
-     * @param array $fields
-     */
-    public function __construct(array $fields)
-    {
-        //No setters/accessors will be called
-        $this->fields = $fields;
-    }
 
     protected function uppercase($name)
     {
@@ -260,15 +227,6 @@ class DemoEntity extends \Spiral\Models\DataEntity
     protected $getters = [
         'name' => 'strtolower'
     ];
-
-    /**
-     * @param array $fields
-     */
-    public function __construct(array $fields)
-    {
-        //No setters/accessors will be called
-        $this->fields = $fields;
-    }
 }
 ```
 
@@ -288,14 +246,14 @@ interface AccessorInterface extends ValueInterface, \JsonSerializable
      * Accessors creation flow is unified and must be performed without Container for performance
      * reasons.
      *
-     * @param mixed           $data
+     * @param mixed           $value
      * @param EntityInterface $parent
      * @throws AccessorExceptionInterface
      */
-    public function __construct($data, EntityInterface $parent);
+    //public function __construct($value, EntityInterface $parent);
 
     /**
-     * Must embed the accessor to another parent model. Can clone itself.
+     * Must embed accessor to another parent model. Allowed to clone itself.
      *
      * @param EntityInterface $parent
      * @return static
@@ -310,14 +268,6 @@ interface AccessorInterface extends ValueInterface, \JsonSerializable
      * @throws AccessorExceptionInterface
      */
     public function setValue($data);
-
-    /**
-     * Serialize mocked data to be stored in database or retrieved by user.
-     *
-     * @return mixed
-     * @throws AccessorExceptionInterface
-     */
-    public function serializeData();
 }
 ```
 
@@ -334,6 +284,7 @@ class NameAccessor implements \Spiral\Models\AccessorInterface
      */
     private $name = '';
 
+    //DataEntity constructor agreement
     public function __construct($data, EntityInterface $parent)
     {
         $this->name = $data;
@@ -384,15 +335,6 @@ class DemoEntity extends \Spiral\Models\DataEntity
     protected $accessors = [
         'name' => NameAccessor::class
     ];
-
-    /**
-     * @param array $fields
-     */
-    public function __construct(array $fields)
-    {
-        //No setters/accessors will be called
-        $this->fields = $fields;
-    }
 }
 ```
 
@@ -431,15 +373,6 @@ class DemoEntity extends \Spiral\Models\DataEntity
     protected $accessors = [
         'name' => NameAccessor::class
     ];
-
-    /**
-     * @param array $fields
-     */
-    public function __construct(array $fields)
-    {
-        //No setters/accessors will be called
-        $this->fields = $fields;
-    }
 }
 ```
 
@@ -507,15 +440,6 @@ class DemoEntity extends \Spiral\Models\DataEntity
             ['string::longer', 3, 'message' => '[[Name is too short (min 3 symbols).]]']
         ]
     ];
-
-    /**
-     * @param array $fields
-     */
-    public function __construct(array $fields)
-    {
-        //No setters/accessors will be called
-        $this->fields = $fields;
-    }
 }
 ```
 
