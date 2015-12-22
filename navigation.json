@@ -55,7 +55,7 @@
     "links": {
       "components-cache": "<s>Cache</s>",
       "components-debug": "<s>Debug</s>",
-      "components-entity": "<s>DataEntity Model</s>",
+      "components-entity": "DataEntity Model",
       "components-encrypter": "Encrypter",
       "components-files": "Files",
       "components-pagination": "<s>Pagination</s>",
