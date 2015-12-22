@@ -134,8 +134,7 @@ Following methodic can work very well in combination with good IDE and provides 
 
 At any moment in future, you can simply create needed property in your class and set it's value using dependency injection (see below).
 
-> Attention, ideally you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.) and DI for your business logic.
-> Note, there is no static profixes/facades in default framework bundle.
+> Ideally you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.) and DI for your business logic.
 
 ## FactoryInterface
 In some cases you might need to construct needed class without specifying each of it's dependencies, in this case you can use specific interface `FactoryInterface` which can help you to handle this task:
@@ -184,7 +183,7 @@ $userMailer = $this->container->get(UserMailer::class);
 
 Container will automatically resolse cascade of dependecies and return us valid instance of `UserMailer`. 
 
-> Attention, default spiral container is ment to be fully autowiring (see below) container and all framework code can work without setting up every needed injection, if you really need to use strict wiring - try to replace container by implementing `Spiral\Core\ContainerInterface`.
+> Default spiral container is ment to be fully autowiring (see below) container and all framework code can work without setting up every needed injection, if you really need to use strict wiring - try to replace container by implementing `Spiral\Core\ContainerInterface`.
 
 ### Method Injections
 Besides using class consturtor to inject dependecies, container allow you to apply same procedute for some specified class method. Dependency injection on method pre-implemented for you in spiral `Controller`, `Command` and `Bootloader` classes:
@@ -209,7 +208,7 @@ class SampleClass
 }
 ```
 
-> Attention, spiral will try to resolve EVERY constructor/method argument even if it's stated as optional!
+> Spiral will try to resolve EVERY constructor/method argument even if it's stated as optional!
 
 ### Singletons
 In many cases you might want to use only one instance of your class across application, you can either configure container with singleton binding (see below), or simply state your class as singleton by declaring `SINGLETON` constant and implementing `SingletonInterface`:
