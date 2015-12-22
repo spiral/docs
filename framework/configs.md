@@ -6,11 +6,11 @@ In some cases you might want to create configuration for your component, service
 
 ```php
 return [
-  'option' => 'value'
+    'option' => 'value'
 ];
 ```
 
-You can now get access to configuration file by requesting ConfiguratorInterface in your contructor or method injections:
+You can now get access to your configuration by requesting ConfiguratorInterface in your contructor or method injections:
 
 ```php
 public function indexAction(ConfiguratorInterface $configurator)
@@ -19,7 +19,7 @@ public function indexAction(ConfiguratorInterface $configurator)
 }
 ```
 
-This method might work in some cases, however spiral ships with more convinient way to work with configurations.
+This method might work in some cases, however spiral ships with more convinient way to work with config files.
 
 ## Injectable Configs
 In many cases presenting your configuration files can give you more benefits (for example improve testability):
