@@ -79,7 +79,7 @@ If you already checked sample spiral application you might notice set of weird c
 ],
 ```
 
-Such placeholders provide an ability to you module to write some strings or code into configuration files (based on your approval), the most common example is situation when module wants to register it's own view namespace, this can be achived by following code in register method:
+Such placeholders provide module an ability to write some strings or code into configuration files (based on your approval), the most common example is when module wants to register it's own view namespace(s), this can be achived by following code:
 
 ```php
 public function register(RegistratorInterface $registrator)
@@ -99,7 +99,9 @@ Now, you can register this module in your system which will automatically alter 
 ## Installing, Registering and Publishing your module
 Registering and publishing modules can be done using simple console commands 'register {module}' and 'publish {module}'. Commands will automatically resolve your module class by converting given name into namespace and added postfix "Module". 
 
-For example, if we created module class which are named like `Vendor\CoolModule`, we register such extension using following command:
+> You can read about packing your module into composer package [here](https://getcomposer.org/doc/02-libraries.md).
+
+For example, we can create module class which are named `Vendor\CoolModule`, to register such extension we have to use following command:
 
 ```
 spiral register vendor/cool
@@ -112,7 +114,7 @@ spiral register vendor/cool
 ```
 
 ### Registering command
-When you run register command with your module specified, all configuration sections will be highlighted for you and your confirmation will be requested:
+When you run `register` command with your module specified, all configuration sections will be highlighted for you and your confirmation will be requested:
 
 ```
 > spiral register spiral/toolkit
@@ -128,7 +130,7 @@ Module requests following configs to be altered:
 Confirm module registration (y/n)
 ```
 
-You can either say "no" and alter configuration files manually or accept modification which will modify and validate (at this moment only syntaxt validation) altered files:
+You can either say "no" and alter configuration files manually or accept modification which will modify and validate (at this moment only syntax validation) altered files:
 
 ```
 > spiral register spiral/toolkit -vv
