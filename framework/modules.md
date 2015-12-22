@@ -110,7 +110,7 @@ spiral register vendor/cool
 You can also publish module files:
 
 ```
-spiral register vendor/cool
+spiral publish vendor/cool
 ```
 
 ### Registering command
