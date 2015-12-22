@@ -22,7 +22,7 @@ public function indexAction(ConfiguratorInterface $configurator)
 This method might work in some cases, however spiral ships with more convinient way to work with config files.
 
 ## Injectable Configs
-In many cases presenting your configuration files can give you more benefits (for example improve testability):
+In many cases presenting your configuration files using specific class can give you more benefits (for example improve testability), let's try to create such implementation:
 
 ```php
 class MyConfig extends InjectableConfig
