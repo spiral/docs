@@ -53,7 +53,7 @@
   {
     "title": "Embedded Components",
     "links": {
-      "components-cache": "<s>Cache</s>",
+      "components-cache": "Cache",
       "components-debug": "<s>Debug</s>",
       "components-entity": "DataEntity Model",
       "components-encrypter": "Encrypter",
