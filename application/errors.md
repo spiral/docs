@@ -82,7 +82,7 @@ return [
 ```
 
 ### Exception views
-Spiral debug snaphot provide and ability to render error using specified view file, at this moment framework ships with 4 different exception views:
+Spiral debug snaphot provide an ability to render error using specified view file, at this moment framework ships with 4 different exception views:
 
 View                                | Description
 ---                                 | ---
