@@ -1,4 +1,4 @@
-# Database / Schema Reading
+# Database Introspection
 Spiral Database layer provides the ability to read and analyze basic properties of a given database or given table. In addition to that, the DBAL contains a mechanism used to convert sets of column types specific to some DBMS into a limited set of "abstract" types available for the user.
 
 ## List of database tables
@@ -109,11 +109,11 @@ You can also use console commands to get information about configured tables and
 
 Command           | Description 
 ---               | ---
-dbal:list         | Get list of databases, their tables and records count.
-dbal:describe     | View table schema of default or specific database.
+db:list         | Get list of databases, their tables and records count.
+db:describe     | View table schema of default or specific database.
 
 ```
-> ./spiral.cli dbal:table people --database=postgres
+> ./spiral.cli db:describe people --database=postgres
 Columns of postgres.people:
 +---------+-------------------------+----------------+-----------+------------------------------------+
 | Column: | Database Type:          | Abstract Type: | PHP Type: | Default Value:                     |
