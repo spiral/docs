@@ -25,7 +25,7 @@ You can configure your application at any moment, by simply executing:
 
 Make sure that `spiral` has right execute permissions (`chmod +x spiral`).
 
-> You can run comment with increaced verbosity to get more details.
+> You can run command(s) with increaced verbosity to get more details.
 
 ## Enviroment settings
 Default spiral application and framework core utilize [dotenv package](https://github.com/vlucas/phpdotenv) which provides you ability to enter your enviroment specific settings into `.env` file.
