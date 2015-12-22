@@ -66,11 +66,7 @@ Render method dedicated to convert exception information into more user friendly
 
 ![alt text](https://raw.githubusercontent.com/spiral/guide/master/resources/exception.png)
 
-> You are able to click on method arguments in stack trace to preview their content.
-
-You can simply create your own exception snapshot handler, but impelementing `SnaphotInterface` and writing your own render, describe and report method.
-
-You can edit snaphot options in `snapshot.php` configuration file:
+Snapshot configuration:
 
 ```php
 return [
