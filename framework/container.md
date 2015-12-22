@@ -440,4 +440,5 @@ try {
 }
 ```
 
-> Almost every framework components/class created using DI or factory, please **do not construct** framework classes directly in your application, use factory/DI instead (to prevent BS changed in future).
+## BS changes
+Almost every framework components/class created using DI or factory, please **do not construct** framework classes directly in your application, use FactoryInterface/container/DI instead (to prevent BS changed in future and make your applicationl more flexible).
