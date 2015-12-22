@@ -51,3 +51,47 @@ You can edit snaphot options in `debug.php` configuration file:
     ]
 ]
 ```
+
+## Connecting [Whoops](https://github.com/filp/whoops)
+Let's try to demonstrate how to change or connect custom exception snaphot. For this purposes we are going to use well know Whoops extension:
+
+```
+composer require filp/whoops
+```
+
+Once package connected, let's write a simple class in our application:
+
+```php
+class Whoops extends QuickSnapshot
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function render()
+    {
+        $whoops = new \Whoops\Run;
+        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+
+        //Simple example
+        return $whoops->handleException($this->exception());
+    }
+}
+```
+
+To make this snapshot work we only have to bind our class to SnaphotInterface, we can do it in App class:
+
+```php
+//$this->container->bind(Debug\SnapshotInterface::class, Debug\Snapshot::class);
+$this->container->bind(Debug\SnapshotInterface::class, \Snapshots\Whoops::class);
+```
+
+Since this moment every exeception will be rendered using Whoops (as with spiral snaphots you can turn your handler only for your enviroment).
+
+> You can also simply find PSR7 middleware for Whoops.
+
+## More control
+If you want to get more control over exception handling in your application you use following techniques:
+* write middleware
+* disable error handling at moment of application initialization
+* attach external error handlers
+* rewrite App methods `handleException` or `getSnapshot`
