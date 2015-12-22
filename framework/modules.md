@@ -40,7 +40,7 @@ Public method in your module are responsible for moving and publishing files int
 public function publish(PublisherInterface $publisher, DirectoriesInterface $directories)
 {
    $publisher->publish(
-        __DIR__ . 'configs/config.php',                   //Module config source
+        __DIR__ . 'config/config.php',                   //Module config source
         $directories->directory('config') . 'config.php', //Final config filename
         PublisherInterface::FOLLOW,                       //FOLLOW = do not overwrite existed
         FilesInterface::READONLY                       
