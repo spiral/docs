@@ -12,7 +12,7 @@ if ($database->hasTable('users')) {
 
 > Read how to get access to database instances [here](/databases/overview.md).
 
-In some cases you want to receive all database tables (array of `Spiral\Database\TableInterface`):
+In some cases you want to receive all database tables (array of `Spiral\Database\TableInterface`/`Spiral\Database\Entities\Schemas\AbstractTable`):
 
 ```php
 foreach ($database->getTables() as $table) {
