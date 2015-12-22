@@ -70,7 +70,7 @@ storage         | Spiral\Storage\StorageInterface
 dbal            | Spiral\Database\DatabaseManager 
 odm             | Spiral\ODM\ODM
 orm             | Spiral\ORM\ORM
-cache           | Spiral\Cache\CacheStore *(default cache store)*
+cache           | Spiral\Cache\StoreInterface *(default cache store)*
 db              | Spiral\Database\Entities\Database *(default database)*
 mongo           | Spiral\ODM\Entities\MongoDatabase *(default database)*
 request         | Psr\Http\Message\ServerRequestInterface *(only in http scope)*
