@@ -35,7 +35,6 @@
     * [Debug (Loggers, Benchmarks, Dumps)](components/debug.md)
     * [DataEntity Model](components/entity.md)
     * [Encrypter](components/encrypter.md)
-    * [Events](components/events.md)
     * [Files](components/files.md)
     * [Pagination](components/pagination.md)
     * [Tokenizer](components/tokenizer.md)
