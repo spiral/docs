@@ -13,7 +13,6 @@
       "framework-container": "Container, Factory, DI",
       "framework-bootloaders": "Bootloaders",
       "framework-memory": "Application Memory",
-      "framework-schemas": "Behaviour Schemas",
       "framework-configs": "Injectable Configs",
       "framework-modules": "Making Modules"
     }
