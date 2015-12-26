@@ -8,7 +8,6 @@
     * [Container, Factory, DI](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
     * [Application Memory](framework/memory.md)
-    * [Behaviour Schemas](framework/schemas.md)
     * [Injectable Configs](framework/configs.md)
     * [Making Modules](framework/modules.md)
 * Application
