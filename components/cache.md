@@ -58,12 +58,10 @@ return [
         'xcache'   => [
             'class'  => Stores\XCacheStore::class,
             'prefix' => 'spiral:'
-
         ],
         'apc'      => [
             'class'  => Stores\APCStore::class,
             'prefix' => 'spiral:'
-
         ],
         'memcache' => [
             'class'   => Stores\MemcacheStore::class,
