@@ -21,7 +21,7 @@ Directory                         | Description
 /app/runtime/logs/                | Default directory to store logs.                  
 **/app/views/**                   | You can locate view files belongs to "default" namespace here (see views config).
 /vendor/                          | Composer vendor directory, aliased under "libraries" directory.              
-**/webroot/**                     | Application public directory, application enterpoint (index.php) located here as any other public asset file. Aliased as "public" directory.
+**/webroot/**                     | Application public directory, application enterpoint (index.php) located here as any other public asset file (alias **public**).
 
 > Spiral Framework bundle does not force any of default application namespace or strict structure except for http routing (see AppBootloader to change that), be free to add more abstractions when you need them (for example ViewModels/Presenters can be good idea).
 
