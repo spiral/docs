@@ -7,7 +7,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 * Test coverage of new functionality
 
 ## Help Needed In
-* Test coverage of existed functionality (slowly doing by myself)
+* Test coverage of existed functionality (slowly doing by myself, currenly relying on pconfigure and test scripts](https://travis-ci.org/spiral/application))
 * Functionality proposals
 * Questionable code improvements and lookup
 * Advices and critics
