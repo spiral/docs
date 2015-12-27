@@ -22,6 +22,11 @@ In some cases you might not want to include parent layout path into tag name, da
 <extends dark:path="namespace:path/to/layout" block="value"/>
 <extends layout="namespace:path/to/layout" block="value"/>
 <extends dark:path="namespace:path/to/layout" block="value"/>
+```
+
+You can use other extends tags:
+
+```html
 <dark:extends path="namespace:path/to/layout" block="value"/>
 <layout:extends path="namespace:path/to/layout" block="value"/>
 ```
