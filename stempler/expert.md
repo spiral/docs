@@ -460,7 +460,7 @@ This doesn't appear to be very useful. Fortunatelly, there is one interesting wa
 
 > We would like to name this variable in a non obvious way to prevent any conflicts.
 
-The next step will be to populate these variable values based on the provided data. We can achieve this using special evalutator specific function `createVariable`:
+The next step will be to populate these variable values based on the provided data. We can achieve this using special evalutator specific function `runtimeVariable`:
 
 ```html
 <extends:elements.input/>
