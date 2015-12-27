@@ -569,7 +569,7 @@ You can locate and import your elements from any desired namespace. This can be 
 The Spiral framework application, which includes the module ['spiral/toolkit'](/modules/toolkit.md), already aggregates a set of virtual tags used to simplify loading assets, form definitions and etc. For example, the following code will render a form, automatically connect the required js libraries and style sheets to make the form work over ajax and highight it's errors:
 
 ```html
-<extends:spiral:layouts.html5 title="Demo View"/>
+<extends:layouts.html5 title="Demo View"/>
 
 <block:body>
     <spiral:form action="/controller/doSomething">
@@ -594,8 +594,7 @@ Compiled view will look like this:
     <link rel="stylesheet" href="/resources/styles/spiral/spiral.css?1atgrq3"/>
 </head>
 <body>
-<form action="/controller/doSomething" method="post" enctype="multipart/form-data"
-      accept-charset="UTF-8" class="js-sf-form">
+<form action="/controller/doSomething" method="post" enctype="multipart/form-data" accept-charset="UTF-8" class="js-sf-form">
     <div class="form-content">
         <label class="item-form">
             <span class="item-label">Name:</span>
@@ -655,7 +654,7 @@ Compiled view will look like this:
         window.csrfToken = "<?= spiral('request')->getAttribute('csrfToken') ?>";
     </script>
     <block:head>
-        <resource:style href="resources/styles/spiral/spiral.css"/>
+        <asset:style href="resources/styles/spiral/spiral.css"/>
         <yield:resources/>
         <!--[STYLES]-->
     </block:head>
@@ -666,3 +665,5 @@ Compiled view will look like this:
 </body>
 </html>
 ```
+
+> ` <!--[STYLES]-->` and `<!--[SCRIPTS]-->` used as placeholders for CSS and JS import tags requested by used widgets (for example ajax forms will declare need for `sf.js` file).
