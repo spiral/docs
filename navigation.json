@@ -69,7 +69,7 @@
     "title": "Stempler",
     "links": {
       "stempler-basics": "Basic Usage",
-      "stempler-expert": "<s>Extended Usage</s>",
+      "stempler-expert": "Extended Usage",
       "stempler-dark": "Dark Syntax"
     }
   },
