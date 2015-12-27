@@ -6,7 +6,7 @@ The general idea regarding the use of schemas is the ability to separate out hea
 
 Since there aren't really any limitation on time in CLI mode, we can make our analysis as complex and powerful as we want. For example, you can describe the desired model behaviour (columns, relations, compositions etc) using model code itself like in other frameworks without the need for huge configurations as we can create reflection and analyse in every existing model.
 
-Behaviour schemas can significantly increase the amount of supported features without slowing down performance of runtime code (sometimes even increase). [**Memory interface**] (/framework/memory.md) plays a very big role in this case, as it works not only as an optional cache, but instead as a required part of component flow.
+Behaviour schemas can significantly increase the amount of supported features without slowing down performance of runtime code (sometimes even increase). [**Memory interface**](/framework/memory.md) plays a very big role in this case, as it works not only as an optional cache, but instead as a required part of component flow.
 
 > In addition to memory interface, another important piece of analysis process is `TokenizerInterface` which can locate the required classes without user intervention.
 
@@ -17,6 +17,4 @@ Since every database entity in spiral can be described using it's schema (model 
 
 Currently, Spiral can generate a "virtual documentation" for PHPStorm IDE using a set of "cloned" classes. This method isn't the cleanest but it works and can be changed at any moment without affecting your application. If you would like to support other IDEs and editors or improve PHPStorm documenter, your help will be much appreciated.
 
-On a side note, having an easily assessable schema of your database layer might help to create automatic project documention. For example, export structure into [UML] (/odm/uml.md).
-
-> I hope one day we can define universal format (JSON or XML) to describe **project specific** structures and dependencies and adapt IDE for our application.
+On a side note, having an easily assessable schema of your database layer might help to create automatic project documention. For example, export structure into [UML](/odm/uml.md).

@@ -1,15 +1,15 @@
-# Extended Templater Usage
-As you might expect based on the title, the basic templater features (like template inheritance) are only one part of the templater (honestly, a very small part of it). In additon to generic features covered in [basic templater tutorial] (basics.md), you can create and import so called virtual tags or widgets. These widgets are created as normal views and can be located inside your application or provided by a [module] (/components/modules.md).
+# Extended Stempler Usage
+As you might expect based on the title, the basic template features (like template inheritance) are only one part of the stempler (honestly, a very small part of it). In additon to generic features covered in [basic stempler tutorial](/stempler/basics.md), you can create and import so called virtual tags or widgets. These widgets are created as normal views and can be located inside your application or provided by a [module](/framework/modules.md).
 
 ## Widget/tag creation 
-If you remember, the information provided by the [Basic Templater Usage] (basic.md) templater handles situation with extending the parent layouts and preventing in-view like:
+If you remember, the information provided by the [Basic Templater Usage](/stempler/basics.md) templater handles situation with extending the parent layouts and preventing in-view like:
 
 ```php
 Some content...
 <?= $this->container->views->render('another-view', [...]) ?>
 ```
 
-This simplifies the view definition when we are talking about footers, headers and navigations. However there are many situations where including another view is more beneficial. For example, we can create a unviversal view to render some newsfeed or display a comment among other things. Let's start with a very simple example where we have a view dedicated to render a newsline in many different areas of your website. Let's try to locate this view in "application/views/elements/feed.php".
+This simplifies the view definition when we are talking about footers, headers and navigations. However there are many situations where including another view is more beneficial. For example, we can create a unviversal view to render some newsfeed or display a comment among other things. Let's start with a very simple example where we have a view dedicated to render a newsline in many different areas of your website. Let's try to locate this view in "app/views/elements/feed.php".
 
 ```html
 <div class="news">
@@ -61,7 +61,7 @@ Such view will generate cached output like:
 </html>
 ```
 
-As you can see, Spiral will render the newsfeed every time someone wants to dispalay the "demo" view. Fortunately, the Templater provides a way to include the content of an external view file during the compilation stage and avoids unnesessary rendering calls. Let's jump to the next section to see how we can do this.
+As you can see, Spiral will render the newsfeed every time someone wants to dispalay the "demo" view. Fortunately, the Stempler provides a way to include the content of an external view file during the compilation stage and avoids unnesessary rendering calls. Let's jump to the next section to see how we can do this.
 
 > Including the view source using the `views->render()` method has it's own pros, such as isolation and the separation of cache.
 
@@ -70,7 +70,7 @@ If we want to include the desired view into our code, first we have to declare t
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
-<use path="elements/feed" as="elements:feed"/>
+<dark:use path="elements/feed" as="elements:feed"/>
 
 <block:content>
     This is our content...
@@ -117,7 +117,7 @@ We can use and import this element into our demo view the same way we did for th
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
-<use path="elements/formatter" as="elements:formatter"/>
+<dark:use path="elements/formatter" as="elements:formatter"/>
 
 <block:content>
     This is our content...
@@ -130,7 +130,7 @@ We can use and import this element into our demo view the same way we did for th
 
 The templater will pass the source declared between the opening and closing widget tags as **context** block. This feature can be very useful in a few different cases. You can freely use other imports inside this use case.
 
-## Dynamic attributes (hard)
+## Dynamic attributes
 One of most useful part of imports is that it can help us mocking up existing elements. Let's say that our website has a universal form element definition which includes some input, input label and some wrapper classes. If we don't want to write each of these wrappers every time, we can locate our input code inside our widget. Let's try this (done by an non-html expert):
 
 ```html
@@ -146,7 +146,7 @@ Now we can use this input tag exactly the same way as normal inputs, except we d
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
-<use path="elements/input" as="form:input"/>
+<dark:use path="elements/input" as="form:input"/>
 
 <block:content>
     This is our content...
@@ -174,7 +174,7 @@ Now every additional attribute provided into our virtual tag will be mounted in 
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
-<use path="elements/input" as="form:input"/>
+<dark:use path="elements/input" as="form:input"/>
 
 <block:content>
     This is our content...
@@ -202,7 +202,7 @@ Now we have created the ability to pass attributes to our widget using prefix "l
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
-<use path="elements/input" as="form:input"/>
+<dark:use path="elements/input" as="form:input"/>
 
 <block:content>
     This is our content...
@@ -224,20 +224,20 @@ In many cases, you might want to include multiple widgets under the same name or
 We already imported our element under the name "form:input". However, Spiral lets us import every folder element under a desired namespace:
 
 ```html
-<use path="elements" namespace="form"/>
+<dark:use path="elements" namespace="form"/>
 ```
 
 You can also import a set of elements from a desired namespace:
 
 ```html
-<use path="default:elements" namespace="form"/>
+<dark:use path="default:elements" namespace="form"/>
 ```
 
 ### Disable import
 If for some reason you would like to disable element import we can declare a "stop" use.
 
 ```html
-<use stop="form:input"/>
+<dark:use stop="form:input"/>
 ```
 
 Now, every `form:input` tag will be preserved as it is.
@@ -246,24 +246,24 @@ Now, every `form:input` tag will be preserved as it is.
 There are a few scenarious where you may want to create many different elements (for example in separate module). If your module declares multiple element namespaces, importing such namespaces one by one isn't very optimal. Spiral provides you the ability to move the desired imports into a separate view file called bundle. Let's create a file in "elements/bundle" view:
 
 ```html
-<use path="default:elements" namespace="form"/>
-<use path="default:elements/input" as="form.input"/>
+<dark:use path="default:elements" namespace="form"/>
+<dark:use path="default:elements/input" as="form.input"/>
 ```
 
 You can now combine multiple use tags in one file. This file won't be included in your template, so you can even leave comments for your imports:
 
 ```html
 <!--This is default namespace for form elements.-->
-<use path="default:elements" namespace="form"/>
+<dark:use path="default:elements" namespace="form"/>
 
 <!--For some reason we want input element be available as 'form.input' tag.-->
-<use path="default:elements/input" as="form.input"/>
+<dark:use path="default:elements/input" as="form.input"/>
 ```
 
 To import your bundle into your view or layout, simply write:
 
 ```html
-<use bundle="elements/bundle"/>
+<dark:use bundle="elements/bundle"/>
 ```
 
 Now all the elements will be automatically imported based on the desired namespaces.
@@ -282,7 +282,7 @@ As you already seen, we can create your widgets using dynamic attributes and con
 Now we can use this tag in our view:
 
 ```html
-<use path="elements/a" as="a"/>
+<dark:use path="elements/a" as="a"/>
 
 Some simple text. <a href="/some-url">link</a>.
 ```
@@ -321,7 +321,7 @@ Now, the only thing we have to do to is convert our from input from input to tex
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
-<use path="elements" namespace="form"/>
+<dark:use path="elements" namespace="form"/>
 
 <block:content>
     This is our content...
@@ -336,7 +336,7 @@ Now, the only thing we have to do to is convert our from input from input to tex
 
 This method can be very convenient when you would like to create a set of similar elements for your project.
 
-## Add intellect to your widget (hard)
+## Add intellect to your widget
 In many cases, we want to give the widgets more flexibility. This includes not only the ability to replace it's blocks. We can do this by combining our templater code with simple php. Let's say that we don't want to render  the label span if no label value is specified. The simplified way to do this is:
 
 ```html
@@ -374,8 +374,8 @@ You can see that no span is rendered if no label attribute is provided to your w
 
 In this case, our code can handle any value provided for the label attribute.
 
-## Using EvalutatorProcessor (hard+)
-If you remember from the [views and view processors] (/components/views.md) section, you can use the special view processor - `EvaluateProcessor`. This processor can execute PHP blocks marked with a `#compile` comment during the view compilation. This means that no code is preserved in the view cache (which will speed it up).
+## Using Evaluator (php compilation)
+If you remember from the [views and view processors](/components/views.md) section, you can use the special view processor - `EvaluateProcessor`. This processor can execute PHP blocks marked with a `#compile` comment during the view compilation. This means that no code is preserved in the view cache (which will speed it up).
 
 Since our label related code does not depend on any user argument, we can try to mark it's code as compilable (we have to include a comment into every php block):
 
@@ -397,7 +397,7 @@ Since our label related code does not depend on any user argument, we can try to
 
 Now your widget will decide whether it will render the label span or not during compilation and not during runtime. You can also check your view cache to make sure.
 
-## Create php variables using attributes (hard++)
+## Create php variables using attributes
 There are many scenarios where you might want to pass the php variable inside your widget. For example, if we want to create a select which can accept an array of it's values. The most obvious way to this is to create some convention variable to excange with values:
 
 ```html
@@ -423,7 +423,7 @@ If we want to use this element in our form, we have to first declare the selectV
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
-<use path="elements" namespace="form"/>
+<dark:use path="elements" namespace="form"/>
 
 <block:content>
     This is our content...
@@ -460,14 +460,15 @@ This doesn't appear to be very useful. Fortunatelly, there is one interesting wa
 
 > We would like to name this variable in a non obvious way to prevent any conflicts.
 
-The next step will be to populate these variable values based on the provided data. We can achieve this using special evalutator specific function `createVariable`:
+The next step will be to populate these variable values based on the provided data. We can achieve this using special evalutator specific function `runtimeVariable`:
 
 ```html
 <extends:elements.input/>
 
 <block:input>
     <?php #compile
-    createVariable('__values__', '${values}');
+    //Attention, this is NOT real function but rather special syntax sugar
+    $this->runtimeVariable('__values__', '${values}');
     ?>
     <select node:attributes="exclude:label-*,context">
         <?php
@@ -483,7 +484,7 @@ This function will parse the value of `${values}` attribute and assign it to the
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
-<use path="elements" namespace="form"/>
+<dark:use path="elements" namespace="form"/>
 
 <block:content>
     This is our content...
@@ -494,7 +495,7 @@ This function will parse the value of `${values}` attribute and assign it to the
 
         //Or even like that
         <?php
-        $selection = [1 => 'A', 2 => 'B', 3 => 'C'];
+            $selection = [1 => 'A', 2 => 'B', 3 => 'C'];
         ?>
 
         <form:select name="select" values="<?= $selection ?>"/>
@@ -560,15 +561,15 @@ To understand what happened, let's try to check the cached (compiled) view sourc
 ```
 
 ## Namespaces and Modules
-You can locate and import your elements from any desired namespace. This can be very useful when you want to organize your widgets into separate [module] (/components/modules.md) and connect them in multiple projects. As a side effect, you will be able to update the visuals and source for your widges using the `composer update` command. 
+You can locate and import your elements from any desired namespace. This can be very useful when you want to organize your widgets into separate [module](/framework/modules.md) and connect them in multiple projects. As a side effect, you will be able to update the visuals and source for your widges using the `composer update` command (do not forget to recompile views). 
 
 > You only have to register the view namespace in your module installer.
 
 ## Spiral Toolkit
-The Spiral framework application, which includes the module ['spiral/toolkit'] (/modules/toolkit.md), already aggregates a set of virtual tags used to simplify loading assets, form definitions and etc. For example, the following code will render a form, automatically connect the required js libraries and style sheets to make the form work over ajax and highight it's errors:
+The Spiral framework application, which includes the module ['spiral/toolkit'](/modules/toolkit.md), already aggregates a set of virtual tags used to simplify loading assets, form definitions and etc. For example, the following code will render a form, automatically connect the required js libraries and style sheets to make the form work over ajax and highight it's errors:
 
 ```html
-<extends:spiral:layouts.html5 title="Demo View"/>
+<extends:layouts.html5 title="Demo View"/>
 
 <block:body>
     <spiral:form action="/controller/doSomething">
@@ -587,20 +588,13 @@ Compiled view will look like this:
     <title>
         Demo View
     </title>
-    <?php
-    /**
-     * @var \Psr\Http\Message\ServerRequestInterface $request
-     */
-    $request = $this->container->get(\Psr\Http\Message\ServerRequestInterface::class);
-    ?>
     <script>
-        window.csrfToken = "<?= $request->getAttribute('csrfToken') ?>";
+        window.csrfToken = "<?= spiral('request')->getAttribute('csrfToken') ?>";
     </script>
     <link rel="stylesheet" href="/resources/styles/spiral/spiral.css?1atgrq3"/>
 </head>
 <body>
-<form action="/controller/doSomething" method="post" enctype="multipart/form-data"
-      accept-charset="UTF-8" class="js-sf-form">
+<form action="/controller/doSomething" method="post" enctype="multipart/form-data" accept-charset="UTF-8" class="js-sf-form">
     <div class="form-content">
         <label class="item-form">
             <span class="item-label">Name:</span>
@@ -648,7 +642,7 @@ Compiled view will look like this:
 > Attention, JS and CSS libraries will be only be connected to the layout decalared in placeholders for assets. In your application, you can simply exclude the layout `spiral:layouts.html5` with pre-defined placeholders and stucture. It will looks like this:
 
 ```html
-<templater:use bundle="spiral:bundle"/>
+<dark:use bundle="spiral:bundle"/>
 
 <!DOCTYPE html>
 <html>
@@ -656,17 +650,11 @@ Compiled view will look like this:
     <title>
         <yield:title/>
     </title>
-    <?php
-    /**
-     * @var \Psr\Http\Message\ServerRequestInterface $request
-     */
-    $request = $this->container->get(\Psr\Http\Message\ServerRequestInterface::class);
-    ?>
     <script>
-        window.csrfToken = "<?= $request->getAttribute('csrfToken') ?>";
+        window.csrfToken = "<?= spiral('request')->getAttribute('csrfToken') ?>";
     </script>
     <block:head>
-        <resource:style href="resources/styles/spiral/spiral.css"/>
+        <asset:style href="resources/styles/spiral/spiral.css"/>
         <yield:resources/>
         <!--[STYLES]-->
     </block:head>
@@ -678,4 +666,4 @@ Compiled view will look like this:
 </html>
 ```
 
-> Element "templater:use" is just an alias for short "use" tag.
+> ` <!--[STYLES]-->` and `<!--[SCRIPTS]-->` used as placeholders for CSS and JS import tags requested by used widgets (for example ajax forms will declare need for `sf.js` file).

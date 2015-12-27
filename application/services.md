@@ -93,39 +93,6 @@ dependencies, hovewer spiral provides set of short bindings which can be resolve
 
 > You can use same technique in Controllers. If you will decide to use specific component in your service, you can simply create variable named as it's binding which will replace magic `__get`.
 
-Check this list of default component bindings:
-
-| Binding   | Compoment                               | 
-| ---       | ---                                     |
-| core      | Spiral\Core\Core or Application         |
-| loader    | Spiral\Core\Components\Loader           |
-| modules   | Spiral\Modules\ModuleManager           |
-| debugger  | Spiral\Debug\Debugger                   |
-| console   | Spiral\Console\ConsoleDispatcher        |
-| http      | Spiral\Http\HttpDispatcher            |
-| cache     | Spiral\Cache\CacheProvider              |
-| dbal      | Spiral\Database\DatabaseProvider        |
-| encrypter | 'Spiral\Encrypter\Encrypter             |
-| files     | Spiral\Files\FileManager                |
-| odm       | Spiral\ODM\ODM                          |
-| orm       | Spiral\ORM\ORM                          |
-| session   | Spiral\Session\SessionStore             |
-| storage   | Spiral\Storage\StorageManager           |
-| tokenizer | Spiral\Tokenizer\Tokenizer              |
-| i18n      | Spiral\Translator\Translator            |
-| views     | Spiral\Views\ViewManager                |
-
-Following bindings will be available only when application executing inside `HttpDispatcher->perform()` method (actually inside `MiddlewarePipeline`):
-
-| Binding   | Compoment                               | 
-| ---       | ---                                     |
-| cookies   | Spiral\Http\Cookies\CookieManager       | 
-| router    | Spiral\Http\Routing\Router              | 
-| request   | Psr\Http\Message\ServerRequestInterface |
-| input     | Spiral\Http\InputManager                |
-
-> You can count short bindings as set of shared components since there is no static Facades/Proxies in Spiral.
-
 ## Communication with DataEntities (ORM and ODM)
 In addition to generic service functionality spiral provides ability to create set of methods specific to some data entity (repository like), this can be done by providing `-e` flag
 to `create:service` command. Let's say that we have database entity `User`, we can generate service for such user using `create:service user -e user`:

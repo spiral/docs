@@ -1,7 +1,7 @@
 # Storage Manager
-The Spiral `StorageManager` (`Spiral\Storage\StorageInterface`) component provides a unified abstraction layer (SAL) across multiple data/file storages including local harddrive (`FilesInterface` used), Amazon S3, Rackspace Files, remote server over SFTP, remote server over FTP, GridFS storage.
+The Spiral `StorageManager` (`Spiral\Storage\StorageInterface`) component provides a simple unified abstraction layer (SAL) across multiple data/file storages including local harddrive (`FilesInterface` used), Amazon S3, Rackspace Files, remote server over SFTP, remote server over FTP, GridFS storage.
 
-The general concept of the StorageManager is to abstract stored data/files using only two primary enties: objects and **buckets** and limit set of operations as much as it can. 
+The general concept of the StorageManager is to abstract stored data/files using only two primary enties: objects and **buckets** and limit set of operations as much as it can.
 
 > The third storage entity **server** is hidden inside buckets and not concidered something the developer should have access to.
 
@@ -16,17 +16,17 @@ First of all, let's view our primary storage interface to understand what method
 interface StorageInterface
 {
     /**
-     * Register new bucket using it's options, server id and prefix.
+     * Register new bucket using it's options, server and prefix.
      *
-     * @param string $name
-     * @param string $prefix
-     * @param string $server
-     * @param array  $options
+     * @param string          $name
+     * @param string          $prefix
+     * @param array           $options
+     * @param ServerInterface $server
      * @return BucketInterface
      * @throws StorageException
      */
-    public function registerBucket($name, $prefix, $server, array $options = []);
-
+    public function registerBucket($name, $prefix, array $options = [], ServerInterface $server);
+    
     /**
      * Get bucket by it's name.
      *
@@ -35,7 +35,7 @@ interface StorageInterface
      * @throws StorageException
      */
     public function bucket($bucket);
-
+    
     /**
      * Find bucket instance using object address.
      *
@@ -45,17 +45,16 @@ interface StorageInterface
      * @throws StorageException
      */
     public function locateBucket($address, &$name = null);
-
+    
     /**
      * Get or create instance of storage server.
      *
      * @param string $server
-     * @param array  $options Used to create new instance.
      * @return ServerInterface
      * @throws StorageException
      */
-    public function server($server, array $options = []);
-
+    public function server($server);
+    
     /**
      * Put object data into specified bucket under provided name. Should support filenames, PSR7
      * streams and streamable objects. Must create empty object if source empty.
@@ -69,7 +68,7 @@ interface StorageInterface
      * @throws ServerException
      */
     public function put($bucket, $name, $source = '');
-
+    
     /**
      * Create instance of storage object using it's address.
      *
@@ -91,20 +90,20 @@ StorageManager buckets provides set of operations you might want to consider usi
 interface BucketInterface
 {
     /**
-     * @param string           $server  Responsible server id or name.
-     * @param string           $prefix  Bucket prefix.
-     * @param array            $options Server related options.
-     * @param StorageInterface $storage
-     * @param FilesInterface   $files
+     * Bucker name.
+     *
+     * @return string
      */
-    public function __construct(
-        $server,
-        $prefix,
-        array $options,
-        StorageInterface $storage,
-        FilesInterface $files
-    );
-
+    public function getName();
+    
+    /**
+     * Associated storage server instance.
+     *
+     * @return ServerInterface
+     * @throws StorageException
+     */
+    public function server();
+    
     /**
      * Get server specific bucket option or return default value.
      *
@@ -113,29 +112,14 @@ interface BucketInterface
      * @return mixed
      */
     public function getOption($name, $default = null);
-
-    /**
-     * Get server name or ID associated with bucket.
-     *
-     * @return string
-     */
-    public function getServerID();
-
-    /**
-     * Associated storage server instance.
-     *
-     * @return ServerInterface
-     * @throws StorageException
-     */
-    public function server();
-
+    
     /**
      * Get bucket prefix.
      *
      * @return string
      */
     public function getPrefix();
-
+    
     /**
      * Check if address be found in bucket namespace defined by bucket prefix.
      *
@@ -143,7 +127,7 @@ interface BucketInterface
      * @return bool|int Should return matched address length.
      */
     public function hasAddress($address);
-
+    
     /**
      * Build object address using object name and bucket prefix. While using URL like prefixes
      * address can appear valid URI which can be used directly at frontend.
@@ -152,7 +136,7 @@ interface BucketInterface
      * @return string
      */
     public function buildAddress($name);
-
+    
     /**
      * Check if given name points to valid and existed location in bucket server.
      *
@@ -162,7 +146,7 @@ interface BucketInterface
      * @throws BucketException
      */
     public function exists($name);
-
+    
     /**
      * Get object size or return false if object not found.
      *
@@ -172,7 +156,7 @@ interface BucketInterface
      * @throws BucketException
      */
     public function size($name);
-
+    
     /**
      * Put given content under given name in associated bucket server. Must replace already existed
      * object.
@@ -184,7 +168,7 @@ interface BucketInterface
      * @throws BucketException
      */
     public function put($name, $source);
-
+    
     /**
      * Must return filename which is valid in associated FilesInterface instance. Must trow an
      * exception if object does not exists. Filename can be temporary and should not be used
@@ -196,7 +180,7 @@ interface BucketInterface
      * @throws BucketException
      */
     public function allocateFilename($name);
-
+    
     /**
      * Return PSR7 stream associated with bucket object content or trow and exception.
      *
@@ -206,7 +190,7 @@ interface BucketInterface
      * @throws BucketException
      */
     public function allocateStream($name);
-
+    
     /**
      * Delete bucket object if it exists.
      *
@@ -215,7 +199,7 @@ interface BucketInterface
      * @throws BucketException
      */
     public function delete($name);
-
+    
     /**
      * Rename storage object without changing it's bucket. Must return new address on success.
      *
@@ -227,7 +211,7 @@ interface BucketInterface
      * @throws BucketException
      */
     public function rename($oldname, $newname);
-
+    
     /**
      * Copy storage object to another bucket. Method must return address which points to
      * new storage object.
@@ -239,10 +223,11 @@ interface BucketInterface
      * @throws BucketException
      */
     public function copy(BucketInterface $destination, $name);
-
+    
     /**
      * Move storage object data to another bucket. Method must return new object address on success.
      *
+     * @todo Add ability to specify new name, not only destination.
      * @param BucketInterface $destination
      * @param string          $name
      * @return string
@@ -257,9 +242,9 @@ One the most important properties of StrorageBuckets is **prefix** and **server*
 
 > As you can see there is no directory related operation as you can encode directory name into object name.
 
-One very important bucket function called located in `getOption` method, this method much provide set of server specific options required to perform low level operations, usually such options declared in storage component configuration file (`application/config/storage.md`).
+One very important bucket function called located in `getOption` method, this method much provide set of server specific options required to perform low level operations, usually such options declared in storage component configuration file (`app/config/storage.php`).
 
-> You can read more about server specific options in [storage servers] (servers.md) section.
+> You can read more about server specific options in [storage servers](/storage/servers.md) section.
 
 ## Configuring StorageBuckets
 Before we jump to some examples, let's try to declare and configure a few buckets and related servers. We can use a storage configuration file to do that:
@@ -276,7 +261,6 @@ return [
         'amazon'    => [
             'class'   => Servers\AmazonServer::class,
             'options' => [
-                'verify'    => false,
                 'accessKey' => '',
                 'secretKey' => '',
             ]
@@ -284,7 +268,6 @@ return [
         'rackspace' => [
             'class'   => Servers\RackspaceServer::class,
             'options' => [
-                'verify'   => false,
                 'username' => '',
                 'apiKey'   => ''
             ]
@@ -315,23 +298,24 @@ return [
             'options' => [
                 'database' => 'default'
             ]
-        ]
+        ],
+        /*{{servers}}*/
     ],
     'buckets' => [
         'local'     => [
             'server'  => 'local',
             'prefix'  => 'local:',
             'options' => [
-                //Temporary location
-                'directory' => '/application/runtime/storage/'
+                //Directory has to be specified relatively to root directory of associated server
+                'directory' => 'app/runtime/storage/'
             ]
         ],
         'uploads'   => [
             'server'  => 'local',
             'prefix'  => '/uploads/',
             'options' => [
-                //Temporary location
-                'directory' => '/webroot/uploads/'
+                //Directory has to be specified relatively to root directory of associated server
+                'directory' => 'webroot/uploads/'
             ]
         ],
         'amazon'    => [
@@ -372,7 +356,8 @@ return [
             'options' => [
                 'collection' => 'files'
             ]
-        ]
+        ],
+        /*{{buckets}}*/
     ]
 ];
 ```
@@ -382,7 +367,7 @@ return [
 First of all, our configuration file declares 6 servers we can use to store data in, every server has it's unique name, adapter class and set of connection options. In our case we declared: local, amazon, rackspace, ftp, sftp and gridfs servers. You can read more about server configurations in the dedicated configuration section.
 
 Next, we created a few named containers each associated with unique prefix, server and server specific options. In our case we have: 
-* **local** - will store data in local directory "application/runtime/storage" (directory will be created automatically). Work with local filesystem directly. Evert created object will gain prefix "local:" (such prefix can not be understand by frontend and expose real file location).
+* **local** - will store data in local directory "app/runtime/storage" (directory will be created automatically). Work with local filesystem directly. Evert created object will gain prefix "local:" (such prefix can not be understand by frontend and expose real file location).
 * **uploads** - stores data in public directory "webroot/uploades" with prefix "/uploads/", such prefix provides us ability to send object address directory to frontend or view.
 * **amazon** - utilized Amazon S3 server storage with prefix "https://s3.amazonaws.com/my-bucket/" (such prefix provides us ability to send object address to frontend directly). As additional server options we stated that every bucket file must be public.
 * **rackspace** - uses Rackspace Files server with default region "DFW" and specified rackspace bucket name. Our prefix - "rackspace:".
@@ -423,7 +408,7 @@ protected function indexAction()
 
 > Every put operation will replace existed data.
 
-As result of such code we will get file named "file.txt" in our "application/runtime/storage" directory. In object dump you may notice that address is specified as "local:file.txt", such address is created using object name and bucket prefix and provides us ability to clearly identify file location.
+As result of such code we will get file named "file.txt" in our "app/runtime/storage" directory. In object dump you may notice that address is specified as "local:file.txt", such address is created using object name and bucket prefix and provides us ability to clearly identify file location.
 
 ### Open storage object by it's address
 Once we have data located in some bucket we only need to store generated address somewere as it's value clearly defines object name and object bucket. Let's use address from previous example and try to get some information about our object:
@@ -443,33 +428,26 @@ Before we will start working with retrieved object, let's quickly look as `Objec
 interface ObjectInterface extends StreamableInterface
 {
     /**
-     * @param string           $address Full object address.
-     * @param StorageInterface $storage Storage component.
-     * @throws ObjectException
-     */
-    public function __construct($address, StorageInterface $storage);
-
-    /**
      * Get object name inside parent bucket.
      *
      * @return string
      */
     public function getName();
-
+    
     /**
      * Get full object address.
      *
      * @return string
      */
     public function getAddress();
-
+    
     /**
      * Get associated bucket instance.
      *
      * @return BucketInterface
      */
     public function getBucket();
-
+    
     /**
      * Check if object exists.
      *
@@ -479,7 +457,7 @@ interface ObjectInterface extends StreamableInterface
      * @throws ObjectException
      */
     public function exists();
-
+    
     /**
      * Get object size or return false of object does not exists.
      *
@@ -489,7 +467,7 @@ interface ObjectInterface extends StreamableInterface
      * @throws ObjectException
      */
     public function getSize();
-
+    
     /**
      * Must return filename which is valid in associated FilesInterface instance. Must trow an
      * exception if object does not exists. Filename can be temporary and should not be used
@@ -501,7 +479,7 @@ interface ObjectInterface extends StreamableInterface
      * @throws ObjectException
      */
     public function localFilename();
-
+    
     /**
      * Delete object from associated bucket.
      *
@@ -510,7 +488,7 @@ interface ObjectInterface extends StreamableInterface
      * @throws ObjectException
      */
     public function delete();
-
+    
     /**
      * Rename storage object without changing it's bucket.
      *
@@ -521,7 +499,7 @@ interface ObjectInterface extends StreamableInterface
      * @throws ObjectException
      */
     public function rename($newname);
-
+    
     /**
      * Copy storage object to another bucket. Method must return ObjectInterface which points to
      * new storage object.
@@ -533,7 +511,7 @@ interface ObjectInterface extends StreamableInterface
      * @throws ObjectException
      */
     public function copy($destination);
-
+    
     /**
      * Move storage object data to another bucket.
      *
@@ -544,7 +522,7 @@ interface ObjectInterface extends StreamableInterface
      * @throws ObjectException
      */
     public function replace($destination);
-
+    
     /**
      * Must be serialized into object address.
      *
@@ -693,4 +671,4 @@ One of the biggest benefits of using StorageManager is that you can point your b
 
 > Tip: do not forget to handle `StorageException` when performing storage related operations.
 
-> Tip: use local bucket to keep files for some processing before sending to permanent storage, for example every uploaded image can be stored on server directly, processed in background and send to permanent bucket after, in this case you can avoid any network charges caused by downloading file from remote storage to process it.
+> Tip: use local bucket to keep files for some processing before sending to apermanent storage, for example every uploaded image can be stored on server directly, processed in background and send to permanent bucket after, in this case you can avoid any network charges caused by downloading file from remote storage to process it.

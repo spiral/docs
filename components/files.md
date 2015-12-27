@@ -1,9 +1,7 @@
-# Work with local Files
+# Work with Files
 Spiral Files component and `FilesInterface` are intended to simplify work with local harddrive rather than create a universal filesystem abstraction (like [Flysystem](https://github.com/thephpleague/flysystem)). 
 
-> Attention, FilesInterface will be replaced or will extend Symfony\Filesystem.
-
-If you want to use abstract storage and work with remote locations (like Amazon, Rackspace, FTP, SFTP, GridFS) you might need to look at spiral [Storage Manager component](/storage/overview.md) which is responsible for such abstractions. 
+If you want to use abstract storage and work with remote locations (like Amazon, Rackspace, FTP, SFTP, GridFS) you might need to look at spiral [Storage Manager component](/storage/overview.md) which is responsible for such abstractions or install already mentioned Flysystem. 
 
 ## FilesInterface
 Like any other component, the default implementation of spiral FileManager is based on the interface. Let's view the interface source code to better understand what methods are available:
@@ -11,7 +9,7 @@ Like any other component, the default implementation of spiral FileManager is ba
 ```php
 interface FilesInterface
 {
-    /**
+   /**
      * Permission mode: fully writable and readable files.
      */
     const RUNTIME = 0777;
@@ -36,11 +34,11 @@ interface FilesInterface
     /**
      * Ensure location (directory) existence with specified mode.
      *
-     * @param string $location
+     * @param string $directory
      * @param int    $mode
      * @return bool
      */
-    public function ensureLocation($location, $mode = self::RUNTIME);
+    public function ensureDirectory($directory, $mode = self::RUNTIME);
 
     /**
      * Read file content into string.
@@ -53,16 +51,16 @@ interface FilesInterface
 
     /**
      * Write file data with specified mode. Ensure location option should be used only if desired
-     * location may not exist to ensure sush location/directory (slow operation).
+     * location may not exist to ensure such location/directory (slow operation).
      *
      * @param string $filename
      * @param string $data
-     * @param int    $mode           One of mode constants.
-     * @param bool   $ensureLocation Ensure final destination!
+     * @param int    $mode            One of mode constants.
+     * @param bool   $ensureDirectory Ensure final destination!
      * @return bool
      * @throws WriteErrorException
      */
-    public function write($filename, $data, $mode = null, $ensureLocation = false);
+    public function write($filename, $data, $mode = null, $ensureDirectory = false);
 
     /**
      * Same as write method with will append data at the end of existed file without replacing it.
@@ -71,11 +69,20 @@ interface FilesInterface
      * @param string $filename
      * @param string $data
      * @param int    $mode
-     * @param bool   $ensureLocation
+     * @param bool   $ensureDirectory
      * @return bool
      * @throws WriteErrorException
      */
-    public function append($filename, $data, $mode = null, $ensureLocation = false);
+    public function append($filename, $data, $mode = null, $ensureDirectory = false);
+
+    /**
+     * Method has to return local uri which can be used in require and include statements.
+     * Implementation is allowed to use virtual stream uris if it's not local.
+     *
+     * @param string $filename
+     * @return string
+     */
+    public function localUri($filename);
 
     /**
      * Delete local file if possible. No error should be raised if file does not exists.
@@ -83,6 +90,14 @@ interface FilesInterface
      * @param string $filename
      */
     public function delete($filename);
+
+   /**
+     * Delete directory all content in it.
+     *
+     * @param string $directory
+     * @param bool   $contentOnly
+     */
+    public function deleteDirectory($directory, $contentOnly = false);
 
     /**
      * Move file from one location to another. Location must exist.
@@ -156,6 +171,18 @@ interface FilesInterface
     public function time($filename);
 
     /**
+     * @param string $filename
+     * @return bool
+     */
+    public function isDirectory($filename);
+
+    /**
+     * @param string $filename
+     * @return bool
+     */
+    public function isFile($filename);
+
+    /**
      * Current file permissions (if exists).
      *
      * @param string $filename
@@ -176,11 +203,13 @@ interface FilesInterface
     /**
      * Flat list of every file in every sub location. Locations must be normalized.
      *
-     * @param string            $location  Location for search.
-     * @param null|string|array $extension Extension or array of extensions to files.
+     * Note: not a generator yet, waiting for PHP7.
+     *
+     * @param string $location Location for search.
+     * @param string $pattern  Extension pattern.
      * @return array
      */
-    public function getFiles($location, $extension = null);
+    public function getFiles($location, $pattern = null);
 
     /**
      * Return unique name of temporary (should be removed when interface implementation destructed)
@@ -195,36 +224,37 @@ interface FilesInterface
     /**
      * Create the most normalized version for path to file or location.
      *
-     * @param string $path File or location path.
+     * @param string $path      File or location path.
+     * @param bool   $directory Path points to directory.
      * @return string
      */
-    public function normalizePath($path);
+    public function normalizePath($path, $directory = false);
 
     /**
      * Get relative location based on absolute path.
      *
-     * @param string $path      Original file or directory location (to).
-     * @param string $directory Path will be converted to be relative to this directory (from).
+     * @param string $path Original file or directory location (to).
+     * @param string $from Path will be converted to be relative to this directory (from).
      * @return string
      */
-    public function relativePath($path, $directory);
+    public function relativePath($path, $from);
 }
 ```
 
-The only notable part of FileInterface and default implementation - FileManager's ability to ensure the file location (directory) with the requested file mode. This functionality is used all across the spiral core to simplify file writing operations and be less dependent on a specific directory structure. Let's look at some examples (and again, we can either use FilesInterface as our dependency or the short binding "files"):
+The only notable part of FileInterface and it's default implementation - FileManager's ability to ensure the file location (directory) with the requested file mode. This functionality is used all across the spiral core to simplify file writing operations and be less dependent on a specific directory structure. Let's look at some examples (and again, we can either use FilesInterface as our dependency or the short binding "files"):
 
 ```php
 protected function indexAction(FilesInterface $files)
 {
     //Directory runtime/folder will be automatically created with RUNTIME (777) mode
     $files->write(
-        directory('runtime') . '/folder/file.txt',
+        directory('runtime') . 'folder/file.txt',
         'data',
         FilesInterface::RUNTIME,
         true
     );
 
-    dump($this->files->read(directory('runtime') . '/folder/file.txt'));
+    dump($this->files->read(directory('runtime') . 'folder/file.txt'));
 }
 ```
 
@@ -237,4 +267,4 @@ protected function indexAction()
 }
 ```
 
-> If you really dreaming about move/copy directory functionality you can achieve it by combining `getFiles` method with `relativePath` method. :)
+> Files are based on Symfony/Finder components which you can use in your code directly as well.
