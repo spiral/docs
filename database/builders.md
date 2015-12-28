@@ -370,7 +370,7 @@ Following methodic can be useful in cases where you would like to create some cl
 
 > You can implement ParameterInterface if you want to declare your own parameter wrappers, for example it will allow you to inject parametrized SQL code into query builder. This is possible due parameter reposible for both - mocking value or multiple values and providing placeholder for such values in query (see about injections below).
 
-##### SQL Injections and Expressions
+##### SQL Fragments and Expressions
 DBAL builders allow you to replace some of where statements with custom SQL code or expression. Such functionality achieved by two classes `Spiral\Database\Injections\Fragment` and `Spiral\Database\Injections\Expression`. Let's try to review both of them to understand the difference.
 
 Let's say we would like to compare our column value to DBMS specific function:
@@ -437,6 +437,8 @@ WHERE CONCAT(`primary_test`.`id`, '-', `primary_test`.`status`) = '1-active'
 > Please remember that our database has table prefix "primary_", however there is high possiblity that you don't even need them ever. Also be careful using epressions with SQL including string constants, it will count your string as column to be quoted (such behaviour must be fixed in future).
 
 You can also use expressions and fragments as column values in insert and update statements.
+
+> Please keep client data as far from Expressions and Fragments as it possible.
 
 ### Table and Column aliases
 Based on previous example we found that expressions can be useful when we have to prepare complex column names, but what if we don't want to do that? In this case we can use default SQL feature - aliases. Aliases can be either applied to table or to column name and later be used in where, sorting and other statements. Spiral does not provide any special way to declare column or table alias, simply inlude "AS alias" into your column name or table. Let's try to demonstrate few examples:
