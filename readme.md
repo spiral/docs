@@ -14,7 +14,7 @@
     * [Directory structure](application/directories.md)
     * [Startup Flow](application/startup.md)
     * [Error Handling](application/errors.md)
-    * [Database and Data Entities](application/entities.md)
+    * [Data Entities and Sources](application/entities.md)
     * REWRITE [Models and Services](application/services.md)
     * REWRITE [Controllers](application/controllers.md)
 * Http Dispatcher
