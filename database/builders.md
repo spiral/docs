@@ -59,9 +59,9 @@ for ($i = 0; $i < 20; $i++) {
     //We don't need to specify key names in this case
     $insert->values([
         new \DateTime(),
-        StringHelper::random(10),
-        StringHelper::random(10) . '@email.com',
-        mt_rand(0, 1000) / 10
+        $this->faker->randomNumber(2),
+        $this->faker->email,
+        $this->faker->randomFloat(2)
     ]);
 }
 
