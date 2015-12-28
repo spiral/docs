@@ -95,7 +95,7 @@ Dark Syntax provides multiple alternatives used to make your templates more expr
 <section:name>block</section:name>
 ```
 
-You can also use block definitions as placeholders:
+You can also use block definitions as placeholders when default content is empty:
 
 ```html
 <block:name/>
