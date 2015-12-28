@@ -20,6 +20,11 @@ class Sample extends Record
         'status'  => 'enum(active,disabled)',
         'name'    => 'string',
         'content' => 'text',
+        
+        'child'   => [
+            self::HAS_ONE => SampleChild::class,
+            self::INVERSE => 'sample'
+        ],
     ];
 }
 ```
