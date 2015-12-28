@@ -1,6 +1,29 @@
 # Database and Data Entities
 One of the critical part of any application is set of models dedicated to represent data stored in some permanent location. At this moment spiral provides two generic data entities you can use in your application - `ORM\Record` and `ODM\Document`. Both entities can be scaffolded using console toolkit and will be located in 'app/classes/Database' directory.
 
+```php
+class Sample extends Record
+{
+    //time_created, time_updated
+    use TimestampsTrait;
+
+    /**
+     * @var string
+     */
+    protected $database = 'sandbox';
+
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'id'      => 'primary',
+        'status'  => 'enum(active,disabled)',
+        'name'    => 'string',
+        'content' => 'text',
+    ];
+}
+```
+
 [ORM](/orm/basics.md) and [ODM](/odm/basics.md) entities provide `ActiveRecord` like behaviour so you can use them directly in your code, hovewer it's recommended to look at [Models and Services](/application/services.md) for this purposes as it will allow you to make your code more modular and isolate database specific operations from your controllers.
 
 > You can also check Source models for ORM and ODM entities which can provide you ability to pre-build your queries and isolate database operations from service layer of your application.
