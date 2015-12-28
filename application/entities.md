@@ -88,7 +88,7 @@ class SampleSource extends RecordSource implements SingletonInterface
 }
 ```
 
-> Spiral can link your sources to needed entity automatically and allow you to use them via DI.
+Spiral can link your sources to needed entity automatically and allow you to use them via DI.
 
 ```php
 public function indexAction(SampleSource $source)
