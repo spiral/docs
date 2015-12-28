@@ -86,4 +86,4 @@ For example following databases configuration will create two virtual databases 
 ```
 
 ## What is [DataEntity](/components/entity.md)
-Generic purposes of any entity is to provide access to its data using set of getters, setters and accessors. In addition to that spiral count that every entity model can and must be validated before any storage related operations. You can read more about base DataEntity (which used as base for both ORM and ODM) [here](/components/entity.md).
+Generic purposes of any entity is to provide access to its data using set of getters, setters and accessors. In addition to that spiral count that every entity model can and must be validated before any storage related operations. You can read more about base DataEntity [here](/components/entity.md).
