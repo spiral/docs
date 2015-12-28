@@ -51,7 +51,7 @@
     * REWRITE [Overview](database/overview.md)
     * [Schema Interospection](database/introspection.md)
     * REWRITE [Schema Declaration](database/declaration.md)
-    * REWRITE [Query Builders](database/builders.md)
+    * [Query Builders](database/builders.md)
 * Spiral ORM
     * REWRITE [Record Model and Database Scaffolding](orm/basics.md)
     * REWRITE [Relations](orm/relations.md)
