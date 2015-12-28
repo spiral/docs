@@ -116,4 +116,4 @@ For example following databases configuration will create two virtual databases 
 > Separatelly from that database isolation and database aliases can be used to write more powerful extensions or even application inside application.
 
 ## What is [DataEntity](/components/entity.md)
-Generic purposes of any entity is to provide us access to its data using set of getters, setters and accessors. In addition to that spiral count that every entity model can and must be validated before any storage related operations. You can read more about base DataEntity [here](/components/entity.md).
+Generic purposes of any entity is to provide us access to its data using set of getters, setters and accessors. In addition to that spiral count that every entity model can be validated (optionally) before any storage related operations. You can read more about base DataEntity [here](/components/entity.md).
