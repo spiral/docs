@@ -2,7 +2,7 @@
 Feel free to contribute to framework or components development. I will glaldy accept your pull requests if it does match provided requiments and do not adds extra complexity to framework.
 
 ## Requiments
-* PSR-2 and PSR-4, line width 100
+* PSR-2 and PSR-4, soft width 100
 * Every method must have doc comment describing return value and parameters
 * Test coverage of new functionality
 
