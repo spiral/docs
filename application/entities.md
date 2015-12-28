@@ -98,7 +98,7 @@ public function indexAction(SampleSource $source)
 ```
 
 ## Databases
-Spiral Framework provides set of tools used to split, separate or join together multiple database sources (physically or logically), on practice it means that you can write your code relying on multiple databases even if internally they all linked together. Such approach can give your code ability to be moved to other spiral (or not) application without full code rewriting.
+Spiral Framework provides set of tools used to split, separate or join together multiple database sources (physically or logically), on practice it means that you can write your code relying on multiple databases even if internally they all linked together. Such approach can give your code ability to be moved to other spiral (or not) application with only few config corrections.
 
 For example following databases configuration will create two virtual databases which are both located in one place but are separated using unique table prefix:
 
@@ -112,6 +112,8 @@ For example following databases configuration will create two virtual databases 
     'tablePrefix' => 'secondary_',
 ],
 ```
+
+> Separatelly from that database isolation and database aliases can be used to write more powerful extensions or even application inside application.
 
 ## What is [DataEntity](/components/entity.md)
 Generic purposes of any entity is to provide access to its data using set of getters, setters and accessors. In addition to that spiral count that every entity model can and must be validated before any storage related operations. You can read more about base DataEntity [here](/components/entity.md).
