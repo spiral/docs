@@ -4,6 +4,7 @@
 * Overview
     * [Installation and Configuration](installation.md)
     * [Contributing](contributing.md)
+    * [Forum](https://groups.google.com/forum/#!forum/spiral-framework)
 * Framework
     * [Container, Factory, DI](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
