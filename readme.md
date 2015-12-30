@@ -17,7 +17,7 @@
     * [Error Handling](application/errors.md)
     * [Data Entities and Sources](application/entities.md)
     * REWRITE [Models and Services](application/services.md)
-    * REWRITE [Controllers](application/controllers.md)
+    * [Controllers](application/controllers.md)
 * Http Dispatcher
     * REWRITE [Request Flow](http/flow.md)
     * REWRITE [Request and InputManager](http/input.md)
