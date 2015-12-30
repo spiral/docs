@@ -173,4 +173,4 @@ Publish command does not require any confirmation and usually used when module g
 
 > Check spiral [toolkit](https://github.com/spiral/toolkit/blob/master/source/ToolkitModule.php) or [profiler](https://github.com/spiral/profiler/blob/master/source/ProfilerModule.php) repositories to get some examples.
 You should also remember to add your module path into tokenizer config if your code contain ORM/ODM entities or console commands which has to be automatically located by ClassLocator or InvocationLocator.
-Use path like `directory('libraries') . 'vendor/module'`
+Use path like `directory('libraries') . 'vendor/module'`.
