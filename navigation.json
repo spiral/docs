@@ -24,7 +24,7 @@
       "application-startup": "Startup Flow",
       "application-errors": "Error Handling",
       "application-entities": "Data Entities and Sources",
-      "application-services": "<s>Models and Services</s>",
+      "application-services": "Models and Services",
       "application-views": "<s>Views</s>",
       "application-controllers": "Controllers"
     }
