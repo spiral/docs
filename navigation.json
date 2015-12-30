@@ -26,7 +26,7 @@
       "application-entities": "Data Entities and Sources",
       "application-services": "<s>Models and Services</s>",
       "application-views": "<s>Views</s>",
-      "application-controllers": "<s>Controllers</s>"
+      "application-controllers": "Controllers"
     }
   },
   {
