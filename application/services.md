@@ -1,10 +1,12 @@
 # Service Classes and Models
-Spiral framework trying to separate database entities and business models, since business logic of your application only limited by your imagination there is no recommended approach of how to organize your models. However framework provides simple parent for your classes `Spiral\Core\Service`, there only valuable thing this implementation can do for your - give you shorted access to [container and shared bindings](/framework/container.md).
+Spiral framework trying to help you to separate database and business logic, since logic of your application only limited by your imagination there is no recommended approach of how to organize your models (but don't put must logic into your [entities](/application/entities.md)).
+
+However framework provides simple parent for your classes `Spiral\Core\Service`, the only valuable thing this implementation can do for your - give you shorted access to [container and shared bindings](/framework/container.md).
 
 > Every Controller is Service.
 
 ## Example Model
-The simpliest implementation of our service using shared bindings might look like:
+The simpliest implementation of our service with shared bindings usage might look like:
 
 ```php
 class UsersService extends Service
@@ -17,7 +19,7 @@ class UsersService extends Service
 }
 ```
 
-> Services DO NOT support method injection, you must provide arguments manually.
+> Services DO NOT support method injection, you must provide arguments manually or use contructor injection.
 
 Now you can use this sample service in your controller this way:
 
@@ -48,7 +50,9 @@ class BlogService extends Service
 }
 ```
 
-The only thing you have to remember is that using short bingings inside your model are only reliable when local instance of `ContainerInterface` set. In a previous example we simply drop `extends Service` as no embedded functionality were used.
+The only thing you have to remember is that using short bingings inside your model are only reliable when local instance of `ContainerInterface` is set. 
+
+> In a previous example we can simply drop `extends Service` as no shared bindings functionality were used.
 
 Let's try to create more complex model:
 
@@ -76,9 +80,9 @@ class BlogService extends Service
 }
 ```
 
-> In a given example we are going to cache count of posts for 1 hour, following methodic can help us to keep our views and controller ligther.
+> In a given example we are going to cache posts count for 1 hour, following methodic can help us to keep our views and controller ligther.
 
-Following example has one issue, code will work however $this->cache will be resolved using shared container which will create minor issues on testing stage, to solve this issues let's improve our contructor:
+This example has one issue - code will work, however `$this->cache` will be resolved using shared container (global for your application) which will create minor issues on testing stage, to solve it let's improve our contructor:
 
 ```php
 class BlogService extends Service
@@ -87,14 +91,11 @@ class BlogService extends Service
     
     public function __construct(PostsSource $source, ContainerInterface $cache)
     {
-        //This call will make every virtual property work thougt our 
-        //local container, you don't need this call if you not using 
-        //shared bindings
         parent::__constuct($container);
-        
         $this->source = $source;
     }
-
+    
+    ...
 ```
 
 Alternatively, we can refactor our class to decouple from Service:
@@ -103,7 +104,6 @@ Alternatively, we can refactor our class to decouple from Service:
 class BlogService
 {
     private $source = null;
-    
     private $cache = null;
 
     public function __construct(PostsSource $source, StoreInterface $cache)
