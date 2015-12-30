@@ -49,7 +49,7 @@ public function publish(PublisherInterface $publisher, DirectoriesInterface $dir
     //You can either publish whole directory content
     $publisher->publishDirectory(
         __DIR__ . '../resources/',
-        $directories->directory('webroot') . 'resources/',
+        $directories->directory('public') . 'resources/',
         PublisherInterface::OVERWRITE
     );
 }
