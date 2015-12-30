@@ -121,7 +121,7 @@ class BlogService extends Service
     ...
 ```
 
-Alternatively, we can refactor our class to decouple from Service:
+Alternatively, at any moment, we can refactor our class to decouple from Service:
 
 ```php
 class BlogService
