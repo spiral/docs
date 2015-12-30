@@ -2,7 +2,7 @@
 Spiral framework will be useless without an ability to alter it's core functionality, connect extensions, add resources or visual plugins (widgets/tags). Any of this features can be achieved using ModuleManager and Bootloaders.
 
 ## Writing Bootloader
-In some cases your module might need to define set of container bindings or bootload specific code, in this case you can simply use technique described in [bootloaders](/framework/bootloaders.md) section.
+Often your module might need to define set of container bindings or bootload specific code, in this case you can simply use technique described in [bootloaders](/framework/bootloaders.md) section.
 
 > In some cases (for example, when you package contains only widgets or delcarative singletons) you might skip Bootloader creation for your module.
 
