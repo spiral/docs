@@ -31,7 +31,7 @@ class Sample extends Record
 
 [ORM](/orm/basics.md) and [ODM](/odm/basics.md) entities provide `ActiveRecord` like behaviour so you can use them directly in your code, hovewer it's recommended to look at [Models and Services](/application/services.md) for this purposes as it will allow you to make your code more modular and isolate database specific operations from your controllers.
 
-> You can also check Source models for ORM and ODM entities which can provide you ability to pre-build your queries and isolate database operations from service layer of your application.
+> You can also check Source models for ORM and ODM entities which can provide you ability to pre-build your queries and isolate database operations even from service layer of your application.
 
 ```php
 class SampleSource extends RecordSource implements SingletonInterface
