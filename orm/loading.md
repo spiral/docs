@@ -308,6 +308,9 @@ $post = new Post();
 $post->author = $user;
 $post->save();
 
+//You have to register newly created instances manually
+$this->orm->cache()->remember($post);
+
 $postB = Post::findByPK($post->id);
 
 dump($post === $postB);
@@ -331,10 +334,10 @@ If you want to disable/enable cache locally, you can use ORM method `entityCache
 
 ```php
 //Disable entity cache
-$this->orm->entityCache(false);
+$this->orm->cache()->configure(false);
 
 //Set of operations with big amount of records
 
 //Enabling cache back
-$this->orm->entityCache(true);
+$this->orm->cache()->configure(true);
 ```
