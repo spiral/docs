@@ -98,8 +98,8 @@ class HomeController extends Controller
 
 > When no action set controller will use it's default action, which is "index" (you can overwrite this value as values used for actions prefixes and postfixes, see Controller code).
 
-## HMVC
-Due every controller can be called without nesessary routing you can implement HMVC pattern in your application like that:
+## "HMVC"
+Due every controller can be called without nesessary routing you can implement HMVC approach in your application like that:
 
 ```php
 protected function hvmcAction(OtherController $controller)
@@ -111,8 +111,10 @@ protected function hvmcAction(OtherController $controller)
 }
 ```
 
+> Spiral does not have specific implemetation of `View` but rather provides simplifier access to rendering engines, you can create missing models if you need them.
+
 ## Other Approaches
-Spiral framework does not force you to any specific implementation of your application architecture, you can easily remove every controller and replace with ADR, MMVM and other patters since the only thing which links http layers to controllers is routes and CoreInterface:
+Spiral framework does not force you to any specific implementation of your application architecture, you can easily remove every controller and replace it with ADR, MMVM and other patters since the only thing which links http layers to controllers is routes and `CoreInterface`:
 
 ```php
 //Calling different actions of HomeController
