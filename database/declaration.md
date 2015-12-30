@@ -7,10 +7,12 @@ Before any operation/declaration can be applied to table schema, DBAL will load 
 
 You can also use additional schema operations to remove or rename table elements.
 
-> Please remember to execute multiple table syncronization using SyncronizationBus class, this implementation will sort your tables in a vaild dependency order and execute every operation under connection specific transaction, see examples below.
+> Please remember to execute multiple table syncronization using `SyncronizationBus` class, this implementation will sort your tables in a vaild dependency order and execute every operation under connection specific transaction, see examples below.
 
 ## To Start
-To get instance of TableSchema which we can manipulate with, we can use similar way described in [Schema Readers (make sure your read them first)] (reading.md). The only difference - we don't need to check table existence. We are going to use controller actions as example:
+To get instance of TableSchema which we can manipulate with, we can use similar way described in [Schema Introspection (make sure your read them first)](/database/instrospection.md). The only difference - we don't need to check table existence. 
+
+Let's use controller action to write an example:
 
 ```php
 protected function indexAction(Database $database)
