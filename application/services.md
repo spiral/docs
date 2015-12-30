@@ -1,7 +1,7 @@
 # Service Classes and Models
 Spiral framework trying to help you to separate database and business logic, since architecture of your application is only limited by your imagination there is no recommended approach of how to organize your models but only few help classes and implentations.
 
-However framework provides simple parent for your classes `Spiral\Core\Service`, the only valuable thing this implementation can do for your - give you shorted access to [container and shared bindings](/framework/container.md).
+Framework provides simple parent for your classes `Spiral\Core\Service`, the only valuable thing this implementation can do for your - give you shorted access to [container and shared bindings](/framework/container.md).
 
 > Every Controller is Service.
 
