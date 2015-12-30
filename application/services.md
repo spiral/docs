@@ -3,6 +3,29 @@ Spiral framework trying to help you to separate database and business logic, sin
 
 Framework provides simple parent for your classes `Spiral\Core\Service`, the only valuable thing this implementation can do for your - give you shorted access to [container and shared bindings](/framework/container.md).
 
+```php
+class Service extends Component
+{
+    use SharedTrait, SaturateTrait;
+
+    /**
+     * @var InteropContainer
+     */
+    protected $container = null;
+
+    /**
+     * Due usage of saturate trait you can skip call for parent __construct method, but in this 
+     * case contrainer will be resolved via global/static scope which is not recommended. 
+     *
+     * @param InteropContainer $container Sugared. Used to drive shared/virtual bindings, if any.
+     */
+    public function __construct(InteropContainer $container = null)
+    {
+        $this->container = $this->saturate($container, InteropContainer::class);
+    }
+}
+```
+
 > Every Controller is Service.
 
 ## Example Model
