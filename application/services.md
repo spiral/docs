@@ -1,7 +1,7 @@
 # Service Classes and Models
 Spiral framework trying to help you to separate database and business logic, since architecture of your application is only limited by your imagination there is no recommended approach of how to organize your models but only few help classes and implentations.
 
-Framework provides simple parent for your classes `Spiral\Core\Service`, the only valuable thing this implementation can do for your - give you shorted access to [container and shared bindings](/framework/container.md).
+To speed up model development, framework provide you simple class `Spiral\Core\Service` which can give you shorter access to [container and shared bindings](/framework/container.md).
 
 ```php
 class Service extends Component
