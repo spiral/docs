@@ -3,9 +3,11 @@ One of the most important part of Spiral DBAL is ability to alter database table
 
 ## Principle of Work
 Before any operation/declaration can be applied to table schema, DBAL will load currently existed structure from database and [normalize it into internal format] (reading.md). As result, you are allowed to apply modification to table schema using declarative way instead of imperative, once schema **save** are requested - DBAL will generate set of creation and altering operations based on difference between declared and existed schemas. 
-> Unfortunatelly some SQL features got simplified to fit, for example primary table key is described as column type, not index. Another side effect of using this methodic - you can not remove any table element like column or index by *non declaring* it.
+> Unfortunatelly some SQL features got simplified to fit, for example primary table key is described as column type, not index.
 
 You can also use additional schema operations to remove or rename table elements.
+
+> Please remember to execute multiple table syncronization using SyncronizationBus class, this implementation will sort your tables in a vaild dependency order and execute every operation under connection specific transaction, see examples below.
 
 ## To Start
 To get instance of TableSchema which we can manipulate with, we can use similar way described in [Schema Readers (make sure your read them first)] (reading.md). The only difference - we don't need to check table existence. We are going to use controller actions as example:
