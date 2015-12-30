@@ -1,5 +1,5 @@
 # Database and Data Entities
-One of the critical part of any application is set of models dedicated to represent data stored in some permanent location. Framewor gives you two generic data models you can use in your application - `ORM\Record` and `ODM\Document`. Both entities can be scaffolded using console toolkit and will be located in 'app/classes/Database' directory.
+One of the critical part of any application is set of models dedicated to represent data stored in some permanent location. Framewor gives you two generic data models you can use in your application - `ORM\Record` and `ODM\Document`. Both entities can be scaffolded using console toolkit and will be located in 'app/classes/Database' directory by default.
 
 ```php
 class Sample extends Record
