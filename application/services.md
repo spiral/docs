@@ -112,7 +112,7 @@ class BlogService extends Service
 {
     private $source = null;
     
-    public function __construct(PostsSource $source, ContainerInterface $container)
+    public function __construct(ContainerInterface $container, PostsSource $source)
     {
         parent::__constuct($container);
         $this->source = $source;
