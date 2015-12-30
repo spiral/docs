@@ -139,7 +139,8 @@ class BlogService
 ```
 
 > You only need to pass container to contructor if your service using shared bindings and
-virtual properties.
+virtual properties. You are not forced to use Services, use plain classes as much as you
+can.
 
 ## Testing Models
 To cover services which use shared bindings with tests you only need to mock needed bindings
