@@ -105,7 +105,7 @@ class BlogService extends Service
 
 > In a given example we are going to cache posts count for 1 hour, following methodic can help us to keep our views and controller ligther.
 
-This example has one issue - code will work, however `$this->cache` will be resolved using shared container (global for your application) which will create minor issues on testing stage, to solve it let's improve our contructor:
+This example has one issue - code will work, however `$this->cache` will be resolved using shared container (global for your application) which is fine, but will create minor issues on testing stage, to solve it let's improve our contructor:
 
 ```php
 class BlogService extends Service
