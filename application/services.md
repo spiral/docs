@@ -1,196 +1,144 @@
-# Service Classes
-Spiral provides idea to put your application business and database logic into set of specific classes called "Services", such classes can be responsible for almost
-every operation in your application. You are not required to use services, hovewer they may significantly simplfify definition of your controllers and data entities
-and provide better base for unit testing.
+# Service Classes and Models
+Spiral framework trying to separate database entities and business models, since business logic of your application only limited by your imagination there is no recommended approach of how to organize your models. However framework provides simple parent for your classes `Spiral\Core\Service`, there only valuable thing this implementation can do for your - give you shorted access to [container and shared bindings](/framework/container.md).
 
 > Every Controller is Service.
 
-## Scaffolding
-You can generate empty service using CLI command "create:service name", this command will allow you to define set of methods, dependecies with other services
-or even pre-generate code required to manage some data entity like ORM Record or ODM Document. Let's looks on some example (`create:service some -m doSomething`):
+## Example Model
+The simpliest implementation of our service using shared bindings might look like:
 
 ```php
-class SomeService extends Service implements SingletonInterface
+class UsersService extends Service
 {
-    //Declaring to IoC that class must be constructed only once
-    const SINGLETON = self::class;
-
-    public function doSomething()
+    public function getCount()
     {
+        //This is better to be done using DI, see below
+        return $this->db->table('users')->count();
     }
 }
 ```
 
-As you can notice, by default new service statet as singleton, meaning any requested dependency in controllers or other services will be resolved with one instance.
-If you wish to make mortal service, simply run command with flag `--mortal` or `-s`. You now can use your service inside any of your contrroller by requesting it
-as class or method dependency.
+> Services DO NOT support method injection, you must provide arguments manually.
+
+Now you can use this sample service in your controller this way:
 
 ```php
-protected function indexAction(SomeService $some)
+protected function testAction(UsersService $users)
 {
-    $some->doSomething();
-    //...
+    dump($users->getCount());
 }
 ```
 
-## Services and Container
-One of important pieces around service implementation, that every service requesting `ContainerInterface` in it's constructor, this provides you ability to 
-request dependcies in your code using `$container` property.
+## Contructor Injections
+As any other class you can change your Service contructor to request additional dependecies, for example we can create model which manages our blog posts:
 
 ```php
-class SomeService extends Service implements SingletonInterface
+class BlogService extends Service
 {
-    //Declaring to IoC that class must be constructed only once
-    const SINGLETON = self::class;
+    private $source = null;
 
-    public function doSomething()
+    public function __construct(PostsSource $source)
     {
-        dump($this->container->get(SomeClass::class));
+        $this->source = $source;
     }
-}
-```
-
-If you with to declate dependcy on class level, you can simply create `init` method with list of needed instances (`init` method this is only required due Service aready have constructor with `ContainerInterface` dependency). You can also specify dependendencies with other services while scaffolding using `-d` flag: `create:service other -d some -m someMethod`
-
-```php
-class OtherService extends Service implements SingletonInterface
-{
-    //Declaring to IoC that class must be constructed only once
-    const SINGLETON = self::class;
-
-    /**
-     * @var SomeService
-     */
-    protected $some = null;
-
-    /**
-     * @param SomeService $some
-     */
-    protected function init(SomeService $some)
+    
+    public function getPosts($date)
     {
-        $this->some = $some;
-    }
-
-    public function someMethod()
-    {
-        dump($this->some->doSomething());
+        return $this->source->findByDate($date);
     }
 }
 ```
 
-> If you don't like using `init` method, you can simply overwrite class constructor, but in such case you have to always pass container instance into parent constructor, in other scenario you will not be able to use shared components.
+The only thing you have to remember is that using short bingings inside your model are only reliable when local instance of `ContainerInterface` set. In a previous example we simply drop `extends Service` as no embedded functionality were used.
 
-## Accessing core components
-In many cases your services might want to talk to framework components, for example databases, translator and etc. You can still request such components as init method
-dependencies, hovewer spiral provides set of short bindings which can be resolved using short name (for example we can get instance of `HttpDispatcher` using `http` binding), such resolution can be performed via magic `__get` method.
+Let's try to create more complex model:
 
 ```php
-   public function someMethod()
-   {
-       dump($this->http->perform($this->request->withUri(...)));
-   }
-```
-
-> You can use same technique in Controllers. If you will decide to use specific component in your service, you can simply create variable named as it's binding which will replace magic `__get`.
-
-## Communication with DataEntities (ORM and ODM)
-In addition to generic service functionality spiral provides ability to create set of methods specific to some data entity (repository like), this can be done by providing `-e` flag
-to `create:service` command. Let's say that we have database entity `User`, we can generate service for such user using `create:service user -e user`:
-
-```php
-class UserService extends Service implements SingletonInterface
+class BlogService extends Service
 {
-    //Declaring to IoC that class must be constructed only once
-    const SINGLETON = self::class;
+    private $source = null;
 
-    /**
-     * Create new blank User. You must save entity using save method.
-     *
-     * @param array|\Traversable $fields Initial set of fields.
-     * @return User
-     */
-    public function create($fields = [])
+    public function __construct(PostsSource $source)
     {
-        return User::create($fields);
+        $this->source = $source;
     }
-        
-    /**
-     * Save User instance.
-     *
-     * @param User  $user
-     * @param bool  $validate
-     * @param array $errors Will be populated if save fails.
-     * @return bool
-     */
-    public function save(User $user, $validate = true, &$errors = null)
+    
+    public function countPosts()
     {
-        if ($user->save($validate)) {
-            return true;
+        if($this->cache->has('posts')) {
+            return $this->cache->get('posts');
         }
-
-        $errors = $user->getErrors();
-
-        return false;
-    }
-
-    /**
-     * Delete User.
-     *
-     * @param User $user
-     * @return bool
-     */
-    public function delete(User $user)
-    {
-        return $user->delete();
-    }
-
-    /**
-     * Find User it's primary key.
-     *
-     * @param mixed $primaryKey
-     * @return User|null
-     */
-    public function findByPK($primaryKey)
-    {
-        return User::findByPK($primaryKey);
-    }
-
-    /**
-     * Find User using set of where conditions.
-     *
-     * @param array $where
-     * @return User[]|Selector
-     */
-    public function find(array $where = [])
-    {
-        return User::find($where);
+        
+        $count = $this->source->count();
+        $this->cache->set('posts', $count, 3600);
+    
+        return $count;
     }
 }
 ```
 
-Now you can use this service in your controller to find, fetch save and delete entities of `User`, for example:
+> In a given example we are going to cache count of posts for 1 hour, following methodic can help us to keep our views and controller ligther.
+
+Following example has one issue, code will work however $this->cache will be resolved using shared container which will create minor issues on testing stage, to solve this issues let's improve our contructor:
 
 ```php
-protected function indexAction(UserService $users)
+class BlogService extends Service
 {
-    dump($users->find()->count());
-    dump($users->find()->findOne());
+    private $source = null;
+    
+    public function __construct(PostsSource $source, ContainerInterface $cache)
+    {
+        //This call will make every virtual property work thougt our 
+        //local container, you don't need this call if you not using 
+        //shared bindings
+        parent::__constuct($container);
+        
+        $this->source = $source;
+    }
+
+```
+
+Alternatively, we can refactor our class to decouple from Service:
+
+```php
+class BlogService
+{
+    private $source = null;
+    
+    private $cache = null;
+
+    public function __construct(PostsSource $source, StoreInterface $cache)
+    {
+        $this->source = $source;
+        $this->cache = $cache;
+    }
+    
+    ...
+```
+
+> You only need to pass container to contructor if your service using shared bindings and
+virtual properties.
+
+## Testing Models
+To cover services which use shared bindings with tests you only need to mock needed bindings
+in a container passed into your service, let's try to create simple test for our model:
+
+```php
+class BlogServiceTest extends TestCase
+{
+    public function testCount()
+    {
+        $source = $this->getMock(PostSource::class);
+        $source->expects($this->once())->method('count')->willReturn(100);
+
+        $cache = $this->getMock(StoreInterface::class);
+        $cache->expects($this->once())->method('has')->with('posts')->willReturn(false);
+        $cache->expects($this->once())->method('set')->with('posts', 100, 3600);
+
+        $container = new Container();
+        $container->bind('cache', $cache);
+
+        $service = new BlogService($source, $container);
+        $this->assertEquals(100, $service->countPosts());
+    }
 }
 ```
-
-> Such class can be the best place to add custom selections like "findPublic" and etc. You can also rename it into "UserRepository" if you wish to keep it for database operations only.
-
-## Shared Services
-As in case with spiral components you can make your service be available in every other service using short binding, to do that simply create binding in your application bootstrap method:
-
-```php
-$this->bind('myService', MyService::class);
-```
-
-Now you are able to access such service from every controller or other service:
-
-```php
-$this->myService->someMethod();
-```
-
-> Spiral core components prefer to avoid shared bindings as such technique can create set of hidden dependencies.
