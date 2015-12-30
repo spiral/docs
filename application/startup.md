@@ -87,7 +87,6 @@ public static function init(
         $container = new SpiralContainer();
     }
     
-    //Spiral core interface, @see SpiralContainer
     $container->bindSingleton(ContainerInterface::class, $container);
     
     //Some sugar for modules, technically can be used as wrapper only here and in start method
