@@ -141,8 +141,8 @@ virtual properties. You are not forced to use Services, use plain classes as muc
 can (concider Service class as RAD sugar).
 
 ## Testing Models
-To cover services which use shared bindings with tests you only need to mock needed bindings
-in a container passed into your service, let's try to create simple test for our model:
+To cover services, which use shared bindings, with tests you only need to mock needed bindings
+in a container passed into your service constructor, let's try to create simple test for our model:
 
 ```php
 class BlogServiceTest extends TestCase
