@@ -315,36 +315,3 @@ To remove table simply run:
 ```php
 $schema->drop();
 ```
-
-## Operational Methods
-Way of how schemas work in DBAL can be very useful when you trying to create your own ORM or sync schema based on some configuration, however such approach can be hard to use in migrations when you migh want to have more control on operations. Fortunatelly TableSchema class provides few simple methods used to control declarations inside them:
-
-```php
-$schema = $database->table('table_name')->schema();
-
-//Such method will allow only to create new table,
-//if table already exsits an exception will be thrown
-$schema->create(function (AbstractTable $table) {
-    $table->primary('id');
-    $table->string('name');
-});
-```
-
-To add new columns, indexes or references to existed table use:
-
-```php
-//Such method will thrown an exception if any column or index were
-//altered (not created) inside closure
-$schema->add(function (AbstractTable $table) {
-    $table->string('new_column');
-});
-```
-
-To alter existed schema and forbid new elements creation we can use method 'alter':
-
-```php
-$schema->alter(function (AbstractTable $table) {
-    //An exception will be thrown if "new_column" does not exists
-    $table->text('new_column');
-});
-```
