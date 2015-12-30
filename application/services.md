@@ -73,8 +73,6 @@ class BlogService extends Service
 }
 ```
 
-The only thing you have to remember is that using short bingings inside your model are only reliable when local instance of `ContainerInterface` is set. 
-
 > In a previous example we can simply drop `extends Service` as no shared bindings functionality were used.
 
 Let's try to create more complex model:
@@ -105,7 +103,7 @@ class BlogService extends Service
 
 > In a given example we are going to cache posts count for 1 hour, following methodic can help us to keep our views and controller ligther.
 
-This example has one issue - code will work, however `$this->cache` will be resolved using shared container (global for your application) which is fine, but will create minor issues on testing stage, to solve it let's improve our contructor:
+This example has one issue - code will work perfectly fine, however `$this->cache` will be resolved using shared container (global for your application) which *might* create minor issues on testing stage, to solve it let's improve our contructor:
 
 ```php
 class BlogService extends Service
