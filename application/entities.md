@@ -22,8 +22,8 @@ class Sample extends Record
         'content' => 'text',
         
         'child'   => [
-            self::HAS_ONE => SampleChild::class,
-            self::INVERSE => 'sample'
+            self::HAS_ONE        => SampleChild::class,
+            SampleChild::INVERSE => 'sample'
         ],
     ];
 }
