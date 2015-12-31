@@ -114,8 +114,8 @@ class BlogService
 ```
 
 > You only need to pass container to contructor if your service using shared bindings and
-virtual properties. You are not forced to use Services, use plain classes as much as you
-can (concider Service class as RAD sugar).
+virtual properties. You are not forced to use Services rather try to use plain classes as 
+much as you can (concider Service class as RAD sugar).
 
 ## Testing Models
 To cover services, which use shared bindings, with tests you only need to mock needed bindings
