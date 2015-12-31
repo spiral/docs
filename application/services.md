@@ -54,10 +54,10 @@ protected function testAction(UsersService $users)
 ```
 
 ## Contructor Injections
-As any other class you can change your Service contructor to request additional dependecies, for example we can create model which manages our blog posts:
+As any other class you can change your Service contructor to request additional dependecies, for example we can create model which manages our blog posts source:
 
 ```php
-class BlogService extends Service
+class BlogService 
 {
     private $source = null;
 
@@ -72,8 +72,6 @@ class BlogService extends Service
     }
 }
 ```
-
-> In a previous example we can simply drop `extends Service` as no shared bindings functionality were used.
 
 Let's try to create more complex model:
 
@@ -100,6 +98,8 @@ class BlogService extends Service
     }
 }
 ```
+
+This time we can extend our model from Service class which will provide us ability to access to variours application components using virtual properties.
 
 > In a given example we are going to cache posts count for 1 hour, following methodic can help us to keep our views and controller ligther.
 
