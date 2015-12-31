@@ -1,30 +1,7 @@
 # Service Classes and Models
 Spiral framework trying to help you to separate database and business logic, since architecture of your application is only limited by your imagination there is no recommended approach of how to organize your models but only few help classes and implentations.
 
-To speed up model development, framework provide you simple class `Spiral\Core\Service` which can give you shorter access to [container and shared bindings](/framework/container.md).
-
-```php
-class Service extends Component
-{
-    use SharedTrait, SaturateTrait;
-
-    /**
-     * @var InteropContainer
-     */
-    protected $container = null;
-
-    /**
-     * Due usage of saturate trait you can skip call for parent __construct method, but in this 
-     * case contrainer will be resolved via global/static scope which is not recommended. 
-     *
-     * @param InteropContainer $container Sugared. Used to drive shared/virtual bindings, if any.
-     */
-    public function __construct(InteropContainer $container = null)
-    {
-        $this->container = $this->saturate($container, InteropContainer::class);
-    }
-}
-```
+To speed up model development, framework provide you simple class `Spiral\Core\Service` which can give you shorter access to [container and shared bindings](/framework/container.md). 
 
 > Every Controller is Service.
 
