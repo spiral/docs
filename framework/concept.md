@@ -6,8 +6,8 @@ applications inside applications (by creating higher level abstractions for busi
 by providing namespace and isolation support for every possible level of your application.
 
 Existed components are loosely coupled not only to each other, but hopefully 
-to your application as well which should provide long term support and updates
-without massing code rewriting.
+to your application as well which should, potentially, provide long term support 
+and updates without massing code rewriting.
 
 Current implementation of core classes and components is intended to be kept light
 and not overcompilcated to ensure that no projects are getting forced into specific
