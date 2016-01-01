@@ -12,4 +12,4 @@ and updates without massing code rewriting.
 Current implementation of core classes and components is intended to be kept light
 and not overcompilcated to ensure that no projects are getting forced into specific
 architecture (i simply don't know what is good architecture for your application can be)
-and developer are given with enought room for experimentation and framework modification.
+so developer are given enought room for experimentation and framework modification.
