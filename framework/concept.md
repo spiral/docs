@@ -1,9 +1,9 @@
 # Concept
 Spiral framework has build as internal platform/tool to modularize development 
-of various applications by improving re-usability to written code. Components
-including Database, ORM, ODM and Stemplter has been build around the idea of writing
-applications inside applications (by creating higher level abstractions for business logic)
-by providing namespacing and isolation of every possible level of your application. 
+of various projects by improving re-usability to written code. Components
+including Database, ORM, ODM and Stemplter has been designed around the idea of writing
+applications inside applications (by creating higher level abstractions for business/domain logic)
+and provide namespacing and isolation of every possible level of your application. 
 
 Existed components are loosely coupled not only to each other, but hopefully 
 to your application as well which should provide long term support and updates
