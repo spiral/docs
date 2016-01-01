@@ -2,7 +2,7 @@
 Spiral framework has build as internal platform/tool to modularize development 
 of various projects by improving re-usability to written code. Components,
 including Database, ORM, ODM and Stemplter has been designed around the idea of writing
-applications inside applications (by creating higher level abstractions for business/domain logic)
+applications inside applications (creating higher level abstractions for business/domain logic)
 by providing namespace and isolation support for every possible level of your application.
 
 Existed components are loosely coupled not only to each other, but hopefully 
