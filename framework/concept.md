@@ -6,7 +6,7 @@ applications inside applications (creating higher level abstractions for busines
 by providing namespace and isolation support for as much levels of your application as possible.
 
 Existed components are loosely coupled not only to each other, but hopefully 
-to your application as well which should, potentially, provide long term support 
+to your application as well, which should, potentially, provide long term support 
 and updates without massing code rewriting.
 
 Current implementation of core classes and components is intended to be kept light
