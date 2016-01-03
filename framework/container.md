@@ -319,7 +319,7 @@ You can always bypass contextual injection using factory with non default set of
 dump($factory->make(Name::class, ['name' => 'abc']));
 ```
 
-> You can also use type reflection as well to resolve needed instance in your dependencies like used for inectable configs.
+> You can also use type reflection as well to resolve needed instance in your dependencies like used for injectable configs.
 
 ## Bindings (see `Spiral\Core\ContainerInterface`)
 As you might notice in a previos sections, there is a lot of mentions for so called bindings. Bindings provide you alibity to link short alias with specific class name or factory, also it can be used to redefine exsited implementation or interface.
@@ -364,7 +364,7 @@ $container->bind(MyInterface::class, MyClass::class);
 $container->bind(MyClass::class, NewClass::class);
 ```
 
-Based on such binding every requested `MyClass` or `MyInterface` going to be resovled using `NewConfigurator` instance. You wish to create short/virtual bindings described above, use following code:
+Based on such binding every requested `MyClass` or `MyInterface` going to be resovled using `NewClass` instance. You wish to create short/virtual bindings described above, use following code:
 
 ```php
 $container->bind('myClass', NewClass::class);
