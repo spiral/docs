@@ -122,13 +122,13 @@ protected function hvmcAction(OtherController $controller)
 Let's check how you can use one controller as gate to a sub controllers set, to do that we will need route first:
 
 ```php
-$http->addRoute(new Route('hmvc', 'account[/<nested>[/<nestedAction>[/<id>]]]', 'AccountController::run'));
+$http->addRoute(new Route('hmvc', 'account[/<nested>[/<action>[/<id>]]]', 'AccountController::run'));
 ```
 
 In your AccountController:
 
 ```php
-public function runAction($nested = null, $nestedAction = null, $id = null)
+public function runAction($nested = null, $action = null, $id = null)
 {
     switch($nested)
     {
@@ -139,12 +139,12 @@ public function runAction($nested = null, $nestedAction = null, $id = null)
             $controller = Account\SettingsController::class;
             break;
         default: 
-            throw new ControllerException("Undefined nested controller {$nested}");
+            throw new ControllerException("Undefined account controller {$nested}");
     }
     
     //Some assertions
     
-    return $this->app->callAction($controller, $nestedAction, compact('id'));
+    return $this->app->callAction($controller, $action, compact('id'));
 }
 ```
 
