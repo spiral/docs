@@ -139,8 +139,9 @@ Since route target will be automatically resolved using factory and DI you can r
 ```php
 class Action extends Service
 {
-    //Since this class is invokable you 
-    public function __invoke()
+    //By default routes treat thier endpoints as PSR-7 compatible
+    //controllers are exception from this rule
+    public function __invoke($request, $response)
     {
         dump($this->request);
         return 'hello world';
@@ -152,4 +153,24 @@ class Action extends Service
 $http->addRoute(new Route('test', 'test', \Actions\Action::class));
 ```
 
-> You can implement method injections by creating additional method inside your action, for example perform, by default route will send you ServerRequestInterface and ResponseInterface into your __invoke method.
+> You can implement method injections by creating additional method inside your action, for example perform (like in consle commands), by default route will send you ServerRequestInterface and ResponseInterface into your __invoke method.
+
+```php
+abstract class Action extends Service
+{
+    //Child class must define perform method with allowed DI
+    public function __invoke()
+    {
+        $reflection = new \ReflectionMethod($this, 'perform');
+        $reflection->setAccessible(true);
+        
+        //Can be received as constructor injection
+        $resolver = $this->container->get(ResolverInterface::class);
+        
+        return $reflection->invokeArgs($this, $resolver->resolveArguments(
+            $reflection, compact('input', 'output')
+        ));
+
+    }
+}
+```
