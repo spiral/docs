@@ -74,7 +74,7 @@ protected function indexAction()
 }
 ```
 
-When no controller under given name can be found, or action is invalid `ControllerException` will be throwed out.
+When no controller under given name can be found, or action is invalid `ControllerException` will be throwed out.s.
 
 ## Default Controller Implementation
 Even if you can easily implement your contoroller using interface only (controllers resolved using `FactoryInterface`, so you can use contructor injections) it might be easier to use pre-created controller implementation `Spiral\Core\Controller`. This implementation provides support for method injections and simplified access to container bindings (every Controller is Service):
