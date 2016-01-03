@@ -14,7 +14,8 @@
       "framework-bootloaders": "Bootloaders",
       "framework-memory": "Application Memory",
       "framework-configs": "Injectable Configs",
-      "framework-modules": "Making Modules"
+      "framework-modules": "Making Modules",
+      "framework-concept": "Concept"
       }
   },
   {
