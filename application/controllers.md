@@ -133,10 +133,10 @@ public function runAction($nested = null, $nestedAction = null, $id = null)
     switch($nested)
     {
         case 'home':
-            $contoller = Nested\HomeController::class;
+            $contoller = Account\HomeController::class;
             break;
-        case 'other':
-            $controller = Nested\OtherController::class;
+        case 'settings':
+            $controller = Account\SettingsController::class;
             break;
         default: 
             throw new ControllerException("Undefined nested controller {$nested}");
@@ -145,6 +145,16 @@ public function runAction($nested = null, $nestedAction = null, $id = null)
     return $this->app->callAction($controller, $nestedAction, compact('id'));
 }
 ```
+
+As result you can call controllers like:
+
+```
+/account/settings/          => Account\SettingsController::indexAction
+/account/settings/save/     => Account\SettingsController::saveAction
+/account/home/addFriend/100 => Account\HomeController::addFriendAction($id = 100)
+```
+
+> There is no real limitation on how deep you can go.
 
 ## Other Approaches
 Spiral framework does not force you to any specific implementation of your application architecture, you can easily remove every controller and replace it with ADR, MVVM and other patters since the only thing which links http layers to controllers is routes and `CoreInterface`:
