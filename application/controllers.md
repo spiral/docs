@@ -120,7 +120,7 @@ protected function hvmcAction(OtherController $controller)
 > Spiral does not have specific implemetation of `View` but rather provides simplifier access to rendering engines, you can create missing models if you need them.
 
 ## Other Approaches
-Spiral framework does not force you to any specific implementation of your application architecture, you can easily remove every controller and replace it with ADR, MMVM and other patters since the only thing which links http layers to controllers is routes and `CoreInterface`:
+Spiral framework does not force you to any specific implementation of your application architecture, you can easily remove every controller and replace it with ADR, MVVM and other patters since the only thing which links http layers to controllers is routes and `CoreInterface`:
 
 ```php
 //Calling different actions of HomeController
