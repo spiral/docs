@@ -35,7 +35,7 @@
     * REWRITE [Custom Commands](console/scaffolding.md)
 * Components
     * [Cache](components/cache.md)
-    * REWRITE [Debug (Loggers, Benchmarks, Dumps)](components/debug.md)
+    * REWRITE [Debug (Monolog, Benchmarks, Dumps)](components/debug.md)
     * [DataEntity Model](components/entity.md)
     * [Encrypter](components/encrypter.md)
     * [Files](components/files.md)
