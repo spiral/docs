@@ -54,7 +54,7 @@ interface ControllerInterface
 }
 ```
 
-As you might notice there is two similar interfaces Core and Controller, Core interface is usually access point to your application (if you using HMVC or MVC), this endpoint can be called from almost any part of your application and by default invoked by Http routes.
+As you might notice there is two similar interfaces Core and Controller, Core interface is usually access point to your application (if you using proposed HMVC or MVC organization), this endpoint can be called from almost any part of your application and by default invoked by Http routes.
 
 Once callAction method of `CoreInterface` invoked implementation must route request to specific controller `callAction` method. On a practice it means that can call any controller in your application or module using following code:
 
