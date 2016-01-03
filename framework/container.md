@@ -79,7 +79,7 @@ session         | Spiral\Session\SessionInterface *(featched from scoped request
 input           | Spiral\Http\Input\InputManager *(only in http scope)*
 cookies         | Spiral\Http\Cookies\CookieManager *(only in http scope)*
 router          | Spiral\Http\Routing\RouterInterface *(only in http scope)*
-responses       | Spiral\Http\Responses\Responder  *(only in http scope)*
+response        | Spiral\Http\Responses\Responder  *(only in http scope)*
 
 > Attention, some bindings are pointing to concrete implementations!
 
