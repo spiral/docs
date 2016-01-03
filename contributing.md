@@ -3,7 +3,7 @@ Feel free to contribute to framework or components development. I will glaldy ac
 
 ## Requiments
 * PSR-2 and PSR-4, soft width 100
-* Every method must have doc comment describing return value and parameters
+* Every method must have doc comment describing return value and parameters, see existed style
 * Test coverage of new functionality
 
 ## Help Needed In
