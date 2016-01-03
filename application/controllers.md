@@ -159,7 +159,7 @@ As result you can call controllers like:
 > There is no real limitation on how deep you can go.
 
 ## Other Approaches
-Spiral does not force you to any specific implementation of your application architecture, you can easily remove every controller and replace it with ADR, MVVM and other patters since the only thing which links http layers to controllers is routes and `CoreInterface`:
+Spiral does not force you to any specific implementation of your application architecture, you can easily remove every controller and replace it with ADR, MVVM and other patterns since the only thing which links http layers to controllers is routes and `CoreInterface`:
 
 ```php
 //Calling different actions of HomeController
