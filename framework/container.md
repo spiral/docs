@@ -268,13 +268,6 @@ protected function indexAction(Database $primary, Database $secondary)
     dump($primary);
     dump($secondary);
 }
-
-//You can also request different cache instance (lazy creation)
-public function cached(CacheStore $storeA, MemcacheStore $storeB)
-{
-    dump($storeA);
-    dump($storeB);
-}
 ```
 
 Both of this examples demonstrates principal of controllable injections which based on dedicating class injection to it's factory using context.
@@ -325,6 +318,8 @@ You can always bypass contextual injection using factory with non default set of
 ```php
 dump($factory->make(Name::class, ['name' => 'abc']));
 ```
+
+> You can also use type reflection as well to resolve needed instance in your dependencies like used for inectable configs.
 
 ## Bindings (see `Spiral\Core\ContainerInterface`)
 As you might notice in a previos sections, there is a lot of mentions for so called bindings. Bindings provide you alibity to link short alias with specific class name or factory, also it can be used to redefine exsited implementation or interface.
