@@ -119,6 +119,33 @@ protected function hvmcAction(OtherController $controller)
 
 > Spiral does not have specific implemetation of `View` but rather provides simplifier access to rendering engines, you can create missing models if you need them.
 
+Let's check how you can use one controller as gate to a sub controllers set, to do that we will need route first:
+
+```php
+$http->addRoute(new Route('hmvc', 'account[/<nested>[/<nestedAction>[/<id>]]]', 'AccountController::run'));
+```
+
+In your AccountController:
+
+```php
+public function runAction($nested = null, $nestedAction = null, $id = null)
+{
+    switch($nested)
+    {
+        case 'home':
+            $contoller = Nested\HomeController::class;
+            break;
+        case 'other':
+            $controller = Nested\OtherController::class;
+            break;
+        default: 
+            throw new ControllerException("Undefined nested controller {$nested}");
+    }
+    
+    return $this->app->callAction($controller, $nestedAction, compact('id'));
+}
+```
+
 ## Other Approaches
 Spiral framework does not force you to any specific implementation of your application architecture, you can easily remove every controller and replace it with ADR, MVVM and other patters since the only thing which links http layers to controllers is routes and `CoreInterface`:
 
