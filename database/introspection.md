@@ -90,7 +90,7 @@ foreach ($schema->getColumns() as $column) {
 
 > Some types can be mapped incorrectly if the table was created outside migrations or ORM. For example, only MySQL has native enum support, all other databases use an enum constraint.
 
-You can find a complete list of available abstract types [here] (syncing.md).
+You can find a complete list of available abstract types [here](/database/declaration.md).
 
 ## Interfaces
 If you want to make your code not depend on a specific implementation, you always talk to schemas using DBAL of interfaces.
