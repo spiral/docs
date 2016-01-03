@@ -444,7 +444,7 @@ with such binding if no other references for class instance exists.
 $this->container->removeBinding(MyService::class);
 ```
 
-### Scoping
+## Scoping
 There is few scenarious when you might want to create some binding only for specific part of code. Such way used a lot inside `HttpDispatcher` and it's middlewares as it provides ability to isolate application request:
 
 ```php
