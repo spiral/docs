@@ -142,6 +142,8 @@ public function runAction($nested = null, $nestedAction = null, $id = null)
             throw new ControllerException("Undefined nested controller {$nested}");
     }
     
+    //Some assertions
+    
     return $this->app->callAction($controller, $nestedAction, compact('id'));
 }
 ```
