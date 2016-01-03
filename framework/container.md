@@ -303,6 +303,12 @@ public function method(Name $john, Name $bob)
 
 > Also, there going to be as alternative way of creating and using contextual injections by declaring special variable in your factory method or class arguments (come in future releases).
 
+You can always bypass contextual injection using factory with non default set of paramerters:
+
+```php
+dump($factory->make(Name::class, ['name' => 'abc']));
+```
+
 ## Bindings (see `Spiral\Core\ContainerInterface`)
 As you might notice in a previos sections, there is a lot of mentions for so called bindings. Bindings provide you alibity to link short alias with specific class name or factory, also it can be used to redefine exsited implementation or interface.
 
