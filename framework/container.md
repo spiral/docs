@@ -327,7 +327,7 @@ As you might notice in a previos sections, there is a lot of mentions for so cal
 The simpliest example of using bindings might look like:
 
 ```php
-$container->bind(SomeInterface::class, MyConfigurator::class);
+$container->bind(SomeInterface::class, MyClass::class);
 ```
 
 You can also bind closure functions to be used to resolve needed instance:
