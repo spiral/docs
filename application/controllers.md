@@ -102,7 +102,7 @@ class HomeController extends Controller
 }
 ```
 
-> When no action set controller will use it's default action, which is "index" (you can overwrite this value as values used for actions prefixes and postfixes, see Controller code).
+> When no action set controller will use it's default action, which is "index" (you can overwrite this value as values used for actions prefixes and postfixes, see Controller code). To customize default controller try overwriting callAction method or constructor (not aware of action to be called).
 
 ## "HMVC"
 Due every controller can be called without nesessary routing you can implement HMVC approach in your application like that:
