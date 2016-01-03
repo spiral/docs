@@ -186,7 +186,7 @@ Container will automatically resolse cascade of dependecies and return us valid 
 > Default spiral container is ment to be fully autowiring (see below) container and all framework code can work without setting up every needed injection, if you really need to use strict wiring - try to replace container by implementing `Spiral\Core\ContainerInterface`.
 
 ### Method Injections
-Besides using class consturtor to inject dependecies, container allow you to apply same procedute for some specified class method. Dependency injection on method pre-implemented for you in spiral `Controller`, `Command` and `Bootloader` classes:
+Besides using class consturtor to inject dependecies, container allow you to apply same procedute for some specific class methods. Dependency injection on method pre-implemented for you in spiral `Controller` (actions), `Command` (perform) and `Bootloader` (boot) classes:
 
 ```php
 protected function indexAction(UserMailer $mailer)
