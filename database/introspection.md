@@ -10,7 +10,7 @@ if ($database->hasTable('users')) {
 }
 ```
 
-> Read how to get access to database instances [here](/databases/overview.md).
+> Read how to get access to database instances [here](/databases/basics.md).
 
 In some cases you want to receive all database tables (array of `Spiral\Database\Table`):
 
