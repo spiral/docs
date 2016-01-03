@@ -458,4 +458,4 @@ try {
 }
 ```
 
-> Almost every framework components/class created using DI or factory, please **do not construct** framework classes directly in your application, use FactoryInterface/Container/DI instead (to prevent breaking changes in future and make your applicationl more flexible).
+> Almost every framework components/class created using DI or factory, please **do not construct** framework classes directly in your application, use FactoryInterface/Container/DI instead (to prevent breaking changes in future and make your application more flexible).
