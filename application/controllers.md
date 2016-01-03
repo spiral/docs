@@ -1,4 +1,10 @@
 # Controllers
+Spiral framework provides simple separation layer between http dispatcher and controller classes - `CoreInterface` which by default binded to your App class.
+
+> To read how to route http request to a specified container [go here](/http/routing.md).
+
+# Controller classes
+
 To better understand what controller is and how it's getting invoked by application let's take a look at two foundation interfaces first:
 
 ```php
