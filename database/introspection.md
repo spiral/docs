@@ -31,7 +31,7 @@ foreach ($database->getTables() as $table) {
 ```
 
 ## Reading table properties using TableSchema
-The TableSchema provides low level access to table information such as column types (internal and abstract), indexes, foreign keys and etc. You can use this information to perform database export or build your own ORM.
+The TableSchema provides low level access to table information such as column types (internal and abstract), indexes, foreign keys and etc. You can use this information to perform database export, build your own ORM or migration mechanism (see [schema declaration](/database/declaration.md)).
 
 Table primary keys:
 
