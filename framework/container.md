@@ -195,6 +195,23 @@ protected function indexAction(UserMailer $mailer)
 }
 ```
 
+By default spiral classes use `ResolverInterface` to retrieve arguments for a specified method or funtion, as in case with factory you can combine resolved and user parameters together:
+
+```php
+$parameters = [
+    'name' => 'value'
+];
+
+$reflection = new \ReflectionMethod($this, 'perform');
+$reflection->setAccessible(true);
+
+$resolver = $this->container->get(ResolverInterface::class);
+return $reflection->invokeArgs($this, $resolver->resolveArguments(
+    $reflection, 
+    $parameters
+));
+```
+
 ### Autowiring
 Spiral container and DI trying to be as ivisible for your code as it possible (some applications can be written with zero configuration). By default spiral will resolve only class constructor arguments based on their declared type, scalar arguments can not be resolved without using `FactoryInterface` hovewer container might use argument default value if it presented.
 
