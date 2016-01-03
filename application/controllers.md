@@ -170,7 +170,6 @@ abstract class Action extends Service
         return $reflection->invokeArgs($this, $resolver->resolveArguments(
             $reflection, compact('input', 'output')
         ));
-
     }
 }
 ```
