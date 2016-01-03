@@ -25,7 +25,7 @@
     * REWRITE [Request Flow](http/flow.md)
     * REWRITE [Request and InputManager](http/input.md)
     * REWRITE [Responses](http/responses.md)
-    * REWRITE [Middlewares](http/middlewares.md)
+    * REWRITE [Middlewares/Filters](http/middlewares.md)
     * REWRITE [Cookies](http/cookies.md)
     * REWRITE [Routing](http/routing.md)
     * REWRITE [Request Filters](http/filters.md)
