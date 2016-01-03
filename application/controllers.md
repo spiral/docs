@@ -159,7 +159,7 @@ $http->addRoute(new Route('test', 'test', \Actions\Action::class));
 abstract class Action extends Service
 {
     //Child class must define perform method with allowed DI
-    public function __invoke()
+    public function __invoke($request, $response)
     {
         $reflection = new \ReflectionMethod($this, 'perform');
         $reflection->setAccessible(true);
@@ -168,7 +168,8 @@ abstract class Action extends Service
         $resolver = $this->container->get(ResolverInterface::class);
         
         return $reflection->invokeArgs($this, $resolver->resolveArguments(
-            $reflection, compact('input', 'output')
+            $reflection,
+            compact('request', 'response')
         ));
     }
 }
