@@ -12,7 +12,8 @@ and updates without massing code rewriting.
 Current implementation of core classes and components is intended to be kept light
 and not overcompilcated (usability and code readability is important) to ensure that
 no projects are getting forced into specific "ideal" architecture so developer are given 
-enought room for experimentation and framework modification.
+enought room for experimentation and framework modification (for obvious reasons you
+have to control code quality by youself).
 
 If you have an idea how to improve code reusability or unifify framework interfaces be
 free to propose your ideas on a [forum](https://groups.google.com/forum/#!forum/spiral-framework).
