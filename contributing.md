@@ -9,9 +9,10 @@ Feel free to contribute to framework or components development. I will glaldy ac
 ## Help Needed In
 * Test coverage of existed functionality (slowly doing by myself, currenly relying on [acceptance/compilation tests](https://travis-ci.org/spiral/application))
 * Functionality proposals
-* Code quality feedback and proposals (i'd bet there is decent amount of mistakes)
+* Code quality feedback and proposals (i bet there is decent amount of mistakes)
 * Advices and critics
 * Automatic splitting for components [repository](https://github.com/spiral/components)
+* Grammar and spelling fixes :(
 * Flexibility proposals (so far there almost no events in framework and at this point i'm too afraid to add any)
 * Something important missing in this guide? Let me know! 
 
