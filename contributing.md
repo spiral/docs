@@ -1,5 +1,5 @@
 # Contributing
-Feel free to contribute to framework or components development. I will glaldy accept your pull requests if it does match provided requiments and do not adds extra complexity to framework (see [concept](/framework/concept.md)).
+Feel free to contribute to framework or components development. I will glaldy accept your pull requests if it does match provided requiments and do not adds extra complexity to framework (see framework [concept](/framework/concept.md)).
 
 ## Requiments
 * PSR-2 and PSR-4, soft width 100
