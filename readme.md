@@ -69,5 +69,3 @@
 * Modules and Extensions
     * REWRITE [Profiler](modules/profiler.md)
     * Scaffolding
-
-> This guide is automatically reflected [here](put-prod-url).
