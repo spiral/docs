@@ -12,7 +12,6 @@
     * [Application Memory](framework/memory.md)
     * [Injectable Configs](framework/configs.md)
     * [Making Modules](framework/modules.md)
-    * [Concept](framework/concept.md)
 * Application
     * [Directory structure](application/directories.md)
     * [Startup Flow](application/startup.md)
