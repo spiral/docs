@@ -16,7 +16,7 @@ This simplifies the view definition when we are talking about footers, headers a
     This is news feed...
     <div class="content">
         <div class="element">
-            <?= \Spiral\Support\StringHelper::random(32) ?>
+            <?= \Spiral\Support\Strings::random(32) ?>
         </div>
     </div>
 </div>
@@ -91,7 +91,7 @@ First, we can realize that switching from the render method to templater created
     This is news feed...
     <div class="content">
         <div class="element">
-            <?= \Spiral\Support\StringHelper::random(${previewSize | 32}) ?>
+            <?= \Spiral\Support\Strings::random(${previewSize | 32}) ?>
         </div>
     </div>
 </div>
