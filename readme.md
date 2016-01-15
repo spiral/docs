@@ -68,3 +68,4 @@
 * Modules and Extensions
     * REWRITE [Profiler](modules/profiler.md)
     * Scaffolding
+    * Security
