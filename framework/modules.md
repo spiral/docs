@@ -2,7 +2,7 @@
 Spiral framework will be useless without an ability to alter it's core functionality, connect extensions, add resources or visual plugins (widgets/tags). Any of this features can be achieved using ModuleManager and Bootloaders.
 
 ## Writing Bootloader
-In some cases your module might need to define set of container bindings or bootload specific code, in this case you can simply use technique described in [bootloaders](/framework/bootloaders.md) section.
+Often your module might need to define set of container bindings or bootload specific code, in this case you can simply use technique described in [bootloaders](/framework/bootloaders.md) section.
 
 > In some cases (for example, when you package contains only widgets or delcarative singletons) you might skip Bootloader creation for your module.
 
@@ -49,7 +49,7 @@ public function publish(PublisherInterface $publisher, DirectoriesInterface $dir
     //You can either publish whole directory content
     $publisher->publishDirectory(
         __DIR__ . '../resources/',
-        $directories->directory('webroot') . 'resources/',
+        $directories->directory('public') . 'resources/',
         PublisherInterface::OVERWRITE
     );
 }
@@ -173,3 +173,4 @@ Publish command does not require any confirmation and usually used when module g
 
 > Check spiral [toolkit](https://github.com/spiral/toolkit/blob/master/source/ToolkitModule.php) or [profiler](https://github.com/spiral/profiler/blob/master/source/ProfilerModule.php) repositories to get some examples.
 You should also remember to add your module path into tokenizer config if your code contain ORM/ODM entities or console commands which has to be automatically located by ClassLocator or InvocationLocator.
+Use path like `directory('libraries') . 'vendor/module'`.

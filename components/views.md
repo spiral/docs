@@ -2,7 +2,7 @@
 The Spiral view manager is a part of the framework bundle and not the components set. The default implementation includes support for multiple rendering engines (compiler + renderer), caching, cache dependencies and **view namespaces**.
 
 ## A few examples
-Before we start to dig into some of the features and functionality of ViewManager, let's examine a few examples. First, we have to create a view file to be rendered. Like we see in many other frameworks, you can pass variables into this file. We are going to name our file "demo.php" and place it into "application/views" directory.
+Before we start to dig into some of the features and functionality of ViewManager, let's examine a few examples. First, we have to create a view file to 
 
 ```php
 This is a demo view file: <?= $value ?>

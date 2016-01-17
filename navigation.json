@@ -4,7 +4,8 @@
     "links": {
       "readme": "Table of Contents",
       "installation": "Install and Configure",
-      "contributing": "Contributing"
+      "contributing": "Contributing",
+      "license": "License"
     }
   },
   {
@@ -15,7 +16,7 @@
       "framework-memory": "Application Memory",
       "framework-configs": "Injectable Configs",
       "framework-modules": "Making Modules"
-    }
+      }
   },
   {
     "title": "Application",
@@ -23,10 +24,10 @@
       "application-directories": "Directory Structure",
       "application-startup": "Startup Flow",
       "application-errors": "Error Handling",
-      "application-entities": "<s>Sources and Data Entities</s>",
-      "application-services": "<s>Models and Services</s>",
+      "application-entities": "Data Entities and Sources",
+      "application-services": "Models and Services",
       "application-views": "<s>Views</s>",
-      "application-controllers": "<s>Controllers</s>"
+      "application-controllers": "Controllers"
     }
   },
   {
@@ -66,7 +67,7 @@
     }
   },
   {
-    "title": "Stempler",
+    "title": "Stempler Templates",
     "links": {
       "stempler-basics": "Basic Usage",
       "stempler-expert": "Extended Usage",
@@ -86,7 +87,7 @@
       "database-overview": "<s>Overview</s>",
       "database-introspection": "Schema Introspection",
       "database-declaration": "<s>Schema Declaration</s>",
-      "database-builders": "<s>Query Builders</s>"
+      "database-builders": "Query Builders"
     }
   },
   {

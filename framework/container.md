@@ -79,7 +79,7 @@ session         | Spiral\Session\SessionInterface *(featched from scoped request
 input           | Spiral\Http\Input\InputManager *(only in http scope)*
 cookies         | Spiral\Http\Cookies\CookieManager *(only in http scope)*
 router          | Spiral\Http\Routing\RouterInterface *(only in http scope)*
-responses       | Spiral\Http\Responses\Responder  *(only in http scope)*
+response        | Spiral\Http\Responses\Responder  *(only in http scope)*
 
 > Attention, some bindings are pointing to concrete implementations!
 
@@ -134,7 +134,7 @@ Following methodic can work very well in combination with good IDE and provides 
 
 At any moment in future, you can simply create needed property in your class and set it's value using dependency injection (see below).
 
-> Ideally you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.) and DI for your business logic.
+> Ideally you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.) and DI for your business logic. Short bindings are not used in spiral components.
 
 ## FactoryInterface
 In some cases you might need to construct needed class without specifying each of it's dependencies, in this case you can use specific interface `FactoryInterface` which can help you to handle this task:
@@ -186,13 +186,30 @@ Container will automatically resolse cascade of dependecies and return us valid 
 > Default spiral container is ment to be fully autowiring (see below) container and all framework code can work without setting up every needed injection, if you really need to use strict wiring - try to replace container by implementing `Spiral\Core\ContainerInterface`.
 
 ### Method Injections
-Besides using class consturtor to inject dependecies, container allow you to apply same procedute for some specified class method. Dependency injection on method pre-implemented for you in spiral `Controller`, `Command` and `Bootloader` classes:
+Besides using class consturtor to inject dependecies, container allow you to apply same procedute for some specific class methods. Dependency injection on method pre-implemented for you in spiral `Controller` (actions), `Command` (perform) and `Bootloader` (boot) classes:
 
 ```php
 protected function indexAction(UserMailer $mailer)
 {
     //...
 }
+```
+
+By default spiral classes use `ResolverInterface` to retrieve arguments for a specified method or funtion, as in case with factory you can combine resolved and user parameters together:
+
+```php
+$parameters = [
+    'name' => 'value'
+];
+
+$reflection = new \ReflectionMethod($this, 'perform');
+$reflection->setAccessible(true);
+
+$resolver = $this->container->get(ResolverInterface::class);
+return $reflection->invokeArgs($this, $resolver->resolveArguments(
+    $reflection, 
+    $parameters
+));
 ```
 
 ### Autowiring
@@ -251,13 +268,6 @@ protected function indexAction(Database $primary, Database $secondary)
     dump($primary);
     dump($secondary);
 }
-
-//You can also request different cache instance (lazy creation)
-public function cached(CacheStore $storeA, MemcacheStore $storeB)
-{
-    dump($storeA);
-    dump($storeB);
-}
 ```
 
 Both of this examples demonstrates principal of controllable injections which based on dedicating class injection to it's factory using context.
@@ -303,13 +313,21 @@ public function method(Name $john, Name $bob)
 
 > Also, there going to be as alternative way of creating and using contextual injections by declaring special variable in your factory method or class arguments (come in future releases).
 
+You can always bypass contextual injection using factory with non default set of paramerters:
+
+```php
+dump($factory->make(Name::class, ['name' => 'abc']));
+```
+
+> You can also use type reflection as well to resolve needed instance in your dependencies like used for injectable configs.
+
 ## Bindings (see `Spiral\Core\ContainerInterface`)
 As you might notice in a previos sections, there is a lot of mentions for so called bindings. Bindings provide you alibity to link short alias with specific class name or factory, also it can be used to redefine exsited implementation or interface.
 
 The simpliest example of using bindings might look like:
 
 ```php
-$container->bind(SomeInterface::class, MyConfigurator::class);
+$container->bind(SomeInterface::class, MyClass::class);
 ```
 
 You can also bind closure functions to be used to resolve needed instance:
@@ -346,7 +364,7 @@ $container->bind(MyInterface::class, MyClass::class);
 $container->bind(MyClass::class, NewClass::class);
 ```
 
-Based on such binding every requested `MyClass` or `MyInterface` going to be resovled using `NewConfigurator` instance. You wish to create short/virtual bindings described above, use following code:
+Based on such binding every requested `MyClass` or `MyInterface` going to be resovled using `NewClass` instance. You wish to create short/virtual bindings described above, use following code:
 
 ```php
 $container->bind('myClass', NewClass::class);
@@ -426,7 +444,7 @@ with such binding if no other references for class instance exists.
 $this->container->removeBinding(MyService::class);
 ```
 
-### Scoping
+## Scoping
 There is few scenarious when you might want to create some binding only for specific part of code. Such way used a lot inside `HttpDispatcher` and it's middlewares as it provides ability to isolate application request:
 
 ```php
@@ -440,4 +458,4 @@ try {
 }
 ```
 
-> Almost every framework components/class created using DI or factory, please **do not construct** framework classes directly in your application, use FactoryInterface/Container/DI instead (to prevent breaking changes in future and make your applicationl more flexible).
+> Almost every framework components/class created using DI or factory, please **do not construct** framework classes directly in your application, use FactoryInterface/Container/DI instead (to prevent breaking changes in future and make your application more flexible).

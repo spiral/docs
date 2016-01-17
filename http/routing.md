@@ -1,5 +1,5 @@
 # Routing
-Like other frameworks, Spiral provides a pre-built mechanism to manage your application's url structure. This operation is performed by the Http `Router` and `Route` classes.
+Like other frameworks, Spiral provides a pre-built mechanism to manage your application's url structure. This operations is performed by the Http `Router` and `Route` classes.
 
 ## What is Router?
 Router is the default http endpoint (see Http Request Flow) which accepts `ServerRequestInterface` applies it to a set of created routes to find match (based on Uri, method or any other request property). When the route is matched, Router will execute it by providing instances of `ServerRequestInterface`, `ResponseInterface` and `ContainerInterface`. The rest of the logic (what controller is called and what parameters are passed) is located in the `Route` class itself.
@@ -304,10 +304,12 @@ You should only provide a route name and set of parameters to be interpolated in
 
 ```php
 //routeName = 'profile[/<id>]'
-dump($this->router->createUri('routeName', ['id' => $user->id, 'success' => 'yes'])); // /profile/ID?success=yes
+dump($this->router->uri('routeName', ['id' => $user->id, 'success' => 'yes'])); // /profile/ID?success=yes
 ```
 
 Additionally, you can specify the route name in a format "controller::action", so that the name will be interpolated into a pattern defined in the default route:
 ```php
-dump($this->router->createUri('users::edit', ['id' => $user->id, 'success' => 'yes'])); // /users/edit/ID?success=yes
+dump($this->router->uri('users::edit', ['id' => $user->id, 'success' => 'yes'])); // /users/edit/ID?success=yes
 ```
+
+> You can also use short function `uri` which will route request to a currently active Router [scope](/framework/container.md).

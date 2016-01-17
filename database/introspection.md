@@ -10,7 +10,7 @@ if ($database->hasTable('users')) {
 }
 ```
 
-> Read how to get access to database instances [here](/databases/overview.md).
+> Read how to get access to database instances [here](/databases/basics.md).
 
 In some cases you want to receive all database tables (array of `Spiral\Database\Table`):
 
@@ -31,7 +31,7 @@ foreach ($database->getTables() as $table) {
 ```
 
 ## Reading table properties using TableSchema
-The TableSchema provides low level access to table information such as column types (internal and abstract), indexes, foreign keys and etc. You can use this information to perform database export or build your own ORM.
+The TableSchema provides low level access to table information such as column types (internal and abstract), indexes, foreign keys and etc. You can use this information to perform database export, build your own ORM or migration mechanism (see [schema declaration](/database/declaration.md)).
 
 Table primary keys:
 
@@ -90,7 +90,7 @@ foreach ($schema->getColumns() as $column) {
 
 > Some types can be mapped incorrectly if the table was created outside migrations or ORM. For example, only MySQL has native enum support, all other databases use an enum constraint.
 
-You can find a complete list of available abstract types [here] (syncing.md).
+You can find a complete list of available abstract types [here](/database/declaration.md).
 
 ## Interfaces
 If you want to make your code not depend on a specific implementation, you always talk to schemas using DBAL of interfaces.

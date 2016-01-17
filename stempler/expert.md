@@ -9,14 +9,14 @@ Some content...
 <?= $this->container->views->render('another-view', [...]) ?>
 ```
 
-This simplifies the view definition when we are talking about footers, headers and navigations. However there are many situations where including another view is more beneficial. For example, we can create a unviversal view to render some newsfeed or display a comment among other things. Let's start with a very simple example where we have a view dedicated to render a newsline in many different areas of your website. Let's try to locate this view in "app/views/elements/feed.php".
+This simplifies the view definition when we are talking about footers, headers and navigations. However there are many situations where including another view is more beneficial. For example, we can create a unviversal view to render some newsfeed or display a comment among other things. Let's start with a very simple example where we have a view dedicated to render a newsline in many different areas of your website. Let's try to locate this view in "app/views/elements/feed.dark.php".
 
 ```html
 <div class="news">
     This is news feed...
     <div class="content">
         <div class="element">
-            <?= \Spiral\Support\StringHelper::random(32) ?>
+            <?= \Spiral\Support\Strings::random(32) ?>
         </div>
     </div>
 </div>
@@ -91,7 +91,7 @@ First, we can realize that switching from the render method to templater created
     This is news feed...
     <div class="content">
         <div class="element">
-            <?= \Spiral\Support\StringHelper::random(${previewSize | 32}) ?>
+            <?= \Spiral\Support\Strings::random(${previewSize | 32}) ?>
         </div>
     </div>
 </div>

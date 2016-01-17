@@ -1,14 +1,18 @@
-## Schema Syncronization  - REQUIRES UPDATE
+## Schema Declaration  - REQUIRES UPDATE DUE DECLARATIVE CREATION NOW DROPS(!!!!) NON DECLARED SCHEMA ENTITIES (COLUMNS AND ETC!!) - NEEDED FOR BETTER SCHEMA SYNCRONIZAION
 One of the most important part of Spiral DBAL is ability to alter database table schema using set of entity abstractions. Such abstractions provide ability to describe desired table rather than create it operation by operation.
 
 ## Principle of Work
 Before any operation/declaration can be applied to table schema, DBAL will load currently existed structure from database and [normalize it into internal format] (reading.md). As result, you are allowed to apply modification to table schema using declarative way instead of imperative, once schema **save** are requested - DBAL will generate set of creation and altering operations based on difference between declared and existed schemas. 
-> Unfortunatelly some SQL features got simplified to fit, for example primary table key is described as column type, not index. Another side effect of using this methodic - you can not remove any table element like column or index by *non declaring* it.
+> Unfortunatelly some SQL features got simplified to fit, for example primary table key is described as column type, not index.
 
 You can also use additional schema operations to remove or rename table elements.
 
+> Please remember to execute multiple table syncronization using `SyncronizationBus` class, this implementation will sort your tables in a vaild dependency order and execute every operation under connection specific transaction, see examples below.
+
 ## To Start
-To get instance of TableSchema which we can manipulate with, we can use similar way described in [Schema Readers (make sure your read them first)] (reading.md). The only difference - we don't need to check table existence. We are going to use controller actions as example:
+To get instance of TableSchema which we can manipulate with, we can use similar way described in [Schema Introspection (make sure your read them first)](/database/instrospection.md). The only difference - we don't need to check table existence. 
+
+Let's use controller action to write an example:
 
 ```php
 protected function indexAction(Database $database)
@@ -314,37 +318,4 @@ To remove table simply run:
 
 ```php
 $schema->drop();
-```
-
-## Operational Methods
-Way of how schemas work in DBAL can be very useful when you trying to create your own ORM or sync schema based on some configuration, however such approach can be hard to use in migrations when you migh want to have more control on operations. Fortunatelly TableSchema class provides few simple methods used to control declarations inside them:
-
-```php
-$schema = $database->table('table_name')->schema();
-
-//Such method will allow only to create new table,
-//if table already exsits an exception will be thrown
-$schema->create(function (AbstractTable $table) {
-    $table->primary('id');
-    $table->string('name');
-});
-```
-
-To add new columns, indexes or references to existed table use:
-
-```php
-//Such method will thrown an exception if any column or index were
-//altered (not created) inside closure
-$schema->add(function (AbstractTable $table) {
-    $table->string('new_column');
-});
-```
-
-To alter existed schema and forbid new elements creation we can use method 'alter':
-
-```php
-$schema->alter(function (AbstractTable $table) {
-    //An exception will be thrown if "new_column" does not exists
-    $table->text('new_column');
-});
 ```

@@ -20,18 +20,18 @@ When application raises uncaught exception, such exception will be handled by Co
 interface SnapshotInterface
 {
     /**
-     * Associated exceptiom.
+     * Associated exception.
      *
      * @return \Throwable
      */
-    public function exception();
+    public function getException();
 
     /**
      * Must return formatted exception message including exception class, location and etc.
      *
      * @return string
      */
-    public function formattedMessage();
+    public function getMessage();
 
     /**
      * Report or store snapshot in known location. Used to store exception information for future
@@ -124,7 +124,7 @@ $this->container->bind(Debug\SnapshotInterface::class, \Snapshots\Whoops::class)
 
 Since this moment every exeception will be rendered using Whoops (as with spiral snaphots you can turn your handler only for your enviroment).
 
-> You can also simply find PSR7 middleware for Whoops.
+> You can also simply find [PSR7 middleware for Whoops](https://github.com/oscarotero/psr7-middlewares).
 
 ## More control
 If you want to get more control over exception handling in your application you use following techniques:
