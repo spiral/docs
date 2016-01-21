@@ -32,7 +32,7 @@
     * REWRITE [Http Errors](http/errors.md)
 * Console Dispatcher
     * REWRITE [Overview](console/commands.md)
-    * REWRITE [Custom Commands](console/scaffolding.md)
+    * [Custom Commands](console/scaffolding.md)
 * Components
     * [Cache](components/cache.md)
     * REWRITE [Debug (Monolog, Benchmarks, Dumps)](components/debug.md)
