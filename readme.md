@@ -70,3 +70,4 @@
     * REWRITE [Profiler](modules/profiler.md)
     * Scaffolding
     * Security
+    * Vault
