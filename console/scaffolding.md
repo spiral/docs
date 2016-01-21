@@ -1,7 +1,7 @@
 # Custom Commands
-You can add your custom commands to your own application or even module by simply making sure that command class can be loaded and executing command `console:refresh` to find and index your command.
+You can add your custom commands to your own application or even module by simply making sure that command class can be loaded and executing command `console:reload` to find and index your command.
 
-To generate blank command we can execute `create:command name`, as result we will get something like that:
+To generate blank command we can execute `create:command name`, as result following class will be created for us (based on scaffolder settings):
 
 ```php
 class SomeCommand extends Command
@@ -10,30 +10,26 @@ class SomeCommand extends Command
      * @var string
      */
     protected $name = 'some';
-        
+
     /**
      * @var string
      */
-    protected $description = '';
-        
+    protected $description = null;
+
     /**
-     * @var string
+     * @var array
      */
-    protected $arguments = [
-        
-    ];
-        
+    protected $attributes = [];
+
     /**
-     * @var string
+     * @var array
      */
-    protected $options = [
-        
-    ];
-        
+    protected $options = [];
+
     /**
-     * Perform command.
+     * Perform command
      */
-    public function perform()
+    protected function perform()
     {
     }
 }
