@@ -19,7 +19,7 @@
     * [Error Handling](application/errors.md)
     * [Data Entities and Sources](application/entities.md)
     * [Models and Services](application/services.md)
-    * REWRITE [Views](application/views.md)
+    * [Views and Engines](application/views.md)
     * [Controllers](application/controllers.md)
 * Http Dispatcher
     * REWRITE [Request Flow](http/flow.md)
