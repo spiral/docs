@@ -5,7 +5,7 @@
     * [Installation and Configuration](installation.md)
     * [Contributing](contributing.md)
     * [Forum](https://groups.google.com/forum/#!forum/spiral-framework)
-    * [License](framework/lincense.md)
+    * [License](lincense.md)
 * Framework
     * [Container, Factory, DI](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
