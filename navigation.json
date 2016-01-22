@@ -114,6 +114,7 @@
     "title": "Modules and Extensions",
     "links": {
       "modules-profiler": "<s>Profiler</s>",
+      "modules-scaffolding": "<s>Scaffolding</s>",
       "modules-security": "<s>Secutiry</s>",
       "modules-toolkit": "<s>Toolkit</s>",
       "modules-vault": "<s>Vault</s>"
