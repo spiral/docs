@@ -298,11 +298,9 @@ If you will carefully read view configuration file, you will notice one section 
 ],
 ```
 
-This section defined set of enviroment dependencies for view cache, in other word when any of this values change new cache version will be created. 
+This section define set of enviroment dependencies for a view cache, in other words when any of this values (value resolved using contrainer: `['translator', 'getLocale']` = `$container->get('translator')->getLocale()`) changes - new cache version will be created.
 
-On a practice it allows us, to perform some operations on view source **before** it will be given to view engine.
-
-For example, the most benefitial use of this feature is supplied by `TranslateModifier` which will replace every string embraced with `[[` and `]]` symbols into locate specific text.
+On a practice it allows us, to perform some operations on view source **before** it will be given to view engine. For example, the most benefitial use of this feature is supplied by `TranslateModifier` which will replace every string embraced with `[[` and `]]` symbols into locate specific text.
 
 ```php
 <extends:layouts.html5 title="[[Welcome To Spiral]]" git="https://github.com/spiral"/>
@@ -311,8 +309,6 @@ For example, the most benefitial use of this feature is supplied by `TranslateMo
    [[Test text]
 </define:body>
 ```
-
-Every time website locale got switched new view cache version to be created.
 
 You can define your own modifier by implementing `Spiral\Views\ModifierInterface`:
 
@@ -341,7 +337,7 @@ interface ModifierInterface
 > Since modifiers are resolved using FactoryInterface so you can define any needed injection in your constuctor + [EnvironmentInterface $environment].
 
 ## View Processors (Stempler specific functionality)
-Separatelly from view modifies Stempler engine provides ability to define set of view processors which are applied to are compiled view source, you can implement your processor via interface `Spiral\Views\ProcessorInterface`
+Separatelly from view modifies Stempler engine provides ability to define set of view processors which are applied to are compiled view source **after** engine, you can implement your processor via interface `Spiral\Views\ProcessorInterface`
 
 ```php
 interface ProcessorInterface
@@ -357,10 +353,10 @@ interface ProcessorInterface
 }
 ```
 
-> For example you can create html prettyfier.
+> For example you can create html prettify processor.
 
 ## Accessing Container inside view
-In some cases you might need to get access to your models or services from a view source. Since, by default, spiral renders your view files inside `NativeView` class you are given ability to access container using `$this->container` property.
+In some cases you might want to get access to your models or services from a view source without passing it's by reference in every render method. Since, by default, spiral renders your view files inside `Spiral\Views\Engines\Native\NativeView` class you are given ability to access container using `$this->container` property.
 
 ```php
 Hello world, <?= $name ?>!
@@ -368,7 +364,7 @@ Hello world, <?= $name ?>!
 <?php dump($this->container->get(MyService::class)); ?>
 ```
 
-In some cases you can use even shorter way to get access to container and your application via functions `app` (defined in your app file) or `spiral`:
+Alternatively you can use even shorter way to get access to container and your application via functions `app` (defined in your app file) or `spiral`:
 
 ```php
 Hello world, <?= $name ?>!
