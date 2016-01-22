@@ -20,6 +20,7 @@
     * [Data Entities and Sources](application/entities.md)
     * [Models and Services](application/services.md)
     * [Controllers](application/controllers.md)
+    * [Views and Templates](application/views.md)
 * Http Dispatcher
     * REWRITE [Request Flow](http/flow.md)
     * REWRITE [Request and InputManager](http/input.md)
