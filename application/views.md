@@ -1,7 +1,7 @@
-# Application Views
-By default your locate your layouts and page templates into `app/views` directory, once template 
-created (for example `app/views/templater.php`) you can render it's content using `ViewsInterface` 
-or short bindings views in your services.
+# Application Views and Templates
+By default you can locate your layouts and page templates into `app/views` directory which is associated
+with defult [view namespace](/components/views.md), once template has been created (for example `app/views/templater.php`) 
+you can render it using `ViewsInterface` or short bindings `views` in your services.
 
 ```php
 public function indexAction()
