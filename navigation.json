@@ -61,7 +61,7 @@
       "components-pagination": "<s>Pagination</s>",
       "components-tokenizer": "<s>Tokenizer</s>",
       "components-translator": "<s>Translator</s>",
-      "components-views": "<s>Views</s>",
+      "components-views": "Views and Engines",
       "components-validation": "<s>Validation</s>",
       "components-reactor": "<s>Reactor</s>"
     }
