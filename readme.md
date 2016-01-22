@@ -58,12 +58,12 @@
     * [Query Builders](database/builders.md)
 * Spiral ORM
     * REWRITE [Record Model and Database Scaffolding](orm/basics.md)
-    * WRITE [Record Sources](orm/sources.md)
+    * WRITE [Sources and Selectors](orm/sources.md)
     * REWRITE [Relations](orm/relations.md)
     * REWRITE [Eager loading and Entity Cache](orm/loading.md)
 * Spiral ODM
     * REWRITE [Documents and Databases](odm/basics.md)
-    * WRITE [Document Sources](orm/sources.md)
+    * WRITE [Sources and Selectors](orm/sources.md)
     * REWRITE [Compositions, Aggreagations](odm/oop.md)
     * REWRITE [Inheritance](odm/inheritance.md)
     * [JSON and Standalone Documents](odm/standalone.md)
