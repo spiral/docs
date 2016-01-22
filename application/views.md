@@ -12,4 +12,4 @@ public function indexAction()
 }
 ```
 
-> Read more about how views work [here](/components/views.md). To find guide for Spiral Stemple engine, go [here](/stemplers/basics.md).
+> Check out guide for [View Component](/components/views.md) and [Stemple Engine](/stemplers/basics.md).
