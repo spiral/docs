@@ -21,6 +21,8 @@
     * [Models and Services](application/services.md)
     * [Controllers](application/controllers.md)
     * [Views and Templates](application/views.md)
+* Skeleton Application
+   * [Description](skeleton/description) 
 * Http Dispatcher
     * REWRITE [Request Flow](http/flow.md)
     * REWRITE [Request and InputManager](http/input.md)
