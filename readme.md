@@ -42,7 +42,7 @@
     * REWRITE [Pagination](components/pagination.md)
     * REWRITE [Tokenizer](components/tokenizer.md)
     * REWRITE [Translator](components/translator.md)
-    * REWRITE [Views](components/views.md)
+    * [Views](components/views.md)
     * [Validation](components/validation.md)
 * Stempler Templates
     * [Basic Usage](stempler/basics.md)
