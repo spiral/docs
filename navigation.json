@@ -27,7 +27,8 @@
       "application-errors": "Error Handling",
       "application-entities": "Data Entities and Sources",
       "application-services": "Models and Services",
-      "application-controllers": "Controllers"
+      "application-controllers": "Controllers",
+      "application-views": "Views and Templates"
     }
   },
   {
