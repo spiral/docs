@@ -41,7 +41,7 @@
     * [DataEntity Model](components/entity.md)
     * [Encrypter](components/encrypter.md)
     * [Files](components/files.md)
-    * REWRITE [Pagination](components/pagination.md)
+    * [Pagination](components/pagination.md)
     * REWRITE [Tokenizer](components/tokenizer.md)
     * REWRITE [Translator](components/translator.md)
     * [Views and Engines](components/views.md)
