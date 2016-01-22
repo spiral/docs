@@ -95,7 +95,7 @@
     "title": "ORM Engine",
     "links": {
       "orm-basics": "<s>Records and Scaffolding</s>",
-      "orm-sources": "<s>Record Sources</s>",
+      "orm-sources": "<s>Sources and Selectors</s>",
       "orm-relations": "<s>Relations</s>",
       "orm-loading": "<s>Eager loading</s>"
     }
@@ -104,7 +104,7 @@
     "title": "ODM Engine",
     "links": {
       "odm-basics": "<s>Documents and Databases</s>",
-      "orm-sources": "<s>Document Sources</s>",
+      "orm-sources": "<s>Sources and Selectors</s>",
       "odm-oop": "<s>Composite and Aggregate</s>",
       "odm-inheritance": "<s>Inheritance</s>",
       "odm-standalone": "Standalone Usage",
