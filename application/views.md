@@ -139,7 +139,7 @@ As mention at top of this page spiral view component can work and automatically 
 ]
 ```
 
-View engines applied automatically based on a file extension, for example we can rename our `test.php` view file into `test.dark.php` which will allows us to use powerful Stempler compiler. Sample way to can use twig templates (`sample.twig`):
+View engines applied automatically based on a file extension, for example we can rename our `test.php` view file into `test.dark.php` which will allows us to use powerful Stempler compiler. Same way can be used for Twig engine (`sample.twig`):
 
 ```twig
 {% extends "layouts/layout.twig" %}
