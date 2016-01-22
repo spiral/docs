@@ -239,7 +239,7 @@ For obvious reasons your might want to change layout colors, logotypes and etc, 
 ],
 ```
 
-As you can see this directory located higher that original vault extension files, which gives us ability to redefine our layout settings by creating file in `app/views/vault/layout.dark.php`:
+As you can see this directory located before original vault extension which gives us ability to redefine our layout settings by creating file in `app/views/vault/layout.dark.php`:
 
 ```php
 <dark:extends path="vault:layouts/root"/>
