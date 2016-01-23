@@ -53,8 +53,8 @@
   {
     "title": "Console Dispatcher",
     "links": {
-      "console-overview": "<s>Overview</s>",
-      "http-scaffolding": "<s>Custom Commands</s>"
+      "console-overview": "Overview",
+      "http-scaffolding": "Custom Commands"
     }
   },
   {
