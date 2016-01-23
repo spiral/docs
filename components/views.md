@@ -23,8 +23,6 @@ public function indexAction(ViewsInterface $views)
 }
 ```
 
-As you can notice view component will automatically create appropriate 
-
 ## View Engines
 As mention at top of this page spiral view component can work and automatically select multiple view engines. Default skeleton application includes 3 view engines declared in a view config file:
 
