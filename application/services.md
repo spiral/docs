@@ -75,12 +75,12 @@ class BlogService extends Service
     }
     
     //You can move some complex operations into services as well
-    public function setImage(Post $post, $filename)
+    public function saveWithImage(Post $post, $filename, &$errors = null)
     {
         //Resize image
         //Store into storage
         
-        if ($this->source->save($post)) {
+        if ($this->source->save($post, $errors)) {
             //Drop old post image
             return true;
         } else {
