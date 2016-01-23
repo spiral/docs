@@ -73,6 +73,13 @@ class BlogService extends Service
     
         return $count;
     }
+    
+    public function setImage(Post $post, $filename)
+    {
+        //Resize image
+        //Store into storege
+        //Save post into source and etc
+    }
 }
 ```
 
