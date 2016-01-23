@@ -13,7 +13,6 @@ class UsersService extends Service
 {
     public function getCount()
     {
-        //This is better to be done using DI, see below
         return $this->db->table('users')->count();
     }
 }
