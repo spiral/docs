@@ -74,8 +74,8 @@ class BlogService extends Service
         return $count;
     }
     
-    //You can move some complex operations into services as well this
-    //will let you to reuse same code in multiple controllers
+    //You can move some complex operations into services as well
+    //It will let you to reuse same code in multiple places
     public function saveWithImage(Post $post, $filename, &$errors = null)
     {
         //Resize image
