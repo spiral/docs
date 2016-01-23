@@ -10,7 +10,8 @@ Feel free to contribute to framework or components development.
 * Test coverage of existed functionality (currenly relying on [acceptance/compilation tests](https://travis-ci.org/spiral/application))
 * Functionality proposals
 * Flexibility improvements
-* Code quality feedback and proposals 
+* Code quality feedback and proposals
+* Todos, a lot of todos
 * Automatic splitting for components [repository](https://github.com/spiral/components)
 
 ## Guide Improvements
