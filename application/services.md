@@ -64,7 +64,7 @@ class BlogService extends Service
     
     public function countPosts()
     {
-        if($this->cache->has('posts')) {
+        if ($this->cache->has('posts')) {
             return $this->cache->get('posts');
         }
         
@@ -79,7 +79,7 @@ class BlogService extends Service
         //Resize image
         //Store into storage
         
-        if($this->source->save($post)) {
+        if ($this->source->save($post)) {
             //Drop old post image
             return true;
         } else {
