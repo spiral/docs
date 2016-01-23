@@ -77,8 +77,15 @@ class BlogService extends Service
     public function setImage(Post $post, $filename)
     {
         //Resize image
-        //Store into storege
-        //Save post into source and etc
+        //Store into storage
+        
+        if($this->source->save($post)) {
+            //Drop old post image
+            return true;
+        } else {
+            //Drop new post image
+            return false;
+        }
     }
 }
 ```
