@@ -81,10 +81,10 @@ class BlogService extends Service
         //Store into storage
         
         if ($this->source->save($post, $errors)) {
-            //Drop old post image
+            //Drop or archive old post image
             return true;
         } else {
-            //Drop new post image
+            //Drop or achive new post image
             return false;
         }
     }
