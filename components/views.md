@@ -267,7 +267,7 @@ As you can see this directory located before original vault extension which give
 ```
 
 ## View Cache
-Spiral framework Stempler engine is extremelly slow compiler, to improve your project performance view component provides engines universal settings to enable and disable compilication cache, such setting is located in a view config:
+Spiral framework Stempler engine is pretty slow compiler, to improve your project performance view component provides engines universal settings to enable and disable compilication cache, such setting is located in a view config:
 
 ```php
 'cache'       => [
