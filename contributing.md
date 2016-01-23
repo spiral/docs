@@ -11,7 +11,7 @@ Feel free to contribute to framework or components development.
 * Functionality proposals
 * Flexibility improvements
 * Code quality feedback and proposals
-* Todos, a lot of todos
+* TODOs, a lot of TODOs
 * Automatic splitting for components [repository](https://github.com/spiral/components)
 
 ## Guide Improvements
