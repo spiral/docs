@@ -37,6 +37,8 @@ class BlogService
 {
     private $source = null;
 
+    //Use container to create PostSourceInterface to be depended on source 
+    //abstraction, not implementation
     public function __construct(PostsSource $source)
     {
         $this->source = $source;
