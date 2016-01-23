@@ -75,7 +75,6 @@ class BlogService extends Service
     }
     
     //You can move some complex operations into services as well
-    //It will let you to reuse same code in multiple places
     public function saveWithImage(Post $post, $filename, &$errors = null)
     {
         //Resize image
