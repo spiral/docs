@@ -60,7 +60,8 @@ As mention at top of this page spiral view component can work and automatically 
         */
         'extensions' => [
             //Provides access to dump() and spiral() functions inside twig templates
-            Engines\Twig\Extensions\SpiralExtension::class
+            Engines\Twig\Extensions\SpiralExtension::class,
+            
             /*{{twig.extension}}*/
         ]
     ],
