@@ -74,6 +74,7 @@ class BlogService extends Service
         return $count;
     }
     
+    //You can move some complex operations into services as well
     public function setImage(Post $post, $filename)
     {
         //Resize image
