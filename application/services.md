@@ -3,7 +3,7 @@ Spiral framework trying to help you to separate database and business logic, sin
 
 To speed up model development, framework provide you simple class `Spiral\Core\Service` which can give you shorter access to [container and shared bindings](/framework/container.md). 
 
-> Every Controller is Service. Every service is singleton by default (see [Declarative Singletons](/framework/container.md))
+> Every Controller is Service as well. Every service is stated as singleton by default (see [Declarative Singletons](/framework/container.md))
 
 ## Example Model
 The simpliest implementation of our service with shared bindings usage might look like:
