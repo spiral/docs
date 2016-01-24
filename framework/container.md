@@ -228,21 +228,17 @@ class SampleClass
 > Spiral will try to resolve EVERY constructor/method argument even if it's stated as optional!
 
 ### Singletons
-In many cases you might want to use only one instance of your class across application, you can either configure container with singleton binding (see below), or simply state your class as singleton by declaring `SINGLETON` constant and implementing `SingletonInterface`:
+In many cases you might want to use only one instance of your class across application, you can either configure container with singleton binding (see below), or simply state your class as singleton by implementing `SingletonInterface`:
 
 ```php
 class MyService implements SingletonInterface
 {
-    const SINGLETON = self::class;
-
     public function method()
     {
         //...
     }
 }
 ```
-
-`SINGLETON` constant must be pointing to the binding, id or alias which has to be used in container to store constructed instance, usualy you can use class name by itself as such alias as in given example.
 
 This implementation provides us ability to avoid setting up singleton bindings in application bootstrap which can significantly improve performance (both application and yours :)).
 
@@ -253,11 +249,9 @@ protected function indexAction(MyService $service)
 }
 ```
 
-> Most of spiral components has defined SINGLETON constant. You can always disable singleton behaviour by inheriting class and defining SINGLETON constant as `null`.
+> Most of spiral components has defined as singleton. You can always disable singleton behaviour by creating your custom factory method in bootloader.
 
 You can freely extend singleton classes or even replace one implementation with another by creating container binding (see below).
-
-> Attention, declarative singletons are not real singletons as you can drop them from container at any moment (plus it's development sugar), you have to remember that other containers you might use - possibly ignore such constant and force you to declare singleton explicitly. 
 
 ### Controllable/Contextual Injections
 Spiral Container in addition to regular method injections provides ability to create more intelligent contextual injections. Such technique provide us ability to request multiple databases using following statement:
@@ -394,7 +388,6 @@ assert($container->get('binding') === $container->make('binding'));
 ```php
 class MyClass implements SingletonInterface 
 {
-    const SINGLETON = self::class;
 }
 ```
 
@@ -406,7 +399,7 @@ class OtherClass extends MyClass
 ```
 
 ```php
-$container->bing(MyClass::class, OtherClass::class);
+$container->bind(MyClass::class, OtherClass::class);
 ```
 
 Let's check our bindings:
