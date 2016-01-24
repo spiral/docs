@@ -383,7 +383,7 @@ $container->bindSingleton('binding', function () {
 assert($container->get('binding') === $container->make('binding'));
 ```
 
-> You can also bind one singleton class (with SINGLETON constant) to another which will automatically replace original class.
+> You can also bind one singleton class to another which will automatically replace original class.
 
 ```php
 class MyClass implements SingletonInterface 
