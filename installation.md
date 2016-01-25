@@ -3,7 +3,7 @@ Spiral Framework uses **Composer** to resolve dependencies and install required 
 
 ## Server Requiments
 Make sure that your server is configured with following PHP version and extensions:
-* PHP 5.6+ (**PHP7 to be required on post-beta release!**)
+* PHP 7.0+
 * OpenSSL Extension
 * MbString Extension
 * Tokenizer Extension
