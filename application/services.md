@@ -33,7 +33,7 @@ protected function testAction(UsersService $users)
 As any other class you can change your Service contructor to request additional dependecies, for example we can create model which manages our blog posts source:
 
 ```php
-class BlogService 
+class BlogService implements SingletonInterface
 {
     private $source = null;
 
@@ -96,7 +96,7 @@ This time we can extend our model from Service class which will provide us abili
 
 > In a given example we are going to cache posts count for 1 hour, following methodic can help us to keep our views and controller ligther.
 
-Given example has one issue - code will work perfectly fine, however `$this->cache` will be resolved using shared container (global for your application) which *might* create minor issues on testing stage, to solve it let's improve our contructor:
+Example has one issue - code will work perfectly fine, however `$this->cache` will be resolved using shared container (global for your application) which *might* create minor issues on testing stage, to solve it let's improve our contructor:
 
 ```php
 class BlogService extends Service
@@ -115,7 +115,7 @@ class BlogService extends Service
 Alternatively, at any moment, we can refactor our class to decouple from Service:
 
 ```php
-class BlogService
+class BlogService implements SingletonInterface
 {
     private $source = null;
     private $cache = null;
