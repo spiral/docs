@@ -2,7 +2,7 @@
 Feel free to contribute to framework or components development. 
 
 ## Requiments
-* PSR-2 and PSR-4
+* PSR-2 and PSR-4, KISS
 * Test coverage of new functionality
 * Discuss major changes first
 
