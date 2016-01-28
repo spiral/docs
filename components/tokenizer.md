@@ -1,29 +1,15 @@
 # Tokenizer
-One of the most important spiral features are located in Tokenizer component, such component are responsible for locating classes and their filenames based on provided parent, interface or even trait. Such functionality widely used in ORM, ODM, Modules, Console Commands and other parts of framework to simplify developer life and locate 
-required code pieces automatically.
+One of the important parts of spiral framework located in Tokenizer component. Such set of classes and
+interfaces used to perform soft static analysis of your codebase, including location of specific
+class declarations, method and function invocations and php blocks isolation.
 
-## TokenizerInterface
-Let's check `Spiral\Tokenizer\TokenizerInterface` to see what methods available for us:
+## ClassLocatorInterface
+ClassLocatorInterface is very simple abstraction used by ORM, ODM and Console components to locate
+existed declaration of classes:
 
 ```php
-interface TokenizerInterface
+interface ClassLocatorInterface
 {
-    /**
-     * Token array constants.
-     */
-    const TYPE = 0;
-    const CODE = 1;
-    const LINE = 2;
-
-    /**
-     * Fetch PHP tokens for specified filename. Usually links to token_get_all() function. Every
-     * token MUST be converted into array.
-     *
-     * @param string $filename
-     * @return array
-     */
-    public function fetchTokens($filename);
-
     /**
      * Index all available files and generate list of found classes with their names and filenames.
      * Unreachable classes or files with conflicts must be skipped. This is SLOW method, should be
@@ -36,68 +22,123 @@ interface TokenizerInterface
      *      'abstract' => 'ABSTRACT_BOOL'
      * ]
      *
-     * @param mixed $parent  Class, interface or trait parent. By default - null (all classes).
+     * @param mixed $target  Class, interface or trait parent. By default - null (all classes).
      *                       Parent (class) will also be included to classes list as one of
      *                       results.
      * @return array
      */
-    public function getClasses($parent = null);
+    public function getClasses($target = null);
 }
 ```
 
-> In spiral such interface implemented by class `Spiral\Tokenizer\Tokenizer` which provides few additional features including ability to find only classes from specific namespace and specific postfix in `getClasses` method.
-
-As you see the most important part of Tokenizer component located in getClasses method. Let's try to view some examples (as in other cases we can use short core binding "tokenizer" in our Controllers and Services):
+Classical usage of such interface might look like:
 
 ```php
-protected function indexAction()
+public function indexAction(ClassLocatorInterface $locator)
 {
-    //Find every controller class
-    dump($this->tokenizer->getClasses(ControllerInterface::class));
-
-    //Find every Record class
-    dump($this->tokenizer->getClasses(Record::class));
-
-    //Every class which extends current class
-    dump($this->tokenizer->getClasses($this));
-
-    //Every class which uses LoggerTrait and located in Spiral namespace
-    dump($this->tokenizer->getClasses(LoggerTrait::class, 'Spiral'));
+    //Every declared controller
+    dump($locator->getClasses(ControllerInterface::class));
+    
+    //Every declared ORM RecordEntity class
+    dump($locator->getClasses(RecordEntity::class));
 }
 ```
 
-> You have to rememeber that Tokenizer `getClasses` is VERY slow method, you should never use it in runtime.
+By default, class locator works with `ReflectionFile` instance provided by `TokenizerInterface` and
+scans every registred tokenization directory (see below). If you want to decouple your project from
+spiral, simply create your own implementation of class locator basen on config, static array or
+other location method.
 
-## Default Tokenizer Implementation
-Default TokenizerInterface implementation provides few additional features which can be useful for you. First of all, we can always get every used trait for given class (including traits used by parents):
+## File Reflection
+As mentioned in previous section, default implementation of ClassLocator uses ReflectionFile class
+as it's source of declarations. In some cases you might want to get access to ReflectionFile
+inside your component or module. This can be achived via `TokenizerInterface` method `fileReflection`:
 
 ```php
-protected function indexAction()
+public function indexAction(TokenizerInterface $tokenizer)
 {
-    dump($this->tokenizer->getTraits(self::class));
+    dump($tokenizer->fileReflection(__FILE__)->getClasses());
 }
 ```
 
-Second feature must be treated as experimental (spiral might migrate to PHPParsed one day), and provides you ablity to get ReflectionFile instance which will provide
-information about classes, interfaces, traits and function declared in given file and, in addition, allow you to located function calls (this feature used by Translator to index your i18n function usages):
+> ReflectionFile might help you to fetch class, interface, trait or function declaration from your file.
+
+## InvocationLocatorInterface
+Separatelly from ClassLocator, you might use InvocationLocator. Such interface is based on a ReflectionFile
+method `getInvocations` (see previous section) and might help your to perform simple analysis of your code
+to detect where some method were used.
+
+For example, we can use our locator to find every invoked internalization function:
 
 ```php
-protected function indexAction()
+public function indexAction(InvocationLocatorInterface $locator)
 {
-    $reflection = $this->tokenizer->fileReflection(__FILE__);
-
-    dump($reflection->getClasses());
-
-    //Will locate every "dump" function, "self::something" call and it's arguments
-    dump($reflection->getCalls());
-
-    self::something($reflection, "string");
-}
-
-public static function something()
-{
-
+    dump($locator->getInvocations(new \ReflectionFunction('l')));
+    l('hello world!');
 }
 ```
 
-> Tokenizer can clearly locate only function and static method calls.
+> At this moment InvocationLocator based on php tokenization and not AST, this limits locations to function,
+static or $this calls only. Class is capable of locating trait methods (say, logger, fire and etc).
+
+## Tokenizer configuration
+Previous sections explains how we can locate our classes, models and invocations in our application source files.
+Hovewer, tokenizer will only count some specific files to be belong to your application based on list of directories
+and exclude patterns (see Symfony\Finder) defined in tokenizer configuration:
+
+```php
+return [
+    /*
+     * Tokenizer will be performing class and invocation lookup in a following directories. Less
+     * directories - faster Tokenizer will work.
+     */
+    'directories' => [
+        directory('application'),
+        directory('libraries') . '/spiral/framework',
+        directory('libraries') . '/spiral/components',
+        directory('libraries') . '/spiral/scaffolder',
+        /*{{directories}}*/
+    ],
+    /*
+     * Such paths are excluded from tokenization. You can use format compatible with Symfony Finder.
+     */
+    'exclude'     => [
+        'vendor',
+        /*{{exclude}}*/
+    ]
+];
+```
+
+Since location or Commands, Records and Documents are based on spiral tokenizer you might need to register
+your module path in tokenizer config in order to let system find your declarations, this can be achieved
+by adding following code to your module class:
+
+```php
+/**
+ * {@inheritdoc}
+ */
+public function register(RegistratorInterface $registrator)
+{
+    $registrator->configure('tokenizer', 'directories', 'vendor/package', [
+        "directory('libraries') . 'vendor/package'"
+    ]);
+}
+```
+
+## PHP blocks isolator
+PHP blocks isolation functionality located in `Spiral\Tokenizer\Isolator` class, generally speaking
+this implementation is only responsible for locating, isolating and replacing php block in a given 
+string. This implementation used a lot in view processors to ensure that no php code will be affected
+by template processing.
+
+```php
+$source = '<?php echo 1, 2 ?> hello world <?= $var ?>';
+
+$isolator = new Isolator();
+
+$isolated = $isolator->isolatePHP($source);
+dump($isolated); //-php-random-block- hello world -php-random-block-
+
+$restored = $isolator->repairPHP($isolated);
+dump($restored); 
+```
