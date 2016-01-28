@@ -69,7 +69,7 @@
       "components-tokenizer": "Tokenizer",
       "components-translator": "<s>Translator</s>",
       "components-views": "Views and Engines",
-      "components-validation": "<s>Validation</s>",
+      "components-validation": "Validation",
       "components-reactor": "<s>Reactor</s>"
     }
   },
