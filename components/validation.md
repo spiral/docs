@@ -8,12 +8,6 @@ Before we start working with validations, let's quickly take a look at `Validato
 interface ValidatorInterface
 {
     /**
-     * @param array              $rules Validation rules.
-     * @param array|\ArrayAccess $data  Data to be validated.
-     */
-    public function __construct(array $rules = [], $data = []);
-
-    /**
      * Update validation rules.
      *
      * @param array $rules
@@ -75,7 +69,7 @@ As you can see, validator requires 2 primary sets:
 * data is an array of fields to be validated
 * rules is set of validation rules to be applied to every data field
 
-> The default spiral implementation `Validator` requires instances of `ContainerInterface` (Interop, needed to load Checkers and external rule classes) and `ValidationConfig` (to provide a list of available validations using section "validation"). This means that you have to request the validator instance using the  container to ensure that it's configured correctly. 
+> The default spiral implementation `Validator` requires instances of `ContainerInterface` (Interop, needed to load Checkers and external rule classes) and `ValidationConfig` (to provide a list of available validations using section "validation"). This means that you have to request the validator instance using the DI or factory to ensure that it's configured correctly. 
 
 Now we can create a sample validator in our controller action (we can configure validation on a fly):
 
