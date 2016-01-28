@@ -46,6 +46,7 @@
     * RW [Translator](components/translator.md)
     * [Views and Engines](components/views.md)
     * [Validation](components/validation.md)
+    * WR [Reactor](components/reactor.md)
 * Stempler Templates
     * [Basic Usage](stempler/basics.md)
     * [Extended Usage (virtual tags, tips and tricks)](stempler/expert.md)
