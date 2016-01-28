@@ -42,7 +42,7 @@
     * [Encrypter](components/encrypter.md)
     * [Files](components/files.md)
     * [Pagination](components/pagination.md)
-    * RW [Tokenizer](components/tokenizer.md)
+    * [Tokenizer](components/tokenizer.md)
     * RW [Translator](components/translator.md)
     * [Views and Engines](components/views.md)
     * [Validation](components/validation.md)
