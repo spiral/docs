@@ -71,8 +71,8 @@
     * [JSON and Standalone Documents](odm/standalone.md)
     * REWRITE [UML Export](odm/uml.md)
 * Modules and Extensions
-    * REWRITE [Profiler](modules/profiler.md)
-    * Scaffolding
-    * Security
-    * Toolkit
-    * Vault
+    * RW [Profiler](modules/profiler.md)
+    * RW [Scaffolding](modules/scaffolding.md)
+    * RW [Security](modules/security.md)
+    * RW [Toolkit](modules/toolkit.md)
+    * RW [Vault](modules/vault.md)
