@@ -40,6 +40,8 @@ spiral('views')->render(...);
 
 > In default application flow shared container are identical to container which can be requested by interface using DI. If you can use DI istead of statically accessed instance - do that.
 
+You can extend your classes from `Spiral\Core\Component` which will automatically define `container()` method capable of automatic routing container request between local (object specific) and global (shared/static) containers.
+
 ## Default bindings (shared components)
 Your application comes pre-configured with some commonly used bingings which are set in framework and application bootloaders.
 
