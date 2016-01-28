@@ -61,13 +61,13 @@
     * [Query Builders](database/builders.md)
 * Spiral ORM
     * RW [Record Model and Database Scaffolding](orm/basics.md)
-    * WRITE [Sources and Selectors](orm/sources.md)
+    * WR [Sources and Selectors](orm/sources.md)
     * RW [Relations](orm/relations.md)
     * RW [Eager loading and Entity Cache](orm/loading.md)
 * Spiral ODM
     * RW [Documents and Databases](odm/basics.md)
     * RW [Sources and Selectors](orm/sources.md)
-    * R [Compositions, Aggreagations](odm/oop.md)
+    * RW [Compositions, Aggreagations](odm/oop.md)
     * RW [Inheritance](odm/inheritance.md)
     * [JSON and Standalone Documents](odm/standalone.md)
     * RW [UML Export](odm/uml.md)
