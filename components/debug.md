@@ -1,14 +1,40 @@
 # Debug
-Spiral provides an embedded debug component with a set of classes useful in developing and debugging your application. Debug does not replace existing debugging tools like XDebug. It was created to simplify your application development and profiling in remote enviroments.
+Spiral provides an embedded debug component with a set of classes useful in developing and debugging your application. 
 
-## Loggers
+>  Debug component does not replace existing debugging tools like XDebug or Symfony BlackFire.
+
+WORK IN PROGRESS
+
+
+## Monolog and PSR-3 integration
+By default 
+
+## LoggerTrait
+In many cases you might want to get access to component specific logger inside your class. You can use `Spiral\Debug\Traits\LoggerTrait` which will provide method `logger()` for you, this trait only required method `container()` to be defined (already defined in every Component and Service class) since loggers will be received via interface `Spiral\Debug\LogsInterface`.
+
+Example usage:
+
+```php
+class SomeService extends Service
+{
+    use LoggerTrait;
+
+    public function doSomething()
+    {
+        $this->logger()->alert('Some message');
+    }
+}
+```
+
+
+
 The Spiral Logger class is built on top of the PSR3 standard and is compatible with it. You can simply replace the default application logger with Monolog classes and etc.
 Spiral loggers aggregate log messages using a channel name. In most cases (when the LoggerTrait was used) the channel name will be the same as the parent class.
 
 If you wish to access the logger in your code (for example in a controller action) you can simply declare the dependency:
 
 ```php
-protected function indexAction(Logger $logger)
+protected function indexAction(LoggerInterface $logger)
 {
     $logger->alert('abc!');
     
@@ -86,46 +112,6 @@ log handlers using the debug configuraion:
 ],
 ```
 
-As you can see, you are able to assign handlers to specific channels and log levels. However this  has some limitations - all used handlers must implement `HandlerInterface` in order to be properly created and configured:
-
-```php
-interface HandlerInterface
-{
-    /**
-     * HandlerInterface should only accept options from debug. Use depends method for additional
-     * classes.
-     *
-     * @param array $options
-     */
-    public function __construct(array $options);
-
-    /**
-     * Handle log message.
-     *
-     * @param int    $level
-     * @param string $message
-     * @param array  $context
-     */
-    public function __invoke($level, $message, array $context = []);
-}
-```
-
-The default file handler which you can see in the configuration provides the following set of options you can alter or leave as the default:
-
-```php
-/**
- * @var array
- */
-protected $options = [
-    'filename'      => '',                             //This option must be declared
-    'filesize'      => 2097152,                        //Max log filesize is 2MB
-    'mode'          => FilesInterface::RUNTIME,        //Mode
-    'rotatePostfix' => '.old',                         //When log size exeeds max filesize it's will be rotated by addind this
-                                                       //postfix to filename    
-    'format'        => '{date}: [{level}] {message}',  //Messaged in log file will look like that
-    'dateFormat'    => 'H:i:s d.m.Y'                   //Date format will be interpolated into line format
-];
-```
 
 ### Logger Trait
 To simplify access to the logger, Spiral provides a `LoggerTrait` which is compatible with `LoggerAwareInterface` but provides a few additional features. Let's view an example using a controller:
