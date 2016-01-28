@@ -11,7 +11,7 @@ interface ValidatorInterface
      * @param array              $rules Validation rules.
      * @param array|\ArrayAccess $data  Data to be validated.
      */
-    //public function __construct(array $rules = [], $data = []);
+    public function __construct(array $rules = [], $data = []);
 
     /**
      * Update validation rules.
