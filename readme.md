@@ -26,7 +26,7 @@
 * Http Dispatcher
     * RW [Request Flow](http/flow.md)
     * RW [Request and InputManager](http/input.md)
-    * REWRITE [Responses](http/responses.md)
+    * RW [Responses](http/responses.md)
     * RW [Middlewares/Filters](http/middlewares.md)
     * RW [Cookies](http/cookies.md)
     * RW [Routing](http/routing.md)
