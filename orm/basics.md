@@ -737,6 +737,9 @@ Since the Spiral ORM uses static analysis, there are no real limitations for how
 
 > When extending, the ORM will merge the schemas and other properties of the Record and it's parent. ORM does not provide table inheritance.
 
+## Post Development Stage
+Write about switching to migrations mechanism.
+
 ## Inspections
 While running the shema update (spiral up) command, you may notice text that contains a list of the inspected entities and resulting rating. This information provided by the Spiral **Entity Inspector** analyses the ORM and ODM schemas to find any unprotected or blacklisted fields. We can get more details by running the inspection on selected entity:
 
