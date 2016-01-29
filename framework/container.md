@@ -137,7 +137,7 @@ Following methodic can work very well in combination with good IDE and provides 
 At any moment in future, you can simply create needed property in your class and set it's value using dependency injection (see below).
 
 > Ideally you should only use short bindings for the set of components which are stated as supportive/infrastruture (i.e. twig, faker, views, cache etc.) and DI for your business logic. Short bindings are not used in spiral components. 
-However short bindings can be useful if you want to use spiral application inside other application as they provide ability to expose some business logic to external consumers:
+However short bindings can be useful if you want to use spiral application inside other application as they provide ability to expose some business logic to external consumers in very simple fashion:
 
 ```php
 $app = MySpiralApp::init(...);
