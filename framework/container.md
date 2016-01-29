@@ -141,7 +141,7 @@ However short bindings can be useful if you want to use spiral application insid
 
 ```php
 $app = MyBlogApp::init(...);
-foreach($app->postsService->getTodaysPosts() as $post) {
+foreach($app->postsService->getTodayPosts() as $post) {
     echo $post->getTitle();
 }
 ```
