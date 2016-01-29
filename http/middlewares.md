@@ -121,4 +121,4 @@ There is set of pre-created middlewares you can use in your application:
 | Spiral\Http\Middlewares\JsonParser        | Converts JSON payload from request body into parsed request body if valid "Content-Type" header set.              
 | Spiral\Session\Http\SessionStarter        | Initiates session using ID stored in cookie "session" or creates such cookies in response if needed.              
 
-In addition to that **Profiler module** also stated as middleware and can be used in primary or route specific chain.
+In addition to that **Profiler module** also stated as middleware and automatically mounted by it's bootloader at top of middlewares chain when debug mode is enabled (see skeleton application).
