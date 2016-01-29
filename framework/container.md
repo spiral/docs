@@ -140,8 +140,10 @@ At any moment in future, you can simply create needed property in your class and
 However short bindings can be useful if you want to use spiral application inside other application as they provide ability to expose some business logic to external consumers in very simple fashion:
 
 ```php
-$app = MySpiralApp::init(...);
-$app->someService->doSomething();
+$app = MyBlogApp::init(...);
+foreach($app->postsService->getTodaysPosts() as $post) {
+    echo $post->getTitle();
+}
 ```
 
 ## FactoryInterface
