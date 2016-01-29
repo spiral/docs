@@ -84,12 +84,11 @@ purposes:
 ```php
 public function start()
 {
-   //Now we can generate response using request
     $response = $this->perform(
         $this->request(),
-        $this->response(),
-        $this->endpoint()
+        $this->response()
     );
+    
     if (!empty($response)) {
         //Sending to client
         $this->dispatch($response);
