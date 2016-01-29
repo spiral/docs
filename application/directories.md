@@ -12,7 +12,7 @@ Directory                         | Description
 /app/classes/Database/            | Database entities (ORM and ODM) and sources can be placed in this directory.                       
 /app/classes/Middlewares/         | By default http middewares going to be scaffolded here.
 /app/classes/Requests/            | Use it to store RequestFilters for your application.    
-/app/classes/Models/              | Services, models and other business logic.
+/app/classes/Models/              | Services, models and other business logic of your application.
 **/app/config/**                  | Configuration files of your application (alias **config**).    
 /app/resources/                   | You can store private application resources here (alias **resources**).
 /app/resources/locales/           | Default directory for application locale files (alias **locales**).
