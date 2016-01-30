@@ -302,6 +302,8 @@ if (!$schema->hasColumn('column')) {
 }
 ```
 
+> Spiral has planned to have additional module which provides ability to generate migration files based on a changed state of database, it will provide developer ability to alter and tweak migration files before executing them.
+
 ## Table related operations
 You can also apply some operations on table level, such commands does not require schema saving and executed immidiatelly:
 
