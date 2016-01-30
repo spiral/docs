@@ -1,7 +1,7 @@
 # Making Modules
 Spiral framework will be useless without an ability to alter it's core functionality, connect extensions, add resources or visual plugins (widgets/tags). Any of this features can be achieved using ModuleManager and Bootloaders.
 
-Since Spiral Framework follows PSR4 you only need bootloaders to define your own container bindings, most of existed packages can be used without any additional configuration or bootloading.
+> Since Spiral follows PSR4 you only need bootloaders to define your own container bindings, most of existed packages can be used without any additional configuration or bootloading.
 
 ## Writing Bootloader
 Often your module might need to define set of container bindings or bootload specific code, in this case you can simply use technique described in [bootloaders](/framework/bootloaders.md) section.
