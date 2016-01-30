@@ -129,7 +129,7 @@ You can find a lot of pre build middlewares outside of spiral, for example [http
 ```php
 public function boot(HttpDispatcher $http)
 {
-    //To the top
+    $http->riseMiddleware(Middleware::responseTime());
     $http->riseMiddleware(
         Middleware::BasicAuthentication(['username' => 'password'])->realm('You shall not pass!')
     );
@@ -178,3 +178,5 @@ Now you can use such middleware in your http config or other places via short al
     /*{{middlewares}}*/
 ],
 ```
+
+> Concider contributing into [https://github.com/oscarotero/psr7-middlewares](https://github.com/oscarotero/psr7-middlewares) directly if you wish to create more middlewares which are not spiral specific.
