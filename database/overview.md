@@ -1,4 +1,4 @@
-# Database Abstraction Layer (DBAL) - TO BE UPDATED
+# Database Abstraction Layer (DBAL)
 Spiral provides a simple but powerful way to manage connections and operations related to multiple database sources. The DBAL focuses mainly on unifying databases rather than trying to get 100% of the specific DBMS feature set. However, you can always use direct queries to bypass the spiral abstractions and speak directly to the database.
 At this moment, Spiral DBAL supports MySQL, SQLite, PostgresSQL and SQLServer (Windows) databases.
 
