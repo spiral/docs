@@ -31,12 +31,6 @@
       "application-views": "Views and Templates"
     }
   },
-   {
-    "title": "Skeleton Application",
-    "links": {
-      "skeleton-description": "Description"
-    }
-  },
   {
     "title": "Http Dispatcher",
     "links": {
