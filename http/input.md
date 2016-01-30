@@ -158,5 +158,5 @@ dump($input->isJsonExpected());
 dump($input->remoteAddress());
 ```
 
-## InputBags are immutable, InputManager not
+## InputBags are immutable but InputManager is service
 Write about it.
