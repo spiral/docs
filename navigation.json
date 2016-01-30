@@ -35,7 +35,7 @@
     "title": "Http Dispatcher",
     "links": {
       "http-flow": "<s>Request Flow</s>",
-      "http-request": "<s>Request and InputManager</s>",
+      "http-request": "Request and Input",
       "http-responses": "<s>Responses</s>",
       "http-middlewares": "<s>Middlewares</s>",
       "http-cookies": "<s>Cookies</s>",
