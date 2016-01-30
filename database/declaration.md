@@ -1,7 +1,7 @@
 ## Schema Declaration  - OUTDATED DOCUMENTATION 
 One of the most important part of Spiral DBAL is ability to alter database table schema using set of entity abstractions. Such abstractions provide ability to describe desired table rather than create it operation by operation.
 
-> Attention, declarative schemas are useful in RAD development but can't cover all possible scenarios, you can simply disable schema synscronization for your ORM and switch to classic migrations when your application are moved to productions and ready for use.
+> Attention, declarative schemas are useful in RAD development but can't cover all possible scenarios, you can simply disable schema synscronization for your ORM and switch to classic migrations when your application at any moment by exporting existed schema into Phinx or other migration mechanism.
 
 Guide TODO: drop command based syntax, write about SyncronizationBus (transaction and table sorter), write about modifying existed tables using pre-declaration.
 
