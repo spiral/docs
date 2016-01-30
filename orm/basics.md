@@ -1,4 +1,4 @@
-# Spiral ORM, Basics
+# ORM, Basics
 The Spiral Framework provides a simple yet powerful ORM engine that you can use in your everyday development. Spiral ORM works with multiple databases, automatically scaffolds tables and columns, it defines set of relations and pre-loads them on demand for later use. 
 
 The ORM model **Record** is based on the [**DataEntity**] (/components/entity.md) class. It's best to read about this component first. In addition, you can check out this [behaviour schema] (/schemas.md) concept which used as the base for the ORM component.
