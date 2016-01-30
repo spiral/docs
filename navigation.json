@@ -37,7 +37,7 @@
       "http-flow": "<s>Request Flow</s>",
       "http-request": "Request and Input",
       "http-response": "Response and Responder",
-      "http-middlewares": "<s>Middlewares</s>",
+      "http-middlewares": "Middlewares",
       "http-cookies": "<s>Cookies</s>",
       "http-routing": "<s>Routing</s>",
       "http-filters": "<s>Request Filters</s>",
