@@ -245,7 +245,7 @@ foreach($schemaBuilder->getTables() as $table) {
 
 Following technique will provide you ability to only generate migrations based on ORM schema changes and run them manually with some tweaking (to disable automatic sync for ORM schema check options set of `orm:schema` in console config so your `update` command wont alter schemas).
 
-> Any help of creating such module will be appreciated. Once such module/code will be created it will be treaded as default behaviour for ORM schema syncronization.
+> Any help of creating such module will be appreciated (see Reactor component for code generation). Once such module/code will be created it will be treaded as default behaviour for ORM schema syncronization.
 
 ## Create Record
 Once your ORM schema has been updated, we are ready to work with our model. Since we just created our table, it's time to push some data to it. Let's do this operation in a controller:
