@@ -298,7 +298,7 @@ If you dont want to deal with external migration mechanism but some data has to 
 
 ```php
 if (!$schema->hasColumn('column')) {
-    $schema->column('column');
+    $schema->renameColumn('other_column', 'column');
     //moving stuff around (don't forget to save schema)
 }
 ```
