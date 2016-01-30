@@ -123,6 +123,27 @@ There is set of pre-created middlewares you can use in your application:
 
 In addition to that **Profiler module** also stated as middleware and automatically mounted by it's bootloader at top of middlewares chain when debug mode is enabled (see skeleton application).
 
+## Mounting middlewares in Bootloader
+In some cases you might want to mount middleware in your bootload class rather than editing config, to do that we have to make our class bootable and request HttpDispatcher dependency:
+
+```php
+class MyBootloader extends Bootloader implements SingletonInterface
+{
+    const BOOT = true;
+
+    public function boot(HttpDispatcher $http)
+    {
+        //To the top of chain
+        $http->riseMiddleware(new MyMiddleware());
+    
+        //To the end of chain
+        $http->pushMiddleware(new MyMiddleware());
+    }
+}
+```
+
+> Attention, you can simply provide class name or container binding as middleware, it will be automatically resolved via IoC container (see example below).
+
 ## Other middlewares
 You can find a lot of pre build middlewares outside of spiral, for example [https://github.com/oscarotero/psr7-middlewares](https://github.com/oscarotero/psr7-middlewares).
 
