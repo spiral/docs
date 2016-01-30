@@ -289,9 +289,9 @@ $comparator = $schema->comparator();
 dump($comparator->addedColumns());
 ```
 
-Comparator will provide you list of created, updated, removed columns, indexes and foreign keys so you can create your own migration mechanism.
+> Comparator will provide you list of created, updated, removed columns, indexes and foreign keys.
 
-## Global table operations
+## Table related operations
 You can also apply some operations on table level, such commands does not require schema saving and executed immidiatelly:
 
 ```php
