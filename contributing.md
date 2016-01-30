@@ -5,7 +5,7 @@ Feel free to contribute to framework or components development.
 * PSR-2 and PSR-4
 * KISS
 * Test coverage of new functionality
-* Discuss major changes first (unless they are relly cool and BC!)
+* Discuss major changes first (unless they are relly cool and backward compatible!)
 
 ## Help Needed In
 * Test coverage of existed functionality (currenly relying on [acceptance/compilation tests](https://travis-ci.org/spiral/application))
