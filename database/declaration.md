@@ -279,6 +279,18 @@ Now, when record in "first" table will be removed related data from "second" tab
 
 ## Removals and Existest Table modifications
 
+## Working with Comparator directly
+In some cases you might want to dedicate table operations to external migration mechanism (for example Phinx), in this case you can access internal TableSchema state and it's comparator:
+
+```php
+$schema->integer('some_value');
+$comparator = $schema->comparator();
+
+dump($comparator->addedColumns());
+```
+
+Comparator will provide you list of created, updated, removed columns, indexes and foreign keys so you can create your own migration mechanism.
+
 ## Global table operations
 You can also apply some operations on table level, such commands does not require schema saving and executed immidiatelly:
 
