@@ -67,7 +67,7 @@
       "components-files": "Files",
       "components-pagination": "Pagination",
       "components-tokenizer": "Tokenizer",
-      "components-translator": "<s>Translator</s>",
+      "components-translator": "Translator",
       "components-views": "Views and Engines",
       "components-validation": "Validation",
       "components-reactor": "<s>Reactor</s>"
