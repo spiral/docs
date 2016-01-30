@@ -21,8 +21,6 @@
     * [Models and Services](application/services.md)
     * [Controllers](application/controllers.md)
     * [Views and Templates](application/views.md)
-* Skeleton Application
-   * [Description](skeleton/description) 
 * Http Dispatcher
     * RW [Request Flow](http/flow.md)
     * RW [Request and InputManager](http/input.md)
