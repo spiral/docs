@@ -23,7 +23,7 @@
     * [Views and Templates](application/views.md)
 * Http Dispatcher
     * RW [Request Flow](http/flow.md)
-    * RW [Request and InputManager](http/input.md)
+    * [Request and Input](http/input.md)
     * RW [Responses](http/responses.md)
     * RW [Middlewares/Filters](http/middlewares.md)
     * RW [Cookies](http/cookies.md)
