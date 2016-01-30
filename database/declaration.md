@@ -3,8 +3,7 @@ One of the most important part of Spiral DBAL is ability to alter database table
 
 > Attention, declarative schemas are useful in RAD development but can't cover all possible scenarios, you can simply disable schema synscronization for your ORM and switch to classic migrations when your application are moved to productions and ready for use.
 
-
-> Guide TODO: drop command based syntax, write about SyncronizationBus (transaction and table sorter), write about modifying existed tables using pre-declaration.
+Guide TODO: drop command based syntax, write about SyncronizationBus (transaction and table sorter), write about modifying existed tables using pre-declaration.
 
 ## Principle of Work
 Before any operation/declaration can be applied to table schema, DBAL will load currently existed structure from database and [normalize it into internal format](/database/introspection.md). As result, you are allowed to apply modification to table schema using declarative way instead of imperative, once schema **save** are requested - DBAL will generate set of creation and altering operations based on difference between declared and existed schemas. 
