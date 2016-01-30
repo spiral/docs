@@ -1,7 +1,6 @@
 # Spiral Framework, Table of Contents
 [![License](https://poser.pugx.org/spiral/framework/license)](https://packagist.org/packages/spiral/framework) 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/spiral/hotline)
-
+[![Gitter](https://badges.gitter.im/Join_Chat.svg)](https://gitter.im/spiral/hotline)
 
 > Please let us know if you find any typos or issues within this documentation. You can email to [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com) or create PR for guide [repository](https://github.com/spiral/guide).
 
