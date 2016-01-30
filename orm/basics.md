@@ -219,6 +219,33 @@ This constant will forbid *any modifications* to an associated table and ensure 
 
 > You can use passive models if you prefer to generate your database using migrations. ORM will create a schema exception if some column is required for relation but missing from the schema. You can also use passive models to validate auto generated structure before doing a real update.
 
+## External migration mechanisms
+At this moment spiral ORM will run table migrations in house, without generating nesessary migrations, however since SchemaBuilder, it's tables and their comparators are easily accessible it's possible to combine them with classical migrations like Phinx:
+
+```php
+$schemaBuilder = $this->orm->schemaBuilder();
+
+foreach($schemaBuilder->getTables() as $table) {
+    if (!$table->exists()) {
+        //Table creation migration
+        $this->createMigration(
+            $table->getName(), 
+            $table->getColumns(), 
+            $table->getIndexes(), 
+            $table->getReferences()
+        );
+    } else {
+        $comparator = $table->comparator();
+        
+        //$comparator->addedColumns(); and etc
+    }
+}
+```
+
+Following technique will provide you ablity perform migrations in a more contol fashion.
+
+> Any help of creating such module will be appreciated.
+
 ## Create Record
 Once your ORM schema has been updated, we are ready to work with our model. Since we just created our table, it's time to push some data to it. Let's do this operation in a controller:
 
