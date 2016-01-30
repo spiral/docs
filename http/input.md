@@ -63,7 +63,7 @@ dump($input->query->fetch(['name', 'nameB'], true, null);
 dump($input->query('name'));
 ```
 
-> InputManager works with active request using container, so it will always contain valid set of data.
+> InputManager works with active request using container, meaning it's not immutable service (data can change based on scope request) however input bags are immutable.
 
 ### Input headers
 We can use 'headers' input bad and `header` method in `InputManager` to access input headers. HeadersBag has few additions we have to mention:
@@ -157,6 +157,3 @@ dump($input->isJsonExpected());
 //Receive client ip address (this method uses _SERVER value and may not be correct in some cases).
 dump($input->remoteAddress());
 ```
-
-## InputBags are immutable but InputManager is service
-Write about it.
