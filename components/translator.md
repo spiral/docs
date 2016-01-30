@@ -339,7 +339,7 @@ msgstr "Привет мир!"
 
 > You can find list of available dumpers or add new in translator config.
 
-## Chanding locale
+## Changing locale
 As stated in previous example changing locale is one function call `setLocale`, hovewer it might be resonable to automatically set different locales for different users and regions, we can utilize functionality of Http Middlewares for that, let's try to select appropariate locale based on user request headers:
 
 ```php
