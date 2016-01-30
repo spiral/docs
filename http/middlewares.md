@@ -122,3 +122,59 @@ There is set of pre-created middlewares you can use in your application:
 | Spiral\Session\Http\SessionStarter        | Initiates session using ID stored in cookie "session" or creates such cookies in response if needed.              
 
 In addition to that **Profiler module** also stated as middleware and automatically mounted by it's bootloader at top of middlewares chain when debug mode is enabled (see skeleton application).
+
+## Other middlewares
+You can find a lot of pre build middlewares outside of spiral, for example [https://github.com/oscarotero/psr7-middlewares](https://github.com/oscarotero/psr7-middlewares). You can either add such middlewares to a specific route or push to primary request pipeline (example based on a AppBootloader):
+
+```php
+public function boot(HttpDispatcher $http, PermissionsInterface $pers)
+{
+    //To the top
+    $http->riseMiddleware(
+        Middleware::BasicAuthentication(['username' => 'password'])->realm('You shall not pass!')
+    );
+}
+```
+
+> Attention, by default Profiler module will always mount it's middleware at top of chain, you have to mount it manually in cases when gzip or other content modification middlewares are used.
+
+If you want to use shor aliases such middlewares concider creating container binding:
+
+```php
+class MyBootloader extends Bootloader implements SingletonInterface
+{
+    /**
+     * @return array
+     */
+    protected $bindings = [
+        'middlewares.auth' => [self::class, 'authMiddleware']
+    ];
+
+    public function authMiddleware(AppConfig $config)
+    {
+        return Middleware::BasicAuthentication(
+            $config->getUsernames()
+        )->realm('You shall not pass!');
+    }
+}
+```
+
+Now you can use such middleware in your http config or other places via short alias:
+
+```php
+'middlewares'  => [
+    'middlewares.auth',
+
+    Middlewares\CsrfFilter::class,
+    Middlewares\ExceptionWrapper::class,
+
+    //Sample middleware
+    \Middlewares\LocaleDetector::class,
+
+    Session\Http\SessionStarter::class,
+    //Middlewares\JsonParser::class,
+    Http\Cookies\CookieManager::class,
+
+    /*{{middlewares}}*/
+],
+```
