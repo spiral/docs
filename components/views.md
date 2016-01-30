@@ -1,525 +1,376 @@
 # Views
-The Spiral view manager is a part of the framework bundle and not the components set. The default implementation includes support for multiple rendering engines (compiler + renderer), caching, cache dependencies and **view namespaces**.
+Being able to render html/xml/json file based on a given set of variables is one of the most important part of any framework. Spiral provides ability to route rendering request to variour engines (including Stempler and Twig) using simple file aliases and namespaces.
 
-## A few examples
-Before we start to dig into some of the features and functionality of ViewManager, let's examine a few examples. First, we have to create a view file to 
+## Quick Start
+Before jumping into details, let's try to see how we can render simple html file with included php code. For that purposes let's create sample view in `app/views/test.php`:
 
 ```php
-This is a demo view file: <?= $value ?>
+Hello world, <?= $name ?>!
 ```
 
-Next, we can render this file using `ViewsInterface` dependency or short binding "views" (we are going to work inside controller):
+To render this file we only have to invoke `render` method or `ViewsInterface` with a given value for our name. Since Views components associated with short binding "views" we can also call it using `$this->views` in our services and controllers:
 
 ```php
-protected function indexAction()
+public function indexAction(ViewsInterface $views)
 {
-    return $this->views->render('demo', [
-        'value' => mt_rand(0, 1000)
-    ]);
+    dump($views->render('test', [
+        'name' => 'Some name'
+    ]));
+
+    dump($this->views->render('test', [
+        'name' => 'Some name'
+    ]));
 }
 ```
 
-If we open our action in the browser, we will see the rendered file with some random value in it. Every view file rendered using `ViewInterface` classes will have the default Spiral implementation of these interface located in `Spiral\Views\View`. This provides us with access to view object and container located within it. Let's update both the view file and our controller code.
-
-Let's use the view container to access some service or class inside our view:
-
-```php
-This is a demo view file: <?= $value ?>
-
-<?php
-/**
- * @var \Spiral\Debug\Dumper $dumper
- */
-$dumper = $this->container->get(\Spiral\Debug\Dumper::class);
-$dumper->dump($value);
-?>
-```
-
-In addition, we can use the 'get' method of our ViewManager to receive an instance of View and, if we wanted to, configure it before rendering:
+## View Engines
+As mention at top of this page spiral view component can work and automatically select multiple view engines. Default skeleton application includes 3 view engines declared in a view config file:
 
 ```php
-protected function indexAction()
-{
-    /**
-     * @var View $view
+'engines'     => [
+     /*
+     * You can always extend TwigEngine class and define your own configuration rules in it.
      */
-    $view = $this->views->get('demo');
-    $view->set('value', mt_rand(0, 1000));
+    'twig'   => [
+        'class'      => Engines\TwigEngine::class,
+        'extension'  => 'twig',
+        'options'    => [
+            'auto_reload' => true
+        ],
 
-    //We can simply use "return $view;" due MiddlewarePipeline
-    //this converts every response into a string
-    return $view->render();
-}
-```
+        /*
+        * Modifiers applied to imported or extended view source before it's getting parsed by
+        * HtmlTemplater, every modifier has to implement ModifierInterface and as result view
+        * name, namespace and filename are available for it. Modifiers is the best to connect
+        * custom syntax processors (for example Laravel's Blade).
+        */
+        'modifiers'  => [
+            //Automatically replaces [[string]] with their translations
+            Modifiers\TranslateModifier::class,
 
-The code above is exactly the same as the short 'render' method. However it gives us the ability to manipulate the View class before rendering. Spiral provides us with the ability to register additional engines associated with a specified file extension and/or custom view rendered which can be very useful in some cases.
+            //Mounts view environment variables using @{name} pattern.
+            Modifiers\EnvironmentModifier::class,
 
-## View Namespaces
-One of the core tenets of ViewManager is to aggregate and store view filenames into multiple locations by namespace. rendering/compilation phase ViewManager will walk though every namespace directory until view file is not found. View file is identified only by it's name. You can use an extension to locate what rendering/compilation engine to use. Let's look at our view configuration to check how the namespaces should defined:
+            /*{{twig.modifiers}}*/
+        ],
 
-```php
-'namespaces'   => [
-    'default'  => [
-        directory("application") . '/views'
+        /*
+        * Here you define list of extensions to be mounted into twig engine, every extension
+        * class will be resolved using container so you can use constructor dependencies.
+        */
+        'extensions' => [
+            //Provides access to dump() and spiral() functions inside twig templates
+            Engines\Twig\Extensions\SpiralExtension::class,
+            
+            /*{{twig.extension}}*/
+        ]
     ],
-    'spiral'   => [
-        directory("application") . '/views/spiral',
-        directory("libraries") . '/spiral/framework/source/views'
+
+    /*
+     * Stempler does not provide any custom command syntax (however you can connect one using
+     * modifiers section), instead it compose templates together using html tags based on
+     * defined syntax (in our case "Dark").
+     */
+    'dark'   => [
+        'class'      => Engines\StemplerEngine::class,
+
+        /*
+         * Class to be used for syntax definitions. Do not change (create new engine instead).
+         */
+        'syntax'     => Stempler\Syntaxes\DarkSyntax::class,
+
+        /*
+         * Do not change this extension, it used across spiral toolkit, profiler and
+         * administration modules.
+         */
+        'extension'  => 'dark.php',
+
+        /*
+         * Modifiers applied to imported or extended view source before it's getting parsed by
+         * HtmlTemplater, every modifier has to implement ModifierInterface and as result view
+         * name, namespace and filename are available for it. Modifiers one of the options to
+         * connect custom syntax processors (for example Laravel's Blade or Nette Latte).
+         */
+        'modifiers'  => [
+            //Automatically replaces [[string]] with their translations
+            Modifiers\TranslateModifier::class,
+
+            //Mounts view environment variables using @{name} pattern.
+            Modifiers\EnvironmentModifier::class,
+
+            //This modifier automatically replace some php constructors with evaluated php code,
+            //such modifier used in spiral toolkit to simplify widget includes (see documentation
+            //and examples).
+            Modifiers\EvaluatorExpressions::class,
+
+            /*{{dark.modifiers}}*/
+        ],
+
+        /*
+         * Processors applied to compiled view source after templating work is done and view is
+         * fully composited.
+         */
+        'processors' => [
+
+            //Evaluates php block with #compile comment at moment of template compilation
+            Processors\EvaluateProcessor::class,
+
+            //Provides ability to automatically include js and css requested by widgets and tags
+            Spiral\Toolkit\AssetManager::class,
+
+            //Drops empty lines and normalize attributes
+            Processors\PrettifyProcessor::class,
+
+            /*{{dark.processors}}*/
+        ]
     ],
-    'profiler' => [
-        directory("libraries") . '/spiral/profiler/source/views'
-    ]
-],
-```
 
-You can specify view name with a namespace using the ":" separator. If you don't enter a namespace, the "default" will be used instead. This makes it possible to rewrite the first example:
-
-```php
-protected function indexAction()
-{
-    return $this->views->render('default:demo', [
-        'value' => mt_rand(0, 1000)
-    ]);
-}
-```
-
-The great thing about namespaces is that because ViewManager will be looking for file in the order of the declared directories, we can change the views used by other spiral components or modules. In this case, let's remember http configuration:
-
-```php
-'httpErrors'   => [
-    400 => 'spiral:http/badRequest',
-    403 => 'spiral:http/forbidden',
-    404 => 'spiral:http/notFound',
-    500 => 'spiral:http/serverError',
+    /*
+     * Native engine simply executes php file without any additional features. You can access
+     * NativeView object using variable $this from your view code, to get instance of view
+     * container use $this->container.
+     */
+    'native' => [
+        'class'     => Engines\NativeEngine::class,
+        'extension' => 'php'
+    ],
+    /*{{engines}}*/
 ]
 ```
 
-As you can see, soft http error system will render the view located in the "spiral" namespace, which is associated with two directories:
+View engines applied automatically based on a file extension, for example we can rename our `test.php` view file into `test.dark.php` which will allows us to use powerful Stempler compiler. Same way can be used for Twig engine (`sample.twig`):
 
-```php
-'spiral'   => [
-    directory("application") . '/views/spiral',
-    directory("libraries") . '/spiral/framework/source/views'
-],
+```twig
+{% extends "layouts/layout.twig" %}
+
+{% block body %}
+    <div class="wrapper">
+        <div class="placeholder">
+            You can access spiral container in twig templates as well:
+            {{ spiral('request').getAttribute('csrfToken') }};
+        
+            [[You can use translator tags even in twig.]]
+        </div>
+    </div>
+{% endblock %}
 ```
 
-Let's try to alter the HTTP 404 error page by creating a view in 'application/views/spiral/http' directory. We are going to overwrite the 'notFound' page. HttpDispacher will provide us a "request" variable we can use in our view:
+> Attention, at this moment view component only detects view engine based on file existention in order of defined engines, meaning that having two view names under same name and different extension will be treated as invalid behaviour.
+
+## Namespaces
+View component and most of mounted view engines (Twig and Stempler) support working with multiple view namespaces. Primary idea of using namespaces is to be able to isolate set of view files defined in an extension, and (in some cases), being able to redefine such files on application layer. Let's try to create our first view namespace linked to a directory `app/module/views`:
 
 ```php
-Page not found: <?= $request->getUri() ?>
-```
-
-> We can also simply point http to another view. :)
-
-Now, if we get a 404 error, our view file will be rendered. If you already got a 404 error before it might be  pre-compiled already with the original view. We can reset it by either disabling cache, flushing the content of "application/runtime/cache/views" (default cache directory) or by executing the command "views:compile" (run with -v options to get more details) which will re-compile the available view files.
-
-## View Engines
-Spiral ViewManager would be useless if you didn't have the ability to create or mount your own templating engines and compilers. Before we do that, let's check out how spiral works with view files and review configuration for the default spiral engine:
-
-```php
-'engines'      => [
-    'default' => [
-        'extensions' => [
-            'php'
-        ],
-        'compiler'   => 'Spiral\Views\Compiler',
-        'view'       => 'Spiral\Views\View'
-    ]
-],
-```
-
-The default engine can be associated with one of many filenames (we only use .php at the moment). Next we provide two classes used to describe every engine. Let's focus on these classes closely.
-
-### View Compiler
-The engine's Compiler option is responsible for the view source pre-compilation. This operation is done once and cached somewhere later. Spiral ViewManager leaves the cache management to Compiler class. Let's view CompilerInterface to see what methods are required from every compiler:
-
-```php
-interface CompilerInterface
-{
-    /**
-     * @param ViewManager $views
-     * @param FilesInterface $files
-     * @param string $namespace View namespace.
-     * @param string $view      View name.
-     * @param string $filename  View filename.
+'namespaces'  => [
+    /*
+     * This is default application namespace which can be used without any prefix.
      */
-    public function __construct(
-        ViewManager $views,
-        FilesInterface $files,
-        $namespace,
-        $view,
-        $filename
-    );
-
-    /**
-     * @return string
-     */
-    public function getNamespace();
-
-    /**
-     * @return string
-     */
-    public function getView();
-
-    /**
-     * True if view has been compiled and cached somewhere already.
-     *
-     * @return bool
-     */
-    public function isCompiled();
+    'default'  => [
+        directory("application") . 'views/',
+        /*{{namespaces.default}}*/
+    ],
     
-    /**
-     * @throws CompilerException
-     * @throws \Exception
+    'module' => [
+        directory("application") . 'module/views/',
+    ],
+    
+    /*
+     * This namespace contain few framework views like http error pages and exception view
+     * used in snapshots. In addition, same namespace used by Toolkit module to share it's
+     * views and widgets.
      */
-    public function compile();
-
-    /**
-     * View filename location (to be rendered using require + export method or similar).
-     *
-     * @return string
-     */
-    public function compiledFilename();
-}
+    'spiral'   => [
+        directory("libraries") . 'spiral/framework/source/views/',
+        directory('libraries') . 'spiral/toolkit/source/views/',
+        /*{{namespaces.spiral}}*/
+    ],
+    'profiler' => [
+        directory('libraries') . 'spiral/profiler/source/views/',
+        /*{{namespaces.profiler}}*/
+    ],
+    'security' => [
+        directory('libraries') . 'spiral/security/source/views/',
+    ],
+    'vault' => [
+       directory('libraries') . 'spiral/vault/source/views/',
+       /*{{namespaces.vault}}*/
+    ],
+    /*{{namespaces}}*/
+],
 ```
 
-Based on the given interface, we can see 3 primary methods ViewManager works with:
-* isCompiler must return true if view source was processed and stored somewhere already
-* compile method must process view source and preprate it for usage in renderer even if it's already cached
-* compiledFilename must return location where compiled view are stored in it
+> As you can see view config already have decent amount of view namespaces mounted by modules and framework, check about module installers to find out how to automatically add your namespace at moment of module registration.
 
-Because most of the existing templating engines convert internal format into plain php files almost all of them can be mounted as compilers.
-
-> Compiler must handle caching and cache validations by itself. However it is recommended that you read about view cache dependecies below. Compiler class doesn't have access to view variables.
-
-### View Renderer
-The second engine class declared under index 'view' must accept the instance of engine compiler and render `compiledFilename()`. When you want your view class to work with compilers, you have to implement `CompilerAwareInterface` which has a pre-defined set of arguments for it's constructor:
+Now we can move our test view into needed directory and render it using namespace prefix:
 
 ```php
-interface CompilerAwareInterface extends ViewInterface
+public function indexAction()
 {
-    /**
-     * @param ContainerInterface $container
-     * @param CompilerInterface  $compiler
-     * @param array              $data
-     */
-    public function __construct(
-        ContainerInterface $container,
-        CompilerInterface $compiler,
-        array $data = []
-    );
+    return $this->views->render('module:test', [
+        'name' => 'Some name'
+    ]);
 }
 ```
 
-In many cases, compiler will create a simple php file with placeholders for php variables. This makes it possible for us to use the existing `Spiral\Views\View` implementation. Let's looks into an implementation like this to understand how it works:
+> Stempler and Twig also allows you to import and include views defined in other namespaces/modules, such technique used a lot in Dark widgets, for example:
 
 ```php
-class View extends Component implements CompilerAwareInterface
-{
-    /**
-     * For render benchmarking.
-     */
-    use BenchmarkTrait;
+<dark:user bundle="spiral:bundle"/>
 
-    /**
-     * @var array
-     */
-    protected $data = [];
-
-    /**
-     * @invisible
-     * @var ContainerInterface
-     */
-    protected $container = null;
-
-    /**
-     * @invisible
-     * @var CompilerInterface
-     */
-    protected $compiler = null;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(
-        ContainerInterface $container,
-        CompilerInterface $compiler,
-        array $data = []
-    ) {
-        $this->container = $container;
-        $this->compiler = $compiler;
-        $this->data = $data;
-    }
-
-    /**
-     * Alter view parameters (should replace existing value).
-     *
-     * @param string $name
-     * @param mixed  $value
-     * @return $this
-     */
-    public function set($name, $value)
-    {
-        $this->data[$name] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Set view rendering data. This will replace the full dataset.
-     *
-     * @param array $data
-     * @return $this
-     */
-    public function setData(array $data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function render()
-    {
-        $__benchmark__ = $this->benchmark(
-            'render',
-            $this->compiler->getNamespace()
-            . ViewsInterface::NS_SEPARATOR
-            . $this->compiler->getView()
-        );
-
-        $__outputLevel__ = ob_get_level();
-        ob_start();
-
-        extract($this->data, EXTR_OVERWRITE);
-        try {
-            require $this->compiler->compiledFilename();
-        } finally {
-            while (ob_get_level() > $__outputLevel__ + 1) {
-                ob_end_clean();
-            }
-
-            $this->benchmark($__benchmark__);
-        }
-
-        return ob_get_clean();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final public function __toString()
-    {
-        return $this->render();
-    }
-}
+<spiral:form>
+  our ajax form
+</spiral:form>
 ```
 
-As you can see, this utilizes classical php methods to render the php files using buffers and the `extract` function.
+One of the cool features about namespaces is that you can link one namespace to multiple directories. Let's try to check how we can use namespaces to redefine layout defined by external module, for this purposes let's try to install [Vault extension](https://github.com/spiral-modules/vault).
 
-### Compilerless Renderers
-There are scenarious where you might want to skip the compilation part and work with the view file directly. You can do that by implementing `FilenameAwareInterface` into your view class. In this case, additonal filename arguments will be provided to your class and point to view filename.
+Once you have vault installed, let's try to open it's dashboard view using url "/vault", it will look like that:
+
+![Dashboard](https://raw.githubusercontent.com/spiral/guide/master/resources/vault-layout.png)
+
+For obvious reasons your might want to change layout colors, logotypes and etc, we can achieve that by mounting additional directory into vault view namespace:
 
 ```php
-interface FilenameAwareInterface extends ViewInterface
+'vault'    => [
+    directory("application") . 'views/vault/',
+    directory('libraries') . 'spiral/vault/source/views/',
+    /*{{namespaces.vault}}*/
+],
+```
+
+As you can see this directory located before original vault extension which gives us ability to redefine our layout settings by creating file in `app/views/vault/layout.dark.php`:
+
+```php
+<dark:extends path="vault:layouts/root"/>
+
+<!--Admin spefific elements-->
+<dark:use bundle="admin:bundle"/>
+
+<define:resources>
+   <block:resources/>
+   //Project specific vault styles and scripts including custom layout colors
+</define:resources>
+
+<define:brand>
+    <a href="/" class="brand-logo">
+        <img src="@{basePath}resources/images/project-logo.jpg" alt="Project name">
+    </a>
+</define:brand>
+
+<!--Project specific actor-->
+<define:user-block>
+    <a href="#" class="user-link">
+        <?= get_class(spiral(\Spiral\Security\ActorInterface::class)) ?>
+    </a>
+    <a href="#" class="user-logout hide">[[Log Out]]</a>
+</define:user-block>
+```
+
+## View Cache
+Spiral framework Stempler engine is pretty slow compiler, to improve your project performance view component provides engines universal settings to enable and disable compilication cache, such setting is located in a view config:
+
+```php
+'cache'       => [
+    /*
+     * Indicates that view engines must enable caching for their templates, you can reset existed
+     * view cache by executing command "view:compile"
+     */
+    'enabled'   => env('VIEW_CACHE'),
+    /*
+     * Location where view cache has to be stored into. By default you can use
+     * app/runtime/cache/views directory.
+     */
+    'directory' => directory("cache") . 'views/'
+],
+```
+
+> As you can see you can enable and disable view cache using your .env file.
+
+## View Environent and Modifies (cachable processors)
+If you will carefully read view configuration file, you will notice one section which might look weird:
+
+```php
+'environment' => [
+    'language' => ['translator', 'getLocale'],
+    'basePath' => ['http', 'basePath'],
+    /*{{environment}}*/
+],
+```
+
+This section define set of enviroment dependencies for a view cache, in other words when any of this values (value resolved using contrainer: `['translator', 'getLocale']` = `$container->get('translator')->getLocale()`) changes - new cache version will be created.
+
+On a practice it allows us, to perform some operations on view source **before** it will be given to view engine. For example, the most benefitial use of this feature is supplied by `TranslateModifier` which will replace every string embraced with `[[` and `]]` symbols into locate specific text.
+
+```php
+<extends:layouts.html5 title="[[Welcome To Spiral]]" git="https://github.com/spiral"/>
+
+<define:body>
+   [[Test text]
+</define:body>
+```
+
+You can define your own modifier by implementing `Spiral\Views\ModifierInterface`:
+
+```php
+interface ModifierInterface
 {
     /**
-     * @param ContainerInterface $container
-     * @param ViewManager        $views
-     * @param string             $namespace
-     * @param string             $view
-     * @param string             $filename
-     * @param array              $data
+     * All modifiers should be requested using FactoryInterface.
+     *
+     * @param EnvironmentInterface $environment
      */
-    public function __construct(
-        ContainerInterface $container,
-        ViewManager $views,
-        $namespace,
-        $view,
-        $filename,
-        array $data = []
-    );
+    //public function __construct(EnvironmentInterface $environment);
+
+    /**
+     * Modify given source.
+     *
+     * @param string $source    Source.
+     * @param string $namespace View namespace.
+     * @param string $name      View name (no extension included).
+     * @return mixed
+     */
+    public function modify($source, $namespace, $name);
 }
 ```
 
-> If you want, you can still handle caching and compilations inside your view.
+> Since modifiers are resolved using FactoryInterface so you can define any needed injection in your constuctor + [EnvironmentInterface $environment].
 
-## Spiral View Compiler
-The default spiral compiler uses `Spiral\Views\View` for rendering purposes. Previously we discussed it's abilities so we will focus mainly on the compiler itself. The spiral compiler is represented by the `Spiral\Views\Compiler` class and built on the principles of the view processors. Essentially, it will pass view source through a set of classes dedicated to perform some code/source manipulations. Every processor must implement `ProcessorInterface`. Let's check out it's declaration:
+## View Processors (Stempler specific functionality)
+Separatelly from view modifies Stempler engine provides ability to define set of view processors which are applied to are compiled view source **after** engine, you can implement your processor via interface `Spiral\Views\ProcessorInterface`
 
 ```php
 interface ProcessorInterface
 {
     /**
-     * @param ViewManager $views
-     * @param Compiler    $compiler
-     * @param array       $options
-     */
-    public function __construct(ViewManager $views, Compiler $compiler, array $options);
-
-    /**
-     * Compile view source.
-     *
-     * @param string $source View source (code).
+     * @param string $source
+     * @param string $namespace
+     * @param string $view
+     * @param string $cachedFilename
      * @return string
-     * @throws CompilerException
-     * @throws \ErrorException
      */
-    public function process($source);
+    public function process($source, $namespace, $view, $cachedFilename = null);
 }
 ```
 
-If we wanted to add a custom processor into our compiler, all we need to do is modify the compiler section in our view configuration:
+> For example you can create html prettify processor.
+
+## Accessing Container inside view
+In some cases you might want to get access to your models or services from a view source without passing it's by reference in every render method. Since, by default, spiral renders your view files inside `Spiral\Views\Engines\Native\NativeView` class you are given ability to access container using `$this->container` property.
 
 ```php
-'processors' => [
-    'Spiral\Views\Processors\ExpressionsProcessor' => [],
-    'Spiral\Views\Processors\TranslateProcessor'   => [],
-    'Spiral\Views\Processors\TemplateProcessor'    => [],
-    'Spiral\Views\Processors\EvaluateProcessor'    => [],
-    'Spiral\Views\Processors\PrettifyProcessor'    => [],
-    'Spiral\Toolkit\ResourceManager'               => []
-]
+Hello world, <?= $name ?>!
+
+<?php dump($this->container->get(MyService::class)); ?>
 ```
 
-> Every compiler class is associated with it's options. The default spiral processors lets you overwrite their options. We will skip this step for now.
-
-Let's say that we want to create simple processor to replace `{{variable}}` with `<?=e($variable)?>`. We can name it `CoolEchoProcessor`:
+Alternatively you can use even shorter way to get access to container and your application via functions `app` (defined in your app file) or `spiral`:
 
 ```php
-class CoolEchoProcessor implements ProcessorInterface
-{
-    /**
-     * @param ViewManager $views
-     * @param Compiler    $compiler
-     * @param array       $options
-     */
-    public function __construct(ViewManager $views, Compiler $compiler, array $options)
-    {
-        //We don't have any options to be configured, so let's keep constructor empty
-    }
+Hello world, <?= $name ?>!
 
-    /**
-     * Compile view source.
-     *
-     * @param string $source View source (code).
-     * @return string
-     * @throws CompilerException
-     * @throws \ErrorException
-     */
-    public function process($source)
-    {
-        return preg_replace(
-            '/{{([^}]+)}}/',
-            '<?=e($\1)?>',
-            $source
-        );
-    }
-}
+<?= spiral(MyService::class)->someMethod(); ?>
+<?= spiral('faker')->someMethod(); ?>
+<?= app()->faker->name ?>
 ```
 
-Now we can modify the views config (to add a new processor). Lets look at the results in our browser:
-
-```php
-This is demo view file: {{value}}
-
-<?php
-/**
- * @var \Spiral\Debug\Dumper $dumper
- */
-$dumper = $this->container->get(\Spiral\Debug\Dumper::class);
-$dumper->dump($value);
-?>
-```
-
-If you want to see what the compiled view file looks like, simply open the 'application/runtime/cache/views/default-demo-*.php' file:
-
-```php
-This is a demo view file: <?=e($value)?>
-<?php
-/**
- * @var \Spiral\Debug\Dumper $dumper
- */
-$dumper = $this->container->get(\Spiral\Debug\Dumper::class);
-$dumper->dump($value);
-?>
-```
-
-Spiral Compiler comes with multiple pre-created processors which can be used to simplify the view files:
-
-| Processor                                    | Description            
-| ---                                          | ---
-| Spiral\Views\Processors\ExpressionsProcessor | Runs few expressions defined in it's options, the most notable one @{variable} will replace it's value with cache dependency (read below).
-| Spiral\Views\Processors\TranslateProcessor   | Replace `[[string]]` with their translations using active language, result are cached and depend on view cache dependencies (read below).
-| Spiral\Views\Processors\TemplateProcessor    | Spiral templates allows user to inherit view layouts, create virual tags and much more. See [Templater] (/templater/overview.md).
-| Spiral\Views\Processors\EvaluateProcessor    | Executes PHP blocks marked with #compile comment, used to perform some layout related code which does not depends on user input or view variables.
-| Spiral\Views\Processors\PrettifyProcessor    | Removes emply view lines and spaces in some tag attributes.
-
-## Cache and Cache Dependencies
-The default spiral compiler uses a cache configuration declared in the view config. You can disable the cache in your development environment to see view updates immediately. However, it might drastically slow down your application:
-
-```php
-'cache'        => [
-    'enabled'   => true,
-    'directory' => directory("cache") . '/views'
-],
-```
-
-As mentioned previously, compiler and it's processors do not have access to the view variables and user input However `ViewManager` defines a set of so called cache dependies declared in view configuration file:
-
-```php
-'dependencies' => [
-    'language' => [
-        'i18n',
-        'getLanguage'
-    ],
-    'basePath' => [
-        'http',
-        'basePath'
-    ]
-],
-```
-
-Such depencies (in our case language - linked to current language, and basePath - linked to http base path values) are used by the default Compiler to change the cached filename. This allows us to use the system functions (for example translations) on the compilation stage without wasting CPU resources during the rendering.
-
-To demonstrate how cache dependencies work, let's modify our demo view this way:
-
-```php
-[[This is demo view file:]] <?= $value ?>
-```
-
-As mentioned before in the processor section, every string surrounded by an `[[]]` will be automatically translated using the active language. If we open our controller action with the view in browser, we will see that no `[[]]` is shown in the output. Now, let's change our language and see what happens:
-
-```php
-protected function indexAction()
-{
-    //Belarusian
-    $this->i18n->setLanguage('by');
-
-    return $this->views->render('default:demo', [
-        'value' => mt_rand(0, 1000)
-    ]);
-}
-```
-
-As you may have noticed, the page rendering took a few extra milliseonds on the first run. This happens because Compiler created a new cached view. To make this example more visual, let's edit our i18n string in 'application/runtime/i18n/belarus/view-demo.php' file (we can also export language into a PO file using the  `i18n:export` command and then import the edited file back in using `i18n:import`).
-
-```php
-<?php return [
-    'This is a demo view file:' => 'This is a demo view file specially for German speakers:',
-];
-```
-
-Now if we will reset or disable cache our output will demonstrate new content. To see what happen inside let's open directory 'application/runtime/cache/views'. As you can see our demo view now represented by 2 filename with different postfixes, if we will compare content of such files we will see the difference:
-
-```php
-This is demo view file: <?= $value ?>
-```
-
-```php
-This is demo view file specially for German speakers: <?= $value ?>
-```
-
-Such technique allows you to "capture" as many strings for localization as you want without paying for it with CPU resources.
+> At this moment spiral does not create container scope while rendering view file, however it might do it in a future which will allow you to use `spiral` and `app` functions without being worry that they are referencing to wrong container.

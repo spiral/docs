@@ -3,7 +3,7 @@ Spiral framework trying to help you to separate database and business logic, sin
 
 To speed up model development, framework provide you simple class `Spiral\Core\Service` which can give you shorter access to [container and shared bindings](/framework/container.md). 
 
-> Every Controller is Service.
+> Every Controller is Service as well. Every service is stated as singleton by default (see [Declarative Singletons](/framework/container.md))
 
 ## Example Model
 The simpliest implementation of our service with shared bindings usage might look like:
@@ -13,7 +13,6 @@ class UsersService extends Service
 {
     public function getCount()
     {
-        //This is better to be done using DI, see below
         return $this->db->table('users')->count();
     }
 }
@@ -34,10 +33,12 @@ protected function testAction(UsersService $users)
 As any other class you can change your Service contructor to request additional dependecies, for example we can create model which manages our blog posts source:
 
 ```php
-class BlogService 
+class BlogService implements SingletonInterface
 {
     private $source = null;
 
+    //Use container to create PostSourceInterface to be depended on source 
+    //abstraction, not implementation
     public function __construct(PostsSource $source)
     {
         $this->source = $source;
@@ -64,7 +65,7 @@ class BlogService extends Service
     
     public function countPosts()
     {
-        if($this->cache->has('posts')) {
+        if ($this->cache->has('posts')) {
             return $this->cache->get('posts');
         }
         
@@ -73,6 +74,21 @@ class BlogService extends Service
     
         return $count;
     }
+    
+    //You can move some complex operations into services as well
+    public function saveWithImage(Post $post, $filename, &$errors = null)
+    {
+        //Resize image
+        //Store into storage
+        
+        if ($this->source->save($post, $errors)) {
+            //Drop or archive old post image
+            return true;
+        } else {
+            //Drop or achive new post image
+            return false;
+        }
+    }
 }
 ```
 
@@ -80,7 +96,7 @@ This time we can extend our model from Service class which will provide us abili
 
 > In a given example we are going to cache posts count for 1 hour, following methodic can help us to keep our views and controller ligther.
 
-Given example has one issue - code will work perfectly fine, however `$this->cache` will be resolved using shared container (global for your application) which *might* create minor issues on testing stage, to solve it let's improve our contructor:
+Example has one issue - code will work perfectly fine, however `$this->cache` will be resolved using shared container (global for your application) which *might* create minor issues on testing stage, to solve it let's improve our contructor:
 
 ```php
 class BlogService extends Service
@@ -99,7 +115,7 @@ class BlogService extends Service
 Alternatively, at any moment, we can refactor our class to decouple from Service:
 
 ```php
-class BlogService
+class BlogService implements SingletonInterface
 {
     private $source = null;
     private $cache = null;

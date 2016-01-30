@@ -1,5 +1,5 @@
 # Validations
-Spiral provides a simple way to validate incoming user data by providing an `Spiral\Validation\ValidatorInterface` interface which is attached by default to the `Spiral\Validation\Validator` class.
+Spiral provides a simple way to validate incoming user data by providing an `Spiral\Validation\ValidatorInterface` interface which is binded by default to the `Spiral\Validation\Validator` class.
 
 ## ValidatorInterface
 Before we start working with validations, let's quickly take a look at `ValidatorInterface` to see what methods are available to us.
@@ -8,27 +8,37 @@ Before we start working with validations, let's quickly take a look at `Validato
 interface ValidatorInterface
 {
     /**
-     * @param array|\ArrayAccess $data  Data to be validated.
-     * @param array              $rules Validation rules.
+     * Update validation rules.
+     *
+     * @param array $rules
+     * @return self
      */
-    public function __construct($data, array $rules);
+    public function setRules(array $rules);
 
     /**
      * Update validation data (context).
      *
      * @param array|\ArrayAccess $data
-     * @return selfp
+     * @return self
      * @throws ValidationException
      */
     public function setData($data);
 
     /**
-     * Update validation rules.
+     * Register outer validation error.
      *
-     * @param array $validates
+     * @param string $field
+     * @param string $error
      * @return self
      */
-    public function setRules(array $rules);
+    public function registerError($field, $error);
+
+    /**
+     * Flush all registered errors.
+     *
+     * @return self
+     */
+    public function flushRegistered();
 
     /**
      * Check if context data valid accordingly to provided rules.
@@ -39,7 +49,7 @@ interface ValidatorInterface
     public function isValid();
 
     /**
-     * Evil twin of isValid() method should return true if context data is not valid.
+     * Evil tween of isValid() method should return true if context data is not valid.
      *
      * @return bool
      * @throws ValidationException
@@ -47,7 +57,7 @@ interface ValidatorInterface
     public function hasErrors();
 
     /**
-     * List of errors associated with parent field. Every field can only have one error assigned.
+     * List of errors associated with parent field, every field should have only one error assigned.
      *
      * @return array
      */
@@ -59,9 +69,9 @@ As you can see, validator requires 2 primary sets:
 * data is an array of fields to be validated
 * rules is set of validation rules to be applied to every data field
 
-> The default spiral implementation `Validator` requires instances of `ContainerInterface` and `ConfiguratorInterface` (to provide a list of available validations using section "validation"). This means that you have to request the validator instance using the  container to ensure that it's configured correctly. 
+> The default spiral implementation `Validator` requires instances of `ContainerInterface` (Interop, needed to load Checkers and external rule classes) and `ValidationConfig` (to provide a list of available validations using section "validation"). This means that you have to request the validator instance using the DI or factory to ensure that it's configured correctly. 
 
-Now we can create a sample validator in our controller action:
+Now we can create a sample validator in our controller action (we can configure validation on a fly):
 
 ```php
 protected function indexAction(ValidatorInterface $validator)
@@ -76,22 +86,25 @@ protected function indexAction(ValidatorInterface $validator)
 }
 ```
 
-We can also create a validator using container and defined data and create rules while class is constructed:
+We can also create a validator using factory and defined data and create rules while class is constructed:
 
 ```php
-protected function indexAction()
+protected function indexAction(FactoryInterface $factory)
 {
     /**
      * @var ValidatorInterface $validator
      */
-    $validator = $this->container->construct(ValidatorInterface::class, [
-        'data'  => [
-            'name' => $this->input->query('name')
-        ],
-        'rules' => [
-            'name' => ['notEmpty']
+    $validator = $factory->make(
+        ValidatorInterface::class, 
+        [
+            'data'  => [
+                'name' => $this->input->query('name')
+            ],
+            'rules' => [
+                'name' => ['notEmpty']
+            ]
         ]
-    ]);
+    );
 
     dump($validator->getErrors());
 }
@@ -111,29 +124,33 @@ Before we move to the format required to define validation rules, let's take a l
 ]
 ```
 
-Such errors can be sent directly to the frontend and be displayed near the input field (see [Spiral Frontent Toolkit](../modules/toolkit.md)) or joined as an array of errors.
+Such errors can be sent directly to the frontend and be displayed near the input field (see [Spiral Frontent Toolkit](/modules/toolkit.md)) or joined as an array of errors.
+
 > Spiral Validator perform **linear field validation**. This means that only one error can be shown in one field. When there are multiple rules associated with one field - the first failed error message will be used for that rule (other validation methods will be skipped). This approach is used to make sure that every rule will receive a value already passed through previous validations (for example we can have rules like: notEmpty, string, string::regexp which will make sure that field is not empty. Than that value is a string and only after regexp expression will it be executed).
 
 ## Validation Rules and Messages
 We can define multiple validation rules for one field. Let's try to modify our example and include an email check into it:
 
 ```php
-protected function indexAction()
+protected function indexAction(FactoryInterface $factory)
 {
     /**
      * @var ValidatorInterface $validator
      */
-    $validator = $this->container->construct(ValidatorInterface::class, [
-        'data'  => [
-            'name' => $this->input->query('name')
-        ],
-        'rules' => [
-            'name' => [
-                'notEmpty',
-                'email'     //We want our name field to contain a valid email address
+    $validator = $factory->make(
+        ValidatorInterface::class, 
+        [
+            'data'  => [
+                'name' => $this->input->query('name')
+            ],
+            'rules' => [
+                'name' => [
+                    'notEmpty',
+                    'email'     //We want our name field to contain a valid email address
+                ]
             ]
         ]
-    ]);
+    );
 
     dump($validator->getErrors());
 }
@@ -201,22 +218,25 @@ It was mentioned before that the complex form lets you set custom error message 
 Let's try to create our own validation method in our controller or service.
 
 ```php
-protected function indexAction()
+protected function indexAction(FactoryInterface $factory)
 {
     /**
      * @var ValidatorInterface $validator
      */
-    $validator = $this->container->construct(ValidatorInterface::class, [
-        'data'  => [
-            'name' => $this->input->query('name')
-        ],
-        'rules' => [
-            'name' => [
-                ['notEmpty'],
-                ['Controllers\HomeController::validate', 'abc', 'message' => 'Invalid value.']
+    $validator = $factory->make(
+        ValidatorInterface::class, 
+        [
+            'data'  => [
+                'name' => $this->input->query('name')
+            ],
+            'rules' => [
+                'name' => [
+                    ['notEmpty'],
+                    ['Controllers\HomeController::validate', 'abc', 'message' => 'Invalid value.']
+                ]
             ]
         ]
-    ]);
+    );
 
     dump($validator->getErrors());
 }
@@ -304,26 +324,29 @@ Another section you may notice in validation config is "emptyConditions". Let's 
 Empty conditions are a set of rules make sure that a field value is set. Generally speaking, you have to include one of these rules into the field validations if you do not want to leave the field empty. Let's try to demonstrate it below:
 
 ```php
-protected function indexAction()
+protected function indexAction(FactoryInterface $factory)
 {
     /**
      * @var ValidatorInterface $validator
      */
-    $validator = $this->container->construct(ValidatorInterface::class, [
-        'data'  => [
-            'name'  => $this->input->query('name'),
-            'email' => $this->input->query('email'),
-        ],
-        'rules' => [
-            'name'  => [
-                'notEmpty',
-                ['matcher', 'abc', 'message' => 'Invalid value.']
+    $validator = $factory->make(
+        ValidatorInterface::class,
+        [
+            'data'  => [
+                'name'  => $this->input->query('name'),
+                'email' => $this->input->query('email'),
             ],
-            'email' => [
-                'email'
+            'rules' => [
+                'name'  => [
+                    'notEmpty',
+                    ['matcher', 'abc', 'message' => 'Invalid value.']
+                ],
+                'email' => [
+                    'email'
+                ]
             ]
         ]
-    ]);
+    );
 
     dump($validator->getErrors());
 }
@@ -442,27 +465,30 @@ class MyChecker extends Checker
 We can now modify our validation code within controller:
 
 ```php
-protected function indexAction()
+protected function indexAction(FactoryInterface $factory)
 {
     /**
      * @var ValidatorInterface $validator
      */
-    $validator = $this->container->construct(ValidatorInterface::class, [
-        'data'  => [
-            'name'  => $this->input->query('name'),
-            'email' => $this->input->query('email'),
-        ],
-        'rules' => [
-            'name'  => [
-                'notEmpty',
-                'my::abc'
+    $validator = $factory->make(
+        ValidatorInterface::class,
+        [
+            'data'  => [
+                'name'  => $this->input->query('name'),
+                'email' => $this->input->query('email'),
             ],
-            'email' => [
-                'notEmpty',
-                ['my::equal', 'name']
+            'rules' => [
+                'name'  => [
+                    'notEmpty',
+                    'my::abc'
+                ],
+                'email' => [
+                    'notEmpty',
+                    ['my::equal', 'name']
+                ]
             ]
         ]
-    ]);
+    );
 
     dump($validator->getErrors());
 }
@@ -590,16 +616,16 @@ interface ValidatesInterface
     public function hasErrors();
 
     /**
-     * List of errors associated with parent field. Every field must have only one error assigned.
+     * List of errors associated with parent field, every field must have only one error assigned.
      *
-     * @param bool $reset Clean errors after receiving every message.
+     * @param bool $reset Force re-validation.
      * @return array
      */
     public function getErrors($reset = false);
 }
 ```
 
-This interface and trait are already implemented in the base spiral model - DataEntity. As a result, it is recommendeded that you validate incoming user requests using http [RequestFilters] (/http/filters.md). Let's try to write an example that demonstrates the usage of image/file checker using the RequestFilter:
+This interface and trait are already implemented in the base spiral model - DataEntity. As a result, it is recommendeded that you validate incoming user requests using http [RequestFilters](/http/filters.md). Let's try to write an example that demonstrates the usage of image/file checker using the RequestFilter:
 
 ```php
 /**
@@ -639,5 +665,90 @@ protected function indexAction(UploadRequest $request)
     }
 
     $request->image->moveTo('...');
+}
+```
+
+## Entity Validations
+You can also use validation rules directly with your database entities, in this case you might skip step of declaring request, to do
+that let's try to create entity which looks like that:
+
+```php
+class Contact extends Record
+{
+    use TimestampsTrait;
+
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'id' => 'primary',
+
+        'role' => 'string(32)',
+
+        'name'        => 'string',
+        'email'       => 'string',
+        'phone'       => 'string',
+        'description' => 'text'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $defaults = [
+        'role' => 'Marketing'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'role',
+        'name',
+        'email',
+        'phone',
+        'description'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'name'        => ['notEmpty', ['string::shorter', 255]],
+        'email'       => ['email'],
+        'phone'       => ['notEmpty', ['string::shorter', 255]],
+        'role'        => ['notEmpty', ['string::shorter', 32]],
+        'description' => [['string::shorter', 500]]
+    ];
+}
+```
+
+Now (i assume you already have ContactSource with save method) you can update such entity in your controller this fashion:
+
+```php
+public function updateAction($id, ContactSource $source)
+{
+    /**
+     * @var Contact $entity
+     */
+    if (empty($entity = $source->findByPK($id))) {
+        throw new ForbiddenException("Undefined contact");
+    }
+
+    //See Security module
+    $this->authorize('edit', compact('entity'));
+
+    //Populates only allowed fields
+    $entity->setFields($this->input->data);
+    if (!$source->save($entity, $errors)) {
+        return [
+            'status' => 400,
+            'errors' => $errors
+        ];
+    }
+
+    return [
+        'status'  => 200,
+        'message' => $this->say('Contact information has been updated')
+    ];
 }
 ```

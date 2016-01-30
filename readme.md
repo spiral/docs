@@ -1,11 +1,11 @@
-# Table of Contents
-> Work in progress. Please let us know if you find any typos or issues within this documentation. You can email to [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com) or create PR for guide [repository](https://github.com/spiral/guide).
+# Spiral Framework, Table of Contents
+> Please let us know if you find any typos or issues within this documentation. You can email to [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com) or create PR for guide [repository](https://github.com/spiral/guide).
 
 * Overview
     * [Installation and Configuration](installation.md)
     * [Contributing](contributing.md)
     * [Forum](https://groups.google.com/forum/#!forum/spiral-framework)
-    * [License](framework/lincense.md)
+    * [License](license.md)
 * Framework
     * [Container, Factory, DI](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
@@ -19,31 +19,34 @@
     * [Error Handling](application/errors.md)
     * [Data Entities and Sources](application/entities.md)
     * [Models and Services](application/services.md)
-    * REWRITE [Views](application/views.md)
     * [Controllers](application/controllers.md)
+    * [Views and Templates](application/views.md)
+* Skeleton Application
+   * [Description](skeleton/description) 
 * Http Dispatcher
-    * REWRITE [Request Flow](http/flow.md)
-    * REWRITE [Request and InputManager](http/input.md)
-    * REWRITE [Responses](http/responses.md)
-    * REWRITE [Middlewares/Filters](http/middlewares.md)
-    * REWRITE [Cookies](http/cookies.md)
-    * REWRITE [Routing](http/routing.md)
-    * REWRITE [Request Filters](http/filters.md)
-    * REWRITE [Http Errors](http/errors.md)
+    * RW [Request Flow](http/flow.md)
+    * RW [Request and InputManager](http/input.md)
+    * RW [Responses](http/responses.md)
+    * RW [Middlewares/Filters](http/middlewares.md)
+    * RW [Cookies](http/cookies.md)
+    * RW [Routing](http/routing.md)
+    * RW [Request Filters](http/filters.md)
+    * RW [Http Errors](http/errors.md)
 * Console Dispatcher
-    * REWRITE [Overview](console/commands.md)
+    * [Overview](console/commands.md)
     * [Custom Commands](console/scaffolding.md)
 * Components
     * [Cache](components/cache.md)
-    * REWRITE [Debug (Monolog, Benchmarks, Dumps)](components/debug.md)
+    * RW [Debug (Monolog, Benchmarks, Dumps)](components/debug.md)
     * [DataEntity Model](components/entity.md)
     * [Encrypter](components/encrypter.md)
     * [Files](components/files.md)
-    * REWRITE [Pagination](components/pagination.md)
-    * REWRITE [Tokenizer](components/tokenizer.md)
-    * REWRITE [Translator](components/translator.md)
-    * REWRITE [Views](components/views.md)
+    * [Pagination](components/pagination.md)
+    * [Tokenizer](components/tokenizer.md)
+    * [Translator](components/translator.md)
+    * [Views and Engines](components/views.md)
     * [Validation](components/validation.md)
+    * WR [Reactor](components/reactor.md)
 * Stempler Templates
     * [Basic Usage](stempler/basics.md)
     * [Extended Usage (virtual tags, tips and tricks)](stempler/expert.md)
@@ -52,22 +55,25 @@
     * [Buckets and Objects](storage/overview.md)
     * [Storage Servers](storage/servers.md)
 * Databases
-    * REWRITE [Overview](database/overview.md)
+    * RW [Overview](database/overview.md)
     * [Schema Interospection](database/introspection.md)
-    * REWRITE [Schema Declaration](database/declaration.md)
+    * RW [Schema Declaration](database/declaration.md)
     * [Query Builders](database/builders.md)
 * Spiral ORM
-    * REWRITE [Record Model and Database Scaffolding](orm/basics.md)
-    * REWRITE [Relations](orm/relations.md)
-    * REWRITE [Entity Cache and Eager loading](orm/loading.md)
+    * RW [Record Model and Database Scaffolding](orm/basics.md)
+    * WR [Sources and Selectors](orm/sources.md)
+    * RW [Relations](orm/relations.md)
+    * RW [Eager loading and Entity Cache](orm/loading.md)
 * Spiral ODM
-    * REWRITE [Documents and Databases](odm/basics.md)
-    * REWRITE [Compositions, Aggreagations](odm/oop.md)
-    * REWRITE [Inheritance](odm/inheritance.md)
+    * RW [Documents and Databases](odm/basics.md)
+    * RW [Sources and Selectors](orm/sources.md)
+    * RW [Compositions, Aggreagations](odm/oop.md)
+    * RW [Inheritance](odm/inheritance.md)
     * [JSON and Standalone Documents](odm/standalone.md)
-    * REWRITE [UML Export](odm/uml.md)
+    * RW [UML Export](odm/uml.md)
 * Modules and Extensions
-    * REWRITE [Profiler](modules/profiler.md)
-    * Scaffolding
-    * Security
-    * Vault
+    * RW [Profiler](modules/profiler.md)
+    * RW [Scaffolding](modules/scaffolding.md)
+    * RW [Security](modules/security.md)
+    * RW [Toolkit](modules/toolkit.md)
+    * RW [Vault](modules/vault.md)

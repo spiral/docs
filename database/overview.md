@@ -1,4 +1,4 @@
-# Database Abstraction Layer (DBAL) - TO BE UPDATED
+# Database Abstraction Layer (DBAL)
 Spiral provides a simple but powerful way to manage connections and operations related to multiple database sources. The DBAL focuses mainly on unifying databases rather than trying to get 100% of the specific DBMS feature set. However, you can always use direct queries to bypass the spiral abstractions and speak directly to the database.
 At this moment, Spiral DBAL supports MySQL, SQLite, PostgresSQL and SQLServer (Windows) databases.
 
@@ -8,7 +8,7 @@ Before jumping into the details, let's review the list of features DBAL allows u
 * Ability to read Database/Table schemas including columns, indexes, foreign keys
 * Ability to write Database/Table schemas using declarative way (including columns, foreign keys and indices syncing)
 * Query builders for Select, Update, Delete and Insert queries with fluent syntax (you know, everyone loves it)
-* Ability to cache select queries using [StoreInterface] (/components/cache.md)
+* Ability to cache select queries using [StoreInterface and CacheInterface](/components/cache.md)
 * Set of generic communication interfaces (DatabaseInterface, TableInterface, Schema\ColumnInterface and etc)
 
 To better understand component hierarchy let's describe the basic DBAL classes:

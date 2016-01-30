@@ -27,8 +27,14 @@
       "application-errors": "Error Handling",
       "application-entities": "Data Entities and Sources",
       "application-services": "Models and Services",
-      "application-views": "<s>Views</s>",
-      "application-controllers": "Controllers"
+      "application-controllers": "Controllers",
+      "application-views": "Views and Templates"
+    }
+  },
+   {
+    "title": "Skeleton Application",
+    "links": {
+      "skeleton-description": "Description"
     }
   },
   {
@@ -47,8 +53,8 @@
   {
     "title": "Console Dispatcher",
     "links": {
-      "console-overview": "<s>Overview</s>",
-      "http-scaffolding": "<s>Custom Commands</s>"
+      "console-commands": "Overview",
+      "console-scaffolding": "Custom Commands"
     }
   },
   {
@@ -59,11 +65,11 @@
       "components-entity": "DataEntity Model",
       "components-encrypter": "Encrypter",
       "components-files": "Files",
-      "components-pagination": "<s>Pagination</s>",
-      "components-tokenizer": "<s>Tokenizer</s>",
-      "components-translator": "<s>Translator</s>",
-      "components-views": "<s>Views</s>",
-      "components-validation": "<s>Validation</s>",
+      "components-pagination": "Pagination",
+      "components-tokenizer": "Tokenizer",
+      "components-translator": "Translator",
+      "components-views": "Views and Engines",
+      "components-validation": "Validation",
       "components-reactor": "<s>Reactor</s>"
     }
   },
@@ -95,15 +101,16 @@
     "title": "ORM Engine",
     "links": {
       "orm-basics": "<s>Records and Scaffolding</s>",
+      "orm-sources": "<s>Sources and Selectors</s>",
       "orm-relations": "<s>Relations</s>",
-      "orm-loading": "<s>Eager loading</s>",
-      "orm-cache": "<s>Entity Cache</s>"
+      "orm-loading": "<s>Eager loading</s>"
     }
   },
   {
     "title": "ODM Engine",
     "links": {
       "odm-basics": "<s>Documents and Databases</s>",
+      "orm-sources": "<s>Sources and Selectors</s>",
       "odm-oop": "<s>Composite and Aggregate</s>",
       "odm-inheritance": "<s>Inheritance</s>",
       "odm-standalone": "Standalone Usage",
@@ -113,7 +120,11 @@
   {
     "title": "Modules and Extensions",
     "links": {
-      "modules-profiler": "<s>Profiler</s>"
+      "modules-profiler": "<s>Profiler</s>",
+      "modules-scaffolding": "<s>Scaffolding</s>",
+      "modules-security": "<s>Secutiry</s>",
+      "modules-toolkit": "<s>Toolkit</s>",
+      "modules-vault": "<s>Vault</s>"
     }
   }
 ]

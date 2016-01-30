@@ -14,7 +14,7 @@ interface PaginableInterface extends \Countable
      * @return mixed
      */
     public function limit($limit = 0);
-
+    
     /**
      * @return int
      */
@@ -27,12 +27,19 @@ interface PaginableInterface extends \Countable
      * @return mixed
      */
     public function offset($offset = 0);
-
+    
     /**
      * @return int
      */
     public function getOffset();
-    
+}
+```
+
+You can also implement `PaginableAwareInterface` which will declare object ability to use external pagination instance:
+
+```php
+interface PaginatorAwareInterface extends PaginableInterface
+{
     /**
      * Manually set paginator instance for specific object.
      *
@@ -40,25 +47,25 @@ interface PaginableInterface extends \Countable
      * @return $this
      */
     public function setPaginator(PaginatorInterface $paginator);
-
-    /**
-     * Indication that object was paginated.
-     *
-     * @return bool
-     */
-    public function isPaginated();
-
+    
     /**
      * Get paginator for the current selection. Paginate method should be already called.
      *
      * @see paginate()
      * @return PaginatorInterface
      */
-    public function getPaginator();
+    public function paginator();
+    
+    /**
+     * Indication that object was paginated.
+     *
+     * @return bool
+     */
+    public function isPaginated();
 }
 ```
 
-If you wish to simlify pagination support in your objects you can also use `PaginatorTrait` which will implement following methods and provide way to use default spiral paginator linked to `ServerRequestInterface`. Let's try to provide an example of paginating object using such trait:
+If you wish to simlify pagination support in your objects you can also use `PaginatorTrait` which will implement following methods and provide way to use default spiral paginator linked to `ServerRequestInterface` and query parameter (by default 'page'). Let's try to provide an example of paginating object using such trait:
 
 ```php
 protected function indexAction()
@@ -68,7 +75,7 @@ protected function indexAction()
 }
 ```
 
-Default spiral paginator `Paginator` will automatically fetch count of records from paginable object and set approparite limit/offset values based on provided parameters. Page pagination will be performed based on query parameter `page`. You can always ajust parameter or [**request**] (/http/flow.md) paginator must follow:
+Default spiral paginator `Paginator` will automatically fetch count of records from paginable object and set approparite limit/offset values based on provided parameters. Page pagination will be performed based on query parameter `page`. You can always ajust parameter or [**request**](/http/flow.md) paginator must follow:
 
 ```php
 protected function indexAction()
@@ -104,33 +111,21 @@ interface PaginatorInterface
      * @return int
      */
     public function setPage($number);
-
+    
     /**
      * Get current page number.
      *
      * @return int
      */
     public function getPage();
-
+    
     /**
-     * Apply pagination to a simple array, should fetch count from target array and return sliced
-     * array version.
+     * Set initial paginator uri
      *
-     * @param array $haystack Target array must be paginated.
-     * @return array
-     * @throws PaginationException
+     * @param UriInterface $uri
      */
-    public function paginateArray(array $haystack);
-
-    /**
-     * Apply paginator to paginable object.
-     *
-     * @param PaginableInterface $object
-     * @return PaginableInterface
-     * @throws PaginationException
-     */
-    public function paginateObject(PaginableInterface $object);
-
+    public function setUri(UriInterface $uri);
+    
     /**
      * Create page URL using specific page number. No domain or schema information included by
      * default, starts with path.
@@ -138,9 +133,20 @@ interface PaginatorInterface
      * @param int $pageNumber
      * @return UriInterface
      */
-    public function createUri($pageNumber);
+    public function uri($pageNumber);
+    
+    /**
+     * Apply paginator to paginable object.
+     *
+     * @param PaginableInterface $paginable
+     * @return PaginableInterface
+     * @throws PaginationException
+     */
+    public function paginate(PaginableInterface $paginable);
 }
 ```
+
+> Methods `getUri()` and `uri()` will be moved out from PaginatorInterface.
 
 For example, let's pretend that we have an implemention which wants as instance of Route and parameters used to generate url.
 

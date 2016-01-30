@@ -85,6 +85,8 @@ class SampleSource extends RecordSource implements SingletonInterface
 
         return true;
     }
+    
+    //delete, deactive and other methods
 }
 ```
 
