@@ -289,7 +289,7 @@ $comparator = $schema->comparator();
 dump($comparator->addedColumns());
 ```
 
-> Comparator will provide you list of created, updated, removed columns, indexes and foreign keys.
+> Comparator will provide you list of created, updated, removed columns, indexes and foreign keys. You can also use your own version of SyncronizationBus to write and run migrations instead of performing altering operations.
 
 ## Table related operations
 You can also apply some operations on table level, such commands does not require schema saving and executed immidiatelly:
