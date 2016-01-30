@@ -1,5 +1,5 @@
 # Request and InputManager
-As mentioned in [Http Flow] (flow.md) you can access incoming request in your controllers and services using "request" binding, or via requesting `ServerRequestInterface`.
+As mentioned in [Http Flow] (flow.md) you can access incoming request in your controllers and services using "request" binding, or via requesting `ServerRequestInterface` from active request flow.
 Let's view some example (every listed request recieve method is idential to each other) in a context of application Controller:
 
 ```php
