@@ -225,6 +225,7 @@ At this moment spiral ORM will run table migrations in house, however since Sche
 ```php
 $schemaBuilder = $this->orm->schemaBuilder();
 
+//See Spiral\Support\DFSSorter to sort tables in needed order
 foreach($schemaBuilder->getTables() as $table) {
     if (!$table->exists()) {
         //Table creation migration
@@ -242,7 +243,7 @@ foreach($schemaBuilder->getTables() as $table) {
 }
 ```
 
-Following technique will provide you ablity perform migrations in a more contol fashion.
+Following technique will provide you only generate migrations based on ORM schema changes and run them manually.
 
 > Any help of creating such module will be appreciated. Once such module/code will be created it will be treaded as default behaviour for ORM schema syncronization.
 
@@ -325,7 +326,7 @@ for ($i = 0; $i < 100; $i++) {
 
 > Pay attention, the `create` method will only return populated Record entity. You **have** to save this entity to your database manually (simply call `save()` method).
 
-> In additiona, every DataEntity, including ORM Records and ODM Documents, must be populated from the outside. This means there is no database related code in entity constuctor. If you want to create the entity based on an existing array of data (skipping setters), just pass this array as a constructor argument `new User([...])`.
+> In addition, every DataEntity, including ORM Records and ODM Documents, must be populated from the outside. This means there is no database related code in entity constuctor. If you want to create the entity based on an existing array of data (skipping setters), just pass this array as a constructor argument `new User([...])`.
 
 To check whats happening with your queries to the database, lets check the logging tab of Spiral [Profiler] (/modules/profiler.md) (this is Postgres connection):
 
