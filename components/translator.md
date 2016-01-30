@@ -326,7 +326,7 @@ Now we can locale exported dumpers in 'russian' directory, you can always select
 Dump successfully completed.
 ```
 
-```po
+```
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
