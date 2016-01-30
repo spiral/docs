@@ -60,6 +60,8 @@ Once endpoint (controller) generated response such responce will be converted in
 #### We can demonstrate request/response flow using well know image:
 ![middleware onion](http://stackphp.com/img/onion.png)
 
+![Scoping](https://raw.githubusercontent.com/spiral/guide/master/resources/scopes.png)
+
 Where "Session" and "Authentication" treated as middlewares and "App" as endpoint.
 
 ## How HttpDispatcher works
