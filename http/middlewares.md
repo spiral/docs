@@ -124,10 +124,10 @@ There is set of pre-created middlewares you can use in your application:
 In addition to that **Profiler module** also stated as middleware and automatically mounted by it's bootloader at top of middlewares chain when debug mode is enabled (see skeleton application).
 
 ## Other middlewares
-You can find a lot of pre build middlewares outside of spiral, for example [https://github.com/oscarotero/psr7-middlewares](https://github.com/oscarotero/psr7-middlewares). You can either add such middlewares to a specific route or push to primary request pipeline (example based on a AppBootloader):
+You can find a lot of pre build middlewares outside of spiral, for example [https://github.com/oscarotero/psr7-middlewares](https://github.com/oscarotero/psr7-middlewares).
 
 ```php
-public function boot(HttpDispatcher $http, PermissionsInterface $pers)
+public function boot(HttpDispatcher $http)
 {
     //To the top
     $http->riseMiddleware(
