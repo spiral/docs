@@ -1,5 +1,5 @@
 ## Schema Declaration  - OUTDATED DOCUMENTATION 
-One of the most important part of Spiral DBAL is ability to alter database table schema using set of entity abstractions. Such abstractions provide ability to describe desired table rather than create it operation by operation.
+One of the most important part of Spiral DBAL is ability to alter database tables using set of schema abstractions. Such abstractions provide ability to describe desired table rather than create it operation by operation.
 
 > Attention, declarative schemas are useful in RAD development but can't cover all possible scenarios. Spiral is planned to utilize
 internal table schema comparator to generate needed Phinx migrations based on table diff to give developer more control.
