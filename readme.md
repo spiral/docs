@@ -60,12 +60,12 @@
     * [Schema Interospection](database/introspection.md)
     * RW [Schema Declaration](database/declaration.md)
     * [Query Builders](database/builders.md)
-* Spiral ORM
+* Adaptive ORM
     * RW [Record Model and Database Scaffolding](orm/basics.md)
     * WR [Sources and Selectors](orm/sources.md)
     * RW [Relations](orm/relations.md)
     * RW [Eager loading and Entity Cache](orm/loading.md)
-* Spiral ODM
+* Adaptive ODM
     * RW [Documents and Databases](odm/basics.md)
     * RW [Sources and Selectors](orm/sources.md)
     * RW [Compositions, Aggreagations](odm/oop.md)
