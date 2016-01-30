@@ -26,7 +26,7 @@
     * [Request and Input](http/request.md)
     * [Response and Responders](http/response.md)
     * RW [Middlewares and Filters](http/middlewares.md)
-      * RW [Cookies](http/cookies.md)
+      * RW [CookieManager](http/cookies.md)
     * RW [Routing](http/routing.md)
     * RW [Request Filters](http/filters.md)
     * RW [Http Errors](http/errors.md)
