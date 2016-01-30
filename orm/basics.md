@@ -168,8 +168,7 @@ Inspecting available DataEntities...
 Inspected entities 1, average rank Good (0.95).
 ```
 
-> You can only use the model schema to add new columns. Renaming and/or removing them must be done via migrations. This means that removing the column declaration from your model will not remove this column from your table.
-> Since migrations are mounted right before the schema updates, you are able to use them as part of your ORM flow.
+> **Attention, dropping column from ORM schema will also drop it from realted table!** If you want to rename column which already have associated data execute classical migrations/commands before updating your schema (see [schema declaration](/database/declaration.md).
 
 Again we can check if our table was successfully modified using the command "db:describe users". This time we switched our connection to PostgresSQL:
 
