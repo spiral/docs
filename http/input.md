@@ -157,3 +157,6 @@ dump($input->isJsonExpected());
 //Receive client ip address (this method uses _SERVER value and may not be correct in some cases).
 dump($input->remoteAddress());
 ```
+
+## InputBags are immutable, InputManager not
+Write about it.
