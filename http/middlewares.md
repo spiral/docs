@@ -168,7 +168,8 @@ class MyBootloader extends Bootloader implements SingletonInterface
      * @return array
      */
     protected $bindings = [
-        'middlewares.auth' => [self::class, 'authMiddleware']
+        //You can also use middleware class name as alias
+        'middlewares.auth' => [self::class, 'authMiddleware'],
     ];
 
     public function authMiddleware(AppConfig $config)
