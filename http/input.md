@@ -1,4 +1,4 @@
-# Request and InputManager
+# Request and Input
 As mentioned in [Http Flow] (flow.md) you can access incoming request in your controllers and services using "request" binding, or via `ServerRequestInterface` dependency. Such request is going to be resolved via IoC based on active request scope.
 
 Let's view as example (every listed request recieve method is idential to each other) in a context of application Controller:
@@ -62,7 +62,7 @@ dump($input->query->fetch(['name', 'nameB'], true, null);
 dump($input->query('name'));
 ```
 
-> InputManager works with active request using container, meaning it's not immutable service (data can change based on scope request) however input bags are immutable.
+> InputManager works with active request using container, meaning it's not immutable service and calling it from different scopes may procude different input, however input bags are immutable.
 
 ### Input headers
 We can use 'headers' input bad and `header` method in `InputManager` to access input headers. HeadersBag has few additions we have to mention:
