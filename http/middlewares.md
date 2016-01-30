@@ -31,12 +31,10 @@ We are going to add this middleware to primary middleware chain in http config:
 
 ```php
  'middlewares'  => [
-        \Spiral\Profiler\Profiler::class,
-        Http\Cookies\CookieManager::class,
         Middlewares\CsrfFilter::class,
+        Http\Cookies\CookieManager::class,
         Middlewares\JsonParser::class,
         \Spiral\Session\Http\SessionStarter::class,
-        \Middlewares\HeadersMiddleware::class
     ],
 ```
 
