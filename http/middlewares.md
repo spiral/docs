@@ -168,13 +168,8 @@ Now you can use such middleware in your http config or other places via short al
     Middlewares\CsrfFilter::class,
     Middlewares\ExceptionWrapper::class,
 
-    //Sample middleware
     \Middlewares\LocaleDetector::class,
-
     Session\Http\SessionStarter::class,
-    
-    //Middlewares\JsonParser::class,
-    
     Http\Cookies\CookieManager::class,
 
     /*{{middlewares}}*/
