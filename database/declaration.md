@@ -275,38 +275,9 @@ Now, when record in "first" table will be removed related data from "second" tab
 
 > Please note that not every DBMS support actions outside of NO ACTION and CASCADE. In addition to that some databases (hi, Microsoft) may forbid multiple foreing keys with CASCADE action in one table to avoid reference loop.
 
-## Additional Operations
-Declarative way does not provides any options to remove or rename existed column, index or refernce. However you can achieve such goals by using set of direct table operations. Such operations are most valuable in [migrations] (migrations.md). You still have to **save** schema after applying following operations.
+## SyncronizationBus
 
-### Remove and rename Columns
-To remove or rename column we can use `dropColumn` and `renameColumn` methods accordingly.
-
-```php
-$schema->dropColumn('column_name');
-
-$schema->renameColumn('name', 'new_name');
-```
-
-### Remove and rename Indexes
-Similar operations can be applied to indexes:
-
-```php
-$schema->dropIndex(['name', 'email']);
-```
-
-Due indexes can be found based on index columns, you don't need to know original index name to rename it:
-
-```php
-$schema->renameIndex(['name', 'email'], 'new_name');
-```
-
-### Remove Foreign Keys
-Foreign keys does not have well determinated name in table schema, as result you can only delete them:
-
-```php
-//Column will not be removed
-$first->dropForeign('first_id');
-```
+## Removals and Existest Table modifications
 
 ## Global table operations
 You can also apply some operations on table level, such commands does not require schema saving and executed immidiatelly:
