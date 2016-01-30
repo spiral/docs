@@ -243,7 +243,7 @@ foreach($schemaBuilder->getTables() as $table) {
 }
 ```
 
-Following technique will provide you only generate migrations based on ORM schema changes and run them manually.
+Following technique will provide you ability to only generate migrations based on ORM schema changes and run them manually (to disable automatic sync for ORM schema check options set of `orm:schema` in console config so your `update` command wont alter schemas).
 
 > Any help of creating such module will be appreciated. Once such module/code will be created it will be treaded as default behaviour for ORM schema syncronization.
 
