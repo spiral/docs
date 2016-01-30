@@ -92,7 +92,7 @@
     }
   },
   {
-    "title": "ORM Engine",
+    "title": "Adaptive ORM",
     "links": {
       "orm-basics": "<s>Records and Scaffolding</s>",
       "orm-sources": "<s>Sources and Selectors</s>",
@@ -101,7 +101,7 @@
     }
   },
   {
-    "title": "ODM Engine",
+    "title": "Adaptive ODM",
     "links": {
       "odm-basics": "<s>Documents and Databases</s>",
       "orm-sources": "<s>Sources and Selectors</s>",
