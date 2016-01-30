@@ -118,7 +118,7 @@ There is set of pre-created middlewares you can use in your application:
 | ---                                       | ---         
 | Spiral\Http\Cookies\CookieManager         | Encrypts and decrypts incoming/outcoming cookies using encrypter or HMAC.                                         
 | Spiral\Http\Middlewares\CsrfFilter        | Halts execution if request made via non GET, HEAD or OPTIONS method and no verification code provided in request. 
-| Spiral\Http\Middlewares\JsonParser        | Converts JSON payload from request body into parsed request body if valid "Content-Type" header set.              
+| Spiral\Http\Middlewares\JsonParser        | Converts JSON payload from request body into parsed request body if valid "Content-Type" header set (to be replaced by Psr7Middlewares\Middleware\Payload).              
 | Spiral\Session\Http\SessionStarter        | Initiates session using ID stored in cookie "session" or creates such cookies in response if needed.              
 
 In addition to that **Profiler module** also stated as middleware and automatically mounted by it's bootloader at top of middlewares chain when debug mode is enabled (see skeleton application).
@@ -172,7 +172,9 @@ Now you can use such middleware in your http config or other places via short al
     \Middlewares\LocaleDetector::class,
 
     Session\Http\SessionStarter::class,
+    
     //Middlewares\JsonParser::class,
+    
     Http\Cookies\CookieManager::class,
 
     /*{{middlewares}}*/
