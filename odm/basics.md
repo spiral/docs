@@ -625,7 +625,7 @@ class User extends Document
         'name'           => 'string',
         'email'          => 'string',
         'balance'        => 'float',
-        'timeRegistered' => MongoDate::class
+        'timeRegistered' => \MongoDate::class
     ];
 
     /**
