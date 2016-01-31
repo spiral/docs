@@ -58,8 +58,6 @@ After every middeware processed incoming request and response, such instances wi
 Once endpoint (controller) generated response such responce will be converted into instance of `ResponseInterface` (for example if endpoint responded with string, such string will be writted to response previously passed thought every middleware). Response again will be passed thought every associated middleware in reverse order (for example to add nesesary headers) and then returned from `HttpDispatcher->perform()` method or automatically dispatched to client. Most of listed operations beformed inside `MiddlewarePipeline` class.
 
 #### We can demonstrate request/response flow using well know image:
-![middleware onion](http://stackphp.com/img/onion.png)
-
 ![Scoping](https://raw.githubusercontent.com/spiral/guide/master/resources/scopes.png)
 
 Where "Session" and "Authentication" treated as middlewares and "App" as endpoint.
