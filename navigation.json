@@ -38,7 +38,7 @@
       "http-request": "Request and Input",
       "http-response": "Response and Responder",
       "http-middlewares": "Middlewares",
-      "http-cookies": "Cookies",
+      "http-cookies": "Working with Cookies",
       "http-routing": "<s>Routing</s>",
       "http-filters": "<s>Request Filters</s>",
       "http-errors": "<s>Http Errors</s>"
