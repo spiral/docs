@@ -68,7 +68,7 @@
 * Adaptive ODM
     * RW [Documents and Databases](odm/basics.md)
     * RW [Sources and Selectors](orm/sources.md)
-    * RW [Compositions, Aggreagations](odm/oop.md)
+    * [Compositions, Aggreagations](odm/oop.md)
     * [Inheritance](odm/inheritance.md)
     * [JSON and Standalone Documents](odm/standalone.md)
     * [UML Export](odm/uml.md)
