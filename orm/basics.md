@@ -663,27 +663,3 @@ class User extends Record
     }
 }
 ```
-
-## Post Development Stage
-Write about switching to migrations mechanism.
-
-## Inspections
-While running the shema update (spiral up) command, you may notice text that contains a list of the inspected entities and resulting rating. This information provided by the Spiral **Entity Inspector** analyses the ORM and ODM schemas to find any unprotected or blacklisted fields. We can get more details by running the inspection on selected entity:
-
-```
-> spiral inspect:entity Database/User
-+-----------------+-----------+----------+----------+-----------+----------------+
-| Field           | Rank      | Fillable | Filtered | Validated | Hidden         |
-+-----------------+-----------+----------+----------+-----------+----------------+
-| id              | Very Good | no       | yes      | no        | no             |
-| name            | Very Good | no       | yes      | yes       | no             |
-| email           | Good      | no       | yes      | yes       | no (blacklist) |
-| status          | Very Good | no       | yes      | yes       | no             |
-| balance         | Very Good | no       | yes      | no        | no             |
-| time_registered | Very Good | no       | yes      | no        | no             |
-| time_created    | Very Good | no       | yes      | no        | no             |
-| time_updated    | Very Good | no       | yes      | no        | no             |
-+-----------------+-----------+----------+----------+-----------+----------------+
-```
-
-> You can also check other inspector commands to receive a list of every fillable or non hidden field in your models.
