@@ -1,4 +1,4 @@
-# Error Handling and Isolation
+# Http Error Handling
 HttDispather does not provide direct functionality for error conversion, however it supplies spiral application with `Spiral\Http\Middlewares\ExceptionWrapper` middleware used to handle and represent client exception (not found, forbidden and etc) using set of defined view files. 
 
 > Please read about [application level error handling](/application/errors.md) to understand how error exceptions a handled.
@@ -33,3 +33,5 @@ There are a few exceptions predefined for generic scenarios:
 | 403  | ForbiddenException    |
 | 404  | NotFoundException     |
 | 500  | ServerErrorException  |
+
+> You can also define your own exception handler middleware or custom exception classes.
