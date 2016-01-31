@@ -1,5 +1,5 @@
 # Compositions, Aggregations, Inheritance
-The ODM component does not use termin "relation(s)" to describe it's functionality but switches to the OOP definitions for [Composition, Aggregration (Reference)] (https://en.wikipedia.org/wiki/Object_composition) and Inheritance. 
+The ODM component does not use termin "relation(s)" to describe it's functionality but switches to the OOP definitions for [Composition, Aggregration (Reference)](https://en.wikipedia.org/wiki/Object_composition) and Inheritance. 
 
 Please make sure that you have already read about [ODM Basics] (basics.md).
 
