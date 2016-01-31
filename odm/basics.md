@@ -239,27 +239,23 @@ protected function indexAction(DocumentSource $source)
 The document model follows the principles of validations described in the `DataEntity` model. If you want to create more complex validations based on some external state, you can redefine the `validate` method:
 
 ```php
-/**
- * @param bool|false $reset
- * @return bool
- */
 protected function validate($reset = false)
 {
     parent::validate($reset);
 
     if ($this->hasUpdates('email') && !$this->hasError('email')) {
         //We are using array based where statement
-        $selection = $this->odmCollection()->where([
+        $selection = $this->source()->find()->where([
             'email' => $this->email,
-            '_id'    => ['$ne' => $this->_id]
+            '_id'   => ['$ne' => $this->_id]
         ]);
 
         if ($selection->count() != 0) {
-            $this->setError('email', self::translate("Email must be unique."));
+            $this->setError('email', $this->say("Email must be unique."));
         }
     }
 
-    return empty($this->errors);
+    return false;
 }
 ```
 
@@ -669,13 +665,13 @@ class User extends Document
 
         if ($this->hasUpdates('email') && !$this->hasError('email')) {
             //We are using array based where statement
-            $selection = $this->odmCollection()->where([
+            $selection = $this->source()->find()->where([
                 'email' => $this->email,
                 '_id'   => ['$ne' => $this->_id]
             ]);
 
             if ($selection->count() != 0) {
-                $this->setError('email', self::translate("Email must be unique."));
+                $this->setError('email', $this->say("Email must be unique."));
             }
         }
 
