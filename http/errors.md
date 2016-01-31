@@ -8,7 +8,7 @@ HttpDispatcher provides ability to expose error exceptions to the client in a fo
 
 Once application moved to producution concider disabing debug mode which will force HttpDispatcher replace snapshot response with regural 500 error. Check `.env` file to locate option to enable and disable debug mode.
 
-> By default HttpDispatcher is capable to exposer exception in html and json formats, if you need more specific error reponses concider using external middlewares such as Whoops.
+> By default HttpDispatcher is capable to expose exception in html and json formats, if you need more specific error responses concider using external middlewares such as Whoops.
 
 ## Client Exceptions
 HttpDispatcher defines a set of "soft" client exceptions you can use in your code to force some HTTP error to happen. For example:
