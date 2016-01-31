@@ -71,7 +71,7 @@
     * RW [Compositions, Aggreagations](odm/oop.md)
     * [Inheritance](odm/inheritance.md)
     * [JSON and Standalone Documents](odm/standalone.md)
-    * RW [UML Export](odm/uml.md)
+    * [UML Export](odm/uml.md)
 * Modules and Extensions
     * RW [Profiler](modules/profiler.md)
     * RW [Scaffolding](modules/scaffolding.md)
