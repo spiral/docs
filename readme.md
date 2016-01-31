@@ -66,7 +66,7 @@
     * RW [Relations](orm/relations.md)
     * RW [Eager loading and Entity Cache](orm/loading.md)
 * Adaptive ODM
-    * RW [Documents and Databases](odm/basics.md)
+    * [Documents and Databases](odm/basics.md)
     * RW [Sources and Selectors](orm/sources.md)
     * [Compositions, Aggreagations](odm/oop.md)
     * [Inheritance](odm/inheritance.md)
