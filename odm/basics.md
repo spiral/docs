@@ -1,4 +1,4 @@
-## ODM, Basics
+# ODM, Basics
 The Spiral ODM component has some similaries to the [ORM engine](/orm/basics.md) as they are both based on the [**DataEntity**](/components/entity.md) model and [Behaviour Schemas](/framework/schemas.md).
 However, the ODM removes the term "relation" and replaces it with the classical [compositions and aggregations](https://en.wikipedia.org/wiki/Object_composition) definition. In addition, the ODM classes support inheritance and can also can also be embedded into ORM as JSON objects. 
 
