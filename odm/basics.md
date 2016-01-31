@@ -1,16 +1,17 @@
 ## ODM, Basics
-The Spiral ODM component has some similaries to the [ORM engine](/orm/basics.md) as they are both based on the [**DataEntity**](/components/entity.md) model and [Behaviour Schemas](/framework/schemas.md). However, the ODM removes the  term "relation" and replaces it with the classical [compositions and aggregations] (https://en.wikipedia.org/wiki/Object_composition) definition. In addition, the ODM classes support inheritance and can also can be embedded into ORM as JSON objects. 
+The Spiral ODM component has some similaries to the [ORM engine](/orm/basics.md) as they are both based on the [**DataEntity**](/components/entity.md) model and [Behaviour Schemas](/framework/schemas.md).
+However, the ODM removes the term "relation" and replaces it with the classical [compositions and aggregations](https://en.wikipedia.org/wiki/Object_composition) definition. In addition, the ODM classes support inheritance and can also can also be embedded into ORM as JSON objects. 
 
-The ODM component was designed mainly to work with a MongoDB database and include support for atomic operations. However, the `DocumentEntity` class and it's compositions can be used outside of Mongo to create the OOP data representation for various structures (XML files, API responses, etc).
+The ODM component was designed mainly to work with a MongoDB database and include support for atomic operations. However, the `DocumentEntity` class and it's compositions can be used outside of Mongo scope to create the OOP data representation for various structures (XML files, complex API requests, API responses, etc).
 
 > At this moment ODM component requires mongodb extension to be installed even if no database used, such limitation will be fixed in a future version.
 
-The Spiral ODM does not use entity cache like in ORM. Instead it uses "streaming like" functionality which can be used to process huge amounts of data using Document models.
+The Spiral ODM does not use entity cache like in ORM (since you are given power to denormalize your data). Instead it uses "streaming like" functionality which can be used to process huge amounts of data using Document models.
 
-Check extended usage for DocumentEntity, Compompositions, Aggreagations and Inheritance [here] (oop.md).
+Check extended usage for DocumentEntity, Compompositions, Aggreagations and Inheritance [here](/odm/oop.md).
 
 ## Mongo Connection and Databases
-With ODM, you are not required to spend a ton of time trying to configure your ODM component. The only thing you have to make sure of (if you want to store your data in MongoDB) is that the Mongo connection is properly set. To ensure that, simply check the configuration file "odm.php" located inside your "applicatio/config" directory:
+You are not required to spend a ton of time trying to configure your ODM component. The only thing you have to make sure of (if you want to store your data in MongoDB) is that the Mongo connection is properly set. To ensure that, simply check the configuration file "odm.php" located inside your "app/config" directory:
 
 ```php
 'default'   => 'default',
@@ -31,37 +32,32 @@ With ODM, you are not required to spend a ton of time trying to configure your O
 ],
 ```
 
-Configration is very similar to the [DBAL] (/database/overview.md) and fully supports database aliases and controllable/contextual injections. If you want to get direct access to the `MongoDatabase` in your controller, simply request it using `ODM->db()` factory method or via `MongoDatabase` dependency using a database alias:
+Configration is very similar to the [DBAL](/database/overview.md) and fully supports database aliases and controllable/contextual injections. If you want to get direct access to the `MongoDatabase` in your controller, simply request it using `ODM->database()` factory method or via `MongoDatabase` dependency using a database alias:
 
 ```php
 protected function indexAction(MongoDatabase $database, ODM $odm)
 {
     dump($database->getCollectionNames());
-    dump($odm->db('default'));
+    dump($odm->database('default'));
+    
+    dump($this->odm->database('default'));
 }
 ```
 
 > `MongoDatabase` class extends original `MongoDB` class so you can use it as regular mongo database.
 
 ## Document
-To define your first model related to MongoDB collection, we only have to create/generate a declaration of `Document` class with the desired set of fields listed in the model **schema**. We can either create this model manually or generate it using the console command "create:document". Let's create our first model User. Using  ODM we are able to pre-define a set of desired fields: "create:document user -f id:MongoId -f name:string -f email:string -f balance:float". The resulting entity will be located in the application/classes/Database/User.php:
+To define your first model related to MongoDB collection, we only have to create/generate a declaration of `Document` class with the desired set of fields listed in the model **schema**. 
+We can either create this model manually or generate it using the console command "create:document". Let's create our first model User. Using ODM we are able to pre-define a set of desired fields: "create:document user -f id:MongoId -f name:string -f email:string -f balance:float". The resulting entity will be located in the application/classes/Database/User.php:
 
 ```php
-class User extends Document 
+class User extends Document
 {
     /**
      * @var array
      */
-    protected $fillable = [
-    ];
-
-    /**
-     * Entity schema.
-     * 
-     * @var array
-     */
     protected $schema = [
-        'id'      => 'MongoId',
+        'id'      => \MongoId::class,
         'name'    => 'string',
         'email'   => 'string',
         'balance' => 'float'
@@ -70,24 +66,52 @@ class User extends Document
     /**
      * @var array
      */
-    protected $validates = [
-        'name'    => ['notEmpty'],
-        'email'   => ['notEmpty'],
-        'balance' => ['notEmpty']
-    ];
+    protected $defaults = [];
+
+    /**
+     * @var array
+     */
+    protected $indexes = [];
+
+    /**
+     * @var array
+     */
+    protected $fillable = [];
+
+    /**
+     * @var array
+     */
+    protected $hidden = [];
+
+    /**
+     * @var array
+     */
+    protected $validates = [];
 }
+```
+
+> You can also set database and collection properties, by default collection name will be resolved based on model name.
+
+As in case with normal DataEntities you are able to define your own validation rules:
+
+```php
+protected $validates = [
+    'name'    => ['notEmpty'],
+    'email'   => ['notEmpty'],
+    'balance' => ['notEmpty']
+];
 ```
 
 You might notice that the declaration is very similar to ORM Record. However, the ODM component does not affect the MongoDB schema. Its just stores it in your application. 
 
-> You can read more about entity configuration (fillable, hidden, secured and validates properties) in the section declared to [DataEntity] (components/entity.md).
+> You can read more about entity configuration (fillable, hidden, secured and validates properties) in the section declared to [DataEntity](/components/entity.md).
 
 #### Schema
 The ODM classes Document (and `DocumentEntity`, see in extended usage) only lets you manipulate a set of fields described in the model schema. The declaration of fields can be performed by simply creating an associated array between the field name and it's **type**. 
 
 ```php
 protected $schema = [
-    'id'      => 'MongoId',
+    'id'      => \MongoId::class,
     'name'    => 'string',
     'email'   => 'string',
     'balance' => 'float'
