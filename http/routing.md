@@ -1,4 +1,4 @@
-# Routing
+# Routing - OUTDATED
 Like other frameworks, Spiral provides a pre-built mechanism to manage your application's url structure. This operations is performed by the Http `Router` and `Route` classes.
 
 ## What is Router?
@@ -265,6 +265,9 @@ $this->http->route('showSomething', 'Controllers\SomeController::show')->with(ne
 ```
 
 > Route middlewares are a perfect spot for caching, csrf and access limiting middlewares.
+
+## Routing to Middlewares and Endpoints
+TODO write about it
 
 ## Direct and Default routes
 If you haven't defined any of your routes or your request can't be matched, Router will attempt to match by performing your request via the default route. The default routes defintion is located in http config and looks like:
