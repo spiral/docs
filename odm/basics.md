@@ -90,8 +90,6 @@ class User extends Document
 }
 ```
 
-> You can also set database and collection properties, by default collection name will be resolved based on model name.
-
 As in case with normal DataEntities you are able to define your own validation rules:
 
 ```php
@@ -122,25 +120,34 @@ You can associate your field with any desired type. However, since MongoDB does 
 
 ```php
 'schemas'   => [
+    /*
+     * Set of mutators to be applied for specific field types.
+     */
     'mutators'       => [
         'int'       => ['setter' => 'intval'],
         'float'     => ['setter' => 'floatval'],
         'string'    => ['setter' => 'strval'],
+        'long'      => ['setter' => 'intval'],
         'bool'      => ['setter' => 'boolval'],
         'MongoId'   => ['setter' => [ODM::class, 'mongoID']],
         'array'     => ['accessor' => ScalarArray::class],
-        'MongoDate' => ['accessor' => Accessors\ODMTimestamp::class],
-        'timestamp' => ['accessor' => Accessors\ODMTimestamp::class],
-        'storage'   => ['accessor' => Accessors\StorageAccessor::class]
+        'MongoDate' => ['accessor' => Accessors\MongoTimestamp::class],
+        'timestamp' => ['accessor' => Accessors\MongoTimestamp::class],
+        'storage'   => ['accessor' => Accessors\StorageAccessor::class],
+        /*{{mutators}}*/
     ],
     'mutatorAliases' => [
+        /*
+         * Mutator aliases can be used to declare custom getter and setter filter methods.
+         */
+        /*{{mutator-aliases}}*/
     ]
 ]
 ```
 
-As you can see, every string field will automatically get the associated setter `setval` while the schema updates.
+As you can see, every string field will automatically get the associated setter `setval` while the schema updates (in some cases you might want to use `trim` function as well).
 
-> Schema can also contain aggregations and compositions. You can read about it below.
+> Schema can also might contain aggregations and compositions. You can read about it below.
 
 #### Default Values
 ODM will automatically force the default values based on the typecasted null value (string => "", int => 0). You can set your own default values using the model property "defaults":
@@ -152,13 +159,12 @@ protected $defaults = [
 ```
 
 #### Associated Collection and Database
-By default, Spiral will associate your `Document` model with the default ODM database and collection. The name is generated based on the class name (in our case User => users). You can alter both of these values by declaring non empty properties like `database` and `collection`.
+By default, Spiral will associate your `Document` model with the default ODM database and collection. The collection is generated based on the class name (in our case User => users). You can alter both of these values by declaring non empty properties like `database` and `collection`.
 
 > If you're unsure what collection will be used based on the model name - simply force `collection` for every Document. It's not going to harm anything and will make your code more readable.
 
 #### Indexes
-To declare which indexes are created in the associated collection, simply declare them in the `indexes` property of your Document. The Declaration form is similar to the MongoCollection
-ensureIndexes method. Indexes will be created at the moment when the schema updates (see next).
+To declare which indexes are created in the associated collection, simply declare them in the `indexes` property of your Document. The Declaration form is similar to the MongoCollection ensureIndexes method. Indexes will be created at the moment of schema syncronization (see next).
 
 ```php
 protected $indexes = [
@@ -170,18 +176,16 @@ protected $indexes = [
 > Use "@options" key to specify the index options.
 
 ## Schema Update
-Once you've created your first Document or Documents, you then have to register them inside your ODM component schema. This operation is called "schema update" and does not require any operation other then putting the console command "spiral update" or "spiral up". The schema update will automatically locate all your Document and DocumentEntity models, analyze them, create an automatic set of mutators and store the information about the compiled behaviours inside the application memory.
+Once you've created your first Document or Documents, you then have to register them inside your ODM component schema. This operation is called "schema update" and does not require anything other then executing the console command "spiral update" or "spiral up" (make sure ODM schema update command is regustred in your console config!). The schema update will automatically locate all your Document and DocumentEntity models, analyze them, create an automatic set of mutators and store the information about the compiled behaviours inside the application memory.
 
-Only related database operation are performed while the schema is updated - ensuring that the requested indexes exist in the associated collection.
-
-> The Spiral Framework will generate virtual documentation for your models, so your IDE will highlight every available field and composition.
+In addition ODM component will ensure all required indexes at moment of schema syncronization.
 
 #### Modifying Documents schema
 Since ODM schema is not stored in the database, it can be efficiently updated without any storage change. As a result you are able to add new columns, compositions etc into your Documents at any moment. Simply declare them in your model schema and update the ODM after.
 
 ```php
 protected $schema = [
-    'id'      => 'MongoId',
+    'id'      => \MongoId:class,
     'name'    => 'string',
     'email'   => 'string',
     'balance' => 'float',
@@ -205,7 +209,9 @@ protected function indexAction()
 }
 ```
 
-> If you are working under PHPStorm, IDE will highlight all the possible record fields for you.
+> Concider using [DocumentSources](/odm/sources.md) for such operations.
+
+If you have documenter module installed you can also generete set of IDE tooltips which migh speed up development a lot:
 
 ![Tooltips](https://raw.githubusercontent.com/spiral/guide/master/resources/tooltips.png)
 
@@ -215,7 +221,19 @@ You can also create your entity using the static method which will respect all f
 $u = User::create($request);
 ```
 
->Attention, the create method will only return a populated entity! You have to save it by it yourself!
+> Attention, the create method will only return a populated entity! You have to save it by it yourself!
+
+Alternativelly, if you using DocumentSource you can create your document this way:
+
+```php
+protected function indexAction(DocumentSource $source)
+{
+    $u = $source->create($this->input->data);
+    $u->save();
+
+    dump($u);
+}
+```
 
 #### Validations
 The document model follows the principles of validations described in the `DataEntity` model. If you want to create more complex validations based on some external state, you can redefine the `validate` method:
@@ -241,9 +259,11 @@ protected function validate($reset = false)
         }
     }
 
-    return false;
+    return empty($this->errors);
 }
 ```
+
+> In many cases it's more reasonable to move validations into RequestFilters.
 
 Now our controller code will return an error related to the email field:
 
@@ -252,19 +272,19 @@ $user = new User();
 $user->name = 'Anton';
 $user->email = 'test@email.com';
 $user->balance = 99;
+
 if (!$user->save()) {
     dump($user->getErrors());
 }
 ```
 
-This validation method will check if the email is unique. It will only do this when the email field is updated (created or changed). Now, we will get an error message associated with the model field.
+This validation method will check if the email is unique. It will only do this when the email field is updated (created or changed). 
 
-Before we jump to the next step, lets try to create a few more users. In this case, we can use the static method create which accepts a set of initial model fields.
-
-Since we have no fillable fields, this method should not work in our case (we will use the setFields method with disabled access policy - by setting the second argument as true). In order to fill our demo entities let's connect faker package.
+Before we jumping to the next step, lets try to create a few more users. Since we have no fillable fields, this method should not work in our case (we will use the setFields method with disabled access policy - by setting the second argument as true). In order to fill our demo entities let's connect faker package.
 
 ```php
 for ($i = 0; $i < 100; $i++) {
+    //or $source->create()->setFields(...
     $user = User::create()->setFields([
         'name'    => $faker->name,
         'email'   => $faker->email,
@@ -276,12 +296,10 @@ for ($i = 0; $i < 100; $i++) {
 }
 ```
 
-> Create method will only return the populated Document entity. You have to save this entity to the database manually (simply call save() method).
-
 ## Selections
 Once your collection is populated with data, it's time to select some of the Users to perform something. The Spiral ODM exposes 3 ActiveRecord like methods which you can use for these purposes: `find`, `findOne` and `findByPK`.
 
-There is 4th method which is used inside every find method - `odmCollection`. You can use it to get access to the  `Collection` class associated with our document. You can also get the associated collecion by calling the method `odmCollection` of the ODM component.
+There is 4th method which is used inside every find method - `selector`. You can use it to get access to the  `DocumentSelector` class associated with our document. You can also get the associated collecion by calling the method `selector` of the ODM component.
 
 #### FindOne
 To find a document based on some conditions and sorting, we can use the static method `findOne`. This method will return null if it's unabled to locate the required document. 
@@ -318,12 +336,12 @@ protected function indexAction($id)
 }
 ```
 
-Or using entity service:
+Or using source:
 
 ```php
-protected function indexAction(UserService $users, $id)
+protected function indexAction($id, DocumentSource $users)
 {
-    if (empty($user = $users->findByPK((int)$id))) {
+    if (empty($user = $users->findByPK($id))) {
         throw new NotFoundException('No such user');
     }
 
@@ -331,14 +349,22 @@ protected function indexAction(UserService $users, $id)
 }
 ```
 
-#### Find and Working with Collection
-To find one or multiple document instances from desired collection, we have to first get the associated instance of `Collecion`. Then we can do this using the ODM component method `odmCollection` or via the static function `find` of our User model.
+#### Find and Working with Selector
+To find one or multiple document instances from desired collection, we have to first get the associated instance of `Collecion`. Then we can do this using the ODM component method `selector` or via the static function `find` of our User model.
 
 ```php
-$collection = User::find();
+$selector = User::find();
 ```
 
-Class is built at top of the MongoCollection and dictates some of it's functions. You are able to set or clarify the selection query using the methods `query` or `where`:
+> You also have an way to connect to your source with set of pre-defined methods using static function `source` of your model.
+
+```php
+foreach(Users::source()->findActive() as $user) {
+    //...
+}
+```
+
+You are able to set or clarify the selection query using the methods `query` or `where`:
 
 ```php
 $collection = User::find()->where([
@@ -348,7 +374,7 @@ $collection = User::find()->where([
 dump($collection->count());
 ```
 
-In addition, you are able to paginate your result using the techniques described in [Pagination] (/components/pagination.md) component:
+In addition, you are able to paginate your result using the techniques described in [Pagination](/components/pagination.md) component:
 
 ```php
 $collection = User::find()->paginate(10);
@@ -489,11 +515,11 @@ Based on the provided configuration, you might notice that ODM will assign Mongo
 
 ```php
 protected $schema = [
-    'id'             => 'MongoId',
+    'id'             => \MongoId::class,
     'name'           => 'string',
     'email'          => 'string',
     'balance'        => 'float',
-    'timeRegistered' => 'MongoDate'
+    'timeRegistered' => \MongoDate::class
 ];
 ```
 
@@ -525,11 +551,11 @@ The ODM component provides one accessor which simplifies operations with hard ty
 
 ```php
 protected $schema = [
-    'id'             => 'MongoId',
+    'id'             => \MongoId::class,
     'name'           => 'string',
     'email'          => 'string',
     'balance'        => 'float',
-    'timeRegistered' => 'MongoDate',
+    'timeRegistered' => \MongoDate::class,
     'tags'           => ['string']
 ];
 ```
@@ -584,42 +610,14 @@ atomics:dynamic = array(2)
 ## Delete Documents
 You can also delete any existing Document by executing it's method "delete". 
 
-## Events and Traits
-In the DataEntity model, Document declares a few [events] (/components/events.md) that you can track or change the models behaviour:
-
-Event                   | Context                                   | Return | Description
----                     | ---                                       | ---    | ---
-setFields               | $fields                                   | *      | Called inside `setFields` method.
-publicFields            | $fields                                   | *      | Called before return in `publicFields` method.
-jsonSerialize           | $publicFields                             | *      | Called while packing model into json.
-validation              | -                                         | -      | Before validation.
-validated               | $errors                                   | *      | After validation.
-**describe** (static)   | [$property, $value, EntitySchema $schema] | value  | Called while model analysis. Such evet can be used to redefine or alter schema, validations, mutators etc.
-created                 | -                                         | -      | Called inside static method "create" after assigning model fields.
-collection              | Collection $selector                      | *      | Called by "find" and other selection methods.
-saving                  | -                                         | -      | Before model data saved into database (model is only created). 
-saved                   | -                                         | -      | After model data saved into database.
-updating                | -                                         | -      | Before model data updated in database (model already exist).
-updated                 | -                                         | -      | After model data updated in database.
-deleting                | -                                         | -      | Before model deleted from database.
-deleted                 | -                                         | -      | After model deleted from database.
-
-In most cases, you don't need to handle any of event since `save` and `delete` methods can be easily overwriten. However, events can be very useful when creating a set of traits used to modify Document schema and update/save behaviour (see next).
-
 #### Timestamps Trait
-One of the most common Document traits you might want to use is the `TimestampsTrait`. This trait handles the "saving", "updating" and "describe" of events to alter Document schema and updates two additional fields "timeCreated" and "timeUpdated" (both type MongoDate). Our final demo Document `User` might look like this:
+One of the most common Document traits you might want to use is the `TimestampsTrait`. This trait handles the "saving", "updating" and "describe" of events to alter Document schema and updates two additional fields "timeCreated" and "timeUpdated" (both type MongoDate).
+Our final demo Document `User` might look like this:
 
 ```php
 class User extends Document
 {
     use TimestampsTrait;
-    
-    /**
-     * @var array
-     */
-    protected $fillable = [
-
-    ];
 
     /**
      * Entity schema.
@@ -627,12 +625,20 @@ class User extends Document
      * @var array
      */
     protected $schema = [
-        'id'             => 'MongoId',
+        'id'             => \MongoId::class,
         'name'           => 'string',
         'email'          => 'string',
         'balance'        => 'float',
-        'timeRegistered' => 'MongoDate'
+        'timeRegistered' => MongoDate::class
     ];
+
+    /**
+     * @var array
+     */
+    protected $fillable = [
+
+    ];
+
 
     /**
      * @var array
@@ -678,110 +684,15 @@ class User extends Document
 }
 ```
 
-## Services and Controllers
-While working with the ODM models you are able to call the `find`, `findByPK` and `save` methods inside your controllers directly. However, spiral provides the ability to pre-generate specific [Service] (/application/services.md) which can help you abstract any database specific operations from your controllers code. 
-
-You can scaffold this class using the console command "create:service user -e user" and your code may look like this:
-
-```php
-class UserService extends Service  implements SingletonInterface
-{
-    /**
-     * Declares to IoC container that class must be treated as Singleton.
-     */
-    const SINGLETON = self::class;
-
-    /**
-     * Create new blank User. You must save the entity using the save method.
-     * 
-     * @param array|\Traversable $fields Initial set of fields.
-     * @return User
-     */
-    public function create($fields = [])
-    {
-        return User::create($fields);
-    }
-
-    /**
-     * Save User instance.
-     * 
-     * @param User $user
-     * @param bool  $validate
-     * @param array $errors Will be populated if saving fails.
-     * @return bool
-     */
-    public function save(User $user, $validate = true, &$errors = NULL)
-    {
-        if ($user->save($validate)) {
-            return true;
-        }
-        
-        $errors = $user->getErrors();
-        
-        return false;
-    }
-
-    /**
-     * Delete User.
-     * 
-     * @param User $user
-     */
-    public function delete(User $user)
-    {
-        $user->delete();
-    }
-
-    /**
-     * Find User it's primary key.
-     * 
-     * @param mixed $primaryKey
-     * @return User|null
-     */
-    public function findByPK($primaryKey)
-    {
-        return User::findByPK($primaryKey);
-    }
-
-    /**
-     * Find User using set of where conditions.
-     * 
-     * @param array $where
-     * @return User[]|Selector
-     */
-    public function find(array $where = [])
-    {
-        return User::find($where);
-    }
-}
-```
-
-As a result, you can use this service inside your controllers to avoid the static methods of Document model (they can always be removed from the service too):
-
-```php
-protected function indexAction(UserService $users)
-{
-    $user = $users->findByPK(1);
-    $user->inc('balance', 1.6);
-
-    if (!$users->save($user)) {
-        dump($user->getErrors());
-    }
-}
-```
-
-Services like this are the best place to locate custom selection methods (like `findActive`) or even alter the delete method to implement "soft deletes".
-
-> You can also generate the CRUD controller to work with any existing entity service using command 'create:controller name -s service'.
-
 ## Inheritance and Abstract Documents
-Since Spiral ODM uses static analysis, there are no real limitations on how you can create your models. As a result you can declare the **abstract** Document with it's schema, validations etc and later extend this class in your application models. This technique can be very useful when writing [modules] (/components/modules.md).
+Since Spiral ODM uses static analysis, there are no real limitations on how you can create your models. As a result you can declare the **abstract** Document with it's schema, validations etc and later extend this class in your application models. This technique can be very useful when writing [modules](/components/modules.md).
 
 > When extending, ODM will merge schemas and other properties of the Document and it's parent.
 
-**You can also use the data driven model inheritance, check [this article] (oop.md).**
+**You can also use the data driven model inheritance, check [this article](/odm/oop.md).**
 
 ## Inspections
-While running the schema update (spiral up) command, you might notice text which contains a list of the inspected entities and resulting rating. This information provided by spiral **Entity Inspector** analyses ORM and ODM schemas to find unprotected or blacklisted fields. We can get more details by running inspection on selected entity:
+Spiral framework toolkit also provides you simple command which can help to inspect any desired ODM document to find out what fields are public, fillable or filtered:
 
 ```
 > spiral inspect:entity Database/User
@@ -797,5 +708,3 @@ While running the schema update (spiral up) command, you might notice text which
 | timeCpdated     | Very Good | no       | yes      | no        | no             |
 +-----------------+-----------+----------+----------+-----------+----------------+
 ```
-
-> You can also check other inspector commands to receive a list of every fillable or non hidden field in your models.
