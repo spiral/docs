@@ -1,6 +1,6 @@
 
 # Inheritance
-In addition to aggregation and composition, the ODM engine provides the ability to store Document and it's children in the same location. When class is created, ODM will automatically resolve what instance has to be used to represent such data. We can demonsrate this functionality using the following example:
+In addition to aggregation and composition, the ODM engine provides the ability to store Document and it's children implementations in the same location. When class is created, ODM will automatically resolve what instance has to be used to represent such data. We can demonsrate this functionality using the following example:
 
 ```php
 class Moderator extends User
