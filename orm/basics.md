@@ -558,28 +558,6 @@ WHERE "id" = 1
 ## Delete Records
 You can delete any existing Record by executing it's method "delete". 
 
-## Events and Traits
-As the DataEntity model, Record declares a few [events] (/components/events.md), which you can use to track or change the model behaviour:
-
-Event                   | Context                                   | Return | Description
----                     | ---                                       | ---    | ---
-setFields               | $fields                                   | *      | Called inside `setFields` method.
-publicFields            | $fields                                   | *      | Called before return in `publicFields` method.
-jsonSerialize           | $publicFields                             | *      | Called while packing model into json.
-validation              | -                                         | -      | Before validation.
-validated               | $errors                                   | *      | After validation.
-**describe** (static)   | [$property, $value, EntitySchema $schema] | value  | Called while model analysis. Such event can be used to redefine or alter schema, validations, mutators etc.
-created                 | -                                         | -      | Called inside static method "create" after assigning model fields.
-selector                | Selector $selector                        | *      | Called by "find" and other selection methods.
-saving                  | -                                         | -      | Before model data is saved into database (model is only created). 
-saved                   | -                                         | -      | After model data is saved into database.
-updating                | -                                         | -      | Before model data is updated in the  database (model already exist).
-updated                 | -                                         | -      | After model data is updated in the database.
-deleting                | -                                         | -      | Before model is deleted from the database.
-deleted                 | -                                         | -      | After model is deleted from the database.
-
-In most cases, you don't need to handle any event as `save` and `delete` and methods can be easily overwritten. However, events can be very useful when you want to create a set of traits that are used to modify the Record schema and update/save behaviour (see next).
-
 #### Timestamps Trait
 One of the most common Record trait you might want to use is `TimestampsTrait`. This trait handles event "saving", "updating" and "describing" to alter the Record columns and update two "magic" fields "time_created" and "time_updated" (both type datetime). In our final demo, the Record User might look like this:
 
@@ -649,17 +627,17 @@ class User extends Record
         if ($this->hasUpdates('email') && !$this->hasError('email')) {
 
             //Let's try to check if email is unique
-            $selection = $this->sourceTable()->where([
+            $selection = $this->souce()->find()->where([
                 'email' => $this->email,
                 'id'    => ['!=' => $this->id]
             ]);
 
             if ($selection->count() != 0) {
-                $this->setError('email', self::translate("Email must be unique."));
+                $this->setError('email', $this->say("Email must be unique."));
             }
         }
 
-        return false;
+        return !empty($this->errors);
     }
 }
 ```
