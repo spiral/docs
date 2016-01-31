@@ -149,7 +149,7 @@ You can find a lot of pre build middlewares outside of spiral, for example [http
 public function boot(HttpDispatcher $http)
 {
     $http->riseMiddleware(Middleware::responseTime());
-    $http->riseMiddleware(
+    $http->pushMiddleware(
         Middleware::BasicAuthentication(['username' => 'password'])->realm('You shall not pass!')
     );
 }
