@@ -3,7 +3,7 @@ Feel free to contribute to framework or components development.
 
 ## Requiments
 * PSR-2 and PSR-4
-* KISS
+* KISS and SOLID
 * Test coverage of new functionality
 * Discuss major changes first (unless they are relly cool and backward compatible!)
 
