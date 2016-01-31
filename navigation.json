@@ -108,7 +108,7 @@
       "odm-oop": "<s>Composite and Aggregate</s>",
       "odm-inheritance": "Inheritance",
       "odm-standalone": "Standalone Usage",
-      "odm-uml": "<s>UML Export</s>"
+      "odm-uml": "UML Export"
     }
   },
   {
