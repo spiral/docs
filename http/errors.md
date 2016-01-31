@@ -1,26 +1,7 @@
 # Error Handling and Isolation
-HttpDispatcher provides the ability to handle exceptions and convert them into valid responses automatically inside the middleware pipeline, this provides the ability to perform some
-requests without worrying about exceptions happening inside the perform method. I'm calling this ability "error isolation" and it can be very useful in many scenarious.
+HttDispather does not provide direct functionality for error conversion, however it supplies spiral application with `Spiral\Http\Middlewares\ExceptionWrapper` middleware used to handle and represent client exception (not found, forbidden and etc) using set of defined view files. 
 
-## Turn isolation on/off
-You can turn isolation for primary request by editing http configuration file (option "isolate") or by setting parameter "isolated" for request you going to send to perform method.
-
-```php
-$this->http->perform($request->withAttribute('isolate', false));
-```
-
-When an exception happens in code executed by middleware or pipeline target and isolation is disabled, the exception will be pushed up into perform method and eventually handled by general `handleException` method defined in Core.
-
-```php
-try {
-    $this->http->perform($request->withAttribute('isolate', false));
-} catch (Exception $e) {
-    //Failed to execute
-}
-
-```
-
-A side effect of turning isolation off is that no middleware will be able to complete its work since the chain will be broken by the exception.
+> Please read about [application level error handling](/application/errors.md) to understand how error exceptions a handled.
 
 ## Client Exceptions
 HttpDispatcher defines a set of "soft" client exceptions you can use in your code to force some HTTP error to happen. For example:
@@ -32,7 +13,7 @@ protected function indexAction()
 }
 ```
 
-Exceptions like that will be handled by HttpDispatcher and converted into a `ExceptionResponse` with an appropriate status code. If you want to define a custom view for your error, edit the http configuration file to link error code to view name:
+Exceptions like that will be handled by `ExceptionWrapper`, rendered using view component and written into response with an appropriate status code. If you want to define a custom view for your error, edit the http configuration file to link error code to view name:
 
 ```php
     'httpErrors'   => [
@@ -52,7 +33,3 @@ There are a few exceptions predefined for generic scenarios:
 | 403  | ForbiddenException    |
 | 404  | NotFoundException     |
 | 500  | ServerErrorException  |
-
-
-## Exposing errors to client
-Exceptions which are not instances of `Spiral\Http\Exception\ClientException` will be treated as server errors, handled via `SnapshotInterface` and sent to client as exception backtrace. You can disable sending trace to client and replace it with generic 500 error by editing the "exposeErrors" flag in your http configuration.
