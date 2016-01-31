@@ -41,7 +41,7 @@
       "http-cookies": "Working with Cookies",
       "http-routing": "<s>Routing</s>",
       "http-filters": "<s>Request Filters</s>",
-      "http-errors": "<s>Http Errors</s>"
+      "http-errors": "Http Errors"
     }
   },
   {
