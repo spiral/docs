@@ -129,4 +129,4 @@ abstract class "Spiral\\ORM\\Accessors\\JsonDocument" {
 
 The resulting image will look like this:
 
-![UML](https://raw.githubusercontent.com/spiral/guide/master/resources/uml.png)
+![UML](https://raw.githubusercontent.com/spiral/guide/master/resources/odm-uml.png)
