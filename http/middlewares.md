@@ -155,7 +155,7 @@ public function boot(HttpDispatcher $http)
 }
 ```
 
-If you want to use shor aliases such middlewares concider creating container binding:
+If you want to use short aliases for such middlewares concider creating container binding:
 
 ```php
 class MyBootloader extends Bootloader implements SingletonInterface
