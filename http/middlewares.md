@@ -155,8 +155,6 @@ public function boot(HttpDispatcher $http)
 }
 ```
 
-> Attention, by default Profiler module will always mount it's middleware at top of chain, you have to mount it manually in cases when gzip or other content modification middlewares are used.
-
 If you want to use shor aliases such middlewares concider creating container binding:
 
 ```php
