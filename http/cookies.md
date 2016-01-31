@@ -25,7 +25,7 @@ public function indexAction(CookieQueue $cookies)
 }
 ```
 
-Attention, CookieManager only provides cookie writing and protection functionality, use InputManager to read cookies from incoming request:
+Attention, `CookieManager` only provides cookie writing and protection functionality, use `InputManager` to read cookie values from incoming request:
 
 ```php
 dump($this->input->cookies);
