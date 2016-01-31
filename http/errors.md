@@ -3,6 +3,11 @@ HttDispather does not provide direct functionality for error conversion, however
 
 > Please read about [application level error handling](/application/errors.md) to understand how error exceptions a handled.
 
+## Exposing errors
+HttpDispatcher provides ability to expose error exceptions to the client in a form of snapshots (see error handling), by default exception rendering will be dedicated to `SnaphotInterface` which will show stack stace and enviroment details. Once application moved to producution concider disabing debug mode which will make HttpDispatcher replace snapshot response with regural 500 error. Check .env file to locate option to enable and disable debug mode.
+
+> By default HttpDispatcher is capable to exposer exception in html and json formats, if you need more specific error reponses concider using external middlewares such as Whoops.
+
 ## Client Exceptions
 HttpDispatcher defines a set of "soft" client exceptions you can use in your code to force some HTTP error to happen. For example:
 
