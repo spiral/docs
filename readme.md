@@ -69,7 +69,7 @@
     * RW [Documents and Databases](odm/basics.md)
     * RW [Sources and Selectors](orm/sources.md)
     * RW [Compositions, Aggreagations](odm/oop.md)
-    * RW [Inheritance](odm/inheritance.md)
+    * [Inheritance](odm/inheritance.md)
     * [JSON and Standalone Documents](odm/standalone.md)
     * RW [UML Export](odm/uml.md)
 * Modules and Extensions
