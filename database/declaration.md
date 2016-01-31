@@ -1,8 +1,13 @@
-## Schema Declaration  - REQUIRES UPDATE DUE DECLARATIVE CREATION NOW DROPS(!!!!) NON DECLARED SCHEMA ENTITIES (COLUMNS AND ETC!!) - NEEDED FOR BETTER SCHEMA SYNCRONIZAION
-One of the most important part of Spiral DBAL is ability to alter database table schema using set of entity abstractions. Such abstractions provide ability to describe desired table rather than create it operation by operation.
+# Schema Declaration  - OUTDATED DOCUMENTATION 
+One of the most important part of Spiral DBAL is ability to alter database tables using set of schema abstractions. Such abstractions provide ability to describe desired table rather than create it operation by operation.
+
+> Attention, declarative schemas are useful in RAD development but can't cover all possible scenarios. Spiral is planned to utilize
+internal table comparator to generate needed Phinx migrations based on table diff to give developer more control.
+
+Guide TODO: drop command based syntax, write about SyncronizationBus (transaction and table sorter), write about modifying existed tables using pre-declaration.
 
 ## Principle of Work
-Before any operation/declaration can be applied to table schema, DBAL will load currently existed structure from database and [normalize it into internal format] (reading.md). As result, you are allowed to apply modification to table schema using declarative way instead of imperative, once schema **save** are requested - DBAL will generate set of creation and altering operations based on difference between declared and existed schemas. 
+Before any operation/declaration can be applied to table schema, DBAL will load currently existed structure from database and [normalize it into internal format](/database/introspection.md). As result, you are allowed to apply modification to table schema using declarative way instead of imperative, once schema **save** are requested - DBAL will generate set of creation and altering operations based on difference between declared and existed schemas. 
 > Unfortunatelly some SQL features got simplified to fit, for example primary table key is described as column type, not index.
 
 You can also use additional schema operations to remove or rename table elements.
@@ -273,40 +278,34 @@ Now, when record in "first" table will be removed related data from "second" tab
 
 > Please note that not every DBMS support actions outside of NO ACTION and CASCADE. In addition to that some databases (hi, Microsoft) may forbid multiple foreing keys with CASCADE action in one table to avoid reference loop.
 
-## Additional Operations
-Declarative way does not provides any options to remove or rename existed column, index or refernce. However you can achieve such goals by using set of direct table operations. Such operations are most valuable in [migrations] (migrations.md). You still have to **save** schema after applying following operations.
+## SyncronizationBus
 
-### Remove and rename Columns
-To remove or rename column we can use `dropColumn` and `renameColumn` methods accordingly.
+## Removals and Existest Table modifications
 
-```php
-$schema->dropColumn('column_name');
-
-$schema->renameColumn('name', 'new_name');
-```
-
-### Remove and rename Indexes
-Similar operations can be applied to indexes:
+## Working with Comparator directly
+In some cases you might want to dedicate table operations to external migration mechanism (for example Phinx), in this case you can access internal TableSchema state and it's comparator:
 
 ```php
-$schema->dropIndex(['name', 'email']);
+$schema->integer('some_value');
+$comparator = $schema->comparator();
+
+dump($comparator->addedColumns());
 ```
 
-Due indexes can be found based on index columns, you don't need to know original index name to rename it:
+> Comparator will provide you list of created, updated, removed columns, indexes and foreign keys. You can also use your own version of SyncronizationBus to write and run migrations instead of performing altering operations.
+
+If you dont want to deal with external migration mechanism but some data has to be moved, or column to renamed simply utilize introspection part of your schema:
 
 ```php
-$schema->renameIndex(['name', 'email'], 'new_name');
+if (!$schema->hasColumn('column')) {
+    $schema->renameColumn('other_column', 'column');
+    //moving stuff around (don't forget to save schema)
+}
 ```
 
-### Remove Foreign Keys
-Foreign keys does not have well determinated name in table schema, as result you can only delete them:
+> Spiral has planned to have additional module which provides ability to generate migration files based on a changed state of database, it will provide developer ability to alter and tweak migration files before executing them.
 
-```php
-//Column will not be removed
-$first->dropForeign('first_id');
-```
-
-## Global table operations
+## Table related operations
 You can also apply some operations on table level, such commands does not require schema saving and executed immidiatelly:
 
 ```php

@@ -1,7 +1,9 @@
-## ODM Component, Basics
+## ODM, Basics
 The Spiral ODM component has some similaries to the [ORM engine](/orm/basics.md) as they are both based on the [**DataEntity**](/components/entity.md) model and [Behaviour Schemas](/framework/schemas.md). However, the ODM removes the  term "relation" and replaces it with the classical [compositions and aggregations] (https://en.wikipedia.org/wiki/Object_composition) definition. In addition, the ODM classes support inheritance and can also can be embedded into ORM as JSON objects. 
 
 The ODM component was designed mainly to work with a MongoDB database and include support for atomic operations. However, the `DocumentEntity` class and it's compositions can be used outside of Mongo to create the OOP data representation for various structures (XML files, API responses, etc).
+
+> At this moment ODM component requires mongodb extension to be installed even if no database used, such limitation will be fixed in a future version.
 
 The Spiral ODM does not use entity cache like in ORM. Instead it uses "streaming like" functionality which can be used to process huge amounts of data using Document models.
 

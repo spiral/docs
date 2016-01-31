@@ -31,20 +31,14 @@
       "application-views": "Views and Templates"
     }
   },
-   {
-    "title": "Skeleton Application",
-    "links": {
-      "skeleton-description": "Description"
-    }
-  },
   {
     "title": "Http Dispatcher",
     "links": {
       "http-flow": "<s>Request Flow</s>",
-      "http-request": "<s>Request and InputManager</s>",
-      "http-responses": "<s>Responses</s>",
-      "http-middlewares": "<s>Middlewares</s>",
-      "http-cookies": "<s>Cookies</s>",
+      "http-request": "Request and Input",
+      "http-response": "Response and Responder",
+      "http-middlewares": "Middlewares",
+      "http-cookies": "Working with Cookies",
       "http-routing": "<s>Routing</s>",
       "http-filters": "<s>Request Filters</s>",
       "http-errors": "<s>Http Errors</s>"
@@ -98,7 +92,7 @@
     }
   },
   {
-    "title": "ORM Engine",
+    "title": "Adaptive ORM",
     "links": {
       "orm-basics": "<s>Records and Scaffolding</s>",
       "orm-sources": "<s>Sources and Selectors</s>",
@@ -107,12 +101,12 @@
     }
   },
   {
-    "title": "ODM Engine",
+    "title": "Adaptive ODM",
     "links": {
       "odm-basics": "<s>Documents and Databases</s>",
       "orm-sources": "<s>Sources and Selectors</s>",
       "odm-oop": "<s>Composite and Aggregate</s>",
-      "odm-inheritance": "<s>Inheritance</s>",
+      "odm-inheritance": "Inheritance",
       "odm-standalone": "Standalone Usage",
       "odm-uml": "<s>UML Export</s>"
     }

@@ -1,4 +1,4 @@
-# Spiral ORM, Basics
+# ORM, Basics
 The Spiral Framework provides a simple yet powerful ORM engine that you can use in your everyday development. Spiral ORM works with multiple databases, automatically scaffolds tables and columns, it defines set of relations and pre-loads them on demand for later use. 
 
 The ORM model **Record** is based on the [**DataEntity**] (/components/entity.md) class. It's best to read about this component first. In addition, you can check out this [behaviour schema] (/schemas.md) concept which used as the base for the ORM component.
@@ -168,8 +168,7 @@ Inspecting available DataEntities...
 Inspected entities 1, average rank Good (0.95).
 ```
 
-> You can only use the model schema to add new columns. Renaming and/or removing them must be done via migrations. This means that removing the column declaration from your model will not remove this column from your table.
-> Since migrations are mounted right before the schema updates, you are able to use them as part of your ORM flow.
+> **Attention, dropping column from ORM schema will also drop it from realted table!** If you want to rename column which already have associated data execute classical migrations/commands before updating your schema (see [schema declaration](/database/declaration.md).
 
 Again we can check if our table was successfully modified using the command "db:describe users". This time we switched our connection to PostgresSQL:
 
@@ -219,6 +218,34 @@ class SomeRecord extends Record
 This constant will forbid *any modifications* to an associated table and ensure that Spiral can not touch the existing structure. The rest of the ORM functionality such as validations and relations are still preserved.
 
 > You can use passive models if you prefer to generate your database using migrations. ORM will create a schema exception if some column is required for relation but missing from the schema. You can also use passive models to validate auto generated structure before doing a real update.
+
+## External migration mechanisms
+At this moment spiral ORM will run table migrations in house, however since SchemaBuilder, it's tables and their comparators are easily accessible it's possible to combine them with classical migrations like Phinx:
+
+```php
+$schemaBuilder = $this->orm->schemaBuilder();
+
+//See Spiral\Support\DFSSorter to sort tables in needed order
+foreach($schemaBuilder->getTables() as $table) {
+    if (!$table->exists()) {
+        //Table creation migration
+        $this->createMigration(
+            $table->getName(), 
+            $table->getColumns(), 
+            $table->getIndexes(), 
+            $table->getReferences()
+        );
+    } else {
+        $comparator = $table->comparator();
+        
+        //$comparator->addedColumns(); and etc
+    }
+}
+```
+
+Following technique will provide you ability to only generate migrations based on ORM schema changes and run them manually after some tweaking (to disable automatic sync for ORM schema check options set of `orm:schema` in console config so your `update` command wont alter schemas).
+
+> Any help of creating such module will be appreciated (see Reactor component for code generation).
 
 ## Create Record
 Once your ORM schema has been updated, we are ready to work with our model. Since we just created our table, it's time to push some data to it. Let's do this operation in a controller:
@@ -299,7 +326,7 @@ for ($i = 0; $i < 100; $i++) {
 
 > Pay attention, the `create` method will only return populated Record entity. You **have** to save this entity to your database manually (simply call `save()` method).
 
-> In additiona, every DataEntity, including ORM Records and ODM Documents, must be populated from the outside. This means there is no database related code in entity constuctor. If you want to create the entity based on an existing array of data (skipping setters), just pass this array as a constructor argument `new User([...])`.
+> In addition, every DataEntity, including ORM Records and ODM Documents, must be populated from the outside. This means there is no database related code in entity constuctor. If you want to create the entity based on an existing array of data (skipping setters), just pass this array as a constructor argument `new User([...])`.
 
 To check whats happening with your queries to the database, lets check the logging tab of Spiral [Profiler] (/modules/profiler.md) (this is Postgres connection):
 

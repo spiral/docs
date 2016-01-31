@@ -31,12 +31,10 @@ We are going to add this middleware to primary middleware chain in http config:
 
 ```php
  'middlewares'  => [
-        \Spiral\Profiler\Profiler::class,
-        Http\Cookies\CookieManager::class,
         Middlewares\CsrfFilter::class,
+        Http\Cookies\CookieManager::class,
         Middlewares\JsonParser::class,
         \Spiral\Session\Http\SessionStarter::class,
-        \Middlewares\HeadersMiddleware::class
     ],
 ```
 
@@ -118,7 +116,82 @@ There is set of pre-created middlewares you can use in your application:
 | ---                                       | ---         
 | Spiral\Http\Cookies\CookieManager         | Encrypts and decrypts incoming/outcoming cookies using encrypter or HMAC.                                         
 | Spiral\Http\Middlewares\CsrfFilter        | Halts execution if request made via non GET, HEAD or OPTIONS method and no verification code provided in request. 
-| Spiral\Http\Middlewares\JsonParser        | Converts JSON payload from request body into parsed request body if valid "Content-Type" header set.              
+| Spiral\Http\Middlewares\JsonParser        | Converts JSON payload from request body into parsed request body if valid "Content-Type" header set (to be replaced by `Psr7Middlewares\Middleware\Payload`).              
 | Spiral\Session\Http\SessionStarter        | Initiates session using ID stored in cookie "session" or creates such cookies in response if needed.              
 
 In addition to that **Profiler module** also stated as middleware and automatically mounted by it's bootloader at top of middlewares chain when debug mode is enabled (see skeleton application).
+
+## Mounting middlewares in Bootloader
+In some cases you might want to mount middleware in your bootload class rather than editing config, to do that we have to make our class bootable and request HttpDispatcher dependency:
+
+```php
+class MyBootloader extends Bootloader implements SingletonInterface
+{
+    const BOOT = true;
+
+    public function boot(HttpDispatcher $http)
+    {
+        //To the top of chain
+        $http->riseMiddleware(new MyMiddleware());
+    
+        //To the end of chain
+        $http->pushMiddleware(new MyMiddleware());
+    }
+}
+```
+
+> Attention, you can simply provide class name or container binding as middleware, it will be automatically resolved via IoC container (see example below).
+
+## Other middlewares
+You can find a lot of pre build middlewares outside of spiral, for example [https://github.com/oscarotero/psr7-middlewares](https://github.com/oscarotero/psr7-middlewares).
+
+```php
+public function boot(HttpDispatcher $http)
+{
+    $http->riseMiddleware(Middleware::responseTime());
+    $http->riseMiddleware(
+        Middleware::BasicAuthentication(['username' => 'password'])->realm('You shall not pass!')
+    );
+}
+```
+
+If you want to use short aliases for such middlewares concider creating container binding:
+
+```php
+class MyBootloader extends Bootloader implements SingletonInterface
+{
+    /**
+     * @return array
+     */
+    protected $bindings = [
+        //You can also use middleware class name as alias
+        'middlewares.auth' => [self::class, 'authMiddleware'],
+    ];
+
+    public function authMiddleware(AppConfig $config)
+    {
+        return Middleware::BasicAuthentication(
+            $config->getUsernames()
+        )->realm('You shall not pass!');
+    }
+}
+```
+
+Now you can use such middleware in your http config or other places via short alias:
+
+```php
+'middlewares'  => [
+    'middlewares.auth',
+
+    Middlewares\CsrfFilter::class,
+    Middlewares\ExceptionWrapper::class,
+
+    \Middlewares\LocaleDetector::class,
+    Session\Http\SessionStarter::class,
+    Http\Cookies\CookieManager::class,
+
+    /*{{middlewares}}*/
+],
+```
+
+> Concider contributing into [https://github.com/oscarotero/psr7-middlewares](https://github.com/oscarotero/psr7-middlewares) directly if you wish to create more middlewares which are not spiral specific.
