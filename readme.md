@@ -32,7 +32,7 @@
     * [Working with Cookies](http/cookies.md)
     * RW [Routing](http/routing.md)
     * RW [Request Filters](http/filters.md)
-    * RW [Http Errors](http/errors.md)
+    * [Http Errors](http/errors.md)
 * Console Dispatcher
     * [Overview](console/commands.md)
     * [Custom Commands](console/scaffolding.md)
