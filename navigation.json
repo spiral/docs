@@ -106,7 +106,7 @@
       "odm-basics": "<s>Documents and Databases</s>",
       "orm-sources": "<s>Sources and Selectors</s>",
       "odm-oop": "<s>Composite and Aggregate</s>",
-      "odm-inheritance": "<s>Inheritance</s>",
+      "odm-inheritance": "Inheritance",
       "odm-standalone": "Standalone Usage",
       "odm-uml": "<s>UML Export</s>"
     }
