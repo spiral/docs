@@ -109,9 +109,6 @@ class "Database\\User" {
   + timestamp timeCreated
   + timestamp timeUpdated
   + $this touch()
-  {static} # void initTimestampsTrait(analysis)
-  {static} - \Closure __timestampsSave()
-  {static} - callable __timestampsSchema()
 }
 
 "Database\\User" --* "Database\\Profile":profile
