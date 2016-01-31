@@ -161,4 +161,4 @@ trait SharedTrait
 }
 ```
 
-> You can treat shortcuts as inline functions in C but in a context of active container.
+> You can treat shortcuts as inline functions in C but in a context of active container scope.
