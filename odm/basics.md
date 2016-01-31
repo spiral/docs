@@ -686,21 +686,3 @@ Since Spiral ODM uses static analysis, there are no real limitations on how you 
 > When extending, ODM will merge schemas and other properties of the Document and it's parent.
 
 **You can also use the data driven model inheritance, check [this article](/odm/oop.md).**
-
-## Inspections
-Spiral framework toolkit also provides you simple command which can help to inspect any desired ODM document to find out what fields are public, fillable or filtered:
-
-```
-> spiral inspect:entity Database/User
-+-----------------+-----------+----------+----------+-----------+----------------+
-| Field           | Rank      | Fillable | Filtered | Validated | Hidden         |
-+-----------------+-----------+----------+----------+-----------+----------------+
-| id              | Very Good | no       | yes      | no        | no             |
-| name            | Very Good | no       | yes      | yes       | no             |
-| email           | Good      | no       | yes      | yes       | no (blacklist) |
-| balance         | Very Good | no       | yes      | no        | no             |
-| timeRegistered  | Very Good | no       | yes      | no        | no             |
-| timeCreated     | Very Good | no       | yes      | no        | no             |
-| timeCpdated     | Very Good | no       | yes      | no        | no             |
-+-----------------+-----------+----------+----------+-----------+----------------+
-```
