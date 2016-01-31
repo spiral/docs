@@ -103,7 +103,7 @@
   {
     "title": "Adaptive ODM",
     "links": {
-      "odm-basics": "<s>Documents and Databases</s>",
+      "odm-basics": "Documents and Databases",
       "orm-sources": "<s>Sources and Selectors</s>",
       "odm-oop": "Composite and Aggregate",
       "odm-inheritance": "Inheritance",
