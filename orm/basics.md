@@ -290,13 +290,13 @@ protected function validate($reset = false)
     if ($this->hasUpdates('email') && !$this->hasError('email')) {
     
         //We are using array based where statement
-        $selection = $this->sourceTable()->where([
+        $selection = $this->source()->where([
             'email' => $this->email,
             'id'    => ['!=' => $this->id]
         ]);
 
         if ($selection->count() != 0) {
-            $this->setError('email', self::translate("Email must be unique."));
+            $this->setError('email', $this->say("Email must be unique."));
         }
     }
 
@@ -627,7 +627,7 @@ class User extends Record
         if ($this->hasUpdates('email') && !$this->hasError('email')) {
 
             //Let's try to check if email is unique
-            $selection = $this->souce()->find()->where([
+            $selection = $this->source()->find()->where([
                 'email' => $this->email,
                 'id'    => ['!=' => $this->id]
             ]);
