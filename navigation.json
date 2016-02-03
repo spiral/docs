@@ -118,7 +118,8 @@
       "modules-scaffolding": "<s>Scaffolding</s>",
       "modules-security": "<s>Secutiry</s>",
       "modules-toolkit": "<s>Toolkit</s>",
-      "modules-vault": "<s>Vault</s>"
+      "modules-vault": "<s>Vault</s>",
+      "modules-auth": "<s>Auth</s>"
     }
   }
 ]
