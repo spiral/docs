@@ -109,6 +109,13 @@ dump($input->data('name'));
 dump($input->post('name'));
 ```
 
+### Post/Data with fallback to Query parameters
+If you want to read value from POST data and then from Query simply use method `input`.
+
+```php
+dump($input->input('name'));
+```
+
 ### PSR7 request attributes
 ```php
 dump($input->attributes->all());
