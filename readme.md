@@ -78,3 +78,4 @@
     * RW [Security](modules/security.md)
     * RW [Toolkit](modules/toolkit.md)
     * RW [Vault](modules/vault.md)
+    * RW [Vault](modules/auth.md)
