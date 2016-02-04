@@ -1,7 +1,7 @@
 # Stempler Engine
 The Spiral Stempler engine is mounted in your application by default and provides very simple and powerful ways to manage your website templates using html tags. Engine supports a very flexible mechanism to add multiple teams to projects and gives more power into the hands of your frontend/html developers.
 
-> Stempler isn't intended to create or replace basic control structures in your templates. If you want to replace PHP as you primary templating language - you can create a custom view processor/modifier and define your own language (for example using Twig, Smarty, Blade, Latte etc).
+> Stempler isn't intended to create or replace basic control structures in your templates. If you want to replace PHP as you primary templating language - you can create a custom view processor/modifier and define your own language (for example using Twig, Smarty, Blade, Latte etc). In addition it is better to use Twig for client facing templates (emails and etc) due it has safe mode.
 
 This section of the documentation focuses mainly on the template inheritance in your projects. If you want to read about "virtual tags" and the ability to include one template into another, please read [Extended Stempler usage](/stempler/expert.md). Make sure to read about [using views](/components/views.md) first.
 
