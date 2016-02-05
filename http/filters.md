@@ -39,6 +39,52 @@ public function createUser(UserRequest $request)
 
 //TOOOD: WRITE ABOUT I!
 
+
+```
+/**
+ * @property-read \Psr\Http\Message\UploadedFileInterface $image
+ * @property-read string $name
+ * @property-read int $test
+ */
+class SampleRequest extends RequestFilter
+{
+    /**
+     * @var array
+     */
+    protected $schema = [
+        'image' => 'file:image',
+        'name'  => 'data:name',
+        'test'  => 'data:test'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $setters = [
+        'name' => 'strval',
+        'test' => 'intval'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $validates = [
+        'image' => [
+            'image::uploaded',
+            'image::valid'
+        ],
+        'name'  => [
+            'notEmpty',
+            'string'
+        ],
+        'test'  => [
+            'notEmpty',
+            'integer'
+        ]
+    ];
+}
+```
+
 As you can see, we declared method dependency for our request. This will automatically allow request access to InputManager and popuplate fields described in it's schema.
 
 ```php
