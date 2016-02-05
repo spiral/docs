@@ -1,6 +1,7 @@
 # Http Dispatcher Request flow
-Spiral HTTP Component based on [PSR7](http://www.php-fig.org/psr/psr-7/) implenentation of http requests and responses, spiral utilizes [Zend implementation](https://github.com/zendframework/zend-diactoros) of such protocol as internal backbone. PSR7 makes dispatcher compatible with other frameworks,
-middlewares and response generators.
+Spiral HTTP layers is fully based on [PSR7](http://www.php-fig.org/psr/psr-7/) implenentation of http requests and response, framework utilizes [Zend implementation](https://github.com/zendframework/zend-diactoros) of such protocol as internal backbone. 
+
+PSR7 makes dispatcher compatible with other frameworks, middlewares and response generators. However, on internal level spiral uses IoC scoping of active request and response which provides ability to use PSR-7 functionality in a more friendly way.
 
 ## What is request
 Spiral does not provide instance of "global" application request available in any place of application, instead of that it opens so called "request scope" and 
