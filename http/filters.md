@@ -173,7 +173,7 @@ Schema definition will include the target field name, it's source and origin (cl
 
 ```php
 protected $schema = [
-    'name'    => 'query:name',
+    'name'  => 'query:name',
     'test'  => 'query:test'
 ];
 ```
