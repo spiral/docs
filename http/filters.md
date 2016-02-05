@@ -26,17 +26,6 @@ class UserRequest extends RequestFilter
 }
 ```
 
-Let's check out an example of request usage in controller method and then walk through it's schema definition:
-
-```php
-public function createUser(UserRequest $request)
-{
-    if(!$request->isValid()) {
-        dump($request->getErrors());
-    }
-}
-```
-
 //TOOOD: WRITE ABOUT I!
 
 
@@ -85,6 +74,20 @@ class SampleRequest extends RequestFilter
 }
 ```
 
+## Using RequestFilters
+Let's check out an example of request usage in controller method and then walk through it's schema definition:
+
+```php
+public function createUser(SampleRequest $request)
+{
+    if(!$request->isValid()) {
+        dump($request->getErrors());
+    }
+    
+    //Doing something with request data
+}
+```
+
 As you can see, we declared method dependency for our request. This will automatically allow request access to InputManager and popuplate fields described in it's schema.
 
 ```php
@@ -113,6 +116,7 @@ protected $schema = [
 ```
 
 RequestFilter supports different sources you can use for definition.  Any method in `InputManager` can be used as source:
+
 ```php
 protected $schema = [
   'name'   => 'post:name',           //identical to "data:name"
@@ -122,7 +126,24 @@ protected $schema = [
 ];
 ```
 
-**Other sources you can use:** uri (UriInterface), path (PAGE URI PATH), method (HTTP METHOD), isSecure (bool), isAjax (bool), isJsonExpected (bool), remoteAddress (string), header:origin, data:origin, post:origin, query:origin, cookie:origin, file:origin, server:origin, attribute:origin.
+### Input Sources
+You can use following sources for your request filters:
+
+* uri (UriInterface)
+* path (PAGE URI PATH)
+* method (HTTP METHOD)
+* isSecure (bool)
+* isAjax (bool)
+* isJsonExpected (bool)
+* remoteAddress (string)
+* header:**origin**
+* data:**origin**
+* post:**origin**
+* query:**origin**
+* cookie:**origin**
+* file:**origin**
+* server:**origin**
+* attribute:**origin**
 
 ## Getting request fields
 If you don't want to populate any entity you can get access to request fields directly using magic getters or `getFields` method.
@@ -136,7 +157,6 @@ public function doSomething(SomeRequest $request)
     
     $data = $request->getFields();
 }
-
 ```
 
 ## Errors
