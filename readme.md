@@ -31,7 +31,7 @@
     * [Middlewares and Filters](http/middlewares.md)
     * [Working with Cookies](http/cookies.md)
     * RW [Routing](http/routing.md)
-    * RW [Request Filters](http/filters.md)
+    * [Request Filters](http/filters.md)
     * [Http Errors](http/errors.md)
 * Console Dispatcher
     * [Overview](console/commands.md)
