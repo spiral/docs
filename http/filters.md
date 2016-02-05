@@ -1,66 +1,28 @@
-# Request Filters - OUTDATED
+# Request Filters
 Request filters is a model designed specially to handle user request parameters and populate the target entity (for example ORM or ODM) or return request data using `getFields`, `getField` or `__get` methods. In other words, this model maps form values to model fields. RequestFilter can define it's own set of getters, setters, accessors and validations for fields. RequestFilter utilizes functionality of InputManager to populate it's data.
 
 > It may be best to read about [DataEntities](/components/entity.md), ORM, ODM and [Validations](/components/validation.md) first.
 
 ## Scaffolding
-You can create a new `RequestFilter` by using the command `create:request name`. 
-
-Now using console command `create:request user -e user` we will get something like this:
+You can create a new `RequestFilter` by using the command `create:request user`. Generated class will look like:
 
 ```php
-/**
- * @property string $name
- * @property string $status
- */
-class UseryRequest extends RequestFilter
+class UserRequest extends RequestFilter
 {
     /**
-     * Input schema.
-     *
      * @var array
      */
-    protected $schema = [
-        'name'    => 'data:name',
-        'status'  => 'data:status'
-    ];
+    protected $schema = [];
 
     /**
      * @var array
      */
-    protected $setters = [
-        'name'    => 'trim',
-        'status'  => 'trim'
-    ];
+    protected $setters = [];
 
     /**
      * @var array
      */
-    protected $validates = [
-        'name'    => [
-            'notEmpty',
-            'string'
-        ],
-        'status'  => [
-            'notEmpty',
-            'string'
-        ]
-    ];
-
-    /**
-     * {@inheritdoc}.
-     *
-     * @param \Database\User $entity Entity to be populated with request data.
-     * @return bool
-     */
-    public function populate(EntityInterface $entity)
-    {
-        if (!parent::populate($entity)) {
-            return false;
-        }
-
-        return $this->isValid();
-    }
+    protected $validates = [];
 }
 ```
 
@@ -69,12 +31,13 @@ Let's check out an example of request usage in controller method and then walk t
 ```php
 public function createUser(UserRequest $request)
 {
-    $user = new User();
-    if(!$request->populate($user)) {
+    if(!$request->isValid()) {
         dump($request->getErrors());
     }
 }
 ```
+
+//TOOOD: WRITE ABOUT I!
 
 As you can see, we declared method dependency for our request. This will automatically allow request access to InputManager and popuplate fields described in it's schema.
 
