@@ -26,8 +26,79 @@ class UserRequest extends RequestFilter
 }
 ```
 
-//TOOOD: WRITE ABOUT I!
+In many cases you might want to pre-create request with a specific set of fields without manually entering them every time, scaffolder config provides you ability to define shortcust for field definitions:
 
+```php
+'request'        => [
+    'namespace' => 'Requests',
+    'postfix'   => 'Request',
+    'class'     => Declarations\RequestDeclaration::class,
+    'mapping'   => [
+        'int'    => [
+            'source'    => 'data',
+            'setter'    => 'intval',
+            'validates' => [
+                'notEmpty',
+                'integer'
+            ]
+        ],
+        'float'  => [
+            'source'    => 'data',
+            'setter'    => 'floatval',
+            'validates' => [
+                'notEmpty',
+                'float'
+            ]
+        ],
+        'string' => [
+            'source'    => 'data',
+            'setter'    => 'strval',
+            'validates' => [
+                'notEmpty',
+                'string'
+            ]
+        ],
+        'bool'   => [
+            'source'    => 'data',
+            'setter'    => 'boolval',
+            'validates' => [
+                'notEmpty',
+                'boolean'
+            ]
+        ],
+        'email'  => [
+            'source'    => 'data',
+            'type'      => 'string',
+            'setter'    => 'strval',
+            'validates' => [
+                'notEmpty',
+                'string',
+                'email'
+            ]
+        ],
+        'file'   => [
+            'source'    => 'file',
+            'type'      => '\Psr\Http\Message\UploadedFileInterface',
+            'validates' => [
+                'file::uploaded'
+            ]
+        ],
+        'image'  => [
+            'source'    => 'file',
+            'type'      => '\Psr\Http\Message\UploadedFileInterface',
+            'validates' => [
+                "image::uploaded",
+                "image::valid"
+            ]
+        ],
+        /*{{request.mapping}}*/
+    ]
+],
+```
+
+Based on a such config we can now create more complex request using folling command: `spiral create:request sample -f image:image -f name:string -f test:int`
+
+Our generated class is going to look like:
 
 ```php
 /**
