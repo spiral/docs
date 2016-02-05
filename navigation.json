@@ -34,7 +34,7 @@
   {
     "title": "Http Dispatcher",
     "links": {
-      "http-flow": "<s>Request Flow</s>",
+      "http-flow": "Request Flow",
       "http-request": "Request and Input",
       "http-response": "Response and Responder",
       "http-middlewares": "Middlewares",
