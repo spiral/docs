@@ -40,7 +40,7 @@
       "http-middlewares": "Middlewares",
       "http-cookies": "Working with Cookies",
       "http-routing": "<s>Routing</s>",
-      "http-filters": "<s>Request Filters</s>",
+      "http-filters": "Request Filters",
       "http-errors": "Http Errors"
     }
   },
