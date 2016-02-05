@@ -40,7 +40,7 @@ public function createUser(UserRequest $request)
 //TOOOD: WRITE ABOUT I!
 
 
-```
+```php
 /**
  * @property-read \Psr\Http\Message\UploadedFileInterface $image
  * @property-read string $name
