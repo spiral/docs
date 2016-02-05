@@ -6,32 +6,6 @@ Request filters is a model designed specially to handle user request parameters 
 ## Scaffolding
 You can create a new `RequestFilter` by using the command `create:request name`. 
 
-Let's look at some examples. First of all, we can define a database entity:
-
-```php
-class User extends Record
-{
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'status'
-    ];
-    
-    /**
-     * Entity schema.
-     *
-     * @var array
-     */
-    protected $schema = [
-        'id'      => 'primary',
-        'name'    => 'string',
-        'status'  => 'enum(active,blocked)'
-    ];
-}
-```
-
 Now using console command `create:request user -e user` we will get something like this:
 
 ```php
