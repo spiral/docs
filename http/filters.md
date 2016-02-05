@@ -163,17 +163,18 @@ As you can see, we declared method dependency for our request. This will automat
 
 ```php
 protected $schema = [
-    'name'    => 'data:name',
-    'status'  => 'data:status'
+    'image' => 'file:image',
+    'name'  => 'data:name',
+    'test'  => 'data:test'
 ];
 ```
 
-Schema definition will include the target field name, it's source and origin name specified using dot notation. We can easily switch our request to read the values from query:
+Schema definition will include the target field name, it's source and origin (client name) name specified using dot notation. We can easily switch our request to read the values from query:
 
 ```php
 protected $schema = [
     'name'    => 'query:name',
-    'status'  => 'query:status'
+    'test'  => 'query:test'
 ];
 ```
 
@@ -182,7 +183,7 @@ In addition, we can specify the origin name using dot notation.
 ```php
 protected $schema = [
     'name'    => 'query:user.name',  //user[status]
-    'status'  => 'query:user.status' //user[status]
+    'test'    => 'query:user.test'   //user[test]
 ];
 ```
 
