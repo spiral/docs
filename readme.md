@@ -25,7 +25,7 @@
     * [Controllers](application/controllers.md)
     * [Views and Templates](application/views.md)
 * Http Dispatcher
-    * RW [Request Flow](http/flow.md)
+    * [Request Flow](http/flow.md)
     * [Request and Input](http/request.md)
     * [Response and Responders](http/response.md)
     * [Middlewares and Filters](http/middlewares.md)
