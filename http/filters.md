@@ -227,6 +227,9 @@ public function doSomething(SomeRequest $request)
     }
     
     $data = $request->getFields();
+    
+    //You can also access some fields using magic methods
+    dump($request->image);
 }
 ```
 
