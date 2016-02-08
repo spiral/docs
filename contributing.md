@@ -13,7 +13,7 @@ Feel free to contribute to framework or components development.
 * Code quality feedback and proposals
 * PHP7 adaptation as minimum version (spiral has been written before PHP7 release)
 * TODOs, a lot of TODOs
-* Automatic splitting for components [repository](https://github.com/spiral/components)
+* Automatic (or permanent) splitting for components [repository](https://github.com/spiral/components)
 
 Feel free to propose any ideas related to architecture, guide (it's never full), adaptaptation or community.
 
