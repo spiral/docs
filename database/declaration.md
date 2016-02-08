@@ -1,8 +1,7 @@
 # Schema Declaration  - OUTDATED DOCUMENTATION 
 One of the most important part of Spiral DBAL is ability to alter database tables using set of schema abstractions. Such abstractions provide ability to describe desired table rather than create it operation by operation.
 
-> Attention, declarative schemas are useful in RAD development but can't cover all possible scenarios. Spiral is planned to utilize
-internal table comparator to generate needed Phinx migrations based on table diff to give developer more control.
+> Attention, declarative schemas are useful in RAD development but can't cover all possible scenarios. It's the best to use declarative schemas only to aggregate changes and create migration based on diff (see Comparator class), when actual DB operations performed by external tool (for example Phinx, integration has been planned).
 
 Guide TODO: drop command based syntax, write about SyncronizationBus (transaction and table sorter), write about modifying existed tables using pre-declaration.
 
