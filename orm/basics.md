@@ -643,3 +643,5 @@ class User extends Record
     }
 }
 ```
+
+> It will be the best to avoild validation rules inside your entities, keep validation in RequestFilters unless your entity schema is really simple.
