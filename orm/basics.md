@@ -1,7 +1,9 @@
 # ORM, Basics
-The Spiral Framework provides a simple yet powerful ORM engine that you can use in your everyday development. Spiral ORM works with multiple databases, automatically scaffolds tables and columns, it defines set of relations and pre-loads them on demand for later use. 
+The Spiral Framework provides a simple yet powerful ORM engine that you can use in your everyday development. Spiral ORM works with multiple databases, automatically scaffolds tables and columns (directly or via migrations), it defines set of relations and pre-loads them on demand for later use. 
 
-The ORM model **Record** is based on the [**DataEntity**] (/components/entity.md) class. It's best to read about this component first. In addition, you can check out this [behaviour schema] (/schemas.md) concept which used as the base for the ORM component.
+The ORM model **Record** is based on the [**DataEntity**](/components/entity.md) class. It's best to read about this component first. In addition, you can check out this [behaviour schema](/schemas.md) concept which used as the base for the ORM component.
+
+> Attention, default spiral ORM uses abstract models as parent for your entities, if you need pure DataMapper please check Doctrine.
 
 ## Record
 The Spiral ORM component does not require any configuration other than making sure that the [DBAL] (/database/overview.md) has valid database connections. To begin using ORM, just create or generate your desired **Record** model.
