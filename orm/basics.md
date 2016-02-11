@@ -308,6 +308,8 @@ protected function validate($reset = false)
 
 This validation method will check if the email is unique but only when the email field has some updates (created or changed). Now, we will get an error message associated with the model field rather than the database exception.
 
+> It will be the best to avoild validation rules inside your entities, keep validation in RequestFilters unless your entity schema is really simple.
+
 Before we jump to the next step, lets create a few more users. We can use the static method `create` which accepts  set of initial model fields.
 
 Since we don't have any fillable fields, this method won't work in our case (so we are going to use the `setFields` method with a disabled access policy. We do this by setting the second argument to `true`). In order to fill our demo entities, let's connect a [faker] (https://github.com/fzaninotto/Faker) package.
