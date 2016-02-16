@@ -160,8 +160,8 @@ class AuraBootloader extends Bootloader
     public function boot(HttpDispatcher $http, \App $app)
     {
         $router = new RouterContainer();
-
         $this->defineRoutes($router->getMap(), $app);
+        
         $http->setEndpoint($this->createEndpoint($router, $app));
     }
 
