@@ -1,9 +1,8 @@
-# Routing - OUTDATED
+# Routing
 Like other frameworks, Spiral provides a pre-built mechanism to manage your application's url structure. This operations is performed by the Http `Router` and `Route` classes.
 
 ## Router
-To manage set of routes inside application spiral provides higher level abstraction `RouterInterface` which is responsible for processing
-request to detect valid route. Router by default has been implemented as `Spiral\Http\Routing\Router` and can be treated as PSR-7 endpoint. 
+To manage set of routes inside application spiral provides higher level abstraction `RouterInterface` which is responsible for aggregating routes and processing request to detect valid route. Router by default has been implemented as `Spiral\Http\Routing\Router` and can be treated as PSR-7 endpoint. 
 
 ```php
 interface RouterInterface
@@ -65,8 +64,89 @@ interface RouterInterface
 
 Per declaration you are able to add as many route instances into router as you want, in addition you can add "default route" which is going to be automatically invoked when no other routes matched request (see examples below).
 
+## Routes
+
+```php
+interface RouteInterface
+{
+    /**
+     * Isolate route endpoint in a given container.
+     *
+     * @param ContainerInterface $container
+     * @return self
+     */
+    public function withContainer(ContainerInterface $container);
+
+    /**
+     * Returns new route instance.
+     *
+     * @param string $name
+     * @return RouteInterface
+     */
+    public function withName($name);
+
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @return string
+     */
+    public function getPrefix();
+
+    /**
+     * @param string $prefix
+     * @return self
+     */
+    public function withPrefix($prefix);
+
+    /**
+     * Returns new route instance.
+     *
+     * @param array $matches
+     * @return self
+     */
+    public function withDefaults(array $matches);
+
+    /**
+     * Get default route values.
+     *
+     * @return array
+     */
+    public function getDefaults();
+
+    /**
+     * Check if route matched with provided request. Must return new route.
+     *
+     * @param ServerRequestInterface $request
+     * @return self|null
+     * @throws RouteException
+     */
+    public function match(ServerRequestInterface $request);
+
+    /**
+     * Execute route on given request. Has to be called after match method.
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface      $response
+     * @return ResponseInterface
+     */
+    public function perform(ServerRequestInterface $request, ResponseInterface $response);
+
+    /**
+     * Generate valid route URL using route name and set of parameters.
+     *
+     * @param array|\Traversable $parameters
+     * @return UriInterface
+     * @throws RouteException
+     */
+    public function uri($parameters = []);
+}
+```
+
 ## Custom Routers
-Spiral router provides deep integration with application container, if you wish to use custom router you can do it by setting endpoint in your HttpDispatcher. Let's review an example of how we can use [Aura.Router](https://github.com/auraphp/Aura.Router) in spiral application. Instead of implementing RouterInterface we are going to change endpoint using routing bootloader:
+Spiral router provides deep integration with application container, if you wish to use custom router you can do it by setting endpoint in your HttpDispatcher. Let's review an example of how we can use [Aura.Router](https://github.com/auraphp/Aura.Router) in spiral application:
 
 ```php
 class AuraBootloader extends Bootloader
@@ -133,7 +213,4 @@ class AuraBootloader extends Bootloader
 }
 ```
 
-> Attention, Aura.Router will not create container scope for request and response so your functionality are limited, try using MiddlewarePipeline inside your endpoint to define such scope.
-
-## Routes
-Spiral routes work little bit different way compared to Aura.Routes (see example above).
+> Attention, Aura.Router will not create container scope for request and response so your functionality are limited, try using MiddlewarePipeline inside your endpoint to define such scope
