@@ -59,7 +59,7 @@ interface EncrypterInterface
 }
 ```
 
-You can see we can encrypt, decrypt, generate random set of bytes and change encryption keys our of the box. By default spiral will bind `EncrypterInterface` to `Spiral\Encrypter\Encrypter` class which utilized [defuse/php-encryption](https://github.com/defuse/php-encryption) package for such operation.
+You can see we can encrypt, decrypt, generate random set of bytes and change encryption keys our of the box. By default spiral will bind `EncrypterInterface` to `Spiral\Encrypter\Encrypter` class which utilize [defuse/php-encryption](https://github.com/defuse/php-encryption) package for such operation.
 
 If you wish to get access to encrypter in your code - use IoC container, depencency injections or short binding "encrypter" (as usual we are giving example using Controller action).
 
