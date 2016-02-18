@@ -10,13 +10,13 @@ To better understand what type of functionalites available for us let's take a l
 interface EncrypterInterface
 {
     /**
-     * Update encryption key.
+     * Create and encrypter instance with new key.
      *
      * @param string $key
      * @return self
      * @throws EncrypterException
      */
-    public function setKey($key);
+    public function withKey($key);
 
     /**
      * Encryption ket value. Sensitive data!
@@ -59,7 +59,7 @@ interface EncrypterInterface
 }
 ```
 
-You can see we can encrypt, decrypt, generate random set of bytes and change encryption keys our of the box. By default spiral will bind `EncrypterInterface` to `Spiral\Encrypter\Encrypter` class which utilized OpenSSL extensions for such operation. Due interal implementation will pack your data using `json_encide` method you can encrypt any serializable data set (for example arrays).
+You can see we can encrypt, decrypt, generate random set of bytes and change encryption keys our of the box. By default spiral will bind `EncrypterInterface` to `Spiral\Encrypter\Encrypter` class which utilized [defuse/php-encryption](https://github.com/defuse/php-encryption) package for such operation.
 
 If you wish to get access to encrypter in your code - use IoC container, depencency injections or short binding "encrypter" (as usual we are giving example using Controller action).
 
@@ -83,5 +83,5 @@ You can change your runtime encryption cipher at any moment, only make sure that
 If you wish to use encrypter separatelly, or construct manually simply provide key and cipher values into Encrypter constructor:
 
 ```php
-$encypter = new Encrypter('my-key'); //Cipher is optional and set to 'aes-256-cbc' by default
+$encypter = new Encrypter('my-key');
 ```
