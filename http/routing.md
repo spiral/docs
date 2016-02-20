@@ -145,6 +145,14 @@ interface RouteInterface
 }
 ```
 
+#### Routing to controllers
+
+#### Routing to Closures
+
+#### Routing to Endpoints
+
+#### Routing to Routers
+
 ## Custom Routers
 Spiral router provides deep integration with application container, if you wish to use custom router you can do it by setting endpoint in your HttpDispatcher. Let's review an example of how we can use [Aura.Router](https://github.com/auraphp/Aura.Router) in spiral application:
 
