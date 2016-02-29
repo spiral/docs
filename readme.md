@@ -30,7 +30,7 @@
     * [Response and Responders](http/response.md)
     * [Middlewares and Filters](http/middlewares.md)
     * [Working with Cookies](http/cookies.md)
-    * RW [Routing](http/routing.md)
+    * [Routing](http/routing.md)
     * [Request Filters](http/filters.md)
     * [Http Errors](http/errors.md)
 * Console Dispatcher
