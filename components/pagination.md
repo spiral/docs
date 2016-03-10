@@ -75,13 +75,13 @@ protected function indexAction()
 }
 ```
 
-Default spiral paginator `Paginator` will automatically fetch count of records from paginable object and set approparite limit/offset values based on provided parameters. Page pagination will be performed based on query parameter `page`. You can always ajust parameter or [**request**](/http/flow.md) paginator must follow:
+Default spiral paginator `Paginator` will automatically fetch count of records from paginable object and set approparite limit/offset values based on provided parameters. Page pagination will be performed based on query parameter `page`. You can always ajust parameter or paginator must follow:
 
 ```php
 protected function indexAction()
 {
     $selection = $this->dbal->db()->users->select('name','email');
-    dump($selection->paginate(1, 'myPage', $this->request)->getIterator());
+    dump($selection->paginate(1, 'myPage')->getIterator());
 }
 ```
 
