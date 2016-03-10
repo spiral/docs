@@ -93,8 +93,8 @@ protected function indexAction()
     $selection = $this->dbal->db()->users->select('name','email')->paginate(10);
     dump($selection->getIterator());
 
-    $selection->getPaginator()->setUri(new Uri('/custom-uri/'));
-    dump($selection->getPaginator()->createUri(1));
+    $selection->paginator()->setUri(new Uri('/custom-uri/'));
+    dump($selection->paginator()->createUri(1));
 }
 ```
 
