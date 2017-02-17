@@ -3,7 +3,7 @@ Feel free to contribute to framework or components development.
 
 ## Requiments
 * PSR-2 and PSR-4
-* KISS and SOLID
+* KISS/SOLID
 * Test coverage of new functionality
 
 ## Help Needed In
