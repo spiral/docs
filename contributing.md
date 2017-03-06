@@ -6,7 +6,7 @@ Feel free to contribute to framework or components development. Please make sure
 * Your code must include Unit tests
 
 ## Help Needed In
-If you wish to help us besides writing code:
+If you want to help but don't know where to start:
 
 * Functionality/modularity proposals
 * Code quality feedback and proposals
