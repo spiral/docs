@@ -68,9 +68,10 @@
 	* [Schema Introspection](database/introspection.md)
 	* [Schema Declaration](database/declaration.md)
 	* [Migrations](database/migrations.md)
-* Static Analysis
+* Static Analysis/Tokenizer
 	* [Looking for Classes](tokenizer/classes.md)
 	* [Looking for method calls](tokenizer/invocations.md)
+	* [PHP Code Isolation](tokenizer/isolation.md)
 * ORM Engine
 	* [Overview](orm/ovewrview.md)
 	* [Record and RecordEntity](orm/entities.md)
@@ -79,6 +80,7 @@
 	* [Relationships](orm/relationships.md)
 	* [Eager loading and Entity map](orm/loading.md)
 	* [ODM Bridge](orm/odm-bridge.md)
+	* [Recursive Relations](extras/recursive.md)
 * ODM Engine
 	* [Documents and Databases](odm/ovewview.md)
 	* [Sources and Selectors](orm/selectors.md)
@@ -94,7 +96,7 @@
 	* [IDE helper](modules/ide-helper.md)
 	* [**Vault Core**](modules/vault.md)
 	* [Cache Bridges](modules/cache.md)
-* Errata and Notes
-	* [Behaviour Schemas](extras/schemas.md)
+* Notes
+	* [Behaviour Schemas](notes/schemas.md)
 
 > Work in progress. Please let us know if you find any typos or issues within this documentation. You can email to [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com) or create PR for guide [repository](https://github.com/spiral/guide).
