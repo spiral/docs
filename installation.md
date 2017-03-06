@@ -4,7 +4,7 @@ Spiral Framework uses **Composer** to resolve dependencies and install required 
 ## Server Requiments
 Make sure that your server is configured with following PHP version and extensions:
 * PHP 7.0+
-* OpenSSL Extension (+mCrypt extension for current version of defuse/php-encryption)
+* OpenSSL Extension
 * MbString Extension
 * Tokenizer Extension
 * PDO Extension with desired database drivers
@@ -34,7 +34,7 @@ Default spiral application and framework core utilize [dotenv package](https://g
 
 > Enviroment file `.env` will be automatically created and pre-configured as moment of application installation, however in a future you have to manage file creation manually (you can simply copy or rename `.env.sample` and later run `spiral app:key` to ensure that unique encryption key were set).
 
-**Always make sure that you have .env file in your root directory (or create it using `cp .env.sample .env`).**
+You are able to declare your own enviroment settings without dotenv extension, follow [this link](/application/environment.md) for more instructions.
 
 ## Configuration
 Your application confuration files are located in `app/config` directory, you can alter it's values to mount additional extensions or change some of application workflow.
@@ -67,3 +67,5 @@ return [
 If you wish to make your configuration be dependend on enviroment settings, simply use function `env(key, default)`.
 
 > Attention, your configuration files will be cached relatively to current enviroment, you should not inlude any code which does not depend of `env` values!
+
+Check `ConfiguratorInterface` and `ConfigFactory` in order to implement additional config loading methods (i.e. yaml).

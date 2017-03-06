@@ -14,7 +14,7 @@
 * Application
 	* [Directory Structure](application/directories.md) 
 	* [Startup Flow](application/startup.md)
-	* [Controllers and Cores](application/cores.md)
+	* [Controllers and Cores](application/controllers.md)
 	* [Services and Models](application/models.md)
 	* [View Templates](application/views.md)
 	* [Database Models](application/database.md)
@@ -30,15 +30,15 @@
 	* [Http Errors](http/errors.md)
 	* [Request Models](http/models.md)
 * Session
-	* Initiating Session
-	* Working with Session
+	* [Initiating Session](session/overview.md)
+	* [Working with Session](session/usage.md)
 * Console Dispatcher
    	* [Overview](console/commands.md)
    	* [Creating Commands](console/scaffolding.md)
 * Debug and Profiling
-	* Logging
- 	* Profiler
-	* [Error Handling](application/errors.md)
+	* [Logging](debug/logging.md)
+ 	* [Profiling](debug/profiling.md)
+	* [Error Handling](debug/errors.md)
 * Common Components
    	* [Files](components/files.md)
    	* [Encryption](components/encrypter.md)
@@ -48,16 +48,16 @@
    	* [Validation](components/validation.md)
    	* [Pagination](components/pagination.md)
 * Internalization
-   	* Overview
-   	* Indexation
-   	* Usage in Views
-   	* Usage in Models
-   	* Usage in Controllers
+   	* [Overview](i18n/overview.md)
+   	* [Indexation](i18n/indexation.md)
+   	* [Usage in Views](i18n/views.md)
+   	* [Usage in Models](i18n/models.md)
+   	* [Usage in Controllers](i18n/controllers.md)
 * Views and Engines
-	* Overview
-	* Twig Templates
-	* Native Templates
-	* View Processors
+	* [Overview](views/overview.md)
+	* [Twig Templates](views/twig.md)
+	* [Native Templates](views/native.md)
+	* [View Processors](views/processors.md)
 * Stempler Views
 	* [Basic Usage](stempler/basics.md)
  	* [Extended Usage (widgets tags, tips'n'tricks)](stempler/expert.md)
@@ -69,31 +69,32 @@
 	* [Schema Declaration](database/declaration.md)
 	* [Migrations](database/migrations.md)
 * Static Analysis
-	* Looking for Classes
-	* Looking for method calls 
+	* [Looking for Classes](tokenizer/classes.md)
+	* [Looking for method calls](tokenizer/invocations.md)
 * ORM Engine
-	* Overview 
-	* Record and RecordEntity
-	* Sources and Selectors
-	* Relationships 
-	* Eager loading and Entity map
-	* ODM Bridge 	
+	* [Overview](orm/ovewrview.md)
+	* [Record and RecordEntity](orm/entities.md)
+	* [Transactions and Unit-of-Work](orm/transactions.md)
+	* [Sources and Selectors](orm/selectors.md)
+	* [Relationships](orm/relationships.md)
+	* [Eager loading and Entity map](orm/loading.md)
+	* [ODM Bridge](orm/odm-bridge.md)
 * ODM Engine
-	* Documents and Databases
-	* Sources and Selectors
-	* Compositions and Aggregations
-	* Inheritance
+	* [Documents and Databases](odm/ovewview.md)
+	* [Sources and Selectors](orm/selectors.md)
+	* [Compositions and Aggregations](odm/oop.md)
+	* [Inheritance](odm/inheritance.md)
 * Storage Manager
   	* [Buckets and Objects](storage/overview.md)
    	* [Storage Servers](storage/servers.md)
 * External Modules
-	* Toolkit
-	* Authorization
-	* Scaffolder
-	* IDE helper
-	* **Vault Core**
-	* Cache Bridges
+	* [Toolkit](modules/toolkit.md)
+	* [Authorization](modules/auth.md)
+	* [Scaffolder](modules/scaffolder.md)
+	* [IDE helper](modules/ide-helper.md)
+	* [**Vault Core**](modules/vault.md)
+	* [Cache Bridges](modules/cache.md)
 * Errata and Notes
-	* [Schemas](extras/schemas.md)
+	* [Behaviour Schemas](extras/schemas.md)
 
 > Work in progress. Please let us know if you find any typos or issues within this documentation. You can email to [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com) or create PR for guide [repository](https://github.com/spiral/guide).
