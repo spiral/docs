@@ -7,12 +7,13 @@
 	* [License](license.md)  	
 * Framework
    * [Container, Factory, DI](framework/container.md)
+   * [Container Shortcuts](framework/shortcuts.md)
    * [Bootloaders](framework/bootloaders.md)
    * [Shared Memory](framework/memory.md)
    * [Configs Objects](framework/configs.md)
    * [Make Module](framework/modules.md)
 * Application
-	* [Directory Structure](application/directories.md) 
+	* [Directory Structure](application/directories.md)
 	* [Startup Flow](application/startup.md)
 	* [Controllers and Cores](application/controllers.md)
 	* [Services and Models](application/models.md)
