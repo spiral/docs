@@ -10,7 +10,7 @@
    * [Bootloaders](framework/bootloaders.md)
    * [Shared Memory](framework/memory.md)
    * [Configs Objects](framework/configs.md)
-   * [Making Modules](framework/modules.md)
+   * [Make Module](framework/modules.md)
 * Application
 	* [Directory Structure](application/directories.md) 
 	* [Startup Flow](application/startup.md)
@@ -19,7 +19,7 @@
 	* [View Templates](application/views.md)
 	* [Database Models](application/database.md)
 	* [Environment](application/environment.md)
-	* [Testing](application/testing.md)
+	* [Tests](application/testing.md)
 * Http Dispatcher
 	* [PSR-7 Flow](http/flow.md)
 	* [Request and Input data](http/input.md)
@@ -29,6 +29,7 @@
 	* [Cookies](http/cookies.md)
 	* [Http Errors](http/errors.md)
 	* [Request Models](http/models.md)
+	* [RESTful Core](http/restful.md)
 * Session
 	* [Initiating Session](session/overview.md)
 	* [Working with Session](session/usage.md)
@@ -43,8 +44,8 @@
    	* [Files](components/files.md)
    	* [Encryption](components/encrypter.md)
    	* [DataEntity model](components/data-entity.md)
-   	* [Security](components/security.md)
-   	* [Reactor](components/reactor.md)
+   	* [Security / RBAC](components/security.md)
+   	* [Code Generation](components/reactor.md)
    	* [Validation](components/validation.md)
    	* [Pagination](components/pagination.md)
 * Internalization
@@ -70,7 +71,7 @@
 	* [Migrations](database/migrations.md)
 * Static Analysis/Tokenizer
 	* [Looking for Classes](tokenizer/classes.md)
-	* [Looking for method calls](tokenizer/invocations.md)
+	* [Looking for Invocations](tokenizer/invocations.md)
 	* [PHP Code Isolation](tokenizer/isolation.md)
 * ORM Engine
 	* [Overview](orm/ovewrview.md)
@@ -79,8 +80,9 @@
 	* [Sources and Selectors](orm/selectors.md)
 	* [Relationships](orm/relationships.md)
 	* [Eager loading and Entity map](orm/loading.md)
+	* [Relations to Interfaces](orm/late-binding.md)
 	* [ODM Bridge](orm/odm-bridge.md)
-	* [Recursive Relations](extras/recursive.md)
+	* [Recursive Relations](orm/recursive.md)
 * ODM Engine
 	* [Documents and Databases](odm/ovewview.md)
 	* [Sources and Selectors](orm/selectors.md)
@@ -89,12 +91,13 @@
 * Storage Manager
   	* [Buckets and Objects](storage/overview.md)
    	* [Storage Servers](storage/servers.md)
+   	* [Uploading Files](storage/uploading.md)
 * External Modules
 	* [Toolkit](modules/toolkit.md)
 	* [Authorization](modules/auth.md)
 	* [Scaffolder](modules/scaffolder.md)
 	* [IDE helper](modules/ide-helper.md)
-	* [**Vault Core**](modules/vault.md)
+	* [Vault Core](modules/vault.md)
 	* [Cache Bridges](modules/cache.md)
 * Notes
 	* [Behaviour Schemas](notes/schemas.md)
