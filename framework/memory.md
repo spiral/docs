@@ -8,7 +8,7 @@ orm and odm schema, loadmap, console commands and tokenizer cache; it can also b
 So to simply state the purpose of the `HippocampusInterface` let's say it's very expensive to store information in, and very quick to retrieve it back.
 
 ```php
-interface HippocampusInterface
+interface MemoryInterface
 {
     /**
      * Read data from long memory cache. Must return exacts same value as saved or null.
@@ -26,16 +26,7 @@ interface HippocampusInterface
      * @param string|array $data
      * @param string       $location Specific memory location.
      */
-    public function saveData($section, $data, $location = null);
-
-    /**
-     * Get all memory sections belongs to given memory location (default location to be used if
-     * none specified).
-     *
-     * @param string $location
-     * @return array
-     */
-    public function getSections($location = null);
+    public function saveData($section, $data, $locatio);
 }
 ```
 
@@ -110,6 +101,7 @@ public function doSomething()
 You can implement your own version of `HippocampusInterface` using APC, XCache or even Memcache. 
 
 ## Embedding Memory into Components
-Before you will embed `HippocampusInterface` into your component or service:
-* Do not expect that stored data will always be in memory, it might dissapear at any moment.
+Before you will embed `MemoryInterface` into your component or service:
+* Always use OpCache
 * Do not store any data related to user request, action or information. Memory is only for logic caching
+* Assume memory can dissapear at any moment
