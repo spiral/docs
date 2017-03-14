@@ -1,5 +1,5 @@
 # Directory structure
-Spiral application does not require any specific structure or namespace for it's files until every application class can be loaded by composer, though spiral scaffolding and cache directories comes pre-configured. Default directory structure:
+Spiral application does not require any specific structure or namespace for it's files until every application class can be loaded by composer, though spiral scaffolding and cache directories comes pre-configured. Default structure:
 
 Directory                         | Description                    
 ---                               | ---       

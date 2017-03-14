@@ -27,7 +27,7 @@
 	* - [Request and Input data](http/input.md)
 	* - [Response and Response Wrapper](http/response.md)
 	* - [Middlewares](http/middlewares.md)
-	* - [Routing](http/routing.md)
+	* [Routing](http/routing.md)
 	* - [Cookies](http/cookies.md)
 	* - [Http Errors](http/errors.md)
 	* - [Request Validation](http/validation.md)
