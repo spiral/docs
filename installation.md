@@ -25,16 +25,14 @@ You can also configure your application at any moment, by simply executing:
 ./spiral configure
 ```
 
-Make sure that `spiral` has right execute permissions (`chmod +x spiral`, btw you can rename `spiral` and `spiral.cli` to any name you want).
+Make sure that `spiral` has right execute permissions (`chmod +x spiral`, also you can rename `spiral` and `spiral.cli` to any name you want).
 
 > You can run command(s) with increaced verbosity to get more details.
 
 ## Enviroment settings
-Default spiral application and framework core utilize [dotenv package](https://github.com/vlucas/phpdotenv) which provides you ability to enter your enviroment specific settings into `.env` file.
+Default spiral application and framework core utilize [dotenv package](https://github.com/vlucas/phpdotenv) which provides you ability to keep your enviroment settings in `.env` file, thought you can replace default implementation to avoid un-nesessary filesystem requests, follow [this link](/application/environment.md) for more instructions.
 
-> Enviroment file `.env` will be automatically created and pre-configured as moment of application installation, however in a future you have to manage file creation manually (you can simply copy or rename `.env.sample` and later run `spiral app:key` to ensure that unique encryption key were set).
-
-You are able to declare your own enviroment settings without dotenv extension, follow [this link](/application/environment.md) for more instructions.
+> Enviroment file `.env` will be automatically created and pre-configured as moment of application installation.
 
 ## Configuration
 Your application confuration files are located in `app/config` directory, you can alter it's values to mount additional extensions or change some of application workflow.
@@ -64,7 +62,7 @@ return [
 ];
 ```
 
-If you wish to make your configuration be dependend on enviroment settings, simply use function `env(key, default)`.
+If you wish to make your configuration be dependend on enviroment settings, use function `env(key, default)`.
 
 > Attention, your configuration files will be cached relatively to current enviroment, you should not inlude any code which does not depend of `env` values!
 
