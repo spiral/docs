@@ -20,7 +20,7 @@ public function indexAction(ConfiguratorInterface $configurator)
 ```
 
 ## ConfigObject
-In order to properly represent configuration in container create class extending `InjectableConfig`:
+In order to properly represent configuration in container create class extends `InjectableConfig`:
 
 ```php
 class MyConfig extends InjectableConfig
