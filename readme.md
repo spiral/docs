@@ -8,7 +8,7 @@
 * Framework
     * - [Container, Factory, DI](framework/container.md)
     * - [Components and IoC Scope](framework/components.md)
-    * - [Container Shortcuts](framework/shortcuts.md)
+    * - [Service Locator Shortcuts](framework/shortcuts.md)
     * - [Bootloaders](framework/bootloaders.md)
     * - [Shared Memory](framework/memory.md)
     * - [Configs Objects](framework/configs.md)
