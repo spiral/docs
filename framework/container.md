@@ -1,7 +1,16 @@
 # Container, Factory, DI
-Spiral framework interfaces and components are mostly (but not entirelly) build around constructor, method injections and universal factories, however to provide you better development environment (and, in some cases, for performance reasons) you are able to use functionality of Service Locator or Container. Spiral utilizes [Interop/Container](https://github.com/container-interop/container-interop) agreement for that.
 
-> Framework internally joins all tree interfaces together: ContainerInterface, FactoryInterface and ResolverInterface (resolves arguments for given method/constructor/closure reflection, see below). However, you are still recommended to request each of this interfaces separatelly if you can.
+
+
+
+
+
+
+
+
+Spiral framework interfaces and components are mostly (but not entirely) build around constructor, method injections and universal factories.
+ 
+ In order to provide you better development environment (and, in some cases, for performance reasons) you are also able to use Service Locator functions. Spiral utilizes [Interop/Container](https://github.com/container-interop/container-interop) agreement for that.
 
 ## Container (Service Locator)
 Classic container example can be explained using following code:
@@ -28,8 +37,10 @@ public function indexAction(ViewsInterface $views)
 
 You can read about how to make container bindings and bootload your application [here](/framework/bootloaders.md).
 
+
+
 ## Shared/Global container
-Framework components and bundle can work using only given dependency injections (however some functionality like shared loggers, easy pagination will be disabled), but in some cases it's easier to construct your application when you have one global instance of container for your enviroment. Such container is automatically set at moment of core initialization and can be used in your code (for example in views) using such options:
+Framework components and bundles can work using only dependency injections (however some functionality like shared loggers, easy pagination will be disabled), but in some cases it's easier to construct your application when you have one global instance of container for your environment. Such container only available when your application receives incoming request in order to avoid collision with other applications in a same runtime process.
 
 ```php
 \App::sharedContainer()->get('views')->render(...);
@@ -38,9 +49,7 @@ Framework components and bundle can work using only given dependency injections 
 spiral('views')->render(...);
 ```
 
-> In default application flow shared container are identical to container which can be requested by interface using DI. If you can use DI istead of statically accessed instance - do that.
-
-You can extend your classes from `Spiral\Core\Component` which will automatically define `container()` method capable of automatic routing container request between local (object specific) and global (shared/static) containers.
+You can extend your classes from `Spiral\Core\Component` which will automatically define `iocContainer()` method capable of automatic routing container request between local (object specific) and global (shared/static) containers.
 
 ## Default bindings (shared components)
 Your application comes pre-configured with some commonly used bingings which are set in framework and application bootloaders.

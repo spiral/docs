@@ -19,5 +19,5 @@ If you feel like some "sugar" functionality (like shared bindings, constructor s
 
 > If you found any issue which is better to be covered in documentation please open related issue. Since i'm not native english speaker feel free to create pull requests for any typo as well.
 
-## Critial/Secutiry Issues
+## Critial/Security Issues
 If you found something which should't be there or bug which opens a security hole please let me know immediately by email [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com)
