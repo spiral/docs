@@ -14,7 +14,7 @@
     * - [Configs Objects](framework/configs.md)
     * - [Modules](framework/modules.md)
 * Application
-	* - [Directory Structure](application/directories.md)
+	* [Directory Structure](application/directories.md)
 	* - [Startup Flow](application/startup.md)
 	* - [Controllers and Cores](application/controllers.md)
 	* - [Services](application/services.md)
