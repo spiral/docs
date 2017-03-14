@@ -1,8 +1,8 @@
 # Injectable Configs
-Spiral framework components do not call configuration files directly, instead they are requesting dependency injection for component specific configuration decorator. Default framework bundle provides ability to automatically route and populate such decorators using contextual injections.
+All framework components talk to config files thogh set of Config value objects. Framework bundle provides ability to automatically route and populate such objects using contextual injections by `ConfigFactory`.
 
 ## Create configuration
-In some cases you might want to create configuration for your component, service or module. First step will be to locate php file with needed confugration in app/config, let's name this file "my-config.php":
+To create new config object, place file into (sub-dirs are allowed) in app/config, example "my-config.php":
 
 ```php
 return [
@@ -10,7 +10,7 @@ return [
 ];
 ```
 
-You can now get access to your configuration by requesting ConfiguratorInterface in your contructor or method injections:
+Config data can now be read using ConfiguratorInterface:
 
 ```php
 public function indexAction(ConfiguratorInterface $configurator)
@@ -19,24 +19,16 @@ public function indexAction(ConfiguratorInterface $configurator)
 }
 ```
 
-This method might work in some cases, however spiral ships with more convinient way to work with config files.
-
-## Injectable Configs
-In many cases presenting your configuration files using specific class can give you more benefits (for example improve testability), let's try to create such implementation:
+## ConfigObject
+In order to properly represent configuration in container create class extending `InjectableConfig`:
 
 ```php
 class MyConfig extends InjectableConfig
 {
-    /**
-     * This constant will tell Configurator which config section we are going to decorate.
-     */
+    //Tells what config file use to hydrate by default
     const CONFIG = 'my-config';
 
-    /**
-     * We only need this property to remember needed structure.
-     *
-     * @var array
-     */
+    //Default config values (docs) if any
     protected $config = [
         'option' => null
     ];
@@ -44,14 +36,14 @@ class MyConfig extends InjectableConfig
     /**
      * @return string
      */
-    public function getOption()
+    public function getOption(): string
     {
         return $this->config['option'];
     }
 }
 ```
 
-Now you can simply request this class as dependency in your code:
+Config object can be used immediately as injection:
 
 ```php
 public function indexAction(MyConfig $config, ConfiguratorInterface $configurator)
@@ -61,7 +53,7 @@ public function indexAction(MyConfig $config, ConfiguratorInterface $configurato
 }
 ```
 
-> Representing config as class can give other benefits, for example we can update our components and handle legacy config values in this class, not inside our component.
+Config objects can be used to properly handle legacy configuration formats:
 
 ```php
 public function getOption()
@@ -75,4 +67,4 @@ public function getOption()
 }
 ```
 
-> There is many configs across spiral which you can use in your code, for example HttpConfig. Since Configurator will cache already loaded decorators in memory there no much performance drop on requesting config dependency in multiple places. And yes, you can bind config in container, extend config class, resolve instance using factory or bootloader, convert to singleton and do other crazy things.
+> All created configs are cached in `ConfigFactory`, use `flushCache()` to reset such cache.

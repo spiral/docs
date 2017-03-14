@@ -11,7 +11,7 @@
     * - [Service Locator Shortcuts](framework/shortcuts.md)
     * - [Bootloaders](framework/bootloaders.md)
     * - [Shared Memory](framework/memory.md)
-    * - [Configs Objects](framework/configs.md)
+    * [Configs Objects](framework/configs.md)
     * - [Modules](framework/modules.md)
 * Application
 	* [Directory Structure](application/directories.md)
@@ -31,7 +31,6 @@
 	* [Cookies](http/cookies.md)
 	* - [Http Errors](http/errors.md)
 	* - [Request Validation](http/validation.md)
-	* - [RESTful Core](http/restful.md)
 * Session
 	* - [Overview](session/overview.md)
 	* - [Working with Session](session/usage.md)
