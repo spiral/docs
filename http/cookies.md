@@ -8,7 +8,7 @@ middleware invoke (request, response, next)
   request = request with decoded cookies
   container share queue
       response = next (request, response)
-      response = response with cookies from queue with encrypting
+      response = response with encrypted cookies from queue
   container release queue
    
 return response 
