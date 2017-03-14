@@ -53,7 +53,7 @@ dump($this->input->cookies);
 ### Cookie protection methods
 * HttpConfig::COOKIE_UNPROTECTED - all cookie values sent in raw mode
 * HttpConfig::COOKIE_ENCRYPT - value passed though EncrypterInterface
-* HttpConfig::COOKIE_HMAC - sings cookie values using `hash_hmac` (sha256) (EncrypterInterface key [~under consideration])
+* HttpConfig::COOKIE_HMAC - sings cookie values using `hash_hmac` (sha256) (EncrypterInterface key [~?])
 
 > When cookie manager meets value which can not be decoded it will replace it with null.
 
