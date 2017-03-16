@@ -1,11 +1,13 @@
 # Application Memory
-One of the notable spiral components which deserves its own section is the application memory component or `HippocampusInterface`. The memory interface is responsible
-for storing component cache information into "permanent" application storage. The default spiral implementation will generate php files in [runtime directory](/application/directories.md) to store provided data.
+Spiral defines interface `MemoryInterface` to application shared memory. Default implementation use generated php files and relies on OpCache.
 
-The general idea of memory is to speed up application bootstrapping and move some runtime operations into the backgroud. The memory component is used to store the configuration cache,
-orm and odm schema, loadmap, console commands and tokenizer cache; it can also be used to cache compiled routes and etc. Application memory is very similar to the cache component however it must never be used to store any data related to a client request.
+> See [runtime directory](/application/directories.md).
 
-So to simply state the purpose of the `HippocampusInterface` let's say it's very expensive to store information in, and very quick to retrieve it back.
+The general idea of memory is to speed up an application by caching executing of some functionality. 
+The memory component is used to store the configuration cache, ORM and ODM schemas, loadmap (see Loader component), console commands and tokenizer cache; it can also be used to cache compiled routes and etc.
+ 
+ > Application memory must never be used to store users data.
+  
 
 ```php
 interface MemoryInterface
@@ -13,25 +15,24 @@ interface MemoryInterface
     /**
      * Read data from long memory cache. Must return exacts same value as saved or null.
      *
-     * @param string $section  Non case sensitive.
-     * @param string $location Specific memory location.
+     * @param string $section Non case sensitive.
+     *
      * @return string|array|null
      */
-    public function loadData($section, $location = null);
+    public function loadData(string $section);
 
     /**
      * Put data to long memory cache. No inner references or closures are allowed.
      *
-     * @param string       $section  Non case sensitive.
+     * @param string       $section Non case sensitive.
      * @param string|array $data
-     * @param string       $location Specific memory location.
      */
-    public function saveData($section, $data, $locatio);
+    public function saveData(string $section, $data);
 }
 ```
 
-## Memory usage example
-Let's view an example of a service which needs to index available classes and generate set of operations based on it:
+## Practical Example
+Let's view an example of a service used to index available classes and generate set of operations based on it:
 
 ```php
 abstract class Operation 
@@ -52,15 +53,16 @@ class OperationService
     /**
      * OperationService constructor.
      *
-     * @param HippocampusInterface  $memory
-     * @param ClassLocatorInterface $locator
+     * @param MemoryInterface  $memory
+     * @param ClassesInterface $classes
      */
-    public function __construct(HippocampusInterface $memory, ClassLocatorInterface $locator)
+    public function __construct(MemoryInterface $memory, ClassesInterface $classes)
     {
         $this->operations = $memory->loadData('operations');
 
         if (is_null($this->operations)) {
-            $this->operations = $this->locateOperations($locator);
+            //This is slow operation
+            $this->operations = $this->locateOperations($classes);
         }
 
         //We now can store data into long time memory
@@ -77,19 +79,19 @@ class OperationService
     }
 
     /**
-     * @param ClassLocatorInterface $locator
+     * @param ClassesInterface $locator
      * @return array
      */
-    protected function locateOperations(ClassLocatorInterface $locator)
+    protected function locateOperations(ClassesInterface $classes)
     {
         //Generate list of available operations via scanning every available class
     }
 }
 ```
 
-> You can only store arrays and scalar values in long term memory.
+> You can store any `var_export`able value in memory.
 
-`HippocampusInterface` is implemented in spiral bundle using `Memory` class, which lets you access it's functions using short 'memory' binding in your services or controllers.
+`MemoryInterface` is implemented in spiral bundle by `Memory` class, which lets you access it's functions using shortcut 'memory'.
 
 ```php
 public function doSomething()
@@ -98,10 +100,9 @@ public function doSomething()
 }
 ```
 
-You can implement your own version of `HippocampusInterface` using APC, XCache or even Memcache. 
+You can implement your own version of `MemoryInterface` using APC, XCache or even Memcache. 
 
-## Embedding Memory into Components
+## Memory Rules
 Before you will embed `MemoryInterface` into your component or service:
-* Always use OpCache
 * Do not store any data related to user request, action or information. Memory is only for logic caching
-* Assume memory can dissapear at any moment
+* Assume memory can disappear at any moment

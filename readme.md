@@ -10,7 +10,7 @@
     * - [Components and IoC Scope](framework/components.md)
     * - [Service Locator Shortcuts](framework/shortcuts.md)
     * - [Bootloaders](framework/bootloaders.md)
-    * - [Shared Memory](framework/memory.md)
+    * [Shared Memory](framework/memory.md)
     * [Configs Objects](framework/configs.md)
     * - [Modules](framework/modules.md)
 * Application
@@ -94,7 +94,7 @@
 * Storage Manager
   	* - [Overview](storage/overview.md)
   	* - [Buckets and Servers](storage/entities.md)
-   	* - [Available Servers](storage/servers.md)
+   	* - [Server Configuration](storage/servers.md)
    	* - [Uploading Files](storage/uploading.md)
 * External Modules
 	* - [Authorization](modules/auth.md)
