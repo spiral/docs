@@ -44,7 +44,7 @@
 	* - [Error Handling](debug/errors.md)
 * Common Components
    	* - [Files](components/files.md)
-   	* - [Encryption](components/encrypter.md)
+   	* [Encryption](components/encrypter.md)
    	* - [DataEntity Model](components/data-entity.md)
    	* - [Security/RBAC](components/security.md)
    	* - [Code Generation](components/reactor.md)
