@@ -8,7 +8,7 @@
 * Framework
     * - [Container, Factory, DI](framework/container.md)
     * - [Components and IoC Scope](framework/components.md)
-    * - [Service Locator Shortcuts](framework/shortcuts.md)
+    * [ServiceLocator Shortcuts](framework/shortcuts.md)
     * - [Bootloaders](framework/bootloaders.md)
     * [Shared Memory](framework/memory.md)
     * [Configs Objects](framework/configs.md)
@@ -103,7 +103,3 @@
 	* - [Scaffolder](modules/scaffolder.md)
 	* - [IDE helper](modules/ide-helper.md)
 	* - [Cache Bridges](modules/cache.md)
-* Notes
-	* - [Behaviour Schemas](notes/schemas.md)
-
-> Work in progress. Please let us know if you find any typos or issues within this documentation. You can email to [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com) or create PR for guide [repository](https://github.com/spiral/guide).
