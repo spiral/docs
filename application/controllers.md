@@ -178,7 +178,7 @@ Since route target will be automatically resolved using factory and DI you can r
 ```php
 class Action extends Service
 {
-    //By default routes treat thier endpoints as PSR-7 compatible
+    //By default routes treat thier endpoints as PSR-7 compatible;
     //controllers are exception from this rule
     public function __invoke($request, $response)
     {
