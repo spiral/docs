@@ -287,4 +287,4 @@ protected function indexAction()
 }
 ```
 
-> Files are based on `Symfony/Finder`, you can use in your code directly as well.
+> Component is based on `Symfony/Finder`, you can use in your code directly as well.
