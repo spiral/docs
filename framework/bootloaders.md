@@ -1,10 +1,7 @@
 # Bootloaders
-In many cases, when you would like to move or split your code from application files, bootloader will becomed required.
+Bootloader classes responsible for pre-initialization on your application parts, configure proper container bindings and environment initialization (i.e. http routes). In many cases bootloaders will be used to represent 3rd party applications.
 
-> Make sure you read about [container and di](/framework/container.md).
-
-## What is bootloader
-Bootloader is special class which used to declare needed container bindings and factory methods to make your component operate well. On other hand you can use bootloader to exectute some code at moment when your environment is loading.
+> Make sure you read about [Container and DI](/framework/container.md).
 
 ## Booting bindings
 Let's try to imagine situation when your code provides set of interfaces and default implementation for them. To make sure that your interfaces work in code you have to configure container first, this can be done in App bootstrap method:
