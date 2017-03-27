@@ -5,12 +5,15 @@ Feel free to contribute to framework or components development. Please make sure
 * KISS/SOLID (reasonably)
 * Your code must include tests
 
+> Make sure to create issue prior to working on potential BC functionality.
+
 ## Help Needed In
 If you want to help but don't know where to start:
 
 * Functionality/modularity proposals
 * Code quality feedback and proposals
-* TODOs, a lot of TODOs
+* TODOs
+* Usability improvements
 
 Feel free to propose any ideas related to architecture, guide (it's never full), adaptaptation or community.
 
