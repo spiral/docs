@@ -3,7 +3,7 @@ Feel free to contribute to framework or components development. Please make sure
 
 * PSR-2 and PSR-4
 * KISS/SOLID (reasonably)
-* Your code must include Unit tests
+* Your code must include tests
 
 ## Help Needed In
 If you want to help but don't know where to start:
