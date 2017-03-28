@@ -1,30 +1,18 @@
 # Custom Commands
-You can add your custom commands to your own application or even module by simply making sure that command class can be loaded and executing command `console:reload` to find and index your command.
+You can add any custom commands to your own application or even module by simply making sure that command class can be loaded (i.e. located in tokenizer directories) and then execute`console:reload` to find and index your command.
 
-To generate blank command we can execute `create:command name`, as result following class will be created for us (based on scaffolder settings):
+> You can also add command manually into your console config.
+
+To generate blank command execute `create:command name` (spiral/scaffolder module is required), as result following class will be created for us (based on scaffolder settings):
 
 ```php
 class SomeCommand extends Command
 {
-    /**
-     * @var string
-     */
-    protected $name = 'some';
+    const NAME        = 'some';
+    const DESCRIPTION = '';
 
-    /**
-     * @var string
-     */
-    protected $description = null;
-
-    /**
-     * @var array
-     */
-    protected $attributes = [];
-
-    /**
-     * @var array
-     */
-    protected $options = [];
+    const ATTRIBUTES = [];
+    const OPTIONS = [];
 
     /**
      * Perform command
@@ -35,16 +23,19 @@ class SomeCommand extends Command
 }
 ```
 
-You can put your command arguments and options into $arguments and $options proterties accordingly. Defintion format is identical to symfony console:
+> You still able to use native Symfony commands.
+
+Spiral `Command` class makes easy to define needed arguments and options:
 
 ```php
-protected $arguments = [
+const ARGUMENTS = [
     ['argument', InputArgument::REQUIRED, 'Argument name.']
 ];
     
-protected $options = [
+const OPTIONS = [
     ['option', 'c', InputOption::VALUE_NONE, 'Some option.']
 ];
 ```
 
 > Perform method are executed using Container and support method injection.
+

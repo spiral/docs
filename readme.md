@@ -36,8 +36,8 @@
 	* - [Working with Session](session/usage.md)
 * Console Dispatcher
    	* - [Overview](console/overview.md)
-   	* - [Embedded Commands](console/commands.md)
-   	* - [Create Command](console/scaffolding.md)
+   	* [Embedded Commands](console/commands.md)
+   	* [User Commands](console/scaffolding.md)
 * Debug and Profiling
 	* - [Logging](debug/logging.md)
  	* - [Profiling](debug/profiling.md)
