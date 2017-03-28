@@ -6,9 +6,7 @@ To better understand how spiral application started check file located in `webro
 /**
  * Spiral Framework
  *
- * @package   spiralFramework
  * @author    Anton Titov (Wolfy-J)
- * @copyright ©2009-2011
  */
 define('SPIRAL_INITIAL_TIME', microtime(true));
 
