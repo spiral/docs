@@ -193,7 +193,7 @@ class SampleClass
 }
 ```
 
-### Lazy Singletons
+## Lazy Singletons
 You can skip singleton bindings by implementing `SingletonInterface` in your class:
 
 ```php
@@ -217,7 +217,7 @@ protected function indexAction(MyService $service)
 
 > Most of spiral components has defined as singleton. You can always disable singleton behaviour by creating your custom factory method in bootloader.
 
-### Controllable/Contextual Injections
+## Controllable/Contextual Injections
 Spiral Container in addition to regular method injections provides ability to create more intelligent contextual injections. Such technique provide us ability to request multiple databases using following statement:
 
 ```php
