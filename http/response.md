@@ -1,5 +1,5 @@
 # Response and Responders
-As in case with active request scope you are able to get access to initial instance of response in your controllers in PSR7 fashion.
+As in case with active request scope, you are able to get access to current instance of response in your controllers in PSR7 fashion.
 
 ```php
 public function indexAction(ResponseInterface $response)
@@ -10,12 +10,10 @@ public function indexAction(ResponseInterface $response)
 }
 ```
 
-MiddlewarePipeline will automatically used this response to be passed back thought the chain of middlewares.
-
-> There is no short binding for initial request as it stated as immutable and can not overwriten, only returned.
+> There is no shortcut for active request as it stated as immutable and can not overwritten, only returned.
 
 ## Writing into response
-To simplify development spiral MiddlewarePipeline might not only accept `ResponseInterface` from it's endpoint (your controllers and action) but also string and arrays, meaning that we can return followin structures:
+To simplify development spiral MiddlewarePipeline might not only accept `ResponseInterface` from it's endpoint (your controllers and action) but also string and arrays, meaning that we can return following structures:
 
 ```php
 public function indexAction()
@@ -24,7 +22,7 @@ public function indexAction()
 }
 ```
 
-Pipeline can also understand array and JsonSerializable response which will be written as json structure:
+Pipeline can also understand array and `JsonSerializable` responses which will be written as json structure:
 
 ```php
 public function indexAction()
@@ -35,6 +33,8 @@ public function indexAction()
   ];
 }
 ```
+
+> In this case 200 will be used as response code.
 
 To better understand how this code work let's try to look to the following simplification (this is not actual code):
 
@@ -62,35 +62,33 @@ class MiddlewarePipeline
 }
 ```
 
-> Attention, at this moment you have use proposed PSR7 flow (withHeader) to modify response headers in your controllers, HeaderManager is coming. 
-
 ## Shortcuts
-In many cases you might want to skip talking to response in PSR7 fashion for a simple responses like redirects, html or sending file, this can be archived using instance of `Spiral\Http\Responses\Responder`:
+You can simplify response manipulation by using `Spiral\Http\Response\ResponseWrapper`:
 
 ```php
 public function indexAction(ResponseInterface $response)
 {
-    $responder = new Responder($response, $this->files); //Files are needed for attachments
-
+    $responder = new ResponseWrapper($response); 
+    
     return $responder->redirect('http://google.com');
 }
 ```
 
-Due `ResponseInterface` are clearly defined in container scope we can simply our code this way (responder will automatically get valid response dependency)
+Response wrapper can be requested as injection:
 
 ```php
-public function indexAction(Responder $responder)
+public function indexAction(ResponseWrapper $response)
 {
-    return $responder->redirect('http://google.com');
+    return $response->redirect('http://google.com');
 }
 ```
 
-We can even use short binding `responses` or `responder` for such purposes:
+Or via shortcut `response`:
 
 ```php
 public function indexAction()
 {
-    return $this->responses->redirect('http://google.com');
+    return $this->response->redirect('http://google.com');
 }
 ```
 
@@ -102,7 +100,7 @@ Let's view other methods than redirect available in Responder.
 ```php
 public function indexAction()
 {
-    return $this->responses->html('hello world');
+    return $this->response->html('hello world');
 }
 ```
 
@@ -110,7 +108,7 @@ public function indexAction()
 ```php
 public function indexAction()
 {
-    return $this->responses->json(
+    return $this->response->json(
         ['something' => 123],
         200
     );
@@ -121,7 +119,7 @@ public function indexAction()
 ```php
 public function indexAction()
 {
-    return $this->responses->attachment(__FILE__, 'name.php');
+    return $this->response->attachment(__FILE__, 'name.php');
 }
 ```
 
@@ -133,6 +131,9 @@ Responder methods are only returns modified instance of ResponseInterface, this 
 ```php
 public function indexAction()
 {
-    return $this->responses->attachment(__FILE__, 'name.php')->withHeader('Header', 'Value');
+    return $this->response->attachment(
+        __FILE__, 
+        'name.php'
+    )->withHeader('Header', 'Value');
 }
 ```

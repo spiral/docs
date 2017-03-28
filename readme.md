@@ -25,7 +25,7 @@
 * Http Dispatcher
 	* [PSR-7 Flow](http/flow.md)
 	* [Request and Input](http/input.md)
-	* - [Response and Response Wrapper](http/response.md)
+	* [Response and Response Wrapper](http/response.md)
 	* [Middlewares](http/middlewares.md)
 	* - [Routing](http/routing.md)
 	* [Cookies](http/cookies.md)
