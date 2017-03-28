@@ -29,7 +29,7 @@
 	* [Middlewares](http/middlewares.md)
 	* - [Routing](http/routing.md)
 	* [Cookies](http/cookies.md)
-	* - [Http Errors](http/errors.md)
+	* [Http Errors](http/errors.md)
 	* - [Request Validation](http/validation.md)
 * Session
 	* - [Overview](session/overview.md)
