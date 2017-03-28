@@ -105,4 +105,4 @@ $application = App::init([
 ], $environment);
 ```
 
-> This approach can be beneficial to test your application.
+> This approach can be beneficial to test your application. Feel free to implement your own `EnvironmentInterface` when needed.
