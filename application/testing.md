@@ -65,7 +65,7 @@ class IndexTest extends HttpTest
 ```
 
 ## Preparing environment
-If you wish to test your application on clean database in each of your test cases simply call needed setup commands in your setup method:
+If you wish to test your application on clean database in each of your test cases - call needed setup commands in your `setUp` method:
 
 ```php
 public function setUp()
@@ -83,7 +83,8 @@ public function setUp()
     
     //Scaffold databases
     $this->app->console->run('orm:schema', ['--alter' => true]);
+    $this->app->console->run('app:seed');
 }
 ```
 
-Such approach can be beneficial when you testing code in relation to real database, though it will drastically increase test suite duration. Consider switching to memory based databases (for example SQLite) in order to speed it up.
+Such approach can be beneficial when you testing code in relation to real database, though it will drastically increase test suite duration as price for data isolation. Consider switching to memory based databases (for example SQLite) in order to speed it up.
