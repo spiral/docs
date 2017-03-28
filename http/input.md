@@ -1,7 +1,7 @@
 # Request and Input
-As mentioned in [Http Flow] (flow.md) you can access incoming request in your controllers and services using "request" binding, or via `ServerRequestInterface` dependency. Such request is going to be resolved via IoC based on active request scope.
+As mentioned in [Http Flow](/http/flow.md) you can access incoming request in your controllers and services using "request" binding, or via `ServerRequestInterface` dependency. Such instance is only available inside `HttpDispatcher` perform method.
 
-Let's view as example (every listed request recieve method is idential to each other) in a context of application Controller:
+As result we are able to access user request in our controllers using 3 different approaches:
 
 ```php
 protected function indexAction(ServerRequestInterface $request)
@@ -12,7 +12,8 @@ protected function indexAction(ServerRequestInterface $request)
 }
 ```
 
-However, PSR7 implemetation is not very user friendly. Spiral provides framework provides specific service `InputManager` used to simplify reading request properties. InputManager can be retrieved using it's class name or short binding "input". Let's rerwite previous example using input manager:
+However, PSR7 implementation is not very user friendly. Spiral framework provides specific service `InputManager` (`InputInterface` contract) used to simplify reading request properties. 
+InputManager can be retrieved using it's class name or short binding "input". Let's rewrite previous example using input manager:
 
 ```php
 protected function indexAction(InputManager $input)
@@ -26,7 +27,8 @@ protected function indexAction(InputManager $input)
 ```
 
 ## Working with InputManager
-You can use input manager to access full array of input data or any specific field by it's name (dot notation is allowed for nested structures). Every input structure are represented using `InputBag` class implementation with set of common methods, let's review query accessing as example:
+You can use input manager to access full array of input data or any specific field by it's name (dot notation is allowed for nested structures). 
+Every input structure are represented using `InputBag` class with set of common methods, let's review query accessing as example:
 
 ```php
 /**
@@ -62,7 +64,7 @@ dump($input->query->fetch(['name', 'nameB'], true, null);
 dump($input->query('name'));
 ```
 
-> InputManager works with active request using container, meaning it's not immutable service and calling it from different scopes may procude different input, however input bags are immutable.
+> Please note that `InputManager` always refer to active user request, you are not able to use this class outside of http scope.
 
 ### Input headers
 We can use 'headers' input bad and `header` method in `InputManager` to access input headers. HeadersBag has few additions we have to mention:
@@ -130,12 +132,12 @@ using `UploadedFileInterface` which is part of PSR7.
 dump($this->input->files->all());
 dump($this->input->files('upload'));
 	
-//If you want to get finename pointing to file content you can use `uri` method, attention, this is not local filename
+//If you want to get finename pointing to file content you can use `localFilename` method, attention, this is not local filename
 //but unique stream uri which can work only inside spiral
-dump($input->files->uri('upload'));
+dump($input->files->localFilename('upload'));
 ```
 
-> Per PSR all files will be organized to valid ieharhy, which differs from default way php handle uploaded files, you can use dot notation to access nested file instances.
+> Per PSR all files will be organized to valid hierarchy, which differs from default way php handle uploaded files, you can use dot notation to access nested file instances.
 
 ### Simplified methods
 In addition to data methods and InputBags `InputManager` provides set of methods to read various properties of active request.

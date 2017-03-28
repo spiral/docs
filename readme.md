@@ -24,7 +24,7 @@
 	* [Tests](application/testing.md)
 * Http Dispatcher
 	* [PSR-7 Flow](http/flow.md)
-	* - [Request and Input data](http/input.md)
+	* [Request and Input](http/input.md)
 	* - [Response and Response Wrapper](http/response.md)
 	* - [Middlewares](http/middlewares.md)
 	* - [Routing](http/routing.md)
