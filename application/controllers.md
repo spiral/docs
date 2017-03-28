@@ -1,19 +1,16 @@
 # Controllers
-Spiral framework provides simple separation layer between http dispatcher and controller classes - `CoreInterface` which by default binded to your App class.
+Spiral framework provides simple separation layer between http routes and controller classes - `CoreInterface` which by default binded to your App class.
 
-> To read how to route http request to a specified container [go here](/http/routing.md).
+> To read how to route http request to a specified container [go here](/http/routing.md). Such approach provides you ability to call some of your controller actions outside of http scope.
 
 # Controller classes
-
 To better understand what controller is and how it's getting invoked by application let's take a look at two foundation interfaces first:
 
 ```php
 namespace Spiral\Core\HMVC;
+
 use Spiral\Core\Exceptions\ControllerException;
 
-/**
- * General application enterpoint class.
- */
 interface CoreInterface
 {
     /**
@@ -24,11 +21,22 @@ interface CoreInterface
      * @param string $action     Controller action, empty by default (controller will use default
      *                           action).
      * @param array  $parameters Action parameters (if any).
+     *
+     * @param array  $scope      Scope in a form if [alias=>binding] to be set by container before
+     *                           executing given action.
+     *
      * @return mixed
+     *
      * @throws ControllerException
+     *
      * @throws \Exception
      */
-    public function callAction($controller, $action = '', array $parameters = []);
+    public function callAction(
+        string $controller,
+        string $action = null,
+        array $parameters = [],
+        array $scope = []
+    );
 }
 ```
 
@@ -36,9 +44,6 @@ interface CoreInterface
 namespace Spiral\Core\HMVC;
 use Spiral\Core\Exceptions\ControllerException;
 
-/**
- * Class being treated as controller.
- */
 interface ControllerInterface
 {
     /**
@@ -46,17 +51,18 @@ interface ControllerInterface
      *
      * @param string $action     Action name, without postfixes and prefixes.
      * @param array  $parameters Method parameters.
+     *
      * @return mixed
+     *
      * @throws ControllerException
-     * @throws \Exception
+     *
+     * @throws \Throwable
      */
-    public function callAction($action = '', array $parameters = []);
+    public function callAction(string $action = null, array $parameters = []);
 }
 ```
 
-As you might notice there is two similar interfaces Core and Controller, Core interface is usually access point to your application (if you using proposed HMVC or MVC organization), this endpoint can be called from almost any part of your application and by default invoked by Http routes.
-
-Once callAction method of `CoreInterface` invoked implementation must route request to specific controller `callAction` method. On a practice it means that can call any controller in your application or module using following code:
+By default spiral expect you to call your controller actions using `CoreInterface` as proxy:
 
 ```php
 protected function indexAction(CoreInterface $core)
@@ -74,21 +80,23 @@ protected function indexAction()
 }
 ```
 
-When no controller under given name can be found, or action is invalid `ControllerException` will be throwed out.s.
+When no controller under given name can be found, or action is invalid `ControllerException` will be thrown out.
+
+> Read more about routing [here](/http/routing.md).
 
 ## Default Controller Implementation
-Even if you can easily implement your contoroller using interface only (controllers resolved using `FactoryInterface`, so you can use contructor injections) it might be easier to use pre-created controller implementation `Spiral\Core\Controller`. This implementation provides support for method injections and simplifies access to container bindings (every Controller is Service):
+Implement `Spiral\Core\Controller` by your controller to automatically enable shortcuts and methods injections your action methods:
 
 ```php
 protected function indexAction(StoreInterface $store)
 {
     dump($store);
+    
     return $this->app->callAction(SomeController::class, 'action', [...]);
 }
 ```
 
-As you might notice every controller action has specific postfix "Action", such string is required for default implementation so class
-can decide if requested action are allowed to be executed.
+As you might notice every controller action has specific postfix "Action", such string is required for default implementation so class can decide if requested action are allowed to be executed.
 
 Simpliest implementation of controller might look like:
 
@@ -102,84 +110,104 @@ class HomeController extends Controller
 }
 ```
 
-> When no action set controller will use it's default action, which is "index" (you can overwrite this value as values used for actions prefixes and postfixes, see Controller code). To customize default controller try overwriting callAction method or constructor (not aware of action to be called).
+> `indexAction` is treated as default action for controller.
 
-## "HMVC"
-Due every controller can be called without nesessary routing you can implement HMVC approach in your application like that:
+## HMVC Cores
+You are free to define your own implementation of CoreInterface in order to implement custom functionality for accessing your controllers and processing controller response.
+HttpDispatcher routes provide you ability to associate custom core with any of your routes:
 
 ```php
-protected function hvmcAction(OtherController $controller)
+class SecuredCore extends Component implements CoreInterface
 {
-    $other = $controller->callAction('action', [...]);
-    
-    //Or using core
-    $this->app->callAction(OtherController::class, 'action', [...]);
-}
-```
+    use GuardedTrait;
 
-> Spiral does not have specific implemetation of `View` but rather provides simplifier access to rendering engines, you can create missing models if you need them.
+    /**
+     * @var SecureConfig
+     */
+    private $config = null;
 
-Let's check how you can use one controller as gate to a sub controllers set, to do that we will need route first:
+    /**
+     * @var CoreInterface
+     */
+    protected $app = null;
 
-```php
-$http->addRoute(new Route('hmvc', 'account[/<nested>[/<action>[/<id>]]]', 'AccountController::run'));
-```
-
-In your AccountController:
-
-```php
-public function runAction($nested = null, $action = null, $id = null)
-{
-    switch($nested)
+    /**
+     * @param SecureConfig  $config
+     * @param CoreInterface $app User application.
+     */
+    public function __construct(SecureConfig $config, CoreInterface $app)
     {
-        case 'home':
-            $contoller = Account\HomeController::class;
-            break;
-        case 'settings':
-            $controller = Account\SettingsController::class;
-            break;
-        default: 
-            throw new ControllerException("Undefined account controller {$nested}");
+        $this->config = $config;
+        $this->app = $app;
     }
-    
-    //Some assertions
-    
-    return $this->app->callAction($controller, $action, compact('id'));
+
+    /**
+     * @return SecureConfig
+     */
+    public function getConfig(): SecureConfig
+    {
+        return $this->config;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function callAction(
+        string $controller,
+        string $action = null,
+        array $parameters = [],
+        array $scope = []
+    ) {
+        if (!$this->config->hasController($controller)) {
+            throw new ControllerException(
+                "Undefined controller '{$controller}'",
+                ControllerException::NOT_FOUND
+            );
+        }
+
+        $actionPermission = "{$this->config->guardNamespace()}.{$controller}";
+
+        if (!$this->getGuard()->allows($actionPermission, compact('action'))) {
+            throw new ControllerException(
+                "Unreachable controller '{$controller}'",
+                ControllerException::FORBIDDEN
+            );
+        }
+
+        //Delegate controller call to real application
+        return $this->app->callAction(
+            $this->config->controllerClass($controller),
+            $action,
+            $parameters,
+            $scope + [Vault::class => $this]
+        );
+    }
 }
 ```
 
-As result you can call controllers like:
+Given example will force using authorization for a called controller action. We can now associate such core with our route:
 
-```
-/account/settings/          => Account\SettingsController::indexAction
-/account/settings/save/     => Account\SettingsController::saveAction
-/account/home/addFriend/100 => Account\HomeController::addFriendAction($id = 100)
+
+```php
+$route = new ControllersRoute(
+    'default',                                  //Route name
+    'secured/[<controller>[/<action>[/<id>]]]', //Pattern [] braces define optional segment
+    'Controllers\Secured'                       //Namespace
+);
+
+$http->addRoute($route->withCore(SecuredCore::class));
 ```
 
 > There is no real limitation on how deep you can go.
 
 ## Other Approaches
-Spiral does not force you to any specific implementation of your application architecture, you can easily remove every controller and replace it with ADR, MVVM and other patterns since the only thing which links http layers to controllers is routes and `CoreInterface`:
+Be free to implement your own route/action architecture by implementing custom `CoreInterface` or `ControllerInterface` or skip them completely (ARD):
 
 ```php
-//Calling different actions of HomeController
-$route = new Route('home', '<action>.html', 'Controllers\HomeController::<action>');
-
-//Calling closures
-$route = new Route('test', 'test', function(){
-    return 'hello world'
-});
-```
-
-> You can read more about routing [here](/http/routing.md).
-
-Since route target will be automatically resolved using factory and DI you can replace your controller layer with, for example, Actions:
-
-```php
-class Action extends Service
+class MyAction extends Service
 {
     //By default routes treat thier endpoints as PSR-7 compatible;
-    //controllers are exception from this rule
+    //controllers are an exception from this rule
     public function __invoke($request, $response)
     {
         dump($this->request);
@@ -189,10 +217,10 @@ class Action extends Service
 ```
 
 ```php
-$http->addRoute(new Route('test', 'test', \Actions\Action::class));
+$http->addRoute(new Route('test', 'test', \Actions\MyAction::class));
 ```
 
-> You can implement method injections by creating additional method inside your action, for example perform (like in consle commands), by default route will send you ServerRequestInterface and ResponseInterface into your __invoke method.
+> You can also make your Actions more friendly by utilizing shortcuts and method injections:
 
 ```php
 abstract class Action extends Service
@@ -210,6 +238,20 @@ abstract class Action extends Service
             $reflection,
             compact('request', 'response')
         ));
+    }
+}
+```
+
+Now our actions might look like:
+
+```php
+class MyAction extends Acion
+{
+    //By default routes treat thier endpoints as PSR-7 compatible;
+    //controllers are an exception from this rule
+    public function perform($request)
+    {
+        return $this->view->render('welcome');
     }
 }
 ```

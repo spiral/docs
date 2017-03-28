@@ -16,7 +16,7 @@
 * Application
 	* [Directory Structure](application/directories.md)
 	* [Startup Flow](application/startup.md)
-	* - [Controllers and Cores](application/controllers.md)
+	* [Controllers and Cores](application/controllers.md)
 	* - [Services](application/services.md)
 	* - [View Templates](application/views.md)
 	* - [Database Models](application/database.md)
