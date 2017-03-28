@@ -48,7 +48,7 @@ abstract class BaseTest extends TestCase
 You can pass custom instance of `EnvironmentInterface` in order to define separate database credentials and values. 
 
 ## Testing Http Methods
-In addition to that, you can use `HttpTest` with ability to emulate user requests, cookies and sessions:
+Use `HttpTest` with ability to emulate user requests, cookies and sessions:
 
 ```php
 class IndexTest extends HttpTest
