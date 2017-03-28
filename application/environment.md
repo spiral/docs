@@ -39,6 +39,8 @@ You are free to access environment values in your configuration files and contro
 echo env('DATABASE_PASSWORD');
 ```
 
+> Please note, this function will ONLY work in IoC scope (i.e. inside your application).
+
 ## DotEnv configuration
 By default, your application relies on '.env' file located in root of your project:
 
