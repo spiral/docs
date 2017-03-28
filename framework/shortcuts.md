@@ -69,4 +69,17 @@ Binding/Alias   | Component
 router          | Spiral\Http\Routing\RouterInterface 
 route           | Spiral\Http\Routing\RouteInterface 
 
-> Shortcuts will work in a static IoC scope when no local container is available.
+> Shortcuts will work in a static IoC scope when no local container is available. Read more about scopes [here](components.md).
+
+Use proper IDE to get maximum from shortcuts:
+ 
+![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
+
+Consider shortcuts as temporary replacement for a proper class dependency or as a way to make some of application services available from outside:
+
+```php
+$app = MyBlogApp::init(...);
+foreach($app->postsService->getTodayPosts() as $post) {
+    echo $post->getTitle();
+}
+```

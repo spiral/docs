@@ -6,7 +6,7 @@
 	* [Contributing](contributing.md)
 	* [License](license.md)  	
 * Framework
-    * - [Container, Factory, DI](framework/container.md)
+    * [Container, Factory, DI](framework/container.md)
     * - [Components and IoC Scope](framework/components.md)
     * [ServiceLocator Shortcuts](framework/shortcuts.md)
     * [Bootloaders](framework/bootloaders.md)
@@ -36,7 +36,7 @@
 	* - [Working with Session](session/usage.md)
 * Console Dispatcher
    	* - [Overview](console/overview.md)
-   	* - [Embedded Comands](console/commands.md)
+   	* - [Embedded Commands](console/commands.md)
    	* - [Create Command](console/scaffolding.md)
 * Debug and Profiling
 	* - [Logging](debug/logging.md)
