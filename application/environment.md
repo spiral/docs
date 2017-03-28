@@ -85,6 +85,8 @@ MONGO_DB = spiral
 
 You can track file changes using `getID()` method of `EnvironmentInterface`, any '.env' change will generate new environment id.
 
+> Do not commit '.env' into your repository!
+
 ## Custom Environments
 If you consider '.env' approach slow or un-secure switch to pure _ENV based implementation:
  
