@@ -42,7 +42,7 @@ echo env('DATABASE_PASSWORD');
 > Please note, this function will ONLY work in IoC scope (i.e. inside your application).
 
 ## DotEnv configuration
-By default, your application relies on '.env' file located in root of your project:
+By default, your application relies on '.env' file located in a root directory of your project:
 
 ```env
 #This value does not used by application core, but you can route some config parameters based on this
