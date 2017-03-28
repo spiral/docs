@@ -12,7 +12,7 @@
     * [Bootloaders](framework/bootloaders.md)
     * [Shared Memory](framework/memory.md)
     * [Configs Objects](framework/configs.md)
-    * - [Modules](framework/modules.md)
+    * [Modules](framework/modules.md)
 * Application
 	* [Directory Structure](application/directories.md)
 	* - [Startup Flow](application/startup.md)
