@@ -41,7 +41,7 @@ protected function iocContainer()
 }
 ```
 
-## Scoping
+## Dependency Scoping
 In some cases (usually inside middlewares or HMVC cores) you might want to custom binding scope for some of your classes, use `replace`/`restore` methods of `ScoperInterface`/`ContainerInterface` to do that:
 
 ```php
