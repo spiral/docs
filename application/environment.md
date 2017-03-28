@@ -1,5 +1,5 @@
 # Application Environment
-Application life cycle will most likely require set of values to be provided outside of it's configuration files, for example database password, encryption key and etc.
+Application life cycle will most likely require set of values to be provided outside of it's configuration files, for example database password(s), encryption key and etc.
 
 In order to deliver such values to application use `EnvironmentInterface` contract:
 
