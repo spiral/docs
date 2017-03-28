@@ -49,3 +49,17 @@ protected function indexAction()
 ```
 
 > You can also define your own exception handler middleware or custom exception classes.
+
+## Custom Errors
+You can also automatically convert your domains into http errors by creating a middleware:
+
+```php
+public function __invoke(Request $request, Response $response, callable $next)
+{
+    try {
+        return $next($request, $response);
+    } catch (\DomainException $e) {
+        throw new ServerErrorException($e->getMessage());
+    }
+}
+```
