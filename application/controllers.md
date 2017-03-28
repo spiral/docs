@@ -1,7 +1,7 @@
 # Controllers
 Spiral framework provides simple separation layer between http routes and controller classes - `CoreInterface` which by default binded to your App class.
 
-> To read how to route http request to a specified container [go here](/http/routing.md). Such approach provides you ability to call some of your controller actions outside of http scope.
+> To read how to route http request to a specified controller [go here](/http/routing.md).
 
 # Controller classes
 To better understand what controller is and how it's getting invoked by application let's take a look at two foundation interfaces first:
@@ -82,10 +82,8 @@ protected function indexAction()
 
 When no controller under given name can be found, or action is invalid `ControllerException` will be thrown out.
 
-> Read more about routing [here](/http/routing.md).
-
 ## Default Controller Implementation
-Implement `Spiral\Core\Controller` by your controller to automatically enable shortcuts and methods injections your action methods:
+Implement `Spiral\Core\Controller` by your class to automatically enable shortcuts and methods injections in your action methods:
 
 ```php
 protected function indexAction(StoreInterface $store)
@@ -96,24 +94,12 @@ protected function indexAction(StoreInterface $store)
 }
 ```
 
-As you might notice every controller action has specific postfix "Action", such string is required for default implementation so class can decide if requested action are allowed to be executed.
-
-Simpliest implementation of controller might look like:
-
-```php
-class HomeController extends Controller
-{
-    protected function indexAction()
-    {
-        return 'hello world';
-    }
-}
-```
+As you might notice every controller action has specific postfix "Action", such string is required by default implementation so class can decide if requested action are allowed to be executed.
 
 > `indexAction` is treated as default action for controller.
 
 ## HMVC Cores
-You are free to define your own implementation of CoreInterface in order to implement custom functionality for accessing your controllers and processing controller response.
+You are free to define your own implementation of `CoreInterface` in order to implement custom functionality for accessing your controllers and processing controller response.
 HttpDispatcher routes provide you ability to associate custom core with any of your routes:
 
 ```php
@@ -185,8 +171,7 @@ class SecuredCore extends Component implements CoreInterface
 }
 ```
 
-Given example will force using authorization for a called controller action. We can now associate such core with our route:
-
+Given example will force user authorization for a every controller action. To associate such core with our route:
 
 ```php
 $route = new ControllersRoute(
@@ -241,8 +226,6 @@ abstract class Action extends Service
     }
 }
 ```
-
-Now our actions might look like:
 
 ```php
 class MyAction extends Acion
