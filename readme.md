@@ -20,7 +20,7 @@
 	* [Services](application/services.md)
 	* [View Templates](application/views.md)
 	* [Database Models](application/database.md)
-	* - [Environment](application/environment.md)
+	* [Environment](application/environment.md)
 	* - [Tests](application/testing.md)
 * Http Dispatcher
 	* - [PSR-7 Flow](http/flow.md)
