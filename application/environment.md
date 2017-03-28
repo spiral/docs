@@ -1,7 +1,7 @@
 # Application Environment
 Application life cycle will most likely require set of values to be provided outside of it's configuration files, for example database password(s), encryption key and etc.
 
-In order to deliver such values to application use `EnvironmentInterface` contract:
+In order to deliver such values use `EnvironmentInterface` contract:
 
 ```php
 interface EnvironmentInterface
