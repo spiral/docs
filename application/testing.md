@@ -1,5 +1,5 @@
 # Application Tests
-Testing your code is essential in order to develop reliable application. Besides classic unit tests for your services and/or controllers you are able to test your application as whole, in isolated environment.
+Testing your code is essential in order to develop reliable application. Besides classic unit tests for your services and/or controllers you are able to test your application as whole using isolated environment.
 
 ## BaseTest
 You can locate this file in `tests` director of your application, by default it configured to work with default `.env`. Test build in a way so your application will be constructed and destroyed completely for each test case:
