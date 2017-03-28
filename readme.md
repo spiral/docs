@@ -19,7 +19,7 @@
 	* [Controllers and Cores](application/controllers.md)
 	* [Services](application/services.md)
 	* [View Templates](application/views.md)
-	* - [Database Models](application/database.md)
+	* [Database Models](application/database.md)
 	* - [Environment](application/environment.md)
 	* - [Tests](application/testing.md)
 * Http Dispatcher
