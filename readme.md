@@ -65,16 +65,16 @@
 	* - [Basic Usage](stempler/basics.md)
  	* - [Extended Usage (widgets tags, tips'n'tricks)](stempler/expert.md)
    	* - [Dark Syntax](stempler/dark.md)
+* Static Analysis/Tokenizer
+    * - [Looking for Classes](tokenizer/classes.md)
+    * - [Looking for Invocations](tokenizer/invocations.md)
+    * - [PHP Code Isolation](tokenizer/isolation.md)
 * Database Layer
 	* - [Overview](database/overview.md)
 	* - [Query Builders](database/buidlers.md)
 	* - [Schema Introspection](database/introspection.md)
 	* - [Schema Declaration](database/declaration.md)
 	* - [Migrations](database/migrations.md)
-* Static Analysis/Tokenizer
-	* - [Looking for Classes](tokenizer/classes.md)
-	* - [Looking for Invocations](tokenizer/invocations.md)
-	* - [PHP Code Isolation](tokenizer/isolation.md)
 * ORM Engine
 	* - [Overview](orm/overview.md)
 	* - [Record and RecordEntity](orm/entities.md)

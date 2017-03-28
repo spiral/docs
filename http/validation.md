@@ -251,3 +251,5 @@ Fox example, if the request within a given schema returns any errors related to 
     ]
 ];
 ```
+
+## Nested Validations
