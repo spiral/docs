@@ -83,3 +83,20 @@ foreach($app->postsService->getTodayPosts() as $post) {
     echo $post->getTitle();
 }
 ```
+
+### SharedTrait
+You can enable shortcuts in any of your class by using `SharedTrait` which defines `__get` method. Such trait alaready used by Controllers, Commands and Services.
+
+```php
+use SharedTrait;
+
+public function indexAction(ViewsInterface $views)
+{
+    dump($this->views === $this->container->get('views'));
+    dump($this->views === $views);
+    
+    echo $this->views->render(...);
+}
+```
+
+> Attention, `SharedTrait` requires method `iocContainer()` to be defined. Extend `Componen` class in order to enable such method in your classes or define it manually.

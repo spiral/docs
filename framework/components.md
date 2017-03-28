@@ -1,6 +1,5 @@
-
-## Shared/Global container
-Framework components and bundles can work using only dependency injections (however some functionality like shared loggers, easy pagination will be disabled), but in some cases it's easier to construct your application when you have one global instance of container for your environment. Such container only available when your application receives incoming request in order to avoid collision with other applications in a same runtime process.
+# Shared/Global container
+In order to simplify access to container in your application and enable some of sugar functionality Spiral relays on global static instance of IoC container:
 
 ```php
 \App::sharedContainer()->get('views')->render(...);
@@ -9,54 +8,22 @@ Framework components and bundles can work using only dependency injections (howe
 spiral('views')->render(...);
 ```
 
-You can extend your classes from `Spiral\Core\Component` which will automatically define `iocContainer()` method capable of automatic routing container request between local (object specific) and global (shared/static) containers.
-
-## Scoping
-There is few scenarious when you might want to create some binding only for specific part of code. Such way used a lot inside `HttpDispatcher` and it's middlewares as it provides ability to isolate application request:
+Please note that such container is only available inside your application and usually initiated by following constructions:
 
 ```php
-$outerBinding = $this->container->replace(SomeClass::class, new SomeClassB());
-
+$scope = self::staticContainer($container);
 try {
-    //Every dependency of `SomeClass` will be resolved with SomeClassB
+    //Execute your application
 } finally {
-    //We can now restore original binding (if any)
-    $this->container->restore($outerBinding);
+    self::staticContainer($scope);
 }
 ```
 
-> Almost every framework components/class created using DI or factory, please **do not construct** framework classes directly in your application, use FactoryInterface/Container/DI instead (to prevent breaking changes in future and make your application more flexible).
+Following approach provides ability to minimize amount of static instances and allow multiple spiral applications co-exists in one session.
 
+> Shared container is widely used for support functionality such as loggers and shortcuts.
 
-
-
-
-### Short/Virtual Bindings (sugar)
-Following statement is possible in any of your service, controller or command which does have property 'container' (this classes already delcared constructor injector)
-
-```php
-public function indexAction()
-{
-    echo $this->container->get('views')->render(...);
-}
-```
-
-As alternative, framework provides special trait which can be used to bypass container property and access required binding directly using class `__get` method:
-
-```php
-//Already used by Command, Service and Controllers
-use SharedTrait;
-
-public function indexAction(ViewsInterface $views)
-{
-    dump($this->views === $this->container->get('views'));
-    dump($this->views === $views);
-    
-    echo $this->views->render(...);
-}
-```
-
-> Attention, `SharedTrait` only requires method `container()` to be defined. Most of spiral classes extends `Spiral\Core\Component` which provides ability to route container request to local container (property `container`) first and then to global/shared container.
+You can always get access to active container by extending `Component` in your code and utilizing function `iocContainer`:
 
 ```php
 protected function iocContainer()
@@ -74,10 +41,17 @@ protected function iocContainer()
 }
 ```
 
-> Try to make sure that every class which uses SharedTrait declares and sets `container` property so you can easily test it.
+> Note that some of spiral traits (i.e. LoggerTrait, PaginatorTrait, TranslatorTrait) require such method.
 
-Following methodic can work very well in combination with good IDE and provides very sufficient way to write or prototype your code:
+## Scoping
+In some cases (usually inside middlewares and HMVC cores) you might want to define IoC scope only one isolated part of your application, use `replace`/`restore` methods of `ScoperInterface`/`ContainerInterface` for that:
 
-![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
-
-At any moment in future, you can simply create needed property in your class and set it's value using dependency injection (see below).
+```php
+$outerBinding = $this->container->replace(SomeClass::class, new SomeClassB());
+try {
+    //Every dependency of `SomeClass` will be resolved with SomeClassB
+} finally {
+    //We can now restore original binding (if any)
+    $this->container->restore($outerBinding);
+}
+```
