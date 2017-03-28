@@ -64,7 +64,7 @@ class IndexTest extends HttpTest
 }
 ```
 
-## Preparing environment
+## Prepare Environment
 If you wish to test your application on clean database in each of your test cases - call needed setup commands in your `setUp` method:
 
 ```php
