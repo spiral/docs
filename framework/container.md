@@ -108,31 +108,6 @@ public function indexAction(MyClass $class, OtherClass $otherClass)
 }
 ```
 
-## Additional Container methods
-There is few additional methods in `Spiral\Core\ContainerInterface` you might consider using.
-
-### Check if Container has given binding
-To check if container has specified binding, let's use `has` method:
-
-```php
-dump($this->container->has(MyService::class));
-```
-
-### Check if Container has binded instance
-To check if container has binded instance (singleton) we can use `hasInstance` method.
-
-```php
-dump($this->container->hasInstance(MyService::class));
-```
-
-### Remove container binding
-If you want to remove existed container binding you can do it using `removeBinding` method, this will automatically destroy any class or singleton associated
-with such binding if no other references for class instance exists.
-
-```php
-$this->container->removeBinding(MyService::class);
-```
-
 ## Service Locator
 The basic example of container can be based around Service Locator invocations:
 
@@ -296,4 +271,29 @@ You can always bypass contextual injection using factories:
 
 ```php
 dump($factory->make(Name::class, ['name' => 'abc']));
+```
+
+## Additional Container methods
+There is few additional methods in `Spiral\Core\ContainerInterface` you might consider using.
+
+### Check if Container has given binding
+To check if container has specified binding, let's use `has` method:
+
+```php
+dump($this->container->has(MyService::class));
+```
+
+### Check if Container has binded instance
+To check if container has binded instance (singleton) we can use `hasInstance` method.
+
+```php
+dump($this->container->hasInstance(MyService::class));
+```
+
+### Remove container binding
+If you want to remove existed container binding you can do it using `removeBinding` method, this will automatically destroy any class or singleton associated
+with such binding if no other references for class instance exists.
+
+```php
+$this->container->removeBinding(MyService::class);
 ```
