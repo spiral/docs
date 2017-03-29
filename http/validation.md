@@ -1,32 +1,21 @@
 # Request Filters
-Request filters is a model designed specially to handle user request parameters and populate the target entity (for example ORM or ODM) or return request data using `getFields`, `getField` or `__get` methods. In other words, this model maps form values to model fields. RequestFilter can define it's own set of getters, setters, accessors and validations for fields. RequestFilter utilizes functionality of InputManager to populate it's data.
+In many cases you might want to validate user request before performing any action, you can do that by manually creating Validator instance in your controllers or dedicate such functionality to RequestFilters.
 
-> It may be best to read about [DataEntities](/components/entity.md), ORM, ODM and [Validations](/components/validation.md) first.
+> It may be best to read about [DataEntities](/components/data-entity.md) and [Validations](/components/validation.md) first.
 
 ## Scaffolding
-You can create a new `RequestFilter` by using the command `create:request user`. Generated class will look like:
+You can create a new `RequestFilter` by using the command `create:request user` (make sure spiral/scaffolder module is installed). Generated class will look like:
 
 ```php
 class UserRequest extends RequestFilter
 {
-    /**
-     * @var array
-     */
-    protected $schema = [];
-
-    /**
-     * @var array
-     */
-    protected $setters = [];
-
-    /**
-     * @var array
-     */
-    protected $validates = [];
+    const SCHEMA    = [];
+    const SETTERS   = [];
+    const VALIDATES = [];
 }
 ```
 
-In many cases you might want to pre-create request with a specific set of fields without manually entering them every time, scaffolder config provides you ability to define shortcust for field definitions:
+In many cases you might want to pre-create request with a specific set of fields without manually entering them every time, scaffolder config provides you ability to define shortcuts for field definitions:
 
 ```php
 'request'        => [
@@ -96,39 +85,25 @@ In many cases you might want to pre-create request with a specific set of fields
 ],
 ```
 
-Based on a such config we can now create more complex request using folling command: `spiral create:request sample -f image:image -f name:string -f test:int`
+Let's create new request: `spiral create:request sample -f image:image -f name:string -f test:int`
 
 Our generated class is going to look like:
 
 ```php
-/**
- * @property-read \Psr\Http\Message\UploadedFileInterface $image
- * @property-read string $name
- * @property-read int $test
- */
 class SampleRequest extends RequestFilter
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
+    const SCHEMA = [
         'image' => 'file:image',
         'name'  => 'data:name',
         'test'  => 'data:test'
     ];
 
-    /**
-     * @var array
-     */
-    protected $setters = [
+    const SETTERS = [
         'name' => 'strval',
         'test' => 'intval'
     ];
 
-    /**
-     * @var array
-     */
-    protected $validates = [
+    const VALIDATES = [
         'image' => [
             'image::uploaded',
             'image::valid'
@@ -159,29 +134,29 @@ public function createUser(SampleRequest $request)
 }
 ```
 
-As you can see, we declared method dependency for our request. This will automatically allow request access to InputManager and popuplate fields described in it's schema.
+Requests will be automatically created and populated with data received from request active in current IoC scope, we can define field/input mapping using our SCHEMA:
 
 ```php
-protected $schema = [
+const SCHEMA = [
     'image' => 'file:image',
     'name'  => 'data:name',
     'test'  => 'data:test'
 ];
 ```
 
-Schema definition will include the target field name, it's source and origin (client name) name specified using dot notation. We can easily switch our request to read the values from query:
+Schema definition will include the target field name, it's source and origin (client name) name can specified using dot notation. Let's switch request to read values from query string:
 
 ```php
-protected $schema = [
+const SCHEMA = [
     'name'  => 'query:name',
     'test'  => 'query:test'
 ];
 ```
 
-In addition, we can specify the origin name using dot notation.
+And demonstrate dot notation:
 
 ```php
-protected $schema = [
+const SCHEMA = [
     'name'    => 'query:user.name',  //user[status]
     'test'    => 'query:user.test'   //user[test]
 ];
@@ -217,8 +192,10 @@ You can use following sources for your request filters:
 * server:**origin**
 * attribute:**origin**
 
+> Read more about InputManager [here](/http/input.md).
+
 ## Getting request fields
-If you don't want to populate any entity you can get access to request fields directly using magic getters or `getFields` method.
+You can always access request values using DataEntity methods:
 
 ```php
 public function doSomething(SomeRequest $request)
@@ -234,11 +211,13 @@ public function doSomething(SomeRequest $request)
 }
 ```
 
+> You can also set fields using `setField` method, this can be beneficial when using requests in non http environment.
+
 ## Errors
 Every error generated by request or target entity will be mapped to it's origin name. 
 
 ```php
-protected $schema = [
+const SCHEMA = [
     'name'    => 'query:user.name'
 ];
 ```
@@ -253,3 +232,90 @@ Fox example, if the request within a given schema returns any errors related to 
 ```
 
 ## Nested Validations
+You can nest RequestFilters into each other to create more complex validations:
+
+```php
+class AddressRequest extends RequestFilter
+{
+    const SCHEMA = [
+        'country' => 'data:countryCode',
+        'city'    => 'data',
+        'address' => 'data',
+    ];
+
+    const VALIDATES = [
+        'country' => ['notEmpty'],
+        'city'    => ['notEmpty'],
+        'address' => ['notEmpty'],
+    ];
+}
+```
+
+```php
+class UploadRequest extends RequestFilter
+{
+    const SCHEMA = [
+        'upload'      => 'file:file',
+        'description' => 'data:label'
+    ];
+
+    const VALIDATES = [
+        'upload'      => ['file:uploaded'],
+        'description' => ['notEmpty']
+    ];
+}
+```
+
+Now we can use this classes as sub-requests:
+
+```php
+class DemoRequest extends RequestFilter
+{
+    const SCHEMA = [
+        'name'    => 'data',
+        'address' => AddressRequest::class,
+        'uploads' => [UploadRequest::class, 'files.*', 'data:files'] //Iterate keys over data:files
+    ];
+
+    const VALIDATES = [
+        'name'    => ['notEmpty'],
+        'uploads' => [
+            ['notEmpty', 'message' => '[[Please upload at least one file]]']
+        ]
+    ];
+
+    const SETTERS = [
+        'name' => 'strval'
+    ];
+}
+```
+
+In a given request AddressRequest will be automatically populated based on values located in a sub-array "address" in incoming request:
+
+```json
+{
+  "address":{
+    "city": "value", 
+    ...
+  }
+}
+```
+
+And will be represented as property in a parent request:
+
+```php
+dump($demoRequest->address->getField('city'));
+```
+
+> All nested requests will be validated with parent.
+
+On another end, UploadRequest will be represented as array of requests:
+
+```php
+foreach($demoRequest->uploads as $upload)
+{
+    dump($upload->upload->getClientFilename());
+}
+```
+
+> You can find demonstration of how nested requests work [here](https://github.com/spiral/spiral/blob/master/tests/Http/RequestFilters/DemoRequestTest.php).
