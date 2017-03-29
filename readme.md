@@ -122,3 +122,4 @@ digging into documentation, consider checking existed test suites:
     * [DataEntity models](https://github.com/spiral/models/tree/master/tests/Models)
     * [Authorization](https://github.com/spiral-modules/auth/tree/master/tests/Auth)
     * [Hybrid Databases](https://github.com/spiral-modules/hybrid-db/tree/master/tests/HybridDB)
+    * [Vault](https://github.com/spiral-modules/vault/tree/master/tests/Vault)
