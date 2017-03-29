@@ -1,10 +1,10 @@
+[Pre-Release (0.9) Documentation is located here](https://github.com/spiral/guide/tree/09branch)
+-----
+
 # Spiral Framework, Table of Contents
 [![License](https://poser.pugx.org/spiral/framework/license)](https://packagist.org/packages/spiral/framework) 
 
 > Work in progress. Please let us know if you find any typos or issues within this documentation. You can email to [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com) or create PR for guide [repository](https://github.com/spiral/guide).
-
-[Pre-Release (0.9) Documentation is located here](https://github.com/spiral/guide/tree/09branch)
------
 
 * Overview
     * [Installation and Configuration](installation.md)
