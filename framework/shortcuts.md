@@ -77,7 +77,7 @@ Use proper IDE to maximize shortcuts output:
  
 ![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
 
-Consider shortcuts as temporary replacement for a proper class dependency or as a way to make some of application services available from outside:
+Consider shortcuts as temporary replacement for a proper class dependency or as public properties of your application (your App use SharedTrait as well):
 
 ```php
 $app = MyBlogApp::init(...);
