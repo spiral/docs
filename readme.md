@@ -1,9 +1,9 @@
-# Spiral Framework, Table of Contents
+# Spiral Framework Table of Contents
 [![License](https://poser.pugx.org/spiral/framework/license)](https://packagist.org/packages/spiral/framework) 
 
 * Overview
 	* [Installation and Configuration](installation.md)
-	* [Contributing](contributing.md)
+	* [Contributions](contributing.md)
 	* [Forum](https://groups.google.com/forum/#!forum/spiral-framework)
 	* [License](license.md)  	
 * Framework
@@ -108,9 +108,9 @@
 	* - [IDE helper](modules/ide-helper.md)
 	* - [Cache Bridges](modules/cache.md)
 
-# I want to read code, not docs!
-If you wish to get more examples of framework functionality without
-digging into documentation, consider checking existed test suites:
+# I want to read code (not docs)!
+If you want to see more examples of this framework's functionality in the real world without 
+digging into the documentation, you can check out these existing test suites:
 
 * [Framework, Http, Sessions, Validations](https://github.com/spiral/spiral/tree/develop/tests)
 * [Database and Query Builders](https://github.com/spiral/database/tree/master/tests/Database)
