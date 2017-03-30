@@ -59,7 +59,7 @@ const LOAD = [
 > You can enable bootloaders cache in your .env file to speed up application initialization a bit.
 
 ## Booting code
-Bootloaders also allows you to load or execute custom code at moment of application initialization, set constant `BOOT` to true and define method `boot` in order to do that:
+To load or execute custom code at moment of application initialization, set constant `BOOT` to true and define method `boot`:
 
 ```php
 class AppBootloader extends Bootloader 
