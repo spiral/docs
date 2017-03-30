@@ -67,7 +67,7 @@ TRANSLATOR_CACHE = true
 #Default session handler, use `(null)` to enable native php session mechanism
 SESSION_HANDLER = files
 
-#Cookie name to store session token (make sure this cookie excluded from protection!)
+#Cookie name to store session token
 SESSION_COOKIE = SID
 
 #Preferred exception view (supported: [dark|light]/[slow|fast])
