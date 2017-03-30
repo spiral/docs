@@ -64,7 +64,7 @@
 * Stempler Views
 	* - [Basic Usage](stempler/basics.md)
  	* - [Extended Usage (widgets tags, tips'n'tricks)](stempler/expert.md)
-   	* - [Dark Syntax](stempler/dark.md)
+   	* [Dark Syntax](stempler/dark.md)
 * Static Analysis/Tokenizer
     * - [Looking for Classes](tokenizer/classes.md)
     * - [Looking for Invocations](tokenizer/invocations.md)

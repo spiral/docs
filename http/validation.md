@@ -251,21 +251,6 @@ class AddressRequest extends RequestFilter
 }
 ```
 
-```php
-class UploadRequest extends RequestFilter
-{
-    const SCHEMA = [
-        'upload'      => 'file:file',
-        'description' => 'data:label'
-    ];
-
-    const VALIDATES = [
-        'upload'      => ['file:uploaded'],
-        'description' => ['notEmpty']
-    ];
-}
-```
-
 Now we can use this classes as sub-requests:
 
 ```php
@@ -273,8 +258,7 @@ class DemoRequest extends RequestFilter
 {
     const SCHEMA = [
         'name'    => 'data',
-        'address' => AddressRequest::class,
-        'uploads' => [UploadRequest::class, 'files.*', 'data:files'] //Iterate keys over data:files
+        'address' => AddressRequest::class
     ];
 
     const VALIDATES = [
@@ -308,6 +292,10 @@ dump($demoRequest->address->getField('city'));
 ```
 
 > All nested requests will be validated with parent.
+
+### Array of Sub Requests 
+
+todo: WRITE ABOUT IT
 
 On another end, UploadRequest will be represented as array of requests:
 
