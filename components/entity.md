@@ -1,5 +1,5 @@
 # DataEntity Model
-Most of Spiral's classes like ORM, ODM and HTTP request models extend one common parent - the `DataEntity` model. This class is one of the most basic application cells used to provide a set of wrappers and operations related to the array dataset.
+Most of Spiral's classes like ORM, ODM and HTTP request models extend one common parent - the `DataEntity`/`EntityInterface` model. This class is one of the most basic application cells used to provide a set of wrappers and operations related to the array dataset and provide unified way to transfer data between modules.
 
 ## Purpose
 DataEntity model is responsible for mocking up and providing access to the array hash - fields that use a set of getters, setters and accessors. In addition, this model provides a way to apply a mass assign to fields (using black/white lists), get all model fields as one array, get a list of all "public" fields (that can be sent to client using a whitelist) and can be converted into JSON. In addition, the model support [field validation](/components/validation.md) is based on a set of defined rules.
@@ -8,39 +8,44 @@ DataEntity model is responsible for mocking up and providing access to the array
 Because the DataEntity class is used widely across the Spiral framework, you may want to create your own code to communicate with it. Instead of using DataEntity class by itself, you can stick with it's primary interface:
 
 ```php
-interface EntityInterface extends ValidatesInterface
+interface EntityInterface extends \ArrayAccess
 {
     /**
      * Check if field known to entity, field value can be null!
      *
      * @param string $name
+     *
      * @return bool
      */
-    public function hasField($name);
+    public function hasField(string $name): bool;
 
     /**
      * Set entity field value.
      *
      * @param string $name
      * @param mixed  $value
+     *
      * @throws EntityExceptionInterface
      */
-    public function setField($name, $value);
+    public function setField(string $name, $value);
 
     /**
      * Get value of entity field.
      *
      * @param string $name
      * @param mixed  $default
-     * @return mixed|AccessorInterface
+     *
+     * @return mixed
+     *
      * @throws EntityExceptionInterface
      */
-    public function getField($name, $default = null);
+    public function getField(string $name, $default = null);
 
     /**
      * Update entity fields using mass assignment. Only allowed fields must be set.
      *
      * @param array|\Traversable $fields
+     *
      * @throws EntityExceptionInterface
      */
     public function setFields($fields = []);
@@ -49,43 +54,15 @@ interface EntityInterface extends ValidatesInterface
      * Get entity field values.
      *
      * @return array
+     *
      * @throws EntityExceptionInterface
      */
-    public function getFields();
-}
-```
-
-Because EntityInterface extends ValidatesInterface, we have to show it's content as well:
-
-```php
-interface ValidatesInterface
-{
-    /**
-     * Check if context data is valid.
-     *
-     * @return bool
-     */
-    public function isValid();
-
-    /**
-     * Check if context data has errors.
-     *
-     * @return bool
-     */
-    public function hasErrors();
-
-    /**
-     * List of errors associated with parent field, every field must have only one error assigned.
-     *
-     * @param bool $reset Force re-validation.
-     * @return array
-     */
-    public function getErrors($reset = false);
+    public function getFields(): array;
 }
 ```
 
 ## Entity Fields
-Every entity must work with a set of mocked up fields. These fields are represented as an associated array and stored in the protected (potentially private) property "fields". Knowing this, we can create a simple entity used to mock up some data array:
+Every entity must work with a set of mocked up fields. These fields are represented as an associated array and stored in the private property "fields". Knowing this, we can create a simple entity used to mock up some data array:
 
 ```php
 protected function indexAction()
@@ -137,26 +114,11 @@ dump($entity->getFields());
 ## Mass Assignment
 In almost all cases, you will need to set up multiple model fields at once. Setting fields one by one may look like an option, especially since every field will be filtered using associated setter (see below), but there is a much easier way to perform mass assignment - the `setFields` method.
 
-This method uses user data as a source (for example, directly from request POST). However, the entity must be previously configured to specify what fields can and/or can't be set.
+This method uses user data as a source (for example, directly from request POST). However, the entity must be previously configured to specify what fields can and/or can't be set (see below).
 
 ```php
 //Get entity data from query
 $entity->setFields($this->input->query);
-```
-
-> Method can accept an array or Traversable object (meaning you can even pass one entity as a source of items for another entity - this is used in the spiral `RequestFilter->populate()` method).
-
-To create an entity based on user input, you have to use the set field method or the static method "create" of ORM and ODM entities.
-To configure, this entity and specify what fields are set, we will use the specialized behaviour property **fillable**. Let's update our entity, to let it fill in "name": 
-
-```php
-class DemoEntity extends \Spiral\Models\DataEntity
-{
-    /**
-     * @var array
-     */
-    protected $fillable = ['name'];
-}
 ```
 
 Now, we can set the entity name by entering it's value in our browser window. 
@@ -165,17 +127,36 @@ Now, we can set the entity name by entering it's value in our browser window.
 
 ### isFillable
 DataEntity controls the mass assigment access using the protected method `isFillable`. You can overwrite it to define a custom field access logic.
+
+In order to define what fields are fillable or secured for your DataEntity model, extend it and overwrite SECURED or FILLABLE constants:
+
+```php
+class MyEntity extends DataEntity
+{
+    const FILLABLE = ['name', 'email'];
+}
+```
+
+Or unprotect all fields for mass assignment:
+
+```php
+class MyEntity extends DataEntity
+{
+    const SECURED = []; //By default "*"
+}
+```
+
 > Tip: ORM and ODM models can inherit the values of fillable and secured properties from it's parents. You can also check what fields are public and fillable in the ORM and ODM models via a set of inspect commands in the CLI toolkit.
 
 ## Setters (filter functions)
 You might want to filter the value assigned to some specific field. For example, when you perform type casting or some value manipulations. You can either write your own access method like "setName($name)" or use a specialized entity behaviour - **setters**. This behaviour is described in the setters property and applied to the field inside `setField` and `setFields` method. Let's try to apply some filter for our "name" and "another" field.
 
 ```php
-class DemoEntity extends \Spiral\Models\DataEntity
+class DemoEntity extends DataEntity
 {
-    protected $fillable = ['name'];
+    const FILLABLE = ['name'];
 
-    protected $setters = [
+    const SETTERS = [
         'name'    => ['self', 'uppercase'],
         'another' => 'intval'
     ];
@@ -188,8 +169,6 @@ class DemoEntity extends \Spiral\Models\DataEntity
     }
 }
 ```
-
-> You can use any valid `call_user_function` callback to describe setters. Please note, setters is a filter function. You should not execute setField inside the setter method as it can be used in many places. Instead use the return filtered value. 
 
 Now, no matter how we try to assign the value of a desired field, it will always be set to a desired value:
 
@@ -216,15 +195,15 @@ protected function indexAction()
 Similar to setters, you can define a set of filters that can be executed inside the `getField` and `getFields` methods. 
 
 ```php
-class DemoEntity extends \Spiral\Models\DataEntity
+class DemoEntity extends DataEntity
 {
-    protected $fillable = ['name'];
+    const FILLABLE = ['name'];
 
-    protected $setters = [
+    const SETTERS = [
         'name' => 'strtoupper'
     ];
 
-    protected $getters = [
+    const GETTERS = [
         'name' => 'strtolower'
     ];
 }
