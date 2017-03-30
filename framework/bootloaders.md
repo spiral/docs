@@ -96,7 +96,7 @@ class AppBootloader extends Bootloader
 > Cache is ignored for such bootloaders.
 
 ## Bootloading outside of core
-If you want to load your bootloader based on some condition simple utilize `getBootloader()` method of your core application:
+If you want to load your bootloader based on some condition use `getBootloader()` method of your core application:
 
 ```php
 public function indexAction()
