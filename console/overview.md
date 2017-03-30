@@ -1,4 +1,4 @@
-# Console Dispatcher and Embedded commands
+# Console Dispatcher
 Spiral Console dispatcher built at top of powerful [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html) component and provides ability to register console commands using automatic Tokenizer class lookup.
 
 > You are able to register native Symfony Commands in your CLi application.
