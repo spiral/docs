@@ -87,7 +87,7 @@ foreach($app->postsService->getTodayPosts() as $post) {
 ```
 
 ### SharedTrait
-You can enable shortcuts in any of your class by using `SharedTrait` which defines `__get` method. Such trait alaready used by Controllers, Commands and Services.
+You can enable shortcuts in any of your class by using `SharedTrait` which defines `__get` method. Such trait already used by Controllers, Commands and Services.
 
 ```php
 use SharedTrait;
