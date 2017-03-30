@@ -41,7 +41,7 @@
    	* [User Commands](console/scaffolding.md)
 * Debug and Profiling
 	* [Logging](debug/logging.md)
- 	* - [Profiling](debug/profiling.md)
+ 	* [Profiling](debug/profiling.md)
 	* - [Error Handling](debug/errors.md)
 * Common Components
    	* [Files](components/files.md)
