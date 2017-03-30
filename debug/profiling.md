@@ -23,3 +23,5 @@ public function indexAction()
 Visualization of collected benchmarks if specific to implementation you used, under default application such timeline can be rendered using profiler module:
 
 ![Profiler](https://raw.githubusercontent.com/spiral/guide/09branch/resources/profiler.png)
+
+> Note that running your application enabled profiling will slow down execution.
