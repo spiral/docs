@@ -55,7 +55,7 @@ return [
 ];
 ```
 
-If you wish to make your configuration be depended on environment settings, use function `env(key, default)`.
+If you wish to make your configuration depend on environment settings, use function `env(key, default)`.
 
 > Attention, your configuration files will be cached relatively to current enviroment, you should not inlude any code which does not depend of `env` values!
 
