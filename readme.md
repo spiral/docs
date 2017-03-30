@@ -32,7 +32,7 @@
 	* [Http Errors](http/errors.md)
 	* [Request Validation](http/validation.md)
 * Session
-	* - [Overview](session/overview.md)
+	* [Overview](session/overview.md)
 	* - [Working with Session](session/usage.md)
 * Console Dispatcher
    	* [Overview](console/overview.md)
