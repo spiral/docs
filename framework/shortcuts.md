@@ -73,7 +73,7 @@ route           | Spiral\Http\Routing\RouteInterface
 
 > Shortcuts will work in a static IoC scope when no local container is available. Read more about scopes [here](components.md).
 
-Use proper IDE to get maximum from shortcuts:
+Use proper IDE to maximize shortcuts output:
  
 ![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
 
