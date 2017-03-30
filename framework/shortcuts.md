@@ -9,6 +9,8 @@ public function indexAction()
 }
 ```
 
+> SharedTrait already used in base Controller and Service classes.
+
 #### Shortcuts defined in `Spiral\Core\Bootloaders\SpiralBootloader`
 Common Components:
 
