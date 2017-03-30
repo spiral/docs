@@ -4,7 +4,7 @@ The Bootloader classes responsible for pre-initialization of your application, u
 > Make sure you read about [Container and DI](/framework/container.md).
 
 ## Booting bindings
-Ordinary your application will need a lot of interfaces and aliases binded to their implementations, you can define them in your code using following constructions:
+Ordinary, the application will require a lots of interfaces and aliases to be binded to their implementations, you can define bindings in your code using following constructions:
 
 ```php
 $this->container->bind(SomeInterface::class, SomeClass::class);
@@ -15,7 +15,7 @@ $this->container->bind(SomeInterface::class, function(...) {
 });
 ```
 
-Now we can use SomeInterface in our constructor and methods injections.
+Example of binding usage:
 
 ```php
 public function indexAction(SomeInterface $some)
@@ -25,7 +25,7 @@ public function indexAction(SomeInterface $some)
 }
 ```
 
-Bootloaders make such definitions easier, faster and provide ability to merge multiple bindings into one bucket:
+Bootloaders make such definitions easier, faster and provide a way to merge multiple bindings into one group:
 
 ```php
 class SomeBootloader extends Bootloader
@@ -34,8 +34,7 @@ class SomeBootloader extends Bootloader
         SomeInterface::class => SomeClass::class
     ];
     
-    //Only constructed once
-    protected $singletons = [
+    const SINGLETONS = [
         OtherInterface::class => [self::class, 'createOther']
     ];
     
