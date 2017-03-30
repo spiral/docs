@@ -82,6 +82,7 @@
 	* - [Schema Introspection](database/introspection.md)
 	* - [Schema Declaration](database/declaration.md)
 	* - [Migrations](database/migrations.md)
+	* [Errata](database/errata.md)
 * ORM Engine
 	* - [Overview](orm/overview.md)
 	* - [Record and RecordEntity](orm/entities.md)
