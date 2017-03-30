@@ -60,7 +60,7 @@ SPIRAL_KEY = ~random-string~
 
 #Production applications must always have view cache turned on, disabled cache can only be useful
 #in development
-VIEW_CACHE =
+VIEW_CACHE = true
 
 #When false translator will be reloading locale bundles on every request
 TRANSLATOR_CACHE = true
