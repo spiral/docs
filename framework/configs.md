@@ -25,7 +25,6 @@ In order to properly represent configuration in container create class extends `
 ```php
 class MyConfig extends InjectableConfig
 {
-    //Tells what config file use to hydrate by default
     const CONFIG = 'my-config';
 
     //Default config values (docs) if any
