@@ -1,5 +1,5 @@
 # Bootloaders
-Bootloader classes responsible for pre-initialization on your application parts, configure proper container bindings and environment initialization (i.e. http routes). In many cases bootloaders will be used to represent 3rd party applications.
+The Bootloader classes responsible for pre-initialization on your application parts, configure proper container bindings and environment initialization (i.e. http routes). In many cases bootloaders will be used to represent 3rd party applications.
 
 > Make sure you read about [Container and DI](/framework/container.md).
 
