@@ -40,7 +40,7 @@
    	* [Embedded Commands](console/commands.md)
    	* [User Commands](console/scaffolding.md)
 * Debug and Profiling
-	* - [Logging](debug/logging.md)
+	* [Logging](debug/logging.md)
  	* - [Profiling](debug/profiling.md)
 	* - [Error Handling](debug/errors.md)
 * Common Components
