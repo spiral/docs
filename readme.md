@@ -82,7 +82,7 @@
 	* - [Sources and Selectors](orm/repositories.md)
 	* - [Relationships](orm/relationships.md)
 	* - [Eager loading and Entity map](orm/loading.md)
-	* - [Relations to Interfaces](orm/late-binding.md)
+	* - [Relate to Interfaces](orm/late-binding.md)
 	* - [ODM Bridge](orm/odm-bridge.md)
 	* - [Recursive Relations](orm/recursive.md)
 	* - [Custom Relations](orm/custom-relations.md)
