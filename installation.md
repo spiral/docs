@@ -27,7 +27,7 @@ You can also configure your application at any moment, by simply executing:
 
 Make sure that `spiral` has right execute permissions (`chmod +x spiral`, also you can rename `spiral` and `spiral.cli` to any name you want).
 
-> You can run command(s) with increaced verbosity to get more details.
+> You can run command(s) with increaced verbosity `-vv` to get more details.
 
 ## Environment settings
 Default spiral application and framework core utilize [dotenv package](https://github.com/vlucas/phpdotenv) which provides you ability to keep your environment settings in `.env` file, thought you can replace default implementation to avoid un-nesessary filesystem requests, follow [this link](/application/environment.md) for more instructions.
