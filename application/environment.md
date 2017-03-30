@@ -100,7 +100,7 @@ $application = App::init([
     'root'        => $root,
     'libraries'   => $root . 'vendor/',
     'application' => $root . 'app/',
-    //other directories calculated based on default pattern, @see Core::__constructor()
+    'runtime'     => $root . 'runtime/',
 ], $environment);
 ```
 
