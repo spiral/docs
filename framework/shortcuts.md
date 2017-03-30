@@ -9,6 +9,8 @@ public function indexAction()
 }
 ```
 
+> SharedTrait already used in base Controller and Service classes.
+
 #### Shortcuts defined in `Spiral\Core\Bootloaders\SpiralBootloader`
 Common Components:
 
@@ -85,7 +87,7 @@ foreach($app->postsService->getTodayPosts() as $post) {
 ```
 
 ### SharedTrait
-You can enable shortcuts in any of your class by using `SharedTrait` which defines `__get` method. Such trait alaready used by Controllers, Commands and Services.
+You can enable shortcuts in any of your class by using `SharedTrait` which defines `__get` method. Such trait already used by Controllers, Commands and Services.
 
 ```php
 use SharedTrait;
