@@ -63,8 +63,8 @@
 	* - [Native Templates](views/native.md)
 	* - [View Processors](views/processors.md)
 * Stempler Views
-	* - [Basic Usage](stempler/basics.md)
- 	* - [Extended Usage (widgets tags, tips'n'tricks)](stempler/expert.md)
+	* [Basic Usage](stempler/basics.md)
+ 	* [Extended Usage (widgets tags, tips'n'tricks)](stempler/expert.md)
    	* [Dark Syntax](stempler/dark.md)
 * Static Analysis/Tokenizer
     * - [Looking for Classes](tokenizer/classes.md)
