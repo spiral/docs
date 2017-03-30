@@ -5,7 +5,7 @@ Feel free to contribute to framework or components development. Please make sure
 * KISS/SOLID (reasonably)
 * Your code must include tests
 
-> Make sure to create issue prior to working on potential BC functionality or if you want to discuss design approach.
+> Make sure to create [forum topic](https://groups.google.com/forum/#!forum/spiral-framework) or issue prior to working on potential BC functionality or if you want to discuss design approach.
 
 ## Help Needed In
 If you want to help but don't know where to start:
