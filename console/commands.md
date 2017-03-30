@@ -1,4 +1,4 @@
-## Embedded Commands
+# Embedded Commands
 Spiral provides big set of commands you might use if your application:
 
 Command            | Description                                                              

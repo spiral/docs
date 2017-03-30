@@ -45,8 +45,7 @@ echo env('DATABASE_PASSWORD');
 By default, your application relies on '.env' file located in a root directory of your project:
 
 ```env
-#This value does not used by application core, but you can route some config parameters based on this
-#value
+#This value can be used in configs
 SPIRAL_ENV = develop
 
 #This option will enable spiral profiler, benchmarking and global log collection
@@ -60,15 +59,15 @@ SPIRAL_KEY = ~random-string~
 
 #Production applications must always have view cache turned on, disabled cache can only be useful
 #in development
-VIEW_CACHE =
+VIEW_CACHE = true
 
-#When false translator will be reloading locale bundles on every request
+#When false translator will reload locale bundles on every request
 TRANSLATOR_CACHE = true
 
 #Default session handler, use `(null)` to enable native php session mechanism
 SESSION_HANDLER = files
 
-#Cookie name to store session token (make sure this cookie excluded from protection!)
+#Cookie name to store session token
 SESSION_COOKIE = SID
 
 #Preferred exception view (supported: [dark|light]/[slow|fast])
@@ -101,7 +100,7 @@ $application = App::init([
     'root'        => $root,
     'libraries'   => $root . 'vendor/',
     'application' => $root . 'app/',
-    //other directories calculated based on default pattern, @see Core::__constructor()
+    'runtime'     => $root . 'runtime/',
 ], $environment);
 ```
 
