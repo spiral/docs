@@ -1,5 +1,5 @@
 # Method Invocations
-Currently Tokenizer is able to locate invocations and given parameters for class methods and functions.
+Tokenizer is able to locate invocations and given parameters for class methods and functions.
 
 Use `Spiral\Tokenizer\InvocationsInterface` to gain access to such functionality.
 
