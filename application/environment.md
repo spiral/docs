@@ -45,8 +45,7 @@ echo env('DATABASE_PASSWORD');
 By default, your application relies on '.env' file located in a root directory of your project:
 
 ```env
-#This value does not used by application core, but you can route some config parameters based on this
-#value
+#This value can be used in configs
 SPIRAL_ENV = develop
 
 #This option will enable spiral profiler, benchmarking and global log collection
