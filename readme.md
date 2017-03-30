@@ -71,6 +71,11 @@
     * [Looking for Classes](tokenizer/classes.md)
     * [Looking for Invocations](tokenizer/invocations.md)
     * [PHP Code Isolation](tokenizer/isolation.md)
+* Storage Manager
+    * - [Overview](storage/overview.md)
+    * - [Buckets and Servers](storage/entities.md)
+    * - [Server Configuration](storage/servers.md)
+    * - [Uploading Files](storage/uploading.md)
 * Database Layer
 	* - [Overview](database/overview.md)
 	* - [Query Builders](database/buidlers.md)
@@ -94,11 +99,6 @@
 	* - [Sources and Selectors](orm/repositories.md)
 	* - [Compositions and Aggregations](odm/oop.md)
 	* - [Inheritance](odm/inheritance.md)
-* Storage Manager
-  	* - [Overview](storage/overview.md)
-  	* - [Buckets and Servers](storage/entities.md)
-   	* - [Server Configuration](storage/servers.md)
-   	* - [Uploading Files](storage/uploading.md)
 * External Modules
 	* - [Authorization](modules/auth.md)
 	* - [Vault Core](modules/vault.md)
