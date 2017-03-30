@@ -47,7 +47,7 @@ class SomeBootloader extends Bootloader
 
 > Note that you can make your factory methods private and protected, container will bypass this restriction.
 
-The only thing we have to do now is to add such bootloader class into our application, you can simply modify constant `LOAD` in your App class.
+The only thing we have to do now is to add such bootloader class into our application, modify constant `LOAD` in your App class.
 
 ```php
 const LOAD = [
