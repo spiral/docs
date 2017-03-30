@@ -42,7 +42,7 @@
 * Debug and Profiling
 	* [Logging](debug/logging.md)
  	* [Profiling](debug/profiling.md)
-	* - [Error Handling](debug/errors.md)
+	* [Error Handling](debug/errors.md)
 * Common Components
    	* [Files](components/files.md)
    	* [Encryption](components/encrypter.md)
