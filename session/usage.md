@@ -179,3 +179,20 @@ interface SectionInterface extends \IteratorAggregate, \ArrayAccess
 ```
 
 > Sections will resume session automatically on demand.
+
+## Contextual Injections
+Spiral Session implementation support contextual injections based on parameter name, this allow you to define your services and models like that:
+
+```php
+class Model
+{
+    private $session;
+
+    public function __construct(SessionInterface $modelSession)
+    {
+        $this->session = $modelSession;
+    }
+}
+```
+
+> All sections/segments are fetched from active session instance.
