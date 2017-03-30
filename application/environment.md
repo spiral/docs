@@ -61,7 +61,7 @@ SPIRAL_KEY = ~random-string~
 #in development
 VIEW_CACHE = true
 
-#When false translator will be reloading locale bundles on every request
+#When false translator will reload locale bundles on every request
 TRANSLATOR_CACHE = true
 
 #Default session handler, use `(null)` to enable native php session mechanism
