@@ -14,7 +14,7 @@ Make sure that your server is configured with following PHP version and extensio
 One of fastest ways to install a fresh spiral application is to use the composer command:
 
 ```
-php composer.phar create-project spiral/application
+php composer.phar create-project spiral/application {dir}
 ```
 
 Initial application installation will automatically configure framework and environment to ensure that all necessary directories have the correct permissions and are available for application, also it will perform translator indexation and view compilation (you can register you own commands in configure sequence, see [**Console Dispatcher**](/console/commands.md)).
