@@ -68,6 +68,8 @@ interface SessionInterface extends InjectorInterface
 }
 ```
 
+Use `resume` method of session to start/restore session manually.
+
 > Read how to control session cookies [here](/session/overview.md).
 
 ## Session Data
