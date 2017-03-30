@@ -22,7 +22,7 @@ abstract class BaseTest extends TestCase
             'application' => $root . 'app/',
         ], null, null, false);
 
-        //Monolog love to write to CLI when no handler set
+        //Monolog love to write to CLI when no handler is set
         $this->app->logs->debugHandler(new NullHandler());
     }
 
