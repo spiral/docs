@@ -106,7 +106,7 @@ public function indexAction()
 ```
 
 ## Rules
-In a previous example we used default role-permissions association without any of additional conditions.
+Previous example used default role-permissions association without any of additional conditions.
 
 Practically we can rewrite association using following code:
 
