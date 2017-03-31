@@ -79,7 +79,7 @@
 * Database Layer
 	* - [Overview](database/overview.md)
 	* - [Query Builders](database/buidlers.md)
-	* - [Schema Introspection](database/introspection.md)
+	* [Schema Introspection](database/introspection.md)
 	* - [Schema Declaration](database/declaration.md)
 	* - [Migrations](database/migrations.md)
 	* [Errata](database/errata.md)
