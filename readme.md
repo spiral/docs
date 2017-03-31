@@ -61,7 +61,7 @@
 	* - [Overview](views/overview.md)
 	* - [Twig Templates](views/twig.md)
 	* - [Native Templates](views/native.md)
-	* - [View Processors](views/processors.md)
+	* [View Processors](views/processors.md)
 * Stempler Views
 	* [Basic Usage](stempler/basics.md)
  	* [Extended Usage (widgets tags, tips'n'tricks)](stempler/expert.md)
