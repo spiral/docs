@@ -87,6 +87,7 @@
 * ORM Engine
 	* - [Overview](orm/overview.md)
 	* - [Record and RecordEntity](orm/entities.md)
+	* - [Scaffolding](orm/scaffolding.md)
 	* - [Transactions](orm/transactions.md)
 	* - [Sources and Selectors](orm/repositories.md)
 	* - [Relationships](orm/relationships.md)
