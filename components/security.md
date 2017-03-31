@@ -134,7 +134,7 @@ To create custom rules which can work based on a context, let's extend default c
 ```php
 class AuthorRule extends Rule
 {
-    public function check(User $actor, string $permission, Post $post)
+    public function check(User $actor, Post $post)
     {
         return $post->author->id == $actor->id;
     }
