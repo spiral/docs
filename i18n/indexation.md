@@ -71,7 +71,7 @@ use:
 ```
 spiral i18n:dump ru russian -d po -f
 Dump successfully completed using Symfony\Component\Translation\Dumper\PoFileDumper
-Output directory: D:\WebServer\domains\spiral.dev\russian
+Output directory:/var/www/spiral.dev/russian
 ```
 
 > You can index your views by simply compiling them.

@@ -110,7 +110,7 @@ One of the most important parts of any translation process is actual translation
 ```
 > spiral i18n:dump ru russian
 Dump successfully completed using Symfony\Component\Translation\Dumper\PhpFileDumper
-Output directory: \var\www\sample.dev\russian
+Output directory: /var/www/sample.dev/russian
 ```
 
 Use `-d` options to select alternative dumper:
@@ -118,7 +118,7 @@ Use `-d` options to select alternative dumper:
 ```
 > spiral i18n:dump ru russian -d po
 Dump successfully completed using Symfony\Component\Translation\Dumper\PoFileDumper
-Output directory: \var\www\sample.dev\russian
+Output directory: /var/www/sample.dev/russian
 ```
 
 ```
