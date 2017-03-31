@@ -55,7 +55,7 @@
 * Internalization
    	* [Overview](i18n/overview.md)
    	* [Usage in Views](i18n/views.md)
-   	* - [Usage in Models/Controllers](i18n/say-trait.md)
+   	* [Usage in Models/Controllers](i18n/say-trait.md)
    	* [Indexation](i18n/indexation.md)
 * Views and Engines
 	* - [Overview](views/overview.md)
