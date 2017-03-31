@@ -99,7 +99,7 @@
 	* - [Documents and Databases](odm/entities.md)
 	* - [Sources and Selectors](orm/repositories.md)
 	* - [Compositions and Aggregations](odm/oop.md)
-	* - [Inheritance](odm/inheritance.md)
+	* [Inheritance](odm/inheritance.md)
 * External Modules
 	* - [Authorization](modules/auth.md)
 	* - [Vault Core](modules/vault.md)
