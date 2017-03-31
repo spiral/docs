@@ -335,25 +335,6 @@ interface ModifierInterface
 
 > Since modifiers are resolved using FactoryInterface so you can define any needed injection in your constuctor + [EnvironmentInterface $environment].
 
-## View Processors (Stempler specific functionality)
-Separatelly from view modifies Stempler engine provides ability to define set of view processors which are applied to are compiled view source **after** engine, you can implement your processor via interface `Spiral\Views\ProcessorInterface`
-
-```php
-interface ProcessorInterface
-{
-    /**
-     * @param string $source
-     * @param string $namespace
-     * @param string $view
-     * @param string $cachedFilename
-     * @return string
-     */
-    public function process($source, $namespace, $view, $cachedFilename = null);
-}
-```
-
-> For example you can create html prettify processor.
-
 ## Accessing Container inside view
 In some cases you might want to get access to your models or services from a view source without passing it's by reference in every render method. Since, by default, spiral renders your view files inside `Spiral\Views\Engines\Native\NativeView` class you are given ability to access container using `$this->container` property.
 
@@ -373,4 +354,4 @@ Hello world, <?= $name ?>!
 <?= app()->faker->name ?>
 ```
 
-> At this moment spiral does not create container scope while rendering view file, however it might do it in a future which will allow you to use `spiral` and `app` functions without being worry that they are referencing to wrong container.
+> Static IoC scope always exists inside render method, `spiral` and `app` functions will work in a context of ViewManger Container (usually application container).
