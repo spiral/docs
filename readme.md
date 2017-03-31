@@ -51,7 +51,7 @@
    	* [Security/RBAC](components/security.md)
    	* [Code Generation](components/reactor.md)
    	* [Validation](components/validation.md)
-   	* - [Pagination](components/pagination.md)
+   	* [Pagination](components/pagination.md)
 * Internalization
    	* - [Overview](i18n/overview.md)
    	* - [Indexation](i18n/indexation.md)
