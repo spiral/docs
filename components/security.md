@@ -141,6 +141,8 @@ class AuthorRule extends Rule
 }
 ```
 
+> Check [this file](https://github.com/spiral/security/blob/master/source/Spiral/Security/Rule.php) to see how Rule class works.
+
 This rule grants access when user is post owner, we can register it like that:
 
 ```php
