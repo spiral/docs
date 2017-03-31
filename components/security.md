@@ -79,7 +79,7 @@ interface ActorInterface
 Actors usually represent by authenticated users which demonstrated in `getActor` factory method. 
 
 ## Guarding Code
-No we can guard our code in services or controllers using GuardTrait or by requesting `GuardInterface` dependency:
+To guard our code in services or controllers using GuardTrait or by requesting `GuardInterface` dependency:
 
 ```php
 use GuardedTrait;
@@ -129,7 +129,7 @@ final class AllowRule implements RuleInterface, SingletonInterface
 }
 ```
 
-Now, we can create custom rules which can work based on a context, let's extend default class Rule to get access to method injections in our rules:
+To create custom rules which can work based on a context, let's extend default class Rule to get access to method injections in our rules:
 
 ```php
 class AuthorRule extends Rule
