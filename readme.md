@@ -49,7 +49,7 @@
    	* [Encryption](components/encrypter.md)
    	* [DataEntity Model](components/data-entity.md)
    	* [Security/RBAC](components/security.md)
-   	* - [Code Generation](components/reactor.md)
+   	* [Code Generation](components/reactor.md)
    	* - [Validation](components/validation.md)
    	* - [Pagination](components/pagination.md)
 * Internalization
