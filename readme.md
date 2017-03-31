@@ -53,7 +53,7 @@
    	* [Validation](components/validation.md)
    	* [Pagination](components/pagination.md)
 * Internalization
-   	* - [Overview](i18n/overview.md)
+   	* [Overview](i18n/overview.md)
    	* - [Indexation](i18n/indexation.md)
    	* - [Usage in Views](i18n/views.md)
    	* - [Usage in Models/Controllers](i18n/say-trait.md)
