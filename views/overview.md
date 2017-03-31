@@ -334,24 +334,3 @@ interface ModifierInterface
 ```
 
 > Since modifiers are resolved using FactoryInterface so you can define any needed injection in your constuctor + [EnvironmentInterface $environment].
-
-## Accessing Container inside view
-In some cases you might want to get access to your models or services from a view source without passing it's by reference in every render method. Since, by default, spiral renders your view files inside `Spiral\Views\Engines\Native\NativeView` class you are given ability to access container using `$this->container` property.
-
-```php
-Hello world, <?= $name ?>!
-
-<?php dump($this->container->get(MyService::class)); ?>
-```
-
-Alternatively you can use even shorter way to get access to container and your application via functions `app` (defined in your app file) or `spiral`:
-
-```php
-Hello world, <?= $name ?>!
-
-<?= spiral(MyService::class)->someMethod(); ?>
-<?= spiral('faker')->someMethod(); ?>
-<?= app()->faker->name ?>
-```
-
-> Static IoC scope always exists inside render method, `spiral` and `app` functions will work in a context of ViewManger Container (usually application container).
