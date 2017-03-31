@@ -59,7 +59,7 @@
    	* [Indexation](i18n/indexation.md)
 * Views and Engines
 	* - [Overview](views/overview.md)
-	* - [Twig Templates](views/twig.md)
+	* [Twig Templates](views/twig.md)
 	* [Native Templates](views/native.md)
 	* [View Processors](views/processors.md)
 * Stempler Views
