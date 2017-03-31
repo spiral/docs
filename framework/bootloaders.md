@@ -1,10 +1,10 @@
 # Bootloaders
-Bootloader classes responsible for pre-initialization on your application parts, configure proper container bindings and environment initialization (i.e. http routes). In many cases bootloaders will be used to represent 3rd party applications.
+The Bootloader classes responsible for pre-initialization of your application, use them to configure proper container bindings and environment initialization (i.e. http routes). 
 
 > Make sure you read about [Container and DI](/framework/container.md).
 
 ## Booting bindings
-Ordinary your application will need a lot of interfaces and aliases binded to their implementations, you can define them in your code using following constructions:
+Ordinary, the application will require a lots of interfaces and aliases to be binded to their implementations, you can define bindings in your code using following constructions:
 
 ```php
 $this->container->bind(SomeInterface::class, SomeClass::class);
@@ -15,7 +15,7 @@ $this->container->bind(SomeInterface::class, function(...) {
 });
 ```
 
-Now we can use SomeInterface in our constructor and methods injections.
+Example of binding usage:
 
 ```php
 public function indexAction(SomeInterface $some)
@@ -25,7 +25,7 @@ public function indexAction(SomeInterface $some)
 }
 ```
 
-Bootloaders make such definitions easier, faster and provide ability to merge multiple bindings into one bucket:
+Bootloaders make such definitions easier, faster and provide a way to merge multiple bindings into one group:
 
 ```php
 class SomeBootloader extends Bootloader
@@ -34,8 +34,7 @@ class SomeBootloader extends Bootloader
         SomeInterface::class => SomeClass::class
     ];
     
-    //Only constructed once
-    protected $singletons = [
+    const SINGLETONS = [
         OtherInterface::class => [self::class, 'createOther']
     ];
     
@@ -48,7 +47,7 @@ class SomeBootloader extends Bootloader
 
 > Note that you can make your factory methods private and protected, container will bypass this restriction.
 
-The only thing we have to do now is to add such bootloader class into our application, you can simply modify constant `LOAD` in your App class.
+The only thing we have to do now is to add such bootloader class into our application, modify constant `LOAD` in your App class.
 
 ```php
 const LOAD = [
@@ -60,7 +59,7 @@ const LOAD = [
 > You can enable bootloaders cache in your .env file to speed up application initialization a bit.
 
 ## Booting code
-Bootloaders also allows you to load or execute custom code at moment of application initialization, set constant `BOOT` to true and define method `boot` in order to do that:
+To load or execute custom code at moment of application initialization, set constant `BOOT` to true and define method `boot`:
 
 ```php
 class AppBootloader extends Bootloader 
@@ -97,7 +96,7 @@ class AppBootloader extends Bootloader
 > Cache is ignored for such bootloaders.
 
 ## Bootloading outside of core
-If you want to load your bootloader based on some condition simple utilize `getBootloader()` method of your core application:
+If you want to load your bootloader based on some condition use `getBootloader()` method of your core application:
 
 ```php
 public function indexAction()

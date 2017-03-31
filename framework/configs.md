@@ -1,5 +1,5 @@
 # Injectable Configs
-All framework components talk to config files though set of config objects. Framework bundle provides ability to automatically route and populate such objects using contextual injections by `ConfigFactory`.
+All framework components talk to config files though the set of config objects. Framework bundle provides ability to automatically route and populate such objects using contextual injections by `ConfigFactory`.
 
 ## Create configuration
 To create new config object, place file in app/config (sub-dirs are allowed), example "my-config.php":
