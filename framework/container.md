@@ -297,3 +297,15 @@ with such binding if no other references for class instance exists.
 ```php
 $this->container->removeBinding(MyService::class);
 ```
+
+## Partial Bindings
+You can also create bindings with partially pre-defined class parameters:
+
+```php
+$container = new Container();
+$container->bind('abc', new Autowire(ClassWithName::class, ['name' => 'Fixed']));
+
+$abc = $container->get('abc');
+
+$this->assertSame('Fixed', $abc->getName());
+```
