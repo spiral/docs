@@ -1,8 +1,6 @@
 # Translator in Views
 The ViewManager component include set of view processors, one of them `TranslateProcessor` is compatible
-with twig and stempler templates and provides ability to include proper i18n string at compilation stage.
-
-Wrap your string with `[[]]` to automatically translate it.
+with twig and stempler templates, Wrap your string with `[[]]` to automatically translate it.
 
 ```php
 <extends:layouts.basic title="[[This is our title]]"/>
