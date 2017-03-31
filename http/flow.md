@@ -44,7 +44,7 @@ IoC scoping works well not only for PSR-7 classes but also for auth, cookies and
 ![Scoping](https://raw.githubusercontent.com/spiral/guide/master/resources/scopes.png)
 
 For example, instance of `\Spiral\Auth\ContextInterface` will be accessible ONLY inside `AuthMiddleware` which gives you power
-to create own domain logic without direct associated with PSR-7 classes.
+to create own domain logic without direct association with PSR-7 classes.
 
 ## How HttpDispatcher works
 HttpDispatcher has 3 notable methods we would like to check due they define our application backbone flow.
