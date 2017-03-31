@@ -65,3 +65,10 @@ Default `SpiralExtension` extension provides access to IoC scope and `spiral` fu
 ```
 
 > `dump` function is available as well.
+
+## Direct Access
+Access twig directly in your code and bootloaders:
+
+```php
+$this->views->engine('twig')->getTwig(); //Twig_Environment
+```
