@@ -15,8 +15,7 @@ class AccessBootloader extends Bootloader
     const ROLES = ['admin', 'manager'];
 
     const BINDINGS = [
-        ActorInterface::class          => [self::class, 'getActor'],
-        UsernameSourceInterface::class => UserSource::class,
+        ActorInterface::class => [self::class, 'getActor']
     ];
 
     /**
@@ -87,7 +86,7 @@ use GuardedTrait;
     
 public function indexAction()
 {
-    if(!$this->getGuard()->allows('post.edit')){
+    if(!$this->getGuard()->allows('post.edit')) {
         throw new ForbiddenException();
     }
 }
