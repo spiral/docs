@@ -17,7 +17,7 @@ class User extends Record implements UserInterface
 Where `UserInterface` can be empty or declare needed methods:
 
 ```php
-inerface UserInterface
+interface UserInterface
 {
     public function getName(): string;
 }
