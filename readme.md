@@ -92,7 +92,7 @@
 	* - [Repositories and Selectors](orm/repositories.md)
 	* - [Relationships](orm/relationships.md)
 	* - [Eager loading and Entity map](orm/loading.md)
-	* - [Relate to Interfaces](orm/late-binding.md)
+	* [Relate to Interfaces](orm/late-binding.md)
 	* - [ODM Bridge](orm/odm-bridge.md)
 	* - [Recursive Relations](orm/recursive.md)
 	* - [Custom Relations](orm/custom-relations.md)
@@ -105,7 +105,7 @@
 	* [Inheritance](odm/inheritance.md)
 * External Modules
     * [Profiler](modules/profiler.md)
-	* - [Authorization](modules/auth.md)
+	* - [User Authorization](modules/auth.md)
 	* - [Vault Core](modules/vault.md)
 	* - [Toolkit](modules/toolkit.md)
 	* - [Scaffolder](modules/scaffolder.md)
