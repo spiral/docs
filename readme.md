@@ -58,7 +58,7 @@
    	* [Usage in Models/Controllers](i18n/say-trait.md)
    	* [Indexation](i18n/indexation.md)
 * Views and Engines
-	* - [Overview](views/overview.md)
+	* [Overview](views/overview.md)
 	* [Twig Templates](views/twig.md)
 	* [Native Templates](views/native.md)
     * [Stempler Views](views/stempler.md)
