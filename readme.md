@@ -76,7 +76,7 @@
     * - [Overview](storage/overview.md)
     * - [Buckets and Servers](storage/entities.md)
     * [Server Configuration](storage/servers.md)
-    * - [Uploading Files](storage/uploading.md)
+    * [Uploading Files](storage/uploading.md)
 * Database Layer
 	* - [Overview](database/overview.md)
 	* - [Query Builders](database/buidlers.md)
