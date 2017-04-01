@@ -309,3 +309,21 @@ $abc = $container->get('abc');
 
 $this->assertSame('Fixed', $abc->getName());
 ```
+
+## Container Delegation
+You are able to delegate container functionality to external PSR compatible implementation using container constructor.
+
+```php             
+$container = new \Pimple\ContainerContainer();
+
+//Initiating shared container, bindings, directories and etc
+$application = App::init([
+    'root'        => $root,
+    'runtime'     => $root . 'runtime/',
+    'libraries'   => $root . 'vendor/',
+    'application' => $root . 'app/',
+    //other directories calculated based on default pattern, @see Core::__constructor()
+], null, $container);
+```
+
+> Note that container like that will not be available in your application directly thought `ContainerInterface` but rather composited inside of `Spiral\Core\ContainerInterface`.
