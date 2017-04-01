@@ -43,7 +43,7 @@
 	* [Logging](debug/logging.md)
  	* [Profiling](debug/profiling.md)
 	* [Error Handling](debug/errors.md)
-    * [Dumping](debug/dumps.md)
+    * [Dump your Data](debug/dumps.md)
 * Common Components
    	* [Files](components/files.md)
    	* [Encryption](components/encrypter.md)
@@ -73,8 +73,8 @@
     * [Looking for Invocations](tokenizer/invocations.md)
     * [PHP Code Isolation](tokenizer/isolation.md)
 * Storage Manager
-    * - [Overview](storage/overview.md)
-    * - [Buckets and Servers](storage/entities.md)
+    * [Overview](storage/overview.md)
+    * [Buckets and Servers](storage/entities.md)
     * [Server Configuration](storage/servers.md)
     * [Uploading Files](storage/uploading.md)
 * Database Layer
