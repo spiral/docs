@@ -89,7 +89,7 @@
 	* - [Record and RecordEntity](orm/entities.md)
 	* - [Scaffolding](orm/scaffolding.md)
 	* - [Transactions](orm/transactions.md)
-	* - [Sources and Selectors](orm/repositories.md)
+	* - [Repositories and Selectors](orm/repositories.md)
 	* - [Relationships](orm/relationships.md)
 	* - [Eager loading and Entity map](orm/loading.md)
 	* - [Relate to Interfaces](orm/late-binding.md)
@@ -99,10 +99,12 @@
 * ODM Engine
 	* - [Overview](odm/overview.md)
 	* - [Documents and Databases](odm/entities.md)
-	* - [Sources and Selectors](orm/repositories.md)
+	* - [Scaffolding](odm/scaffolding.md)
+	* - [Repositories and Selectors](orm/repositories.md)
 	* - [Compositions and Aggregations](odm/oop.md)
 	* [Inheritance](odm/inheritance.md)
 * External Modules
+    * [Profiler](modules/profiler.md)
 	* - [Authorization](modules/auth.md)
 	* - [Vault Core](modules/vault.md)
 	* - [Toolkit](modules/toolkit.md)
