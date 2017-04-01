@@ -79,6 +79,7 @@
     * [Uploading Files](storage/uploading.md)
 * Database Layer
 	* - [Overview](database/overview.md)
+	* - [Databases and Connectors](database/databases.md)
 	* - [Query Builders](database/buidlers.md)
 	* [Schema Introspection](database/introspection.md)
 	* - [Schema Declaration](database/declaration.md)
