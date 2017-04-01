@@ -1,8 +1,8 @@
 # Storage servers
-Spiral StorageManager support multiple servers to be used to store you data. Every server must be configured with connection/basic options and must have correlated bucket declare few adapter specific options.
+The StorageManager component support multiple servers and buckets for each of the server. Server connection configuration is located in `storage` config and can be altered in runtime by talking to `StorageInterface`.
 
 ## Local Server
-Local server utilizes local hard drive and `FilesInterface` to store your data. It has only one global option used to declare "home" storage directory - every bucket located will be realted to such home, bucket options must include storage directory and optional mode (by default RUNTIME - 777).
+`FilesInterface` stores data on local hard-drive. It has only one global option "home" which every bucket directory will be related to, bucket options must include storage directory and optional mode (by default RUNTIME - 755).
 
 Example server definition:
 
@@ -10,7 +10,7 @@ Example server definition:
 'local'     => [
     'class'   => Servers\LocalServer::class,
     'options' => [
-        'home' => directory('root')
+        'home' => directory('runtime')
     ]
 ],
 ```
@@ -22,13 +22,13 @@ Example bucket definition:
     'server'  => 'local',
     'prefix'  => 'local:',
     'options' => [
-        'directory' => '/app/runtime/storage/'
+        'directory' => 'storage/' // runtime/storage/
     ]
 ],
 ```
 
 ## Amazon S3 
-Amazon S3 storage server works with amazon api using Guzzle clients and requires to specify connection credentials on server level and amazon container name and access policy on bucket level.
+`AmazonServer` talks to AWS S3 storage via Guzzle package.
 
 Example server definition:
 
@@ -42,18 +42,9 @@ Example server definition:
 ],
 ```
 
-You can also specify two additinal options for amazon server - timeout (0 by default) and server ("https://s3.amazonaws.com" by default).
+> You can include addition arguments such as `timeout` (default 0) and `server` (default "https://s3.amazonaws.com");
 
-```php
-protected $options = [
-    'server'    => 'https://s3.amazonaws.com',
-    'timeout'   => 0,
-    'accessKey' => '',
-    'secretKey' => ''
-];
-```
-
-Example bucket definition:
+In your buckets you have to specify AWS S3 bucket name and public/private flag.
 
 ```php
 'amazon'    => [
@@ -68,10 +59,8 @@ Example bucket definition:
 
 Setting "public" option to true will make every uploaded file available for access from web without signed requests.
 
-> Amazon and Rackspace servers was written originally in 2011, if you wish to update their code to use official SDK - you will be much appriciated.
-
 ## Rackspace Files
-Rackspace server uses same Guzzle package to perform requests, however due rackspace requires additional query to fetch available buckets and generate access token it declares additional dependency with CacheStore to be remember such token and buckets list.
+`RackspaceServer` works similar to AWS, though, due protocol difference, it have different credential management system.
 
 Example server definition:
 
@@ -85,10 +74,10 @@ Example server definition:
 ],
 ```
 
-Let's view additional options we can use:
+Additional options available:
 
 ```php
-protected $options = [
+$options = [
     'server'     => 'https://auth.api.rackspacecloud.com/v1.0',
     'authServer' => 'https://identity.api.rackspacecloud.com/v2.0/tokens',
     'username'   => '',
@@ -98,7 +87,7 @@ protected $options = [
 ];
 ```
 
-Rackspace buckets requires us to define region bucket located in (Rackspace has limited abilities of copying files from buckets located in different regions), example 
+Rackspace buckets requires us to define region bucket located in (Rackspace has limited abilities of copying files from buckets located in different regions), example:
 
 ```php
 'rackspace' => [
@@ -114,9 +103,7 @@ Rackspace buckets requires us to define region bucket located in (Rackspace has 
 > You can find bucket region in Rackspace control panel.
 
 ## FTP server
-FTP storage server provides ability to utilize FTP protocol to store files on remote machine. As in case with local server it provides ability to specify home directory for every server bucket.
-
-Example server definition:
+`FtpServer` stores it's files on remote server:
 
 ```php
 'ftp'       => [
@@ -130,10 +117,10 @@ Example server definition:
 ],
 ```
 
-Let's view additional server options:
+Additional server options:
 
 ```php
-protected $options = [
+$options = [
     'host'     => '',
     'port'     => 21,
     'timeout'  => 60,
@@ -144,7 +131,7 @@ protected $options = [
 ];
 ```
 
-As in case with files we are able to specify default file mode for bucket:
+Bucket definition is similar to `LocalServer`:
 
 ```php
 'sftp'      => [
@@ -158,7 +145,7 @@ As in case with files we are able to specify default file mode for bucket:
 ```
 
 ## SFTP server
-Sftp server are very similar to FTP and utilized ssh2 php extension to connect to remove machines. Server support multiple authorization ways, default one - public key, as in case with FTP or local server we can specify home directory on server level:
+`SftpServer` works almost identically to `FtpServer` but over SSH:
 
 ```php
 'sftp'      => [
@@ -166,7 +153,7 @@ Sftp server are very similar to FTP and utilized ssh2 php extension to connect t
     'options' => [
         'host'       => 'hostname.com',
         'home'       => '/home/',
-        'authMethod' => 'pubkey',
+        'authMethod' => 'pubkey', //
         'username'   => '',
         'password'   => '',
         'publicKey'  => '',
@@ -175,7 +162,7 @@ Sftp server are very similar to FTP and utilized ssh2 php extension to connect t
 ],
 ```
 
-Let's review additional server options and authorization methods:
+Additional options and SFTP authorization:
 
 ```php
 /**
@@ -208,7 +195,7 @@ protected $options = [
 ];
 ```
 
-Example bucket definition:
+Bucket definition:
 
 ```php
 'sftp'      => [
@@ -222,17 +209,15 @@ Example bucket definition:
 ```
 
 ## GridFS server
-GridFS server connects to mongo using spiral ODM, you should only declare what database should be used on server level and what collection on bucket level.
-
-Example server definition:
+You can also use MongoDB to store your files:
 
 ```php
-'gridfs'    => [
-    'class'   => Servers\GridfsServer::class,
+'gridFS'    => [
+    'class'   => Servers\GridFSServer::class,
     'options' => [
-        'database' => 'default'
+        //Works with default database if any, use new Autowire (db bingin) to use custom db
     ]
-]
+],
 ```
 
 Example bucket definition:
@@ -247,8 +232,10 @@ Example bucket definition:
 ]
 ```
 
-## Add more servers
-If you wish to create custom storage server you must only implement `Spiral\Storage\ServerInterface`, you can access to bucket specific options using `$bucket->option()` method.
+Use ODM extension to support 
+
+## More Sevres
+Implement your own storage server or server bridge by implementing `ServerInterface`:
 
 ```php
 interface ServerInterface
@@ -259,32 +246,35 @@ interface ServerInterface
      *
      * @param BucketInterface $bucket
      * @param string          $name
+     *
      * @return bool
      * @throws ServerException
      */
-    public function exists(BucketInterface $bucket, $name);
-    
+    public function exists(BucketInterface $bucket, string $name): bool;
+
     /**
      * Get object size in specified bucket or return false.
      *
      * @param BucketInterface $bucket
      * @param string          $name
-     * @return int|bool
+     *
+     * @return int|null
      * @throws ServerException
      */
-    public function size(BucketInterface $bucket, $name);
-    
+    public function size(BucketInterface $bucket, string $name);
+
     /**
      * Put object data into specified bucket under given name, must replace existed data.
      *
-     * @param BucketInterface        $bucket
-     * @param string                 $name
-     * @param string|StreamInterface $source
+     * @param BucketInterface                 $bucket
+     * @param string                          $name
+     * @param string|StreamInterface|resource $source
+     *
      * @return bool
      * @throws ServerException
      */
-    public function put(BucketInterface $bucket, $name, $source);
-    
+    public function put(BucketInterface $bucket, string $name, $source): bool;
+
     /**
      * Must return filename which is valid in associated FilesInterface instance. Must trow an
      * exception if object does not exists. Filename can be temporary and should not be used
@@ -292,65 +282,73 @@ interface ServerInterface
      *
      * @param BucketInterface $bucket
      * @param string          $name
+     *
      * @return string
      * @throws ServerException
      */
-    public function allocateFilename(BucketInterface $bucket, $name);
-    
+    public function allocateFilename(BucketInterface $bucket, string $name): string;
+
     /**
      * Return PSR7 stream associated with bucket object content or trow and exception.
      *
      * @param BucketInterface $bucket
      * @param string          $name
+     *
      * @return StreamInterface
      * @throws ServerException
      */
-    public function allocateStream(BucketInterface $bucket, $name);
-    
+    public function allocateStream(BucketInterface $bucket, string $name): StreamInterface;
+
     /**
      * Delete bucket object if it exists.
      *
      * @param BucketInterface $bucket
      * @param string          $name
+     *
      * @throws ServerException
      */
-    public function delete(BucketInterface $bucket, $name);
-    
+    public function delete(BucketInterface $bucket, string $name);
+
     /**
      * Rename storage object without changing it's bucket.
      *
      * @param BucketInterface $bucket
-     * @param string          $oldname
-     * @param string          $newname
+     * @param string          $oldName
+     * @param string          $newName
+     *
      * @return bool
      * @throws ServerException
      */
-    public function rename(BucketInterface $bucket, $oldname, $newname);
-    
+    public function rename(BucketInterface $bucket, string $oldName, string $newName): bool;
+
     /**
      * Copy storage object to another bucket. Both buckets must belong to same server.
      *
      * @param BucketInterface $bucket
      * @param BucketInterface $destination
      * @param string          $name
+     *
      * @return bool
      * @throws ServerException
      */
-    public function copy(BucketInterface $bucket, BucketInterface $destination, $name);
-    
+    public function copy(BucketInterface $bucket, BucketInterface $destination, string $name): bool;
+
     /**
      * Move storage object data to another bucket. Both buckets must belong to same server.
      *
      * @param BucketInterface $bucket
      * @param BucketInterface $destination
      * @param string          $name
+     *
      * @return bool
      * @throws ServerException
      */
-    public function replace(BucketInterface $bucket, BucketInterface $destination, $name);
+    public function replace(
+        BucketInterface $bucket,
+        BucketInterface $destination,
+        string $name
+    ): bool;
 }
 ```
 
-Spiral StorageManager has been written originally in 2010-2011, since then many nice libraries and new ways to store your files remotelly got created.
-
-One of the notable implementation is [Flysystem](https://github.com/thephpleague/flysystem). Flysystem can be easily intergated into StorageManager (or used as directly) due it provides much lower abstraction level than required by StorageManager, such implementation can significantly improve list of supported storages (for example if you want Dropbox support).
+Spiral StorageManager has been written originally in 2010-2011, you can find a lot of alternative libraries since then, for example [Flysystem](https://github.com/thephpleague/flysystem).

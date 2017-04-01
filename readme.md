@@ -75,7 +75,7 @@
 * Storage Manager
     * - [Overview](storage/overview.md)
     * - [Buckets and Servers](storage/entities.md)
-    * - [Server Configuration](storage/servers.md)
+    * [Server Configuration](storage/servers.md)
     * - [Uploading Files](storage/uploading.md)
 * Database Layer
 	* - [Overview](database/overview.md)
