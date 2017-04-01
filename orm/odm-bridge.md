@@ -5,6 +5,12 @@ Use module `spiral/hybrid-db` in order to create link to ODM models.
 
 Such approach can be used to store heave or unstructured data in a separate database.
 
+## Installation
+You can install ODM bridge using `spiral/hybrid-db` package:
+
+`composer require spiral/hybrid-db`
+`spiral register spiral/hybrid-db`
+
 ## Example
 ```php
 class Photo extends Record
