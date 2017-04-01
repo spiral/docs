@@ -1,9 +1,7 @@
 # ODM Bridge
-Use module `spiral/hybrid-db` in order to create link to ODM models.
+Use module `spiral/hybrid-db` in order to create link to ODM models. Such approach can be used to store heave or unstructured data in a separate database.
 
 > Currently only HAS_ONE relation is supported.
-
-Such approach can be used to store heave or unstructured data in a separate database.
 
 ## Installation
 You can install ODM bridge using `spiral/hybrid-db` package:
