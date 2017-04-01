@@ -1,8 +1,10 @@
-# Relate to Interfaces
+# Static Relations, Relate to Interfaces
 Due nature of ORM component and the way how it pre-compiles your schema, you can relate your entities
 to external `RecordInterface` compatible modules using interfaces and roles instead of concrete implementation.
 
 Such approach will work for any of your relation types and provides the most use in your modules.
+
+> Attention, do not confuse with [Morphed relations](/orm/morphed.md)!
 
 ## Example
 We can demonstrate such functionality by relating our `Post` model to an User using UserInterface:
