@@ -141,5 +141,69 @@ Migration my_migration was successfully executed.
 
 You commands `migrate:rollback` and `migrate:replay` to rollback your migrations.
 
+## Update existed schema
+Create migrations ot alter existed table schema:
+
+```php
+class NewFieldMigration extends Migration
+{
+    public function up()
+    {
+        $this->table('sample_table')
+            ->addColumn('field', 'float')
+            ->update();
+    }
+    
+    public function down()
+    {
+        $this->table('sample_table')
+            ->dropColumn('field')
+            ->update();
+    }
+}
+```
+
+```
+> spiral migrate -vv
+[MySQLDriver] SELECT COUNT(*) FROM `information_schema`.`tables` WHERE `table_schema` = 'sample_2' AND `table_name` = 'migrations'
+[MySQLDriver] SELECT COUNT(*) FROM `information_schema`.`tables` WHERE `table_schema` = 'sample_2' AND `table_name` = 'migrations'
+[MySQLDriver] SELECT
+`id`, `time_executed`
+FROM `migrations`
+WHERE `migration` = 'my_migration'
+[MySQLDriver] SELECT
+`id`, `time_executed`
+FROM `migrations`
+WHERE `migration` = 'new_field'
+[MySQLDriver] Begin transaction
+[MySQLDriver] SELECT COUNT(*) FROM `information_schema`.`tables` WHERE `table_schema` = 'sample_2' AND `table_name` = 'sample_table'
+[MySQLDriver] SHOW FULL COLUMNS FROM `sample_table`
+[MySQLDriver] SHOW INDEXES FROM `sample_table`
+[MySQLDriver] SELECT * FROM `information_schema`.`referential_constraints` WHERE `constraint_schema` = 'sample_2' AND `table_name` = 'sample_table'
+[MySQLDriver] SHOW INDEXES FROM `sample_table`
+[MySQLDriver] SHOW TABLE STATUS WHERE `Name` = 'sample_table'
+[MySQLDriver] ALTER TABLE `sample_table` ADD COLUMN `field` float NOT NULL
+[MySQLDriver] Commit transaction
+[MySQLDriver] INSERT INTO `migrations` (`migration`, `time_executed`)
+VALUES ('new_field', '2017-04-01 16:23:36')
+[MySQLDriver] Given insert ID: 4
+[MySQLDriver] SELECT
+`id`, `time_executed`
+FROM `migrations`
+WHERE `migration` = 'new_field'
+Migration new_field was successfully executed.
+[MySQLDriver] SELECT COUNT(*) FROM `information_schema`.`tables` WHERE `table_schema` = 'sample_2' AND `table_name` = 'migrations'
+[MySQLDriver] SELECT
+`id`, `time_executed`
+FROM `migrations`
+WHERE `migration` = 'my_migration'
+[MySQLDriver] SELECT
+`id`, `time_executed`
+FROM `migrations`
+WHERE `migration` = 'new_field'
+```
+
 ## Compatibility with DBAL
 All migration methods are based on DBAL functions, feel free to use same abstract types as in [direct schema declarations](/database/declaration.md).
+
+> Note that ORM component can create migrations automatically.
