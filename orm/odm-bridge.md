@@ -1,5 +1,5 @@
 # ODM Bridge
-Use module `spiral/hybrid-db` in order to create link to ODM models. Such approach can be used to store heave or unstructured data in a separate database.
+Use module `spiral/hybrid-db` in order to create link to ODM models. Such approach can be used to store heavy or unstructured data in a separate database.
 
 > Currently only Document::ONE relation is supported.
 
