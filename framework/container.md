@@ -326,4 +326,5 @@ $application = App::init([
 ], null, $container);
 ```
 
-> Note that container like that will not be available in your application directly thought `ContainerInterface` but rather composited inside of `Spiral\Core\ContainerInterface`.
+> Note that container like that will not be available in your application directly thought `ContainerInterface` but rather composited inside of `Spiral\Core\ContainerInterface`. Spiral container
+will work as auto-wiring layer at of your Pimple container.
