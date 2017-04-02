@@ -2,7 +2,7 @@
 Feel free to contribute to framework or components development. Please make sure that following requiments are satisfied before submitting your pull request:
 
 * PSR-2 and PSR-4
-* KISS/SOLID (reasonably)
+* KISS/SOLID
 * Your code must include tests
 
 > Make sure to create [forum topic](https://groups.google.com/forum/#!forum/spiral-framework) or issue prior to working on potential BC functionality or if you want to discuss design approach.
