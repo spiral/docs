@@ -78,7 +78,7 @@
     * [Server Configuration](storage/servers.md)
     * [Uploading Files](storage/uploading.md)
 * Database Layer (SQL)
-	* - [Overview](database/overview.md)
+	* [Overview](database/overview.md)
     * - [Databases and Drivers](database/databases.md)
     * - [Query Builders](database/buidlers.md)
     * [Schema Introspection](database/introspection.md)
