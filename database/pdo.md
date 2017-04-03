@@ -23,3 +23,10 @@ dump($statement);
 ```
 
 > Use [Query Builders](/database/builders.md) to let DBAL compile DBMS specific query for you.
+
+## Access PDO
+If you wish to access PDO instance associated with database use:
+
+```php
+dump($this->db->getDriver()->getPDO());
+```

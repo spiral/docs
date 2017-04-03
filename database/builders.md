@@ -1,14 +1,15 @@
 # Query Builders
-DBAL component include set of query b
+You can read how to work with Database using manually written queries [here](/database/pdo.md). 
+DBAL component includes set of QueryBuilders used to unify the way of working with different databases
+and simplify migration to different DBMS over the lifetime of application.
 
 ## Before we start
-Before we will start learning about different query builders let's try to create a table in our database first (we can use controller or command to do it quick, or create ORM entity which will scaffold needed schema automatically):
+In order to demonstrate query building abilities let's declare sample table in our default database first:
 
 ```php
 protected function indexAction(Database $database)
 {
-    $table = $database->table('test');
-    $schema = $table->schema();
+    $schema = $database->table('test')->getSchema();
     
     $schema->primary('id');
     $schema->datetime('time_created');
@@ -20,7 +21,7 @@ protected function indexAction(Database $database)
 }
 ```
 
-Once such table created, we can remove schema declaration and leave only table variable (instance `Spiral\Database\Entities\Table` or Table abstraction).
+> You can read more about declarative schemas [here](/database/declaration.md).
 
 ## Insert Builder
 To get an instance of InsertBuilder (responsible for insertions), we have to execute following code:
@@ -29,7 +30,7 @@ To get an instance of InsertBuilder (responsible for insertions), we have to exe
 $insert = $database->insert('test');
 ```
 
-As result we will get builder associated with our table. Now we can add some values to our builder to be inserted into related table:
+Now we can add some values to our builder to be inserted into related table:
 
 ```php
 $insert = $database->insert('test');
@@ -51,7 +52,7 @@ dump($insert->run());
 > You can also use fluent syntax: `$database->insert('table')->values(...)->run()`.
 
 ### Batch Insert
-In many cases you might want to insert multiple records at once, we can achieve such goal with insert builder by specifying set of columns and values separatelly:
+You add as many values into insert builder as your database can support:
 
 ```php
 $insert->columns(['time_created', 'name', 'email', 'balance']);
@@ -69,12 +70,12 @@ $insert->run();
 ```
 
 ### Quick Inserts
-You can simplify insertion process by talking directly to Table absraction you want to add data into, in this case our code may look like:
+You can skip InsertQuery creation by talking to your table directly:
 
 ```php
 $table = $database->table('test');
 
-dump($table->insert([
+dump($table->insertOne([
     'time_created' => new \DateTime(),
     'name'         => 'Anton',
     'email'        => 'test@email.com',
@@ -82,56 +83,55 @@ dump($table->insert([
 ]));
 ```
 
-> Table class will automatically run query and return last inserted id. You can also check `batchInsert` method of Table abstraction.
+> Table class will automatically run query and return last inserted id. You can also check `insertMultiple` method of Table.
 
 ## Select Query Builder
-SelectQuery builder can be retrieved two very similar ways, you can either get it from database or from table abstractions, let's try to show both examples (result are identical):
+SelectQuery builder can be retrieved two very similar ways, you can either get it from database or from table instances:
 
 ```php
 protected function indexAction(Database $database)
 {
-    $table = $database->table('test');
-
+    $select = $database->table('test')->select();
     $select = $database->select()->from('test');
-    $selectB = $table->select();
+    
+    //Alternative
+    $select = $database->test->select();
 }
 ```
 
-In our examples we will choose second appropach as it's shorter.
-
-### Configuring and Reading selection
+### Select Columns
 By default SelectQuery selects every column (`*`) from it's related table. We can always change set of requested columns using `columns` method.
 
 ```php
-$select->columns(['id', 'status', 'name']);
+$database->users->select()->columns('name')->fetchAll();
 ```
 
-Now, before jumping to where/having and other statements, let's figure out how to read data from our selection. DBAL component provides convinient `QueryResult` class which can help us to iterate thought result. We can receive such iterator either by calling `run()` method or by using `getIterator()` method. 
+You can use your select query as proper iterator or use `run` method which will return instance of `PDOStatement`: 
 
 ```php
-$iterator = $select->getIterator();
-foreach($iterator as $row) {
+foreach($select->getIterator() as $row) {
     dump($row);
 }
 ```
 
-In addition to that you can simply foreach over builder itself:
+To select all values as array use `fetchAll`:
 
 ```php
-foreach($select as $row) {
+foreach($select->fetchAll() as $row) {
     dump($row);
 }
 ```
 
-> You can add such code to your action to view data created by insertion.
-
-If you wish to preview SQL query generated by builder before executing it (after execution you can locate query in [Profiler](/modules/profiler.md) logging tab) you can retrieve it via `queryString()` method or by simply dumping builder object. For example you might notice that DBAL automatically assigned table prefix.
+You can always view what SQL is generated by your query by dumping it or via method `queryString`:
 
 ```dump
-dump($select->queryString());
+dump($database->users->select()->columns('name')->queryString());
 ```
 
-> Attention! This query string is interpolated with parameters, you should ONLY use it for debudding/analyzation reasons. If you wish to see non interpolated query which will be sent to database with it's parameters - exectute `sqlStatement()` method.
+> Attention, queryString method returns interpolated query (will inserted where values), do not use it run a query. You can access SQL with value placeholders using `sqlStatement` method.
+
+
+-----
 
 ### Where Statements
 Obvisously, no query can useful if we can not specify where conditions. SeletQuery builder provides us such ability by declaric set of methods to generate where statement: `where`, `andWhere`, `orWhere`. Where methods can accept different arguments based on condition you want to create, but first argument is always dedicated to table identifier (column), you must never use it for user data. 
