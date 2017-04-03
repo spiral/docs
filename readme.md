@@ -81,7 +81,7 @@
 	* [Overview](database/overview.md)
     * [Databases and Drivers](database/databases.md)
     * [PDO Queries](database/pdo.md)
-    * - [Query Builders](database/builders.md)
+    * [Query Builders](database/builders.md)
     * [Schema Introspection](database/introspection.md)
     * - [Schema Declaration](database/declaration.md)
     * [Migrations](database/migrations.md)

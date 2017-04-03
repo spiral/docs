@@ -85,7 +85,7 @@ dump($table->insertOne([
 
 > Table class will automatically run query and return last inserted id. You can also check `insertMultiple` method of Table.
 
-## Select Query Builder
+## SelectQuery Builder
 SelectQuery builder can be retrieved two very similar ways, you can either get it from database or from table instances:
 
 ```php
@@ -130,8 +130,6 @@ dump($database->users->select()->columns('name')->queryString());
 
 > Attention, queryString method returns interpolated query (will inserted where values), do not use it run a query. You can access SQL with value placeholders using `sqlStatement` method.
 
-
------
 
 ### Where Statements
 Add WHERE conditions to your query using `where`, `andWhere`, `orWhere` methods. 
@@ -693,19 +691,21 @@ GROUP BY `status`
 ```
 
 ### Aggregations and Count
+Since you can manipulate with selected columns including COUNT and other aggregation functions into your query might look like:
 
-Separatelly from grouping and distinct you can use simplified aggregations which does not require you fetching result, one of them if `count`, which for many reasons will be used a lot in your application. To get result of such aggregation we only need to call method `count()`:
+```php
+$select = $database->table('test')->select(['COUNT(*)']);
+```
+
+Though, in many cases you want to get query count or summarize results without column manipulations, 
+use `count`, `avg`, `sum`, `max` and `min` methods to do that:
 
 ```php
 $select = $database->table('test')->select(['id', 'name', 'status']);
 
 dump($select->count());
-foreach ($select as $row) {
-    dump($row);
-}
+dump($select->sum('balance'));
 ```
-
-In this scenariou system will generate two separate SQL queries:
 
 ```sql
 SELECT
@@ -713,45 +713,27 @@ COUNT(*)
 FROM `primary_test`;
 
 SELECT
-`id`, `name`, `status`
+SUM(`balance`)
 FROM `primary_test`;
 ```
 
-> You can also provide column name to be counted by.
-
-Similar to `count()` SelectBuilder defines few additional methods you can use to calculate basic aggregations: `AVG`, `MAX`, `MIN` and `SUM`. You must only provide column name or expression to run aggregation by:
-
-```php
-dump($database->table('test')->sum('id'));
-dump($database->table('test')->where('id', '<', 100)->max('id*10'));
-```
-
-
-//----- START HERE
-
-
 ### Pagination
-When you working with big datasets you might want to limit amount of records to be returned, to do that you can use two simple SelectQuery methods: `limit` and `offset`
+You can paginate your query using methods `limit` and `offset`:
 
 ```php
 $select = $database->table('test')->select(['id', 'name', 'status']);
-
 $select->limit(10)->offset(1);
-
-//Please note result of this method
-dump($select->count());
 foreach ($select as $row) {
     dump($row);
 }
 ```
 
-> Please note that count method will ignore specified LIMIT and OFFSET values by default (spiral will grant you additional parameter to avoid that in future).
-
-However, there is very small chance that you going to work with `limit` and `offset` directly in your code as spiral provides much more convinient way - [Pagination] (/components/pagination.md). You can read pagination details in related section, hovewer let's try to modify our example to limit amount of results as 10 per page:
+In addition, SelectQuery support [Pagination](/components/pagination.md) component and makes you able to manipulate with results easier:
 
 ```php
 $select = $database->table('test')->select(['id', 'name', 'status']);
 
+//Uses "page" query value of active request
 $select->paginate(10);
 
 foreach ($select as $row) {
@@ -759,10 +741,8 @@ foreach ($select as $row) {
 }
 ```
 
-> You can change query parameter "page" in your website to iterate thought set.
-
-## Update Query Builder
-UpdateQuery builder as it states from it's name used to update specified records in table based on provided values and where conditions (set of where methods are identical to SelectQuery builder). We only have to execute `run()` method of our builder when we ready to perform query.
+## UpdateQuery Builder
+Use "update" method of your table or database instance to get access to UpdateQuery builder, call `run` method of such query to execute result:
 
 ```php
 $update = $database->table('test')->update([
@@ -772,25 +752,21 @@ $update = $database->table('test')->update([
 $update->where('id', '<', 10)->run();
 ```
 
-Generated SQL (for MySQL) looks like:
-
 ```sql
 UPDATE `primary_test`
-SET `name` = 'Anb'
+SET `name` = 'Abc'
 WHERE `id` < 10
 ```
 
-As in cases with InsertQuery you can use `SQLExpressions` and `SQLFragments` as update values:
+You can use `Expression` and `Fragment` instances in your update values:
 
 ```php
 $update = $database->table('test')->update([
-    'name' => new SQLExpression('UPPER(test.name)')
+    'name' => new Expression('UPPER(test.name)')
 ]);
 
 $update->where('id', '<', 10)->run();
 ```
-
-Result:
 
 ```sql
 UPDATE `primary_test`
@@ -798,7 +774,7 @@ SET `name` = UPPER(`primary_test`.`name`)
 WHERE `id` < 10
 ```
 
-You can also use nested queries:
+Nested queries are also supported:
 
 ```php
 $update = $database->table('test')->update([
@@ -807,8 +783,6 @@ $update = $database->table('test')->update([
 
 $update->where('id', '<', 10)->run();
 ```
-
-Related SQL:
 
 ```sql
 UPDATE `primary_test`
@@ -819,8 +793,10 @@ WHERE `id` = 1)
 WHERE `id` < 10 
 ```
 
-## Delete Query Builders
-DeleteQuery builder is probably the simpliest builder you can quess, you should only specify table you want to delete data from and set of where conditions in a same form as for select and update builders. You can access delete builder using Database or Table instances.
+> Where methods work identically as in SelectQuery.
+
+## DeleteQuery Builders
+Delete queries are represent by DeleteQuery accessible via "delete" method:
 
 ```php
 $database->table('test')->delete()->where('id', '<', 1000)->run();
@@ -833,8 +809,3 @@ $database->table('test')->delete([
     'id' => ['>' => 1000]
 ])->run();
 ```
-
-## Why do we need query builders?
-QueryBuilders (especially all this weird where statements) can seem useless as we still can write our queries in plain SQL, hovewer they will simplify your life a lot once you will start working with different DBMS or databases with non empty table prefix (isolation) and especially with ORM and pre-loading relations.
-
-However, it's still the best to learn SQL as good as you can and check queries generated by Spiral in profiler logging tab to make sure that system is not fooling you.
