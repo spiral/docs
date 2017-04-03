@@ -12,7 +12,7 @@ Spiral\ORM\RelationInterface | Used to represent loaded data in parent entity.
 Spiral\ORM\Schemas\RelationInterface | Used to compile ORM schema, declared needed columns and FKs.
 Spiral\ORM\LoaderInterface | Configures RecordSelector based on relation options and JOIN needed tables
 
-Once your relation is implemented you can register in in schemas/relations config based on desired name:
+Once your relation is implemented you can register it in schemas/relations config based on desired name:
 
 ```php
 'customRelation'  => [
