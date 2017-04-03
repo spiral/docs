@@ -54,7 +54,7 @@ Use translator config to associate this bundle with messages domain:
 ```
 
 ## Class messages
-In cases where message is defined by logic and can not be indexes use constants and/or properties
+In cases where message is defined by logic and can not be indexed use constants and/or properties
 to declare class messages, every string wrapped with `[[]]` will be automatically indexed.
 
 ```php
