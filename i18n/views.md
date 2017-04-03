@@ -12,7 +12,7 @@ with twig and stempler templates, wrap your string with `[[]]` to automatically 
 
 > Attention, translation process of your view file will happen at moment of view compilation and use different cache versions for different locales, you not limited in performance so translate as much text in your views as you want. See [Views and Engines](/views/overview.md)
 
-Include processor as modifier to your engine to capture strings in relation to original view file,
+Include processor as **modifier** to your engine to capture strings in relation to original view file,
 not composed one:
 
 ```php
