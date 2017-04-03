@@ -97,7 +97,7 @@
 	* [Static Relations](orm/late-binding.md)
 	* [ODM Bridge](orm/odm-bridge.md)
 	* [Recursive Relations](orm/recursive-relations.md)
-	* - [Custom Relations](orm/custom-relations.md)
+	* [Custom Relations](orm/custom-relations.md)
 * ODM Engine (MongoDB)
 	* - [Overview](odm/overview.md)
 	* - [Documents and Databases](odm/entities.md)
