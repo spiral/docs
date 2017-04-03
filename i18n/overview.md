@@ -153,12 +153,6 @@ class LocaleDetector extends Service implements MiddlewareInterface
      */
     public function __invoke(Request $request, Response $response, callable $next)
     {
-        try {
-            return $next($request, $response);
-        } catch (\DomainException $e) {
-            throw new ServerErrorException($e->getMessage());
-        }
-
         $supported = $this->translator->getLocales();
 
         foreach ($this->fetchLocales($request) as $locale) {
