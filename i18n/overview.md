@@ -104,7 +104,7 @@ Inside your locale directory you only need to place domain specific localization
 ],
 ```
 
-## Export Locate
+## Export locale
 One of the most important parts of any translation process is actual translation, let's try to export our locale messages in a user friendly format using command `i18n:dump`:
 
 ```
