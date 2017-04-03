@@ -37,7 +37,7 @@ const SCHEMA = [
 > You are to link you relations to any desired model, even outside of ORM.
 
 ## Eager Loading
-ORM engine converts your related data into tree using combination of `LoaderInterface` and set of tree Node classes.
+ORM engine converts your related data into tree using combination of `LoaderInterface` and set of tree Node classes before pushing it into your models.
 
 > Note that all loaders are initiated using ORM specific container (usually global application container), this makes you able to request external dependencies needed to load your data.
 
