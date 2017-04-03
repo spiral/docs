@@ -1,13 +1,17 @@
-
+# Working with Databases
+Follow configuration instructions [here](/database/overview.md).
 
 ## Access the Database
-After we make sure that Spiral can talk to our databases, we can start working with our component. The first step will be to get an instance of Database. We can do this first by getting an instance of `DatabasesInterface` or `DatabaseManager` (provider). Database component can also be retrieved using the short binding "dbal" (avaiable in application services including controllers and commands).
+Once DBAL component is configured properly you can access your databases in controllers and services multiple ways:
 
 ```php
 protected function indexAction(DatabaseManager $dbal)
 {
     //Default database
     dump($dbal->db());
+    
+    //Default database over shortcut
+    dump($this->db);
 
     //Using alias default which points to primary database
     dump($dbal->db('default'));
@@ -21,7 +25,7 @@ protected function indexAction(DatabaseManager $dbal)
 ```
 
 ### Controllable Injections
-You might remember the one specific feature of [Spiral IoC container] (/framework/container.md) - controllable injections. This feature lets us resolve the dependency in constructor and method injections based on a context parameter. The Database component supports this feature and uses the parameter name to resolve the database. This simplifies our code and makes it possible to write controller actions (or init methods, or constructors) such as:
+DBAL component fully support [controllable injections](/framework/container.md) based on database name and their aliases:
 
 ```php
 protected function indexAction(Database $database, Database $primary, Database $slave)
@@ -34,4 +38,32 @@ protected function indexAction(Database $database, Database $primary, Database $
 }
 ```
 
-> As result we can add a touch of magic to our code but make it much more readable. As you can see, aliases play a big role here because you can use them to create different variable names based on context.
+### Create Databases in Runtime
+If you wish to create database manually use `addDatabase` method of DatabaseManager component:
+
+```php
+$this->dbal->createDatabase('new', 'prefix_', 'mysql');
+```
+
+You can also push database using existed instance:
+
+```php
+$this->dbal->addDatabase(new Database(
+    $this->dbal->driver('mysql'),
+    'name',
+    'prefix_'
+));
+```
+
+## Create Connections in Runtime
+Same way you can create one or more connections without need to alter configuration:
+
+```php
+$this->dbal->createDriver(
+    'mysql-connection',
+    MySQLDriver::class,
+    'mysql:host=127.0.0.1;dbname=mydb',
+    'username',
+    'password'
+);
+```
