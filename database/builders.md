@@ -1,5 +1,5 @@
 # Query Builders
-As many other DB layers spiral provide way to construct basic SQL queries using set of generation classes. Such classes support fluent syntax which simplifies their usage in everyday applications.
+DBAL component include set of query b
 
 ## Before we start
 Before we will start learning about different query builders let's try to create a table in our database first (we can use controller or command to do it quick, or create ORM entity which will scaffold needed schema automatically):

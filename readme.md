@@ -80,6 +80,7 @@
 * Database Layer (SQL)
 	* [Overview](database/overview.md)
     * [Databases and Drivers](database/databases.md)
+    * [PDO Queries](database/pdo.md)
     * - [Query Builders](database/buidlers.md)
     * [Schema Introspection](database/introspection.md)
     * - [Schema Declaration](database/declaration.md)
