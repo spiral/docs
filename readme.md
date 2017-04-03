@@ -3,7 +3,7 @@
 
 * Overview
 	* [Installation and Configuration](installation.md)
-	* [Contributions](contributing.md)
+	* [Contribute](contributing.md)
 	* [Forum](https://groups.google.com/forum/#!forum/spiral-framework)
 	* [License](license.md)  	
 * Framework

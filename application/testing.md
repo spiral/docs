@@ -64,6 +64,25 @@ class IndexTest extends HttpTest
 }
 ```
 
+## Mock Services
+To manipulate with application services while testing simply bind any specific interface, binding or class to your mock object:
+
+```php
+$this->app->container->bind(MyService::class, $myServiceMock);
+
+//...
+```
+
+## Test Bootloaders
+In order to replace application bootloaders list in your tests create App child with desired value:
+
+```php
+class TestApplication extends App
+{
+    const LOAD = []; //Bootloads nothing, manual initialization is required
+}
+```
+
 ## Prepare Environment
 If you wish to test your application on clean database in each of your test cases - call needed setup commands in your `setUp` method:
 
