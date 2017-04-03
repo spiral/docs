@@ -63,7 +63,7 @@ Scanning Translatable classes...
 [Indexer] Found [validation]: 'Condition '{condition}' does not meet.'
 ```
 
-> All found string will be places into proper domain based on your config settings.
+> All found string will be placed into proper domain based on your config settings.
 
 By default all found strings will be stored in default locale, to export them into different language
 use:
