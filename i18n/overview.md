@@ -1,5 +1,5 @@
 # Translator
-Spiral Translate component utilizes Symfony\Translation interface and message formatter but simplifies logic of how locale and domains work.
+Spiral Translate component utilizes Symfony\Translation interface and message formatter but changes the logic of how locale and domains work.
 
 ## Translator Interface
 
