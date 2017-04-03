@@ -33,7 +33,7 @@ interface TranslatorInterface extends \Symfony\Component\Translation\TranslatorI
 The biggest implementation difference is located in how spiral process fallback locales and domains.
 
 First of all there is only one fallback locale per translation (by default 'en'), 
-secondly spiral helps to route multiple "bundles" into one domain (see below).
+secondly spiral helps to route multiple "bundles" into one domain (sub namespaces).
 
 ## Usage
 Classical usage of TranslatorInterface might looks like:
