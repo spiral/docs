@@ -74,4 +74,4 @@ Dump successfully completed using Symfony\Component\Translation\Dumper\PoFileDum
 Output directory:/var/www/spiral.dev/russian
 ```
 
-> You can index your views by simply compiling them.
+> You can index your views by compiling them.
