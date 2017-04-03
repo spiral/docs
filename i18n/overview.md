@@ -46,7 +46,7 @@ public function indexAction(TranslatorInterface $translator)
 }
 ```
 
-You can also use `transChoice` method of translator same way as it was designed in original interface: 
+You can also use `transChoice` method of translator, same way as it was designed in original interface: 
 
 ```php
 public function indexAction(TranslatorInterface $translator)
