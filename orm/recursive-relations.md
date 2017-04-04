@@ -1,5 +1,5 @@
 # Recursive Relations
-Spiral ORM and loading mechanism does not limit you in how to build your hierarchies, though it is important to remember based aspects of how to work with such models.
+Spiral ORM and loading mechanism does not limit you in how to build your hierarchies, though it is important to remember basic aspects of how to work with such models.
 
 ## Sample Model
 We can define model which belongs to itself following way:
