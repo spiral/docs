@@ -90,7 +90,7 @@
 * ORM Engine
 	* - [Overview](orm/overview.md)
 	* - [Record and RecordEntity](orm/entities.md)
-	* - [Repositories and Selectors](orm/repositories.md)
+	* [Repositories and Selectors](orm/repositories.md)
 	* [Columns](orm/columns.md)
 	* [Scaffolding and Migrations](orm/scaffolding.md)
 	* [Transactions and Commands](orm/transactions.md)
