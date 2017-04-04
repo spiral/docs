@@ -43,7 +43,7 @@
 	* [Logging](debug/logging.md)
  	* [Profiling](debug/profiling.md)
 	* [Error Handling](debug/errors.md)
-    * [Dump your Data](debug/dumps.md)
+    * [Dump your data](debug/dumps.md)
 * Common Components
    	* [Files](components/files.md)
    	* [Encryption](components/encrypter.md)
