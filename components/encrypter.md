@@ -68,3 +68,5 @@ protected function indexAction(EncrypterInterface $encrypter)
 
 }
 ```
+
+> Run `app:key` to change your application key.
