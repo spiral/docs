@@ -527,38 +527,6 @@ $user->time_registered = 'next friday 10am';
 
 > Attentio, the DBAL will convert and fetch all dates using UTC timezone!
 
-#### Atomic Number
-Field accessors in ORM not only provide mocking functionality but declare the update behaviours. One of these accessors can be very useful to manage the numeric values in an "atomic" way. Let's see this accessor in action. First, we have to declare it in our Record model and then update the schema after:
-
-```php
-protected $accessors = [
-    'balance' => AtomicNumber::class
-];
-```
-
-Now we can manipulate the field values using deltas:
-
-```php
-$user = User::findByPK(1);
-$user->balance->inc(1.6);
-
-if (!$user->save()) {
-    dump($user->getErrors());
-}
-```
-
-> You can use the accessor method `setData` to specify the new balance value without deltas. Use `serializeData()` to get the mocked accessor value.
-
-The whole point of solid state and such accessor is described using the resulting update statement:
-
-```sql
-UPDATE "primary_users"
-SET "balance" = "balance" + 1.6
-WHERE "id" = 1
-```
-
-> You can create your own accessors by implementing `RecordAccessorInterface`. Also check out the [JsonDocument] (/odm/standalone.md) accessor.
-
 ## Delete Records
 You can delete any existing Record by executing it's method "delete". 
 

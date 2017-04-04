@@ -113,7 +113,7 @@
 	* - [User Authorization](modules/auth.md)
 	* - [Vault Core](modules/vault.md)
 	* - [Toolkit](modules/toolkit.md)
-	* - [Scaffolder](modules/scaffolder.md)
+	* [Scaffolder](modules/scaffolder.md)
 	* - [IDE helper](modules/ide-helper.md)
 	* - [Cache Bridges](modules/cache.md)
 
