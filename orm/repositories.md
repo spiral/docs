@@ -45,7 +45,7 @@ $user = $users->findOne(['name' => 'Antony']);
 Method `find` of your Repository will return entity specific `RecordSelector` which can be used as QueryBuilder:
 
 ```php
-$users = $userRepository->find()->where('name', 'Antony')->paginate(10)->fetchAll();
+$users = $users->find()->where('name', 'Antony')->paginate(10)->fetchAll();
 ```
 
 ### Custom find methods 
@@ -71,8 +71,8 @@ public function findAuthors(): RecordSelector
 In some cases you might want to set base query for all of your find method. You can do it in your repository constructor or use public method `withSelector`:
 
 ```php
-$deletedUsersRepository = $usersRepository->withSelector(
-    $usersRepository->find(['status' => 'deleted'])
+$deletedUsers = $users->withSelector(
+    $users->find(['status' => 'deleted'])
 );
 ```
 
