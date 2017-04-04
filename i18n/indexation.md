@@ -1,6 +1,6 @@
 # Translator
 The Translator component simplify the way how you can work with your locates. You do not need to manually
-register every used i18n string, but rather analyze your project. 
+register every used i18n string, but rather index your project files. 
 
 What can be indexed:
 * Invocations of `l` and `p` methods
@@ -63,7 +63,7 @@ Scanning Translatable classes...
 [Indexer] Found [validation]: 'Condition '{condition}' does not meet.'
 ```
 
-> All found string will be places into proper domain based on your config settings.
+> All found string will be placed into proper domain based on your config settings.
 
 By default all found strings will be stored in default locale, to export them into different language
 use:
@@ -74,4 +74,4 @@ Dump successfully completed using Symfony\Component\Translation\Dumper\PoFileDum
 Output directory:/var/www/spiral.dev/russian
 ```
 
-> You can index your views by simply compiling them.
+> You can index your views by compiling them.

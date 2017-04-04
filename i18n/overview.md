@@ -1,5 +1,5 @@
 # Translator
-Spiral Translate component utilizes Symfony\Translation interface and message formatter but simplifies logic of how locale and domains work.
+Spiral Translate component utilizes Symfony\Translation interface and message formatter but changes the logic of how locale and domains work.
 
 ## Translator Interface
 
@@ -30,10 +30,9 @@ interface TranslatorInterface extends \Symfony\Component\Translation\TranslatorI
 }
 ```
 
-The biggest implementation difference is located in how spiral process fallback locales and domains.
-
-First of all there is only one fallback locale per translation (by default 'en'), 
-secondly spiral helps to route multiple "bundles" into one domain (see below).
+The main implementation difference is how spiral process fallback locales and domains: 
+- there is only one fallback locale per translation (by default 'en')
+- spiral helps to route multiple "bundles" into one domain (sub namespaces)
 
 ## Usage
 Classical usage of TranslatorInterface might looks like:
@@ -47,7 +46,7 @@ public function indexAction(TranslatorInterface $translator)
 }
 ```
 
-You can also use `transChoice` method of translator same way as it was designed in original interface: 
+You can also use `transChoice` method of translator, same way as it was designed in original interface: 
 
 ```php
 public function indexAction(TranslatorInterface $translator)
@@ -104,7 +103,7 @@ Inside your locale directory you only need to place domain specific localization
 ],
 ```
 
-## Export Locate
+## Export locale
 One of the most important parts of any translation process is actual translation, let's try to export our locale messages in a user friendly format using command `i18n:dump`:
 
 ```
@@ -154,12 +153,6 @@ class LocaleDetector extends Service implements MiddlewareInterface
      */
     public function __invoke(Request $request, Response $response, callable $next)
     {
-        try {
-            return $next($request, $response);
-        } catch (\DomainException $e) {
-            throw new ServerErrorException($e->getMessage());
-        }
-
         $supported = $this->translator->getLocales();
 
         foreach ($this->fetchLocales($request) as $locale) {
