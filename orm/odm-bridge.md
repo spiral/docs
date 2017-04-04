@@ -42,11 +42,8 @@ You can use your photo model `metadata` field as for usual ORM relations:
 $photo = $this->orm->make(Photo::class);
 $photo->filesize = 100;
 $photo->filename = 'filename';
-$photo->metadata = $this->odm->make(IPTCMetadata::class, [
-    'keywords' => ['metadata', 'keyword'],
-    'iptc'     => [
-        'some' => 'value'
-    ]
+$photo->metadata = $this->odm->make(Metadata::class, [
+    'keywords' => ['metadata', 'keyword']
 ]);
 $photo->save();
 ```
