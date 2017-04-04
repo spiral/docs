@@ -65,7 +65,6 @@ protected function indexAction(EncrypterInterface $encrypter)
 
     dump($payload = $encrypter->encrypt(['abc']));
     dump($this->encrypter->decrypt($payload));
-
 }
 ```
 
