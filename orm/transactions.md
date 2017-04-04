@@ -112,7 +112,7 @@ $tr->save();
 ```
 
 ## Transaction Scope
-Though, it is recommended to use proper UnitOfWork implementation you are able to use transaction and common command aggregator for your application. In order to do that, we can create middleware used to define transaction scope:
+Though, it is recommended to use proper UnitOfWork implementation you are able to use transaction as common command aggregator for your application. In order to do that, we can create middleware used to define transaction scope:
 
 ```php
 class TransactionMiddleware extends Service implements MiddlewareInterface
