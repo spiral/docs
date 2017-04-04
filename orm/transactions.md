@@ -135,7 +135,7 @@ class TransactionMiddleware extends Service implements MiddlewareInterface
 
 > Do not forget to add middleware into http config or desired route.
 
-We can now request our transaction using dependency or shortcut (if you have any):
+We can now request transaction instance using dependency or shortcut (if you have any):
 
 ```php
 protected function indexAction(Transaction $transaction)
@@ -144,6 +144,8 @@ protected function indexAction(Transaction $transaction)
     $user->name = 'Antony';
 
     $transaction->store($user);
+    
+    //No 'run' call here
 }
 ```
 
