@@ -20,8 +20,7 @@ ORM include base type for enum columns with associated accessor - `EnumColumn`. 
 ```php
 class UserStatus extends EnumColumn
 {
-    const VALUES = ['active', 'blocked'];
-    
+    const VALUES = ['active', 'blocked'];  
     const DEFAULT = 'active';
 }
 ```
@@ -40,6 +39,21 @@ class User extends RecordEntity
 ```
 
 You can define your own method in such columns to be used as accessors later:
+
+```php
+class UserStatus extends EnumColumn
+{
+    const VALUES = ['active', 'blocked'];  
+    const DEFAULT = 'active';
+    
+    public function isBlocked(): bool
+    {
+        return $this->packValue() == 'blocked';
+    }
+    
+    //...
+}
+```
 
 ```php
 if($user->status->isBlocked()) {
