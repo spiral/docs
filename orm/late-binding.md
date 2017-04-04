@@ -1,4 +1,4 @@
-# Static Relations, Relate to Interfaces
+# Pre-Compiled Relations, Relate to Interfaces
 Due nature of ORM component and the way how it pre-compiles your schema, you can relate your entities
 to external `RecordInterface` compatible modules using interfaces and roles instead of concrete implementation.
 
