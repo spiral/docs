@@ -82,7 +82,7 @@
     * [Databases and Drivers](database/databases.md)
     * [PDO Queries](database/pdo.md)
     * [Query Builders](database/builders.md)
-    * - [Transactions](database/transactions.md)
+    * [Transactions](database/transactions.md)
     * [Schema Introspection](database/introspection.md)
     * - [Schema Declaration](database/declaration.md)
     * [Migrations](database/migrations.md)
