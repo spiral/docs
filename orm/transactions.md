@@ -94,6 +94,8 @@ $user->save($transaction);
 $transaction->run();
 ```
 
+> Same is true for `delete` method.
+
 ## Multiple Commands
 Spiral Record and RecordEntity models support ability to snapshot model data and state for each save operation:
 
