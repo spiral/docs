@@ -1,13 +1,11 @@
 # Pre-Compiled Relations, Relate to Interfaces
 Due nature of ORM component and the way how it pre-compiles your schema, you can relate your entities
-to external `RecordInterface` compatible modules using interfaces and roles instead of concrete implementation.
-
-Such approach will work for any of your relation types and provides the most use in your modules.
+to external models using interface instead of class name.
 
 > Attention, do not confuse with [Morphed relations](/orm/morphed.md)!
 
 ## Example
-We can demonstrate such functionality by relating our `Post` model to an User using UserInterface:
+We can demonstrate such functionality by relating our `Post` model to an `User` using `UserInterface`:
 
 ```php
 class User extends Record implements UserInterface
@@ -44,6 +42,10 @@ You must always declare `LATE_BINGING` option in your relation to indicate inter
 
 > Other relation options are still allowed.
 
+Now, while updating your schema ORM will locate proper implementation and link it to our relation.
+
+> Note that you can relate only one model type to reation, when morphed relations can point to multiple model classes.
+
 ## Relate to roles
 In some cases you might want to relate to an role instead of interface, this can be achieved using same practice:
 
@@ -61,7 +63,3 @@ class Post extends Record
     ];
 }
 ```
-
-## Verification
-Note, that ORM will not allow you to create interface relation when such interface is implemented by
-multiple classes!
