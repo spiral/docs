@@ -12,7 +12,7 @@ $payment->amount = $amount;
 $user->balance -= $amount;
 ```
 
-We can store this records inside one transaction:
+To store this records inside one transaction:
 
 ```php
 $transaction = new Transaction();
