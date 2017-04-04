@@ -93,7 +93,7 @@
 	* - [Repositories and Selectors](orm/repositories.md)
 	* [Columns](orm/columns.md)
 	* [Scaffolding and Migrations](orm/scaffolding.md)
-	* - [Transactions and Commands](orm/transactions.md)
+	* [Transactions and Commands](orm/transactions.md)
 	* - [Relations](orm/relations.md)
 	* - [Morphed Relations](orm/morphed-relations.md)
 	* [Pre-compiled Relations](orm/late-binding.md)
