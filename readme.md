@@ -97,7 +97,7 @@
 	* - [Relations](orm/relations.md)
 	* - [Morphed Relations](orm/morphed-relations.md)
 	* [Pre-compiled Relations](orm/late-binding.md)
-	* - [Query Models](orm/query.md)
+	* [Query Models](orm/query.md)
 	* [Eager loading](orm/loading.md)
 	* [Recursive Relations](orm/recursive-relations.md)
 	* [Hybrid Databases](orm/odm-bridge.md)
