@@ -27,6 +27,7 @@ Where:
 class Metadata extends Document
 {
     const SCHEMA = [
+        '_id'=>'MongoId',
         'photo_id' => 'int',
         'keywords' => ['string'],
     ];
