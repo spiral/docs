@@ -91,7 +91,7 @@
 	* - [Overview](orm/overview.md)
 	* - [Record and RecordEntity](orm/entities.md)
 	* [Repositories and Selectors](orm/repositories.md)
-	* [Columns and Types](orm/columns.md)
+	* [Columns and Type objects](orm/columns.md)
 	* [Scaffolding and Migrations](orm/scaffolding.md)
 	* [Transactions and Commands](orm/transactions.md)
 	* - [Relations](orm/relations.md)
