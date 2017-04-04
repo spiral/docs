@@ -92,7 +92,7 @@
 	* - [Record and RecordEntity](orm/entities.md)
 	* - [Columns](orm/columns.md)
 	* - [Scaffolding and Migrations](orm/scaffolding.md)
-	* - [Transactions](orm/transactions.md)
+	* - [Transactions and Commands](orm/transactions.md)
 	* - [Repositories and Selectors](orm/repositories.md)
 	* - [Relations](orm/relations.md)
 	* - [Eager loading and Entity map](orm/loading.md)
