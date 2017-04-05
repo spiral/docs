@@ -19,7 +19,7 @@ ORM is capable of schema generation, multiple data carry mechanisms and support 
 	* [Custom Relations](/orm/custom-relations.md)
 
 ## ActiveRecord vs DataMapper
-Spiral ORM uses features specific to both AR and DataMapper approach, though, at this moment there is no native support to map data to pure php objects. 
+Spiral ORM uses features specific to both AR and DataMapper approach, though, at this moment there is no native support to map data to pure php objects (see `RecordInterface`). 
 
 Consider using Doctrine or writing your own hydration using `RecordSelector` `fetchData` method and existed relation loaders. 
 
