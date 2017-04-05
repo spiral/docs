@@ -26,7 +26,7 @@ class User extends Record
 You can specify default values and relations to other records at this step.
 
 ## Update Schema
-Now, we have to tell ORM to register our class in schems, we can do it using `orm:schema` command or `update` command:
+Now, we have to tell ORM to register our class in schemas, we can do it using `orm:schema` command or `update` command:
 
 ```
 > spiral orm:schema -vv
@@ -95,7 +95,7 @@ class MigrationOrm9d14973b extends Spiral\Migrations\Migration
 
 Execute migration using `migrate` command and now you ready to work with your database.
 
-> Use `spiral orm:schema -m && spiral migrate` to quickly model changes to your database.
+> Use `spiral orm:schema -m && spiral migrate` to quickly push changes to your database.
 
 ## Alter schema
 You are able to add or delete columns from your records at any moment:
