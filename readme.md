@@ -89,8 +89,9 @@
     * [Errata](database/errata.md)
 * ORM Engine
 	* - [Overview](orm/overview.md)
-	* - [Record and RecordEntity](orm/entities.md)
+	* [Record and RecordEntity](orm/entities.md)
 	* [Repositories and Selectors](orm/repositories.md)
+	* - [Accessors and Filters](orm/accessors.md)
 	* [Column Objects](orm/columns.md)
 	* [Scaffolding and Migrations](orm/scaffolding.md)
 	* [Transactions](orm/transactions.md)

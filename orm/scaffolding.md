@@ -96,3 +96,20 @@ class MigrationOrm9d14973b extends Spiral\Migrations\Migration
 Execute migration using `migrate` command and now you ready to work with your database.
 
 > Use `spiral orm:schema -m && spiral migrate` to quickly model changes to your database.
+
+## Alter schema
+You are able to add or delete columns from your records at any moment:
+
+```php
+const SCHEMA = [
+    'id'     => 'primary',
+    'name'   => 'string(64)',
+    'email'  => 'string',
+    'status' => 'enum(active,blocked)',
+    'balance' => 'decimal(10,2)'
+];
+```
+
+Run `spiral orm:schema -m` to generate migration needed to alter your database schema.
+
+> Attention, ORM will delete column from table schema if column are removed from record schema.

@@ -41,6 +41,20 @@ Use methods `findByPK`, `findOne` and `find` to load entities from database:
 $user = $users->findOne(['name' => 'Antony']);
 ```
 
+### FindByPK
+Use method `findByPK` to select entity using id:
+
+```php
+protected function indexAction(string $id, UsersRepository $users)
+{
+    if (empty($user = $users->findByPK((int)$id))) {
+        throw new NotFoundException('No such user');
+    }
+
+    dump($user);
+}
+```
+
 ## RecordSelector
 Method `find` of your Repository will return entity specific `RecordSelector` which can be used as QueryBuilder:
 
