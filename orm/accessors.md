@@ -1,25 +1,35 @@
+# Accessors and Filters
+To automatically typecast your value into specific format use DataEntity getters, setters and accessors.
 
-#### Filters and Accessors
-You can define setters, getters and accessors the same way you would do for `DataEntity`. However, the spiral ORM can automatically assign some getters and accessors to your record based on column type. You can check what filters will be created by default by looking into the ORM configuration file:
+## Filters and Accessors
+ORM engine can automatically associate setter, getter or accessor to your entity fields based on database type, check `schemas/records` config to locate such mapping:
 
 ```php
-'mutators'       => [
-    'timestamp'  => ['accessor' => Accessors\ORMTimestamp::class],
-    'datetime'   => ['accessor' => Accessors\ORMTimestamp::class],
+'mutators' => [
+    'timestamp'  => ['accessor' => Accessors\SqlTimestamp::class],
+    'datetime'   => ['accessor' => Accessors\SqlTimestamp::class],
     'php:int'    => ['setter' => 'intval', 'getter' => 'intval'],
     'php:float'  => ['setter' => 'floatval', 'getter' => 'floatval'],
     'php:string' => ['setter' => 'strval'],
-    'php:bool'   => ['setter' => 'boolval', 'getter' => 'boolval']
+    'php:bool'   => ['setter' => 'boolval', 'getter' => 'boolval'],
+    /*{{mutators}}*/
 ],
 ```
 
-As you can see, ORM will make sure that every column is a valid type casted into a scalar value while reading (this can be very useful since some DBMS will return the column values as strings only).
-
-#### Timestamps Accessor
-Based on the provided configuration, you may notice that the ORM will assign the `ORMTimestamp` accessor to every timestamp or datetime field. Let's try to add this field into our table (again, lets avoid using timestamps):
+## Custom Filters
+To associate filter with entity value use constants `SETTERS` and `GETTERS`:
 
 ```php
-protected $schema = [
+const SETTERS = [
+    'name' => 'ucfirst'
+];
+```
+
+## Timestamps Accessor
+ORM includes pre-defined accessor to help you manage `datetime` fields with respect of database timezone: 
+
+```php
+const SCHEMA = [
     'id'              => 'primary',
     'time_registered' => 'datetime',
     'name'            => 'string(64)',
@@ -29,20 +39,16 @@ protected $schema = [
 ];
 ```
 
-After the schema updates, we can use that field as a [Carbon] (https://github.com/briannesbitt/Carbon) instance.
-
 ```php
 protected function indexAction()
 {
-    $user = User::findByPK(1);
+    $user = new User();
     $user->name = 'New Name';
 
     $user->time_registered->setDateTime(2015, 1, 1, 12, 0, 0);
     dump($user->time_registered);
 
-    if (!$user->solidState(true)->save()) {
-        dump($user->getErrors());
-    }
+    $user->save();
 }
 ```
 
@@ -52,4 +58,4 @@ You can also simply assign the time to a `time_registered` field. An accessor mu
 $user->time_registered = 'next friday 10am';
 ```
 
-> Attentio, the DBAL will convert and fetch all dates using UTC timezone!
+> DateTime will be automatically converted into DB specific timezone (UTC by default).
