@@ -88,7 +88,7 @@
     * [Migrations](database/migrations.md)
     * [Errata](database/errata.md)
 * ORM Engine
-	* - [Overview](orm/overview.md)
+	* [Overview](orm/overview.md)
 	* [Record and RecordEntity](orm/entities.md)
 	* [Repositories and Selectors](orm/repositories.md)
 	* - [Accessors and Filters](orm/accessors.md)
