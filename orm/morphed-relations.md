@@ -1,39 +1,21 @@
+## Morphed Relations
+In some rare cases you might want to link your models to undefined target, use set of morphed relations and common interface for such purposes.
 
-#### Belongs To Morphed
-Spiral ORM provides another relation type very similar to BELONGS_TO - BELONGS_TO_MORPHED. This relation gives ability to assign model to various parents based on morph key value. Morphed relations can be declared exacly same wasy a BELONGS_TO, however you must link your relation to an **interface** rather than specific model.
+> You are not able to pre-load morphed relations.
 
-> Disclaimer: polymorphic relations must be used only when you absolutelly sure about it, avoid using BELONGS_TO_MORPHED as much as you can. 
-> Fyi, you are not able to pre-load morphed relations.
+## Belongs To Morphed
+BELONGS_TO_MORPHED relation gives ability to assign model to various parents based on morph key value. Morphed relations can be declared exactly same way as BELONGS_TO, however you must link your relation to an **interface** rather than specific model.
+
+> Disclaimer: polymorphic relations must be used only when you absolutely sure about it, avoid using BELONGS_TO_MORPHED as much as you can. 
 
 Let's try to create new ORM entity Photo which we would like to assign to User or Post models: "create:record photo -f id:primary -f imageURL:string"
 
 ```php
 class Photo extends Record 
 {
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        
-    ];
-
-    /**
-     * Entity schema.
-     * 
-     * @var array
-     */
-    protected $schema = [
+    const SCHEMA = [
         'id'       => 'primary',
         'imageURL' => 'string'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $validates = [
-        'imageURL' => [
-            'notEmpty'
-        ]
     ];
 }
 ```
@@ -54,13 +36,13 @@ protected $schema = [
     'id'       => 'primary',
     'imageURL' => 'string',
     'parent'   => [
-        self::BELONGS_TO => PhotoHolderInterface::class,
+        self::BELONGS_TO_MORPHED => PhotoHolderInterface::class,
         self::INVERSE    => [self::HAS_ONE, 'photo']
     ]
 ];
 ```
 
-The only thing we have to do to let our User and Post model have photo - implement `PhotoHolderInterface`, inverse relation in this case will be cretaed automatically.
+The only thing we have to do to let our User and Post model have photo - implement `PhotoHolderInterface`, inverse relation in this case will be created automatically.
 
 ```php
 class User extends Record implements PhotoHolderInterface
@@ -121,38 +103,15 @@ dump($post->photo);
 
 > Simply declare HAS_MANY inversion to link multiple photos to morphed parent.
 
-
-
-#### Many To Many Morphed
-As in case with BELONGS_TO you are able to define polymorphic many to many connection. To define such connection we can simply link our relation to an **interface**. Let's try to do an example using model Tag. Again, to create our Tag model - "create:record tag -f id:primary -f name:string":
+## Many To Many Morphed
+As in case with BELONGS_TO you are able to define polymorphic many to many connection. Let's try to do an example using model Tag. Again, to create our Tag model - "create:record tag -f id:primary -f name:string":
 
 ```php
 class Tag extends Record
 {
-    /**
-     * @var array
-     */
-    protected $fillable = [
-
-    ];
-
-    /**
-     * Entity schema.
-     *
-     * @var array
-     */
-    protected $schema = [
+    const SCHEMA = [
         'id'   => 'primary',
         'name' => 'string'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $validates = [
-        'name' => [
-            'notEmpty'
-        ]
     ];
 }
 ```
@@ -164,13 +123,15 @@ protected $schema = [
     'id'     => 'primary',
     'name'   => 'string',
     'tagged' => [
-        self::MANY_TO_MANY => TaggableInterface::class,
+        self::MANY_TO_MORPHED => TaggableInterface::class,
         self::INVERSE      => 'tags'
     ]
 ];
 ```
 
-As before, the best way to create relation from `User` and `Post` to Tags - use INVERSE option. After updating ORM schema let's check pivot table, this time our table follow relation name (not as in previous case "role_user_map") so it named "tagged_map":
+As before, the best way to create relation from `User` and `Post` to Tags - use INVERSE option. 
+
+After updating ORM schema let's check pivot table, this time our table follow relation name (not as in previous case "role_user_map") so it named "tagged_map":
 
 ```
 Columns of primary.tagged_map:
@@ -198,7 +159,7 @@ Foreign keys of primary.tagged_map:
 +-------------------------------------------------+---------+----------------+-----------------+------------+------------+
 ```
 
-As in case with BELONGS_TO_MPRHED you can observe morphed key in our pivot table. To better understand how such table is created we can check relation options which are very similar to MANY_TO_MANY:
+As in case with BELONGS_TO_MORPHED you can observe morphed key in our pivot table. To better understand how such table is created we can check relation options which are very similar to MANY_TO_MANY:
 
 Option            | Default                                 | Description
 ---               | ---                                     | ---
@@ -217,45 +178,32 @@ PIVOT_COLUMNS     | []                                      | Additional set of 
 PIVOT_DEFAULTS    | []                                      | Set of default values to be used for pivot table columns.
 WHERE_PIVOT       | []                                      | Where statement in a form of simplified array definition to be applied to pivot table data.
 
-As in case with original MANY_TO_MANY we can link models together:
+To order models with our tag we have to use sup relation:
 
 ```php
 $tag = new Tag();
 $tag->name = 'First';
 $tag->save();
 
-$tag->tagged()->link(User::findOne());
-$tag->tagged()->link(Post::findOne());
+$tag->tagged->posts->link(User::findOne());
+$tag->tagged->posts->link(Post::findOne());
+
+$tag->save();
 ```
 
-> Attention, link() method of ManyToMorphed relation can only accept one `Record` model.
+On another end we can assign tags to photos directly:
 
-To get access to relation data, we should specify what type of Records we want to receive (simply used pluralize model name, IDE must help you):
+```php
+$photo->tags->link($tag);
+```
+
+To get access to tagged entities use sub relation as iterator:
 
 ```php
 $tag = Tag::findOne();
-
 
 dump($tag->tagged->users);
 dump($tag->tagged->posts);
 ```
 
-> If you want to change names used to get access to data, check MORPHED_ALIASES option.
-
-Technically, ManyToMorphed relation simply aggregates set of ManyToMany relations, meaning you can always get access to inner sub relation using such code:
-
-```php
-$tag = Tag::findOne();
-
-$tag->tagged->users()->sync([1, 2, 3, 4]);
-```
-
-As before, since we declared INVERSE key, we can get access to our tags using "tags" property of method in models User and Post.
-
-```php
-$user = User::findByPK(1);
-
-foreach ($user->tags as $tag) {
-    dump($tag);
-}
-```
+> Accessing Tags from User or Post models are identical to MANY_TO_MANY relation.
