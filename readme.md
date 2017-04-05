@@ -95,7 +95,7 @@
 	* [Column Objects](orm/columns.md)
 	* [Scaffolding and Migrations](orm/scaffolding.md)
 	* [Transactions](orm/transactions.md)
-	* - [Relations](orm/relations.md)
+	* [Relations](orm/relations.md)
 	* - [Morphed Relations](orm/morphed-relations.md)
 	* [Pre-compiled Relations](orm/late-binding.md)
 	* [Query Models](orm/query.md)
