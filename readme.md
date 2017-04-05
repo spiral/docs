@@ -117,7 +117,7 @@
 	* - [Vault Core](modules/vault.md)
 	* - [Toolkit](modules/toolkit.md)
 	* [Scaffolder](modules/scaffolder.md)
-	* - [IDE helper](modules/ide-helper.md)
+	* [IDE helper](modules/ide-helper.md)
 	* - [Cache Bridges](modules/cache.md)
 
 # I want to read code (not docs)!
