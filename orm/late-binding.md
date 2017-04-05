@@ -2,7 +2,7 @@
 Due nature of ORM component and the way how it pre-compiles your schema, you can relate your entities
 to external models using interface instead of class name.
 
-> Attention, do not confuse with [Morphed relations](/orm/morphed.md)!
+> Attention, do not confuse with [Morphed relations](/orm/morphed-relations.md)!
 
 ## Example
 We can demonstrate such functionality by relating our `Post` model to an `User` using `UserInterface`:
