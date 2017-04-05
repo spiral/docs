@@ -108,7 +108,7 @@
 	* - [MongoDB Databases](odm/databases.md)
 	* - [Documents and DocumentEntity](odm/entities.md)
 	* - [Repositories and Selectors](orm/repositories.md)
-	* - [Scaffolding](odm/scaffolding.md)
+	* [Scaffolding](odm/scaffolding.md)
 	* [Compositions and Aggregations](odm/oop.md)
 	* [Inheritance](odm/inheritance.md)
 * External Modules
