@@ -1,5 +1,5 @@
 # Columns
-In some cases you can move column type definition to external class, or even combine it with accessor `RecordAccessorInterface`. In order to do that, implement `ColumnInterface` and write column type definition method.
+You can move column type definition to external class, or even combine it with accessor `RecordAccessorInterface`. In order to do that, implement `ColumnInterface` and write column type definition method.
 
 ## ColumnInterface
 ```php
