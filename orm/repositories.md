@@ -25,9 +25,11 @@ protected function indexAction(UserRepository $users)
 To create record entity call method `create` of your repository:
 
 ```php
-$users = $users->create([
+$user = $users->create([
     'name' => 'Antony'
 ]);
+
+$user->save();
 ```
 
 Note, that entity values will be populated using `setFields` method, make sure that you have `FILLABLE` and `SECURED` constants property set. 

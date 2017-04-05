@@ -64,7 +64,7 @@ class HomeController extends Controller
 
     const MESSAGES = [
         'error'   => '[[An error]]',
-        'success' => '[[Success]]
+        'success' => '[[Success]]'
     ];
 
     public function indexAction()
