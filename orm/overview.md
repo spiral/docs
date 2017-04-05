@@ -27,4 +27,4 @@ Consider using Doctrine or writing your own hydration using `RecordSelector` `fe
 Please note, ORM engine use second level cache to store information about mapping between persistence layer and your data entity models. Do not forget to run command `spiral orm:schema -m` to update schema cache and generate migrations.
 
 ## Standalone Usage
-You are able to use ORM component separately from framework, take a look at institutionalization [here](https://github.com/spiral/orm/tree/master/tests/ORM).
+You are able to use ORM component separately from framework, take a look at initialization [here](https://github.com/spiral/orm/tree/master/tests/ORM).
