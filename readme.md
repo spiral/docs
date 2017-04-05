@@ -109,7 +109,7 @@
 	* - [Documents and DocumentEntity](odm/entities.md)
 	* - [Repositories and Selectors](orm/repositories.md)
 	* - [Scaffolding](odm/scaffolding.md)
-	* - [Compositions and Aggregations](odm/oop.md)
+	* [Compositions and Aggregations](odm/oop.md)
 	* [Inheritance](odm/inheritance.md)
 * External Modules
     * [Profiler](modules/profiler.md)
