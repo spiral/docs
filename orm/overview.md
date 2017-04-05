@@ -24,7 +24,7 @@ Spiral ORM uses features specific to both AR and DataMapper approach, though, at
 Consider using Doctrine or writing your own hydration using `RecordSelector` `fetchData` method and existed relation loaders. 
 
 ## Schemas
-Please note, ORM engine use second level cache to store information about mapping between persistence layer and your data entity models. Do not forge to run command `spiral orm:schema -m` to update schema cache and generate migrations.
+Please note, ORM engine use second level cache to store information about mapping between persistence layer and your data entity models. Do not forget to run command `spiral orm:schema -m` to update schema cache and generate migrations.
 
 ## Standalone Usage
 You are able to use ORM component separately from framework, take a look at institutionalization [here](https://github.com/spiral/orm/tree/master/tests/ORM).
