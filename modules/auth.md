@@ -102,7 +102,7 @@ public function indexAction()
 ```
 
 ## Authorize User
-We are not able to authorize our user using `CredentialsAuthenticator` which will handle password comparision logic for us:
+To authorize users use `CredentialsAuthenticator` which will handle password comparision logic for us:
 
 ```php
 public function loginAction(LoginRequest $request, CredentialsAuthenticator $authenticator)
@@ -154,8 +154,10 @@ class LoginRequest extends RequestFilter
 }
 ```
 
+> You can write your own authenticators, see how to manually create auth tokens below.
+
 ## Tokens
-Note that auth module uses token based authentication for users, you are able to write your own token operator (modules/auth config):
+Note that auth module uses token based authentication for all users, you are able to write your own token operator (modules/auth config):
 
 ```php
 return [
@@ -246,7 +248,7 @@ return [
 ];
 ```
 
-For example, using this configuration we can create token to be stored in cookie and verified using ORM models represented by `Spiral\Auth\Database\Sources\AuthTokenSource`:
+For example, we can create token to be stored in cookie and verified using ORM models represented by `Spiral\Auth\Database\Sources\AuthTokenSource`:
 
 ```php
 $this->auth->init($this->tokens->createToken($user, 'long'));
