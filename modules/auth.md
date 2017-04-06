@@ -79,7 +79,7 @@ const BINDINGS = [
 ```
 
 ## Passwords
-In order to properly crete user we have to assign hashed password value, use `Spiral\Auth\Hashing\PasswordHasher` dependency to do that:
+To properly create user use `Spiral\Auth\Hashing\PasswordHasher` dependency to handle password hashing:
 
 ```php
 public function createUser(PasswordHasher $hasher)
