@@ -1,179 +1,110 @@
 # Pagination
-Pagination is one of the most imporant part of any project interface. Spiral trying to clearly separate pagination process by itself and way used to represent pagination in template or page.
-
-## Paginable Objects
-If you wish to apply pagination to your data source/object, you only have to implement `PaginableInterface` which requires few methods to be defined. In addition to that, object must expose `count` method (however this method might not be used by countless paginators):
-
-```php
-interface PaginableInterface extends \Countable
-{
-    /**
-     * Set selection limit.
-     *
-     * @param int $limit
-     * @return mixed
-     */
-    public function limit($limit = 0);
-    
-    /**
-     * @return int
-     */
-    public function getLimit();
-    
-    /**
-     * Set selection offset.
-     *
-     * @param int $offset
-     * @return mixed
-     */
-    public function offset($offset = 0);
-    
-    /**
-     * @return int
-     */
-    public function getOffset();
-}
-```
-
-You can also implement `PaginableAwareInterface` which will declare object ability to use external pagination instance:
-
-```php
-interface PaginatorAwareInterface extends PaginableInterface
-{
-    /**
-     * Manually set paginator instance for specific object.
-     *
-     * @param PaginatorInterface $paginator
-     * @return $this
-     */
-    public function setPaginator(PaginatorInterface $paginator);
-    
-    /**
-     * Get paginator for the current selection. Paginate method should be already called.
-     *
-     * @see paginate()
-     * @return PaginatorInterface
-     */
-    public function getPaginator();
-    
-    /**
-     * Indication that object was paginated.
-     *
-     * @return bool
-     */
-    public function isPaginated();
-}
-```
-
-If you wish to simlify pagination support in your objects you can also use `PaginatorTrait` which will implement following methods and provide way to use default spiral paginator linked to `ServerRequestInterface` and query parameter (by default 'page'). Let's try to provide an example of paginating object using such trait:
-
-```php
-protected function indexAction()
-{
-    $selection = $this->dbal->db()->users->select('name','email');
-    dump($selection->paginate(1)->getIterator());
-}
-```
-
-Default spiral paginator `Paginator` will automatically fetch count of records from paginable object and set approparite limit/offset values based on provided parameters. Page pagination will be performed based on query parameter `page`. You can always ajust parameter or paginator must follow:
-
-```php
-protected function indexAction()
-{
-    $selection = $this->dbal->db()->users->select('name','email');
-    dump($selection->paginate(1, 'myPage')->getIterator());
-}
-```
-
-If you wish to change Uri paginator must follow (to generate page Uris) you use method `setUri()` (attention, such method is available only in default spiral Paginator not in it's interface):
-
-```php
-protected function indexAction()
-{
-    $selection = $this->dbal->db()->users->select('name','email')->paginate(10);
-    dump($selection->getIterator());
-
-    $selection->getPaginator()->setUri(new Uri('/custom-uri/'));
-    dump($selection->getPaginator()->createUri(1));
-}
-```
+Spiral database, ORM and ODM layers support ability to specify limit and offset values based on external pagination object.
 
 ## PaginatorInterface
-If you wish to create your own paginator, for example to fetch page number from Route parameter you can easily do that by implementing `PaginatorInterface`:
+Pagination interface is defined using following contract:
 
 ```php
 interface PaginatorInterface
 {
     /**
-     * Set page number.
-     *
-     * @param int $number
-     * @return int
-     */
-    public function setPage($number);
-    
-    /**
-     * Get current page number.
+     * Get pagination limit value.
      *
      * @return int
      */
-    public function getPage();
-    
+    public function getLimit(): int;
+
     /**
-     * Set initial paginator uri
+     * Get calculated offset value.
      *
-     * @param UriInterface $uri
+     * @return int
      */
-    public function setUri(UriInterface $uri);
-    
+    public function getOffset(): int;
+
     /**
-     * Create page URL using specific page number. No domain or schema information included by
-     * default, starts with path.
+     * Get parameter paginator depends on. Environment specific.
      *
-     * @param int $pageNumber
-     * @return UriInterface
+     * @return null|string
      */
-    public function uri($pageNumber);
-    
-    /**
-     * Apply paginator to paginable object.
-     *
-     * @param PaginableInterface $paginable
-     * @return PaginableInterface
-     * @throws PaginationException
-     */
-    public function paginate(PaginableInterface $paginable);
+    public function getParameter();
 }
 ```
 
-> Methods `getUri()` and `uri()` will be moved out from PaginatorInterface.
-
-For example, let's pretend that we have an implemention which wants as instance of Route and parameters used to generate url.
+Classes which are open for pagination must implement `PaginatorAwareInterface`:
 
 ```php
-protected function indexAction($page = 1)
+interface PaginatorAwareInterface
 {
-    $selection = $this->dbal->db()->users->select('name','email');
-    $selection->setPaginator(
-        new MyPaginator(
-            $this->router->activeRoute(),               //We can use active route
-            'page',                                     //Parameter for page
-            $page                                       //Parameter value
-        )
-    );
+    /**
+     * Indication that object has associated paginator.
+     *
+     * @return bool
+     */
+    public function hasPaginator(): bool;
 
-    dump($selection->getIterator());
+    /**
+     * Manually set paginator instance for specific object.
+     *
+     * @param PaginatorInterface $paginator
+     */
+    public function setPaginator(PaginatorInterface $paginator);
+
+    /**
+     * Get paginator for the current selection. Paginate method should be already called or
+     * paginator must be previously set.
+     *
+     * Potentially to be renamed to getPaginator method since this method does not create paginator
+     * automatically.
+     *
+     * @see paginate()
+     *
+     * @return PaginatorInterface
+     *
+     * @throws PaginationException
+     */
+    public function getPaginator(): PaginatorInterface;
 }
 ```
 
+Default pagination implementation can be received using `Spiral\Pagination\Paginator` class, we can use it directly in our code:
+
+```php
+$paginator = new Paginator(10);
+
+$selection = $this->db->users->select('name', 'email');
+$selection->setPaginator($paginator->withPage(2));
+```
+
+### Http based pagination
+In most of cases you want to associate paginator with specific query page parameter, you can either do
+it manually or use `PaginatorsInterface` which is based on active request scope:
+
+```php
+$paginator = $this->paginators->createPaginator('query-parameter', 10);
+
+$selection = $this->db->users->select('name', 'email')->paginate();
+$selection->setPaginator($paginator);
+```
+
+In addition, DBAL, ORM and ODM components include shortcut method which will initiate paginator automatically:
+
+```php
+//Default page parameter is "page"
+$selection = $this->db->users->select('name', 'email')->paginate(10, 'query-parameter');
+```
+
+
 ## Render paginator on page
-Spiral does not include rendering logic into pagination class itself, you have to render page range by youself. Luckily, if you have installed module `spiral/toolkit` you can use [virtual templater tag/widget] (/templater/expert.md) for such purposes. Such widget located in 'spiral:paginator' tag and can accept both `PaginableInterface` and `PaginatorInterface` as source however it can work only with default spiral `Paginator` class.
+Spiral does not include rendering logic into pagination class itself, you have to render page range by youself.
+ 
+Luckily, if you have installed `spiral/toolkit` you can use [widget](/stempler/expert.md) "<spiral:paginator>" for such purposes. Widget can accept both `PaginatorInterface` and `PaginatorAwareInterface`:
 
 ```php
 protected function indexAction()
-{
-    $selection = $this->dbal->db()->users->select('name','email')->paginate(2);
-    return $this->views->render('users/list', ['list' => $selection]);
+{   
+    return $this->views->render('users/list', [
+        'list' => $this->db->users->select('name','email')->paginate(2)
+    ]);
 }
 ```
 
@@ -211,32 +142,27 @@ View source:
 </block:content>
 ```
 
-Given example will produce output like that:
+Result:
 ![Pagination](https://raw.githubusercontent.com/spiral/guide/master/resources/pagination.png)
 
-You can create your own project/module paginators using Templater virtual tags (widgets).
+> You can create your own project/module paginators using Stempler virtual tags (widgets).
 
 ## JSON packing
-There is few scenarious when you would like to include pagination data into resulted JSON response, and again, in order to simplify default implementations, spiral does not provide such ability out of the box, such code will return only array of paginated data (select builder implements `JsonSerializable`):
+You can create your own pagination responses by talking to `Paginator` class directly:
 
 ```php
-protected function indexAction()
+class ResponseWrapper implements JsonSerializable
 {
-    return $this->db->users->select('name', 'email')->paginate(2);
-}
-```
+    protected $select;
 
-However we can ealisy implement our own JSON packer with desired pagination format, let's create class for that:
-
-```php
-class JSONPaginator implements JsonSerializable
-{
-    protected $select = null;
-
-    public function __construct(PaginableInterface $select)
+    public function __construct(PaginatorAwareInterface $select)
     {
-        if (!$select->isPaginated()) {
-            throw new RuntimeException('Selection must be paginated.');
+        if (!$select->hasPaginator()) {
+            throw new RuntimeException('Selection must be paginated');
+        }
+        
+        if ($select->getPaginator() instanceof PagedIterface) {
+            throw new RuntimeException('PagedIterface compatible paginator is required');
         }
         
         $this->select = $select;
@@ -259,14 +185,12 @@ class JSONPaginator implements JsonSerializable
 }
 ```
 
-Now we can modify our controller code to use our pagination wrapper:
-
 ```php
 protected function indexAction()
 {
     $selection = $this->dbal->db()->users->select('name', 'email')->paginate(2);
 
-    return new \JSONPaginator($selection);
+    return new \ResponseWrapper($selection);
 }
 ```
 

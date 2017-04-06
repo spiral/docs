@@ -1,62 +1,30 @@
 # Compositions and Aggregations
-The ODM component does not use termin "relation(s)" to describe it's functionality but switches to the OOP definitions for [Composition, Aggregration (Reference)](https://en.wikipedia.org/wiki/Object_composition) and Inheritance. 
+The ODM component does not use term "relation(s)" to describe it's functionality but switches to the OOP definitions for [Composition, Aggregation (Reference)](https://en.wikipedia.org/wiki/Object_composition) and Inheritance. 
 
-Please make sure that you have already read about [ODM Basics] (basics.md).
+Please make sure that you have already read about [ODM Entities](/odm/entities.md).
 
-> You can also refresh your memory with regards to [Composited Types](https://en.wikipedia.org/wiki/Composite_data_type).
+> You can also refresh your memory with regards to [Composite Types](https://en.wikipedia.org/wiki/Composite_data_type).
 
 ## Aggregations
-Aggregations is probably the closest thing to classical ORM relations since they define the rule to create the selection of outer models. Just like with classical relationships, agregations can reference one or multiple models. First of all, let's try to create a document that our User can reference to `create:document post -f _id:MongoId -f userId:MongoId -f title:string -f content:string`:
+Aggregations is probably the closest thing to classical ORM relations since they define the rule to create the selection of outer models. Just like with classical relationships, aggregations can reference one or multiple models.
+ 
+First of all, let's try to create a document that our User can reference to `create:document post -f _id:MongoId -f userId:MongoId -f title:string -f content:string`:
 
 ```php
 class Post extends Document
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
+    const SCHEMA = [
         '_id'     => \MongoId::class,
         'userId'  => \MongoId::class,
         'title'   => 'string',
         'content' => 'string'
     ];
-
-    /**
-     * @var array
-     */
-    protected $defaults = [];
-
-    /**
-     * @var array
-     */
-    protected $indexes = [];
-
-    /**
-     * @var array
-     */
-    protected $fillable = [];
-
-    /**
-     * @var array
-     */
-    protected $hidden = [];
-
-    /**
-     * @var array
-     */
-    protected $validates = [
-        'title'   => ['notEmpty'],
-        'content' => ['notEmpty']
-    ];
 }
 ```
-
-> We'v added embedded validations for title and content properties. You can also drop some unused properties.
-
 To create the aggregation of posts in our User model, we have to modify it's schema like this:
 
 ```php
-protected $schema = [
+const SCHEMA = [
     '_id'            => \MongoId::class,
     'name'           => 'string',
     'email'          => 'string',
@@ -75,7 +43,7 @@ protected $schema = [
 We can also create a reverted relation in our `Post` model:
 
 ```php
-protected $schema = [
+const SCHEMA = [
     '_id'     => \MongoId::class,
     'userId'  => \MongoId::class,
     'title'   => 'string',
@@ -87,9 +55,9 @@ protected $schema = [
 ];
 ```
 
-Once the schema updates, we are able to use this aggreation via the `Document` method `aggregation` or magic `__call` function. Aggregation of many models (posts) will return a pre-configured instance of `Spiral\ODM\Entities\DocumentSelector` where the query will be based on the second element of our aggregation array.
+Once the schema updates, we are able to use this aggregation via the `Document` method `aggregation` or magic `__call` function. Aggregation of many models (posts) will return a pre-configured instance of `Spiral\ODM\Entities\DocumentSelector` where the query will be based on the second element of our aggregation array.
 
-You can also specify the aggregation query in any form supported by MongoDB including keywords `$or`, `$in`, etc. Once the aggeration request is sent, the Document will replace the constructions like "self::key" with appropriate field value (You are able to use the dot notation to get the values of the composited models "self::author.id". See next).
+You can also specify the aggregation query in any form supported by MongoDB including keywords `$or`, `$in`, etc. Once the aggregation request is sent, the Document will replace the constructions like "self::key" with appropriate field value (You are able to use the dot notation to get the values of the composite models "self::author.id". See next).
 
 ```php
 $user = User::findOne();
@@ -124,7 +92,7 @@ dump($post->aggregation('author'));
 Compositions is one of the most powerful features within the ODM component. This functionality provides the ability to nest multiple models inside each other. It can also be combined with inheritance and atomic operations.
 
 #### DocumentEntity
-Before we jump to compositions, let's first review the class `DocumentEntity`. This class is very similar to `Document` (in fact, it's `Document` parent) but it does not provide the ActiveRecord like functionality which makes it perfect a candicate to be embedded. To create the `DocumentEntity` model, we have to execute the command `create:entity profile -f biography:text -f facebookUID:int`. The generated entity looks exactly the same as the other Documents and can be configured the same way:
+Before we jump to compositions, let's first review the class `DocumentEntity`. This class is very similar to `Document` (in fact, it's `Document` parent) but it does not provide the ActiveRecord like functionality which makes it perfect a candidate to be embedded. To create the `DocumentEntity` model, we have to execute the command `create:entity profile -f biography:text -f facebookUID:int`. The generated entity looks exactly the same as the other Documents and can be configured the same way:
 
 ```php
 class Profile extends DocumentEntity
@@ -132,48 +100,18 @@ class Profile extends DocumentEntity
     /**
      * @var array
      */
-    protected $schema = [
+    const SCHEMA = [
         'biography'   => 'text',
         'facebookUID' => 'int'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $defaults = [];
-
-    /**
-     * @var array
-     */
-    protected $indexes = [];
-
-    /**
-     * @var array
-     */
-    protected $fillable = [];
-
-    /**
-     * @var array
-     */
-    protected $hidden = [];
-
-    /**
-     * Let's add some validations.
-     *
-     * @var array
-     */
-    protected $validates = [
-        'biography'   => ['notEmpty'],
-        'facebookUID' => ['notEmpty']
     ];
 }
 ```
 
-#### Singural Composition
-To composite a document inside another, you just need to declare the field in your schema that is linked to the composited document class. For example let's say that every user has one profile:
+#### Singular Composition
+To composite a document inside another, you just need to declare the field in your schema that is linked to the composite document class. For example let's say that every user has one profile:
 
 ```php
-protected $schema = [
+const SCHEMA = [
     '_id'            => \MongoId::class,
     'name'           => 'string',
     'email'          => 'string',
@@ -199,6 +137,8 @@ $user->profile->facebookUID = 2345678;
 
 dump($user);
 ```
+
+> Example are given using `SourceTrait` of ODM component.
 
 DocumentEntity data will be set up using atomic operations:
 
@@ -227,10 +167,10 @@ $user->save();
 ```
 
 ##### Mass Assignment
-ODM engine provides you ability to set cascade data using setFields method of top model, to do that you have to ensure that your composited document are listed in **fillable** fields.
+ODM engine provides you ability to set cascade data using setFields method of top model, to do that you have to ensure that your composite document are listed in **FILLABLE** fields.
 
 ```php
-protected $fillable = ['profile'];
+const FILLABLE = ['profile'];
 ```
 
 ```php
@@ -247,22 +187,17 @@ In many cases, you will need an array compositions of the documents. To start, l
 ```php
 class Session extends DocumentEntity
 {
-    /**
-     * @var array
-     */
-    protected $schema = [
+    const SCHEMA = [
         'timeCreated' => \MongoDate::class,
         'accessToken' => 'string'
     ];
 }
 ```
 
-> Let's drop unesessary structures.
-
-Now we can modify the user schema and include our composited model name as an array element (the same way as ScalarArray):
+Now we can modify the user schema and include our composite model name as an array element (the same way as ScalarArray):
 
 ```php
-protected $schema = [
+const SCHEMA = [
     '_id'            => \MongoId::class,
     'name'           => 'string',
     'email'          => 'string',
@@ -304,7 +239,7 @@ foreach ($user->sessions as $session) {
 }
 ```
 
-Additionally, Compositor provides the easy to use methods `find` and `findOne`, which can locate composited objects by it's field value(s):
+Additionally, Compositor provides the easy to use methods `find` and `findOne`, which can locate composite objects by it's field value(s):
 
 ```php
 dump($user->sessions->findOne(['accessToken' => 'random']));

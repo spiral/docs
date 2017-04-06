@@ -1,14 +1,15 @@
 # Query Builders
-As many other DB layers spiral provide way to construct basic SQL queries using set of generation classes. Such classes support fluent syntax which simplifies their usage in everyday applications.
+You can read how to work with Database using manually written queries [here](/database/pdo.md). 
+DBAL component includes set of QueryBuilders used to unify the way of working with different databases
+and simplify migration to different DBMS over the lifetime of application.
 
 ## Before we start
-Before we will start learning about different query builders let's try to create a table in our database first (we can use controller or command to do it quick, or create ORM entity which will scaffold needed schema automatically):
+In order to demonstrate query building abilities let's declare sample table in our default database first:
 
 ```php
 protected function indexAction(Database $database)
 {
-    $table = $database->table('test');
-    $schema = $table->schema();
+    $schema = $database->table('test')->getSchema();
     
     $schema->primary('id');
     $schema->datetime('time_created');
@@ -20,7 +21,7 @@ protected function indexAction(Database $database)
 }
 ```
 
-Once such table created, we can remove schema declaration and leave only table variable (instance `Spiral\Database\Entities\Table` or Table abstraction).
+> You can read more about declarative schemas [here](/database/declaration.md).
 
 ## Insert Builder
 To get an instance of InsertBuilder (responsible for insertions), we have to execute following code:
@@ -29,7 +30,7 @@ To get an instance of InsertBuilder (responsible for insertions), we have to exe
 $insert = $database->insert('test');
 ```
 
-As result we will get builder associated with our table. Now we can add some values to our builder to be inserted into related table:
+Now we can add some values to our builder to be inserted into related table:
 
 ```php
 $insert = $database->insert('test');
@@ -51,7 +52,7 @@ dump($insert->run());
 > You can also use fluent syntax: `$database->insert('table')->values(...)->run()`.
 
 ### Batch Insert
-In many cases you might want to insert multiple records at once, we can achieve such goal with insert builder by specifying set of columns and values separatelly:
+You add as many values into insert builder as your database can support:
 
 ```php
 $insert->columns(['time_created', 'name', 'email', 'balance']);
@@ -69,12 +70,12 @@ $insert->run();
 ```
 
 ### Quick Inserts
-You can simplify insertion process by talking directly to Table absraction you want to add data into, in this case our code may look like:
+You can skip InsertQuery creation by talking to your table directly:
 
 ```php
 $table = $database->table('test');
 
-dump($table->insert([
+dump($table->insertOne([
     'time_created' => new \DateTime(),
     'name'         => 'Anton',
     'email'        => 'test@email.com',
@@ -82,59 +83,56 @@ dump($table->insert([
 ]));
 ```
 
-> Table class will automatically run query and return last inserted id. You can also check `batchInsert` method of Table abstraction.
+> Table class will automatically run query and return last inserted id. You can also check `insertMultiple` method of Table.
 
-## Select Query Builder
-SelectQuery builder can be retrieved two very similar ways, you can either get it from database or from table abstractions, let's try to show both examples (result are identical):
+## SelectQuery Builder
+SelectQuery builder can be retrieved two very similar ways, you can either get it from database or from table instances:
 
 ```php
 protected function indexAction(Database $database)
 {
-    $table = $database->table('test');
-
+    $select = $database->table('test')->select();
     $select = $database->select()->from('test');
-    $selectB = $table->select();
+    
+    //Alternative
+    $select = $database->test->select();
 }
 ```
 
-In our examples we will choose second appropach as it's shorter.
-
-### Configuring and Reading selection
+### Select Columns
 By default SelectQuery selects every column (`*`) from it's related table. We can always change set of requested columns using `columns` method.
 
 ```php
-$select->columns(['id', 'status', 'name']);
+$database->users->select()->columns('name')->fetchAll();
 ```
 
-Now, before jumping to where/having and other statements, let's figure out how to read data from our selection. DBAL component provides convinient `QueryResult` class which can help us to iterate thought result. We can receive such iterator either by calling `run()` method or by using `getIterator()` method. 
+You can use your select query as proper iterator or use `run` method which will return instance of `PDOStatement`: 
 
 ```php
-$iterator = $select->getIterator();
-foreach($iterator as $row) {
+foreach($select->getIterator() as $row) {
     dump($row);
 }
 ```
 
-In addition to that you can simply foreach over builder itself:
+To select all values as array use `fetchAll`:
 
 ```php
-foreach($select as $row) {
+foreach($select->fetchAll() as $row) {
     dump($row);
 }
 ```
 
-> You can add such code to your action to view data created by insertion.
-
-If you wish to preview SQL query generated by builder before executing it (after execution you can locate query in [Profiler](/modules/profiler.md) logging tab) you can retrieve it via `queryString()` method or by simply dumping builder object. For example you might notice that DBAL automatically assigned table prefix.
+You can always view what SQL is generated by your query by dumping it or via method `queryString`:
 
 ```dump
-dump($select->queryString());
+dump($database->users->select()->columns('name')->queryString());
 ```
 
-> Attention! This query string is interpolated with parameters, you should ONLY use it for debudding/analyzation reasons. If you wish to see non interpolated query which will be sent to database with it's parameters - exectute `sqlStatement()` method.
+> Attention, queryString method returns interpolated query (will inserted where values), do not use it run a query. You can access SQL with value placeholders using `sqlStatement` method.
+
 
 ### Where Statements
-Obvisously, no query can useful if we can not specify where conditions. SeletQuery builder provides us such ability by declaric set of methods to generate where statement: `where`, `andWhere`, `orWhere`. Where methods can accept different arguments based on condition you want to create, but first argument is always dedicated to table identifier (column), you must never use it for user data. 
+Add WHERE conditions to your query using `where`, `andWhere`, `orWhere` methods. 
 
 ##### Basics
 Let's add simple condition on `status` column of our table:
@@ -152,8 +150,6 @@ protected function indexAction(Database $database)
 }
 ```
 
-Builder will generate following SQL for us:
-
 ```sql
 SELECT
 `id`, `status`, `name`
@@ -161,14 +157,16 @@ FROM `primary_test`
 WHERE `status` = 'active'        
 ```
 
-In cases were we want to use simple where statement with equal sign we can skip it as second argument, as result our where condition can be simplified:
+> Note, that prepared statement will be used behind the scenes.
+
+You can skip '=' in your conditions:
 
 ```php
 $select->where('status', 'active');
 ```
 
 ##### Where Operators
-As you might expect, second argument can be used to declare operator:
+Second argument can be used to declare operator:
 
 ```php
 $select->where('id', '>', 10);
@@ -191,7 +189,7 @@ WHERE `id` BETWEEN 10 AND 20
 ```
 
 ##### Multiple Where Conditions
-As you might notice in previous example builder provides you ability to state multiple where conditions for one query, every new condtion will be joined to query based on it's modifier (AND or OR). Let's try to specify two AND coditions.
+Chain multiple where conditions using fluent calls:
 
 ```php
 $select->where('id', 1)->where('status', 'active');
@@ -203,7 +201,7 @@ Method `andWhere` is an alias for `where`, so we can rewrite such condition to m
 $select->where('id', 1)->andWhere('status', 'active');
 ```
 
-Resulted SQL will look like:
+Resulted SQL:
 
 ```sql
 SELECT
@@ -212,13 +210,11 @@ FROM `primary_test`
 WHERE `id` = 1 AND `status` = 'active'
 ```
 
-Same way we can create OR conditions by using `orWhere` method (it has identical logic and set of arguments):
+SelectQuery will generate SQL based respecting your operator order and boolean operators:
 
 ```php
 $select->where('id', 1)->orWhere('id', 2)->orWhere('status', 'active');
 ```
-
-And our query changed to:
 
 ```sql
 SELECT
@@ -228,15 +224,13 @@ WHERE `id` = 1 OR `id` = 2 OR `status` = 'active'
 ```
 
 ##### Complex/Group Where Conditions
-So far we managed to create simple where statement, however in many cases we would need to group where conditions, this can be achieved by providing closure function with inner where statement inside our where or `orWhere` method. QueryBuilder will provide self as first argument into such function, let's check an example:
+Group multiple where conditions using Closure as your first argument:
 
 ```php
 $select->where('id', 1)->where(function (SelectQuery $select) {
     $select->where('status', 'active')->orWhere('id', 10);
 });
 ```
-
-Resulted SQL:
 
 ```sql
 SELECT
@@ -245,7 +239,7 @@ FROM `primary_test`
 WHERE `id` = 1 AND (`status` = 'active' OR `id` = 10)
 ```
 
-Obviosly you can use `orWhere` to add grouped conditions:
+Boolean joiners are respected:
 
 ```php
 $select->where('id', 1)->orWhere(function (SelectQuery $select) {
@@ -265,7 +259,7 @@ WHERE `id` = 1 OR (`status` = 'active' AND `id` = 10)
 > You can nest as many conditions as you want.
 
 ##### Simplified/array Where Conditions
-Spiral where builders can additionally support simplified/array where conditions ([MongoDB style](https://docs.mongodb.org/manual/reference/operator/query/)). Such definition can be really useful when you want to specify few short condition:
+Alternatively you can use [MongoDB style](https://docs.mongodb.org/manual/reference/operator/query/) to build your where conditions:
 
 ```php
 $select->where([
@@ -283,7 +277,7 @@ FROM `primary_test`
 WHERE (`id` = 1 AND `status` = 'active')
 ```
 
-You can also specify custom comparasion operators using nested arrays:
+You can also specify custom comparision operators using nested arrays:
 
 ```php
 $select->where([
@@ -303,7 +297,7 @@ FROM `primary_test`
 WHERE (`id` IN (1, 2, 3) AND `status` LIKE 'active')
 ```
 
-Additionaly you can specify multiple compasation operations for one key:
+Multiple conditions per field are supported:
 
 ```php
 $select->where([
@@ -314,7 +308,7 @@ $select->where([
 ]);
 ```
 
-Array where syntax also allows you to use [MongoDB like](https://docs.mongodb.org/manual/reference/operator/query/) conditions (@OR and @AND), such conditons can defined group with specified boolean joiner. Let's try to find every record where (ID is between 10 and 100 AND name equals Anton) OR (status is disabled), we can describe such condition using normal where statements:
+Use `@or` and `@and` groups to create where groups:
 
 ```php
 $select->where(function (SelectQuery $select) {
@@ -322,7 +316,7 @@ $select->where(function (SelectQuery $select) {
 })->orWhere('status', 'disabled');
 ```
 
-Or we can use array syntax:
+Using short syntax:
 
 ```php
 $select->where([
@@ -348,15 +342,14 @@ WHERE ((`id` BETWEEN 10 AND 100 AND `name` = 'Anton') OR `status` = 'disabled')
 You can experiment with both ways to declare where conditions and pick one you like more.
 
 ##### Parameters
-Spiral does not support parameter binding at this moment, hovewer it provides an alternative way to set query parameters using special class `Spiral\Database\Injections\Parameter`. Let's try to parametrize id value and change it after forming our query:
+Spiral mocks all given values using `Parameter` class internally, in some cases (array) you might need to pass `Parameter` directly. You can alter parameter value at any moment, but before query `run` method:
 
 ```php
 $select = $database->select()->from('test')->columns(['id', 'status', 'name']);
 
-//You can also do: $select->where(['id' => $id = new Parameter(null)]);
 $select->where('id', $id = new Parameter(null));
 
-//Setting ID value
+//Bing new parameter value
 $id->setValue(15);
 
 foreach ($select as $row) {
@@ -366,21 +359,18 @@ foreach ($select as $row) {
 
 > You can also pass requested PDO parameter type as second argument: `new Parameter(1, PDO::PARAM_INT)`. Internally every value passed into where method are going to be wrapped using Parameter class.
 
-Following methodic can be useful in cases where you would like to create some class wrapper at top of builder and expose it's parameters without rebuilding query every time.
 
-> You can implement ParameterInterface if you want to declare your own parameter wrappers, for example it will allow you to inject parametrized SQL code into query builder. This is possible due parameter reposible for both - mocking value or multiple values and providing placeholder for such values in query (see about injections below).
+You can implement ParameterInterface if you want to declare your own parameter wrappers with custom logic.
 
 ##### SQL Fragments and Expressions
-DBAL builders allow you to replace some of where statements with custom SQL code or expression. Such functionality achieved by two classes `Spiral\Database\Injections\Fragment` and `Spiral\Database\Injections\Expression`. Let's try to review both of them to understand the difference.
+QueryBuilders allow you to replace some of where statements with custom SQL code or expression. Use `Spiral\Database\Injections\Fragment` and `Spiral\Database\Injections\Expression` for such purposes. 
 
-Let's say we would like to compare our column value to DBMS specific function:
+Use fragment to include SQL code into your query bypassing escaping:
 
 ```php
 //255
 $select->where('id', '=', new Fragment("DAYOFYEAR('2015-09-12')"));
 ```
-
-Resulted SQL will look exacly is needs to:
 
 ```sql
 SELECT
@@ -389,43 +379,39 @@ FROM `primary_test`
 WHERE `id` = DAYOFYEAR('2015-09-12')
 ```
 
-You can not only use fragments as values for your identifiers, but as key itself:
+If you wish to compare complex value to user parameter replace where column with expression:
 
 ```php
 $select->where(new Expression("DAYOFYEAR(concat('2015-09-', id))"), 255);
 ```
 
-As result we can run complex statement against some column:
-
 ```sql
 SELECT
-`id`, `status`, `name`
-FROM `primary_test`
-WHERE DAYOFYEAR(concat('2015-09-', id)) = 255
+*
+FROM `x_users`
+WHERE DAYOFYEAR(concat('2015-09-', `id`)) = 255
 ```
 
-The only problem in sql fragments is that table names will not be prefixed and column keys will be left unquoted, to solve such issue we can use alternative injector `Spiral\Database\Injections\Expression`:
+> Note that all column identifiers in Expressions will be quoted.
+
+Join multiple columns same way: 
 
 ```php
 $select->where(new Expression("CONCAT(id, '-', status)"), '1-active');
 ```
 
-Notice that know listed columns are quotes in resulted SQL:
-
 ```sql
 SELECT
 `id`, `status`, `name`
 FROM `primary_test`
-WHERE CONCAT(`id`, "-", `status`) = '1-active'
+WHERE CONCAT(`id`, '-', `status`) = '1-active'
 ```
 
-To demonstrate case when expressions are really useful let's edit our where statement a little bit as in case if we have multiple tables involved in one query (see joins and table aliases below):
+Expressions are extremely useful when you Database have non empty prefix:
 
 ```php
 $select->where(new Expression("CONCAT(test.id, '-', test.status)"), '1-active');
 ```
-
-In this case DBAL detected usage of table name in our expression and applied valid table prefix:
 
 ```sql
 SELECT
@@ -434,14 +420,12 @@ FROM `primary_test`
 WHERE CONCAT(`primary_test`.`id`, '-', `primary_test`.`status`) = '1-active'
 ```
 
-> Please remember that our database has table prefix "primary_", however there is high possiblity that you don't even need them ever. Also be careful using epressions with SQL including string constants, it will count your string as column to be quoted (such behaviour must be fixed in future).
-
 You can also use expressions and fragments as column values in insert and update statements.
 
 > Please keep client data as far from Expressions and Fragments as it possible.
 
 ### Table and Column aliases
-Based on previous example we found that expressions can be useful when we have to prepare complex column names, but what if we don't want to do that? In this case we can use default SQL feature - aliases. Aliases can be either applied to table or to column name and later be used in where, sorting and other statements. Spiral does not provide any special way to declare column or table alias, simply inlude "AS alias" into your column name or table. Let's try to demonstrate few examples:
+QueryBuilders support user defined table and column aliases:
 
 ```php
 $select = $database->select()->from('test as abc')->columns([
@@ -457,8 +441,6 @@ foreach ($select as $row) {
 }
 ```
 
-Related SQL:
-
 ```sql
 SELECT
 `id`, `status`, `name`
@@ -466,7 +448,7 @@ FROM `primary_test` as `abc`
 WHERE `abc`.`id` > 10
 ```
 
-We can also rename some columns or create new one:
+Columns:
 
 ```php
 $select = $database->select()->from('test')->columns([
@@ -489,10 +471,8 @@ SELECT
 FROM `primary_test`
 ```
 
-> Aliases very useful with Joins (see below), in addition aliases used a lot of queries generated by spiral ORM.
-
 ##### Sub/Nested Queries
-Every spiral QueryBuilder is as instance of `FragmentInterface` which means you can freely use such sub queries as arugments in where methods. For example let's create some dummy query:
+Every spiral QueryBuilder is as instance of `FragmentInterface`, this makes you able to create complex nested queries when you need them:
 
 ```php
 $select = $database->select()->from('test')->columns(['id', 'status', 'name']);
@@ -508,8 +488,6 @@ foreach ($select as $row) {
 }
 ```
 
-And resulted SQL will look like:
-
 ```sql
 SELECT
 `id`, `status`, `name`
@@ -520,15 +498,13 @@ FROM `primary_test`
 WHERE `id` BETWEEN 10 AND 100)  
 ```
 
-As in cases with fragments and expressions you can use such sub query as where identifier and compare it with custom use data (or even leave it without any comparation if sub query returns boolean value).
+You can compare nested query return value in where statements:
 
 ```php
 $select->where(
     $database->select('COUNT(*)')->from('test')->where('id', 'BETWEEN', 10, 100), '>', 1
 );
 ```
-
-Output:
 
 ```sql
 SELECT
@@ -540,7 +516,7 @@ FROM `primary_test`
 WHERE `id` BETWEEN 10 AND 100) > 1   
 ```
 
-Following query does not have too much sense since we don't have connection between our query and sub query, we can add such connection by using `Expression` class. In this example i'm going to use another table - `users`.
+You can exchange column identifiers between parent and nested query using `Expression` class:
 
 ```php
 $select = $database->select()->from('test')->columns(['id', 'status', 'name']);
@@ -551,13 +527,7 @@ $select->where(
     )->where('id', '!=', 100),
     'Anton'
 );
-
-foreach ($select as $row) {
-    dump($row);
-}
 ```
-
-Generated SQL must automatically apply prefix to our expression and link two tables together:
 
 ```sql
 SELECT
@@ -569,50 +539,43 @@ FROM `primary_users`
 WHERE `id` = `primary_test`.`id` AND `id` != 100) = 'Anton'
 ```
 
+> Nested queries will only work when nested query belongs to the same database as primary builder. 
+
 ### Having
-To add having satement to your selection use methods `having`, `orHaving` and `andHaving`, their declaration and behaviour is identical to `where`.
+Use methods `having`, `orHaving` and `andHaving` methods to define HAVING conditions. Syntax is identical to WHERE statement. 
 
 > Yep, it was quick.
 
 ### Joins
-Previous example my explain you why everyone need joins. DBAL select query builer provides ability to join any desired table and specify ON and ON where statement. Let's try (i'm going to ajust way we creating our selection to make it shorter):
+You can join any desired table to your query using `leftJoin`, `join`, `rightJoin`, `fullJoin` and `innerJoin` methods:
 
 ```php
-$select = $database->table('test')->select(['test.*', 'users.name as user_name']);
+$select = $database->table('test')->select(['test.*', 'u.name as u']);
 
-//Let's join table users same way as before
-$select->leftJoin('users')->on('users.id', 'test.id');
-
-foreach ($select as $row) {
-    dump($row);
-}
+$select->leftJoin('users', 'u')->on('users.id', 'test.id');
 ```
-
-> You can also use inner, full or right joins.
-
-Result:
 
 ```sql
-SELECT
-`primary_test`.*, `primary_users`.`name` as `user_name`
-FROM `primary_test`  
-LEFT JOIN `primary_users`
-    ON `primary_users`.`id` = `primary_test`.`id`
+ SELECT
+`x_test`.*, `u`.`name` AS `u`
+FROM `x_test` 
+LEFT JOIN `x_users` AS `u`
+    ON `x_users`.`id` = `x_test`.`id`
 ```
 
-Method `on` works exacly as `where` except provided values treated as identifier and not as user value. As result we can use either complex `on` statements with `orOn`, `andOn` methods or array form of defining connection between tables.
+Method `on` works exactly as `where` except provided values treated as identifier and not as user value. Chain `on`, `andOn` and `orOn` methods to create more complex joins:
 
 ```php
 $select->leftJoin('users')->on('users.id', 'test.id')->orOn('users.id', 'test.balance');
 ```
 
-Analog:
+Array based where conditions is also supported:
 
 ```sql
-$select->leftJoin('users', [
+$select->leftJoin('users', 'u')->on([
     '@or' => [
-        ['users.id' => 'test.id'],
-        ['users.id' => 'test.balance']
+        ['u.id' => 'test.id'],
+        ['u.id' => 'test.balance']
     ]
 ]);
 ```
@@ -628,13 +591,11 @@ LEFT JOIN `primary_users`
 ```
 
 ##### On Where statement
-In cases where you would like to include user value into ON statement, use methods `onWhere`, `orOnWhere` and `andOnWhere` (i'm going to change join to "inner" so we can filter our results):
+To include user value into ON statement, use methods `onWhere`, `orOnWhere` and `andOnWhere`:
 
 ```php
-$select->innerJoin('users', ['users.id' => 'test.id'])->onWhere('users.name', 'Anton');
+$select->innerJoin('users')->on(['users.id' => 'test.id'])->onWhere('users.name', 'Anton');
 ```
-
-As result we just defined new query parameter:
 
 ```sql
 SELECT
@@ -645,20 +606,19 @@ INNER JOIN `primary_users`
 ```
 
 ##### Aliases
-Obviously you might want to create custom alias for your joined table, and again you can do it by simply declaring word AS (do not forget to edit your columns and conditions):
+Second parameter in join methods are dedicated to table alias, feel free to use it in `on` and `where` statements of your query:
 
 ```php
 $select = $database->table('test')->select(['test.*', 'uu.name as user_name']);
-
-//Let's join table users same way as before
-$select->innerJoin('users as uu', ['uu.id' => 'test.id'])->onWhere('uu.name', 'Anton');
-
-foreach ($select as $row) {
-    dump($row);
-}
+$select->innerJoin('users', 'uu')->onWhere('uu.name', 'Anton');
 ```
 
-And our final joins example looks like:
+Alternatively:
+
+```php
+$select = $database->table('test')->select(['test.*', 'uu.name as user_name']);
+$select->innerJoin('users as uu')->onWhere('uu.name', 'Anton');
+```
 
 ```sql
 SELECT
@@ -668,15 +628,15 @@ INNER JOIN `primary_users` as `uu`
     ON `uu`.`id` = `primary_test`.`id` AND `uu`.`name` = 'Anton'       
 ```
 
-### Sorting
-If you wish to apply sorting to your selection it's time to use method `orderBy` which can accept column name and sorting direction or array of columns associated with their directions.
+### OrderBy
+User `orderBy` to specify sort direction:
 
 ```php
 //We have a join, so table name is mandratory
 $select->orderBy('test.id', SelectQuery::SORT_DESC);
 ```
 
-You can all `orderBy` method multiple times or simply provide an array of columns into it:
+Multiple `orderBy` calls are allowed:
 
 ```php
 $select->orderBy(
@@ -684,9 +644,12 @@ $select->orderBy(
 )->orderBy(
     'test.id', SelectQuery::SORT_ASC
 );
-        
-//Analog
- $select->orderBy([
+```
+
+Alternatively:
+
+```php
+$select->orderBy([
     'test.name' => SelectQuery::SORT_DESC,
     'test.id'   => SelectQuery::SORT_ASC
 ]);
@@ -705,21 +668,17 @@ ORDER BY `primary_test`.`name` DESC, `primary_test`.`id` ASC
 
 > You can also use Fragments instead of sorting identifiers (by default identifiers are treated as column name or expression).
 
-### Grouping and Distinct
-If you wish to select only unique results from your selection use method `distinct`, such method will be very useful in situations where you using HAS_MANY relations in ORM to filter selection.
+### GroupBy and Distinct
+If you wish to select only unique results from your selection use method `distinct` (always use `distinct` while loading HAS_MANY/MANY_TO_MANY relations in ORM).
 
 ```php
 $select->distinct();
 ```
 
-To group results (for example in combination with aggregation) you can use method `groupBy` which accepts column name or SQLExpression, let's try to count our records in test table and group them by status:
+Result grouping is available using `groupBy` method:
 
 ```php
 $select = $database->table('test')->select(['status', 'count(*) as count'])->groupBy('status');
-
-foreach ($select as $row) {
-    dump($row);
-}
 ```
 
 As you might expect produced SQL looks like:
@@ -731,19 +690,22 @@ FROM `primary_test`
 GROUP BY `status`
 ```
 
-### Aggreagations and Count
-Separatelly from grouping and distinct you can use simplified aggregations which does not require you fetching result, one of them if `count`, which for many reasons will be used a lot in your application. To get result of such aggregation we only need to call method `count()`:
+### Aggregations and Count
+Since you can manipulate with selected columns including COUNT and other aggregation functions into your query might look like:
+
+```php
+$select = $database->table('test')->select(['COUNT(*)']);
+```
+
+Though, in many cases you want to get query count or summarize results without column manipulations, 
+use `count`, `avg`, `sum`, `max` and `min` methods to do that:
 
 ```php
 $select = $database->table('test')->select(['id', 'name', 'status']);
 
 dump($select->count());
-foreach ($select as $row) {
-    dump($row);
-}
+dump($select->sum('balance'));
 ```
-
-In this scenariou system will generate two separate SQL queries:
 
 ```sql
 SELECT
@@ -751,41 +713,27 @@ COUNT(*)
 FROM `primary_test`;
 
 SELECT
-`id`, `name`, `status`
+SUM(`balance`)
 FROM `primary_test`;
 ```
 
-> You can also provide column name to be counted by.
-
-Similar to `count()` SelectBuilder defines few additional methods you can use to calculate basic aggregations: `AVG`, `MAX`, `MIN` and `SUM`. You must only provide column name or expression to run aggregation by:
-
-```php
-dump($database->table('test')->sum('id'));
-dump($database->table('test')->where('id', '<', 100)->max('id*10'));
-```
-
 ### Pagination
-When you working with big datasets you might want to limit amount of records to be returned, to do that you can use two simple SelectQuery methods: `limit` and `offset`
+You can paginate your query using methods `limit` and `offset`:
 
 ```php
 $select = $database->table('test')->select(['id', 'name', 'status']);
-
 $select->limit(10)->offset(1);
-
-//Please note result of this method
-dump($select->count());
 foreach ($select as $row) {
     dump($row);
 }
 ```
 
-> Please note that count method will ignore specified LIMIT and OFFSET values by default (spiral will grant you additional parameter to avoid that in future).
-
-However, there is very small chance that you going to work with `limit` and `offset` directly in your code as spiral provides much more convinient way - [Pagination] (/components/pagination.md). You can read pagination details in related section, hovewer let's try to modify our example to limit amount of results as 10 per page:
+In addition, SelectQuery support [Pagination](/components/pagination.md) component and makes you able to manipulate with results easier:
 
 ```php
 $select = $database->table('test')->select(['id', 'name', 'status']);
 
+//Uses "page" query value of active request
 $select->paginate(10);
 
 foreach ($select as $row) {
@@ -793,22 +741,8 @@ foreach ($select as $row) {
 }
 ```
 
-> You can change query parameter "page" in your website to iterate thought set.
-
-### Caching
-SelectQuery builder can store it's result in specified cache storage during requested time period. To enable caching for your selection, simply call method `cache` of your select builder. Method has only one mandratory argument - lifetime (seconds). In addition to that you can also provide desired cache key and cache store (in opposite case spiral will select key and store automatically).
-
-```php
-$select = $database->table('test')->select(['id', 'name', 'status'])->cache(10);
-foreach ($select as $row) {
-    dump($row);
-}
-```
-
-If you have Pagination extension, you might notice that database query executed only once per 10 seconds, whan cache data expires.
-
-## Update Query Builder
-UpdateQuery builder as it states from it's name used to update specified records in table based on provided values and where conditions (set of where methods are identical to SelectQuery builder). We only have to execute `run()` method of our builder when we ready to perform query.
+## UpdateQuery Builder
+Use "update" method of your table or database instance to get access to UpdateQuery builder, call `run` method of such query to execute result:
 
 ```php
 $update = $database->table('test')->update([
@@ -818,25 +752,21 @@ $update = $database->table('test')->update([
 $update->where('id', '<', 10)->run();
 ```
 
-Generated SQL (for MySQL) looks like:
-
 ```sql
 UPDATE `primary_test`
-SET `name` = 'Anb'
+SET `name` = 'Abc'
 WHERE `id` < 10
 ```
 
-As in cases with InsertQuery you can use `SQLExpressions` and `SQLFragments` as update values:
+You can use `Expression` and `Fragment` instances in your update values:
 
 ```php
 $update = $database->table('test')->update([
-    'name' => new SQLExpression('UPPER(test.name)')
+    'name' => new Expression('UPPER(test.name)')
 ]);
 
 $update->where('id', '<', 10)->run();
 ```
-
-Result:
 
 ```sql
 UPDATE `primary_test`
@@ -844,7 +774,7 @@ SET `name` = UPPER(`primary_test`.`name`)
 WHERE `id` < 10
 ```
 
-You can also use nested queries:
+Nested queries are also supported:
 
 ```php
 $update = $database->table('test')->update([
@@ -853,8 +783,6 @@ $update = $database->table('test')->update([
 
 $update->where('id', '<', 10)->run();
 ```
-
-Related SQL:
 
 ```sql
 UPDATE `primary_test`
@@ -865,8 +793,10 @@ WHERE `id` = 1)
 WHERE `id` < 10 
 ```
 
-## Delete Query Builders
-DeleteQuery builder is probably the simpliest builder you can quess, you should only specify table you want to delete data from and set of where conditions in a same form as for select and update builders. You can access delete builder using Database or Table instances.
+> Where methods work identically as in SelectQuery.
+
+## DeleteQuery Builders
+Delete queries are represent by DeleteQuery accessible via "delete" method:
 
 ```php
 $database->table('test')->delete()->where('id', '<', 1000)->run();
@@ -879,8 +809,3 @@ $database->table('test')->delete([
     'id' => ['>' => 1000]
 ])->run();
 ```
-
-## Why do we need query builders?
-QueryBuilders (especially all this weird where statements) can seem useless as we still can write our queries in plain SQL, hovewer they will simplify your life a lot once you will start working with different DBMS or databases with non empty table prefix (isolation) and especially with ORM and pre-loading relations.
-
-However, it's still the best to learn SQL as good as you can and check queries generated by Spiral in profiler logging tab to make sure that system is not fooling you.

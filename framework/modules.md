@@ -1,30 +1,19 @@
 # Making Modules
-Spiral framework will be useless without an ability to alter it's core functionality, connect extensions, add resources or visual plugins (widgets/tags). Any of this features can be achieved using ModuleManager and Bootloaders.
+Spiral framework makes it easy to split your application code to external package. Spiral use Composer to load your classes, so you only need to define proper [Bootloader](/framework/bootloaders.md) in your module to bind your implementations. 
 
-> Since Spiral follows PSR4 you only need bootloaders to define your own container bindings, most of existed packages can be used without any additional configuration or bootloading - simply require needed package via composer.
-
-## Writing Bootloader
-Often your module might need to define set of container bindings or bootload specific code, in this case you can simply use technique described in [bootloaders](/framework/bootloaders.md) section.
-
-> In some cases (for example, when you package contains only widgets or delcarative singletons) you might skip Bootloader creation for your module.
+> You can read about packing your module into composer package [here](https://getcomposer.org/doc/02-libraries.md).
 
 ## Writing Module Class
-Usually your module code goes with set of resources to be added to application or set of configs to be mounted. Both of this operations can be performed using module class which can be created by simply implementing `Spiral\Modules\ModuleInterface`:
+In addition to Bootloaders you can automatically alter application configs and move some files in by creating module class in your extension:
 
 ```php
 class MyModule implements ModuleInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function register(RegistratorInterface $registrator)
     {
 
     }
     
-    /**
-     * {@inheritdoc}
-     */
     public function publish(PublisherInterface $publisher, DirectoriesInterface $directories)
     {
 
@@ -58,7 +47,7 @@ public function publish(PublisherInterface $publisher, DirectoriesInterface $dir
 ```
 
 ### Register method
-If you already checked sample spiral application you might notice set of weird comments located all across configuration files:
+If you already checked sample spiral application you might notice set of placeholder comments located all across configuration files:
 
 ```php
 'namespaces'  => [
@@ -87,7 +76,7 @@ If you already checked sample spiral application you might notice set of weird c
 ],
 ```
 
-Such placeholders provide module an ability to write some strings or code into configuration files (based on your approval), the most common example is when module wants to register it's own view namespace(s), this can be achived by following code:
+Such placeholders provide module an ability to write some strings or code into configuration files (based on your approval), the most common example is when module wants to register it's own view namespace(s):
 
 ```php
 public function register(RegistratorInterface $registrator)
@@ -100,14 +89,12 @@ public function register(RegistratorInterface $registrator)
 }
 ```
 
-Now, you can register this module in your system which will automatically alter views config (if allowed) and publish all nesessary resources.
+Now, you can register this module in your system which will automatically alter views config (if allowed) and publish all necessary resources.
 
 > Attention, **do not** alter configs using absolute paths, only use directory based [aliases](/application/directories.md) if you want your module work in any environment.
 
-## Installing, Registering and Publishing your module
-Registering and publishing modules can be done using simple console commands 'register {module}' and 'publish {module}'. Commands will automatically resolve your module class by converting given name into namespace and added postfix "Module". 
-
-> You can read about packing your module into composer package [here](https://getcomposer.org/doc/02-libraries.md).
+## Install, Register and Publish your module
+Register/publish your module using 'register {module}' and 'publish {module}' commands accordingly. Commands will automatically resolve your module class by converting given name into namespace and added postfix "Module". 
 
 For example, we can create module class which are named `Vendor\CoolModule`, to register such extension we have to use following command:
 
@@ -115,7 +102,7 @@ For example, we can create module class which are named `Vendor\CoolModule`, to 
 spiral register vendor/cool
 ```
 
-You can also publish module files:
+You can also publish module files without altering any of configuration files:
 
 ```
 spiral publish vendor/cool
@@ -173,6 +160,13 @@ Module 'Spiral\ToolkitModule' has been successfully published.
 ### Publish command
 Publish command does not require any confirmation and usually used when module gets updated resources such as assets, images and etc.
 
-> Check spiral [toolkit](https://github.com/spiral/toolkit/blob/master/source/ToolkitModule.php) or [profiler](https://github.com/spiral/profiler/blob/master/source/ProfilerModule.php) repositories to get some examples.
-You should also remember to add your module path into tokenizer config if your code contain ORM/ODM entities or console commands which has to be automatically located by ClassLocator or InvocationLocator.
-Use path like `directory('libraries') . 'vendor/module'`.
+> Check spiral [toolkit](https://github.com/spiral-modules/toolkit/blob/master/source/ToolkitModule.php) or [profiler](https://github.com/spiral-modules/profiler/blob/master/source/ProfilerModule.php) repositories to get some examples.
+
+## ORM/ODM
+In cases when your module defines databases models you have to also register your module path in `tokenizer` config to make it classes available for location.
+
+```php
+$registrator->configure('tokenizer', 'directories', 'spiral/auth', [
+    "directory('libraries') . 'vendor/module/source/Module/Database/',"
+]);
+```

@@ -1,7 +1,11 @@
 # Application Views and Templates
-By default you can locate your layouts and page templates into `app/views` directory which is associated
-with defult [view namespace](/components/views.md), once template has been created (for example `app/views/template.php`) 
-you can render it using `ViewsInterface` or short bindings `views` in your services.
+Spiral does provide ViewModel implementation by default, but rather simply access to rendering functions of view templates.
+
+By default your application view templates are located in 'app/views' directory and can be invoked by file name.
+
+> Read more about [view component](/views/overview.md) to understand how to configure view namespaces and connect more rendering engines.
+
+You can render any of your template using `ViewsInterface` dependency or shortcut `views`:
 
 ```php
 public function indexAction()
@@ -12,4 +16,31 @@ public function indexAction()
 }
 ```
 
-> Check out guide for [View Component](/components/views.md) and [Stemple Engine](/stemplers/basics.md).
+## ViewModels
+Be free to implement your own buffer class between rendering engine and controllers when needed:
+
+```php
+class ViewModel extends Service 
+{
+    private $name;
+
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
+
+    public function __toString()
+    {
+        return $this->views->render('template', [
+            'name' => $this->name
+        ]);
+    }
+}
+```
+
+```php
+public function indexAction()
+{
+    return new ViewModel('some name');
+}
+```

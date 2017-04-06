@@ -1,15 +1,15 @@
 # Extended Stempler Usage
-As you might expect based on the title, the basic template features (like template inheritance) are only one part of the stempler (honestly, a very small part of it). In additon to generic features covered in [basic stempler tutorial](/stempler/basics.md), you can create and import so called virtual tags or widgets. These widgets are created as normal views and can be located inside your application or provided by a [module](/framework/modules.md).
+As you might expect based on the title, the basic template features (like template inheritance) are only one part of the stempler (honestly, a very small part of it). In addition to generic features covered in [basic Stempler tutorial](/stempler/basics.md), you can create and import so called virtual tags or widgets. These widgets are created as normal views and can be located inside your application or provided by a [module](/framework/modules.md).
 
 ## Widget/tag creation 
-If you remember, the information provided by the [Basic Templater Usage](/stempler/basics.md) templater handles situation with extending the parent layouts and preventing in-view like:
+If you remember, the information provided by the [Basic Stempler Usage](/stempler/basics.md) template engine handles situation with extending the parent layouts and preventing in-view like:
 
 ```php
 Some content...
 <?= $this->container->views->render('another-view', [...]) ?>
 ```
 
-This simplifies the view definition when we are talking about footers, headers and navigations. However there are many situations where including another view is more beneficial. For example, we can create a unviversal view to render some newsfeed or display a comment among other things. Let's start with a very simple example where we have a view dedicated to render a newsline in many different areas of your website. Let's try to locate this view in "app/views/elements/feed.dark.php".
+This simplifies the view definition when we are talking about footers, headers and navigation. However there are many situations where including another view is more beneficial. For example, we can create a universal view to render some news-feed or display a comment among other things. Let's start with a very simple example where we have a view dedicated to render a news-line in many different areas of your website. Let's try to locate this view in "app/views/elements/feed.dark.php".
 
 ```html
 <div class="news">
@@ -22,7 +22,7 @@ This simplifies the view definition when we are talking about footers, headers a
 </div>
 ```
 
-We now can create a demo view and render the newsfeed inside it (we are going to use the layouts created in a previous section).
+We now can create a demo view and render the news-feed inside it (we are going to use the layouts created in a previous section).
 
 ```html
 <extends:layouts.desktop title="Demo View"/>
@@ -61,11 +61,11 @@ Such view will generate cached output like:
 </html>
 ```
 
-As you can see, Spiral will render the newsfeed every time someone wants to dispalay the "demo" view. Fortunately, the Stempler provides a way to include the content of an external view file during the compilation stage and avoids unnesessary rendering calls. Let's jump to the next section to see how we can do this.
+As you can see, Spiral will render the news-feed every time someone wants to display the "demo" view. Fortunately, the Stempler provides a way to include the content of an external view file during the compilation stage and avoid unnecessary rendering calls. Let's jump to the next section to see how we can do this.
 
 > Including the view source using the `views->render()` method has it's own pros, such as isolation and the separation of cache.
 
-## Imporing widged/tag into view
+## Import widget/tag into view
 If we want to include the desired view into our code, first we have to declare the use tag to link the view location (we might include namespace) and the virtual tag we want to use to represent that view. Our content can be simplified like this:
 
 ```html
@@ -79,12 +79,12 @@ If we want to include the desired view into our code, first we have to declare t
 </block:content>
 ```
 
-This time the feed source will be included to cache without any additional `render()` method calls. This technique in the spiral Templater is called virtual-tags (since you can represent your import as a tag) or widgets. Let's check another section of this tutorial to find other smart ways to import and define your widgets.
+This time the feed source will be included to cache without any additional `render()` method calls. This technique in the spiral Stempler is called virtual-tags (since you can represent your import as a tag) or widgets. Let's check another section of this tutorial to find other smart ways to import and define your widgets.
 
 > You can define the "use" tag(s) in the parent view (in our case "layouts.desktop"). All child views will inherit this use (with the ability to redefine it at any moment). 
 
 ## Widget attributes
-First, we can realize that switching from the render method to templater created a problem linked to the inability to provide variables and options into our importer view. We can solve this problem by defining a set of blocks in our newsfeed exactly the same way we do it in the parent layouts. Below we would like to define the feed class.
+First, we can realize that switching from the render method to the Stempler created a problem linked to the inability to provide variables and options into our importer view. We can solve this problem by defining a set of blocks in our news-feed exactly the same way we do it in the parent layouts. Below we would like to define the feed class.
 
 ```html
 <div class="news ${class}">
@@ -104,7 +104,7 @@ Now we can import this widget with the additional parameters similar to how we e
 ```
 
 Be careful that you don't pass the php variables into the templater blocks without making any additional manipulations and verifications .See below.
-> You can use exacly the same pricinciples of block definition and block value passing that is described in the Basic Templater Usage section.
+> You can use exactly the same principles of block definition and block value passing that is described in the Basic Stempler Usage section.
 
 ## Context block
 Let's make our example more complex. So far we were able to import the existing view and pass some compilation parameters into it. However, these parameters do not allow us to pass a custom HTML code into our element. Let's say that we want to have a special element (commonly used) to format some block of text. We can call it "elements/formatter":
@@ -215,12 +215,12 @@ Now we have created the ability to pass attributes to our widget using prefix "l
 </block:content>
 ```
 
-You can use other parameters for node:attribues. For example `node:attributes="include:id,name;exclude:placeholder"` will fetch only id and name. The placeholder value will not be included into such export even if it was provided (we can add in some other place using `node:attributes="include:placeholder"`).
+You can use other parameters for `node:attributes`. For example `node:attributes="include:id,name;exclude:placeholder"` will fetch only id and name. The placeholder value will not be included into such export even if it was provided (we can add in some other place using `node:attributes="include:placeholder"`).
 
 ## Importing multiple virtual tags at once
 In many cases, you might want to include multiple widgets under the same name or namespaces rather that doing it for each element. Spiral provides a few alternative syntaxes to do that.
 
-### Create wigdet namespace
+### Create widget namespace
 We already imported our element under the name "form:input". However, Spiral lets us import every folder element under a desired namespace:
 
 ```html
@@ -243,7 +243,7 @@ If for some reason you would like to disable element import we can declare a "st
 Now, every `form:input` tag will be preserved as it is.
 
 ### Bundle import
-There are a few scenarious where you may want to create many different elements (for example in separate module). If your module declares multiple element namespaces, importing such namespaces one by one isn't very optimal. Spiral provides you the ability to move the desired imports into a separate view file called bundle. Let's create a file in "elements/bundle" view:
+There are a few scenarios where you may want to create many different elements (for example in separate module). If your module declares multiple element namespaces, importing such namespaces one by one isn't very optimal. Spiral provides you the ability to move the desired imports into a separate view file called bundle. Let's create a file in "elements/bundle" view:
 
 ```html
 <dark:use path="default:elements" namespace="form"/>
@@ -271,7 +271,7 @@ Now all the elements will be automatically imported based on the desired namespa
 > Don't forget that you can declare use tags in parent view layout. They will inherit all parent uses.
 
 ## Overwriting default html tags (danger!)
-Information in this section is for **educational purposes only**. Do not ovewrite the default HTML tags as this might cause any set of unpredicable scenarios in the future.
+Information in this section is for **educational purposes only**. Do not overwrite the default HTML tags as this might cause any set of unpredictable scenarios in the future.
 
 As you already seen, we can create your widgets using dynamic attributes and context block to make them behave as normal HTML tags. As a result, combining this knowledge with an alias based import, you can overwrite an existing HTML tag (but you should't). Let's try to create our tag to replace "a" element ("elements/a.php" view).
 
@@ -566,7 +566,7 @@ You can locate and import your elements from any desired namespace. This can be 
 > You only have to register the view namespace in your module installer.
 
 ## Spiral Toolkit
-The Spiral framework application, which includes the module ['spiral/toolkit'](/modules/toolkit.md), already aggregates a set of virtual tags used to simplify loading assets, form definitions and etc. For example, the following code will render a form, automatically connect the required js libraries and style sheets to make the form work over ajax and highight it's errors:
+The Spiral framework application, which includes the module ['spiral/toolkit'](/modules/toolkit.md), already aggregates a set of virtual tags used to simplify loading assets, form definitions and etc. For example, the following code will render a form, automatically connect the required js libraries and style sheets to make the form work over ajax and highlight it's errors:
 
 ```html
 <extends:layouts.html5 title="Demo View"/>
@@ -615,7 +615,7 @@ Compiled view will look like this:
                     }
                     if (!is_array($__values__)) {
                         throw new \Spiral\Core\Exceptions\RuntimeException(
-                            "Select values must be supplied as associated array."
+                            "Select values must be supplied as associated array"
                         );
                     }
                     foreach ($__values__ as $__value__ => $__label__) {
@@ -639,7 +639,7 @@ Compiled view will look like this:
 </html>
 ```
 
-> Attention, JS and CSS libraries will be only be connected to the layout decalared in placeholders for assets. In your application, you can simply exclude the layout `spiral:layouts.html5` with pre-defined placeholders and stucture. It will looks like this:
+> Attention, JS and CSS libraries will be only be connected to the layout declared in placeholders for assets. In your application, you can simply exclude the layout `spiral:layouts.html5` with pre-defined placeholders and structure. It will looks like this:
 
 ```html
 <dark:use bundle="spiral:bundle"/>

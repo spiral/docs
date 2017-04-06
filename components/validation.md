@@ -2,7 +2,6 @@
 Spiral provides a simple way to validate incoming user data by providing an `Spiral\Validation\ValidatorInterface` interface which is binded by default to the `Spiral\Validation\Validator` class.
 
 ## ValidatorInterface
-Before we start working with validations, let's quickly take a look at `ValidatorInterface` to see what methods are available to us.
 
 ```php
 interface ValidatorInterface
@@ -11,32 +10,57 @@ interface ValidatorInterface
      * Update validation rules.
      *
      * @param array $rules
+     *
      * @return self
      */
-    public function setRules(array $rules);
+    public function setRules(array $rules): ValidatorInterface;
 
     /**
-     * Update validation data (context).
+     * Update validation data (context). Data change must reset validation state and all errors.
      *
      * @param array|\ArrayAccess $data
+     *
      * @return self
+     *
      * @throws ValidationException
      */
-    public function setData($data);
+    public function setData($data): ValidatorInterface;
 
     /**
-     * Register outer validation error.
+     * Get all validation data passed into validator.
+     *
+     * @return array|\ArrayAccess
+     */
+    public function getData();
+
+    /**
+     * Receive field from context data or return default value.
+     *
+     * @param string $field
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getValue(string $field, $default = null);
+
+    /**
+     * Register outer validation error. Registered error persists until context data are changed
+     * or flushRegistered method not called.
      *
      * @param string $field
      * @param string $error
+     *
      * @return self
      */
-    public function registerError($field, $error);
+    public function registerError(string $field, string $error): ValidatorInterface;
+
+    /**
+     * Reset validation state.
+     */
+    public function reset();
 
     /**
      * Flush all registered errors.
-     *
-     * @return self
      */
     public function flushRegistered();
 
@@ -44,24 +68,26 @@ interface ValidatorInterface
      * Check if context data valid accordingly to provided rules.
      *
      * @return bool
+     *
      * @throws ValidationException
      */
-    public function isValid();
+    public function isValid(): bool;
 
     /**
      * Evil tween of isValid() method should return true if context data is not valid.
      *
      * @return bool
+     *
      * @throws ValidationException
      */
-    public function hasErrors();
+    public function hasErrors(): bool;
 
     /**
      * List of errors associated with parent field, every field should have only one error assigned.
      *
      * @return array
      */
-    public function getErrors();
+    public function getErrors(): array;
 }
 ```
 
@@ -69,9 +95,9 @@ As you can see, validator requires 2 primary sets:
 * data is an array of fields to be validated
 * rules is set of validation rules to be applied to every data field
 
-> The default spiral implementation `Validator` requires instances of `ContainerInterface` (Interop, needed to load Checkers and external rule classes) and `ValidationConfig` (to provide a list of available validations using section "validation"). This means that you have to request the validator instance using the DI or factory to ensure that it's configured correctly. 
+> The default spiral implementation `Validator` requires instances of `ContainerInterface` (Interop, needed to load Checkers and external rule classes) and `ValidatorConfig` (to provide a list of available validations using section "validation"). This means that you have to request the validator instance using the DI or factory to ensure that it's configured correctly. 
 
-Now we can create a sample validator in our controller action (we can configure validation on a fly):
+Now we can create a sample validator in our controller action and configure validation on a fly:
 
 ```php
 protected function indexAction(ValidatorInterface $validator)
@@ -86,7 +112,7 @@ protected function indexAction(ValidatorInterface $validator)
 }
 ```
 
-We can also create a validator using factory and defined data and create rules while class is constructed:
+We can also create a validator using factory and define data/rules at moment of construction:
 
 ```php
 protected function indexAction(FactoryInterface $factory)
@@ -113,7 +139,9 @@ protected function indexAction(FactoryInterface $factory)
 > Both declarations are identical.
 
 ## Validator Data
-Validator data set can be represented by any associated array where the key is treated as a field name that needs value and data to be validated. In our example, we defined only one field called "name" and associated it with a value fetched from a query. By default, the validation will fail with the error message "This field is required." associated with the "name" field. You can alter the website url and include query "?name=something" to pass the example validation.
+Validator data set can be represented by any associated array where the key is treated as a field name that needs value and data to be validated. In our example, we defined only one field called "name" and associated it with a value fetched from a query.
+
+By default, the validation will fail with the error message "This field is required." associated with the "name" field. You can alter the website url and include query "?name=something" to pass the example validation.
 
 ## Validation Errors
 Before we move to the format required to define validation rules, let's take a look at the error generated in our case. The error array will look like the following:
@@ -124,12 +152,12 @@ Before we move to the format required to define validation rules, let's take a l
 ]
 ```
 
-Such errors can be sent directly to the frontend and be displayed near the input field (see [Spiral Frontent Toolkit](/modules/toolkit.md)) or joined as an array of errors.
+Such errors can be sent directly to the frontend and be displayed near the input field (see [Spiral Frontend Toolkit](/modules/toolkit.md)) or joined as an array of errors.
 
-> Spiral Validator perform **linear field validation**. This means that only one error can be shown in one field. When there are multiple rules associated with one field - the first failed error message will be used for that rule (other validation methods will be skipped). This approach is used to make sure that every rule will receive a value already passed through previous validations (for example we can have rules like: notEmpty, string, string::regexp which will make sure that field is not empty. Than that value is a string and only after regexp expression will it be executed).
+> Spiral Validator perform **linear field validation**. This means that only one error can be associated with one field. When there are multiple rules associated with one field - the first failed error message will be used for that rule (other validation methods will be skipped). This approach is used to make sure that every rule will receive a value already passed through previous validations (for example we can have rules like: notEmpty, string, string::regexp which will make sure that field is not empty. Than that value is a string and only after regexp expression will it be executed).
 
 ## Validation Rules and Messages
-We can define multiple validation rules for one field. Let's try to modify our example and include an email check into it:
+To define multiple validation rules for one field:
 
 ```php
 protected function indexAction(FactoryInterface $factory)
@@ -157,7 +185,7 @@ protected function indexAction(FactoryInterface $factory)
 ```
 
 ### What is a Validation rule?
-Generally speaking, a validation rule is a simple function or function alias which must accept a value to be validated first and then return bool or typecasted bool as a result. Let's try to add a few php functions as data validations:
+Generally speaking, a validation rule is a simple function or function alias which must accept a value to be validated first and then return bool or type-casted bool as a result. Let's try to add a few php functions as data validations:
 
 ```php
 'rules' => [
@@ -254,34 +282,35 @@ Default Spiral Validation provides the ability to define a set of aliases associ
 
 ```php
 'aliases'         => [
-    "notEmpty"    => "type::notEmpty",
-    "required"    => "type::notEmpty",
-    "datetime"    => "type::datetime",
-    "timezone"    => "type::timezone",
-    "bool"        => "type::boolean",
-    "boolean"     => "type::boolean",
-    "cardNumber"  => "mixed::cardNumber",
-    "regexp"      => "string::regexp",
-    "email"       => "address::email",
-    "url"         => "address::url",
-    "file"        => "file::exists",
-    "uploaded"    => "file::uploaded",
-    "filesize"    => "file::size",
-    "image"       => "image::valid",
-    "array"       => "is_array",
-    "callable"    => "is_callable",
-    "double"      => "is_double",
-    "float"       => "is_float",
-    "int"         => "is_int",
-    "integer"     => "is_integer",
-    "long"        => "is_long",
-    "null"        => "is_null",
-    "object"      => "is_object",
-    "real"        => "is_real",
-    "resource"    => "is_resource",
-    "scalar"      => "is_scalar",
-    "string"      => "is_string",
-    "match"       => "mixed::match"
+    "notEmpty"   => "type::notEmpty",
+    "required"   => "type::notEmpty",
+    "datetime"   => "type::datetime",
+    "timezone"   => "type::timezone",
+    "bool"       => "type::boolean",
+    "boolean"    => "type::boolean",
+    "cardNumber" => "mixed::cardNumber",
+    "regexp"     => "string::regexp",
+    "email"      => "address::email",
+    "url"        => "address::url",
+    "file"       => "file::exists",
+    "uploaded"   => "file::uploaded",
+    "filesize"   => "file::size",
+    "image"      => "image::valid",
+    "array"      => "is_array",
+    "callable"   => "is_callable",
+    "double"     => "is_double",
+    "float"      => "is_float",
+    "int"        => "is_int",
+    "integer"    => "is_integer",
+    "numeric"    => "is_numeric",
+    "long"       => "is_long",
+    "null"       => "is_null",
+    "object"     => "is_object",
+    "real"       => "is_real",
+    "resource"   => "is_resource",
+    "scalar"     => "is_scalar",
+    "string"     => "is_string",
+    "match"      => "mixed::match",
 ]
 ```
 
@@ -316,8 +345,8 @@ Another section you may notice in validation config is "emptyConditions". Let's 
     "required::withoutAll",
     "file::exists",
     "file::uploaded",
-    "image::exists",
-    "image::uploaded"
+    "image:valid",
+    "record::notEmpty",
 ],
 ```
 
@@ -370,7 +399,7 @@ If you check the validation configuration file, you will see some checkers alrea
     "address"  => Checkers\AddressChecker::class,
     "string"   => Checkers\StringChecker::class,
     "file"     => Checkers\FileChecker::class,
-    "image"    => Checkers\ImageChecker::class
+    "image"    => Checkers\ImageChecker::class,
 ],
 ```
 
@@ -409,11 +438,11 @@ class MyChecker extends Checker
      *
      * @var array
      */
-    protected $messages = [
+    const MESSAGES = [
         'abc' => '[[Invalid value, only a,b,c are allowed.]]'
     ];
 
-    public function abc($value)
+    public function abc($value): bool
     {
         return in_array($value, ['a', 'b', 'c']);
     }
@@ -445,19 +474,19 @@ class MyChecker extends Checker
      *
      * @var array
      */
-    protected $messages = [
+    const MESSAGES = [
         'abc'   => '[[Invalid value, only a,b,c are allowed.]]',
         'equal' => '[[Two fields must equal.]]'
     ];
 
-    public function abc($value)
+    public function abc($value): bool
     {
         return in_array($value, ['a', 'b', 'c']);
     }
 
-    public function equal($value, $field)
+    public function equal($value, string $field): bool
     {
-        return $value == $this->validator->field($field);
+        return $value == $this->getValidator()->getValue($field, null);
     }
 }
 ```
@@ -501,19 +530,21 @@ The following validation Checkers can be used.
 
 ### Type Checker (prefix "type::")
 | Rule          | Parameters         | Description         
-| ---           | ---                | ---                   
-| notEmpty      | [trim:bool - true] | Value should not be empty.                                             
+| ---           | ---                | ---       
+| notEmpty      | [asString:bool - true] | Value should not be empty.                                             
+| notNull       | ---                | Value should not be null.                                            
 | boolean       | ---                | Value has to be boolean or integer[0,1].                            
 | datetime      | ---                | Value has to be valid datetime definition including numeric timestamp. 
 | timezone      | ---                | Value has to be valid timezone.                                        
 
 ### Required Checker (prefix "required::")
-| Rule          | Parameters            | Description    
-| ---           | ---                   | ---  
-| with          | with:array            | Check if field is not empty but only if any of listed fields presented or not empty.
-| withAll       | with:array            | Check if field is not empty but only if all of listed fields presented and not empty.
-| without       | without:array         | Check if field is not empty but only if one of listed fields missing or empty.
-| withoutAll    | without:array         | Check if field is not empty but only if all of listed fields missing or empty.
+| Rule          | Parameters             | Description    
+| ---           | ---                    | ---  
+| notEmpty      | [asString:bool - true] | Value should not be empty.                                             
+| with          | with:array             | Check if field is not empty but only if any of listed fields presented or not empty.
+| withAll       | with:array             | Check if field is not empty but only if all of listed fields presented and not empty.
+| without       | without:array          | Check if field is not empty but only if one of listed fields missing or empty.
+| withoutAll    | without:array          | Check if field is not empty but only if all of listed fields missing or empty.
 
 Examples:
 
@@ -586,76 +617,31 @@ Image checker extends the file checker and fully supports it's features.
 
 | Rule          | Parameters              | Description           |
 | ---           | ---                     | ---                   |
-| exists        | ---                     | Check if image exist.
-| uploaded      | ---                     | Check if image was uploaded.
-| size          | size:int                | Check if image size is less than specified value in KB.
-| extension     | extensions:array        | Check if image extension is in whitelist. Client name of uploaded file will be used!
 | type          | types:array             | Check if image is within a list of allowed image types.
 | valid         | ---                     | Shortcut to check if the image has a valid type (JPEG, PNG and GIF are allowed).
 | smaller       | width:int, [height:int] | Check if image is smaller than a specified shape (height check if optional).
 | bigger        | width:int, [height:int] | Check if image is bigger than a specified shape (height check is optional).
 
 ## Example of Validator usage
-In most of cases, you don't need to create a validator manually. The Validation component provides `ValidatesInterface`.  `ValidatorTrait` provides the ability to embed a field based validation into your models.
+Spiral Http component ships with [convenient way](/http/validation.md) to validate incoming request,
+use VALIDATES constant to configure request validation rules:
 
 ```php
-interface ValidatesInterface
-{
-    /**
-     * Check if context data is valid.
-     *
-     * @return bool
-     */
-    public function isValid();
-
-    /**
-     * Check if context data has errors.
-     *
-     * @return bool
-     */
-    public function hasErrors();
-
-    /**
-     * List of errors associated with parent field, every field must have only one error assigned.
-     *
-     * @param bool $reset Force re-validation.
-     * @return array
-     */
-    public function getErrors($reset = false);
-}
-```
-
-This interface and trait are already implemented in the base spiral model - DataEntity. As a result, it is recommendeded that you validate incoming user requests using http [RequestFilters](/http/filters.md). Let's try to write an example that demonstrates the usage of image/file checker using the RequestFilter:
-
-```php
-/**
- * @property \Zend\Diactoros\UploadedFile $image
- */
 class UploadRequest extends RequestFilter
 {
-    /**
-     * Input schema.
-     *
-     * @var array
-     */
-    protected $schema = [
+    const SCHEMA = [
         'image' => 'file:image'
     ];
     
-    /**
-     * @var array
-     */
-    protected $validates = [
+    const VALIDATES = [
         'image' => [
-            'image::uploaded',
+            'file::uploaded',
             'image::valid',
             ['image::bigger', 100, 100] //Must be at least 100x100px
         ]
     ];
 }
 ```
-
-Our controller code will look like this:
 
 ```php
 protected function indexAction(UploadRequest $request)
@@ -668,87 +654,4 @@ protected function indexAction(UploadRequest $request)
 }
 ```
 
-## Entity Validations
-You can also use validation rules directly with your database entities, in this case you might skip step of declaring request, to do
-that let's try to create entity which looks like that:
-
-```php
-class Contact extends Record
-{
-    use TimestampsTrait;
-
-    /**
-     * @var array
-     */
-    protected $schema = [
-        'id' => 'primary',
-
-        'role' => 'string(32)',
-
-        'name'        => 'string',
-        'email'       => 'string',
-        'phone'       => 'string',
-        'description' => 'text'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $defaults = [
-        'role' => 'Marketing'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'role',
-        'name',
-        'email',
-        'phone',
-        'description'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $validates = [
-        'name'        => ['notEmpty', ['string::shorter', 255]],
-        'email'       => ['email'],
-        'phone'       => ['notEmpty', ['string::shorter', 255]],
-        'role'        => ['notEmpty', ['string::shorter', 32]],
-        'description' => [['string::shorter', 500]]
-    ];
-}
-```
-
-Now (i assume you already have ContactSource with save method) you can update such entity in your controller this fashion:
-
-```php
-public function updateAction($id, ContactSource $source)
-{
-    /**
-     * @var Contact $entity
-     */
-    if (empty($entity = $source->findByPK($id))) {
-        throw new ForbiddenException("Undefined contact");
-    }
-
-    //See Security module
-    $this->authorize('edit', compact('entity'));
-
-    //Populates only allowed fields
-    $entity->setFields($this->input->data);
-    if (!$source->save($entity, $errors)) {
-        return [
-            'status' => 400,
-            'errors' => $errors
-        ];
-    }
-
-    return [
-        'status'  => 200,
-        'message' => $this->say('Contact information has been updated')
-    ];
-}
-```
+> You can extend `ValidatesEntity` to implement your own set of model filters.

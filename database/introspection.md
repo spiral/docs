@@ -1,8 +1,9 @@
 # Database Introspection
-Spiral Database layer provides the ability to read and analyze basic properties of a given database or given table. In addition to that, the DBAL contains a mechanism used to convert sets of column types specific to some DBMS into a limited set of "abstract" types available for the user.
+Spiral Database layer provides the ability to read and analyze basic properties of a given database or a given table. DBAL layer include set of "abstract" types assigned to each column based on DBMS specific
+mapping in order to unify different engines.
 
 ## List of database tables
-Once you have received an instance of `DatabaseInterface` you can check if the desired table exists using the `hasTable` method.
+To check if database has table use `hasTable`:
 
 ```php
 if ($database->hasTable('users')) {
@@ -10,9 +11,9 @@ if ($database->hasTable('users')) {
 }
 ```
 
-> Read how to get access to database instances [here](/databases/basics.md).
+> Read how to get Database instances [here](/databases/overview.md).
 
-In some cases you want to receive all database tables (array of `Spiral\Database\Table`):
+Receive all database tables (array of `Spiral\Database\Table`):
 
 ```php
 foreach ($database->getTables() as $table) {
@@ -20,18 +21,18 @@ foreach ($database->getTables() as $table) {
 }
 ```
 
-> Attention, all table operation will automatically use a database level table prefix. 
+> Only tables specific to database prefix (if any) are resulted.
 
-Given instance of table is only high level abstaction, we will need instance of "TableSchema".
+Schema Reader/Builder (`AbstractTable`) is available using `getSchema` method:
 
 ```php
 foreach ($database->getTables() as $table) {
-    dump($table->schema());
+    dump($table->getSchema());
 }
 ```
 
-## Reading table properties using TableSchema
-The TableSchema provides low level access to table information such as column types (internal and abstract), indexes, foreign keys and etc. You can use this information to perform database export, build your own ORM or migration mechanism (see [schema declaration](/database/declaration.md)).
+## Reading table properties using AbstractTable
+The AbstractTable provides low level access to table information such as column types (internal and abstract), indexes, foreign keys and etc. You can use this information to perform database export, build your own ORM or migration mechanism (see [schema declaration](/database/declaration.md)).
 
 Table primary keys:
 
@@ -54,13 +55,15 @@ Table foreign keys (references):
 ```php
 foreach ($schema->getForeigns() as $foreign) {
     dump($foreign->getColumn());       //Local column name
-    dump($foreign->getForeignTable()); //Prefix included (raw name)
+    dump($foreign->getForeignTable()); //Global table name!
     dump($foreign->getForeignKey());
 
     dump($foreign->getDeleteRule());   //NO ACTION, CASCADE
     dump($foreign->getUpdateRule());   //NO ACTION, CASCADE
 }
 ```
+
+> Attention, `getForeignTable` returns full table name ignoring db prefix.
 
 Table columns:
 
@@ -88,27 +91,15 @@ foreach ($schema->getColumns() as $column) {
 }
 ```
 
-> Some types can be mapped incorrectly if the table was created outside migrations or ORM. For example, only MySQL has native enum support, all other databases use an enum constraint.
+> Some types can be mapped incorrectly if the table was created outside migrations or ORM.
 
 You can find a complete list of available abstract types [here](/database/declaration.md).
-
-## Interfaces
-If you want to make your code not depend on a specific implementation, you always talk to schemas using DBAL of interfaces.
-
-| Interface                                        | Description 
-| ---                                              | ---
-| Spiral\Database\DatabaseInterface                | High level abstraction used to represent a single database with the ability to get its tables and run queries.
-| Spiral\Database\TableInterface                   | Table level abstraction linked to existing or non-existing database table.
-| Spiral\Database\Schemas\TableInterface           | Represent a table schema with all of its columns, indexes and foreign keys.
-| Spiral\Database\Schemas\ColumnInterface          | Must represent a table schema column abstraction.
-| Spiral\Database\Schemas\IndexInterface           | Represent a single table index associated with a set of columns.
-| Spiral\Database\Schemas\ReferenceInterface       | Represents a single foreign key and its options.
 
 ## Console Commands
 You can also use console commands to get information about configured tables and their schemas:
 
-Command           | Description 
----               | ---
+Command         | Description 
+---             | ---
 db:list         | Get list of databases, their tables and records count.
 db:describe     | View table schema of default or specific database.
 

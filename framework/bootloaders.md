@@ -1,13 +1,10 @@
 # Bootloaders
-In many cases, when you would like to move or split your code from application files, bootloader will becomed required.
+The Bootloader classes responsible for pre-initialization of your application, use them to configure proper container bindings and environment initialization (i.e. http routes). 
 
-> Make sure you read about [container and di](/framework/container.md).
-
-## What is bootloader
-Bootloader is special class which used to declare needed container bindings and factory methods to make your component operate well. On other hand you can use bootloader to exectute some code at moment when your environment is loading.
+> Make sure you read about [Container and DI](/framework/container.md).
 
 ## Booting bindings
-Let's try to imagine situation when your code provides set of interfaces and default implementation for them. To make sure that your interfaces work in code you have to configure container first, this can be done in App bootstrap method:
+Ordinary, the application will require a lots of interfaces and aliases to be binded to their implementations, you can define bindings in your code using following constructions:
 
 ```php
 $this->container->bind(SomeInterface::class, SomeClass::class);
@@ -18,7 +15,7 @@ $this->container->bind(SomeInterface::class, function(...) {
 });
 ```
 
-Now we can use SomeInterface in our constructor and methods injections.
+Example of binding usage:
 
 ```php
 public function indexAction(SomeInterface $some)
@@ -28,53 +25,52 @@ public function indexAction(SomeInterface $some)
 }
 ```
 
-Let's try to archieve same goal using bootloader (this is only example code):
+Bootloaders make such definitions easier, faster and provide a way to merge multiple bindings into one group:
 
 ```php
 class SomeBootloader extends Bootloader
 {
-    protected $bindings = [
+    const BINDINGS = [
         SomeInterface::class => SomeClass::class
     ];
     
-    //Only constructed once
-    protected $singletons = [
+    const SINGLETONS = [
         OtherInterface::class => [self::class, 'createOther']
     ];
     
-    //Automatically resolved by container
-    public function createOther(SomeInterface $class, ...)
+    protected function createOther(SomeInterface $class, ...)
     {
         return new OtherClass($class);
     }
 }
 ```
 
-The only thing we have to do now is to add such bootloader class into our application, you can simply modify property `$load` in your App class.
+> Note that you can make your factory methods private and protected, container will bypass this restriction.
+
+The only thing we have to do now is to add such bootloader class into our application, modify constant `LOAD` in your App class.
 
 ```php
-protected $load = [
+const LOAD = [
     //...
     Bootloaders\SomeBootloader::class
 ];
 ```
 
-Once done you will be able to use declared bindings and factories in your application. 
-
-> Framework bundle caches bootloader bindings so there is no need to load such classes on every request, this means that any modifications in already registred bootloaders has to be declared to application using console command "app:reload". On other 
-hand, bootloading cache provides ability to connect multiple extensions or modules without getting much performance penalty on that.
+> You can enable bootloaders cache in your .env file to speed up application initialization a bit.
 
 ## Booting code
-Often you might want to execute your code at moment of application bootloading, you can do that by simply declaring specific constant in your bootloader `BOOT` and creating boot method with supported method injection:
+To load or execute custom code at moment of application initialization, set constant `BOOT` to true and define method `boot`:
 
 ```php
 class AppBootloader extends Bootloader 
 {
-    protected $bindings = [
+    const BOOT = true;
+
+    const BINDIGNS = [
         SomeInterface::class => SomeClass::class
     ];
     
-    protected $singletons = [
+    const SINGLETONS = [
         OtherInterface::class => [self::class, 'createOther']
     ];
     
@@ -85,23 +81,22 @@ class AppBootloader extends Bootloader
     }
 
     /**
-     * @param HttpDispatcher       $http
+     * @param HttpDispatcher $http
      */
     public function boot(HttpDispatcher $http)
     {
         $http->addRoute(new Route(
-            'route', 'route/<section:[a-z\-]*>', 'Vendor\Controllers\SomeController::action'
+            'route', 'route/<section:[a-z\-]*>',
+            'Vendor\Controllers\SomeController::action'
         ));
     }
 }
 ```
 
-Given Bootloader will automatically register http route at moment of application initialization. You can declare any needed depencies in your boot method arguments.
-
-> Attention, booted Bootloaders are not cached. If you want to add boot method to existed bootloaded - do not forget to execture 'app:reload' after doing that.
+> Cache is ignored for such bootloaders.
 
 ## Bootloading outside of core
-As you see in default application, using `$load` property is not the only way to mount your bootloaders as you can get access to BootloadManager at any moment:
+If you want to load your bootloader based on some condition use `getBootloader()` method of your core application:
 
 ```php
 public function indexAction()
@@ -112,12 +107,8 @@ public function indexAction()
 }
 ```
 
-> Attention, this bootloaded will not be cached in memory by default.
-
 ## Short bindings and Shortcuts
-Sometimes you might need to have simplified access to some of your code, for example database or specific part of request. As you might notice in [Container, Factory, DI](/framework/cotainer.md) section you can create short bindings for some of you classes and services.
-
-However in some cases we can additionally combine short binding with factory methods in Bootloader:
+Bootloaders can also be used to define shortcuts to your services:
 
 ```php
 class MyBootloader extends Bootloader
@@ -125,22 +116,21 @@ class MyBootloader extends Bootloader
     /**
      * @return array
      */
-    protected $bindings = [
+    const BINDINGINS = [
         'someTable' => [self::class, 'someTable']
     ];
 
     /**
      * @param DatabaseManager $databases
-     * @return \Spiral\Database\Entities\Table
      */
-    public function someTable(DatabaseManager $databases)
+    public function someTable(DatabaseManager $databases): Table
     {
         return $databases->database('default')->table('some');
     }
 }
 ```
 
-Now you can use such table shortcut in your controllers and services:
+Now you can use such table shortcut in your controllers or service:
 
 ```php
 public function indexAction()
@@ -149,16 +139,4 @@ public function indexAction()
 }
 ```
 
-If you would like to get automatic tooltips in your IDE for such shortcut - simply add comment into SharedTrait twin which you can put into your module or find one in app/classes/Bootloaders/Virtual:
-
-```php
-/**
- * @property-read \Spiral\Databases\Entities\Table $someTable Binded in MyBootloader
- */
-trait SharedTrait 
-{
-    //...
-}
-```
-
-> You can treat shortcuts as inline functions in C but in a context of active container scope.
+> You can treat shortcuts/[factory methods] as inline functions in C but in a context of active container scope.

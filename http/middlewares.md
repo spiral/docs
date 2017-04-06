@@ -1,9 +1,8 @@
 # Http Middlewares
-Http Middlewares is very powerful tool allowing you manipulate application flow using PSR7 request and response. Middlewares executed using so called pipeline, 
-which will push request and response thought chain on defined middlewares. Make sure you read [Http Flow] (flow.md).
+Http Middlewares is very powerful tool allowing you manipulate application flow using PSR7 request and response. Middlewares executed using so called pipeline, which will push request and response thought chain on middleware instances. Make sure you read [Http Flow](/http/flow.md) first.
 
-## Scaffoling
-You can generate empty middleware using `create:middleware name` command, scaffolded middlewares automatically extend Service class so you can use any of service features (like short bindings, singleton constants and init method) in your class. In addition to that you can define service dependencies using `-d` option.
+## Scaffolding
+You can generate empty middleware using `create:middleware name` command (install spiral/scaffolder module first), scaffolded middlewares automatically extend Service.
 
 Let's try to generate example middleware `create:middleware headers`:
 
@@ -26,7 +25,8 @@ class HeadersMiddleware extends Service implements MiddlewareInterface
 }
 ```
 
-First of all, to make this middleware work we have to assign it to primary http pipeline (using http configuration) which is applied to every request or to specific route.
+First of all, to make this middleware work we have to assign it to primary http pipeline (using http configuration) which is applied to every request or to a specific route.
+
 We are going to add this middleware to primary middleware chain in http config:
 
 ```php
@@ -35,10 +35,11 @@ We are going to add this middleware to primary middleware chain in http config:
         Http\Cookies\CookieManager::class,
         Middlewares\JsonParser::class,
         \Spiral\Session\Http\SessionStarter::class,
+        Middlewares\HeadersMiddleware::class
     ],
 ```
 
-Now we can either modify incoming request and response before sending it to next pipeline element or endpoing or modify generated response after it been processed. Let's do both of this operations:
+Now we can either modify the incoming request and the response before sending it to a next pipeline element or the endpoint or modify generated response after it been processed. Let's do both of this operations:
 
 ```php
 class HeadersMiddleware extends Service implements MiddlewareInterface
@@ -54,13 +55,15 @@ class HeadersMiddleware extends Service implements MiddlewareInterface
         ResponseInterface $response,
         \Closure $next
     ) {
-        return $next($request->withAttribute('name', 'value'), $response)->withHeader('Header', 'value');
+        return $next(
+            $request->withAttribute('name', 'value'), 
+            $response
+       )->withHeader('Header', 'value');
     }
 }
 ```
 
-This will make every request passed thought middleware get atrribute "name" and every response gain header "Header". In real world application middlewares can perform
-much more complex operations, for example middleware can halt execution if some condition not met:
+This will make every request passed thought middleware get attribute "name" and every response gain header "Header". In a real world application middlewares can perform much more complex operations, for example middleware can halt execution if some condition not met:
 
 ```php
 /**
@@ -88,18 +91,31 @@ To understand other abilities of middlewares and PSR7 classes let's look into co
 class JsonParser implements MiddlewareInterface
 {
     /**
+     * @var bool
+     */
+    private $asArray;
+
+    /**
+     * @param bool $asArray
+     */
+    public function __construct(bool $asArray = true)
+    {
+        $this->asArray = $asArray;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function __invoke(
-        ServerRequestInterface $request,
-        ResponseInterface $response,
-        \Closure $next
-    ) {
-        if ($request->getHeaderLine('Content-Type') == 'application/json') {
-            $request = $request->withParsedBody(json_decode(
-                $request->getBody()->__toString(),
-                true
-            ));
+    public function __invoke(Request $request, Response $response, callable $next)
+    {
+        if (strpos($request->getHeaderLine('Content-Type'), 'application/json') !== false) {
+            $data = json_decode($request->getBody()->__toString(), $this->asArray);
+            if (!empty(json_last_error())) {
+                //Mailformed request
+                return $response->withStatus(400);
+            }
+
+            $request = $request->withParsedBody($data);
         }
 
         return $next($request);
@@ -112,16 +128,17 @@ Such middleware replaces request parsed body (data) with JSON structure, but onl
 ## Default spiral Middlewares
 There is set of pre-created middlewares you can use in your application:
 
-| Middleware                                | Description 
-| ---                                       | ---         
-| Spiral\Http\Cookies\CookieManager         | Encrypts and decrypts incoming/outcoming cookies using encrypter or HMAC.                                         
-| Spiral\Http\Middlewares\CsrfFilter        | Halts execution if request made via non GET, HEAD or OPTIONS method and no verification code provided in request. 
-| Spiral\Http\Middlewares\JsonParser        | Converts JSON payload from request body into parsed request body if valid "Content-Type" header set (to be replaced by `Psr7Middlewares\Middleware\Payload`).              
-| Spiral\Session\Http\SessionStarter        | Initiates session using ID stored in cookie "session" or creates such cookies in response if needed.              
+Middleware                                | Description 
+---                                       | ---         
+Spiral\Http\Cookies\CookieManager         | Encrypts and decrypts incoming/outcoming cookies using encrypter or HMAC.                     
+Spiral\Http\Middlewares\CsrfMiddleware    | Sets user specific CSRF cookie.
+Spiral\Http\Middlewares\CsrfFirewall      | Halts execution if request does not include proper csrf value matched with user cookie.
+Spiral\Http\Middlewares\JsonParser        | Converts JSON payload from request body into parsed request body if valid "Content-Type" header set.              
+Spiral\Session\Http\SessionStarter        | Creates user session scope using cookie id. 
 
-In addition to that **Profiler module** also stated as middleware and automatically mounted by it's bootloader at top of middlewares chain when debug mode is enabled (see skeleton application).
+> In addition to that **Profiler module** also stated as middleware and automatically mounted by it's bootloader at top of middlewares chain when debug mode is enabled (see skeleton application).
 
-## Mounting middlewares in Bootloader
+## Mount middlewares in Bootloader
 In some cases you might want to mount middleware in your bootload class rather than editing config, to do that we have to make our class bootable and request HttpDispatcher dependency:
 
 ```php
@@ -150,12 +167,14 @@ public function boot(HttpDispatcher $http)
 {
     $http->riseMiddleware(Middleware::responseTime());
     $http->pushMiddleware(
-        Middleware::BasicAuthentication(['username' => 'password'])->realm('You shall not pass!')
+        Middleware::BasicAuthentication([
+            'username' => 'password'
+        ])->realm('You shall not pass!')
     );
 }
 ```
 
-If you want to use short aliases for such middlewares concider creating container binding:
+If you want to use short aliases for such middlewares consider creating container binding:
 
 ```php
 class MyBootloader extends Bootloader implements SingletonInterface
@@ -163,7 +182,7 @@ class MyBootloader extends Bootloader implements SingletonInterface
     /**
      * @return array
      */
-    protected $bindings = [
+    const BINDINGS = [
         //You can also use middleware class name as alias
         'middlewares.auth' => [self::class, 'authMiddleware'],
     ];
@@ -194,4 +213,4 @@ Now you can use such middleware in your http config or other places via short al
 ],
 ```
 
-> Concider contributing into [https://github.com/oscarotero/psr7-middlewares](https://github.com/oscarotero/psr7-middlewares) directly if you wish to create more middlewares which are not spiral specific.
+> Contribute directly into [https://github.com/oscarotero/psr7-middlewares](https://github.com/oscarotero/psr7-middlewares) if you wish to create more middlewares which are not spiral specific.

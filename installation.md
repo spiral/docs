@@ -1,10 +1,10 @@
-# Installation and Requiments
+# Installation and Requirements
 Spiral Framework uses **Composer** to resolve dependencies and install required components. You can check how to install composer [here](https://getcomposer.org/download/).
 
-## Server Requiments
+## Server Requirements
 Make sure that your server is configured with following PHP version and extensions:
 * PHP 7.0+
-* OpenSSL Extension (+mCrypt extension for current version of defuse/php-encryption)
+* OpenSSL Extension
 * MbString Extension
 * Tokenizer Extension
 * PDO Extension with desired database drivers
@@ -14,10 +14,10 @@ Make sure that your server is configured with following PHP version and extensio
 One of fastest ways to install a fresh spiral application is to use the composer command:
 
 ```
-php composer.phar create-project spiral/application
+php composer.phar create-project spiral/application {dir}
 ```
 
-Initial application installation will automatically configure framework and enviroment to ensure that all nesessary directories have the correct permissions and are available for application, also it will perform translator indexation and view compilation (you can register you own commands in configure sequence, see [**Console Dispatcher**](/console/commands.md)).
+Initial application installation will automatically configure framework and environment to ensure that all necessary directories have the correct permissions and are available for application, also it will perform translator indexation and view compilation (you can register you own commands in configure sequence, see [**Console Dispatcher**](/console/overview.md)).
 
 You can also configure your application at any moment, by simply executing:
 
@@ -25,21 +25,17 @@ You can also configure your application at any moment, by simply executing:
 ./spiral configure
 ```
 
-Make sure that `spiral` has right execute permissions (`chmod +x spiral`, btw you can rename `spiral` and `spiral.cli` to any name you want).
+Make sure that `spiral` has right execute permissions (`chmod +x spiral`, also you can rename `spiral` and `spiral.cli` to any name you want).
 
-> You can run command(s) with increaced verbosity to get more details.
+> You can run command(s) with increaced verbosity `-vv` to get more details.
 
-## Enviroment settings
-Default spiral application and framework core utilize [dotenv package](https://github.com/vlucas/phpdotenv) which provides you ability to enter your enviroment specific settings into `.env` file.
+## Environment settings
+Default spiral application and framework core utilize [dotenv package](https://github.com/vlucas/phpdotenv) which provides you ability to keep your environment settings in `.env` file, thought you can replace default implementation to avoid un-nesessary filesystem requests, follow [this link](/application/environment.md) for more instructions.
 
-> Enviroment file `.env` will be automatically created and pre-configured as moment of application installation, however in a future you have to manage file creation manually (you can simply copy or rename `.env.sample` and later run `spiral app:key` to ensure that unique encryption key were set).
-
-**Always make sure that you have .env file in your root directory (or create it using `cp .env.sample .env`).**
+> Enviroment file `.env` will be automatically created and pre-configured as moment of application installation.
 
 ## Configuration
-Your application confuration files are located in `app/config` directory, you can alter it's values to mount additional extensions or change some of application workflow.
-
-Every configuration configuration file are represented by a simple PHP script which has to return array as it's result:
+Your application configuration files are located in `app/config` directory, every configuration configuration file are represented by a simple PHP script which has to return array as it's result:
 
 ```php
 <?php
@@ -56,14 +52,11 @@ return [
      * command "app:key".
      */
     'key'    => env('SPIRAL_KEY'),
-
-    /*
-     * Default encryption algorithm.
-     */
-    'cipher' => 'aes-256-cbc'
 ];
 ```
 
-If you wish to make your configuration be dependend on enviroment settings, simply use function `env(key, default)`.
+If you wish to make your configuration depend on environment settings, use function `env(key, default)`.
 
 > Attention, your configuration files will be cached relatively to current enviroment, you should not inlude any code which does not depend of `env` values!
+
+Check `ConfiguratorInterface` and `ConfigFactory` in order to implement additional config loading methods (i.e. yaml).

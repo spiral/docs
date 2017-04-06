@@ -1,6 +1,6 @@
 # Dark Syntax
-Spiral Stempler engine ships with XML/HTML syntax used to defined imports, extends and use tags. Following sections describes what
-constructions available for you in your dark views.
+Spiral Stempler engine ships with XML/HTML syntax used to defined imports, extends and use tags. Following sections describe what
+constructions are available for you in your dark views.
 
 ## Extends declaration
 You can declare that your view extends specific parent using following constructions:
@@ -9,13 +9,13 @@ You can declare that your view extends specific parent using following construct
 <extends:path.to.layout block="value"/>
 ```
 
-In a following example parent path embedded into tag name, you can also use namespaces by simply separating them using ":" symbol:
+To include namespace use additional ":" separator:
 
 ```html
 <extends:namespace:path.to.layout block="value"/>
 ```
 
-In some cases you might not want to include parent layout path into tag name, dark syntax provides you following alternatives:
+If you want to define layout as string use `path` or `dark:path` attributes:
 
 ```html
 <extends path="namespace:path/to/layout" block="value"/>
@@ -24,7 +24,7 @@ In some cases you might not want to include parent layout path into tag name, da
 <extends dark:path="namespace:path/to/layout" block="value"/>
 ```
 
-You can use other extends tags:
+Extends have multiple aliases for people who love freedom:
 
 ```html
 <dark:extends path="namespace:path/to/layout" block="value"/>
@@ -34,17 +34,16 @@ You can use other extends tags:
 > Attention, attributes "path" and "layout" are reserved for extends declaration and can not be used for block definition.
 
 ## Use declaration
-Stempler and dark syntax provdes you ability to declare use of external view a form of virtual tag or widget, there is multiple ways 
-to declare such use:
+Stempler and dark syntax provides you ability to declare use of external view a form of virtual tag/widget, there is multiple ways to declare such use:
 
 ### Alias based
-If you want to import external view under specific name use followin statement:
+If you want to import external view under specific name use:
 
 ```html
 <dark:use path="path/to/view" as="tag-name"/>
 ```
 
-Following syntax alternatives available for you:
+Available alternatives:
 
 ```html
 <dark:use path="path/to/view" as="tag-name"/>
@@ -53,31 +52,31 @@ Following syntax alternatives available for you:
 <stempler:use path="path/to/view" as="tag-name"/>
 ```
 
-Pick one you like more.
-
-### Prefixing directory
-In some cases you migh want to include whole directory as set of virtual tags, in this case "as" attribute has to be replaced
-with "prefix".
+### Importing directory of widgets
+To import all views from a directory you must define prefix all imported views:
 
 ```html
 <dark:use path="path/to/directory" prefix="prefix."/>
 ```
 
-As result you can use views from this directory as:
+Use view from this directory via prefix:
 
 ```html
 <prefix.relative.name/>
 ```
 
-### Namespacing directory
-Often your prefix might look like "prefix:", you can use shortcut for such definitions via "namespace" attribute:
+> You can include namespace into path.
+
+Following declarations are shortcuts to define directory with xml like namespace:
 
 ```html
 <dark:use path="path/to/directory" prefix="prefix:"/>
 <dark:use path="path/to/directory" namespace="prefix"/>
 ```
 
-> Both declaration are identical.
+```html
+<prefix:relative.name/>
+```
 
 ### Bundle import
 To import file which contain other "use" declarations replace path with "bundle" attribute:
@@ -87,7 +86,7 @@ To import file which contain other "use" declarations replace path with "bundle"
 ```
 
 ## Block declaration
-Dark Syntax provides multiple alternatives used to make your templates more expressive, every definition is idential to other:
+Dark Syntax provides multiple alternatives used to make your templates more expressive, every definition is identical to others:
 
 ```html
 <block:name>block</block:name>
@@ -102,10 +101,10 @@ You can also use block definitions as placeholders when default content is empty
 <yield:name/>
 ```
 
-> "yield" is preferred keyword when you using block as placeholder.
+> "yield" is preferred keyword when you use a block as placeholder.
 
 ## Short Block declaration
-In some cases where you can't use tag based block declaration you can use short block definitions in a form of "${name|default value}":
+Some blocks can be defined using regexp like fashion "${name|default value}":
 
 ```html
 <div class="${div-class|default-class}"></div>
