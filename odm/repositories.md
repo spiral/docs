@@ -1,36 +1,55 @@
-## Selections
-Once your collection is populated with data, it's time to select some of the Users to perform something. The Spiral ODM exposes 3 ActiveRecord like methods which you can use for these purposes: `find`, `findOne` and `findByPK`.
+# Repositories and Selectors
+In order to select or create specific entity you must create repository class.
 
-There is 4th method which is used inside every find method - `selector`. You can use it to get access to the  `DocumentSelector` class associated with our document. You can also get the associated collecion by calling the method `selector` of the ODM component.
-
-#### FindOne
-To find a document based on some conditions and sorting, we can use the static method `findOne`. This method will return null if it's unabled to locate the required document. 
-The ODM component does not provide any query wrapper at the top of the MongoDB so you are able to use the pure mongo queries for your requests:
+## Example
+To create and automatically link repository class to your `Document` create class extending `DocumentSource` and define `DOCUMENT` constant pointing to your model:
 
 ```php
-//Don't worry about second argument yet, it's about pre-loading
-$user = User::findOne(['email' => 'test@email.com'];
-dump($user);
-```
-
-> The ODM provides only one feature of automatic conversion of the `DateTime` classes in your queries into instance of `MongoDate`.
-
-#### FindByPK
-When you want to find your document based on it's primary key value (MongoId in "_id" field), you can use the method `findByPK`. This method will behave the same way as `findOne` if no entity is found.
-
-```php
-$user = User::findByPK($mongoID);
-dump($user);
-```
-
-> Method can accept both `MongoId` and string which will be automatically combined to valid id instance.
-
-The most common option is to find the model based on the provided primary key or return client exception on failure. Spiral does not embed any application specific logic into the ODM component so you have to raise an exception on your own. This is easy to do:
-
-```php
-protected function indexAction($id)
+class UserRepository extends DocumentSource
 {
-    if (empty($user = User::findByPK((int)$id))) {
+    const DOCUMENT = User::class;
+}
+```
+
+You can access your repository right after running `odm:schema` command:
+
+```php
+protected function indexAction(UserRepository $users)
+{
+    //Alternative approach 
+    $users = $this->odm->source(User::class);
+}
+```
+
+### Create entity
+To create record entity call method `create` of your repository:
+
+```php
+$user = $users->create([
+    'name' => 'Antony'
+]);
+
+$user->save();
+```
+
+Note, that entity values will be populated using `setFields` method, make sure that you have `FILLABLE` and `SECURED` constants property set. 
+
+> Attention, create would only initiate blank model entity, you have to save it into database manually.
+
+### Find Entities
+Use methods `findByPK`, `findOne` and `find` to load entities from database:
+
+```php
+$user = $users->findOne(['name' => 'Antony']);
+```
+
+### FindByPK
+Use method `findByPK` to select entity using id:
+
+```php
+protected function indexAction(string $id, UsersRepository $users)
+{
+    if (empty($user = $users->findByPK((int)$id))) {
         throw new NotFoundException('No such user');
     }
 
@@ -38,119 +57,79 @@ protected function indexAction($id)
 }
 ```
 
-Or using source:
+## RecordSelector
+Method `find` of your Repository will return entity specific `DocumentSelector` with included query builder and paginator:
 
 ```php
-protected function indexAction($id, DocumentSource $users)
+$users = $users->find()->where([
+    'name' => 'Antony'
+])->paginate(10)->fetchAll();
+```
+
+### Custom find methods 
+In order to simplify your domain layer, it is recommended to define custom find commands specific to your application into repository class:
+
+```php
+public function findActive(): DocumentSelector
 {
-    if (empty($user = $users->findByPK($id))) {
-        throw new NotFoundException('No such user');
-    }
-
-    dump($user);
+    return $this->find(['status' => 'active']);
 }
 ```
 
-#### Find and Working with Selector
-To find one or multiple document instances from desired collection, we have to first get the associated instance of `Collecion`. Then we can do this using the ODM component method `selector` or via the static function `find` of our User model.
+You can also chain this methods inside your repository:
 
 ```php
-$selector = User::find();
-```
-
-> You also have an way to connect to your source with set of pre-defined methods using static function `source` of your model.
-
-```php
-foreach(Users::source()->findActive() as $user) {
-    //...
+public function findAuthors(): DocumentSelector
+{
+    return $this->findActive()->where(['type' => 'author']);
 }
 ```
 
-You are able to set or clarify the selection query using the methods `query` or `where`:
+### Overwrite repository selector
+In some cases you might want to set base query for all of your find method. You can do it in your repository constructor or use public method `withSelector`:
 
 ```php
-$collection = User::find()->where([
-    'email' => new \MongoRegex('/test@email.com/')
-]);
-
-dump($collection->count());
+$deletedUsers = $users->withSelector(
+    $users->find(['status' => 'deleted'])
+);
 ```
 
-In addition, you are able to paginate your result using the techniques described in [Pagination](/components/pagination.md) component:
+> All repositories are treated as immutable.
+
+## Static Access
+If you wish to access record repository and selector using static functions use `Spiral\ODM\SourceTrait`.
 
 ```php
-$collection = User::find()->paginate(10);
-```
+class User extends Record
+{
+    use SourceTrait;
 
-> Check other Collection methods, such as limit, offset (skip) and sortBy.
+    const SCHEMA = [
+        '_id'   => ObjectId::class,
+        'name'  => 'string',
+        'email' => 'string'
+    ];
 
-##### Fetching Documents
-Once you've configured your Collection selection with desired query, you can fetch the found document by simply iterating over collection or explicitly calling the method `getIterator`/`getCursor`, which will return an instance of `DocumentCursor`:
+    const DEFAULTS = [];
 
-```php
-foreach (User::find()->paginate(10) as $user) {
-    dump($user);
+    const INDEXES = [];
 }
 ```
 
 ```php
-$cursor = User::find()->sortBy(['name' => 1])->paginate(10)->getCursor();
+//Repository
+dump(User::source());
 
-/**
- * @var DocumentCursor $cursor
- */
-foreach ($cursor as $user) {
-    dump($user);
-}
+//Shortcut
+dump(User::findOne());
 ```
 
-##### DocumentCursor
-The provided instance of `DocumentCursor` wraps the top of the `MongoCursor` and provides support for lazy creation of the collection documents (no entity cache is used). As a result, you can iterate over a huge amount of Documents without any significant memory usage. Also you can access the `MongoCursor` functionality:
+> Please note, this method will only work in global container scope (inside your application).
+
+## Get Projection
+To fetch only specific fields from your database use DocumentSelector method `getProjection`:
 
 ```php
-$cursor = User::find()->sortBy(['name' => 1])->paginate(10)->getCursor();
-
-/**
- * @var DocumentCursor $cursor
- * @var User           $user
- */
-while ($user = $cursor->getNext()) {
-    dump($user);
-    dump($cursor->dead());
-}
-
-dump($cursor->info());
+$cursor = $users->find(['active' => true])->getProjection(['email']);
+dump($cursor); // MongoDB\Driver\Cursor
 ```
-
-##### Fetching Fields
-If you wish to fetch only the specified set of fields from your collection, simply specify their names in the form of an array into the `fetchFields` method:
-
-```php
-foreach (User::find()->fetchFields(['name']) as $data) {
-    dump($data);
-}
-```
-
-> Attention, fetchFields() will return one big array for whole selection, do not use it for big datasets. Use alternative curson configuration:
-
-```php
-foreach (User::find()->getCursor()->fields(['name' => true]) as $data) {
-    dump($data);
-}
-```
-
-This methods will read all the desired fields and return them in the form of an array. You can also read them in a streaming mode by utilizing the `fields` method of your `DocumentCursor`:
-
-```php
-$cursor = User::find()->getCursor()->fields([
-    'email' => true
-]);
-
-while ($data = $cursor->getNext()) {
-    dumP($data);
-}
-
-dumP($cursor->info());
-```
-
-> Attention, format in this case follows the [offical documentation] (http://php.net/manual/ru/mongocursor.fields.php)!
