@@ -115,7 +115,7 @@
 * External Modules
     * [Profiler](modules/profiler.md)
 	* - [User Authorization](modules/auth.md)
-	* - [Vault Core](modules/vault.md)
+	* [Vault Core](modules/vault.md)
 	* - [Toolkit](modules/toolkit.md)
 	* [Scaffolder](modules/scaffolder.md)
 	* [IDE helper](modules/ide-helper.md)
