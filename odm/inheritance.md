@@ -76,11 +76,11 @@ And, in your code:
 ```php
 $user = new User();
 
-$user->sessions[] = new SuperSession([
+$user->sessions->add(new SuperSession([
     'timeCreated' => new \MongoDate(),
     'accessToken' => 'random',
     'superKey'    => 'some value'
-]);
+]));
 
 $user->save();
 ```
