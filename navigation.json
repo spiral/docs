@@ -3,7 +3,7 @@
     "title": "Overview",
     "links": {
       "readme": "Table of Contents",
-      "installation": "Installation and Configuration",
+      "installation": "Installation",
       "contributing": "Contributing",
       "license": "License"
     }
@@ -38,7 +38,7 @@
     "links": {
       "http-flow": "PSR-7 Flow",
       "http-input": "Request and Input",
-      "http-response": "Response and Response Wrapper",
+      "http-response": "Responses",
       "http-middlewares": "Middlewares",
       "http-routing": "Routing",
       "http-cookies": "Cookies",
@@ -65,7 +65,7 @@
     "title": "Debug and Profiling",
     "links": {
       "debug-logging": "Overview",
-      "debug-profiling": "Embedded Commands",
+      "debug-profiling": "Profiling",
       "debug-errors": "Error Handling",
       "debug-dumps": "Dump your data"
     }
@@ -73,15 +73,32 @@
   {
     "title": "Common Components",
     "links": {
-      "components-cache": "Cache",
-      "components-debug": "<s>Debug</s>",
       "components-files": "Files",
-      "components-encrypter": "Encrypter",
+      "components-encrypter": "Encryption",
       "components-data-entity": "DataEntity Model",
       "components-security": "Security/RBAC",
       "components-reactor": "ode Generation",
-      "components-pagination": "Pagination",
-      "components-validation": "Validation"
+      "components-validation": "Validation",
+      "components-pagination": "Pagination"
+    }
+  },
+  {
+    "title": "Internalization",
+    "links": {
+      "i18n-overview": "Overview",
+      "i18n-views": "Usage in Views",
+      "i18n-say-trait": "Usage in Models",
+      "i18n-indexation": "Indexation"
+    }
+  },
+  {
+    "title": "Views and Engines",
+    "links": {
+      "views-overview": "Overview",
+      "views-twig": "Twig Templates",
+      "views-native": "Native Templates",
+      "views-stempler": "Stempler Views",
+      "views-processors": "View Processors"
     }
   },
   {
@@ -93,50 +110,79 @@
     }
   },
   {
+    "title": "Static Analysis/Tokenizer",
+    "links": {
+      "tokenizer-overview": "Overview",
+      "tokenizer-classes": "Find Classes",
+      "tokenizer-invocations": "Find Invocations",
+      "tokenizer-isolation": "PHP Code Isolation"
+    }
+  },
+  {
     "title": "Storage Manager",
     "links": {
-      "storage-overview": "Buckets and Objects",
-      "storage-servers": "Storage Servers"
+      "storage-overview": "Overview",
+      "storage-entities": "Buckets and Servers",
+      "storage-servers": "Server Configuration",
+      "storage-uploading": "Uploading Files"
     }
   },
   {
-    "title": "Databases",
+    "title": "Database Layer (SQL)",
     "links": {
-      "database-overview": "<s>Overview</s>",
+      "database-overview": "Overview",
+      "database-databases": "Databases and Drivers",
+      "database-pdo": "PDO Queries",
+      "database-builders": "Query Builders",
+      "database-transactions": "Transactions",
       "database-introspection": "Schema Introspection",
-      "database-declaration": "<s>Schema Declaration</s>",
-      "database-builders": "Query Builders"
+      "database-declaration": "Schema Declaration",
+      "database-migrations": "Migrations",
+      "database-errata": "Errata"
     }
   },
   {
-    "title": "Adaptive ORM",
+    "title": "ORM Engine",
     "links": {
-      "orm-basics": "<s>Records and Scaffolding</s>",
-      "orm-sources": "<s>Sources and Selectors</s>",
-      "orm-relations": "<s>Relations</s>",
-      "orm-loading": "<s>Eager loading</s>"
+      "orm-overview": "Overview",
+      "orm-entities": "Record and RecordEntity",
+      "orm-repositories": "Repositories and Selectors",
+      "orm-accessors": "Accessors and Filters",
+      "orm-columns": "Column Objects",
+      "orm-scaffolding": "Scaffolding and Migrations",
+      "orm-transactions": "Transactions",
+      "orm-relations": "Relations",
+      "orm-morphed-relations": "Morphed Relations",
+      "orm-late-binding": "Pre-compiled Relations",
+      "orm-query": "Query Models",
+      "orm-loading": "Eager loading",
+      "orm-recursive-relations": "Recursive Relations",
+      "orm-odm-bridge": "Hybrid Databases",
+      "orm-custom-relations": "Custom Relations"
     }
   },
   {
-    "title": "Adaptive ODM",
+    "title": "ODM Engine (MongoDB)",
     "links": {
-      "odm-basics": "Documents and Databases",
-      "orm-sources": "<s>Sources and Selectors</s>",
-      "odm-oop": "Composite and Aggregate",
-      "odm-inheritance": "Inheritance",
-      "odm-standalone": "Standalone Usage",
-      "odm-uml": "UML Export"
+      "odm-basics": "Overview",
+      "odm-databases": "MongoDB Databases",
+      "odm-entities": "Documents and DocumentEntity",
+      "odm-accessors": "Accessors and Filters",
+      "odm-repositories": "Repositories and Selectors",
+      "odm-scaffolding": "Scaffolding",
+      "odm-oop": "Compositions and Aggregations",
+      "odm-inheritance": "Inheritance"
     }
   },
   {
-    "title": "Modules and Extensions",
+    "title": "External Modules",
     "links": {
-      "modules-profiler": "<s>Profiler</s>",
-      "modules-scaffolding": "<s>Scaffolding</s>",
-      "modules-security": "<s>Secutiry</s>",
-      "modules-toolkit": "<s>Toolkit</s>",
-      "modules-vault": "<s>Vault</s>",
-      "modules-auth": "<s>Auth</s>"
+      "modules-profiler": "Profiler",
+      "modules-auth": "User Authentication",
+      "modules-vault": "Vault Core",
+      "modules-scaffolder": "Scaffolder",
+      "modules-ide-helper": "IDE helper",
+      "modules-cache": "Cache Bridges"
     }
   }
 ]
