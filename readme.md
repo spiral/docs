@@ -114,7 +114,7 @@
 	* [Inheritance](odm/inheritance.md)
 * External Modules
     * [Profiler](modules/profiler.md)
-	* - [User Authorization](modules/auth.md)
+	* [User Authentication](modules/auth.md)
 	* [Vault Core](modules/vault.md)
 	* - [Toolkit](modules/toolkit.md)
 	* [Scaffolder](modules/scaffolder.md)
