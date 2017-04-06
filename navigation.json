@@ -2,6 +2,7 @@
   {
     "title": "Overview",
     "links": {
+      "readme": "Table of Contents",
       "installation": "Installation and Configuration",
       "contributing": "Contributing",
       "license": "License"
@@ -76,7 +77,7 @@
       "components-debug": "<s>Debug</s>",
       "components-files": "Files",
       "components-encrypter": "Encrypter",
-      "components-dataEntity": "DataEntity Model",
+      "components-data-entity": "DataEntity Model",
       "components-security": "Security/RBAC",
       "components-reactor": "ode Generation",
       "components-pagination": "Pagination",
