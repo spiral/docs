@@ -116,10 +116,9 @@
     * [Profiler](modules/profiler.md)
 	* [User Authentication](modules/auth.md)
 	* [Vault Core](modules/vault.md)
-	* - [Toolkit](modules/toolkit.md)
 	* [Scaffolder](modules/scaffolder.md)
 	* [IDE helper](modules/ide-helper.md)
-	* - [Cache Bridges](modules/cache.md)
+	* [Cache Bridges](modules/cache.md)
 
 # I want to read code (not docs)!
 If you want to see more examples of the framework's functionality in the real world without 
