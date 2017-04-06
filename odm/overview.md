@@ -15,3 +15,5 @@ Please note, ODM engine use second level cache to store information about mappin
 
 ## Standalone Usage
 You are able to use ODM component separately from framework, take a look at initialization [here](https://github.com/spiral/odm/tree/master/tests/ODM).
+
+> Component configuration and bindings are pre-installed in your application, require `spiral/odm` to enable mongodb support.
