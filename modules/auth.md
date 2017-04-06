@@ -52,7 +52,7 @@ class User extends Record implements PasswordAwareInterface
 ```
 
 ### UsernameSource
-In order to enable credentials based authentication in your application your source by implement `UsernameSourceInterface`:
+In order to enable credentials based authentication in your application your repository must implement `UsernameSourceInterface`:
  
 ```php
 class UserRepository extends RecordSource implements UsernameSourceInterface
