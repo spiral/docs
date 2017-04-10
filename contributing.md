@@ -16,6 +16,8 @@ If you want to help but don't know where to start:
 
 Feel free to propose any ideas related to architecture, guide (it's never full), adaptaptation or community.
 
+> Original guide author is not native English speaker, feel free to create PR for any text corrections.
+
 ## Guide Improvements
 If you feel like some "sugar" functionality (like shortcuts, constructor saturation or autowiring) can cause potential issues in future or reduce code testability please let me know so i can update guide and mention about potential architecture decigions or workarounds.
 
