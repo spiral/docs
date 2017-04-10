@@ -289,6 +289,19 @@ $route = new Route('test', '(test|hello)/<abc:\d+>', function ($req, $res) {
 
 We just allowed route to react not only to "test" keyword but to "hello" as well.
 
+Spiral will automatically pass route parameters to your controllers based on their name:
+
+```php
+$route = new Route('test', '(test|hello)/<abc:\d+>', 'MyController::index');
+```
+
+```php
+public function indexAction(strign $abc)
+{
+    //...
+}
+```
+
 #### Optional parts
 To define some segments as optional, wrap them inside square parenthesis.
 
