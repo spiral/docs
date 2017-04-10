@@ -114,3 +114,12 @@ $selection->load('posts', ['where' => [
 
 ## Load Alias
 You can define table alias for included relation table using `alias` option.
+
+## Caching
+To cache your selection (including pre-loaded relations) pass `Psr\SimpleCache\CacheInterface` into `getIterator` method of your selector:
+
+```php
+$iterator = $selector->getIterator('cache-key', 8600, $cache);
+```
+
+> RecordSelector can fetch cache instance automatically from IoC if such binding exists.
