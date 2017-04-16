@@ -132,7 +132,7 @@ class TransactionMiddleware extends Service implements MiddlewareInterface
 }
 ```
 
-> Do not forget to add middleware into http config or desired route.
+> Do not forget to add middleware into http config or a desired route.
 
 We can now request transaction instance using dependency or shortcut (if you have any):
 
