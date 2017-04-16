@@ -7,9 +7,9 @@ We can demonstrate simple transaction example using following code:
 ```php
 $payment = new Payment();
 $payment->user = $user;
-$payment->amount = $amount;
 
-$user->balance -= $amount;
+$payment->amount = $amount;
+$payment->user->balance -= $amount;
 ```
 
 To store this records inside one transaction:
@@ -17,7 +17,6 @@ To store this records inside one transaction:
 ```php
 $transaction = new Transaction();
 $transaction->store($payment);
-$transaction->store($user);
 
 $transaction->run();
 ```
