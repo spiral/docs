@@ -108,7 +108,7 @@ You can also publish module files without altering any of configuration files:
 spiral publish vendor/cool
 ```
 
-### Registering command
+### Register command
 When you run `register` command with your module specified, all configuration sections will be highlighted for you and your confirmation will be requested:
 
 ```
@@ -156,6 +156,8 @@ Module 'Spiral\ToolkitModule' has been successfully registered.
 [Publisher] File 'vendor/spiral/toolkit/source/../resources/styles/spiral/variables.less' already published and latest version.
 Module 'Spiral\ToolkitModule' has been successfully published.
 ```
+
+> Do not forget about git.
 
 ### Publish command
 Publish command does not require any confirmation and usually used when module gets updated resources such as assets, images and etc.
