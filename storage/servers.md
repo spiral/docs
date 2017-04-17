@@ -2,7 +2,7 @@
 The StorageManager component support multiple servers and buckets for each of the server. Server connection configuration is located in `storage` config and can be altered in runtime by talking to `StorageInterface`.
 
 ## Local Server
-`FilesInterface` stores data on local hard-drive. It has only one global option "home" which every bucket directory will be related to, bucket options must include storage directory and optional mode (by default RUNTIME - 755).
+`FilesInterface` stores data on local hard-drive. It has only one global option "home" which every bucket directory must be related to, bucket options must include storage directory and optional mode (by default RUNTIME - 755).
 
 Example server definition:
 
