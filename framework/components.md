@@ -41,8 +41,6 @@ protected function iocContainer()
 }
 ```
 
-> Note, that if class/manager contains property "container" this property container will be preferred option (use private properties).
-
 ## Dependency Scoping
 In some cases (usually inside middlewares or HMVC cores) you might want to create IoC scope for some of your classes/interfaces, use `replace`/`restore` methods of `ScoperInterface`/`ContainerInterface` to do that:
 
