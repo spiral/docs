@@ -77,6 +77,7 @@ Use proper IDE to maximize shortcuts output:
  
 ![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
 
+### Decoupling
 Consider shortcuts as temporary replacement for a proper class dependency or as public properties of your application (your App use SharedTrait as well):
 
 ```php
