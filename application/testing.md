@@ -74,7 +74,7 @@ $this->app->container->bind(MyService::class, $myServiceMock);
 ```
 
 ## Mock Databases
-You use mock database to test your application code including or excuding seed data. The only nesessary change is to point your target database to another driver (usually runtime SQLite). Be aware, that in this case your tests might take much longer to execute.
+You mock database to test your application code in more realisting environment. The nesessary change is to point your target database to another driver (usually runtime SQLite). Be aware, that in this case your tests might take much longer to execute.
 
 ```php
 public function setUp()
