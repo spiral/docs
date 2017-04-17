@@ -29,6 +29,9 @@ Make sure that `spiral` has right execute permissions (`chmod +x spiral`, also y
 
 > You can run command(s) with increaced verbosity `-vv` to get more details.
 
+## Directory Access
+Please make sure that `runtime` directory located in a root of your project is writable for your web worker (usually `www-data` group).
+
 ## Environment settings
 Default spiral application and framework core utilize [dotenv package](https://github.com/vlucas/phpdotenv) which provides you ability to keep your environment settings in `.env` file, thought you can replace default implementation to avoid un-nesessary filesystem requests, follow [this link](/application/environment.md) for more instructions.
 
