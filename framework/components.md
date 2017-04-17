@@ -1,5 +1,5 @@
 # Shared/Global container
-In order to simplify access to IoC container in your application and enable some of sugar functionality Spiral relays on global static instance of `ContainerInterface`:
+In order to simplify access to IoC container in your application and enable some of "magick" functionality Spiral relays on global static instance of `ContainerInterface`:
 
 ```php
 \App::sharedContainer()->get('views')->render(...);
@@ -8,7 +8,7 @@ In order to simplify access to IoC container in your application and enable some
 spiral('views')->render(...);
 ```
 
-Please note that such container is only available inside your application and usually initiated as scope by following constructions:
+Please note that such container is only available inside your application (run method) and usually initiated as scope by following constructions:
 
 ```php
 $scope = self::staticContainer($container);
@@ -21,7 +21,7 @@ try {
 
 This approach provides ability to minimize amount of static instances and allow multiple spiral applications co-exists in one session.
 
-> Shared container is widely used for support functionality such as loggers, translations and shortcuts.
+> Shared container support lazy functinonality for paginators, loggers and debug, all components can work without it.
 
 You can always get access to active container by extending `Component` in your code and calling function `iocContainer`:
 
@@ -41,8 +41,10 @@ protected function iocContainer()
 }
 ```
 
+> Note, that if class/manager contains property "container" this property container will be preferred option (use private properties).
+
 ## Dependency Scoping
-In some cases (usually inside middlewares or HMVC cores) you might want to custom binding scope for some of your classes, use `replace`/`restore` methods of `ScoperInterface`/`ContainerInterface` to do that:
+In some cases (usually inside middlewares or HMVC cores) you might want to create IoC scope for some of your classes/interfaces, use `replace`/`restore` methods of `ScoperInterface`/`ContainerInterface` to do that:
 
 ```php
 $outerBinding = $this->container->replace(SomeClass::class, new SomeClassB());
