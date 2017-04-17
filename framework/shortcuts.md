@@ -78,12 +78,21 @@ Use proper IDE to maximize shortcuts output:
 ![Short Bindings](https://raw.githubusercontent.com/spiral/guide/master/resources/virtual-bindings.gif)
 
 ### Decoupling
-Consider shortcuts as temporary replacement for a proper class dependency or as public properties of your application (your App use SharedTrait as well):
+Consider shortcuts as temporary replacement for a proper class dependency, any shortcut can be rewritten using proper DI:
 
 ```php
-$app = MyBlogApp::init(...);
-foreach($app->postsService->getTodayPosts() as $post) {
-    echo $post->getTitle();
+class HomeController extends Controller //or ControllerInterface
+{
+    private $views;
+    
+    public function __construct(ViewsInterface $views)
+    {
+        $this->views = $views;
+    }
+
+    public function indexAction()
+    {
+    //...
 }
 ```
 
