@@ -99,7 +99,7 @@ public function setUp()
    
         //Schemas and seeds
         $this->app->console->run('orm:schema', ['-alter'=>true]);
-        //...        
+        $this->app->console->run('app:seed');
 }
 ```
 
@@ -114,28 +114,3 @@ class TestApplication extends App
     const LOAD = []; //Bootloads nothing, manual initialization is required
 }
 ```
-
-## Prepare Environment
-If you wish to test your application on clean database in each of your test cases - call needed setup commands in your `setUp` method:
-
-```php
-public function setUp()
-{
-    $root = dirname(__DIR__) . '/';
-
-    $app = $this->app = \App::init([
-        'root'        => $root,
-        'libraries'   => $root . 'vendor/',
-        'application' => $root . 'app/',
-    ], null, null, false);
-
-    //Monolog love to write to CLI when no handler is set
-    $this->app->logs->debugHandler(new NullHandler());
-    
-    //Scaffold databases
-    $this->app->console->run('orm:schema', ['--alter' => true]);
-    $this->app->console->run('app:seed');
-}
-```
-
-> Such approach can be beneficial when you testing code in relation to real (physically) database, though it will drastically increase test suite duration as price for data isolation. Consider switching to memory based databases (for example SQLite) in order to speed it up.
