@@ -19,7 +19,7 @@ try {
 }
 ```
 
-This approach provides ability to minimize amount of static instances and allow multiple spiral applications co-exists in one session.
+This approach provides ability to avoid global state and allow multiple spiral applications co-exists in one session.
 
 > Shared container support lazy functinonality for paginators, loggers and debug, all components can work without it.
 
