@@ -73,6 +73,38 @@ $this->app->container->bind(MyService::class, $myServiceMock);
 //...
 ```
 
+## Mock Databases
+You use mock database to test your application code including or excuding seed data. The only nesessary change is to point your target database to another driver (usually runtime SQLite). Be aware, that in this case your tests might take much longer to execute.
+
+```php
+public function setUp()
+    {
+        $root = dirname(__DIR__) . '/';
+
+        $app = $this->app = \App::init([
+            'root'        => $root,
+            'libraries'   => $root . 'vendor/',
+            'application' => $root . 'app/',
+        ], null, null, false);
+
+        //Replace default database
+        $this->app->dbal->addDatabase(new Database(
+            $this->app->dbal->driver('runtime'),
+            'default',
+            'tests_'
+        ));
+
+        //Monolog love to write to CLI when no handler is set
+        $this->app->logs->debugHandler(new NullHandler());
+   
+        //Schemas and seeds
+        $this->app->console->run('orm:schema', ['-alter'=>true]);
+        //...        
+}
+```
+
+You can destroy or empty database in tearDown method.
+
 ## Test Bootloaders
 In order to replace application bootloaders list in your tests create App child with desired value:
 
