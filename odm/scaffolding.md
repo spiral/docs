@@ -15,6 +15,8 @@ class User extends Document
 }
 ```
 
+> Use command option -s to automatically generate repository class.
+
 As in case with ORM you have to update your schema to register class: `spiral odm:schema`.
 
 > Run `spiral odm:schema -i` to automatically add all requested mongo indexes.
