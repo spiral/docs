@@ -25,6 +25,8 @@ class User extends Record
 
 You can specify default values and relations to other records at this step.
 
+> Use command option `-s` to automatically generate repository class.
+
 ## Update Schema
 Now, we have to tell ORM to register our class in schemas, we can do it using `orm:schema` command or `update` command:
 
