@@ -77,7 +77,7 @@
       "components-encrypter": "Encryption",
       "components-data-entity": "DataEntity Model",
       "components-security": "Security/RBAC",
-      "components-reactor": "ode Generation",
+      "components-reactor": "Code Generation",
       "components-validation": "Validation",
       "components-pagination": "Pagination"
     }
