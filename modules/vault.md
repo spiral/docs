@@ -187,4 +187,4 @@ protected function indexAction(PostsSource $source)
 
 ![Grid](https://raw.githubusercontent.com/spiral/guide/master/resources/grid.png)
 
-> There is also Listing implementation with search and filtering abilities.
+> There is also Advanced Grid implementation with search and filtering abilities.
