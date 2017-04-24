@@ -186,3 +186,5 @@ protected function indexAction(PostsSource $source)
 ```
 
 ![Grid](https://raw.githubusercontent.com/spiral/guide/master/resources/grid.png)
+
+> There is also Listing implementation with search and filtering abilities.
