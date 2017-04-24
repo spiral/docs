@@ -9,7 +9,7 @@ Make sure you already read about [ORM Relations](/orm/relations.md).
 To filter our model while selection we can use it's singular name as table alias:
 
 ```php
-$selection = User::find()->find()->where('user.name', '!=', '');
+$selection = User::find()->where('user.name', '!=', '');
 ```
 
 In order to filter based on related data we have to join it's table first:
