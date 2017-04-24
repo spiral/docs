@@ -11,7 +11,7 @@ To load user, it's profile (has one) and roles:
  
 ```php
 $selection = $userRepo->find()->where('user.name', '!=', '');
-$selection->load('profile')->load('roles';
+$selection->load('profile')->load('roles');
 $selection->limit(10);
 ```
 
