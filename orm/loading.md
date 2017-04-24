@@ -7,7 +7,7 @@ To make pre-loading you will need only one method - `load`.
 
 > Such method can be combined with joined table conditions without causing collisions, `load` method are fully compatibly by it's syntax with `with` method so you can pre-load many relations at once, specify where conditions and pre-load nested relations using dot separator.
 
-To load user, it's profiler (has one) and roles:
+To load user, it's profile (has one) and roles:
  
 ```php
 $selection = $userRepo->find()->where('user.name', '!=', '');
