@@ -52,7 +52,7 @@ INNER JOIN `primary_posts` AS `publishedPosts`
 WHERE `user`.`name` != ''
 ```
 
-> Always used **DISTINCT** flag when including relation with multiple objects. 
+> Always use **DISTINCT** flag when including relation with multiple objects. 
 
 #### Sub Relations
 To include nested relation use dot notation.
