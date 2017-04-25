@@ -71,7 +71,7 @@
     * [Overview](tokenizer/overview.md)
     * [Looking for Classes](tokenizer/classes.md)
     * [Looking for Invocations](tokenizer/invocations.md)
-    * [PHP Code Isolation](tokenizer/isolation.md)
+    * [PHP Code Isolation](tokenizer/isolator.md)
 * Storage Manager
     * [Overview](storage/overview.md)
     * [Buckets and Servers](storage/entities.md)
