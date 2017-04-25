@@ -2,7 +2,7 @@
 The Spiral Framework includes Security component based on role-rule-permission structure.
 
 ## Overview
-The Security component work using set of roles associated with different application permissions (i.e. ability to edit post) based on set of context specific rules.
+The Security component work using set of roles associated with different application permissions (i.e. ability to edit post) based on set of context specific rules (how to allow specific permission).
  
 ## Booting permission
 In order to configure security component in your application use `boot` method of custom bootloader:
