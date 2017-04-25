@@ -1,5 +1,5 @@
 # Contributing
-Feel free to contribute to framework or components development. Please make sure that following requiments are satisfied before submitting your pull request:
+Feel free to contribute to the development of the framework or it's components. Please make sure that the following requirements are satisfied before submitting your pull request:
 
 * PSR-2 and PSR-4
 * KISS/SOLID
@@ -14,14 +14,14 @@ If you want to help but don't know where to start:
 * TODOs
 * Usability improvements
 
-Feel free to propose any ideas related to architecture, guide (it's never full), adaptaptation or community.
+Feel free to propose any ideas related to architecture, guide (___docs are never complete___),  adaptation or community.
 
 > Original guide author is not native English speaker, feel free to create PR for any text corrections.
 
 ## Guide Improvements
-If you feel like some "sugar" functionality (like shortcuts, constructor saturation or autowiring) can cause potential issues in future or reduce code testability please let me know so i can update guide and mention about potential architecture decigions or workarounds.
+If you feel like some "sugar" functionality (like shortcuts, constructor saturation or autowiring) can cause potential issues in future or reduce code testability please let me know so i can update guide and mention about potential architecture decisions or workarounds.
 
-> If you found any issue which is better to be covered in documentation please open related issue. Since i'm not native english speaker feel free to create pull requests for any typo as well.
+> If you find the documentation lacking in certain areas - arhitectural wise or typos -, please create a issue on [Github](https://github.com/spiral/spiral) or better still a pull request containing the improvements.
 
 ## Critical/Security Issues
-If you found something which should't be there or bug which opens a security hole please let me know immediately by email [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com)
+If you found something which shouldn't be there or a bug which opens a security hole please let me know immediately by email [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com)

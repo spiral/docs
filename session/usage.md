@@ -1,8 +1,8 @@
 # Working with Session
-On practice spiral session work as simple facade at top of native php _SESSION implementation. Differences include bypassing default cookie control and splitting session into segments/sections.
+In practice, Spiral's session works as a simple facade on top of PHP's `_SESSION`. The only differences include bypassing default cookie control and splitting session into segments/sections.
 
 ## Session Access
-You are able to access active session instance inside your controllers and services using shortcut "session" or `SessionInterface` dependency:
+You are able to access the active session instance inside your controllers and services using shortcut "session" or `SessionInterface` dependency:
 
 ```php
 public function indexAction(SessionInterface $session)
@@ -73,7 +73,7 @@ Use `resume` method of session to start/restore session manually.
 > Read how to control session cookies [here](/session/overview.md).
 
 ## Session Data
-Due session is being based on native php implementation you can freely use _SESSION global variable in your legacy code, though you are required to start session manually in this case:
+Due to Session being based on PHP's native implementation you can freely use _SESSION global variable in your legacy code, though you are required to start session manually in this case:
 
 ```php
 public function indexAction()

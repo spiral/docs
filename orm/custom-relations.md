@@ -1,5 +1,5 @@
 # Custom Relations
-Spiral ORM engine can be extend in order to support custom relation mechanisms including: schema generation, eager-loading, post-loading, data representation and ect.
+Spiral ORM engine can be extended in other to support custom relation mechanisms including: schema generation, eager-loading, post-loading, data representation and etc.
 
 > Take a look at [ODM Bridge](/orm/odm-bridge.md) to check an example of custom relations.
 

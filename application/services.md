@@ -1,9 +1,9 @@
 # Service Classes and Models
-Spiral framework trying to help you to separate database and business logic, since architecture of your application is only limited by your imagination there is no recommended approach of how to organize your models but only few help classes and implementations.
+Spiral framework tries to help you to separate database and business logic, since architecture of your application is only limited by your imagination there is no recommended approach of how to organize your models but only few help classes and implementations.
 
 To speed up model development, use class `Spiral\Core\Service` which can give you shorter access to [container and shared bindings](/framework/container.md). 
 
-> Every Controller is Service as well. Consider implementing [SingletonInterface](/framework/container.md) in your services in order to share them across application.
+> Every Controller is a Service as well. Consider implementing [SingletonInterface](/framework/container.md) in your services in order to share them across application.
 
 ## Example Model
 Due to container shortcuts simpliest implementation of service class might look like:
@@ -51,4 +51,4 @@ class BlogService implements SingletonInterface
 }
 ```
 
-> As you can notice you are not required to extend `Service` in this case.
+> As you can notice, you are not required to extend `Service` in this case.

@@ -1,5 +1,5 @@
 # Session
-Spiral session implementation based on native PHP session mechanism with few extensions.
+Spiral's session implementation is based on PHP's native session with a few added extensions.
 
 Session provides basic security mechanism using user signature and represent session data via set of isolated [session sections/segments](/session/usage.md).
  

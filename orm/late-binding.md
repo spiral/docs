@@ -1,8 +1,8 @@
 # Pre-Compiled Relations, Relate to Interfaces
-Due nature of ORM component and the way how it pre-compiles your schema, you can relate your entities
+Due to the nature of the components that make up the ORM and the way it pre-compiles your schema, you can relate your entities
 to external models using interface instead of class name.
 
-> Attention, do not confuse with [Morphed relations](/orm/morphed-relations.md)!
+> Attention, do not confuse this with [Morphed relations](/orm/morphed-relations.md)!
 
 ## Example
 We can demonstrate such functionality by relating our `Post` model to an `User` using `UserInterface`:
