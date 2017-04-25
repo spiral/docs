@@ -12,7 +12,7 @@ protected function indexAction(ServerRequestInterface $request)
 }
 ```
 
-However, PSR7 implementation is not very user friendly. Spiral framework provides specific service `InputManager` (`InputInterface` contract) used to simplify reading request properties. 
+However, PSR7 implementation is not very user friendly. Spiral framework provides specific service `InputManager` (`InputInterface`) used to simplify reading request properties. 
 InputManager can be retrieved using it's class name or short binding "input". Let's rewrite previous example using input manager:
 
 ```php
