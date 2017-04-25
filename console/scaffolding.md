@@ -12,7 +12,7 @@ class SomeCommand extends Command
     const DESCRIPTION = '';
 
     const ATTRIBUTES = [];
-    const OPTIONS = [];
+    const OPTIONS    = [];
 
     /**
      * Perform command
