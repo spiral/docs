@@ -11,9 +11,7 @@ In order to configure security component in your application use `boot` method o
 class AccessBootloader extends Bootloader
 {
     const BOOT = true;
-
-    const ROLES = ['admin', 'manager'];
-
+    
     const BINDINGS = [
         ActorInterface::class => [self::class, 'getActor']
     ];
@@ -23,12 +21,9 @@ class AccessBootloader extends Bootloader
      */
     public function boot(PermissionsInterface $permissions)
     {
-        foreach (self::ROLES as $role) {
-            if (!$permissions->hasRole($role)) {
-                $permissions->addRole($role);
-            }
-        }
-
+        $permissions->addRole('admin');
+        $permissions->addRole('manager');
+        
         //Grant admin full assess to 3 levers of permissisos
         $permissions->associate('admin', "*");
         $permissions->associate('admin', "*.*");
