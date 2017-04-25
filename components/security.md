@@ -24,7 +24,7 @@ class AccessBootloader extends Bootloader
         $permissions->addRole('admin');
         $permissions->addRole('manager');
         
-        //Grant admin full assess to 3 levers of permissisos
+        //Grant admin full assess to 3 levers of permissions
         $permissions->associate('admin', "*");
         $permissions->associate('admin', "*.*");
         $permissions->associate('admin', "*.*.*");
