@@ -3,6 +3,7 @@ Install `spiral/auth` module in order to enable token based authorization of you
 
 ## Installation
 `$ composer require spiral/auth` 
+
 `$ spiral register spiral/auth`
 
 ## User Entity and Source
