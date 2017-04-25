@@ -72,7 +72,7 @@ class UserRepository extends RecordSource implements UsernameSourceInterface
 ```
 
 ## Register Bindings
-To allow auth module locate your users via repository create container binding in one of your bootloaders:
+To allow auth module locate your users via repository - create container binding in one of your bootloaders:
 
 ```php
 const BINDINGS = [
