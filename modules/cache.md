@@ -6,7 +6,8 @@ You are able to choose any caching library which support this mechanisms. To ena
 ```php
 use Psr\SimpleCache\CacheInterface;
 
-class CacheBootloader extends Bootloader {
+class CacheBootloader extends Bootloader
+{
     const SINGLETONS = [
         CacheInterface::class => [self::class, 'makeCache']
     ];  
