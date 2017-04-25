@@ -32,7 +32,7 @@ protected function testAction(UsersService $users)
 > Consider container shortcuts as RAD approach and replace them with proper dependencies when ready.
 
 ## Constructor Injections
-As any other class you can change your Service constructor to request additional dependencies, for example we can create model which manages our blog posts source:
+As any other class you can change your Service constructor to request additional dependencies, for example we can create model which manages our blog posts source and decouples from Service class:
 
 ```php
 class BlogService implements SingletonInterface
@@ -50,5 +50,3 @@ class BlogService implements SingletonInterface
     }
 }
 ```
-
-> As you can notice, you are not required to extend `Service` in this case.
