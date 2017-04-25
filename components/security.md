@@ -75,7 +75,7 @@ interface ActorInterface
 Actors usually represent by authenticated users which demonstrated in `getActor` factory method. 
 
 ## Guarding Code
-To guard our code in services or controllers using GuardTrait or by requesting `GuardInterface` dependency:
+To guard our code in services or controllers use GuardTrait or request `GuardInterface` dependency:
 
 ```php
 use GuardedTrait;
