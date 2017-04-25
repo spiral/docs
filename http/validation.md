@@ -1,5 +1,5 @@
 # Request Filters
-In many cases you might want to validate user request before performing any action, you can do that by manually creating Validator instance in your controllers or dedicate such functionality to RequestFilters.
+In many cases you might want to validate user request before any further action, you can do that by manually creating Validator instance in your controllers or dedicate such functionality to RequestFilters.
 
 > It may be best to read about [DataEntities](/components/data-entity.md) and [Validations](/components/validation.md) first.
 
