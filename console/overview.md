@@ -47,7 +47,7 @@ $application->console->consoleApplication();
 ```
 
 ## Configuration
-By default ConsoleDispatcher is able to locate command automatically, you always alter it's behaviour by modifying console config:
+By default, ConsoleDispatcher is able to locate command automatically, you can always alter it's behaviour by modifying console config:
 
 ```php
 return [
