@@ -55,3 +55,5 @@ public function indexAction()
     dump($code);
 }
 ```
+
+> This is helper class, it must never touch user generated data.
