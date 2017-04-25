@@ -21,7 +21,7 @@ protected function indexAction()
 You can provide custom Input and Output interfaces into command method or even specify parameters via array:
 
 ```php
-  dump($this->console->command('command', [
+  dump($this->console->run('command', [
     'name' => 'Some value' 
   ]));
 ```
