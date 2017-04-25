@@ -24,4 +24,4 @@ SQLServer includes fallback mechanism to limit your selection without orderBy sp
 > SQLServer is optimized to work with 12+ versions of [Microsoft SQL Server](https://www.microsoft.com/en-us/sql-server/).
 
 ### SQLite Driver
-SQLIte DBMS does not support set of table altering operation, in order to address that some of schema migrations will be performed using temporary tables and data copy.
+SQLIte DBMS does not support set of table altering operations, in order to address some of schema migrations will be performed using temporary tables and data copy.
