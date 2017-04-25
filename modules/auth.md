@@ -118,8 +118,7 @@ public function loginAction(LoginRequest $request, CredentialsAuthenticator $aut
 
     try {
         $user = $authenticator->getUser($request->username, $request->password);
-    } catch (CredentialsException $e)
-    {
+    } catch (CredentialsException $e) {
         thow new ForbiddenException('unable to authorize');
     }
 
