@@ -289,7 +289,7 @@ const BINDINGS = [
 Where `getActor` is IoC specific proxy:
 
 ```php
-public function getActor(\Spiral\Auth\ContextInterface $context)
+public function getActor(\Spiral\Auth\ContextInterface $context): ActorInterface
 {
     if ($context->isAuthenticated()) {
         return $context->getUser();
