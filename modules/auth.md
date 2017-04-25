@@ -119,7 +119,7 @@ public function loginAction(LoginRequest $request, CredentialsAuthenticator $aut
     try {
         $user = $authenticator->getUser($request->username, $request->password);
     } catch (CredentialsException $e) {
-        thow new ForbiddenException('unable to authorize');
+        throw new ForbiddenException('unable to authorize');
     }
 
     //Create auth token
