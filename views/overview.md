@@ -11,7 +11,7 @@ To start, create `app/views/test.php`:
 Hello world, <?= $name ?>!
 ```
 
-This file can now be rendered and send to use browser:
+This file can now be rendered and send to user browser:
 
 ```php
 public function indexAction(ViewsInterface $views)
