@@ -2,7 +2,8 @@
 Install `spiral/auth` module in order to enable token based authorization of your users.
 
 ## Installation
-`composer require spiral/auth` `spiral register spiral/auth`
+`$ composer require spiral/auth` 
+`$ spiral register spiral/auth`
 
 ## User Entity and Source
 First of all we have to define what is actually represent user in your application, in order to do that create Record `User` and repository `UserRepository`:
