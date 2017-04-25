@@ -43,7 +43,7 @@ Directories and exclude patters can be specified in Symfony Finder format.
 ## Performance Considerations
 Please note that code analysis is very slow operation, do not execute it based on user requests but rather move it into console command.
 
-Following components are currently use Tokenizer:
+Following components use Tokenizer:
 - ORM - automatic location of Record, RecordEntity and Repository models
 - ODM - automatic location of Document and DocumentEntity and Repository models
 - Console - automatic location of available commands
