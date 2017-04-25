@@ -145,7 +145,7 @@ This rule grants access when user is post owner, we can register it like that:
 $permissions->associate('user', "post.edit", AuthorRule::class);
 ```
 
-In order to use this rule properly we have to supply additional context "post" (actor will be resolved automatically):
+In order to use this rule properly we have to supply additional context "post" (actor/user will be resolved automatically):
 
 ```php    
 $this->authorize('posts.edit', ['post' => $post]);
