@@ -34,6 +34,7 @@ class AccessBootloader extends Bootloader
         $permissions->associate('manager', "vault.dashboard");
     }
 
+    //Use authorizer user as actor (see authorization)
     public function getActor(ContextInterface $context): ActorInterface
     {
         if ($context->isAuthenticated()) {
