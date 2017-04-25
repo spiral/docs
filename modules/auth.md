@@ -122,7 +122,7 @@ public function loginAction(LoginRequest $request, CredentialsAuthenticator $aut
         throw new ForbiddenException('unable to authorize');
     }
 
-    //Create auth token
+    //Create auth token (using default token operator, see below)
     $this->auth->init($this->tokens->createToken($user));
 
     //Redirect and etc
