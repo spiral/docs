@@ -22,7 +22,9 @@ class CacheBootloader extends Bootloader
 ## Existed Bridges
 Take a look at existed module `spiral/phpfastcache` which creates bridge to [https://github.com/PHPSocialNetwork/phpfastcache](https://github.com/PHPSocialNetwork/phpfastcache) library and adds cache configuration into your application.
 
-`$ composer require spiral/phpfastcache
-$ spiral register spiral/phpfastcache`
+```
+$ composer require spiral/phpfastcache
+$ spiral register spiral/phpfastcache
+```
 
 Add bootloader `Spiral/PhpFastCache/CacheBootloader` to enable caching. 
