@@ -33,4 +33,4 @@ public function indexAction(InvocationsInterface $invocations)
 }
 ```
 
-> Note, current implementation is only capable of locating constructions like `self::method()`, `$this->method()` and `static::method()`, type based resolutions are currently not implemented (AST support is required).
+> Note, current implementation is only capable of locating constructions like `self::method()`, `$this->method()` and `static::method()`, tree based resolutions are currently not implemented (AST support is required).
