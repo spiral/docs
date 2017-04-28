@@ -6,6 +6,7 @@
 	* [Contribute](contributing.md)
 	* [Forum](https://groups.google.com/forum/#!forum/spiral-framework)
 	* [License](license.md)  	
+	* [Video Tutorials](https://www.youtube.com/watch?v=zJ4fqW4M86I&list=PLHZNig4c1SXGVt8hUVHxZTrlJqqdn8ktW)
 * Framework
     * [Container, Factory, DI](framework/container.md)
     * [Components and IoC Scope](framework/components.md)
