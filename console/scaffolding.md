@@ -23,7 +23,7 @@ class SomeCommand extends Command
 }
 ```
 
-> You would still able to use native Symfony commands.
+> You would still be able to use native Symfony commands.
 
 #### Arguments and Options
 
