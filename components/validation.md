@@ -138,7 +138,7 @@ protected function indexAction(FactoryInterface $factory)
 
 > Both declarations are identical.
 
-## Validator Data
+## Validaton Data
 Validator data set can be represented by any associated array where the key is treated as a field name that needs value and data to be validated. In our example, we defined only one field called "name" and associated it with a value fetched from a query.
 
 By default, the validation will fail with the error message "This field is required." associated with the "name" field. You can alter the website url and include query "?name=something" to pass the example validation.

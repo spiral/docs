@@ -23,9 +23,11 @@ class SomeCommand extends Command
 }
 ```
 
-> You still able to use native Symfony commands.
+> You would still able to use native Symfony commands.
 
-Spiral `Command` class makes easy to define needed arguments and options:
+#### Arguments and Options
+
+Spiral's `Command` class makes easy to define needed arguments and options:
 
 ```php
 const ARGUMENTS = [
@@ -39,3 +41,4 @@ const OPTIONS = [
 
 > Perform method are executed using Container and support method injection.
 
+To get user's data via arguments and/or options, you can make use of `$this->argument("argName")` or `$this->option("optName")`. 

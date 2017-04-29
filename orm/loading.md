@@ -122,4 +122,4 @@ To cache your selection (including pre-loaded relations) pass `Psr\SimpleCache\C
 $iterator = $selector->getIterator('cache-key', 8600, $cache);
 ```
 
-> RecordSelector can fetch cache instance automatically from IoC if such binding exists.
+> RecordSelector can fetch the cache instance automatically from IoC if such binding exists.

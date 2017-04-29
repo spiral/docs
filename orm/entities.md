@@ -1,5 +1,5 @@
 # Record and RecordEntity
-ORM engine include 2 base classes to carry your database data across application: `Record` and `RecordEnity`. When `Record` class can be described as classic AR implementation, `RecordEntity` requires external transaction or UoW to persist it's data.
+ORM engine includes 2 base classes to carry your database data across application: `Record` and `RecordEnity`. When `Record` class can be described as classic AR implementation, `RecordEntity` requires external transaction or UoW to persist it's data.
 
 > Implement `RecordInterface` if you want to use custom data carrier.
 
