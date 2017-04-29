@@ -18,7 +18,7 @@ In order to filter based on related data we have to join it's table first:
 $selection->with('profile');
 ```
 
-> Note, `with` only work for data located in a same database.
+> Note, `with` only work for data located in the same database.
 
 Our query now will include INNER JOIN for our relation:
 

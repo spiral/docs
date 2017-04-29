@@ -2,7 +2,7 @@
 In order to select or create specific entity you must create repository class.
 
 ## Example
-To create and automatically link repository class to your `Record` or `RecordEntity` create class extending `RecordSource` and define `RECORD` constant pointing to your record class:
+To create and automatically link a repository class to your `Record` or `RecordEntity` create class extending `RecordSource` and define `RECORD` constant pointing to your record class:
 
 ```php
 class UserRepository extends RecordSource
@@ -32,7 +32,7 @@ $users = $users->create([
 
 Note, that entity values will be populated using `setFields` method, make sure that you have `FILLABLE` and `SECURED` constants property set. 
 
-> Attention, create would only initiate blank model entity, you have to save it into database manually.
+> Attention, create would only initiate blank model entity, you have to manually persist your changes to the database by calling `save()`.
 
 ### Find Entities
 Use methods `findByPK`, `findOne` and `find` to load entities from database:
