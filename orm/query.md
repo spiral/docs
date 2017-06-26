@@ -1,5 +1,5 @@
 # Query Models
-One of them most important part of ORM is ability to use Record relations in conditional selections and pre-load such relation data using eager loading.
+One of them most important part of the ORM is the ability to use Record relations in conditional selections and pre-load such relation data using eager loading.
 
 Make sure you already read about [ORM Relations](/orm/relations.md).
 
