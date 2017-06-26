@@ -75,7 +75,7 @@ INNER JOIN `primary_role_user_map` AS `d1_pivot`
 WHERE `d1_pivot`.`user_id` IN (1)
 ```
 
-You can set conditions for you load data as well:
+You can set conditions to load data as well:
 
 ```php
 $selection->where('user.name', '!=', '');
