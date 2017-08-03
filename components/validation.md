@@ -18,7 +18,7 @@ interface ValidatorInterface
     /**
      * Update validation data (context). Data change must reset validation state and all errors.
      *
-     * @param array|\ArrayAccess $data
+     * @param array|\ArrayAccess|\Spiral\Models\EntityInterface $data
      *
      * @return self
      *
@@ -88,12 +88,30 @@ interface ValidatorInterface
      * @return array
      */
     public function getErrors(): array;
+
+    /**
+     * Get context data (not validated).
+     *
+     * @return mixed
+     */
+    public function getContext();
+
+    /**
+     * Set context data (not validated).
+     *
+     * @param $context
+     *
+     * @return mixed
+     */
+    public function setContext($context);
 }
 ```
 
 As you can see, validator requires 2 primary sets:
 * data is an array of fields to be validated
 * rules is set of validation rules to be applied to every data field
+
+You can add some context to validator, it can be used in request filters or in checkers later.
 
 > The default spiral implementation `Validator` requires instances of `ContainerInterface` (Interop, needed to load Checkers and external rule classes) and `ValidatorConfig` (to provide a list of available validations using section "validation"). This means that you have to request the validator instance using the DI or factory to ensure that it's configured correctly. 
 
@@ -622,10 +640,84 @@ Image checker extends the file checker and fully supports it's features.
 | smaller       | width:int, [height:int] | Check if image is smaller than a specified shape (height check if optional).
 | bigger        | width:int, [height:int] | Check if image is bigger than a specified shape (height check is optional).
 
+## Checker Conditions
+Sometimes we want to validate field only in certain cases, for example when creating a blog post you want it to have a thumbnail. Thumbnail is required for a new post, but is optional when you update it (unless you upload a new thumnail for it).
+
+Conditions are provided by `\Spiral\Validation\CheckerConditionInterface` interface, to see basic implementation refer to `\Spiral\Validation\Prototypes\AbstractCheckerCondition` class
+```php
+interface CheckerConditionInterface
+{
+    /**
+     * @param ValidatorInterface $validator
+     *
+     * @return CheckerConditionInterface
+     */
+    public function withValidator(ValidatorInterface $validator): CheckerConditionInterface;
+
+    /**
+     * @return bool
+     */
+    public function isMet(): bool;
+}
+```
+
+### Example usage
+Request filter:
+```php
+class Request extends RequestFilter
+{
+    const SCHEMA = ['file' => 'file:image'];
+
+    const VALIDATES = [
+        'file' => [
+            ['file::uploaded', 'condition' => NewPostOrUpdatedFileCondition::class],
+            ['image::valid', 'condition' => NewPostOrUpdatedFileCondition::class]
+        ],
+    ];
+
+    public function getFile(): UploadedFileInterface
+    {
+        return $this->file;
+    }
+}
+```
+Condition file:
+```php
+class NewPostOrUpdatedFileCondition extends AbstractCheckerCondition
+{
+    use FileTrait;
+
+    /**
+     * @return bool
+     */
+    public function isMet(): bool
+    {
+        $context = $this->validator->getContext();
+
+        /** @var \Spiral\ORM\RecordEntity $entity */
+        $entity = $context['entity'] ?? null;
+
+        /** @var \Psr\Http\Message\UploadedFileInterface $entity */
+        $file = $context['file'] ?? null;
+
+        //Entity is new
+        if (empty($entity) || !$entity->isLoaded()) {
+            return true;
+        }
+
+        //File is provided and uploaded
+        if (!empty($file) && $this->isUploaded($file)) {
+            return true;
+        }
+
+        return false;
+}
+```
+So in this case request filter will require file when there's no entity yet or (entity exists) file is uploaded again.
+
 ## Example of Validator usage
 Spiral Http component ships with [convenient way](/http/validation.md) to validate incoming request,
 use VALIDATES constant to configure request validation rules:
-
 ```php
 class UploadRequest extends RequestFilter
 {
