@@ -101,6 +101,17 @@ const INDEXES = [
 ];
 ```
 
+To give custom name to an index assing desired value to index type.
+
+```php
+const INDEXES = [
+    [
+        self::UNIQUE => 'custom_index_name',
+        'email'
+    ],
+];
+```
+
 ## Create Record
 To persist data associated with your Record or RecordEntity model:
 
