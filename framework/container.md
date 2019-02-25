@@ -65,7 +65,7 @@ public function indexAction()
 > Read more about shortcuts [here](shortcuts.md).
 
 ## Singletons
-If you want your class to be constructed only once in a term of application life cycle, use alternative method `bingSingleton`:
+If you want your class to be constructed only once in a term of application life cycle, use alternative method `bindSingleton`:
 
 ```php
 $container->bindSingleton('binding', function () {
