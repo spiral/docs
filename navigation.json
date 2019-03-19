@@ -11,178 +11,178 @@
   {
     "title": "Framework",
     "links": {
-      "framework-container": "Container, Factory, DI",
-      "framework-components": "Components and IoC Scope",
-      "framework-shortcuts": "ServiceLocator Shortcuts",
-      "framework-bootloaders": "Bootloaders",
-      "framework-memory": "Shared Memory",
-      "framework-configs": "Configs Objects",
-      "framework-modules": "Modules"
+      "framework/container": "Container, Factory, DI",
+      "framework/components": "Components and IoC Scope",
+      "framework/shortcuts": "ServiceLocator Shortcuts",
+      "framework/bootloaders": "Bootloaders",
+      "framework/memory": "Shared Memory",
+      "framework/configs": "Configs Objects",
+      "framework/modules": "Modules"
     }
   },
   {
     "title": "Application",
     "links": {
-      "application-directories": "Directory Structure",
-      "application-startup": "Startup Flow",
-      "application-controllers": "Controllers and Cores",
-      "application-services": "Services",
-      "application-views": "View Templates",
-      "application-database": "Database Models",
-      "application-environment": "Environment",
-      "application-testing": "Testing Application"
+      "application/directories": "Directory Structure",
+      "application/startup": "Startup Flow",
+      "application/controllers": "Controllers and Cores",
+      "application/services": "Services",
+      "application/views": "View Templates",
+      "application/database": "Database Models",
+      "application/environment": "Environment",
+      "application/testing": "Testing Application"
     }
   },
   {
     "title": "Http Dispatcher",
     "links": {
-      "http-flow": "PSR-7 Flow",
-      "http-input": "Request and Input",
-      "http-response": "Responses",
-      "http-middlewares": "Middlewares",
-      "http-routing": "Routing",
-      "http-cookies": "Cookies",
-      "http-errors": "Http Errors",
-      "http-validation": "Request Validation"
+      "http/flow": "PSR-7 Flow",
+      "http/input": "Request and Input",
+      "http/response": "Responses",
+      "http/middlewares": "Middlewares",
+      "http/routing": "Routing",
+      "http/cookies": "Cookies",
+      "http/errors": "Http Errors",
+      "http/validation": "Request Validation"
     }
   },
   {
     "title": "Session",
     "links": {
-      "session-overview": "Overview",
-      "session-usage": "Working with Session"
+      "session/overview": "Overview",
+      "session/usage": "Working with Session"
     }
   },
   {
     "title": "Console Dispatcher",
     "links": {
-      "console-overview": "Overview",
-      "console-commands": "Embedded Commands",
-      "console-scaffolding": "User Commands"
+      "console/overview": "Overview",
+      "console/commands": "Embedded Commands",
+      "console/scaffolding": "User Commands"
     }
   },
   {
     "title": "Debug and Profiling",
     "links": {
-      "debug-logging": "Overview",
-      "debug-profiling": "Profiling",
-      "debug-errors": "Error Handling",
-      "debug-dumps": "Dump your data"
+      "debug/logging": "Overview",
+      "debug/profiling": "Profiling",
+      "debug/errors": "Error Handling",
+      "debug/dumps": "Dump your data"
     }
   },
   {
     "title": "Common Components",
     "links": {
-      "components-files": "Files",
-      "components-encrypter": "Encryption",
-      "components-data-entity": "DataEntity Model",
-      "components-security": "Security/RBAC",
-      "components-reactor": "Code Generation",
-      "components-validation": "Validation",
-      "components-pagination": "Pagination"
+      "components/files": "Files",
+      "components/encrypter": "Encryption",
+      "components/data-entity": "DataEntity Model",
+      "components/security": "Security/RBAC",
+      "components/reactor": "Code Generation",
+      "components/validation": "Validation",
+      "components/pagination": "Pagination"
     }
   },
   {
     "title": "Internalization",
     "links": {
-      "i18n-overview": "Overview",
-      "i18n-views": "Usage in Views",
-      "i18n-say-trait": "Usage in Models",
-      "i18n-indexation": "Indexation"
+      "i18n/overview": "Overview",
+      "i18n/views": "Usage in Views",
+      "i18n/say-trait": "Usage in Models",
+      "i18n/indexation": "Indexation"
     }
   },
   {
     "title": "Views and Engines",
     "links": {
-      "views-overview": "Overview",
-      "views-twig": "Twig Templates",
-      "views-native": "Native Templates",
-      "views-stempler": "Stempler Views",
-      "views-processors": "View Processors"
+      "views/overview": "Overview",
+      "views/twig": "Twig Templates",
+      "views/native": "Native Templates",
+      "views/stempler": "Stempler Views",
+      "views/processors": "View Processors"
     }
   },
   {
     "title": "Stempler Templates",
     "links": {
-      "stempler-basics": "Basic Usage",
-      "stempler-expert": "Extended Usage",
-      "stempler-dark": "Dark Syntax"
+      "stempler/basics": "Basic Usage",
+      "stempler/expert": "Extended Usage",
+      "stempler/dark": "Dark Syntax"
     }
   },
   {
     "title": "Static Analysis/Tokenizer",
     "links": {
-      "tokenizer-overview": "Overview",
-      "tokenizer-classes": "Find Classes",
-      "tokenizer-invocations": "Find Invocations",
-      "tokenizer-isolation": "PHP Code Isolation"
+      "tokenizer/overview": "Overview",
+      "tokenizer/classes": "Find Classes",
+      "tokenizer/invocations": "Find Invocations",
+      "tokenizer/isolation": "PHP Code Isolation"
     }
   },
   {
     "title": "Storage Manager",
     "links": {
-      "storage-overview": "Overview",
-      "storage-entities": "Buckets and Servers",
-      "storage-servers": "Server Configuration",
-      "storage-uploading": "Uploading Files"
+      "storage/overview": "Overview",
+      "storage/entities": "Buckets and Servers",
+      "storage/servers": "Server Configuration",
+      "storage/uploading": "Uploading Files"
     }
   },
   {
     "title": "Database Layer (SQL)",
     "links": {
-      "database-overview": "Overview",
-      "database-databases": "Databases and Drivers",
-      "database-pdo": "PDO Queries",
-      "database-builders": "Query Builders",
-      "database-transactions": "Transactions",
-      "database-introspection": "Schema Introspection",
-      "database-declaration": "Schema Declaration",
-      "database-migrations": "Migrations",
-      "database-errata": "Errata"
+      "database/overview": "Overview",
+      "database/databases": "Databases and Drivers",
+      "database/pdo": "PDO Queries",
+      "database/builders": "Query Builders",
+      "database/transactions": "Transactions",
+      "database/introspection": "Schema Introspection",
+      "database/declaration": "Schema Declaration",
+      "database/migrations": "Migrations",
+      "database/errata": "Errata"
     }
   },
   {
     "title": "ORM Engine",
     "links": {
-      "orm-overview": "Overview",
-      "orm-entities": "Record and RecordEntity",
-      "orm-repositories": "Repositories and Selectors",
-      "orm-accessors": "Accessors and Filters",
-      "orm-columns": "Column Objects",
-      "orm-scaffolding": "Scaffolding and Migrations",
-      "orm-transactions": "Transactions",
-      "orm-relations": "Relations",
-      "orm-morphed-relations": "Morphed Relations",
-      "orm-late-binding": "Pre-compiled Relations",
-      "orm-query": "Query Models",
-      "orm-loading": "Eager loading",
-      "orm-recursive-relations": "Recursive Relations",
-      "orm-odm-bridge": "Hybrid Databases",
-      "orm-custom-relations": "Custom Relations"
+      "orm/overview": "Overview",
+      "orm/entities": "Record and RecordEntity",
+      "orm/repositories": "Repositories and Selectors",
+      "orm/accessors": "Accessors and Filters",
+      "orm/columns": "Column Objects",
+      "orm/scaffolding": "Scaffolding and Migrations",
+      "orm/transactions": "Transactions",
+      "orm/relations": "Relations",
+      "orm/morphed-relations": "Morphed Relations",
+      "orm/late-binding": "Pre-compiled Relations",
+      "orm/query": "Query Models",
+      "orm/loading": "Eager loading",
+      "orm/recursive-relations": "Recursive Relations",
+      "orm/odm-bridge": "Hybrid Databases",
+      "orm/custom-relations": "Custom Relations"
     }
   },
   {
     "title": "ODM Engine (MongoDB)",
     "links": {
-      "odm-overview": "Overview",
-      "odm-databases": "MongoDB Databases",
-      "odm-entities": "Documents and DocumentEntity",
-      "odm-accessors": "Accessors and Filters",
-      "odm-repositories": "Repositories and Selectors",
-      "odm-scaffolding": "Scaffolding",
-      "odm-oop": "Compositions and Aggregations",
-      "odm-inheritance": "Inheritance"
+      "odm/overview": "Overview",
+      "odm/databases": "MongoDB Databases",
+      "odm/entities": "Documents and DocumentEntity",
+      "odm/accessors": "Accessors and Filters",
+      "odm/repositories": "Repositories and Selectors",
+      "odm/scaffolding": "Scaffolding",
+      "odm/oop": "Compositions and Aggregations",
+      "odm/inheritance": "Inheritance"
     }
   },
   {
     "title": "External Modules",
     "links": {
-      "modules-profiler": "Profiler",
-      "modules-auth": "User Authentication",
-      "modules-vault": "Vault Core",
-      "modules-scaffolder": "Scaffolder",
-      "modules-ide-helper": "IDE helper",
-      "modules-cache": "Cache Bridges"
+      "modules/profiler": "Profiler",
+      "modules/auth": "User Authentication",
+      "modules/vault": "Vault Core",
+      "modules/scaffolder": "Scaffolder",
+      "modules/ide-helper": "IDE helper",
+      "modules/cache": "Cache Bridges"
     }
   }
 ]
