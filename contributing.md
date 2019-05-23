@@ -24,4 +24,4 @@ If you feel like some "sugar" functionality (like shortcuts, constructor saturat
 > If you find the documentation lacking in certain areas - arhitectural wise or typos -, please create a issue on [Github](https://github.com/spiral/spiral) or better still a pull request containing the improvements.
 
 ## Critical/Security Issues
-If you found something which shouldn't be there or a bug which opens a security hole please let me know immediately by email [wolfy.jd@gmail.com](mailto:wolfy.jd@gmail.com)
+If you found something which shouldn't be there or a bug which opens a security hole please let me know immediately by email [team@spiralscout.com](mailto:team@spiralscout.com)
