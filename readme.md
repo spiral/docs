@@ -66,9 +66,6 @@
     * Configuration
     * Generating Service Code
     * GPRC client code
-* Scheduling
-    * Configuration
-    * Task Declaration
 * Views
     * Configuration
     * View object
