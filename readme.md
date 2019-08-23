@@ -3,10 +3,16 @@
 * Getting Started
     * About Spiral Framework
     * Installation
-    * Quick Start
     * Skeleton Applications
     * Contributing
     * [LICENSE](license.md)
+* Cookbook
+    * Quick Start
+    * Scaffold Database
+    * Simple CRUD
+    * Queue and Tasks
+    * Request Validation
+    * Stempler Views
 * Basics
     * Workers and Application Lifecycle
     * Application Structure
