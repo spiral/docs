@@ -7,7 +7,8 @@
     * [LICENSE](license.md)
 * Cookbook
     * Quick Start
-    * Scaffold Database
+    * Scaffolding
+    * Database Scaffolding
     * Simple CRUD
     * Queue and Tasks
     * Request Validation
@@ -17,12 +18,12 @@
     * Application Structure
     * Configuration
     * Console Commands
-    * Scaffolding Application
 * Framework
     * RoadRunner
-    * Container and Factories
-    * Application Kernel, Environment
+    * Kernel
     * Bootloaders
+    * Configuration
+    * Container and Factories    
     * IoC scopes
     * Auto-wiring
     * Config Objects
@@ -108,3 +109,4 @@
 * Advanced
     * RoadRunner customization
     * Auto-configuration
+    * Performance optimizations
