@@ -41,6 +41,7 @@
     * RBAC Authorization
     * Entity Models
     * Static Analysis Tools
+    * Prometheus Metrics
 * Console
     * Configuration
     * Create Command
