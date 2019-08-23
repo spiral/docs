@@ -36,7 +36,7 @@
     * Data Encryption
     * Validation
     * Pagination
-    * RBAC authorization
+    * RBAC Authorization
     * Entity Models
     * Static Analysis Tools
 * Console
@@ -49,7 +49,6 @@
     * Input, Request and Response
     * PSR-7 and PSR-15 
     * Routing
-    * Controllers and HMVC 
     * Middleware
     * Cookies
     * Session
@@ -102,11 +101,14 @@
     * PSR-6 cache
 * Debug and Profiling
     * Dumping variables
-    * RoadRunner specifics
+    * RoadRunner
     * Logging
     * Handle Exceptions
     * Monolog Integration
 * Advanced
     * RoadRunner customization
+    * Controllers and HMVC 
     * Auto-configuration
     * Performance optimizations
+* Roadmap
+    * Vault
