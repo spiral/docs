@@ -113,5 +113,6 @@
     * Controllers and HMVC 
     * Auto-configuration
     * Performance optimizations
+    * Docker and Kubernetes
 * Roadmap
     * Vault
