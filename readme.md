@@ -3,7 +3,6 @@
 * Getting Started
     * About Spiral Framework
     * Installation
-    * Skeleton Applications
     * Contributing
     * [LICENSE](license.md)
 * Cookbook
