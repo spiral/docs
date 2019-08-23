@@ -5,15 +5,6 @@
     * Installation
     * Contributing
     * [LICENSE](license.md)
-* Cookbook
-    * Quick Start
-    * Scaffolding
-    * Database Scaffolding
-    * Cycle ORM
-    * Simple CRUD
-    * Queue and Tasks
-    * Request Validation
-    * Stempler Views
 * Basics
     * Workers and Application Lifecycle
     * Application Structure
@@ -30,6 +21,16 @@
     * Auto-wiring
     * Config Objects
     * Shared Memory
+* Cookbook
+    * Quick Start
+    * Scaffolding
+    * Singleton Services
+    * Database Scaffolding
+    * Cycle ORM
+    * Simple CRUD
+    * Queue and Tasks
+    * Request Validation
+    * Stempler Views    
 * Components
     * Files and Directories
     * Code Generation
