@@ -2,6 +2,7 @@
 
 * Getting Started
     * About Spiral Framework
+    * Versioning
     * Installation
     * Contributing
     * [LICENSE](license.md)
