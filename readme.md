@@ -20,6 +20,7 @@
     * Configuration
     * Console Commands
 * Framework
+    * Design Approach
     * RoadRunner
     * Kernel
     * Bootloaders
