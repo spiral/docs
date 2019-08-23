@@ -9,6 +9,7 @@
     * Quick Start
     * Scaffolding
     * Database Scaffolding
+    * Cycle ORM
     * Simple CRUD
     * Queue and Tasks
     * Request Validation
@@ -92,6 +93,7 @@
     * Errata
 * Cycle DataMapper ORM
     * Configuration
+    * Full Documentation
     * Command Shortcuts
     * Extensions       
 * Storage Engine 
