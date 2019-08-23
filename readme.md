@@ -101,12 +101,13 @@
 * Extensions
     * DotEnv
     * PSR-6 cache
+    * Monolog
 * Debug and Profiling
     * Dumping variables
     * RoadRunner
     * Logging
     * Handle Exceptions
-    * Monolog Integration
+    * XDebug
 * Advanced
     * RoadRunner customization
     * Controllers and HMVC 
