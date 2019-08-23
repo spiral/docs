@@ -34,6 +34,7 @@
 * Console
     * Configuration
     * Create Command
+    * Symfony/Console compatibility
 * Web and HTTP
     * Configuration
     * Request Lifecycle
@@ -52,10 +53,14 @@
 * Queues and Jobs
     * Configuration
     * Running Jobs
-* GRPC Services
+    * Scheduling Tasks
+* GRPC API
     * Configuration
     * Generating Service Code
     * GPRC client code
+* Scheduling
+    * Configuration
+    * Task Declaration
 * Views
     * Configuration
     * View object
@@ -94,3 +99,6 @@
     * Logging
     * Handle Exceptions
     * Monolog Integration
+* Advanced
+    * RoadRunner customization
+    * Auto-configuration
