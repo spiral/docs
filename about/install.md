@@ -1,6 +1,6 @@
 # Install
 You can install Spiral components independently or use pre build application skeleton which enables most of framework 
-functions. You can either downgrade Web skeleton or use CLI skeleton with minimal dependencies.
+functions. You can either downgrade Web skeleton or use CLI skeleton with minimal dependencies to start new application.
 
 Installation includes customized version of RoadRunner application server with additional extensions and framework 
 specific functions enabled.
