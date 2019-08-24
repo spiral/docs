@@ -104,7 +104,7 @@ without performance penalty (still, watch memory).
 There is multiple limitations to be aware of.
 
 #### Memory Leaks
-Since application stays in memory to long even small memory leak might lead to process restart. Though RoadRunner
+Since application stays in memory for long even small memory leak might lead to process restart. Though RoadRunner
 will monitor memory consumption it is the best to avoid memory leaks in your application source code.
 
 #### Application State
