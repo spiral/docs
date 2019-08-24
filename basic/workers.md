@@ -96,7 +96,7 @@ class App extends Kernel
 }
 ```
 
-The bootloaders will only be invoked once, without request/task context. After that application will stay in process 
+The bootloaders will only be invoked once, without request/task context. After that application will stay in the process 
 memory permanently. Since the application bootload only happens once for many requests you can add many components and extension
 without performance penalty (still, watch memory).
 
@@ -104,8 +104,8 @@ without performance penalty (still, watch memory).
 There is multiple limitations to be aware of.
 
 #### Memory Leaks
-Since application stays in memory for long even small memory leak might lead to process restart. Though RoadRunner
-will monitor memory consumption it is the best to avoid memory leaks in your application source code.
+Since application stays in memory for long even small memory leak might lead to the process restart. RoadRunner
+will monitor memory consumption but it is the best to avoid memory leaks in your application source code.
 
 #### Application State
 Any service declared as singleton will remain in application memory till process end. Try to avoid storing any user data
