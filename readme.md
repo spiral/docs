@@ -1,6 +1,6 @@
 # Table of Contents
 
-* Documentation for [v1.0](https://github.com/spiral/docs/tree/master)
+* [Documentation for v1.0](https://github.com/spiral/docs/tree/master)
 
 * Getting Started
     * [About Spiral Framework](about/spiral.md)
