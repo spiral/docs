@@ -1,5 +1,5 @@
 # Workers and Application Lifecycle
-Spiral Framework can work using classic Nginx/PHP-FPM setup the highest effectiveness can be achieved using 
+Spiral Framework can work using classic Nginx/PHP-FPM setup. But the highest effectiveness can be achieved using 
 embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates the set of php processes for each of dispatching 
 method (HTTP, GRPC, Queue).
 
