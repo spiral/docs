@@ -3,7 +3,7 @@
 * Getting Started
     * [About Spiral Framework](about/spiral.md)
     * [Versioning](about/semver.md)
-    * Installation
+    * [Installation](about/install.md)
     * Contributing
     * [LICENSE](license.md)
 * Basics
