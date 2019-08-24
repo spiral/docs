@@ -59,5 +59,6 @@ Application will be available on `http://localhost:8080`.
 
 ## Other Skeletons
 Check other skeleton builds:
+
     * https://github.com/spiral/app-cli - minimal CLI build
     * https://github.com/spiral/app-grpc - grpc specific build (no views, http)
