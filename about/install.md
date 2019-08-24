@@ -15,7 +15,7 @@ Make sure that your server is configured with following PHP version and extensio
 * MbString Extension
 * PDO Extension with desired database drivers
 
-Application Bundle
+Web Application Bundle
 --------
 Application bundle includes following components:
 * High-Performance HTTP, HTTP/2 server based on [RoadRunner](https://roadrunner.dev)
