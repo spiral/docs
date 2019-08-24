@@ -1,6 +1,6 @@
 # Workers and Application Lifecycle
 Spiral Framework can work using classic Nginx/PHP-FPM setup the highest effectiveness can be achieved using 
-embedded application server (based on RoadRunner). The server creates the set of php processes for each of dispatching 
+embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates the set of php processes for each of dispatching 
 method (HTTP, GRPC, Queue).
 
 Every PHP process will only work within single request/task. It allows you to write code as if you would normally do. 
