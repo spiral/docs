@@ -3,8 +3,7 @@ Spiral Framework can work using classic Nginx/PHP-FPM setup. But the highest eff
 embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates the set of php processes for each of dispatching 
 method (HTTP, GRPC, Queue).
 
-Every PHP process will only work within single request/task. It allows you to write code as if you would normally do. 
-By keeping application state intact between requests you can drastically increase performance and also offload part
+Every PHP process will only work within single request/task. It allows you to write code as if you would normally do (classic blocking PHP). By keeping application state intact between requests you can drastically increase performance and also offload part
 of functionality to application server.
 
 ## Application Server
