@@ -1,4 +1,4 @@
-# Table of Contents
+# Table of Contents [v2.*]
 
 * [Documentation for v1.0](https://github.com/spiral/docs/tree/master)
 
