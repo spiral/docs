@@ -4,7 +4,7 @@
     * [About Spiral Framework](about/spiral.md)
     * [Versioning](about/semver.md)
     * [Installation](about/install.md)
-    * Contributing
+    * [Contributing](about/contributing.md)
     * [LICENSE](license.md)
 * Basics
     * Workers and Application Lifecycle
