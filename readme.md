@@ -7,7 +7,7 @@
     * [Contributing](about/contributing.md)
     * [LICENSE](license.md)
 * Basics
-    * Workers and Application Lifecycle
+    * [Workers and Application Lifecycle](basic/workers.md)
     * Application Structure
     * Configuration
     * Console Commands
@@ -31,7 +31,7 @@
     * Simple CRUD
     * Queue and Tasks
     * Request Validation
-    * Stempler Views    
+    * Stempler Views
 * Components
     * Files and Directories
     * Code Generation
