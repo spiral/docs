@@ -2,6 +2,8 @@
 You can install Spiral components independently or use pre build application skeleton which enables most of framework 
 functions. You can either downgrade Web skeleton or use CLI skeleton with minimal number dependencies to start new application.
 
+Default Web (fullstack) skeleton is available on https://github.com/spiral/app
+
 Installation includes customized version of RoadRunner application server with additional extensions and framework 
 specific functions enabled.
 <br/>
