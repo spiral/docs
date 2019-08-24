@@ -63,7 +63,7 @@ You can read more about RoadRunner [here](https://roadrunner.dev/docs).
 Every worker will contain single application instance. Default application skeleton(s) are based 
 on [spiral/boot](https://github.com/spiral/boot).
 
-The package allows quick application instantiation via static factory:
+The package allows quick application instantiation via static factory method `init`:
 
 ```php
 $app = \App\App::init(['root' => __DIR__]);
