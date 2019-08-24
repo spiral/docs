@@ -4,7 +4,6 @@ functions. You can either downgrade Web skeleton or use CLI skeleton with minima
 
 Installation includes customized version of RoadRunner application server with additional extensions and framework 
 specific functions enabled.
-
 <br/>
 
 Server Requirements
