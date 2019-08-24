@@ -8,7 +8,7 @@
     * [LICENSE](license.md)
 * Basics
     * [Workers and Application Lifecycle](basic/workers.md)
-    * Application Structure
+    * [Application Structure](basic/structure.md)
     * Configuration
     * Console Commands
 * Framework
