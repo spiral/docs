@@ -97,7 +97,7 @@ class App extends Kernel
 ```
 
 The bootloaders will only be invoked once, without request/task context. After that application will stay in process 
-memory permanently. Since the application bootload only happens once for many requests you add many components and extension
+memory permanently. Since the application bootload only happens once for many requests you can add many components and extension
 without performance penalty (still, watch memory).
 
 ## Limitations
