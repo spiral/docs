@@ -1,6 +1,7 @@
 # Cycle - Full Documentation
 Full documentation for Cycle DataMapper ORM is [available here](https://github.com/cycle/docs). Online help can be found on 
-<a href="https://discord.gg/TFeEmCs"><img src="https://img.shields.io/badge/discord-chat-magenta.svg"></a>.
+
+<a href="https://discord.gg/TFeEmCs"><img src="https://img.shields.io/badge/discord-chat-magenta.svg"></a>
 
 ## Repositories and Versions
 Repository | Status
