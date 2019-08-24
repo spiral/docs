@@ -95,7 +95,7 @@
     * Errata
 * Cycle DataMapper ORM
     * Configuration
-    * Full Documentation
+    * [Full Documentation](cycle/documentation.md)
     * Command Shortcuts
     * Extensions       
 * Storage Engine 
