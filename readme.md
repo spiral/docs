@@ -1,8 +1,8 @@
 # Table of Contents
 
 * Getting Started
-    * About Spiral Framework
-    * Versioning
+    * [About Spiral Framework](about/spiral.md)
+    * [Versioning](about/semver.md)
     * Installation
     * Contributing
     * [LICENSE](license.md)
@@ -103,6 +103,7 @@
     * DotEnv
     * PSR-6 cache
     * Monolog
+    * Doctrine Annotations
 * Debug and Profiling
     * Dumping variables
     * RoadRunner
