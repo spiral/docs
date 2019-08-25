@@ -94,10 +94,10 @@
     * Migrations
     * Errata
 * Cycle DataMapper ORM
-    * Configuration
+    * [Configuration](cycle/configuration.md)
     * [Full Documentation](cycle/documentation.md)
     * Command Shortcuts
-    * Extensions       
+    * Extensions
 * Storage Engine 
     * Configuration
     * Supported Drivers
