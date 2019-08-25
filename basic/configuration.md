@@ -51,7 +51,7 @@ return [
 ];
 ```
 
-Identically, you can edit any configuration for any of the components. For example we can change default http headers 
+Identically, you can edit any configuration for any of component. For example we can change default http headers 
 via `app/config/http.php`:
 
 ```php
@@ -61,6 +61,16 @@ return [
         'Content-Type' => 'text/html; charset=UTF-8'
     ],
 ];
+```
+
+To find which config file corresponds to proper config object check the value of [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php):
+
+```php
+final class HttpConfig extends InjectableConfig
+{
+    const CONFIG = 'http';
+    
+    // ...
 ```
 
 > See the reference for each component configuration in related documentation section. 
