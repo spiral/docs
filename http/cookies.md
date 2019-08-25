@@ -24,7 +24,7 @@ public function index(ServerRequestInterface $request)
 ```
 
 Alternatively you can read cookie values using `Spiral\Http\Request\InputManager` which automatically resolves request
-scope and can be stored in properties:
+scope and can be stored as singleton:
 
 ```php
 class HomeController
