@@ -10,7 +10,10 @@ Implement `Psr\Http\Server\MiddlewareInterface` to create your middleware:
 ```php
 class MyMiddleware implements MiddlewareInterface
 {
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(
+        ServerRequestInterface $request, 
+        RequestHandlerInterface $handler
+    ): ResponseInterface
     {
         return $handler->handle($request)->withAddedHeader('My-Header', 'my-value');
     }
