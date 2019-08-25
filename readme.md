@@ -106,7 +106,7 @@
     * PSR-6 cache
     * Monolog
 * Debug and Profiling
-    * Dumping variables
+    * [Dumping variables](debug/dumps.md)
     * RoadRunner
     * Logging
     * Handle Exceptions
