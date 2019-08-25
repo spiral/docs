@@ -58,7 +58,7 @@ public function index(CookieQuery $cookies)
 }
 ```
 
-Method accepts following arguments in a same order: 
+Method accepts following arguments in the same order: 
 
 Parameter | Type | Description
 --- | --- | ---
@@ -71,16 +71,16 @@ secure | bool | Indicates that the cookie should only be transmitted over a secu
 httpOnly | bool | When true the cookie will be made accessible only through the HTTP protocol. This means that the cookie won't be accessible by scripting languages, such as JavaScript. This setting can effectively help to reduce identity theft through XSS attacks (although it is not supported by all browsers).
 
 ## Usage with Singletons
-You can not use `CookieQuery` as `__construct` argument. Query is only available withing IoC scope of CookieMiddleware
-and must be requested as part of method injection or from container directly:
+You can not use `CookieQuery` as `__construct` argument. Queue is only available withing IoC context of CookieMiddleware
+and must be requested from container directly (use use method injection as showed above):
 
 ```php
 $container->get(CookieQuery::class)->set($name, $value);
 ```
 
-The best place to use `CookieQuery` is controller methods.
+> The best place to use `CookieQuery` is controller methods.
 
-If you already have access to `ServerRequestInterface` use can use attribute `cookieQueue`:
+If you already have access to `ServerRequestInterface` use can also use attribute `cookieQueue`:
 
 ```php
 use Psr\Http\Message\ServerRequestInterface;
