@@ -1,6 +1,8 @@
 # Install
 You can install Spiral components independently or use pre build application skeleton which enables most of framework 
-functions. You can either downgrade Web skeleton or use CLI skeleton with minimal dependencies.
+functions. You can either downgrade Web skeleton or use CLI skeleton with minimal number dependencies to start new application.
+
+Default Web (fullstack) skeleton is available on https://github.com/spiral/app
 
 Installation includes customized version of RoadRunner application server with additional extensions and framework 
 specific functions enabled.
@@ -13,7 +15,7 @@ Make sure that your server is configured with following PHP version and extensio
 * MbString Extension
 * PDO Extension with desired database drivers
 
-Application Bundle
+Web Application Bundle
 --------
 Application bundle includes following components:
 * High-Performance HTTP, HTTP/2 server based on [RoadRunner](https://roadrunner.dev)

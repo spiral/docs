@@ -1,10 +1,9 @@
 # Workers and Application Lifecycle
-Though Framework can work using classic Nginx/PHP-FPM setup the highest effectiveness can be achieved using 
-embedded application server (based on RoadRunner). The server creates the set of php processes for each of dispatching 
+Spiral Framework can work using classic Nginx/PHP-FPM setup. But the highest effectiveness can be achieved using 
+embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates the set of php processes for each of dispatching 
 method (HTTP, GRPC, Queue).
 
-Every PHP process will only work within single request/task. It allows you to write code as if you would normally do. 
-By keeping application state intact between requests you can drastically increase performance and also offload part
+Every PHP process will only work within single request/task. It allows you to write code as if you would normally do. By keeping application state intact between requests you can drastically increase performance and also offload part
 of functionality to application server.
 
 ## Application Server
@@ -64,7 +63,7 @@ You can read more about RoadRunner [here](https://roadrunner.dev/docs).
 Every worker will contain single application instance. Default application skeleton(s) are based 
 on [spiral/boot](https://github.com/spiral/boot).
 
-The package allows quick application instantiation via static factory:
+The package allows quick application instantiation via static factory method `init`:
 
 ```php
 $app = \App\App::init(['root' => __DIR__]);
@@ -104,8 +103,8 @@ without performance penalty (still, watch memory).
 There is multiple limitations to be aware of.
 
 #### Memory Leaks
-Since application stays in memory for long even small memory leak might lead to the process restart. RoadRunner
-will monitor memory consumption but it is the best to avoid memory leaks in your application source code.
+Since application stays in memory for long time, even small memory leak might lead to the process restart. RoadRunner
+will monitor memory consumption and perform soft reset, but it is the best to avoid memory leaks in your application source code.
 
 #### Application State
 Any service declared as singleton will remain in the application memory till the process end. Try to avoid storing any user data
