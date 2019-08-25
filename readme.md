@@ -88,7 +88,7 @@
     * Configuration
     * Databases and Drivers
     * Query Builders
-    * Transactions
+    * [Transactions](database/transactions.md)
     * [Schema Introspection](database/introspection.md)
     * [Schema Declaration](database/declaration.md)
     * Migrations

@@ -28,3 +28,6 @@ $this->db->transaction(function (Database $db) {
 ```
 
 > Transaction will be rolled back in case of any exception.
+
+## Connection Errors
+DBAL will attempt to reconnect to the database in case of connection drop only when no transactions open.
