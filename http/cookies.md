@@ -10,9 +10,13 @@ automatically invalidate all cookie values set for all users.
 
 > You can also disable encryption for performance reasons or use alternative HMAC signature method (see below). 
 
-Cookie component will decrypt all values and update request object, you can get all cookies values using:
+Cookie component will decrypt all values and update request object, so you can get all cookies values using default PSR-7 `ServerRequestInterface`:
 
 ```php
+use Psr\Http\Message\ServerRequestInterface;
+
+// ...
+
 public function index(ServerRequestInterface $request)
 {
     dump($request->getCookieParams());
