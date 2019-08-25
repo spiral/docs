@@ -58,7 +58,7 @@ public function index(CookieQuery $cookies)
 }
 ```
 
-Method accepts following arguments: 
+Method accepts following arguments in a same order: 
 
 Parameter | Type | Description
 --- | --- | ---
@@ -79,6 +79,19 @@ $container->get(CookieQuery::class)->set($name, $value);
 ```
 
 The best place to use `CookieQuery` is controller methods.
+
+If you already have access to `ServerRequestInterface` use can use attribute `cookieQueue`:
+
+```php
+use Psr\Http\Message\ServerRequestInterface;
+
+// ...
+
+public function index(ServerRequestInterface $request)
+{
+    $request->getAttribute('cookieQueue')->set('name', 'value');
+}
+```
 
 ## Set Cookie Manually
 You can always write cookie header manually by invoking `withAddedHeader` of `Psr\Http\Message\ResponseInterface`:
