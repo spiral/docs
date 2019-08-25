@@ -111,7 +111,7 @@ class MyMiddleware implements MiddlewareInterface
 }
 ```
 
-You can request this context from container or via method injection of your controller:
+You can request this context from the container or via method injection of your controller:
 
 ```php
 public function index(UserContext $ctx)
