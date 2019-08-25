@@ -23,7 +23,8 @@
     * IoC scopes
     * Auto-wiring
     * Config Objects
-    * Shared Memory
+    * [Static Memory](framework/memory.md)
+    * [Finalizers](framework/finalizers.md)
 * Cookbook
     * Quick Start
     * Scaffolding
