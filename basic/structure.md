@@ -3,7 +3,7 @@ Framework does not enforce any specific namespace or directory structure, you ca
 
 # Directories
 The directory structure can be controlled via `mapDirectories` method of Kernel class. By
-default, all application directories can be calculated from `root` using the following pattern:
+default, all application directories will be calculated based on `root` using the following pattern:
 
 Directory | Value 
 ---       | ---
