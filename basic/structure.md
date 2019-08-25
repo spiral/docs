@@ -1,5 +1,5 @@
 # Application Structure
-Framework does not enforce any specific namespace or directory structure, you can freely both of them.
+Framework does not enforce any specific namespace or directory structure, you can freely change them.
 
 # Directories
 The directory structure can be controlled via `mapDirectories` method of Kernel class. By
