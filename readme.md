@@ -96,7 +96,7 @@
 * Cycle DataMapper ORM
     * [Configuration](cycle/configuration.md)
     * [Full Documentation](cycle/documentation.md)
-    * Command Shortcuts
+    * [Console Commands](cycle/commands.md)
     * Extensions
 * Storage Engine 
     * Configuration
