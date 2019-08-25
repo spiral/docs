@@ -16,7 +16,7 @@
 * Framework
     * Design Approach
     * RoadRunner
-    * Kernel
+    * Kernel, Environment
     * Bootloaders
     * Configuration
     * Container and Factories    
@@ -92,7 +92,7 @@
     * [Schema Introspection](database/introspection.md)
     * [Schema Declaration](database/declaration.md)
     * Migrations
-    * Errata
+    * [Errata](database/errata.md)
 * Cycle DataMapper ORM
     * [Configuration](cycle/configuration.md)
     * [Full Documentation](cycle/documentation.md)
