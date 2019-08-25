@@ -54,7 +54,7 @@
     * Input, Request and Response
     * PSR-7 and PSR-15 
     * Routing
-    * Middleware
+    * [Middleware](http/middleware.md)
     * [Cookies](http/cookies.md)
     * Session
     * CSRF protection
