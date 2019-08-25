@@ -2,28 +2,28 @@
 Cycle ORM integration provides multiple commands for easier control. You can get help for any of command using
 
 ```bash
-php app.php help cycle...
+$ php app.php help cycle...
 ```
 
 ## Cycle Commands
 To update ORM schema without modifying the database run:
 
 ```bash
-php app.php cycle
+$ php app.php cycle
 ```
 
 To update schema and automatically modify database schema:
 
 ```bash
-php app.php cycle:sync
+$ php app.php cycle:sync
 ```
 
 > Attention, do not use this command in combination with migrations.
 
 To generate migration file to reflect current ORM schema:
 
-```php
-php app.php cycle:migrate
+```bash
+$ php app.php cycle:migrate
 ```
 
 > Make sure to run `migrate:init` first.
@@ -31,7 +31,7 @@ php app.php cycle:migrate
 You can also run generated migration automatically:
 
 ```bash
-php app.php cycle:migrate -r
+$ php app.php cycle:migrate -r
 ```
 
 > You can run any cycle command with `-vv` flag to see list of modified tables.
