@@ -11,7 +11,7 @@
 * Basics
     * [Workers and Application Lifecycle](basic/workers.md)
     * [Application Structure](basic/structure.md)
-    * Configuration
+    * Default Configuration
     * [Console Commands](basic/commands.md)
 * Framework
     * Design Approach
