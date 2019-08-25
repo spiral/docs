@@ -46,9 +46,8 @@
     * Static Analysis Tools
     * Prometheus Metrics
 * Console
-    * Configuration
-    * Create Command
-    * Symfony/Console compatibility
+    * [Configuration](console/configuration.md)
+    * [User Commands](console/commands.md)
 * Web and HTTP
     * Configuration
     * Request Lifecycle
