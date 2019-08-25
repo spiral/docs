@@ -18,11 +18,10 @@
     * Application Server
     * Kernel, Environment
     * Bootloaders
-    * Configuration
+    * Config Objects
     * Container and Factories    
     * IoC scopes
     * Auto-wiring
-    * Config Objects
     * [Static Memory](framework/memory.md)
     * [Finalizers](framework/finalizers.md)
 * Cookbook
