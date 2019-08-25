@@ -103,7 +103,7 @@ return $response->withAddedHeader('Set-Cookie', 'name=value');
 > Make sure to add cookie to whitelist, otherwise CookieMiddleware won't let it pass.
 
 ## Configuration
-You can configure `CookieQueue` using `Spiral\Bootloader\Http\CookiesBootloader`.
+You can configure `CookieQueue` behaviour using `Spiral\Bootloader\Http\CookiesBootloader`.
 
 To whitelist cookie (disable protection):
 
