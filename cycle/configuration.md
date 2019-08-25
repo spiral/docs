@@ -23,3 +23,6 @@ The following components must be required in `composer.json`:
 ```
 
 > You can enable and disable ORM extensions separately.
+
+## Configuration
+ORM does no require any configuration. You can specify connections and drivers in DBAL Component configuration.
