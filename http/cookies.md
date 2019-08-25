@@ -1,5 +1,5 @@
 # Web and HTTP - Cookies
-Default application skeleton enabled cookie integration by default. If you need to enable cookies it in alternative bundle
+Default application skeleton enables cookie integration by default. If you need to enable cookies it in alternative bundle
 require composer package `spiral/cookies` and add bootloader `Spiral\Bootloader\Bootloader\Http\CookiesBootloader::class` 
 into your app.
 
