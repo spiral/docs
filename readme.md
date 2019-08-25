@@ -44,7 +44,7 @@
     * RBAC Authorization
     * Entity Models
     * Static Analysis Tools
-    * Prometheus Metrics
+    * [Prometheus Metrics](component/metrics.md)
 * Console
     * [Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
