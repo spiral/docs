@@ -25,6 +25,8 @@ To run this command in verbose mode:
 $ php app.php configure -vv
 ```
 
+> Always run `configure` before running newly installed application.
+
 ## RoadRunner
 Application server includes it's own set of commands, to list all available server commands run:
 
