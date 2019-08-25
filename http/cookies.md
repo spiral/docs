@@ -48,7 +48,8 @@ class HomeController
 Note, if cookie value is invalid and can't be decrypted it will be set to NULL and not available to the application. 
 
 ## Write Cookie
-Since all of cookie values must be encrypted or signed you must use proper method to them. Use `Spiral\Cookies\CookieQuery`.
+Since all of cookie values must be encrypted or signed you must use proper way to write them. 
+Use context specific object `Spiral\Cookies\CookieQuery`.
 
 ```php
 public function index(CookieQuery $cookies)
