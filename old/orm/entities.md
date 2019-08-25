@@ -12,7 +12,7 @@ You can read about base entity class [here](/old/components/data-entity.md).
 ## ActiveRecord
 To create AR model extent base class `Record`.
 
-Your model must include a constant **SCHEMA** which will describe the table columns and record relationships. Since the ORM component uses DBAL as it's backbone, you can declare a set of desired columns the same way as [schema declaration](/old/database/declaration.md).
+Your model must include a constant **SCHEMA** which will describe the table columns and record relationships. Since the ORM component uses DBAL as it's backbone, you can declare a set of desired columns the same way as [schema declaration](/database/declaration.md).
 
 Put your model into `app/classes/Database/User.php`:
 
@@ -60,7 +60,7 @@ Since we are creating a model from scratch (non existing table), we need to decl
 
 >  Spiral ORM will detect your primary key name automatically so you don't have to use "id".
 
-To provide an additional type arguments, such as length, scale or enum values, you can simply use braces as you would call `AbstractColumn` [methods](/old/database/declaration.md).
+To provide an additional type arguments, such as length, scale or enum values, you can simply use braces as you would call `AbstractColumn` [methods](/database/declaration.md).
 
 ```php
 'name'   => 'string(64)',

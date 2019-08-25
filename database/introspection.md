@@ -1,6 +1,7 @@
-# Database Introspection
-Spiral Database layer provides the ability to read and analyze basic properties of a given database or a given table. DBAL layer include set of "abstract" types assigned to each column based on DBMS specific
-mapping in order to unify different engines.
+# DBAL - Schema Introspection
+Spiral Database layer provides the ability to read and analyze basic properties of a given database or a given table.
+DBAL layer include set of "abstract" types assigned to each column based on DBMS specific mapping in order to unify 
+different engines.
 
 ## List of database tables
 To check if database has table use `hasTable`:
@@ -11,7 +12,7 @@ if ($database->hasTable('users')) {
 }
 ```
 
-> Read how to get Database instances [here](/databases/overview.md).
+> Read how to get Database instances [here](/database/entity.md).
 
 Receive all database tables (array of `Spiral\Database\Table`):
 
@@ -54,9 +55,9 @@ Table foreign keys (references):
 
 ```php
 foreach ($schema->getForeigns() as $foreign) {
-    dump($foreign->getColumn());       //Local column name
+    dump($foreign->getColumns());      //Local columns name
     dump($foreign->getForeignTable()); //Global table name!
-    dump($foreign->getForeignKey());
+    dump($foreign->getForeignKeys());
 
     dump($foreign->getDeleteRule());   //NO ACTION, CASCADE
     dump($foreign->getUpdateRule());   //NO ACTION, CASCADE
@@ -93,7 +94,7 @@ foreach ($schema->getColumns() as $column) {
 
 > Some types can be mapped incorrectly if the table was created outside migrations or ORM.
 
-You can find a complete list of available abstract types [here](/old/databasebase/declaration.md).
+You can find a complete list of available abstract types [here](/database/declaration.md).
 
 ## Console Commands
 You can also use console commands to get information about configured tables and their schemas:
