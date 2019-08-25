@@ -64,7 +64,7 @@ public function boot(RouterInterface $router)
 ```
 
 ## Combine with IoC scopes
-You can combine middleware with IoC scope to create user-specific application context.
+You can combine middleware with IoC scope to create request-specific application context.
 
 ```php
 class UserContext
