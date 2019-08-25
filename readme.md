@@ -118,5 +118,6 @@
     * Auto-configuration
     * Performance optimizations
     * Docker and Kubernetes
+    * Custom Dispatchers
 * Roadmap
     * Vault
