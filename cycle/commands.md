@@ -5,6 +5,8 @@ Cycle ORM integration provides multiple commands for easier control. You can get
 $ php app.php help cycle...
 ```
 
+> Make sure to enable `Spiral\Bootloader\CommandBootloader` after the cycle bootloaders to active helper commands.
+
 ## Cycle Commands
 To update ORM schema without modifying the database run:
 
