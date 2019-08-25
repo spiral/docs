@@ -6,7 +6,7 @@ bootloader `Spiral\Bootloader\Bootloader\Http\CookiesBootloader::class` into you
 
 ## Read Cookie
 By default, framework will encrypt and decrypt all cookies values using ENV key `ENCRYPTER_KEY`. Changing this value will
-automatically invalidate all cookie values set of the users.
+automatically invalidate all cookie values set for all users.
 
 > You can also disable encryption for performance reasons or use alternative HMAC signature method (see below). 
 
