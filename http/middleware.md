@@ -21,8 +21,8 @@ class MyMiddleware implements MiddlewareInterface
 ```
 
 ## Global Middleware
-To activate middleware for every user request use `Spiral\Bootloader\Http\HttpBootloader`. You can also set this value 
-during application bootstrap process and not during application runtime.
+To activate middleware for every user request use `Spiral\Bootloader\Http\HttpBootloader`. You can only set this value in 
+application bootloaders.
 
 ```php
 use Spiral\Bootloader\Http\HttpBootloader;
@@ -60,5 +60,62 @@ public function boot(RouterInterface $router)
     $route = $route->withMiddleware(MyMiddleware::class);
 
     $router->addRoute('index', $route);
+}
+```
+
+## Combine with IoC scopes
+You can combine middleware with IoC scope to create user-specific application context.
+
+```php
+class UserContext
+{
+    public $id;
+    public $name;
+
+    public function __construct(int $id, string $name)
+    {
+        $this->id = $id;
+        $this->name = $name;
+    }
+}
+```
+
+Use `Spiral\Core\ScopeInterface` to set application scope in your middleware:
+
+```php
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Spiral\Core\ScopeInterface;
+
+class MyMiddleware implements MiddlewareInterface
+{
+    private $scope;
+
+    public function __construct(ScopeInterface $scope)
+    {
+        $this->scope = $scope;
+    }
+
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        return $this->scope->runScope([
+            UserContext::class => new UserContext(123, 'test')
+        ], function () use ($handler, $request) {
+            return $handler->handle($request);
+        });
+    }
+}
+```
+
+You can request this context from container or via method injection of your controller:
+
+```php
+public function index(UserContext $ctx)
+{
+    dump($ctx);
 }
 ```
