@@ -105,10 +105,10 @@ return $response->withAddedHeader('Set-Cookie', 'name=value');
 ## Configuration
 You can configure `CookieQueue` behaviour using `Spiral\Bootloader\Http\CookiesBootloader`.
 
-To whitelist cookie (disable protection):
+To whitelist cookie (disable protection) in your bootloader:
 
 ```php
-public function boot(CookiesBootloader $cookies) 
+public function boot(CookiesBootloader $cookies)
 {
     $cookies->whitelistCookie('CustomCookie');
 }
