@@ -55,8 +55,9 @@
     * PSR-7 and PSR-15 
     * Routing
     * Middleware
-    * Cookies
+    * [Cookies](http/cookies.md)
     * Session
+    * CSRF protection
 * Request Objects
     * Configuration
     * Filter Entity
