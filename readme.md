@@ -34,7 +34,6 @@
     * Simple CRUD
     * Queue and Tasks
     * Request Validation
-    * Stempler Views
 * Components
     * Files and Directories
     * Code Generation
@@ -81,10 +80,6 @@
     * Indexation and Exporting
     * Translate Views
     * Say Trait
-* Stempler Markup Engine
-    * Configuration
-    * TODO ?
-    * Extensions
 * DBAL
     * Configuration
     * Databases and Drivers
@@ -119,5 +114,3 @@
     * DotEnv
     * PSR-6 cache
     * [Monolog](extension/monolog.md)
-* Roadmap
-    * Vault
