@@ -53,6 +53,7 @@
     * Read User Input
     * Request and Response
     * Routing
+    * Error Pages
     * [Middleware](http/middleware.md)
     * [Cookies](http/cookies.md)
     * Session
