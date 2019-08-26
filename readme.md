@@ -18,8 +18,9 @@
     * Application Server
     * Kernel, Environment
     * Bootloaders
+    * Configuration
     * Config Objects
-    * Container and Factories    
+    * Container and Factories
     * IoC scopes
     * Auto-wiring
     * [Static Memory](framework/memory.md)
@@ -50,8 +51,8 @@
 * Web and HTTP
     * Configuration
     * Request Lifecycle
-    * Input, Request and Response
-    * PSR-7 and PSR-15 
+    * Read User Input
+    * Request and Response
     * Routing
     * [Middleware](http/middleware.md)
     * [Cookies](http/cookies.md)
@@ -61,7 +62,7 @@
     * Configuration
     * Filter Entity
     * Nested Filters
-    * Error mapping
+    * Error Mapping
 * Queues and Jobs
     * Configuration
     * Running Jobs
@@ -104,7 +105,7 @@
 * Extensions
     * DotEnv
     * PSR-6 cache
-    * Monolog
+    * [Monolog](extension/monolog.md)
 * Debug and Profiling
     * [Dumping variables](debug/dumps.md)
     * RoadRunner
