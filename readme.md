@@ -22,7 +22,7 @@
     * Config Objects
     * Container and Factories
     * IoC scopes
-    * Auto-wiring
+    * Auto Wiring
     * [Static Memory](framework/memory.md)
     * [Finalizers](framework/finalizers.md)
 * Cookbook
