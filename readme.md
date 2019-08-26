@@ -79,7 +79,7 @@
 * Internalization
     * Configuration
     * Indexation and Exporting
-    * View localization
+    * Translate Views
     * Say Trait
 * Stempler Markup Engine
     * Configuration
@@ -102,10 +102,6 @@
 * Storage Engine 
     * Configuration
     * Supported Drivers
-* Extensions
-    * DotEnv
-    * PSR-6 cache
-    * [Monolog](extension/monolog.md)
 * Debug and Profiling
     * [Dumping variables](debug/dumps.md)
     * RoadRunner
@@ -114,10 +110,14 @@
     * XDebug
 * Advanced
     * RoadRunner customization
-    * Controllers and HMVC 
+    * Controllers and HMVC
     * Auto-configuration
     * Performance optimizations
     * Docker and Kubernetes
     * Custom Dispatchers
+* Extensions
+    * DotEnv
+    * PSR-6 cache
+    * [Monolog](extension/monolog.md)
 * Roadmap
     * Vault
