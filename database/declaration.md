@@ -4,14 +4,14 @@ Spiral DBAL ship with included mechanism to declare table structures, FKS and in
 > Practically, table changes can be executed using external migration system.
 
 ## Principle of Work
-Before any operation/declaration can be applied to table schema, DBAL will load currently existed structure from database and [normalize it into internal format](/old/databasebase/introspection.md). 
+Before any operation/declaration can be applied to table schema, DBAL will load currently existed structure from database and [normalize it into internal format](/v1.0.0/databasebase/introspection.md). 
 
 As result, you are allowed to apply modification to table schema using declarative way instead of imperative, once schema **save** are requested - DBAL will generate set of creation and altering operations based on difference between declared and existed schemas. 
 
 > See below how to use `SynchronizationPool` to sync multiple related tables.
 
 ## To Start
-To get instance of `AbstractTable` use similar way described in [Schema Introspection (make sure your read them first)](/old/database/instrospection.md). 
+To get instance of `AbstractTable` use similar way described in [Schema Introspection (make sure your read them first)](/v1.0.0/database/instrospection.md). 
 
 > No need to check for table existence. 
 
@@ -88,7 +88,7 @@ CREATE TABLE "secondary_new_table" (
 
 > Note, by default every column stated as nullable. Use `nullable` method to overwrite it (see below).
 
-> Use `-vv` CLI debug mode or [Profiler](/old/modulesules/profiler.md) module to find out what SQL code is being generated.
+> Use `-vv` CLI debug mode or [Profiler](/v1.0.0/modulesules/profiler.md) module to find out what SQL code is being generated.
 
 Once schema is created you can add new columns into it by only declaring them in your code:
 
