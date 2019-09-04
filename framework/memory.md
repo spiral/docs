@@ -36,7 +36,7 @@ interface MemoryInterface
 
 ## Use Cases
 The general idea of memory is to speed up an application by caching execution result of some functionality. The memory component 
-is used to store the configuration cache, ORM and ODM schemas, list console commands and tokenizer cache; 
+is used to store the configuration cache, ORM and ODM schemas, console commands list and tokenizer cache; 
 it can also be used to cache compiled routes and etc.
  
  > Application memory must never be used to store users data.
