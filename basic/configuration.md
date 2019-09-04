@@ -29,8 +29,7 @@ public function index(EnvironmentInterface $env)
 ```
 
 ## Configuration
-Default component configuration defined inside the related Bootloader. You can alter such configuration inside your 
-bootloaders (see Auto-Configuration) or by creating default configuration file in `app/config`.
+Default component configuration location inside the related Bootloader. You can alter such configuration using other bootloaders (see Auto-Configuration) or by creating default configuration file in `app/config`.
 
 Web and GRPC skeletons include `app/config/database.php` config file:
 
