@@ -103,6 +103,6 @@ You can implement your own version of `Spiral\Boot\MemoryInterface` using APC, X
 Before you will embed `Spiral\Boot\MemoryInterface` into your component or service:
 * Do not store any data related to user request, action or information. Memory is only for logic caching
 * Assume memory can disappear at any moment
-* `saveData` is thread safe
+* `saveData` is thread safe, slows down with higher concurrency
 * `saveData` is more expensive than `loadData`, make sure not to store anything in memory during application runtime
 * bootloaders and commands are the best place to use memory
