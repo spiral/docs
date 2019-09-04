@@ -23,7 +23,7 @@
     * Container and Factories
     * IoC scopes
     * Auto Wiring
-    * [Static Memory](framework/memory.md)
+    * [Shared Memory](framework/memory.md)
     * [Finalizers](framework/finalizers.md)
 * Cookbook
     * Quick Start
