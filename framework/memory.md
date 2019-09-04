@@ -98,19 +98,9 @@ class OperationService
 
 > You can currently only store arrays or scalar values in memory.
 
-`MemoryInterface` is implemented in spiral bundle by `Memory` class, which lets you access it's
- functions using shortcut 'memory'.
+You can implement your own version of `Spiral\Boot\MemoryInterface` using APC, XCache, DHT on RoadRunner, Redis or even Memcache. 
 
-```php
-public function doSomething()
-{
-    dump($this->memory->loadData('something'));
-}
-```
-
-You can implement your own version of `MemoryInterface` using APC, XCache, DHT on RoadRunner, Redis or even Memcache. 
-
-Before you will embed `MemoryInterface` into your component or service:
+Before you will embed `Spiral\Boot\MemoryInterface` into your component or service:
 * Do not store any data related to user request, action or information. Memory is only for logic caching
 * Assume memory can disappear at any moment
 * `saveData` is thread safe
