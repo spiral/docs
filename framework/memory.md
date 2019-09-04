@@ -42,7 +42,7 @@ it can also be used to cache compiled routes and etc.
  > Application memory must never be used to store users data.
 
 ## Practical Example
-Let's view an example of a service used to index available classes to compute some behaviour (operations):
+Let's view an example of a service used to analyze available classes to compute some behaviour (operations):
 
 ```php
 abstract class Operation 
