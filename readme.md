@@ -76,6 +76,12 @@
     * View object
     * Native PHP templates
     * Twig Templates
+* Stempler Views
+   * Configuration
+   * Basic Usage
+   * Inheritance
+   * Components
+   * Directives
 * Internalization
     * Configuration
     * Indexation and Exporting
