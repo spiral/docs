@@ -65,7 +65,7 @@ return [
 ];
 ```
 
-To find which config file corresponds to proper config object check the value of [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php):
+To find which config file corresponds to proper config object check the value of [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php#L17):
 
 ```php
 final class HttpConfig extends InjectableConfig
