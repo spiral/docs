@@ -1,4 +1,4 @@
-# Framework - Static Memory
+# Framework - Shared Memory
 Framework (component spiral/boot) provides convenient interface to store some computation data shared between processes.  
 
 > Currently implementation of shared memory store data in physical files vis help of OpCache. Future implementation will
