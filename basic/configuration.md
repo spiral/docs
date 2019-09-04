@@ -24,6 +24,8 @@ You can access this values using `Spiral\Boot\EnvironmentInterface` or via short
 public function index(EnvironmentInterface $env)
 {
     dump($env->get('ENCRYPTER_KEY'));
+    
+    dump(env('ENCRYPTER_KEY')); // only inside IoC scope
 }
 ```
 
