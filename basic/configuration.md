@@ -2,6 +2,8 @@
 All of provided application skeletons are already pre-configured using optimal settings. You can edit any of the settings
 by editing file(s) in `app/config/`.
 
+> If config file does not exist - create it using `<?php return [];` as a base.
+
 ## Environment
 Web and GRPC templates use DotEnv extension to read environment values from `.env` file located in a root of your project.
 
