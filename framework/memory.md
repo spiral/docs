@@ -71,12 +71,9 @@ class OperationService
         $this->operations = $memory->loadData('operations');
 
         if (is_null($this->operations)) {
-            //This is slow operation
-            $this->operations = $this->locateOperations($classes);
-        }
-
-        //We now can store data into long time memory
-        $memory->saveData('operations', $this->operations);
+            $this->operations = $this->locateOperations($classes); // slow operation
+            $memory->saveData('operations', $this->operations);
+        }      
     }
 
     /**
