@@ -1,7 +1,7 @@
 # Framework - Shared Memory
 Framework (component spiral/boot) provides convenient interface to store some computation data shared between processes.  
 
-> Currently implementation of shared memory store data in physical files with the help of OpCache. Future implementation will
+> Current implementation of shared memory stores data in physical files with the help of OpCache. Future implementation will
 move data storage to RoadRunner or shared PHP extension with shm, do not couple your codebase to physical files.  
 
 ## MemoryInterface
