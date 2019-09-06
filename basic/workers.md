@@ -107,6 +107,8 @@ There is multiple limitations to be aware of.
 Since application stays in memory for long time, even small memory leak might lead to the process restart. RoadRunner
 will monitor memory consumption and perform soft reset, but it is the best to avoid memory leaks in your application source code.
 
+Though framework and all of it's components are written with memory management in mind you still have to make sure that your domain code is not leaking.
+
 #### Application State
 Any service declared as singleton will remain in the application memory till the process end. Try to avoid storing any user data
 or open resources in such services. 
