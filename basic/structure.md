@@ -37,6 +37,15 @@ function test(DirectoriesInterface $dirs)
 }
 ```
 
+You can also use function `directory` inside global IoC scope (config files, controllers, service code).
+
+```php
+function test()
+{
+    dump(directory('app'));
+}
+```
+
 ## Namespaces
 By default, all skeleton applications use `App` root namespace pointing to `app/src` directory. You can change base 
 to any desired namespace in `composer.json`:
