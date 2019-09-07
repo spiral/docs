@@ -28,6 +28,7 @@
 * Cookbook
     * Quick Start
     * Scaffolding
+    * Prototyping
     * Singleton Services
     * Database Scaffolding
     * Cycle ORM
