@@ -13,7 +13,24 @@ To get help about any specific command:
 $ php app.php help db:table
 ```
 
+Alternative: 
+
+```bash
+$ php app.php db:table -h
+```
+
 > You can read how to create your own commands in a following sections.
+
+## Aliases
+Spiral Console is based on Symfony/Console, it means you can use command short names as far as there is enough information to find target command:
+
+```bash
+# can be resolved into `update`
+$ php app.php up 
+
+# Collides with `configure`, `cache:clean`, `cycle:*` commands.
+$ php app.php c
+```
 
 ## Configure
 Your application includes one main command `configure`. This command will run the sequence of operations to ensure
