@@ -34,6 +34,7 @@
     * Cycle ORM
     * Simple CRUD
     * Queue and Tasks
+    * Custom PSR-15 Handlers
     * Request Validation
 * Components
     * Files and Directories
