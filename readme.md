@@ -29,7 +29,7 @@
     * Quick Start
     * Scaffolding
     * Prototyping
-    * Singleton Services
+    * Singleton and Stateful Services
     * Database Scaffolding
     * Cycle ORM
     * Simple CRUD
