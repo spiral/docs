@@ -60,7 +60,7 @@
     * [Cookies](http/cookies.md)
     * Session
     * CSRF protection
-* Request Objects
+* Request/Filter Objects
     * Configuration
     * Filter Entity
     * Nested Filters
@@ -79,11 +79,11 @@
     * Native PHP templates
     * Twig Templates
 * Stempler Views
-   * Configuration
-   * Basic Usage
-   * Inheritance
-   * Components
-   * Directives
+    * Configuration
+    * Basic Usage
+    * Inheritance
+    * Components
+    * Directives
 * Internalization
     * Configuration
     * Indexation and Exporting
