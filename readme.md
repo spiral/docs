@@ -16,11 +16,11 @@
 * Framework
     * Design Approach
     * Application Server
+    * [Container and Factories](framework/container.md)
     * Kernel, Environment
     * Bootloaders
     * Configuration
     * Config Objects
-    * Container and Factories
     * IoC scopes
     * Auto Wiring
     * [Static Memory](framework/memory.md)

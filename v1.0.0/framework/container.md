@@ -1,5 +1,6 @@
 # Container, Factory, DI
-Spiral framework includes set of implementations to enable inversion of control and dependency injection in your application. In many cases you can use same functionality in a form of Service Locators.
+Spiral framework includes set of implementations to enable inversion of control and dependency injection in your application. 
+In many cases you can use same functionality in a form of Service Locators.
 
 > Note that IoC implementation is based on [Interop/Container](https://github.com/container-interop/container-interop), you are free to replace default spiral container or delegate it's functionality to 3rd part component.
 
@@ -309,22 +310,3 @@ $abc = $container->get('abc');
 
 $this->assertSame('Fixed', $abc->getName());
 ```
-
-## Container Delegation
-You are able to delegate container functionality to external PSR compatible implementation using container constructor.
-
-```php             
-$container = new \Pimple\ContainerContainer();
-
-//Initiating shared container, bindings, directories and etc
-$application = App::init([
-    'root'        => $root,
-    'runtime'     => $root . 'runtime/',
-    'libraries'   => $root . 'vendor/',
-    'application' => $root . 'app/',
-    //other directories calculated based on default pattern, @see Core::__constructor()
-], null, $container);
-```
-
-> Note that container like that will not be available in your application directly thought `ContainerInterface` but rather composited inside of `Spiral\Core\ContainerInterface`. Spiral container
-will work as auto-wiring layer at of your Pimple container.
