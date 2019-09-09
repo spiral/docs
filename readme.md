@@ -19,7 +19,6 @@
     * [Container and Factories](framework/container.md)
     * Kernel, Environment
     * Bootloaders
-    * Configuration
     * Config Objects
     * IoC scopes
     * Auto Wiring
