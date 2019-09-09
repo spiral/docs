@@ -114,5 +114,3 @@ public function makeClass(FactoryInterface $factory)
     ]); 
 }
 ```
-
-## Class Injectors 
