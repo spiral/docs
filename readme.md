@@ -18,7 +18,7 @@
     * Application Server
     * [Container and Factories](framework/container.md)
     * Kernel, Environment
-    * Bootloaders
+    * ~ [Bootloaders](framework/bootloaders.md)
     * Config Objects
     * IoC scopes
     * Auto Wiring
