@@ -44,7 +44,7 @@
     * Pagination
     * RBAC Authorization
     * Entity Models
-    * Static Analysis Tools
+    * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
 * Console
     * [Configuration](console/configuration.md)
