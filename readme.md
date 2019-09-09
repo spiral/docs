@@ -107,7 +107,7 @@
     * Configuration
     * Supported Drivers
 * Debug and Profiling
-    * [Dumping variables](debug/dumps.md)
+    * [Dumping Variables](debug/dumps.md)
     * RoadRunner
     * Logging
     * Handle Exceptions
