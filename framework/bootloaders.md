@@ -99,3 +99,22 @@ class MyBootloader extends Bootloader
     }
 }
 ```
+
+## Configuring Application
+Another common use case of bootloaders is to configure framework prior to application launch. For example, we can declare
+new route for our application or module:
+
+```php
+class MyBootloader extends Bootloader 
+{
+    public function boot(RouterInterface $router)
+    {
+        $router->addRoute(
+            'my-route',
+            new Route('/<action>', new Controller(MyController::class))
+        );
+    }
+}
+```
+
+> Identically you can mount middleware, change tokenizer directories and much more.
