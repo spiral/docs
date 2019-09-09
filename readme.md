@@ -67,6 +67,7 @@
     * Error Mapping
 * Queues and Jobs
     * Configuration
+    * Standalone Usage
     * Running Jobs
     * Scheduling Tasks
 * GRPC API
