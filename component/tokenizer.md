@@ -2,6 +2,8 @@
 A lot of Spiral components are based on automatic code discovery and analysis. The most important functionality or locating class declarations
 is provided by `Spiral\Tokenizer\ClassesInterface`.
 
+> Tokenizer component is pre-installed with all framework bundles.
+
 ## ClassLocator
 Use `Spiral\Tokenizer\ClassesInterface` to find available classes by their name, interface or trait:
 
