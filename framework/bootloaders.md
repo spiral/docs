@@ -1,1 +1,101 @@
 # Framework - Bootloaders
+Bootloaders are central piece in Spiral Framework and your application. This objects are responsible for [Container](/framework/container.md)
+configuration, default configuration and etc.
+
+Bootloaders only executed once, while loading your application. Since your application will stay in memory for long you can
+add as many functionality to your bootloaders as you want, it will not cause any performance effect on runtime.
+
+## Simple Bootloader
+You can create simple bootloader by extending `Spiral\Boot\Bootloader\Bootloader`:
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+
+class MyBootloader extends Bootloader 
+{
+
+}
+```
+
+Every bootloader must be activated in your application kernel. Add the class reference into `LOAD` or `APP` lists:
+
+```php
+class App extends Kernel
+{
+    protected const LOAD = [
+        // ...
+    ];
+
+    protected const APP = [
+        RoutesBootloader::class,
+        LoggingBootloader::class,
+        MyBootloader::class
+    ];
+}
+```
+
+Currently your bootloader does't do anything. We can start with adding some container bindings.
+
+## Configuring Container
+The most common use-case of bootloaders is to configure DI container, for example we might want to bind multiple
+implementations to their interfaces and/or construct some service.
+
+We can use method `boot` for this purposes. Method support method injection, so we can request any services we need:
+
+```php
+use Spiral\Core\Container;
+
+class MyBootloader extends Bootloader 
+{
+    public function boot(Container $container) 
+    {
+        $container->bind(MyInterface::class, MyClass::class);
+        
+        $container->bindSingleton(MyService::class, function(MyClass $myClass) {
+            return new MyService($myClass); 
+        });
+    }
+}
+```
+
+Bootloaders provide the ability to simplify container binding definition using constants `BINDINGS` and `SINGLETONS`. 
+
+```php
+use Spiral\Core\Container;
+
+class MyBootloader extends Bootloader 
+{
+    const BINDINGS = [
+        MyInterface::class => MyClass::class
+    ];
+
+    public function boot(Container $container) 
+    {
+        $container->bindSingleton(MyService::class, function(MyClass $myClass) {
+            return new MyService($myClass); 
+        });
+    }
+}
+```
+
+You can also replace factory closures with factory methods:
+
+```php
+class MyBootloader extends Bootloader 
+{
+    const BINDINGS = [
+        MyInterface::class => MyClass::class
+    ];
+
+    const SINGLETONS = [
+        MyService::class => [self::class, 'myService']
+    ];
+
+    public function myService(MyClass $myClass): MyService
+    {
+        return new MyService($myClass); 
+    }
+}
+```
