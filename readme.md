@@ -28,7 +28,7 @@
 * Cookbook
     * Quick Start
     * Scaffolding
-    * Prototyping
+    * [Prototyping](cookbook/prototype.md)
     * Singleton and Stateful Services
     * Database Scaffolding
     * Cycle ORM
