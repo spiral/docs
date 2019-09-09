@@ -101,6 +101,8 @@ To check if container has binding use:
 dump($container->has(MyImplementation::class));
 ```
 
+> Read about [Config Objects](/framework/config.md) to see how to manage config dependencies.
+
 ## FactoryInterface
 In some cases you might want to construct desired class without resolving all of it's `__constructor` dependencies.
 You can use `Spiral\Core\FactoryInterface` for that purpose:
