@@ -121,13 +121,28 @@ class MyBootloader extends Bootloader
 
 > Identically you can mount middleware, change tokenizer directories and much more.
 
-## Requesting other bootloaders
+## Depending on other Bootloaders
 Some framework bootloaders can be used to as simple path to configure application settings. For example we can
 use `Spiral\Bootloader\Http\HttpBootloader` to add global PSR-15 middleware:
 
 ```php
 class MyBootloader extends Bootloader 
 {
+    public function boot(HttpBootloader $http)
+    {
+        $http->addMiddleware(MyMiddleware::class);
+    }
+}
+```
+
+If you want to ensure that `HttpBootloader` has always been initiated prior to `MyBootloader` use constant `DEPENDENCIES`:
+
+
+```php
+class MyBootloader extends Bootloader 
+{
+    const DEPENDENCIES = [HttpBootloader::class];
+
     public function boot(HttpBootloader $http)
     {
         $http->addMiddleware(MyMiddleware::class);
