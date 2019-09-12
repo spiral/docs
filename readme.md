@@ -115,7 +115,7 @@
     * RoadRunner customization
     * Controllers and HMVC
     * Auto-configuration
-    * Performance optimizations
+    * Performance Tuning
     * Docker and Kubernetes
     * Custom Dispatchers
 * Extensions
