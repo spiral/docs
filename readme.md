@@ -30,7 +30,6 @@
     * [Prototyping](cookbook/prototype.md)
     * Singleton and Stateful Services
     * Database Scaffolding
-    * Cycle ORM
     * Simple CRUD
     * Queue and Tasks
     * Custom PSR-15 Handlers
@@ -100,6 +99,7 @@
     * [Errata](database/errata.md)
 * Cycle DataMapper ORM
     * [Configuration](cycle/configuration.md)
+    * [How to Use](cycle/how-to.md)
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
 * Storage Engine 
