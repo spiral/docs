@@ -1,4 +1,4 @@
-# Cycle ORM - Transactions Lifecycle
+# Cycle ORM - Transactions
 In order to persist entity changes you application services and controllers will require `Cycle\ORM\TransactionInterface`.
 
 ## Default Configuration
