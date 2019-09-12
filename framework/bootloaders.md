@@ -1,8 +1,8 @@
 # Framework - Bootloaders
-Bootloaders are central piece in Spiral Framework and your application. This objects are responsible for [Container](/framework/container.md)
+Bootloaders are the central piece in Spiral Framework and your application. This objects are responsible for [Container](/framework/container.md)
 configuration, default configuration and etc.
 
-Bootloaders only executed once, while loading your application. Since your application will stay in memory for long you can
+Bootloaders only executed once while loading your application. Since your application will stay in memory for long you can
 add as many functionality to your bootloaders as you want, it will not cause any performance effect on runtime.
 
 ## Simple Bootloader
@@ -37,6 +37,8 @@ class App extends Kernel
 ```
 
 Currently your bootloader does't do anything. We can start with adding some container bindings.
+
+> `APP` bootloader namespace is always loaded after `LOAD`, keep domain specific bootloaders in it.
 
 ## Configuring Container
 The most common use-case of bootloaders is to configure DI container, for example we might want to bind multiple
@@ -118,3 +120,17 @@ class MyBootloader extends Bootloader
 ```
 
 > Identically you can mount middleware, change tokenizer directories and much more.
+
+## Requesting other bootloaders
+Some framework bootloaders can be used to as simple path to configure application settings. For example we can
+use `Spiral\Bootloader\Http\HttpBootloader` to add global PSR-15 middleware:
+
+```php
+class MyBootloader extends Bootloader 
+{
+    public function boot(HttpBootloader $http)
+    {
+        $http->addMiddleware(MyMiddleware::class);
+    }
+}
+```
