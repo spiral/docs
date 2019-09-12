@@ -99,7 +99,7 @@
     * [Errata](database/errata.md)
 * Cycle DataMapper ORM
     * [Configuration](cycle/configuration.md)
-    * [How to Use](cycle/how-to.md)
+    * [Transactions Lifecycle](cycle/transactions.md)
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
 * Storage Engine 
