@@ -20,8 +20,7 @@ Add the following bootloader to your application:
 
 > Make sure to add bootloader at top of the list in order to alter Env.
 
-The values from `.env` file will be copied into your env and available via `Spiral\Boot\EnvironmentInterface` and function
-`env`.
+The values from `.env` file will be copied into your env and available via `Spiral\Boot\EnvironmentInterface` or `env` function.
 
 ## Pre-Processing
 Please remember that values in `.env` will be pre-processed, following changes will occure:
