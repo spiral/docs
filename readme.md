@@ -96,13 +96,12 @@
     * [Transactions](database/transactions.md)
     * [Schema Introspection](database/introspection.md)
     * [Schema Declaration](database/declaration.md)
-    * Migrations
+    * [Migrations](database/migrations.md)
     * [Errata](database/errata.md)
 * Cycle DataMapper ORM
     * [Configuration](cycle/configuration.md)
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
-    * Extensions
 * Storage Engine 
     * Configuration
     * Supported Drivers
