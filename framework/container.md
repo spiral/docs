@@ -42,7 +42,7 @@ The `Mailer` dependency will be automatically delivered by container. Read more 
 You can configure container by creating set of bindings between aliases or interfaces to concrete implementations.   
 Use [Bootloaders](/framework/bootloaders.md) to define bindings.
 
-We can either use `Spiral\Core\BindingsInterface` or `Spiral\Core\Container` to configure application container.
+We can either use `Spiral\Core\BinderInterface` or `Spiral\Core\Container` to configure application container.
 
 To bind interface to concrete implementation:
 

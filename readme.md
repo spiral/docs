@@ -120,6 +120,5 @@
     * Docker and Kubernetes
     * Custom Dispatchers
 * Extensions
-    * DotEnv
-    * PSR-6 cache
+    * [DotEnv](extension/dotenv.md)   
     * [Monolog](extension/monolog.md)
