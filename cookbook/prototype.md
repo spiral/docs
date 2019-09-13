@@ -110,3 +110,20 @@ public function boot(PrototypeBootloader $prototype)
     $prototype->bindProperty('myService', MyService::class);
 }
 ```
+
+## Annotation Based
+Alternatively you can use annotations to register prototype classes and services. Use annotation `Spiral\Prototype\Annotation\Prototyped` on the class you want to inject:
+
+```php
+namespace App\Service;
+
+use Spiral\Prototype\Annotation\Prototyped;
+
+/** @Prototyped(property="myService") */
+class MyService
+{
+
+}
+```
+
+Make sure to run `php app.php update` or `php app.php prototype:dump` to auto-locate your service.
