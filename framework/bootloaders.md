@@ -149,3 +149,5 @@ class MyBootloader extends Bootloader
     }
 }
 ```
+
+> Note, you are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another bootloader). Framework would not allow you to change any configuration value after component initialization.
