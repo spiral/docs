@@ -7,5 +7,5 @@ Current framework version is `2.*`. Previous releases can be found at https://gi
 
 Version | Release Date | End of Active Support
 ---     | ---          | ---
-1.*     | Apr 2017     | Apr 2020 
-2.*     | May 2019     | May 2022
+1.*     | Apr 2017     | Apr 2019 
+2.*     | May 2019     | May 2021
