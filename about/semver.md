@@ -5,7 +5,7 @@ releases.
 ## Current Version
 Current framework version is `2.*`. Previous releases can be found at https://github.com/spiral/framework/releases
 
-Version | EOL
----     | ---
-1.*     | June 2020 
-2.*     | Jan 2022
+Version | Release Date | End of Active Support
+---     | ---          | ---
+1.*     | Apr 2017     | Apr 2020 
+2.*     | May 2019     | May 2022
