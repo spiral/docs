@@ -83,6 +83,7 @@
     * Inheritance
     * Components
     * Directives
+    * AST Modifications 
 * Internalization
     * Configuration
     * Indexation and Exporting
