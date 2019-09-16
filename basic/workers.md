@@ -1,9 +1,8 @@
 # Workers and Application Lifecycle
 Spiral Framework can work using classic Nginx/PHP-FPM setup. But the highest effectiveness can be achieved using 
-embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates the set of php processes for each of dispatching/communication method (HTTP, GRPC, Queue, etc).
+an embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates the set of php processes for each of dispatching/communication method (HTTP, GRPC, Queue, etc).
 
-Every PHP process will only work within single request/task. It allows you to write code as if you would normally do. By keeping application state intact between requests you can drastically increase performance and also offload part
-of functionality to application server.
+Every PHP process will only work within a single request/task. It allows you to write code as if you would normally do. By keeping application state intact between requests you can drastically increase performance and also offload part of functionality to the application server.
 
 ![High Level Architecture Diagram](https://user-images.githubusercontent.com/796136/64451724-762d0800-d0ed-11e9-8c34-9c054a7bb0bd.png)
 
@@ -61,7 +60,7 @@ http:
 You can read more about RoadRunner [here](https://roadrunner.dev/docs).
 
 ## Application Kernel
-Every worker will contain single application instance. Default application skeleton(s) are based 
+Every worker will contain a single application instance. Default application skeleton(s) are based 
 on [spiral/boot](https://github.com/spiral/boot).
 
 The package allows quick application instantiation via static factory method `init`:
@@ -70,7 +69,7 @@ The package allows quick application instantiation via static factory method `in
 $app = \App\App::init(['root' => __DIR__]);
 ```
 
-Application Kernel initiates your application state and IoC configuration using set of bootloaders:
+Application Kernel initiates your application state and IoC configuration using a set of bootloaders:
 
 ```php
 class App extends Kernel
@@ -96,9 +95,7 @@ class App extends Kernel
 }
 ```
 
-The bootloaders will only be invoked once, without request/task context. After that application will stay in the process 
-memory permanently. Since the application bootload only happens once for many requests you can add many components and extension
-without performance penalty (still, watch memory).
+The bootloaders will only be invoked once, without request/task context. After that application will stay in the process memory permanently. Since the application bootload only happens once for many requests you can add many components and extension without performance penalty (still, watch memory).
 
 ## Limitations
 There is multiple limitations to be aware of.
