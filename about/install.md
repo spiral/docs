@@ -12,7 +12,7 @@ Server Requirements
 --------
 Make sure that your server is configured with following PHP version and extensions:
 * PHP 7.2+, 64bit
-* MbString Extension
+* **mb-string** Extension (spiral is utf-8 centric framework)
 * PDO Extension with desired database drivers
 
 Web Application Bundle
@@ -21,7 +21,7 @@ Application bundle includes following components:
 * High-Performance HTTP, HTTP/2 server based on [RoadRunner](https://roadrunner.dev)
 * Console commands via symfony/console
 * Queue support for AMQP, Beanstalk, Amazon SQS, in-Memory
-* Twig template engine
+* Stempler template engine
 * Translation support by symfony/translation
 * Security, validation, filter models
 * PSR-7 HTTP pipeline, session, encrypted cookies
