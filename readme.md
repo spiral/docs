@@ -67,6 +67,7 @@
     * Installation and Configuration
     * Standalone Usage
     * Running Jobs
+    * Golang Consumers
     * Scheduling Tasks
 * GRPC API
     * Installation and Configuration
