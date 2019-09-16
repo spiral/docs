@@ -23,6 +23,7 @@ Component         | Directory | Value
 spiral/views      | views     | **app**/views
 spiral/translator | locale    | **app**/locale
 
+## Init Directories
 You can specify `root` or any other directory value in your `app.php` file as argument to `App`:
 
 ```php
