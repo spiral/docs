@@ -1,5 +1,5 @@
 # Web and HTTP - Middleware
-Framework allows you to set [PSR-15 compatible](https://www.php-fig.org/psr/psr-15/) HTTP middleware globally or to a 
+The framework allows you to set [PSR-15 compatible](https://www.php-fig.org/psr/psr-15/) HTTP middleware globally or to a 
 specific route. 
 
 > Check https://github.com/middlewares/psr15-middlewares to find many publicly maintained middleware.
@@ -21,8 +21,7 @@ class MyMiddleware implements MiddlewareInterface
 ```
 
 ## Global Middleware
-To activate middleware for every user request use `Spiral\Bootloader\Http\HttpBootloader`. You can only set this value in 
-application bootloaders.
+To activate middleware for every user request use `Spiral\Bootloader\Http\HttpBootloader`. You can only set this value in application bootloaders.
 
 ```php
 use Spiral\Bootloader\Http\HttpBootloader;
@@ -64,7 +63,7 @@ public function boot(RouterInterface $router)
 ```
 
 ## Combine with IoC scopes
-You can combine middleware with IoC scope to create request-specific application context.
+You can combine middleware with IoC scope to create a request-specific application context.
 
 ```php
 class UserContext
