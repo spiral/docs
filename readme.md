@@ -55,6 +55,7 @@
     * Routing
     * Error Pages
     * [Middleware](http/middleware.md)
+    * Golang Middleware
     * [Cookies](http/cookies.md)
     * Session
     * CSRF protection
@@ -72,19 +73,21 @@
 * GRPC API
     * Installation and Configuration
     * Generating Service Code
+    * Passing Metadata and Errors
+    * Golang Services
     * GPRC client code
 * Views
     * Installation and Configuration
     * View object
     * Native PHP templates
-    * Twig Templates
-* Stempler Views
+    * Twig templates
+* Stempler templates
     * Installation and Configuration
     * Basic Usage
     * Inheritance
     * Components
     * Directives
-    * AST Modifications 
+    * AST Modifications
 * Internalization
     * Installation and Configuration
     * Indexation and Exporting
@@ -109,7 +112,7 @@
     * Supported Drivers
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
-    * RoadRunner
+    * RoadRunner Gotchas
     * Logging
     * Handle Exceptions
     * XDebug
@@ -118,6 +121,7 @@
     * Auto-Configuration
     * Performance Tuning
     * Docker and Kubernetes
+    * Integrating Golang library
     * Custom Dispatchers
 * Extensions
     * [Dotenv](extension/dotenv.md)   
