@@ -1,5 +1,5 @@
 # Framework - Finalizers
-Most of framework components does not require any resetting after the request completion. However, there is multiple
+Most of the framework components does not require any resetting after the request completion. However, there is multiple
 use-cases when you might want to reset your library after user request is complete.
 
 > Prioritize usage of IoC scopes over finalizers.
@@ -30,25 +30,24 @@ interface FinalizerInterface
 }
 ```
 
-The finalizer will be invoked by all of application dispatchers. During:
-* http request complete
-* http request failed with error
+The finalizer will be invoked by all of the application dispatchers. During:
+* HTTP request complete
+* HTTP request failed with error
 * job is complete
 * job failed with error
-* grpc rpc call complete
-* grpc rpc call failed with error
+* GRPC call complete
+* GRPC call failed with error
 * console command is complete
 
-> Attention, finalizer will only be invoked if specific dispatcher has been started. You can freely invoke app commands
-and http methods without using dispatcher directly and without resetting your services after each request.
+> Attention, the finalizer will only be invoked if the specific dispatcher has been started. You can freely invoke app commands
+and HTTP methods without using dispatcher directly and without resetting your services after each request.
 
-You handler will receive first bool argument which specifies if app is going to terminate after the request.
+Your handler will receive first bool argument which specifies if the app is going to terminate after the request.
 
 > Note, avoid resetting IoC setting in finalizer as it might lead to some singleton service cache previous service version.
 
 ## Example Finalizer
-We can use finalizer to demonstrate how to automatically close database connection after every request. Such approach 
-will be useful if you run a lot of workers (or lamda functions) and do not want to consume all of the database sockets.
+We can use a finalizer to demonstrate how to automatically close the database connection after every request. It can be useful if you run a lot of workers (or lambda functions) and do not want to consume all of the database sockets.
 
 
 ```php
