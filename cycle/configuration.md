@@ -1,4 +1,4 @@
-# Cycle ORM - Configuration
+# Cycle ORM - Installation and Configuration
 Cycle ORM is included into default [Web skeleton](https://github.com/spiral/app). 
 
 To enable full ORM integration in other skeletons use following bootloaders:
