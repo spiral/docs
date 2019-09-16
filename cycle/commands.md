@@ -8,13 +8,13 @@ $ php app.php help cycle...
 > Make sure to enable `Spiral\Bootloader\CommandBootloader` after the cycle bootloaders to active helper commands.
 
 ## Cycle Commands
-To update ORM schema without modifying the database run:
+To update the ORM schema without modifying the database run:
 
 ```bash
 $ php app.php cycle
 ```
 
-To update schema and automatically modify database schema:
+To update the schema and automatically modify database schema:
 
 ```bash
 $ php app.php cycle:sync
@@ -22,7 +22,7 @@ $ php app.php cycle:sync
 
 > Attention, do not use this command in combination with migrations.
 
-To generate migration file to reflect current ORM schema:
+To generate a migration file to reflect the current ORM schema:
 
 ```bash
 $ php app.php cycle:migrate
