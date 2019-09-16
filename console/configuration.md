@@ -1,4 +1,4 @@
-# Console - Configuration
+# Console - Installation and Configuration
 All of the provided application skeletons include Console component by default. To enable component in alternative builds make
 sure to require composer package `spiral/console` and modify the application bootloader:
 
