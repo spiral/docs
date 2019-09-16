@@ -5,7 +5,7 @@ component configured to automatically find commands in `app/src` directory.
 To add new `symfony/console` based command simply drop it into your application. 
 
 ## Command class
-To create new command you can either extend `Symfony\Component\Console\Command\Command` or `Spiral\Console\Command` which 
+To create a new command you can either extend `Symfony\Component\Console\Command\Command` or `Spiral\Console\Command` which 
 provides some syntax sugar.
 
 ```php
@@ -28,7 +28,7 @@ class MyCommand extends Command
 }
 ```
 
-Use constants `NAME` and `DESCRIPTION` to give name to your command. You can invoke it now using:
+Use constants `NAME` and `DESCRIPTION` to give a name to your command. You can invoke it now using:
 
 ```bash
 $ php app.php my:command 
@@ -51,7 +51,7 @@ To get user's data via arguments and/or options, you can make use of `$this->arg
 `$this->option("optName")`. 
 
 ## Perform method
-You can put your user code into `perform` method. The `perform` support method injection and provide `$this->input` and
+You can put your user code into the `perform` method. The `perform` support method injection and provide `$this->input` and
  `$this->output` properties to work with user input.
 
 ```php
@@ -62,8 +62,8 @@ protected function perform(MyService $service)
 ```
 
 ## Helper Methods
-You can use set of helper methods available inside the `Spiral\Console\Command`. Given examples are intended to be called in
-`perform` method.
+You can use a set of helper methods available inside the `Spiral\Console\Command`. Given examples are intended to be called in
+the `perform` method.
 
 To write into output:
 
