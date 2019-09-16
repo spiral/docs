@@ -25,4 +25,6 @@ If you found something which shouldn't be there or a bug which opens a security 
 [wolfy-j@spiralscout.com](mailto:team@spiralscout.com)
 
 ## Official Support
-Spiral Framework and all related components are maintained by [Spiral Scout](https://spiralscout.com/). For commercial support please contact team@spiralscout.com.
+Spiral Framework and all related components are maintained by [Spiral Scout](https://spiralscout.com/). 
+
+For commercial support please contact team@spiralscout.com.
