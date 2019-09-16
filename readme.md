@@ -4,8 +4,8 @@
 
 * Getting Started
     * [About Spiral Framework](about/spiral.md)
-    * [Versioning](about/semver.md)
     * [Installation](about/install.md)
+    * [Versioning](about/semver.md)
     * [Contributing](about/contributing.md)
     * [LICENSE](license.md)
 * Basics
