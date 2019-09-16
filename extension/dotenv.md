@@ -1,8 +1,8 @@
-# Extensions - DotEnv
+# Extensions - Dotenv
 Default application skeleton includes the ability to read ENV values from `.env` file located in the root of the project.
 
 ## Configuration
-To install DotEnv extension in non default application skeleton:
+To install Dotenv extension in non default application skeleton:
 
 ```bash
 $ composer require spiral/dotenv-bridge
