@@ -27,10 +27,10 @@
 * Cookbook
     * Quick Start
     * Scaffolding
+    * [Prototyping](cookbook/prototype.md)
     * IoC scopes and Singletons
     * Database Scaffolding
     * Simple REST CRUD
-    * [Prototyping](cookbook/prototype.md)
     * Queue and Jobs
     * Custom PSR-15 Handlers
     * Integrating Golang library
