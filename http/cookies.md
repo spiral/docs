@@ -5,12 +5,12 @@ If you need to enable cookies it in alternative bundle require composer package 
 bootloader `Spiral\Bootloader\Bootloader\Http\CookiesBootloader::class` into your app.
 
 ## Read Cookie
-By default, framework will encrypt and decrypt all cookies values using ENV key `ENCRYPTER_KEY`. Changing this value will
+By default, the framework will encrypt and decrypt all cookies values using ENV key `ENCRYPTER_KEY`. Changing this value will
 automatically invalidate all cookie values set for all users.
 
 > You can also disable encryption for performance reasons or use alternative HMAC signature method (see below). 
 
-Cookie component will decrypt all values and update request object, so you can get all cookies values using default PSR-7 `ServerRequestInterface`:
+Cookie component will decrypt all values and update the request object, so you can get all cookies values using default PSR-7 `ServerRequestInterface`:
 
 ```php
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,8 +23,8 @@ public function index(ServerRequestInterface $request)
 }
 ```
 
-Alternatively you can read cookie values using `Spiral\Http\Request\InputManager` which automatically resolves request
-scope and can be stored as singleton:
+Alternatively, you can read cookie values using `Spiral\Http\Request\InputManager` which automatically resolves the request
+scope and can be stored as a singleton:
 
 ```php
 class HomeController
@@ -45,11 +45,11 @@ class HomeController
 
 > You can also request cookie value in request filters.
 
-Note, if cookie value is invalid and can't be decrypted it will be set to NULL and not available to the application. 
+Note, if the cookie value is invalid and can't be decrypted it will be set to NULL and not available to the application. 
 
 ## Write Cookie
-Since all of cookie values must be encrypted or signed you must use proper way to write them. 
-Use context specific object `Spiral\Cookies\CookieQuery`.
+Since all of the cookie values must be encrypted or signed you must use the proper way to write them. 
+Use context-specific object `Spiral\Cookies\CookieQuery`.
 
 ```php
 public function index(CookieQuery $cookies)
@@ -58,16 +58,16 @@ public function index(CookieQuery $cookies)
 }
 ```
 
-Method accepts following arguments in the same order: 
+The method accepts the following arguments in the same order: 
 
 Parameter | Type | Description
 --- | --- | ---
 name | string | The name of the cookie.
-value |  string | The value of the cookie. This value is stored on the clients computer; do not store sensitive information.
-lifetime | int | Cookie lifetime. This value specified in seconds and declares period of time in which cookie will expire relatively to current time() value.
-path | string | The path on the server in which the cookie will be available on. If set to '/', the cookie will be available within the entire domain. If set to '/foo/', the cookie will only be available within the /foo/ directory and all sub-directories such as /foo/bar/ of domain. The default value is the current directory that the cookie is being set in.
+value |  string | The value of the cookie. This value is stored on the client's computer; do not store sensitive information.
+lifetime | int | Cookie lifetime. This value specified in seconds and declares a period of time in which cookie will expire relatively to current time() value.
+path | string | The path on the server in which the cookie will be available on. If set to '/', the cookie will be available within the entire domain. If set to '/foo/', the cookie will only be available within the /foo/ directory and all sub-directories such as /foo/bar/ of the domain. The default value is the current directory that the cookie is being set in.
 domain | string | The domain that the cookie is available. To make the cookie available on all subdomains of example.com then you'd set it to '.example.com'. The . is not required but makes it compatible with more browsers. Setting it to www.example.com will make the cookie only available in the www subdomain. Refer to tail matching in the spec for details.
-secure | bool | Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client. When set to true, the cookie will only be set if a secure connection exists. On the server-side, it's on the programmer to send this kind of cookie only on secure connection (e.g. with respect to $_SERVER["HTTPS"]).
+secure | bool | Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client. When set to true, the cookie will only be set if a secure connection exists. On the server-side, it's on the programmer to send this kind of cookie only on a secure connection (e.g. with respect to $_SERVER["HTTPS"]).
 httpOnly | bool | When true the cookie will be made accessible only through the HTTP protocol. This means that the cookie won't be accessible by scripting languages, such as JavaScript. This setting can effectively help to reduce identity theft through XSS attacks (although it is not supported by all browsers).
 
 ## Usage with Singletons
