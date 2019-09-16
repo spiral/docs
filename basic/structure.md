@@ -27,13 +27,18 @@ spiral/translator | locale    | **app**/locale
 You can specify `root` or any other directory value in your `app.php` file as argument to `App`:
 
 ```php
-$app = \App\App::init(['root' => __DIR__]);
+$app = \App\App::init([
+    'root' => __DIR__
+]);
 ```
 
 For example we can change runtime directory location:
 
 ```php
-$app = \App\App::init(['root' => __DIR__, 'runtime' => sys_get_temp_dir()]);
+$app = \App\App::init([
+    'root' => __DIR__, 
+    'runtime' => sys_get_temp_dir()
+]);
 ```
 
 To resolve directory alias within your application use `Spiral\Boot\DirectoriesInterface`:
