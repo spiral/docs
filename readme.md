@@ -16,8 +16,8 @@
 * Framework
     * Design Approach
     * Application Server
-    * [Container and Factories](framework/container.md)
     * Kernel, Environment
+    * [Container and Factories](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
     * Config Objects
     * IoC scopes
