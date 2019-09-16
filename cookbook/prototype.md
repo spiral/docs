@@ -1,7 +1,6 @@
 # Cookbook - Prototyping
-Spiral Framework comes with development extension which speed up the development of application services, controllers,
-middleware and other classes via automatic code modification (AST). Extension includes IDE friendly tooltips for most 
-common framework components and Cycle Repositories.
+Spiral Framework comes with development extension which speeds up the development of application services, controllers,
+middleware and other classes via automatic code modification (AST). Extension includes IDE friendly tooltips for most common framework components and Cycle Repositories.
 
 ## Installation
 To install extension:
@@ -39,7 +38,7 @@ Once complete your IDE will immediately suggest you available classes and Cycle 
 
 ![IDE Tooltips](https://user-images.githubusercontent.com/796136/64488784-a04d0a00-d254-11e9-8650-6a25c71bf46c.png)
 
-You can use this suggestions directly, without need for any import:
+You can use this suggestion directly, without need for any import:
 
 ```php
 namespace App\Controller;
@@ -65,7 +64,7 @@ $ php app.php prototype:inject -r
 
 > Use `-r` flag to remove `PrototypeTrait`.
 
-Extension will modify your class into given form:
+The extension will modify your class into given form:
 
 
 ```php
@@ -111,10 +110,10 @@ public function boot(PrototypeBootloader $prototype)
 }
 ```
 
-> You can combine such approach with automatic class discovery to achive better integration of domain layer achitecture into your development process.
+> You can combine such approach with automatic class discovery to achieve better integration of domain layer architecture into your development process.
 
 ## Annotation Based
-Alternatively you can use annotations to register prototype classes and services. Use annotation `Spiral\Prototype\Annotation\Prototyped` on the class you want to inject:
+Alternatively, you can use annotations to register prototype classes and services. Use annotation `Spiral\Prototype\Annotation\Prototyped` in the class you want to inject:
 
 ```php
 namespace App\Service;
