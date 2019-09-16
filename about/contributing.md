@@ -1,5 +1,5 @@
 # Contributing
-Feel free to contribute to the development of the framework or it's components. Please make sure that the following
+Feel free to contribute to the development of the framework or its components. Please make sure that the following
  requirements are satisfied before submitting your pull request:
 
 * KISS
@@ -17,11 +17,11 @@ If you want to help but don't know where to start:
 
 Feel free to propose any ideas related to architecture, guide (___docs are never complete___),  adaptation or community.
 
-> Original guide author is not native English speaker, feel free to create PR for any text corrections.
+> Original guide author is not a native English speaker, feel free to create PR for any text corrections.
 
 ## Critical/Security Issues
 If you found something which shouldn't be there or a bug which opens a security hole please let me know immediately by email 
 [wolfy-j@spiralscout.com](mailto:team@spiralscout.com)
 
 ## Official Support
-Spiral Framework and all related components are maintained by [Spiral Scout](https://spiralscout.com/). For commercial support pleace contact team@spiralscout.com.
+Spiral Framework and all related components are maintained by [Spiral Scout](https://spiralscout.com/). For commercial support please contact team@spiralscout.com.
