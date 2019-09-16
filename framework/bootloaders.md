@@ -2,8 +2,8 @@
 Bootloaders are the central piece in Spiral Framework and your application. This objects are responsible for [Container](/framework/container.md)
 configuration, default configuration and etc.
 
-Bootloaders only executed once while loading your application. Since your application will stay in memory for long you can
-add as many code to your bootloaders as you want, it will not cause any performance effect on runtime.
+Bootloaders only executed once while loading your application. Since your application will stay in memory for long - you can
+add as many functionality to your bootloaders as you want. It will not cause any performance effect on runtime.
 
 ![Application Control Phases](https://user-images.githubusercontent.com/796136/64906478-e213ff80-d6ef-11e9-839e-95bac78ef147.png)
 
