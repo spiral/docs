@@ -1,5 +1,5 @@
 # Framework - Container and Factories
-Framework includes set of interfaces and components intended to simplify dependency injection and object construction
+The framework includes a set of interfaces and components intended to simplify dependency injection and object construction
 in your application.
 
 > Container implementation is fully compatible with [PSR-11 Container](https://github.com/php-fig/container).
@@ -34,15 +34,15 @@ class UserMailer
 }
 ```
 
-The `Mailer` dependency will be automatically delivered by container. Read more in [Auto Wiring](/framework/auto-wiring.md).
+The `Mailer` dependency will be automatically delivered by the container. Read more in [Auto Wiring](/framework/auto-wiring.md).
  
-> Note, your controllers, commands and jobs support method injection.
+> Note, your controllers, commands, and jobs support method injection.
  
 ## Configuring Container
-You can configure container by creating set of bindings between aliases or interfaces to concrete implementations.   
+You can configure container by creating a set of bindings between aliases or interfaces to concrete implementations.   
 Use [Bootloaders](/framework/bootloaders.md) to define bindings.
 
-We can either use `Spiral\Core\BinderInterface` or `Spiral\Core\Container` to configure application container.
+We can either use `Spiral\Core\BinderInterface` or `Spiral\Core\Container` to configure the application container.
 
 To bind interface to concrete implementation:
 
@@ -104,7 +104,7 @@ dump($container->has(MyImplementation::class));
 > Read about [Config Objects](/framework/config.md) to see how to manage config dependencies.
 
 ## FactoryInterface
-In some cases you might want to construct desired class without resolving all of it's `__constructor` dependencies.
+In some cases, you might want to construct desired class without resolving all of it's `__constructor` dependencies.
 You can use `Spiral\Core\FactoryInterface` for that purpose:
 
 ```php
