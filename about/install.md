@@ -17,7 +17,7 @@ Make sure that your server is configured with following PHP version and extensio
 Web Application Bundle
 --------
 Application bundle includes the following components:
-* High-Performance HTTP, HTTP/2 server based on [RoadRunner](https://roadrunner.dev)
+* High-performance HTTP, HTTP/2 server based on [RoadRunner](https://roadrunner.dev)
 * Console commands via Symfony/Console
 * Queue support for AMQP, Beanstalk, Amazon SQS, in-Memory
 * Stempler template engine
