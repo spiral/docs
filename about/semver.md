@@ -9,4 +9,4 @@ Version  | Release Date | End of Active Support
 ---      | ---          | ---
 0.*      | Nov 2013     | Apr 2017
 1.*      | Apr 2017     | Apr 2019 
-**2.***  | May 2019     | May 2021
+**2.***  | May 2019     | **May 2021**
