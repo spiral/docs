@@ -34,6 +34,7 @@
     * Queue and Tasks
     * Custom PSR-15 Handlers
     * Request Validation
+    * Integrating Golang library
 * Components
     * Files and Directories
     * Code Generation
@@ -121,7 +122,6 @@
     * Auto-Configuration
     * Performance Tuning
     * Docker and Kubernetes
-    * Integrating Golang library
     * Custom Dispatchers
 * Extensions
     * [Dotenv](extension/dotenv.md)   
