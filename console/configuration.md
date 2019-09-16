@@ -1,5 +1,5 @@
 # Console - Configuration
-All of provided application skeletons include Console component by default. To enable component in alternative builds make
+All of the provided application skeletons include Console component by default. To enable component in alternative builds make
 sure to require composer package `spiral/console` and modify the application bootloader:
 
 ```php
@@ -18,21 +18,20 @@ To invoke application command run:
 $ php app.php command:name
 ```
 
-To get list of available commands:
+To get a list of available commands:
 
 ```bash
 $ php app.php
 ```
 
-To get help about particular command:
+To get help about the particular command:
 
 ```bash
 $ php app.php help command:name
 ```
 
 ## Invoke in Application
-You can invoke console commands inside your application or application tests. Such approach can be useful to create 
-mock data for tests or automatically pre-configure the database.
+You can invoke console commands inside your application or application tests. This approach can be useful to create mock data for tests or automatically pre-configure the database.
 
 Use `Spiral\Console\Console` to do that:
 ```php
@@ -55,10 +54,10 @@ public functiobn test(Console $console)
 Spiral Console dispatcher built at top of powerful [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html) 
 component.
 
-> You are able to register native Symfony Commands in your CLi application.
+> You are able to register native Symfony Commands in your CLI application.
 
 ## Configuration
-To apply custom configuration to the Console component use `ConfiguratorInterface` or create config file in `app/config/console.php`:
+To apply the custom configuration to the Console component use `Spiral\Config\ConfiguratorInterface` or create a config file in `app/config/console.php`:
 
 ```php
 return [
@@ -79,7 +78,7 @@ return [
 ];
 ```
 
-You can modify some of this values during application bootload via `Spiral\Bootloader\ConsoleBootloader`. To register new 
+You can modify some of these values during application bootload via `Spiral\Bootloader\ConsoleBootloader`. To register new 
 user command:
 
 ```php
