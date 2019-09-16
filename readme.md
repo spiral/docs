@@ -33,7 +33,7 @@
     * Simple CRUD
     * Queue and Tasks
     * Custom PSR-15 Handlers
-    * Request Validation
+    * REST API and Validation
     * Integrating Golang library
 * Components
     * Files and Directories
