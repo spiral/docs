@@ -1,7 +1,7 @@
 # Cycle ORM - Configuration
 Cycle ORM is included into default [Web skeleton](https://github.com/spiral/app). 
 
-To enable full ORM integration in other skeletons use:
+To enable full ORM integration in other skeletons use following bootloaders:
 
 ```php
 [
@@ -25,4 +25,4 @@ The following components must be required in `composer.json`:
 > You can enable and disable ORM extensions separately.
 
 ## Configuration
-ORM does no require any configuration. You can specify connections and drivers in DBAL Component configuration.
+ORM does not require any configuration. You can specify connections and drivers in DBAL Component configuration.
