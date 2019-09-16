@@ -31,7 +31,7 @@
     * IoC scopes and Singletons
     * Database Scaffolding
     * Simple CRUD
-    * Queue and Tasks
+    * Queue and Jobs
     * Custom PSR-15 Handlers
     * REST API and Validation
     * Integrating Golang library
