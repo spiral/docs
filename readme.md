@@ -28,7 +28,7 @@
     * Quick Start
     * Scaffolding
     * [Prototyping](cookbook/prototype.md)
-    * Singleton and Stateful Services
+    * IoC scopes and Singletons
     * Database Scaffolding
     * Simple CRUD
     * Queue and Tasks
