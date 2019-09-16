@@ -3,7 +3,7 @@
 * [Documentation for v1.0](https://github.com/spiral/docs/tree/master)
 
 * Getting Started
-    * [About](about/spiral.md)
+    * [About Framework](about/spiral.md)
     * [Installation](about/install.md)
     * [Versioning](about/semver.md)
     * [Contributing](about/contributing.md)
