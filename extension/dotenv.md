@@ -1,5 +1,5 @@
 # Extensions - DotEnv
-Default application skeleton includes the ability to read ENV values from `.env` file located in a root of the project.
+Default application skeleton includes the ability to read ENV values from `.env` file located in the root of the project.
 
 ## Configuration
 To install DotEnv extension in non default application skeleton:
@@ -20,7 +20,7 @@ Add the following bootloader to your application:
 
 > Make sure to add bootloader at top of the list in order to alter Env.
 
-The values from `.env` file will be copied into your env and available via `Spiral\Boot\EnvironmentInterface` or `env` function.
+The values from the `.env` file will be copied into your env and available via `Spiral\Boot\EnvironmentInterface` or `env` function.
 
 ## Pre-Processing
 Please remember that values in `.env` will be pre-processed, following changes will occure:
