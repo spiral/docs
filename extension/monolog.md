@@ -1,5 +1,5 @@
 # Extensions - Monolog
-Web and GRPC bundles include default integration with https://github.com/Seldaek/monolog to manage logging.
+Web and GRPC bundles include default integration with https://github.com/Seldaek/monolog to manage logs.
 
 ## Configuration
 Extension does not require any default configuration. Use `Spiral\Monolog\Bootloader\MonologBootloader` to
@@ -15,7 +15,7 @@ public function boot(MonologBootloader $monolog)
 }
 ``` 
 
-> You can use any monolog handler as second argument.
+> You can use any monolog handler as the second argument.
 
 ## Write to Log
 You receive `default` logger using `Psr\Log\LoggerInterface` dependency:
@@ -40,7 +40,7 @@ public function index(LogsInterface $logs)
 ```
 
 ## LoggerTrait
-You can use `Spiral\Logger\Traits\LoggerTrait` to quickly assign Logger to any class, class name will be used as 
+You can use `Spiral\Logger\Traits\LoggerTrait` to quickly assign Logger to any class, the class name will be used as 
 channel name:
 
 ```php
@@ -62,9 +62,9 @@ public function boot(MonologBootloader $monolog)
 {
     $monolog->addHandler(
         HomeController::class,
-        $monolog->logRotate(directory('runtime') . 'logs/home-controller.log')
+        $monolog->logRotate(directory('runtime') . 'logs/home-controller.log') // handler
     );
 }
 ```
 
-> LoggerTrait works only inside `$app->serve()` method.
+> LoggerTrait works only inside `$app->serve()` method via global IoC scope.
