@@ -4,6 +4,7 @@ Feel free to contribute to the development of the framework or its components. P
 
 * KISS
 * PSR-2
+* `declare(strict_types=1);` is mandratory
 * Your code must include tests
 
 > Use our discord server to check for the advice or suggestion https://discord.gg/FZ9BCWg
