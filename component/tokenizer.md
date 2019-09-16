@@ -16,7 +16,7 @@ public function findClasses(ClassesInterface $classes)
 }
 ```
 
-By default, the component will be looking for classes available in `app` directory only. You can add any other directory
+By default, the component will be looking for classes available in the `app` directory only. You can add any other directory
 using `Spiral\Bootloader\TokenizerBootloader`:
 
 ```php
@@ -26,4 +26,4 @@ public function boot(TokenizerBootloader $tokenizer)
 }
 ```
 
-> Attention, class lookup is not fast process, only add necessary directories.
+> Attention, class lookup is not a fast process, only add necessary directories.
