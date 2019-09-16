@@ -114,7 +114,7 @@
     * XDebug
 * Advanced
     * Controllers and HMVC
-    * Auto-configuration
+    * Auto-Configuration
     * Performance Tuning
     * Docker and Kubernetes
     * Custom Dispatchers
