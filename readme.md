@@ -113,7 +113,6 @@
     * Handle Exceptions
     * XDebug
 * Advanced
-    * RoadRunner customization
     * Controllers and HMVC
     * Auto-configuration
     * Performance Tuning
