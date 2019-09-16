@@ -13,7 +13,7 @@ runtime  | **root**/runtime
 cache    | **root**/runtime/cache
 public   | **root**/public
 app      | **root**/app
-config   | **root**/config
+config   | **app**/config
 resources| **app**/resources
 
 You can specify `root` or any other directory value in your `app.php` file as argument to `App`:
