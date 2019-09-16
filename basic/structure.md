@@ -1,5 +1,5 @@
 # Application Structure
-Framework does not enforce any specific namespace or directory structure, you can freely change them.
+The framework does not enforce any specific namespace or directory structure, you can freely change them.
 
 # Directories
 The directory structure can be controlled via `mapDirectories` method of Kernel class. By
@@ -47,7 +47,7 @@ function test()
 ```
 
 ## Namespaces
-By default, all skeleton applications use `App` root namespace pointing to `app/src` directory. You can change base 
+By default, all skeleton applications use `App` root namespace pointing to `app/src` directory. You can change the base 
 to any desired namespace in `composer.json`:
 
 ```json
