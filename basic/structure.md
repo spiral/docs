@@ -8,20 +8,21 @@ default, all application directories will be calculated based on `root` using th
 Directory | Value 
 ---       | ---
 root      | **set by user**
-vendor   | **root**/vendor
-runtime  | **root**/runtime
-cache    | **root**/runtime/cache
-public   | **root**/public
-app      | **root**/app
-config   | **app**/config
-resources| **app**/resources
+vendor    | **root**/vendor
+runtime   | **root**/runtime
+cache     | **root**/runtime/cache
+public    | **root**/public
+app       | **root**/app
+config    | **app**/config
+resources | **app**/resources
 
 Some components will declare their own directories such as:
 
-Component         | Directory | Value 
----               | ---       | ---
-spiral/views      | views     | **app**/views
-spiral/translator | locale    | **app**/locale
+Component         | Directory  | Value 
+---               | ---        | ---
+spiral/views      | views      | **app**/views
+spiral/translator | locale     | **app**/locale
+spiral/migrations | migrations | **app**/migrations
 
 ## Init Directories
 You can specify `root` or any other directory value in your `app.php` file as argument to `App`:
