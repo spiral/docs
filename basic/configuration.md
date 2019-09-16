@@ -1,24 +1,24 @@
 # Default Configuration
-All of provided application skeletons are already pre-configured using optimal settings. You can edit any of the settings
-by editing file(s) in `app/config/`.
+All of the provided application skeletons are already pre-configured using optimal settings. You can edit any of the settings
+by editing the file(s) in `app/config/`.
 
 > If config file does not exist - create it using `<?php return [];` as a base.
 
 ## Environment
-Web and GRPC templates use DotEnv extension to read environment values from `.env` file located in a root of your project.
+Web and GRPC templates use DotEnv extension to read environment values from `.env` file located in the root of your project.
 
 ```dotenv
 # Debug mode disabled view cache and enabled higher verbosity.
 DEBUG = true
 
-# Set to application specific value, used to encrypt/decrypt cookies and etc.
+# Set to application-specific value, used to encrypt/decrypt cookies and etc.
 ENCRYPTER_KEY = {encrypt-key}
 
 # Set to TRUE to disable confirmation in `migrate` commands.
 SAFE_MIGRATIONS = true
 ```
 
-You can access this values using `Spiral\Boot\EnvironmentInterface` or via short function `env`.
+You can access these values using `Spiral\Boot\EnvironmentInterface` or via short function `env`.
 
 ```php
 public function index(EnvironmentInterface $env)
@@ -29,7 +29,7 @@ public function index(EnvironmentInterface $env)
 ```
 
 ## Configuration
-Default component configuration location inside the related Bootloader. You can alter such configuration using other bootloaders (see Auto-Configuration) or by creating default configuration file in `app/config`.
+Default component configuration location inside the related Bootloader. You can alter such configuration using other bootloaders (see Auto-Configuration) or by creating a default configuration file in `app/config`.
 
 Web and GRPC skeletons include `app/config/database.php` config file:
 
@@ -53,7 +53,7 @@ return [
 ];
 ```
 
-Identically, you can edit any configuration for any of component. For example we can change default http headers 
+Identically, you can edit any configuration for any of component. For example, we can change default HTTP headers 
 via `app/config/http.php`:
 
 ```php
@@ -75,4 +75,4 @@ final class HttpConfig extends InjectableConfig
     // ...
 ```
 
-> See the reference for each component configuration in related documentation section. 
+> See the reference for each component configuration in the related documentation section. 
