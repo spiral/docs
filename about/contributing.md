@@ -28,3 +28,6 @@ If you found something which shouldn't be there or a bug which opens a security 
 Spiral Framework and all related components are maintained by [Spiral Scout](https://spiralscout.com/). 
 
 For commercial support please contact team@spiralscout.com.
+
+## Licensing
+Spiral Frameworks and its components are released and remain under MIT license indefinitely.
