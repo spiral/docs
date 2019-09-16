@@ -3,6 +3,7 @@ Feel free to contribute to the development of the framework or its components. P
  requirements are satisfied before submitting your pull request:
 
 * KISS
+* PSR-2
 * Your code must include tests
 
 > Use our discord server to check for the advice or suggestion https://discord.gg/FZ9BCWg
