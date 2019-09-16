@@ -120,5 +120,5 @@
     * Docker and Kubernetes
     * Custom Dispatchers
 * Extensions
-    * [DotEnv](extension/dotenv.md)   
+    * [Dotenv](extension/dotenv.md)   
     * [Monolog](extension/monolog.md)
