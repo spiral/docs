@@ -1,5 +1,5 @@
 # Migrations
-Spiral ships with set of embedded commands to control your database migrations, [component](https://github.com/spiral/migrations) 
+Spiral ships with a set of embedded commands to control your database migrations, [component](https://github.com/spiral/migrations) 
 is build upon DBAL and support virtual databases and prefixes.
 
 ## Configure Migrations (optional)
@@ -19,17 +19,17 @@ return [
 ];
 ```
 
-Migration state table can be automatically initiated using command `migrate:init`.
+Migration state table can be automatically initiated using the command `migrate:init`.
 
-## Create migration
-We can create our migrations manually or use scaffolder module for such purposes with set of helper options:
+## Create a migration
+We can create our migrations manually or use scaffolder module for such purposes with a set of helper options:
 
 ```bash
 $ php app.php create:migration -t sample_table -f id:primary -f name:string my_migration
 Declaration of 'MyMigrationMigration' has been successfully written into '20170401.160544_0_my_migration.php'.
 ```
 
-Migration will be automatically placed into your `app/migrations` directory:
+The migration will be automatically placed into your `app/migrations` directory:
 
 ```php
 class MyMigrationMigration extends Migration
@@ -132,10 +132,10 @@ Migration my_migration was successfully executed.
 
 > Enable DEBUG mode first.
 
-You commands `migrate:rollback` and `migrate:replay` to rollback your migrations.
+Run command `migrate:rollback` and `migrate:replay` to rollback your migrations.
 
 ## Update existed schema
-Create migrations ot alter existed table schema:
+Create migrations to alter existed table schema:
 
 ```php
 class NewFieldMigration extends Migration
