@@ -97,7 +97,7 @@ class App extends Kernel
 
 The bootloaders will only be invoked once, without request/task context. After that application will stay in the process memory permanently. Since the application bootload only happens once for many requests you can add many components and extension without performance penalty (still, watch memory).
 
-## Limitations
+## Gotchas
 There is multiple limitations to be aware of.
 
 #### Memory Leaks
