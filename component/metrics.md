@@ -2,7 +2,7 @@
 You can expose some of application metrics using Prometheus service embedded to RoadRunner application server.
 
 ## Configuration
-Metrics service does not require configuration in application, however, you must activate this service in `.rr.yaml`:
+Metrics service does not require configuration in the application, however, you must activate this service in `.rr.yaml`:
 
 ```yaml
 metrics:
@@ -13,7 +13,7 @@ metrics:
 > You can view defaults metrics on http://localhost:2112/metrics
 
 ## Custom Application metrics
-You can also publish application specific metrics. First you have to register metric in your configuration file:
+You can also publish application-specific metrics. First, you have to register a metric in your configuration file:
 
 ```yaml
 metrics:
