@@ -94,8 +94,8 @@
     * Databases and Drivers
     * Query Builders
     * [Transactions](database/transactions.md)
-    * [Schema Introspection](database/introspection.md)
-    * [Schema Declaration](database/declaration.md)
+    * ! [Schema Introspection](database/introspection.md)
+    * ! [Schema Declaration](database/declaration.md)
     * [Migrations](database/migrations.md)
     * [Errata](database/errata.md)
 * Cycle DataMapper ORM
