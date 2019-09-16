@@ -25,12 +25,13 @@ Application bundle includes the following components:
 * Security, validation, filter models
 * PSR-7 HTTP pipeline, session, encrypted cookies
 * DBAL and migrations support
-* Monolog, DotEnv
+* Monolog, Dotenv
+* Prometheus metrics
 * [Cycle DataMapper ORM](https://github.com/cycle)
 
 Installation
 --------
-```
+```bash
 composer create-project spiral/app
 ```
 
@@ -38,19 +39,19 @@ composer create-project spiral/app
 
 Once the application is installed you can ensure that it was configured properly by executing:
 
-```
+```bash
 $ php ./app.php configure
 ```
 
 To start application server execute:
 
-```
+```bash
 $ ./spiral serve -v -d
 ```
 
 On Windows:
 
-```$xslt
+```bash
 $ spiral.exe serve -v -d
 ```
 
