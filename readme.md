@@ -45,7 +45,7 @@
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
 * Console
-    * [Configuration](console/configuration.md)
+    * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
 * Web and HTTP
     * Configuration
@@ -99,7 +99,7 @@
     * [Migrations](database/migrations.md)
     * [Errata](database/errata.md)
 * Cycle DataMapper ORM
-    * [Configuration](cycle/configuration.md)
+    * [Installation and Configuration](cycle/configuration.md)
     * [Transactions](cycle/transactions.md)
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
