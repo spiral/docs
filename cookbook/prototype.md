@@ -94,6 +94,8 @@ class HomeController
 }
 ```
 
+> The formatting around the injected lines will be affected.
+
 To view all the classes which use prototyped properties without modifying them:
 
 ```bash
