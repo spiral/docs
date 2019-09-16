@@ -48,7 +48,7 @@
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
 * Web and HTTP
-    * Configuration
+    * Installation and Configuration
     * Request Lifecycle
     * Read User Input
     * Request and Response
@@ -59,38 +59,38 @@
     * Session
     * CSRF protection
 * Request/Filter Objects
-    * Configuration
+    * Installation and Configuration
     * Filter Entity
     * Nested Filters
     * Error Mapping
 * Queues and Jobs
-    * Configuration
+    * Installation and Configuration
     * Standalone Usage
     * Running Jobs
     * Scheduling Tasks
 * GRPC API
-    * Configuration
+    * Installation and Configuration
     * Generating Service Code
     * GPRC client code
 * Views
-    * Configuration
+    * Installation and Configuration
     * View object
     * Native PHP templates
     * Twig Templates
 * Stempler Views
-    * Configuration
+    * Installation and Configuration
     * Basic Usage
     * Inheritance
     * Components
     * Directives
     * AST Modifications 
 * Internalization
-    * Configuration
+    * Installation and Configuration
     * Indexation and Exporting
     * Translate Views
     * Say Trait
 * DBAL
-    * Configuration
+    * Installation and Configuration
     * Databases and Drivers
     * Query Builders
     * [Transactions](database/transactions.md)
@@ -104,7 +104,7 @@
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
 * Storage Engine 
-    * Configuration
+    * Installation and Configuration
     * Supported Drivers
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
