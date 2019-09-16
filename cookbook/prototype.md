@@ -56,6 +56,8 @@ class HomeController
 }
 ```
 
+> The code will work via magic `__get` on the object.
+
 Once your prototyping phase is complete you can remove the trait and inject dependencies via:
 
 ```bash
