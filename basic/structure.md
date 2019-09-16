@@ -16,6 +16,13 @@ app      | **root**/app
 config   | **app**/config
 resources| **app**/resources
 
+Some components will declare their own directories such as:
+
+Component         | Directory | Value 
+---               | ---       | ---
+spiral/views      | views     | **app**/views
+spiral/translator | locale    | **app**/locale
+
 You can specify `root` or any other directory value in your `app.php` file as argument to `App`:
 
 ```php
