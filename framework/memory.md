@@ -1,8 +1,8 @@
 # Framework - Static Memory
-Framework (component spiral/boot) provides convenient interface to store some computation data shared between processes.  
+Framework (component `spiral/boot`) provides a convenient interface to store some computation data shared between processes.  
 
 > Current implementation of shared memory stores data in physical files with the help of OpCache. Future implementation will
-move data storage to RoadRunner or shared PHP extension with shm, do not couple your codebase to physical files.  
+move data storage to RoadRunner or shared PHP extension with SHM, do not couple your codebase to physical files.  
 
 ## MemoryInterface
 Use interface `Spiral\Boot\MemoryInterface` to store computation results:
@@ -35,14 +35,14 @@ interface MemoryInterface
 ```
 
 ## Use Cases
-The general idea of memory is to speed up an application by caching execution result of some functionality. The memory component 
+The general idea of memory is to speed up an application by caching the execution result of some functionality. The memory component 
 is used to store the configuration cache, ORM and ODM schemas, console commands list and tokenizer cache; 
 it can also be used to cache compiled routes and etc.
  
  > Application memory must never be used to store users data.
 
 ## Practical Example
-Let's view an example of a service used to analyze available classes to compute some behaviour (operations):
+Let's view an example of a service used to analyze available classes to compute some behavior (operations):
 
 ```php
 abstract class Operation 
