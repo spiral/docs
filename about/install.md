@@ -12,7 +12,7 @@ Server Requirements
 --------
 Make sure that your server is configured with following PHP version and extensions:
 * PHP 7.2+, 64bit
-* **mb-string** Extension (spiral is utf-8 centric framework)
+* **mb-string** extension (spiral is utf-8 centric framework)
 * PDO Extension with desired database drivers
 
 Web Application Bundle
