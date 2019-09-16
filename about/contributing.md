@@ -11,8 +11,8 @@ Feel free to contribute to the development of the framework or its components. P
 If you want to help but don't know where to start:
 
 * TODOs
-* Quality Recommendations
-* Improvements
+* Updating to latest dev-dependencies (PHPUnit, Mockery, etc)
+* Quality recommendations and improvements
 * Check [Open Issues](https://github.com/spiral/framework/issues)
 
 Feel free to propose any ideas related to architecture, guide (___docs are never complete___),  adaptation or community.
