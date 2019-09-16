@@ -1,6 +1,5 @@
 # Workers and Application Lifecycle
-Spiral Framework can work using classic Nginx/PHP-FPM setup. But the highest effectiveness can be achieved using 
-an embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates the set of php processes for each of dispatching/communication method (HTTP, GRPC, Queue, etc).
+Spiral Framework can work using classic Nginx/PHP-FPM setup. But the highest effectiveness can be achieved using an embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates the set of php processes for each of dispatching/communication method (HTTP, GRPC, Queue, etc).
 
 Every PHP process will only work within a single request/task. It allows you to write code as if you would normally do in classic frameworks. By keeping application state intact between requests you can drastically increase performance and also offload part of functionality to the application server.
 
@@ -98,13 +97,13 @@ class App extends Kernel
 The bootloaders will only be invoked once, without request/task context. After that application will stay in the process memory permanently. Since the application bootload only happens once for many requests you can add many components and extension without performance penalty (still, watch memory).
 
 ## Gotchas
-There is multiple limitations to be aware of.
+There are multiple limitations to be aware of.
 
 #### Memory Leaks
-Since application stays in memory for long time, even small memory leak might lead to the process restart. RoadRunner
-will monitor memory consumption and perform soft reset, but it is the best to avoid memory leaks in your application source code.
+Since the application stays in memory for a long time, even a small memory leak might lead to the process restart. RoadRunner
+will monitor memory consumption and perform a soft reset, but it is the best to avoid memory leaks in your application source code.
 
-Though framework and all of it's components are written with memory management in mind you still have to make sure that your domain code is not leaking.
+Though framework and all of its components are written with memory management in mind you still have to make sure that your domain code is not leaking.
 
 #### Application State
 Any service declared as singleton will remain in the application memory till the process end. Try to avoid storing any user data
