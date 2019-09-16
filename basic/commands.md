@@ -19,7 +19,7 @@ Alternative:
 $ php app.php db:table -h
 ```
 
-> You can read how to create your own commands in a following sections.
+> You can read how to create your own commands in following sections.
 
 ## Aliases
 Spiral Console is based on Symfony/Console, it means you can use command short names as far as there is enough information to find target command:
@@ -42,10 +42,10 @@ To run this command in verbose mode:
 $ php app.php configure -vv
 ```
 
-> Always run `configure` before running newly installed application.
+> Always run `configure` before running ф newly installed application.
 
 ## RoadRunner
-Application server includes it's own set of commands, to list all available server commands run:
+The application server includes it's own set of commands, to list all available server commands run:
 
 ```bash
 $ ./spiral
