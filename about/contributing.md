@@ -30,4 +30,4 @@ Spiral Framework and all related components are maintained by [Spiral Scout](htt
 For commercial support please contact team@spiralscout.com.
 
 ## Licensing
-Spiral Frameworks and its components are released and remain under MIT license indefinitely.
+Spiral Frameworks and its components are released and remain under [MIT license](/about/license.md) indefinitely.
