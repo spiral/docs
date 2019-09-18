@@ -7,8 +7,8 @@ You can create magical (in both ways) workflows and helpers by implementing your
 > You can read more about how traversing works [here](https://github.com/nikic/PHP-Parser/blob/master/doc/2_Usage_of_basic_components.markdown#node-traversation).
 
 ## Create Visitor
-To create AST visitor you must implement interface provided by Stempler engine - `Spiral\Stempler\VisitorInterface`. We will try to create
-visitor which automatically adds `alt` attribute to all `img` tags found in your templates:
+To create AST visitor you must implement interface provided by Stempler engine - `Spiral\Stempler\VisitorInterface`. 
+We will try to create visitor which automatically adds `alt` attribute to all `img` tags found in your templates:
 
 ```php
 use Spiral\Stempler\Node\HTML;
