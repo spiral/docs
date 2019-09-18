@@ -34,12 +34,6 @@
     * Queue and Jobs
     * Custom PSR-15 Handlers
     * Integrating Golang library
-* Advanced Cookbook
-    * Controllers and HMVC
-    * Auto-Configuration
-    * Performance Tuning
-    * Docker and Kubernetes
-    * Custom Dispatchers
 * Components
     * Files and Directories
     * Code Generation
@@ -122,6 +116,12 @@
     * Logging
     * Handle Exceptions
     * XDebug
+* Advanced
+    * Controllers and HMVC
+    * Auto-Configuration
+    * Performance Tuning
+    * Docker and Kubernetes
+    * Custom Dispatchers
 * Extensions
     * [Dotenv](extension/dotenv.md)   
     * [Monolog](extension/monolog.md)
