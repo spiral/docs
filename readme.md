@@ -15,7 +15,7 @@
     * [Console Commands](basic/commands.md)
 * Framework
     * Design Approach
-    * Application Server
+    * [Application Server](framework/application-server.md)
     * Kernel, Environment
     * [Container and Factories](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
