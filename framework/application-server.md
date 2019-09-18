@@ -14,7 +14,7 @@ $ ./vendor/bin/spiral get
 ```
 
 ## Running the Server
-The spiral server is easy to run:
+The spiral server is easy to run on default `:8080` port:
 
 ```bash
 $ ./spiral serve -v -d
