@@ -5,6 +5,8 @@ Every PHP process will only work within a single request/task. It allows you to 
 
 By keeping application in resident memory you can drastically increase performance and also offload part of functionality to the application server.
 
+> Read more about framework and application server symbiosis [here](/framework/design.md).
+
 ## Application Server
 You can configure the number of workers, memory limits and other extensions using `.rr.yaml` file:
 
