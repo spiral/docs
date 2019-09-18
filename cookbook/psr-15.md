@@ -51,6 +51,8 @@ class FastRouteBootloader extends Bootloader
 }
 ```
 
+> Make sure that `Spiral\Bootloader\Http\HttpBootloader` is enabled.
+
 Add this bootloader to your application, the route `/name/{name}` will be available immediately.
 
 ## Custom Handler
