@@ -2,8 +2,13 @@
 Spiral Framework, RoadRunner, Cycle and other described components follow https://semver.org/ with BC allowed for security 
 releases.
 
-## PHP Version Support
-Framework and Components support **PHP 7.2+** version. 
+## Language Version support
+As of 2019 the framework and its components support:
+
+Language | Version
+---      | ---
+PHP      | ≥ 7.2.0
+Golang   | ≥ 1.12
 
 ## Current Version
 Current framework version is `2.*`. Previous releases can be found at https://github.com/spiral/framework/releases
