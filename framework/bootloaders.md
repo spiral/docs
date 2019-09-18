@@ -143,7 +143,9 @@ If you want to ensure that `HttpBootloader` has always been initiated prior to `
 ```php
 class MyBootloader extends Bootloader 
 {
-    const DEPENDENCIES = [HttpBootloader::class];
+    const DEPENDENCIES = [
+        HttpBootloader::class
+    ];
 
     public function boot(HttpBootloader $http)
     {
