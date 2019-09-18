@@ -1,6 +1,5 @@
 # Cookbook - Custom PSR-15 handlers
-Spiral Framework is compatible with `PSR-7`, `PSR-15`, `PSR-17` community standards, it allows you to swap HTTP layer implementation to any 
-alternative.
+Spiral Framework is compatible with `PSR-7`, `PSR-15` and `PSR-17` community standards, it allows you to swap HTTP layer implementation to any alternative.
 
 > By default, `Psr\Http\Server\RequestHandlerInterface` is implemented and binded to `Spiral\Router\Router`. You would have to disable
 the bootloader `Spiral\Bootloader\Http\RouterBootloader` in your application.
