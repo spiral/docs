@@ -83,7 +83,7 @@ Encrypter is also available as prototype property `encrypter`:
 ```php
 protected function index(EncrypterInterface $encrypter)
 {
-    // never expose encryption key to website users
+    // never expose encryption key to the end user
     dump($encrypter->getKey());
     
     $payload = $encrypter->encrypt(['abc']);
