@@ -21,7 +21,7 @@
     * [Bootloaders](framework/bootloaders.md)
     * Config Objects
     * IoC scopes
-    * Auto Wiring
+    * [Auto Wiring](framework/auto-wiring.md)
     * [Static Memory](framework/memory.md)
     * [Finalizers](framework/finalizers.md)
 * Cookbook
