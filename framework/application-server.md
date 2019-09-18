@@ -33,7 +33,7 @@ A lot of the sections in this documentation will explain how to extend your appl
 middleware or data providers. It's essential to learn how to build a server on your own.
 
 #### Install Golang
-To build an application server you need [Golang 1.12](https://golang.org/dl/) to be installed.
+To build an application server you need [Golang 1.12+](https://golang.org/dl/) to be installed.
 
 #### Create main.go
 Download default [main.go](https://github.com/spiral/framework/blob/master/main.go) file, we are going to use to register custom services later. You can store this file in the root of your project or other location.
