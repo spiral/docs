@@ -39,7 +39,7 @@ __construct(OtherClass $class, SomeInterface $some)
 __construct(OtherClass $class, SomeInterface $some = null) 
 ```
 
-## Injectors
+## Contextual Wiring
 In addition to regular method injections, the container is able to resolve the injection context automatically. Such technique provides us the ability to request multiple databases using the following statement:
 
 ```php
