@@ -48,7 +48,7 @@
 * Console
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
-* Web and HTTP
+* HTTP
     * Installation and Configuration
     * Request Lifecycle
     * Request and Response
