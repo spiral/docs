@@ -14,7 +14,7 @@ $ composer require middlewares/fast-route middlewares/request-handler
 ```
 
 Create bootloader to bind this implementation to our http server. We can either bind handler via `HttpBootloader` or simply
-declare `Psr\Http\Server\RequestHandlerInterface` key in `SINGLETONS`:
+declare `Psr\Http\Server\RequestHandlerInterface` in `SINGLETONS`:
 
 ```php
 use FastRoute;
