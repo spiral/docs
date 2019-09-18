@@ -2,7 +2,7 @@
 Default application skeleton enables cookie integration by default.
  
 If you need to enable cookies it in alternative bundle require composer package `spiral/cookies` and add 
-bootloader `Spiral\Bootloader\Bootloader\Http\CookiesBootloader::class` into your app.
+bootloader `Spiral\Bootloader\Bootloader\Http\CookiesBootloader` into your app.
 
 ## Read Cookie
 By default, the framework will encrypt and decrypt all cookies values using ENV key `ENCRYPTER_KEY`. Changing this value will
