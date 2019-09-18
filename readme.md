@@ -32,7 +32,7 @@
     * Database Scaffolding
     * Simple REST CRUD
     * Queue and Jobs
-    * Custom PSR-15 Handlers
+    * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * Integrating Golang library
 * Components
     * Files and Directories
