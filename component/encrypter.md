@@ -18,7 +18,7 @@ If you use [Dotenv](/extension/dotenv.md) extension you can specify this key val
 $ php app.php encrypt:key -m
 ```
 
-> Note, the encrypter is used to protect your cookie values by default. Changing the key will automatically invalidate all
+> Note, the encrypter is used to protect your cookie values, changing the key will automatically invalidate all
 issues cookies. 
 
 ## Usage
