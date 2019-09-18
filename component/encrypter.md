@@ -5,10 +5,10 @@ Both Web and GRPC application skeletons include encryption component by default.
 $ composer require spiral/encrypter
 ```
 
-You must register bootloader `Spiral\Bootloader\Security\EncrypterBootloader` in order to active the component. 
+You must register bootloader `Spiral\Bootloader\Security\EncrypterBootloader` in order to activate the component. 
 
 ## Application Key
-The encryption componetn is based on [defuse/php-encryption](https://github.com/defuse/php-encryption), the component require encryption key to be
+The encryption component is based on [defuse/php-encryption](https://github.com/defuse/php-encryption), the component requires an encryption key to be
 specified in your application. 
 
 By default, `EncrypterBootloader` will load Base64 encoded key from environment variable `ENCRYPTER_KEY`.
