@@ -19,7 +19,7 @@ class MyService
 }
 ```
 
-> Make sure that `persist`/`delete` and `run` methods are always called within one method scope.
+> Make sure that `persist`/`delete` and `run` methods are always called within one method scope while using service specific transaction.
 
 ## Testing
 You can always test your codebase without performing actual by mocking `TransactionInterface`, consider binding singleton test object
