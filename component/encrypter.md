@@ -18,8 +18,8 @@ If you use [Dotenv](/extension/dotenv.md) extension you can specify this key val
 $ php app.php encrypt:key -m
 ```
 
-> Note, the encrypter is used to protect your cookie values, changing the key will automatically invalidate all
-issues cookies. 
+> Note, the encrypter is used to protect your cookie values, changing the key will automatically invalidate all the
+issued cookies. 
 
 ## Usage
 You can use the encrypter in your application via `Spiral\Encrypter\EncrypterInterface`:
