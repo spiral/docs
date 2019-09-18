@@ -87,7 +87,7 @@
     * Inheritance
     * Components
     * Directives
-    * AST Modifications
+    * [AST Modifications](stempler/visitors.md)
 * Internalization
     * Installation and Configuration
     * Indexation and Exporting
