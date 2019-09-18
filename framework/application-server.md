@@ -2,7 +2,7 @@
 The framework application server is based on [RoadRunner](https://roadrunner.dev) but includes multiple additions specific to Spiral such as
 Queue, Scheduler, and GRPC integrations.
 
-> Attention, you need some basic knowledge of Golang in order to read some of these sections.
+> Attention, you need some basic knowledge of Golang in order to customize the application server.
 
 ## Downloading Application Server
 You can download the application server directly from [release page](https://github.com/spiral/framework/releases). 
