@@ -37,7 +37,7 @@
 * Components
     * Files and Directories
     * Code Generation
-    * Data Encryption
+    * [Data Encryption](component/encrypter.md)
     * Validation
     * Pagination
     * RBAC Authorization
