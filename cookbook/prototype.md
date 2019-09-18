@@ -36,7 +36,7 @@ Now you can run `php app.php configure` to generate IDE tooltips.
 To use prototyping abilities of framework add `Spiral\Prototype\Traits\PrototypeTrait` to any of your classes. 
 Once complete your IDE will immediately suggest you available classes and Cycle Repositories:
 
-![IDE Tooltips](https://user-images.githubusercontent.com/796136/64488784-a04d0a00-d254-11e9-8650-6a25c71bf46c.png)
+![IDE Tooltips](/resources/virtual-bindings.gif)
 
 You can use this suggestion directly, without need for any import:
 
