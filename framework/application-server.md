@@ -26,6 +26,8 @@ You can observe the memory consumption of your workers in realtime and other inf
 $ ./spiral http:workers -i
 ```
 
+> Use similar commands `jobs:workers` and `grpc:workers` to check other dispatchers.
+
 ## Building Application Server
 A lot of the sections in this documentation will explain how to extend your application capabilities by adding your own RoadRunner services, 
 middleware or data providers. It's essential to learn how to build a server on your own.
