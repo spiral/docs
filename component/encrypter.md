@@ -81,7 +81,7 @@ interface EncrypterInterface
 Encrypter is also available as prototype property `encrypter`:
 
 ```php
-protected function indexAction()
+protected function index(EncrypterInterface $encrypter)
 {
     // never expose encryption key to website users
     dump($encrypter->getKey());
