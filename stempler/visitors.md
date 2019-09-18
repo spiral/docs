@@ -8,6 +8,7 @@ You can create magical (in both ways) workflows and helpers by implementing your
 
 ## Create Visitor
 To create AST visitor you must implement interface provided by Stempler engine - `Spiral\Stempler\VisitorInterface`. 
+
 We will try to create visitor which automatically adds `alt` attribute to all `img` tags found in your templates:
 
 ```php
