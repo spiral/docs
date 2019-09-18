@@ -34,6 +34,7 @@
     * Queue and Jobs
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * Integrating Golang library
+    * Testing
 * Components
     * Files and Directories
     * Code Generation
