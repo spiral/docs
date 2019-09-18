@@ -41,6 +41,8 @@ class AltImageVisitor implements VisitorInterface
 }
 ```
 
+> You can inject other tags or even PHP into your templates.
+
 ## Register Visitor
 Call `StemplerBootloader`->`addVistitor` to register visitor in the template engine. We can do it using application bootloader:
 
