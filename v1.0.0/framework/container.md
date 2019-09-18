@@ -136,48 +136,6 @@ public function indexAction(ViewsInterface $views)
 
 You can read about how to make container bindings and bootload your application [here](/v1.0.0/frameworkwork/bootloaders.md).
 
-## FactoryInterface
-In many cases you might want to create an instance with automatically resolved dependencies, use `FactoryInterface` for such purposes:
-
-```php
-public function indexAction(FactoryInterface $factory)
-{
-    dump($factory->make(MyClass::class, [
-        'parameter' => 'value'
-    ])); 
-}
-```
-
-## Dependency Injection
-Spiral support both method and constructor injections for your classes:
-
-```php
-class UserMailer
-{
-    protected $mailer = null;
-
-    public function __construct(Mailer $mailer)
-    {
-        $this->mailer = $mailer;
-    }
-    
-    public function do()
-    {
-        $this->mailer->sendMail(...);
-    }
-}
-```
-
-We can automatically resolve "Mailer" value by creating such class using factory, or simply requesting it as dependency:
-
-```php
-$userMailer = $factory->make(UserMailer::class);
-
-//Due auto-wiring principles of spiral you can use this alternative
-$userMailer = $this->container->get(UserMailer::class);
-```
-
-Container will automatically resolve cascade of dependencies and return us valid instance of `UserMailer`. 
 
 ### Auto-wiring
 Default spiral container is intended to be as invisible for your code as possible, in order to achieve that container is set to be auto-wiring by default. You have to acknowledge that framework will try to resolve EVERY constructor/method argument even if it's stated as optional, unless you have manually defined binding or factory method:
@@ -193,30 +151,6 @@ class SampleClass
     }
 }
 ```
-
-## Lazy Singletons
-You can skip singleton bindings by implementing `SingletonInterface` in your class:
-
-```php
-class MyService implements SingletonInterface
-{
-    public function method()
-    {
-        //...
-    }
-}
-```
-
-Now, container will automatically treat this class as singleton in your application:
-
-```php
-protected function indexAction(MyService $service)
-{
-    dump($this->container->get(MyService::class) === $service);
-}
-```
-
-> Most of spiral components has defined as singleton. You can always disable singleton behaviour by creating your custom factory method in bootloader.
 
 ## Controllable/Contextual Injections
 Spiral Container in addition to regular method injections provides ability to create more intelligent contextual injections. Such technique provide us ability to request multiple databases using following statement:
