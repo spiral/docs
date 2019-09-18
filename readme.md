@@ -51,7 +51,6 @@
 * Web and HTTP
     * Installation and Configuration
     * Request Lifecycle
-    * Read User Input
     * Request and Response
     * Routing
     * Error Pages
