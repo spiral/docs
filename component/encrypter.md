@@ -8,19 +8,17 @@ $ composer require spiral/encrypter
 You must register bootloader `Spiral\Bootloader\Security\EncrypterBootloader` in order to activate the component. 
 
 ## Application Key
-The encryption component is based on [defuse/php-encryption](https://github.com/defuse/php-encryption), the component requires an encryption key to be
-specified in your application. 
+The encryption component is based on [defuse/php-encryption](https://github.com/defuse/php-encryption), it requires an encryption key to be specified in your application. 
 
 By default, `EncrypterBootloader` will load Base64 encoded key from environment variable `ENCRYPTER_KEY`.
 
-If you use [Dotenv](/extension/dotenv.md) extension you can specify this key value in `.env` file located in the root of your application. To issue
-new key run:
+If you use [Dotenv](/extension/dotenv.md) extension you can specify this key value in `.env` file located in the root of your application. To issue new key run:
 
 ```bash
 $ php app.php encrypt:key -m
 ```
 
-> Note, encrypter is used to protect your cookie values by default. Changing the key will automatically invalidate all
+> Note, the encrypter is used to protect your cookie values by default. Changing the key will automatically invalidate all
 issues cookies. 
 
 ## Usage
