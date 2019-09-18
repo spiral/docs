@@ -37,7 +37,7 @@ class UserMailer
 The `Mailer` dependency will be automatically delivered by the container. Read more in [Auto Wiring](/framework/auto-wiring.md).
  
 > Note, your controllers, commands, and jobs support method injection.
- 
+
 ## Configuring Container
 You can configure container by creating a set of bindings between aliases or interfaces to concrete implementations.   
 Use [Bootloaders](/framework/bootloaders.md) to define bindings.
@@ -73,6 +73,8 @@ public function boot(Container $container)
 }
 ```
 
+> Read about [Config Objects](/framework/config.md) to see how to manage config dependencies.
+
 You can also use `closure` to automatically configure your class:
 
 ```php
@@ -101,7 +103,33 @@ To check if container has binding use:
 dump($container->has(MyImplementation::class));
 ```
 
-> Read about [Config Objects](/framework/config.md) to see how to manage config dependencies.
+To remove the container binding:
+
+```php
+$container->removeBinding(MyService::class);
+```
+
+## Lazy Singletons
+You can skip singleton binding by implementing `piral\Core\Container\SingletonInterface` in your class:
+
+```php
+class MyService implements SingletonInterface
+{
+    public function method()
+    {
+        //...
+    }
+}
+```
+
+Now, the container will automatically treat this class as a singleton in your application:
+
+```php
+protected function index(MyService $service)
+{
+    dump($this->container->get(MyService::class) === $service);
+}
+```
 
 ## FactoryInterface
 In some cases, you might want to construct desired class without resolving all of it's `__constructor` dependencies.
