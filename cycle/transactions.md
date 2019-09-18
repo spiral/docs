@@ -2,7 +2,7 @@
 In order to persist entity changes your application services and controllers will require `Cycle\ORM\TransactionInterface`.
 
 ## Default Configuration
-By default, the framework will automatically create a transaction on on-demand from the container. Considering that transactions always clean
+By default, the framework will automatically create a transaction on-demand from the container. Considering that transactions always clean
 after the `run` operation you can request it as a constructor parameter.
 
 ```php
