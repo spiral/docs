@@ -29,14 +29,13 @@ $ ./spiral http:workers -i
 > Use similar commands `jobs:workers` and `grpc:workers` to check other dispatchers.
 
 ## Building Application Server
-A lot of the sections in this documentation will explain how to extend your application capabilities by adding your own RoadRunner services, 
-middleware or data providers. It's essential to learn how to build a server on your own.
+A lot of the sections in this documentation will explain how to extend your application capabilities by adding your own RoadRunner services, middleware or data providers. It's essential to learn how to build a server on your own.
 
 #### Install Golang
 To build an application server you need [Golang 1.12+](https://golang.org/dl/) to be installed.
 
 #### Create main.go
-Download default [main.go](https://github.com/spiral/framework/blob/master/main.go) file, we are going to use to register custom services later. You can store this file in the root of your project or other location.
+Download default [main.go](https://github.com/spiral/framework/blob/master/main.go) file, we are going to use it later to register custom services. You can store this file in the root of your project or other location.
 
 #### Initiate go modules
 Go Modules is Golang approach to manage your application dependencies and it's very similar to the Composer. You can initiate blank 
