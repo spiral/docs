@@ -33,7 +33,7 @@ Spiral Framework makes developing in PHP exciting again. It optimizes on the pow
 | App Type | Current Status        
 | ---       | ---
 spiral/app | [![Latest Stable Version](https://poser.pugx.org/spiral/app/version)](https://packagist.org/packages/app/core)
-spiral/app-cli | [![Latest Stable Version](https://poser.pugx.org/spiral/app-cli/version)](https://packagist.org/packages/spiral/app-cli) [!
+spiral/app-cli | [![Latest Stable Version](https://poser.pugx.org/spiral/app-cli/version)](https://packagist.org/packages/spiral/app-cli)
 spiral/app-grpc | [![Latest Stable Version](https://poser.pugx.org/spiral/app=-grpc/version)](https://packagist.org/packages/spiral/app-grpc)
 
 ## Core
