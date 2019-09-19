@@ -22,7 +22,6 @@ jobs:
   pipelines:
     local.broker: "ephemeral"
   consume: ["local"]
-
   workers:
     command: "php app.php"
     pool.numWorkers: 2
