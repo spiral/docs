@@ -30,11 +30,11 @@ Spiral Framework makes developing in PHP exciting again. It optimizes on the pow
 - MVC, HMVC, ADR, Micro, Queue-oriented, RPC-oriented, CLI apps... any apps
 
 ## Skeletons
-| App Type | Current Status        
-| ---       | ---
-spiral/app | [![Latest Stable Version](https://poser.pugx.org/spiral/app/version)](https://packagist.org/packages/app/core)
-spiral/app-cli | [![Latest Stable Version](https://poser.pugx.org/spiral/app-cli/version)](https://packagist.org/packages/spiral/app-cli)
-spiral/app-grpc | [![Latest Stable Version](https://poser.pugx.org/spiral/app=-grpc/version)](https://packagist.org/packages/spiral/app-grpc)
+| App Type | Current Status | Install       
+| ---       | --- | ---
+spiral/app | [![Latest Stable Version](https://poser.pugx.org/spiral/app/version)](https://packagist.org/packages/app/core) | https://github.com/spiral/app
+spiral/app-cli | [![Latest Stable Version](https://poser.pugx.org/spiral/app-cli/version)](https://packagist.org/packages/spiral/app-cli) | https://github.com/spiral/app-cli
+spiral/app-grpc | [![Latest Stable Version](https://poser.pugx.org/spiral/app-grpc/version)](https://packagist.org/packages/spiral/app-grpc) | https://github.com/spiral/app-grpc
 
 ## Core
 | Component | Current Status        
