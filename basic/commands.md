@@ -44,7 +44,7 @@ $ php app.php configure -vv
 
 > Always run `configure` before running a newly installed application.
 
-## RoadRunner
+## Application Server
 The application server includes it's own set of commands, to list all available server commands run:
 
 ```bash
