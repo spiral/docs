@@ -33,7 +33,7 @@ Where `test.php`:
 Hello , <?= $name ?>!
 ```
 
-## Accessing Container
+## Container
 You can access the container in your view files via `$this->container`:
 
 ```php
