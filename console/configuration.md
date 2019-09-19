@@ -41,7 +41,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 // ...
 
-public functiobn test(Console $console)
+public function test(Console $console)
 {
     $input = new ArrayInput(['args' => 'value']);
     $output = new BufferedOutput();
