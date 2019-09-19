@@ -12,7 +12,7 @@ The encryption component is based on [defuse/php-encryption](https://github.com/
 
 By default, `EncrypterBootloader` will load Base64 encoded key from environment variable `ENCRYPTER_KEY`.
 
-If you use [Dotenv](/extension/dotenv.md) extension you can specify this key value in `.env` file located in the root of your application. To issue new key run:
+If you use [Dotenv](/extension/dotenv.md) extension you can specify this key value in `.env` file located in the root of your application. To issue new key into `.env` (see `-m` flag) run:
 
 ```bash
 $ php app.php encrypt:key -m
