@@ -88,7 +88,7 @@ public function boot(ConsoleBootloader $console)
 }
 ```
 
-> Note, by default Console component use auto-discover mode to find all user commands in `app/` automatically.
+> Note, by default Console component use auto-discovery mode to find all user commands in `app/` automatically.
 
 To register command in configure/update sequence:
 
