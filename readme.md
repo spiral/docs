@@ -117,7 +117,7 @@
     * Handle Exceptions
     * XDebug
 * Advanced
-    * Playing with Architecture
+    * Playing with App Architecture
     * Auto-Configuration
     * Performance Tuning
     * Docker and Kubernetes
