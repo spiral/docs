@@ -117,7 +117,7 @@
     * Handle Exceptions
     * XDebug
 * Advanced
-    * Controllers and HMVC
+    * Playing with Architecture
     * Auto-Configuration
     * Performance Tuning
     * Docker and Kubernetes
