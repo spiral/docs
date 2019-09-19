@@ -77,9 +77,6 @@ Encrypter is also available as [prototype property](/cookbook/prototype.md) `enc
 ```php
 protected function index(EncrypterInterface $encrypter)
 {
-    // never expose encryption key to the end user
-    dump($encrypter->getKey());
-    
     $payload = $encrypter->encrypt(['abc']);
     dump($payload);
 
