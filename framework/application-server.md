@@ -31,6 +31,8 @@ $ ./spiral http:workers -i
 ## Building Application Server
 A lot of the sections in this documentation will explain how to extend your application capabilities by adding your own RoadRunner services, middleware or data providers. It's essential to learn how to build a server on your own.
 
+> You are not required to learn Golang or build application server by yourself, the default build will cover all of the framework features.
+
 #### Install Golang
 To build an application server you need [Golang 1.12+](https://golang.org/dl/) to be installed.
 
@@ -40,7 +42,7 @@ Download default [main.go](https://github.com/spiral/framework/blob/master/main.
 #### Initiate go modules
 Go Modules is Golang approach to manage your application dependencies and it's very similar to the Composer. You can initiate blank 
 `go.mod` file (`composer.json` analog) by running following command in the same directory as your application.
-
+ B
 ```bash
 $ go mod init {repository-name}
 ``` 
