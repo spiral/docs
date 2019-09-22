@@ -28,7 +28,6 @@
     * Quick Start
     * Scaffolding
     * [Prototyping](cookbook/prototype.md)
-    * IoC scopes and Singletons
     * Database Scaffolding
     * MVC Application
     * Queue and Jobs
