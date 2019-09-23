@@ -117,18 +117,18 @@ To enable [AMQP](https://www.amqp.org/) broker you have to specify AMQP dsn in `
 
 ```yaml
 jobs:
-    amqp.addr: amqp://guest:guest@localhost:5672/
+  amqp.addr: amqp://guest:guest@localhost:5672/
 
-    # ...
+  # ...
 ```
 
 The pipelines must be assigned to `amqp` broker and must specify the `queue` name:
 
 ```php
 pipelines:
-    my-queue:
-        broker: amqp
-        queue:  default
+  my-queue:
+    broker: amqp
+    queue:  default
 ```
 
 Additional options are supported:
