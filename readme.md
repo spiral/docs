@@ -62,7 +62,7 @@
     * Filter Entity
     * Nested Filters
     * Error Mapping
-* Queues and Jobs
+* Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)
     * Console Commands
     * Standalone Usage

@@ -1,4 +1,4 @@
-# Jobs and Queue - Installation and Configuration
+# Queue and Jobs - Installation and Configuration
 Web and GRPC bundles of Spiral Framework support background PHP processing and a queue out of the box. You are able
 to work with one or multiple message brokers such as Beanstalk, AMQP (RabbitMQ) or Amazon SQS.
 
