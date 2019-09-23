@@ -337,7 +337,7 @@ dump($schema->getComparator()->addedColumns());
 > You can use comparator to generate migrations instead of letting DBAL to sync your schemas.
 
 ## Sync multiple Tables
-In some cases you might want to create multiple linked tables. In order to handle such operation feed your table schemas into `SynchronizationPool`:
+In some cases you might want to create multiple linked tables. In order to handle such operation feed your table schemas into `Reflector`:
 
 ```php
 $schema = $database->table('table_a')->getSchema();
@@ -348,12 +348,11 @@ $schemaB->primary('id');
 $schemaB->integer('a_id');
 $schemaB->foreign('a_id')->references('table_a', 'id');
 
-$pool = new SynchronizationPool([
-    $schemaB,
-    $schema
-]);
+$r = new Spiral\Database\Schema\Reflector();
+$r->addTable($schema);
+$r->addTable($schemaB);
 
-$pool->run($this->getLogger());
+$pool->run();
 ```
 
-> `SynchronizationPool` will sort your tables based on their cross dependencies.
+> `Reflector` will sort your tables based on their cross dependencies.
