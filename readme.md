@@ -28,9 +28,8 @@
     * Quick Start
     * Scaffolding
     * [Prototyping](cookbook/prototype.md)
-    * IoC scopes and Singletons
     * Database Scaffolding
-    * Simple REST CRUD
+    * MVC Application
     * Queue and Jobs
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * Integrating Golang library
@@ -42,7 +41,6 @@
     * Validation
     * Pagination
     * RBAC Authorization
-    * Entity Models
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
 * Console

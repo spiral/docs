@@ -1,5 +1,5 @@
 # Application Metrics
-You can expose some of application metrics using Prometheus service embedded to RoadRunner application server.
+You can expose some of application metrics using Prometheus service embedded to Spiral application server.
 
 ## Configuration
 Metrics service does not require configuration in the application, however, you must activate this service in `.rr.yaml`:

@@ -6,11 +6,36 @@
 
 <img src="https://raw.githubusercontent.com/spiral/guide/master/resources/logo.png" height="135px" alt="Spiral Framework" align="left"/>
 
-Spiral Framework is an open-source (MIT) framework core that speeds up the development of high-performance PHP applications. It uses a combination of open-source components and Roadrunner, [an application server](https://github.com/spiral/roadrunner) which comes with native support for HTTP/2, [GRPC](https://grpc.io/), distributed computations ([Queue](https://github.com/spiral/jobs)) and Golang extensions.
+Spiral Framework makes developing in PHP exciting again. It optimizes on the power of PHP to quickly develop business logic while uniquely leveraging Golang to craft an elegant infrastructure layer with native support for HTTP/2, GRPC, Queue, and more. Build faster, more efficient applications with this flexible and PSR compliant PHP7 framework (and have fun while you’re at it). 
 
 [Website](https://spiral-framework.com) | <b>[App Skeleton](https://github.com/spiral/app)</b> ([cli](https://github.com/spiral/app-cli), [grpc](https://github.com/spiral/app-grpc)) | [Documentation](https://github.com/spiral/guide) | [Twitter](https://twitter.com/spiralphp) | [CHANGELOG](/CHANGELOG.md) | [Contributing](https://github.com/spiral/guide/blob/master/contributing.md)
 
 <br/>
+
+## Features
+- battle-tested since 2013
+- resident memory framework, RAM is your cache
+- PSR-{2,3,4,6,7,11,15,16,17} compliant
+- built on loosely coupled components
+- native support of queue (AMQP, SQS, Beanstalk) and background PHP workers
+- GRPC server and client
+- HTTPS, HTTP/2+Push, encrypted cookies, sessions, CSRF-guard
+- MySQL, MariaDB, SQLite, Postgres, SQLServer support, auto-migrations
+- data-mapper ORM which can be configured at runtime
+- class discovery via static analysis
+- scaffolding and prototyping (it literally writes code for you)
+- RBAC security, validation, and encryption
+- can be extended on PHP or on Golang
+- template engine lets you create your own HTML tags
+- or just use twig
+- MVC, HMVC, ADR, CQRS, Queue-oriented, RPC-oriented, CLI apps... any apps
+
+## Skeletons
+| App Type | Current Status | Install       
+| ---       | --- | ---
+spiral/app | [![Latest Stable Version](https://poser.pugx.org/spiral/app/version)](https://packagist.org/packages/app/core) | https://github.com/spiral/app
+spiral/app-cli | [![Latest Stable Version](https://poser.pugx.org/spiral/app-cli/version)](https://packagist.org/packages/spiral/app-cli) | https://github.com/spiral/app-cli
+spiral/app-grpc | [![Latest Stable Version](https://poser.pugx.org/spiral/app-grpc/version)](https://packagist.org/packages/spiral/app-grpc) | https://github.com/spiral/app-grpc
 
 ## Core
 | Component | Current Status        

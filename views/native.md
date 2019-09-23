@@ -7,9 +7,14 @@ To create plain PHP view simply put file with `.php` extension into `views` dire
 filename:
 
 ```php
+<?php // test.php
+echo "hello world";
+```
+
+```php
 public function index(ViewsInterface $views)
 {
-    return $views->render('filename'); // no need to specify the extension
+    return $views->render('test'); // no need to specify the extension
 }
 ```
 
@@ -18,17 +23,17 @@ All the passed parameters will be available as PHP variables:
 ```php
 public function index(ViewsInterface $views)
 {
-    return $views->render('home', ['name' => 'Antony']); 
+    return $views->render('test', ['name' => 'Antony']); 
 }
 ```
 
-Where `home.php`:
+Where `test.php`:
 
 ```php
 Hello , <?= $name ?>!
 ```
 
-## Accessing Container
+## Container
 You can access the container in your view files via `$this->container`:
 
 ```php

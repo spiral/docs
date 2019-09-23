@@ -22,7 +22,7 @@ $ php app.php db:table -h
 > You can read how to create your own commands in following sections.
 
 ## Aliases
-Spiral Console is based on Symfony/Console, it means you can use command short names as far as there is enough information to find target command:
+Spiral Console is based on Symfony/Console, it means you can use short command names as far as there is enough information to find the target command:
 
 ```bash
 # can be resolved into `update`
@@ -42,9 +42,9 @@ To run this command in verbose mode:
 $ php app.php configure -vv
 ```
 
-> Always run `configure` before running ф newly installed application.
+> Always run `configure` before running a newly installed application.
 
-## RoadRunner
+## Application Server
 The application server includes it's own set of commands, to list all available server commands run:
 
 ```bash

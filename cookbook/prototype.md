@@ -14,21 +14,18 @@ Make sure to add `Spiral\Prototype\Bootloader\PrototypeBootloader` to your App c
 ```php
 class App extends Kernel
 {
-    /*
-     * List of components and extensions to be automatically registered
-     * within system container on application start.
-     */
-    protected const LOAD = [
-        // ...
+    // ...
 
-        // Framework commands
-        Bootloader\CommandBootloader::class,
+    protected const APP = [
+        RoutesBootloader::class,
+        LoggingBootloader::class,
+
         PrototypeBootloader::class
     ];
-    
-    // ...   
 }
 ```
+
+> Attention, the extension will invoke `TokenierConfig`, make sure it add it after the end of bootload chain.
 
 Now you can run `php app.php configure` to generate IDE tooltips.
 
