@@ -65,7 +65,8 @@
     * Nested Filters
     * Error Mapping
 * Queues and Jobs
-    * Installation and Configuration
+    * [Installation and Configuration](queue/configuration.md)
+    * Console Commands
     * Standalone Usage
     * Running Jobs
     * Golang Consumers
