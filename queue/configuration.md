@@ -112,7 +112,7 @@ to run non-critical background tasks.
 ## Brokers
 You must specify connection options for all of the brokers except ephemeral. 
 
-#### AMQP (RabbitMQ)
+### AMQP (RabbitMQ)
 To enable [AMQP](https://www.amqp.org/) broker you have to specify AMQP dsn in `jobs` config:
 
 ```yaml
@@ -140,7 +140,7 @@ consumer | rr-**pipeline-name**-**pid** | Consumer ID
 
 > Queue will be created automatically if not exists.
 
-#### Beanstalk
+### Beanstalk
 To enable [Beanstalk](https://beanstalkd.github.io/) broker:
 
 ```yaml
@@ -163,7 +163,7 @@ Option   | Default  | Comment
 --      | ---      | ---
 reserve  | 1        | How long to wait for an incoming job until re-sending request (long-pulling). 
 
-#### Amazon SQS
+### Amazon SQS
 To enable [Amazon SQS](https://aws.amazon.com/en/sqs/) broker:
 
 
