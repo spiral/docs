@@ -101,6 +101,8 @@ you might want to disable consuming on a given instance to offload tasks to remo
 consume: ["local"]  
 ```
 
+> You can always start and stop pipeline consuming via CLI command.
+
 ## Local Pipeline
 One of the pipelines extremely useful in application development is pipelines associated with `ephemeral` broker.
 This pipelines does not require an external broker and can run directly in application server memory. Use this pipeline
