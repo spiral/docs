@@ -64,7 +64,7 @@
     * Error Mapping
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)
-    * Console Commands
+    * [Console Commands](queue/commands.md)
     * Standalone Usage
     * Running Jobs
     * Golang Consumers

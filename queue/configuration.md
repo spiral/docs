@@ -111,6 +111,8 @@ to run non-critical background tasks.
 > Note, `ephemeral` broker is **not reliable**, any server failure will erase application server memory and your jobs
 > will be lost. Use it in development or for non-critical tasks.
 
+You can have multiple ephemeral pipelines in your application.
+
 ## Brokers
 You must specify connection options for all of the brokers except ephemeral. 
 
@@ -200,3 +202,18 @@ pipelines:
 You can find a list of available declare options [here](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SetQueueAttributes.html).
 
 > Note, Amazon SQS does not support jobs delayed for longer than 15 minutes.
+
+## Monitoring
+The extensions automatically register Prometheus metrics in the application server, the metrics are available on `localhost:2112`
+ by default.
+ 
+> Make sure to enable metrics extension.
+
+## Memory Control
+You can limit the memory usage and set up TTLs via `limit` config section, similar to `http`:
+
+```yaml
+limit:
+  services:
+    jobs.maxMemory: 100
+```
