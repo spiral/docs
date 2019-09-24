@@ -25,7 +25,7 @@ $ ./spiral jobs:workers
 
 To view the stats in interactive mode use flag `-i`:
 
-```bash
+```
 +---------+-----------+---------+---------+--------------------+
 |   PID   |  STATUS   |  EXECS  | MEMORY  |      CREATED       |
 +---------+-----------+---------+---------+--------------------+
@@ -52,7 +52,7 @@ $ ./spiral jobs:stat
 
 Use flag `-i` to run the stats in an interactive mode:
 
-```bash
+```
 +----------+-----------+----------+-------+---------+--------+
 | PIPELINE |  BROKER   |   NAME   | QUEUE | DELAYED | ACTIVE |
 +----------+-----------+----------+-------+---------+--------+
