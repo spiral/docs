@@ -65,6 +65,7 @@
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)
     * [Console Commands](queue/commands.md)
+    * [PHP Integration](queue/php.md)
     * Standalone Usage
     * Running Jobs
     * Golang Consumers

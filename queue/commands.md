@@ -34,16 +34,6 @@ To view the stats in interactive mode use flag `-i`:
 +---------+-----------+---------+---------+--------------------+
 ```
 
-## Pipelines
-You to start or pause consuming any of the pipeline using commands:
-
-```bash
-$ ./spiral jobs:resume {pipeline-1} {pipeline-2}
-$ ./spiral jobs:pause {pipeline-1} {pipeline-2}
-```
-
-> You can omit name(s) to resume/pause all pipelines. 
-
 To view active pipelines and jobs:
 
 ```bash
@@ -59,3 +49,13 @@ Use flag `-i` to run the stats in an interactive mode:
 | local    | ephemeral | :memory: | 0     | 0       | 0      |
 +----------+-----------+----------+-------+---------+--------+
 ```
+
+## Pipelines
+You to start or pause consuming any of the pipeline using commands:
+
+```bash
+$ ./spiral jobs:resume {pipeline-1} {pipeline-2}
+$ ./spiral jobs:pause {pipeline-1} {pipeline-2}
+```
+
+> You can omit name(s) to resume/pause all pipelines. 
