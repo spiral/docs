@@ -1,7 +1,7 @@
 # Queue and Jobs - Standalone Usage
 You can run `spiral/jobs` as a standalone extension. 
 
-> Make sure to read [Running Jobs](/queue/jobs.md) to understand the principles of job dispatching.
+> Make sure to read [Running Jobs](/queue/jobs.md) to understand the principles of job dispatching. The extension configuration is the same as described [here](/queue/configuration.md).
 
 ## PHP Worker
 You would have to create a PHP worker in order to consume tasks from the queue. The primary class you have to implement is 
