@@ -66,9 +66,7 @@
     * [Installation and Configuration](queue/configuration.md)
     * [Console Commands](queue/commands.md)
     * [Running Jobs](queue/jobs.md)
-    * Standalone Usage
-    * Golang Consumers
-    * Scheduling Tasks
+    * [Standalone Usage](queue/standalone.md)
 * GRPC API
     * Installation and Configuration
     * Generating Service Code
