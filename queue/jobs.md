@@ -147,10 +147,13 @@ public function createJob(QueueInterface $queue, User $user)
 Use third parameter of `QueueInterface->push()` to specify additional job options. Options must be specified as 
 `Spiral\Jobs\Options` object. To run job with 60 seconds delay:
 
-
 ```php
+use Spiral\Jobs\Options;
+
+// ...
+
 public function createJob(QueueInterface $queue)
 {
-    $queue->push(SampleJob::class, ['value' => 123]);
+    $queue->push(SampleJob::class, ['value' => 123], Options::delayed(60));
 }
 ```
