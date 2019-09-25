@@ -3,6 +3,9 @@ You can run `spiral/jobs` as a standalone extension.
 
 > Make sure to read [Running Jobs](/queue/jobs.md) to understand the principles of job dispatching. The extension configuration is the same as described [here](/queue/configuration.md).
 
+## Installation
+The RoadRunner build with enabled jobs is available [here](https://github.com/spiral/framework/releases).
+
 ## PHP Worker
 You would have to create a PHP worker in order to consume tasks from the queue. The primary class you have to implement is 
 `Spiral\Jobs\HandlerRegistryInterface` which is responsible for providing job handler for a given job type.
