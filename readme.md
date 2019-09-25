@@ -85,7 +85,7 @@
     * Installation and Configuration
     * Basic Usage
     * Inheritance
-    * Components
+    * Components and Props
     * Directives
     * [AST Modifications](stempler/visitors.md)
 * Internalization
