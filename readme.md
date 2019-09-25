@@ -65,9 +65,8 @@
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)
     * [Console Commands](queue/commands.md)
-    * [PHP SDK](queue/php.md)
+    * [Running Jobs](queue/jobs.md)
     * Standalone Usage
-    * Running Jobs
     * Golang Consumers
     * Scheduling Tasks
 * GRPC API
