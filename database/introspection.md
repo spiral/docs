@@ -33,7 +33,9 @@ foreach ($database->getTables() as $table) {
 ```
 
 ## Reading table properties using AbstractTable
-The AbstractTable provides low level access to table information such as column types (internal and abstract), indexes, foreign keys and etc. You can use this information to perform database export, build your own ORM or migration mechanism (see [schema declaration](/v1.0.0/databasebase/declaration.md)).
+The AbstractTable provides low level access to table information such as column types (internal and abstract), indexes,
+foreign keys and etc. You can use this information to perform database export, build your own ORM or migration mechanism 
+(see [schema declaration](/database/declaration.md)).
 
 Table primary keys:
 
@@ -54,13 +56,13 @@ foreach ($schema->getIndexes() as $index) {
 Table foreign keys (references):
 
 ```php
-foreach ($schema->getForeigns() as $foreign) {
-    dump($foreign->getColumns());      //Local columns name
-    dump($foreign->getForeignTable()); //Global table name!
+foreach ($schema->getForeignKeys() as $foreign) {
+    dump($foreign->getColumns());      // local columns name
+    dump($foreign->getForeignTable()); // global table name!
     dump($foreign->getForeignKeys());
 
-    dump($foreign->getDeleteRule());   //NO ACTION, CASCADE
-    dump($foreign->getUpdateRule());   //NO ACTION, CASCADE
+    dump($foreign->getDeleteRule());   // NO ACTION, CASCADE
+    dump($foreign->getUpdateRule());   // NO ACTION, CASCADE
 }
 ```
 
@@ -72,23 +74,24 @@ Table columns:
 foreach ($schema->getColumns() as $column) {
     dump($column->getName());
 
-    dump($column->getType());          //Internal database type
-    dump($column->abstractType());     //Abstract type like string, bigInt, enum, text and etc.
-    dump($column->phpType());          //PHP type: int, float, string, bool
+    dump($column->getInternalType());  // Internal database type
+    dump($column->getAbstractType());  // Abstract type like string, bigInt, enum, text and etc.
+    dump($column->getType());          // PHP type: int, float, string, bool
 
-    dump($column->getDefaultValue());  //Can be instance of SqlFragment
+    dump($column->hasDefaultValue()); 
+    dump($column->getDefaultValue());  // Can be instance of Fragment
     
-    dump($column->getSize());          //Only for strings and decimal values
+    dump($column->getSize());          // Only for strings and decimal values
 
-    dump($column->getPrecision());     //Decimals only
-    dump($column->getScale());         //Decimals only
+    dump($column->getPrecision());     // Decimals only
+    dump($column->getScale());         // Decimals only
 
     dump($column->isNullable());
-    dump($column->getEnumValues());    //Only for enums
+    dump($column->getEnumValues());    // Only for enums
 
     dump($column->getConstraints());
 
-    dump($column->sqlStatement());     //Column creation syntax
+    dump($column->sqlStatement());     // Column creation syntax
 }
 ```
 
@@ -102,10 +105,10 @@ You can also use console commands to get information about configured tables and
 Command         | Description 
 ---             | ---
 db:list         | Get list of databases, their tables and records count.
-db:describe     | View table schema of default or specific database.
+db:table        | View table schema of default or specific database.
 
 ```
-> ./spiral.cli db:describe people --database=postgres
+> ./spiral.cli db:table people --database=postgres
 Columns of postgres.people:
 +---------+-------------------------+----------------+-----------+------------------------------------+
 | Column: | Database Type:          | Abstract Type: | PHP Type: | Default Value:                     |
