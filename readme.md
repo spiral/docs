@@ -118,7 +118,7 @@
     * Auto-Configuration
     * Performance Tuning
     * Docker and Kubernetes
-    * Custom Dispatchers
+    * [Custom Dispatcher](advanced/custom-dispatcher.md)
 * Extensions
     * [Dotenv](extension/dotenv.md)   
     * [Monolog](extension/monolog.md)
