@@ -5,7 +5,7 @@ you only need to run `composer require`, the Golang will require you to build yo
 > Check [Awesome Go](https://github.com/avelino/awesome-go) to find some inspiration.
 
 In this tutorial, we will show how to integrate https://github.com/russross/blackfriday library to the application server and
-define the RPC interface for your application. 
+write PHP SDK for your application. 
 
 > Attention, this article excepts that you are familiar with the Golang programming language.
 
