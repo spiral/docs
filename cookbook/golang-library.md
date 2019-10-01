@@ -54,6 +54,8 @@ rr.Container.Register(markdown.ID, &markdown.Service{})
 
 > Read more about RoadRunner services [here](https://roadrunner.dev/docs/beep-beep-service).
 
+Build and start your application in order to active the service.
+
 ## PHP SDK
 You can invoke newly created service immediately via `Spiral\Goridge\RPC`: 
 
