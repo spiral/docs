@@ -34,6 +34,7 @@
     * Queue and Jobs
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * [Integrate Golang service to PHP via RPC](cookbook/golang-library.md)
+    * Write an Extension       
     * Testing Application
 * Components
     * Files and Directories
@@ -115,8 +116,6 @@
     * Handle Exceptions
     * XDebug
 * Advanced
-    * Playing with App Architecture
-    * Auto-Configuration
     * Performance Tuning
     * Docker and Kubernetes
     * [Custom Dispatcher](advanced/custom-dispatcher.md)
