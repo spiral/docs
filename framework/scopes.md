@@ -8,7 +8,8 @@ as global objects.
 
 ## Explanation
 While processing some user request the context-specific data is located in IoC scope, available in the container only for a limited
-period of time. Such operation is performed using `Spiral\Core\ScopeInterface`->`runScope` method.
+period of time. Such operation is performed using `Spiral\Core\ScopeInterface`->`runScope` method. Default spiral container
+`Spiral\Core\Container` implements this interface.
 
 ```php
 $container->runScope([
