@@ -1,11 +1,11 @@
-# Cookbook - Integrating Golang Library
+# Cookbook - Integrate Golang service to PHP via RPC
 You are able to extend the functionality of your application by including PHP or Golang libraries. While for the PHP library
 you only need to run `composer require`, the Golang will require you to build your own version of [application server](/framework/application-server.md).
 
-> Check [Awesome Go](https://github.com/avelino/awesome-go) to find inspiration.
+> Check [Awesome Go](https://github.com/avelino/awesome-go) to find some inspiration.
 
 In this tutorial, we will show how to integrate https://github.com/russross/blackfriday library to the application server and
-define the RPC interface for your application. 
+write PHP SDK for your application. 
 
 > Attention, this article excepts that you are familiar with the Golang programming language.
 
@@ -16,8 +16,7 @@ Make sure to require the go module dependency first:
 $ go get github.com/russross/blackfriday
 ```
 
-We are able to create our service now since our service doesn't need any configuration we can locate all the code in
-a single file `markdown/service.go`:
+Since our service doesn't need any configuration we can locate all the code in a single file `markdown/service.go`:
 
 ```go
 package markdown
@@ -29,6 +28,7 @@ import (
 
 const ID = "markdown"
 
+// to be registered in app server
 type Service struct{}
 
 func (s *Service) Init(rpc *rpc.Service) (bool, error) {
@@ -39,6 +39,7 @@ func (s *Service) Init(rpc *rpc.Service) (bool, error) {
 	return true, nil
 }
 
+// to be called via RPC
 type rpcService struct{}
 
 func (s *rpcService) Convert(input []byte, output *[]byte) error {
@@ -54,6 +55,8 @@ rr.Container.Register(markdown.ID, &markdown.Service{})
 ```
 
 > Read more about RoadRunner services [here](https://roadrunner.dev/docs/beep-beep-service).
+
+Build and start your application in order to activate the service.
 
 ## PHP SDK
 You can invoke newly created service immediately via `Spiral\Goridge\RPC`: 
