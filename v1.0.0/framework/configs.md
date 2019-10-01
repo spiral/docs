@@ -65,5 +65,3 @@ public function getOption()
     return $this->config['option'];
 }
 ```
-
-> All created configs are cached in `ConfigFactory`, use `flushCache()` to reset such cache.

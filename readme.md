@@ -87,7 +87,7 @@
     * [AST Modifications](stempler/visitors.md)
 * Internalization
     * Installation and Configuration
-    * Indexation and Exporting
+    * Import and Export
     * Translate Views
     * Say Trait
 * DBAL
