@@ -7,7 +7,7 @@ such requests by using global IoC container as context carrier which allows you 
 as global objects.
 
 ## Explanation
-While processing some user request the context-specific data is located in IoC scope, available in the container only for a limited
+While processing some user request the context-specific data is located in the IoC scope, available in the container only for a limited
 period of time. Such operation is performed using `Spiral\Core\ScopeInterface`->`runScope` method. Default spiral container
 `Spiral\Core\Container` implements this interface.
 
@@ -33,11 +33,11 @@ public function doSomething(UserContext $user)
 ```
 
 In short, you can receive active context from container or injection inside the IoC scope as you would normally do
-for any normal dependency but you must not store it between scopes.
+for any normal dependency but you **must not store** it between scopes.
 
-## Combination with Singleton Services
-Note, IoC scopes only exist for short period of time while processing user request, you are **not allowed** to store
-values received from scope inside any of your singleton services.
+## Context Managers
+As mentioned above you are not allowed to store any reference to the scoped instance, the following code is invalid and will
+cause controller to lock on first scope value:
 
 ```php
 class HomeController implements SingletonInterface
@@ -51,13 +51,8 @@ class HomeController implements SingletonInterface
 }
 ``` 
 
-## Context Shortcuts
-The framework provides a set of wrappers which you are able to use in singleton services and request as constructor arguments,
-while internally the data is resolved from active container scope. 
-
-> The good example is `Spiral\Http\Request\InputManager` which operates as accessor to `Psr\Http\Message\ServerRequestInterface`.
-
-The simple context wrapper can be written as follows:
+Instead, it is recommended to use objects specifically crafted to provide access to IoC scopes from singletons - Context 
+Managers. The simple context manager can be written as follows:
 
 ```php
 class UserManager 
@@ -82,7 +77,7 @@ class UserManager
 }
 ```
 
-You are able to use this wrapper in any of your services, including singletons.
+You are able to use this manager in any of your services, including singletons.
 
 ```php
 class HomeController implements SingletonInterface
@@ -95,3 +90,5 @@ class HomeController implements SingletonInterface
     }
 }
 ```
+
+> The good example is `Spiral\Http\Request\InputManager` which operates as accessor to `Psr\Http\Message\ServerRequestInterface`.
