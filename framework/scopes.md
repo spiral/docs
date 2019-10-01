@@ -23,7 +23,7 @@ $container->runScope([
 
 > Framework will guarantee that scope is clean after the execution, even in case of any exception.
 
-You can receive values set in scope directly from the container or as method injections in your services/controllers:
+You can receive values set in scope directly from the container or as method injections in your services/controllers while calling then **inside the IoC scope**:
 
 ```php
 public function doSomething(UserContext $user)
