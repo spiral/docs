@@ -1,4 +1,4 @@
-# Cookbook - Integrating Golang Library
+# Cookbook - Calling Golang from PHP via RPC
 You are able to extend the functionality of your application by including PHP or Golang libraries. While for the PHP library
 you only need to run `composer require`, the Golang will require you to build your own version of [application server](/framework/application-server.md).
 
