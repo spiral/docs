@@ -16,8 +16,7 @@ Make sure to require the go module dependency first:
 $ go get github.com/russross/blackfriday
 ```
 
-We are able to create our service now since our service doesn't need any configuration we can locate all the code in
-a single file `markdown/service.go`:
+Since our service doesn't need any configuration we can locate all the code in a single file `markdown/service.go`:
 
 ```go
 package markdown
