@@ -12,7 +12,8 @@ period of time. Such operation is performed using `Spiral\Core\ScopeInterface`->
 `Spiral\Core\Container` implements this interface.
 
 ```php
-$container->runScope([
+$container->runScope(
+    [
         UserContext::class => $user
     ],
     function () use($container) {
