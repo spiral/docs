@@ -7,7 +7,7 @@ you only need to run `composer require`, the Golang will require you to build yo
 In this tutorial, we will show how to integrate https://github.com/russross/blackfriday library to the application server and
 write PHP SDK for your application. 
 
-> Attention, this article excepts that you are familiar with the Golang programming language.
+> Attention, this article expects that you are familiar with the Golang programming language.
 
 ## RoadRunner service
 Make sure to require the go module dependency first:
