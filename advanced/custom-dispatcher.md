@@ -1,6 +1,5 @@
 # Advanced - Custom Dispatcher
-It is possible to invoke application kernel using a custom data source, for example, Kafka, NSQ or attach to user-defined
-interrupt. In this section, we will try to demonstrate how to write RoadRunner service and kernel dispatcher to consume
+It is possible to invoke application kernel using a custom data source, for example, Kafka, state-machine events or attach to user-defined interrupt. In this section, we will try to demonstrate how to write RoadRunner service and kernel dispatcher to consume
 data from this service. In this example, we will be sending "ticks" to the kernel every second.
 
 > Attention, make sure to read about [application server](/framework/application-server.md) first. This article expects
