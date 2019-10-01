@@ -32,7 +32,7 @@
     * MVC Application
     * Queue and Jobs
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
-    * Integrating Golang library
+    * [Integrating Golang library](cookbook/golang-library.md)
     * Testing Application
 * Components
     * Files and Directories
