@@ -28,6 +28,7 @@ import (
 
 const ID = "markdown"
 
+// to be registered in app server
 type Service struct{}
 
 func (s *Service) Init(rpc *rpc.Service) (bool, error) {
@@ -38,6 +39,7 @@ func (s *Service) Init(rpc *rpc.Service) (bool, error) {
 	return true, nil
 }
 
+// to be called via RPC
 type rpcService struct{}
 
 func (s *rpcService) Convert(input []byte, output *[]byte) error {
