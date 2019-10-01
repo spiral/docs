@@ -20,7 +20,7 @@
     * [Container and Factories](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
     * Config Objects
-    * IoC scopes
+    * [IoC scopes](framework/scopes.md)
     * [Auto Wiring](framework/auto-wiring.md)
     * [Static Memory](framework/memory.md)
     * [Finalizers](framework/finalizers.md)
