@@ -88,7 +88,7 @@ class HomeController implements SingletonInterface
     
     public function __construct(UserManager $userManager)
     {
-        $this->$userManager = $userManager;
+        $this->userManager = $userManager;
     }
 }
 ```
