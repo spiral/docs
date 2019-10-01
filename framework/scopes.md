@@ -50,8 +50,9 @@ class HomeController implements SingletonInterface
 
 ## Context Shortcuts
 The framework provides a set of wrappers which you are able to use in singleton services and request as constructor arguments,
-while internally the data is resolved from active container scope. The good example is `Spiral\Http\Request\InputManager`
-which operates as gateway to `Psr\Http\Message\ServerRequestInterface`.
+while internally the data is resolved from active container scope. 
+
+> The good example is `Spiral\Http\Request\InputManager` which operates as accessor to `Psr\Http\Message\ServerRequestInterface`.
 
 The simple context wrapper can be written as follows:
 
