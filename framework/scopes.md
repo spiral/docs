@@ -32,8 +32,8 @@ public function doSomething(UserContext $user)
 }
 ```
 
-In short, you can receive active context from container or injection inside the IoC scope but you must not store it 
-between scopes.
+In short, you can receive active context from container or injection inside the IoC scope as you would normally do
+for any normal dependency but you must not store it between scopes.
 
 ## Combination with Singleton Services
 Note, IoC scopes only exist for short period of time while processing user request, you are **not allowed** to store
