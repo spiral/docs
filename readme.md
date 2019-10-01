@@ -18,8 +18,8 @@
     * [Application Server](framework/application-server.md)
     * Kernel, Environment
     * [Container and Factories](framework/container.md)
-    * Singletons
     * [Bootloaders](framework/bootloaders.md)
+    * Singletons
     * Config Objects
     * [IoC scopes](framework/scopes.md)
     * [Auto Wiring](framework/auto-wiring.md)
