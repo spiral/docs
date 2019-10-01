@@ -4,7 +4,7 @@ you are no longer allowed to treat user request as global singleton object and s
 
 Practically it means that you must explicitly request context while processing user input. Spiral framework simplifies
 such requests by using global IoC container as context carrier which allows you to call request specific instances
-as global objects.
+as global objects via context bounded scopes.
 
 ## Explanation
 While processing some user request the context-specific data is located in the IoC scope, available in the container only for a limited
