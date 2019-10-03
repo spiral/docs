@@ -31,7 +31,7 @@
     * [Prototyping](cookbook/prototype.md)
     * Database Scaffolding
     * MVC Application
-    * Queue and Jobs
+    * Background Jobs
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * Write an Extension       
