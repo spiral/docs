@@ -155,3 +155,27 @@ class MyBootloader extends Bootloader
 ```
 
 > Note, you are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another bootloader). The framework would not allow you to change any configuration value after component initialization.
+
+## Cascade Bootloading
+You are able to control bootloading process using bootloader itself, simply request `Spiral\Boot\BootloadManager`:
+
+```php
+namespace App\Bootloader;
+
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Boot\BootloadManager;
+use Spiral\Bootloader\DebugBootloader;
+
+class AppBootloader extends Bootloader
+{
+    public function boot(BootloadManager $bootloadManager)
+    {
+        if (env('DEBUG')) {
+            $bootloadManager->bootload([
+                DebugBootloader::class
+            ]);
+        }
+    }
+}
+```
