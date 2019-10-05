@@ -70,7 +70,7 @@ Where MyClass is:
 ```php
 class MyClass 
 {
-    public function __constrcut(string $name)
+    public function __construct(string $name)
     {
         //...
     }
