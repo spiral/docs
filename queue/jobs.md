@@ -157,3 +157,6 @@ public function createJob(QueueInterface $queue)
     $queue->push(SampleJob::class, ['value' => 123], Options::delayed(60));
 }
 ```
+
+## Debugging
+Make sure to user `dumprr` function, output to STDOUT will break the communication with application server. If you MUST write to the STDOUT use alternative relay communication method, such as unix or TCP sockets.
