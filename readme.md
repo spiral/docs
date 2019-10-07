@@ -95,6 +95,7 @@
 * DBAL
     * Installation and Configuration
     * Databases and Drivers
+    * Database Isolation
     * Query Builders
     * [Transactions](database/transactions.md)
     * [Schema Introspection](database/introspection.md)
