@@ -110,6 +110,11 @@
 * Storage Engine 
     * Installation and Configuration
     * Supported Drivers
+ * WebSocket Broadcasting
+    * Installation and Configuration
+    * JavaScript Client
+    * Topics and Authorization
+    * Standalone Usage
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * RoadRunner Gotchas
