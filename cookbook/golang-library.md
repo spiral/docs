@@ -113,3 +113,7 @@ public function index(Blackfriday $bf)
     return $bf->convert(file_get_contents('README.md'));
 }
 ```
+
+## Performance
+The selected library in this example shows double the performance of classic https://github.com/erusev/parsedown. Read how to optimize
+performance even more by switching to unix sockets for RCP communications in **Performance Tuning** section.
