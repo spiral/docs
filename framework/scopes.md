@@ -56,7 +56,7 @@ Instead, it is recommended to use objects specifically crafted to provide access
 Managers. The simple context manager can be written as follows:
 
 ```php
-class UserManager 
+class UserScope 
 {
     private $container;
     
@@ -83,11 +83,11 @@ You are able to use this manager in any of your services, including singletons.
 ```php
 class HomeController implements SingletonInterface
 {
-    private $userManager; // allowed
+    private $userScope; // allowed
     
-    public function __construct(UserManager $userManager)
+    public function __construct(UserScope $userManager)
     {
-        $this->userManager = $userManager;
+        $this->userScope = $userManager;
     }
 }
 ```
