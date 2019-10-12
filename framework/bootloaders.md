@@ -113,7 +113,7 @@ class MyBootloader extends Bootloader
 {
     public function boot(RouterInterface $router)
     {
-        $router->addRoute(
+        $router->setRoute(
             'my-route',
             new Route('/<action>', new Controller(MyController::class))
         );
