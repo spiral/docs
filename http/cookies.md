@@ -139,3 +139,23 @@ public function boot(CookiesBootloader $cookies)
     $cookies->whitelistCookie('CustomCookie');
 }
 ```
+
+To perform deeper configuration on cookie component settings create config file `cookies` in `app/config` directory:
+
+```php
+<?php
+declare(strict_types=1);
+
+use Spiral\Cookies\Config\CookiesConfig;
+
+return [
+    // by default all cookies will be set as .domain.com
+    'domain'   => '.%s',
+    
+    // protection method
+    'method'   => CookiesConfig::COOKIE_ENCRYPT,
+    
+    // whitelisted cookies (no ecnrypt/descrypt)
+    'excluded' => ['PHPSESSID', 'csrf-token'] 
+];
+```
