@@ -127,5 +127,6 @@
     * Docker and Kubernetes
     * [Custom Dispatcher](advanced/custom-dispatcher.md)
 * Extensions
+    * Code Style
     * [Dotenv](extension/dotenv.md)   
     * [Monolog](extension/monolog.md)
