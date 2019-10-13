@@ -129,3 +129,38 @@ class MyService
 ```
 
 Make sure to run `php app.php update` or `php app.php prototype:dump` to auto-locate your service.
+
+## Available Shortcuts
+There are number of component shortcuts available for your usage:
+
+Property | Component
+--- | ---
+app | App\App (or class which implements `Spiral\Boot\Kernel`)
+classLocator | Spiral\Tokenizer\ClassesInterface
+console | Spiral\Console\Console
+container | Psr\Container\ContainerInterface
+db | Spiral\Database\DatabaseInterface
+dbal | Spiral\Database\DatabaseProviderInterface
+encrypter | Spiral\Encrypter\EncrypterInterface
+env | Spiral\Boot\EnvironmentInterface
+files | Spiral\Files\FilesInterface
+guard | Spiral\Security\GuardInterface
+http | Spiral\Http\Http
+i18n | Spiral\Translator\TranslatorInterface
+input | Spiral\Http\Request\InputManager
+session | Spiral\Session\SessionScope
+cookies | Spiral\Cookies\CookieManager
+logger | Psr\Log\LoggerInterface
+logs | Spiral\Logger\LogsInterface
+memory | Spiral\Boot\MemoryInterface
+orm | Cycle\ORM\ORMInterface
+paginators | Spiral\Pagination\PaginationProviderInterface
+queue | Spiral\Jobs\QueueInterface
+request | Spiral\Http\Request\InputManager
+response | Spiral\Http\ResponseWrapper
+router | Spiral\Router\RouterInterface
+server | Spiral\Goridge\RPC
+snapshots | Spiral\Snapshots\SnapshotterInterface
+'storage | Spiral\Storage\StorageInterface
+validator | Spiral\Validation\ValidationInterface
+views | Spiral\Views\ViewsInterface
