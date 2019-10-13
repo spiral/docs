@@ -4,6 +4,32 @@ Default application skeleton enables cookie integration by default.
 If you need to enable cookies it in alternative bundle require composer package `spiral/cookies` and add 
 bootloader `Spiral\Bootloader\Bootloader\Http\CookiesBootloader` into your app.
 
+## Cookie Manager
+The easiest way to manage cookies in Spiral is to obtain instance of `Spiral\Cookies\CookieManager`. This instance can be stored inside
+singletong services and controllers and provide access to active request scope.
+
+```php
+public function index(CookieManager $cookies)
+{
+    dump($cookies->getAll());
+    $cookies->set('name', 'value'); // read about more options down below
+}
+```
+
+If you use `spiral/prototype` extension you can also access cookie managed using `cookies` prototype property:
+
+```php
+use PrototypeTrait;
+
+public function index()
+{
+    dump($this->cookies->getAll());
+    $this->cookies->set('name', 'value'); // read about more options down below
+}
+```
+
+Read more about low-level cookie managent down below.
+
 ## Read Cookie
 By default, the framework will encrypt and decrypt all cookies values using ENV key `ENCRYPTER_KEY`. Changing this value will
 automatically invalidate all cookie values set for all users.
