@@ -140,7 +140,7 @@ public function boot(CookiesBootloader $cookies)
 }
 ```
 
-To perform deeper configuration on cookie component settings create config file `cookies` in `app/config` directory:
+To perform deeper configuration on cookie component create config file `cookies.php` in `app/config` directory:
 
 ```php
 <?php
