@@ -6,7 +6,7 @@ bootloader `Spiral\Bootloader\Bootloader\Http\CookiesBootloader` into your app.
 
 ## Cookie Manager
 The easiest way to manage cookies in Spiral is to obtain instance of `Spiral\Cookies\CookieManager`. This instance can be stored inside
-singletong services and controllers and provide access to active request scope.
+singleton services and controllers and provide access to active request scope.
 
 ```php
 public function index(CookieManager $cookies)
