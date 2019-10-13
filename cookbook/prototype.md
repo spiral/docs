@@ -161,6 +161,6 @@ response | Spiral\Http\ResponseWrapper
 router | Spiral\Router\RouterInterface
 server | Spiral\Goridge\RPC
 snapshots | Spiral\Snapshots\SnapshotterInterface
-'storage | Spiral\Storage\StorageInterface
+storage | Spiral\Storage\StorageInterface
 validator | Spiral\Validation\ValidationInterface
 views | Spiral\Views\ViewsInterface
