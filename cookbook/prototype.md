@@ -25,7 +25,7 @@ class App extends Kernel
 }
 ```
 
-> Attention, the extension will invoke `TokenierConfig`, make sure it add it after the end of bootload chain.
+> Attention, the extension will invoke `TokenizerConfig`, make sure it add it after the end of bootload chain.
 
 Now you can run `php app.php configure` to generate IDE tooltips.
 
