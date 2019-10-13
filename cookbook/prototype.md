@@ -1,5 +1,5 @@
 # Cookbook - Prototyping
-Spiral Framework comes with development extension which speeds up the development of application services, controllers,
+Spiral Framework comes with a development extension which speeds up the development of application services, controllers,
 middleware and other classes via AST modification (a.k.a. it writes code for you). Extension includes IDE friendly tooltips for most common framework components and Cycle Repositories.
 
 ## Installation
