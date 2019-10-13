@@ -119,7 +119,7 @@ public function index(UserContext $ctx)
 }
 ```
 
-## Alternative Scope Resolution
+## Non-Direct Scope Configuration
 You can use already exists requets scope to carry user values. Create bootloader providing access method for the context specific value:
 
 ```php
