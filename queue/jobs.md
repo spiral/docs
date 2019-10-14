@@ -112,6 +112,8 @@ For example, we can modify the job to accept Cycle ORM entity:
 ```php
 class SampleJob extends JobHandler
 {
+    use PrototypeTrait;
+
     public function invoke(User $user)
     {
         dumprr($user);
