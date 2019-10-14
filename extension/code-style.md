@@ -1,6 +1,6 @@
 # Extensions - Code Style
-Spiral framework ships with extension intended to unify coding style across components and your applications. The extension
-code style is strictly based on [PSR-12](https://www.php-fig.org/psr/psr-12/) with no exceptions.
+Spiral framework ships with an extension intended to unify the coding style across it's components and your applications. 
+The extension code style is based on strict [PSR-12](https://www.php-fig.org/psr/psr-12/) with no exceptions.
 
 The extension repository: https://github.com/spiral/code-style
 
