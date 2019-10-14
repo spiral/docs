@@ -2,7 +2,7 @@
 Default application skeleton enables cookie integration by default.
  
 If you need to enable cookies it in alternative bundle require composer package `spiral/cookies` and add 
-bootloader `Spiral\Bootloader\Bootloader\Http\CookiesBootloader` into your app.
+bootloader `Spiral\Bootloader\Http\CookiesBootloader` into your app.
 
 ## Cookie Manager
 The easiest way to manage cookies in Spiral is to obtain instance of `Spiral\Cookies\CookieManager`. This instance can be stored inside
