@@ -19,7 +19,7 @@
     * Kernel, Environment
     * [Container and Factories](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
-    * Singletons
+    * [Singletons](framework/singletons.md)
     * Config Objects
     * [IoC scopes](framework/scopes.md)
     * [Auto Wiring](framework/auto-wiring.md)
