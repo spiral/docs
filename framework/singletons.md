@@ -1,5 +1,5 @@
 # Framework - Singletons
-A lot of internal application services represent in a memory in a form of singleton objects. Such objects does not
+A lot of internal application services reside  in a memory in the form of singleton objects. Such objects does not
 implement static `getIntance` but rather configured to remain in container **between requests**.
 
 Declaring your service or controller as singleton is the shortest path to get small performance improvement, however,
