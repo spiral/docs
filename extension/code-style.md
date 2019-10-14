@@ -16,7 +16,7 @@ $ composer require --dev spiral/code-style
 ```
 
 ## Check the code
-To check to code-style compliance: 
+To check code-style compliance: 
 
 ```
 # vendor/bin/spiral-cs check <dir1> <dir2> <file1>....
