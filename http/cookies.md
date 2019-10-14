@@ -5,8 +5,7 @@ If you need to enable cookies it in alternative bundle require composer package 
 bootloader `Spiral\Bootloader\Http\CookiesBootloader` into your app.
 
 ## Cookie Manager
-The easiest way to manage cookies in Spiral is to obtain instance of `Spiral\Cookies\CookieManager`. This instance can be stored inside
-singleton services and controllers and provide access to active request scope.
+The easiest way to manage cookies in Spiral is to obtain an instance of `Spiral\Cookies\CookieManager`. This instance can be stored inside singleton services and controllers and provide access to active request scope.
 
 ```php
 public function index(CookieManager $cookies)
