@@ -41,7 +41,7 @@
     * Code Generation
     * [Data Encryption](component/encrypter.md)
     * Validation
-    * Pagination
+    * [Pagination](component/pagination.md)
     * RBAC Authorization
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
