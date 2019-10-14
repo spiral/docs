@@ -15,7 +15,7 @@ public function index(CookieManager $cookies)
 }
 ```
 
-If you use `spiral/prototype` extension you can also access cookie managed using `cookies` prototype property:
+If you use `spiral/prototype` extension you can also access `CookieManager` using `cookies` prototype property:
 
 ```php
 use PrototypeTrait;
