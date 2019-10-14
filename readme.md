@@ -59,7 +59,6 @@
     * [Cookies](http/cookies.md)
     * Session
     * CSRF protection
-    * WebSocket Broadcasting
 * Request/Filter Objects
     * Installation and Configuration
     * Filter Entity
