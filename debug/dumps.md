@@ -1,4 +1,4 @@
-# Dumping Variables
+# Debug - Dumping Variables
 Use `Spirl\Debug\Dumper` class or function `dump` to view content of your variables and instances without xDebug:
 
 ```php

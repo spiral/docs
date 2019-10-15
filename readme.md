@@ -120,8 +120,8 @@
     * [Dumping Variables](debug/dumps.md)
     * RoadRunner Gotchas
     * Logging
-    * Handle Exceptions
-    * XDebug   
+    * [Handling Exceptions](debug/exceptions.md)
+    * XDebug
 * Extensions
     * [Code Style](extension/code-style.md)
     * [Dotenv](extension/dotenv.md)   
