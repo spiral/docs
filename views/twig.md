@@ -52,7 +52,7 @@ public function index()
 }
 ```
 
-> You can freely use twig include and extends directives.
+> You can freely use twig `include` and `extends` directives.
 
 To access the value from the IoC scope:
 
