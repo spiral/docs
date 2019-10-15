@@ -77,6 +77,8 @@ class WhoopsBootloader extends Bootloader
 
 You can use this approach to handle suppress specific type of exceptions in your application.
 
+> You can also handle domain specific exceptions in `Spiral\Core\CoreInterface`.
+
 ## Snapshots
 In addition to custom middleware framework provides the unified way to handle exceptions registration (including fatal exceptions).
 Such functionality is delivered by `spiral/snaphots` package and intended for exception registration in external monitoring
