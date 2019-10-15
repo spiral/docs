@@ -12,12 +12,13 @@ $ composer require spiral/twig-bridge
 The extension can be enabled using `Spiral\Twig\Bootloader\TwigBootloader`.
 
 ```php
-// ...
-Spiral\Bootloader\Views\ViewsBootloader::class,
-Spiral\Bootloader\Views\TranslatedCacheBootloader::class, // to keep translated views in different cache files
-Spiral\Twig\Bootloader\TwigBootloader::class,
-
-// ...
+protected const LOAD = [
+    // ...
+    Spiral\Bootloader\Views\ViewsBootloader::class,
+    Spiral\Bootloader\Views\TranslatedCacheBootloader::class, // to keep translated views in different cache files
+    Spiral\Twig\Bootloader\TwigBootloader::class,
+    // ...
+];
 ```
 
 You can add any custom extension to Twig via `addExtension` method of `TwigBootloader`:
