@@ -35,6 +35,7 @@
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * Write an Extension       
+    * [Custom Dispatcher](cookbook/custom-dispatcher.md)
     * Testing Application
 * Components
     * Files and Directories
@@ -120,11 +121,7 @@
     * RoadRunner Gotchas
     * Logging
     * Handle Exceptions
-    * XDebug
-* Advanced
-    * Performance Tuning
-    * Docker and Kubernetes
-    * [Custom Dispatcher](advanced/custom-dispatcher.md)
+    * XDebug   
 * Extensions
     * [Code Style](extension/code-style.md)
     * [Dotenv](extension/dotenv.md)   
