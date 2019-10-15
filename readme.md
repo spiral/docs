@@ -79,7 +79,7 @@
     * Installation and Configuration
     * View object
     * [Plain PHP templates](views/native.md)
-    * Twig templates
+    * [Twig templates](views/twig.md)
 * Stempler templates
     * Installation and Configuration
     * Basic Usage
