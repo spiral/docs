@@ -50,7 +50,7 @@
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
 * HTTP
-    * Installation and Configuration
+    * [Installation and Configuration](http/configuration.md)
     * Request Lifecycle
     * Request and Response
     * Routing

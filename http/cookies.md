@@ -1,4 +1,4 @@
-# Web and HTTP - Cookies
+# HTTP - Cookies
 Default application skeleton enables cookie integration by default.
  
 If you need to enable cookies it in alternative bundle require composer package `spiral/cookies` and add 
