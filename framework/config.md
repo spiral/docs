@@ -74,7 +74,7 @@ class AppConfig extends InjectableConfig
 ``` 
 
 The base class `Spiral\Core\InjectableConfig` allows you to request this object immediately in your code without any
-IoC container configuration. The constant `CONFIG` contains the name of the configuration section.
+IoC container configuration. The constant `CONFIG` contains the name of the configuration file.
 
 ```php
 use App\Config\AppConfig;
