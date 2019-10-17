@@ -207,3 +207,5 @@ To observe how many pages are being scraped via interactive console:
 ```bash
 $ ./spiral jobs:stat -i
 ```
+
+> The demo solution will scan some pages multiple times, use proper database or lock mechanism to avoid that.
