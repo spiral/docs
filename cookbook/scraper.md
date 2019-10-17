@@ -23,14 +23,14 @@ spiral/scaffolder        | Faster scaffolding (dev only)
 spiral/prototype         | Faster prototyping (dev only)
 paquettg/php-html-parser | Parsing HTML
 
-To install all needed packaged and a version of RoadRunner server:
+To install all needed packages and download app server:
 
 ```bash
 $ composer require spiral/jobs spiral/scaffolder spiral/prototype paquettg/php-html-parser
 $ ./vendor/bin/spiral get 
 ```
 
-Active the installed extensions in your `App\App`:
+Activate the installed extensions in your `App\App`:
 
 ```php
 namespace App;
@@ -53,10 +53,10 @@ class App extends Kernel
 }
 ```
 
-Make sure to run `php app.php configure` to make sure to verify the installation.
+Make sure to run `php app.php configure` to ensure proper installation.
 
 ## Configure App Server
-Let's configure application server with one default queue in memory via `.rr.yaml` file in a root of the project:
+Let's configure application server with one default queue in memory. Create `.rr.yaml` file in a root of the project:
 
 ```yaml
 jobs:
@@ -80,10 +80,10 @@ jobs:
 ```
 
 ## Create Job Handler
-Now, let's write a simple job handler which will scan website, get the HTML content and jump by links on a specific depth.
-All the content will be stored in application runtime directory.
+Now, let's write a simple job handler which will scan website, get the HTML content and jump by links util the specific
+depth is reached. All the content will be stored in `runtime` directory.
 
-We can create our JobHandler via `php app.php create:job scrape`. We are not going to use CURL for simplicity.
+> Create JobHandler via `php app.php create:job scrape`. We are not going to use CURL for simplicity.
 
 ```php
 namespace App\Job;
@@ -158,7 +158,7 @@ class ScrapeJob extends JobHandler
 ```
 
 ## Create command
-Let's create command to start scraping `php app.php create:command scrape`:
+Create command to start scraping `php app.php create:command scrape`:
 
 ```php
 namespace App\Command;
@@ -190,19 +190,19 @@ class ScrapeCommand extends Command
 ```
 
 ## Test it
-Let's launch application server first:
+Launch application server first:
 
 ```bash
 $ ./spiral serve -v -d
 ```
 
-We can now scape any URL via console command (keep the server running):
+Scape any URL via console command (keep the server running):
 
 ```bash
 $ php app.php scrape https://some-website.com/ 5
 ```
 
-We can observe how many pages are being scraped via interactive console:
+To observe how many pages are being scraped via interactive console:
 
 ```bash
 $ ./spiral jobs:stat -i
