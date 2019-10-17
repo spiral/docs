@@ -174,7 +174,7 @@ class ValueBootloader extends Bootloader
 }
 ```
 
-> Make sure to locate the bootloader after the `AppBootloader`.
+> Make sure to locate the bootloader after the `AppBootloader` or use `DEPENDENCIES` constant.
 
 ## Config Lifecycle
 The framework provides security mechanism to make sure that you are not changing config values after the config object
