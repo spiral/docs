@@ -43,7 +43,7 @@ It is not very convenient to read the configuration in a form of arrays. The fra
 read your values. We can create this class manually or automatically generate it via `spiral/scaffolder`:
 
 ```php
-$ php app.php create:config app -r app
+$ php app.php create:config app -r
 ``` 
 
 > Use option `-r` to reverse engineer the configuration structure.
