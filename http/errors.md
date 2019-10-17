@@ -42,7 +42,7 @@ be displayed.
 > Do not deploy your application to production with enabled debug mode.
 
 ## Client Exceptions
-There a number of exceptions you can throw from your controllers to cause HTTP level error page, for example
+There a number of exceptions you can throw from your controllers and middleware to cause HTTP level error page, for example
 we can trigger `404 Not Found` using `NotFoundException`:
 
 ```php
@@ -69,6 +69,9 @@ Code | Exception
 403 | Spiral\Http\Exception\ClientException\ForbiddenException
 404 | Spiral\Http\Exception\ClientException\NotFoundException
 500 | Spiral\Http\Exception\ClientException\ServerErrorException
+
+> Do not use http exceptions inside your services and repositories as it will couple your implementation to http dispatcher.
+> Use domain specific exceptions and their mapping to http exception instead.
 
 ## Page Renderer
 By default the middleware will use simple error page without any styles attached. To implement your own error page renderer
