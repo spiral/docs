@@ -35,9 +35,11 @@ class App extends Kernel
 ```
 
 ## Application Exceptions
-The middleware will handle application exceptions and will render them in debug friendly mode. To suppress the delivery 
+The middleware will handle application exceptions and will render them in a developer friendly mode. To suppress the delivery 
 of the exception details to the browser set the env variable `DEBUG` to `false`. In this case the default 500 error page will
 be displayed.
+
+> Do not deploy your application to production with enabled debug mode.
 
 ## Client Exceptions
 There a number of exceptions you can throw from your controllers to cause HTTP level error page, for example
