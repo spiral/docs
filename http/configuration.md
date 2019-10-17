@@ -63,6 +63,8 @@ return [
 ];
 ```
 
+> The default configuration will be used if such file does not exists.
+
 You can register middleware during the bootload phase via `HttpBootloader`:
 
 ```php
