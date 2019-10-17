@@ -1,6 +1,6 @@
 # Framework - Config Objects
 Spiral framework exposes all the underlying configuration of it's components using config objects. The core purpose of config
-objects is to separate the bootloading phase and runtime phase.
+objects is to separate the bootloading phase and runtime phase and provide easily accessible source of configuration.
 
 ![Application Control Phases](https://user-images.githubusercontent.com/796136/64906478-e213ff80-d6ef-11e9-839e-95bac78ef147.png)
 
