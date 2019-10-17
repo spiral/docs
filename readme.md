@@ -54,7 +54,7 @@
     * Request Lifecycle
     * Request and Response
     * Routing
-    * Error Pages
+    * [Error Pages](http/errors.md)
     * [Middleware](http/middleware.md)
     * Golang Middleware
     * [Cookies](http/cookies.md)
