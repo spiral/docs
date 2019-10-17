@@ -20,7 +20,7 @@
     * [Container and Factories](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
     * [Singletons](framework/singletons.md)
-    * Config Objects
+    * [Config Objects](framework/config.md)
     * [IoC scopes](framework/scopes.md)
     * [Auto Wiring](framework/auto-wiring.md)
     * [Static Memory](framework/memory.md)
