@@ -3,7 +3,7 @@ Your application will expose a number of errors and exceptions, some of which mu
 to the client and some of them don't.
 
 The HTTP component includes the default error handling middleware which can be used to intercept and log critical errors
-and request level exceptions.
+and user level exceptions.
 
 The enable such middleware add the `Spiral\Bootloader\Http\ErrorHandlerBootloader` to your application:
 
