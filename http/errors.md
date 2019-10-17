@@ -74,7 +74,7 @@ Code | Exception
 > Use domain specific exceptions and their mapping to http exception instead.
 
 ## Page Renderer
-By default the middleware will use simple error page without any styles attached. To implement your own error page renderer
+By default the middleware will use a simple error page without any styles attached. To implement your own error page renderer
 implement and bind in container the `Spiral\Http\ErrorHandler\RendererInterface` interface:
 
 ```php
