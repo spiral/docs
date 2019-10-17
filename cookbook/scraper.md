@@ -1,8 +1,8 @@
 # Cookbook - Website Scraper
-We can use Spiral Queue and local roadrunner server to implement applications different from classic web setup. In this
-tutorial we will try to implement a simple scraper application for CLI usage.
+We can use Spiral Queue and RoadRunner server to implement applications different from classic web setup. In this
+tutorial we will try to implement a simple web-scraper application for CLI usage.
 
-The scraped data will be stored in a local folder. 
+The scraped data will be stored in a `runtime` folder. 
 
 > The produced code only demonstrates the capabilities and can be improved a lot.
 
