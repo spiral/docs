@@ -93,8 +93,7 @@ in long-running applications.
 Every spiral component provides the config object you can use in your application.
 
 ## Default Configuration in Bootloader
-In many cases the default configuration might be enough for most of the applications. To avoid the need to pollute application
-files with never changed configuration use custom bootloader to define default configuration values.
+In many cases the default configuration might be enough for most of the applications. To avoid the need to create unnecessary files with never changed configuration use custom bootloader to define default configuration values.
 
 ```php
 namespace App\Bootloader;
