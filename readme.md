@@ -108,9 +108,6 @@
     * [Transactions](cycle/transactions.md)
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
-* Storage Engine 
-    * Installation and Configuration
-    * Supported Drivers
  * WebSocket Broadcasting
     * Installation and Configuration
     * JavaScript Client
