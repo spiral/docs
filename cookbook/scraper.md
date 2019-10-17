@@ -1,4 +1,4 @@
-# Cookbook - Background Jobs
+# Cookbook - Website Scraper
 We can use Spiral Queue and local roadrunner server to implement applications different from classic web setup. In this
 tutorial we will try to implement a simple scraper application for CLI usage.
 
