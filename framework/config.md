@@ -115,7 +115,7 @@ class AppBootloader extends Bootloader
 
 The file `app/config/app.php` will overwrite default configuration values. Remove this file to use the default configuration.
 
-> The overwrite is done on first level keys of configuration array.
+> The overwrite is done on the first level keys of configuration array.
 
 ## Auto-Configuration
 Some components will expose auto-configuration API to change it's settings during the application bootload time. Usually 
