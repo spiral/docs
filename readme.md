@@ -31,7 +31,7 @@
     * [Prototyping](cookbook/prototype.md)
     * Database Scaffolding
     * MVC Application
-    * [CLI Scraper](cookbook/scraper.md)
+    * [Website Scraper](cookbook/scraper.md)
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * Write an Extension       
