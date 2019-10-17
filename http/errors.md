@@ -34,7 +34,7 @@ class App extends Kernel
 }
 ```
 
-## Exceptions
+## Application Exceptions
 The middleware will handle application exceptions and will render them in debug friendly mode. To suppress the delivery 
 of the exception details to the browser set the env variable `DEBUG` to `false`. In this case the default 500 error page will
 be displayed.
