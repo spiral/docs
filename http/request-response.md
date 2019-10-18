@@ -270,8 +270,8 @@ class HomeController
 }
 ```
 
-The PSR-15 handler enabled by default provides the ability to generate the response automatically based on resulted
-string or output buffer:
+The PSR-15 handler enabled by default provides the ability to generate the response automatically based on the returned
+string or the content of output buffer:
 
 ```php
 namespace App\Controller;
