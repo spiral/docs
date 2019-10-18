@@ -121,10 +121,10 @@ We can use 'headers' input bad and `header` method in `InputManager` to access i
 ```php
 dump($input->headers->all());
 
-//Will be normalized into "Accept"
+// Will be normalized into "Accept"
 dump($input->headers->get('accept')); 
 
-//Return Accept header as array of values
+// Return Accept header as array of values
 dump($input->headers->get('accept', false));
 
 dump($input->header('accept'));
@@ -154,7 +154,7 @@ dump($input->server('server-port'));
 dump($input->data->all());
 dump($input->data('name'));
 
-//An alias
+// An alias
 dump($input->post('name'));
 ```
 
