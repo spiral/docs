@@ -207,6 +207,12 @@ dump($input->isJsonExpected());
 dump($input->remoteAddress());
 ```
 
+To access `InputBag` without the use of `__get`:
+
+```php
+dump($input->bag('data')->all());
+```
+
 ## Generate Response
 You can return an instance of `Psr\Http\Message\ResponseInterface` from your controller, it will be send directly to the user.
 
