@@ -51,7 +51,7 @@
     * [User Commands](console/commands.md)
 * HTTP
     * [Installation and Configuration](http/configuration.md)
-    * Request Lifecycle
+    * [Request Lifecycle](http/lifecycle.md)
     * Request and Response
     * Routing
     * [Error Pages](http/errors.md)
