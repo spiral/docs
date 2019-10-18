@@ -40,10 +40,9 @@ namespace App\Controller;
 
 use Nyholm\Psr7\Uri;
 use Psr\Http\Message\ServerRequestInterface;
-use Spiral\Core\Container\SingletonInterface;
 use Spiral\Http\Http;
 
-class HomeController implements SingletonInterface
+class HomeController 
 {
     public function index(Http $http, ServerRequestInterface $request)
     {
