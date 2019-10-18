@@ -54,7 +54,7 @@ class HomeController implements SingletonInterface
     public function index(ServerRequestInterface $request)
     {
         $response = $this->http->handle(
-            $request->withUri(new Uri('/home/other'))
+            $request->withUri(new Uri('/home/other')) // modify Uri of current request
         );
 
         assert((string)$response->getBody() == 'other');
