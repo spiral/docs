@@ -186,13 +186,13 @@ In addition to data methods and InputBags `InputManager` provides set of methods
 
 ```php
 //Request Uri path, will always include leading /
-dump($input->getPath());
+dump($input->path());
 
 //Active request Uri instance
-dump($input->getUri());
+dump($input->uri());
 
 //GET, POST, PUT...
-dump($input->getMethod());
+dump($input->method());
 
 //Check if connection made over https
 dump($input->isSecure());
