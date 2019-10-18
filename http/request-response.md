@@ -215,10 +215,61 @@ dump($input->bag('data')->all());
 ```
 
 ## InputInterface
+The `InputManager` does not have `get` prefix for it's methods. The reason for that is located in external package
+`spiral/filters` which require data source provider via `Spiral\Filters\InputInterface`:
 
-`Spiral\Filters\InputInterface`
+```php
+namespace Spiral\Filters;
 
-> The  `InputManager` does not have `get` prefix. This is
+// ...
+
+interface InputInterface
+{
+    /**
+     * Create version of input isolated by a given prefix.
+     *
+     * In a given examples listed method must produce same result:
+     *
+     * $input->getValue('data', 'array.value')
+     * $input->withPrefix('array')->getValue('data', 'value')
+     *
+     * @param string $prefix
+     *
+     * @param bool   $add When set to false current prefix path will be overwritten.
+     *
+     * @return InputInterface
+     */
+    public function withPrefix(string $prefix, bool $add = true): InputInterface;
+
+    /**
+     * Get input value based on it's source and name.
+     *
+     * @param string $source
+     * @param string $name
+     *
+     * @return mixed
+     *
+     * @throws InputException
+     */
+    public function getValue(string $source, string $name = null);
+}
+```
+
+The `InputManager` used as default source provider for this interface allowing you to invoke `InputManager` via short notation.
+Both approaches will produce the same set of data.
+
+```php
+public function index(InputInterface $inputSource, InputManager $inputManager)
+{
+    dump($inputManager->query('name'));
+    dump($inputSource->getValue('query', 'name'));
+
+    dump($inputManager->path());
+    dump($inputSource->getValue('path'));
+}
+```
+
+> You must activate `Spiral\Bootloader\Security\FiltersBootloader` in order to access `Spiral\Filters\InputInterface`.
 
 ## Generate Response
 You can return an instance of `Psr\Http\Message\ResponseInterface` from your controller, it will be send directly to the user.
