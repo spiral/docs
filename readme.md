@@ -52,7 +52,7 @@
 * HTTP
     * [Installation and Configuration](http/configuration.md)
     * [Request Lifecycle](http/lifecycle.md)
-    * Request and Response
+    * [Request and Response](http/request-response.md)
     * Routing
     * [Error Pages](http/errors.md)
     * [Middleware](http/middleware.md)
