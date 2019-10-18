@@ -231,7 +231,7 @@ interface InputInterface
 }
 ```
 
-The `InputManager` used as default source provider for this interface allowing you to invoke `InputManager` via short notation.
+The `InputManager` used as default source provider for this interface allowing you to invoke `InputManager` methods via short notation.
 Both approaches will produce the same set of data.
 
 ```php
@@ -244,6 +244,8 @@ public function index(InputInterface $inputSource, InputManager $inputManager)
     dump($inputSource->getValue('path'));
 }
 ```
+
+This approach used to map incoming data into Request Filter.
 
 > You must activate `Spiral\Bootloader\Security\FiltersBootloader` in order to access `Spiral\Filters\InputInterface`.
 
