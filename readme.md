@@ -56,7 +56,7 @@
     * Routing
     * [Error Pages](http/errors.md)
     * [Middleware](http/middleware.md)
-    * Golang Middleware
+    * [Golang Middleware](http/golang.md)
     * [Cookies](http/cookies.md)
     * Session
     * CSRF protection
