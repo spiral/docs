@@ -13,7 +13,7 @@ Make sure to add `Spiral\Bootloader\Jobs\JobsBootloader` to your application ker
 > Read how to setup standalone worker [here](/queue/standalone.md).
 
 ## Configuration
-Jobs extension does not require configuration on application end, however, you must specify broken connections and
+Jobs extension does not require configuration on application end, however, you must specify broker connections and
 available queue pipelines in `.rr` file. The extension configuration must be located in the `jobs` section:
 
 ```yaml
