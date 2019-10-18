@@ -1,7 +1,8 @@
 # HTTP - Request and Response
 You controllers or endpoints will require a way to access active PSR-7 request and ability to generate
-the response. In this section we will cover the use of request/responses in controllers setup, middleware
-and native PSR-15 handlers can receive PSR-7 objects directly.
+the response. In this section we will cover the use of request/responses in controllers setup. 
+
+> The middleware and native PSR-15 handlers can receive PSR-7 objects directly.
 
 ## The Request Scope
 The fastest way to get access to user request is to create `Psr\Http\Message\ServerRequestInterface` method injection.
@@ -212,6 +213,12 @@ To access `InputBag` without the use of `__get`:
 ```php
 dump($input->bag('data')->all());
 ```
+
+## InputInterface
+
+`Spiral\Filters\InputInterface`
+
+> The  `InputManager` does not have `get` prefix. This is
 
 ## Generate Response
 You can return an instance of `Psr\Http\Message\ResponseInterface` from your controller, it will be send directly to the user.
