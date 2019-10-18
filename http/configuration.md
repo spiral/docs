@@ -83,3 +83,13 @@ class AppBootloader extends Bootloader
     }
 }
 ```
+
+## Middleware
+HTTP extension include multiple middleware you might want to activate in your project:
+
+Bootloader | Middleware
+--- | ---
+Spiral\Bootloader\Http\ErrorHandlerBootloader | Hide exceptions in non debug mode and render HTTP error pages.
+Spiral\Bootloader\Http\JsonPayloadParserBootloader | Parse body of `application/json` requests.
+Spiral\Bootloader\Http\PaginationBootloader | Use request query parameters to automatically configure paginator(s).
+Spiral\Bootloader\Http\DiactorosBootloader | Use Zend/Diactoros as PSR-7 implementation (legacy).
