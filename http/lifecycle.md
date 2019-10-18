@@ -42,11 +42,18 @@ use Nyholm\Psr7\Uri;
 use Psr\Http\Message\ServerRequestInterface;
 use Spiral\Http\Http;
 
-class HomeController 
+class HomeController implements SingletonInterface
 {
-    public function index(Http $http, ServerRequestInterface $request)
+    private $http;
+
+    public function __construct(Http $http)
     {
-        $response = $http->handle(
+        $this->http = $http;
+    }
+
+    public function index(ServerRequestInterface $request)
+    {
+        $response = $this->http->handle(
             $request->withUri(new Uri('/home/other'))
         );
 
