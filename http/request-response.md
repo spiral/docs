@@ -176,11 +176,7 @@ using `UploadedFileInterface` which is part of PSR7.
 
 ```php
 dump($this->input->files->all());
-dump($this->input->files('upload'));
-	
-//If you want to get finename pointing to file content you can use `localFilename` method, attention, this is not local filename
-//but unique stream uri which can work only inside spiral
-dump($input->files->localFilename('upload'));
+dump($this->input->file('upload'));
 ```
 
 > Per PSR all files will be organized to valid hierarchy, which differs from default way php handle uploaded files, you can use dot notation to access nested file instances.
