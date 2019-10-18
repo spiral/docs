@@ -57,7 +57,7 @@ class HomeController implements SingletonInterface
             $request->withUri(new Uri('/home/other')) // modify Uri of current request
         );
 
-        return (string)$response->getBody(); // other
+        return (string)$response->getBody(); // "other"
     }
 
     public function other(): string
