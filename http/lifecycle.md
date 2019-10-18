@@ -61,4 +61,5 @@ class HomeController implements SingletonInterface
 }
 ```
 
-> The IoC scopes can be nested, so all the functionality will work properly.
+> The IoC scopes can be nested, so all the functionality will work properly. However, aware that not all extensions will
+> allow nesting (you are not allowed create nested sessions yet).
