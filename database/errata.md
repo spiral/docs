@@ -11,7 +11,7 @@ to define proper default values.
 Not all drivers are implemented equally:
 
 ### MySQL Driver
-MySQL driver if fully supported by DBAL layer with all functionality being available.
+MySQL driver is fully supported by DBAL layer with all functionality being available.
 
 Default table engine is set to `InnoDB`.
 
