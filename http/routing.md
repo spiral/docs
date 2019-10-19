@@ -36,12 +36,13 @@ class RoutesBootloader extends Bootloader
 {
     public function boot(RouterInterface $router)
     {
-        $router->setRoute('home', new Route(
-            '/',
-            function () {
-                return 'hello world';
-            }
-        ));
+        $router->setRoute(
+            'home',                                   // route name 
+            new Route(
+                '/',                                  // pattern
+                function () { return 'hello world'; } // handler
+            )
+        );
     }
 }
 ```
