@@ -1,5 +1,5 @@
 # HTTP - Routing
-The framework [Web bundle](https://github.com/spiral/app) includes pre-configured router components. To install router in
+The framework [Web Bundle](https://github.com/spiral/app) includes pre-configured router components. To install router in
 alternative builds:
 
 ```bash
