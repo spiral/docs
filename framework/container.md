@@ -8,6 +8,8 @@ in your application.
 You can always access container directly in your code by requesting `Psr\Container\ContainerInterface`:
 
 ```php
+use Psr\Container\ContainerInterface;
+
 class HomeContoller
 {
     public function index(ContainerInterface $container)
