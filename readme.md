@@ -53,7 +53,7 @@
     * [Installation and Configuration](http/configuration.md)
     * [Request Lifecycle](http/lifecycle.md)
     * [Request and Response](http/request-response.md)
-    * Routing
+    * [Routing](http/routing.md)
     * [Error Pages](http/errors.md)
     * [Middleware](http/middleware.md)
     * [Golang Middleware](http/golang.md)
