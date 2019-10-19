@@ -594,6 +594,8 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
+> Such approach is useful when you want to assemble multiple modules under one path (i.e. admin panels).
+
 ## RESTful
 All of the route targets listed above support third argument which specifies the method selection behaviour. Set this
 parameter as `TargetInterface::RESTFUL` to automatically prefix all the methods with HTTP verb.
