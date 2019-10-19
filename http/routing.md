@@ -637,7 +637,7 @@ $router->setRoute('user', new Route(
 ```
 
 > Invoking `/user/1` with different HTTP methods will call different controller methods. Note, you are still required
-> to specify action.
+> to specify an action name.
 
 #### Sharing target across routes
 Another way to define RESTFul or similar routing to multiple controllers is to share common target with different routes.
