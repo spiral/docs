@@ -7,7 +7,7 @@ The scraped data will be stored in a `runtime` folder.
 > The produced code only demonstrates the capabilities and can be improved a lot.
 
 ## Installing Dependencies
-We will base our application on `spiral/app-cli` - the minimalistic spiral build without ORM, HTTP and other extensions.
+We will base our application on [spiral/app-cli](https://github.com/spiral/app-cli) - the minimalistic spiral build without ORM, HTTP and other extensions.
 
 ```bash
 $ composer create-project spiral/app-cli scraper
