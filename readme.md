@@ -70,7 +70,7 @@
     * [Console Commands](queue/commands.md)
     * [Running Jobs](queue/jobs.md)
     * [Standalone Usage](queue/standalone.md)
-* GRPC API
+* GRPC
     * Installation and Configuration
     * Generating Service Code
     * Passing Metadata and Errors
