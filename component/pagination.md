@@ -24,7 +24,7 @@ interface PaginableInterface
 ```
  
 ## Pagination
-To paginate your query you must object an pagination object first. Since pagination depends on current request scope
+To paginate your query you must request an pagination object first. Since pagination depends on current request scope
 you must either create this object by yourself or use factory `Spiral\Pagination\PaginationProviderInterface`:
 
 ```php
