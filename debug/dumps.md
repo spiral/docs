@@ -75,3 +75,6 @@ class TestService
     protected $container = null;
 }
 ```
+
+## In RoadRunner
+You can dump variable into roadrunner debug log using function `dumprr`. Make sure to use this function in your job handlers.
