@@ -26,7 +26,7 @@ PSR-7 request object (`ServerRequestInterface`) though the set of PSR-15 compati
 Once all the middleware processing is complete, the framework with create an [IoC scope](/framework/scopes.md) for the request object.
 Such approach allows you to use PSR-7 request as classic global object, while technically, it only exists during the user request.
 
-The request will be passed into PSR-15 handler on your chaise (by default `spiral/router`). The handler must generate the response
+The request will be passed into PSR-15 handler on your choise (by default `spiral/router`). The handler must generate the response
 which will be send back to user should all middleware layers.
 
 > Spiral Router provides the ability to associate custom middleware set with each route.
