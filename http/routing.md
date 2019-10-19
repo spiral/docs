@@ -25,7 +25,7 @@ The default web application bundle allows you to call any controller action loca
 The component does not require any external configuration. You can create new routing via `Spiral\Router\RouterInterface` 
 in your bootloader. We can start with simple `/` handler:
 
-```
+```php
 namespace App\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
