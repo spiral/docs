@@ -16,7 +16,7 @@ And activate its bootloader:
 ```
 
 ## Default Configuration
-The default web application bundle allows you to call any controller action located in `App\Controller` using
+The default web application bundle allows you to call any controller action located in `App\Controller`namespace using
 `/<controller>/<action>` pattern. See below how to alter this behaviour.
 
 > Your controllers must have `Controller` suffix.
