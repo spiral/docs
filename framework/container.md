@@ -8,9 +8,12 @@ in your application.
 You can always access container directly in your code by requesting `Psr\Container\ContainerInterface`:
 
 ```php
-public function testMethod(ContainerInterface $container)
+class HomeContoller
 {
-    dump($container->get(App\App::class));
+    public function index(ContainerInterface $container)
+    {
+        dump($container->get(App\App::class));
+    }
 }
 ```
 
