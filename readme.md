@@ -44,6 +44,7 @@
     * Validation
     * [Pagination](component/pagination.md)
     * RBAC Authorization
+    * User Authentication
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
 * Console
@@ -75,9 +76,10 @@
     * Generating Service Code
     * Passing Metadata and Errors
     * Golang Services
-    * GPRC client code
+    * GRPC client code
 * Views
     * Installation and Configuration
+    * Cache Management
     * View object
     * [Plain PHP templates](views/native.md)
     * [Twig templates](views/twig.md)
@@ -93,7 +95,7 @@
     * Import and Export
     * Translate Views
     * Say Trait
-* DBAL
+* Databases
     * Installation and Configuration
     * Databases and Drivers
     * Database Isolation
