@@ -56,13 +56,13 @@ User will receive `412 Bad CSRF Token` if token is missing or not set.
 ```php
 public function index(ServerRequestInterface $request)
 {
-    $form = <<<eot
+    $form = '
         <form method="post">
           <input type="hidden" name="csrf-token" value="{csrfToken}"/>
           <input type="text" name="value"/>
           <input type="submit"/>
         </form>
-    eot;
+    ';
 
     $form = str_replace(
         '{csrfToken}',
