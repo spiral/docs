@@ -1,7 +1,7 @@
 # Application Structure
 The framework does not enforce any specific namespace or directory structure, you can freely change them.
 
-# Directories
+## Directories
 The directory structure can be controlled via `mapDirectories` method of Kernel class. By
 default, all application directories will be calculated based on `root` using the following pattern:
 
