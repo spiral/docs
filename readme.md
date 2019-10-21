@@ -60,7 +60,7 @@
     * [Golang Middleware](http/golang.md)
     * [Cookies](http/cookies.md)
     * Session
-    * CSRF protection
+    * [CSRF protection](http/csrf.md)
 * Request/Filter Objects
     * Installation and Configuration
     * Filter Entity

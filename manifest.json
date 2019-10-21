@@ -69,7 +69,8 @@
       "http/errors": "Error Pages",
       "http/middleware": "Middleware",
       "http/golang": "Golang Middleware",
-      "http/cookies": "Cookies"
+      "http/cookies": "Cookies",
+      "http/csrf": "CSRF protection"
     }
   },
   {
