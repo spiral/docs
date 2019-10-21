@@ -163,7 +163,7 @@ $router->setRoute('home', new Route(
 
 > This route will only match `/do/login` and `/do/logout`.
 
-#### Match Host
+### Match Host
 To match the domain or sub-domain name, prefix your pattern with `//`:
 
 ```php
@@ -197,7 +197,7 @@ $router->setRoute('home', new Route(
 ));
 ```
 
-#### Immutability
+### Immutability
 All route objects are immutable by design, you can not change their state after creation, but only make a copy 
 with new values. To set default route parameters outside constructor:
 
@@ -225,7 +225,7 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
-#### Verbs
+### Verbs
 Use `withVerbs` method to match routes with only certain HTTP verbs:
 
 ```php
@@ -257,7 +257,7 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
-#### Middleware
+### Middleware
 To associate route specific middleware use `withMiddleware`, you can access route parameters via `route` attribute
 of the request object:
 
@@ -406,7 +406,7 @@ class DemoController
 }
 ```
 
-#### Route to Action
+### Route to Action
 To point your route to the controller action specify route handler as `Spiral\Router\Target\Action`:
 
 ```php
@@ -440,7 +440,7 @@ $router->setRoute(
 );
 ```
 
-#### Wildcard Actions
+### Wildcard Actions
 We can point route to more than one controller action at the same time, in order to do that we have to define the
 parameter `<action>` in our route pattern. Since one of the methods require `<id>` parameter, we can make it optional:
 
@@ -476,7 +476,7 @@ $router->setRoute(
 );
 ```
 
-#### Route to Controller
+### Route to Controller
 You point your route to all of the controller actions at once using `Spiral\Router\Target\Controller`. This target
 requires `<action>` parameter to be defined (unless default is forced). 
 
@@ -516,7 +516,7 @@ $router->setRoute(
 > This route will match `/home` with `action=index`. Note, you must extend optional path segments `[]` till the end of the
 > route pattern.
 
-#### Route to Namespace
+### Route to Namespace
 In some cases you might want to route to the set of controllers located in a same namespace. Use target `Spiral\Router\Target\Namespaced`
 for this purposes. This target will require route parameters `<controller>` and `<action>` (unless default is forced). 
 
@@ -568,7 +568,7 @@ the public methods only.
 
 > You can turn the default route off once the development is over.
 
-#### Route to Controller Group
+### Route to Controller Group
 The alternative is to specify controller names manually without common namespace. Use target
 `Spiral\Router\Target\Group`. Target requires `<controller>` and `<action>` parameters to be defined (unless default is forced).
 
@@ -637,7 +637,7 @@ $router->setRoute('user', new Route(
 > Invoking `/user/1` with different HTTP methods will call different controller methods. Note, you still need
 > to specify the action name.
 
-#### Sharing target across routes
+### Sharing target across routes
 Another way to define RESTful or similar routing to multiple controllers is to share common target with different routes.
 Such approach will allow you to define your own controller style. 
 
