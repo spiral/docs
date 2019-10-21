@@ -1,0 +1,131 @@
+[
+  {
+    "title": "Spiral Framework",
+    "links": {
+      "readme": "Table of Contents",
+      "about/about": "About Framework",
+      "about/install": "Installation",
+      "about/semver": "Versioning",
+      "about/contributing": "Contributing",
+      "license": "LICENSE"
+    }
+  },
+  {
+    "title": "Basics",
+    "links": {
+      "basic/workers": "Workers and Application Lifecycle",
+      "basic/structure": "Application Structure",
+      "basic/configuration": "Default Configuration",
+      "basic/commands": "Console Commands"
+    }
+  },
+  {
+    "title": "Framework",
+    "links": {
+      "framework/application-server": "Application Server",
+      "framework/container": "Container and Factories",
+      "framework/bootloaders": "Bootloaders",
+      "framework/singletons": "Singletons",
+      "framework/config": "Config Objects",
+      "framework/scopes": "IoC scopes",
+      "framework/auto-wiring": "Auto Wiring",
+      "framework/memory": "Static Memory",
+      "framework/finalizers": "Finalizers"
+    }
+  },
+  {
+    "title": "Cookbook",
+    "links": {
+      "cookbook/prototype": "Prototyping",
+      "cookbook/scraper": "Website Scraper",
+      "cookbook/psr-15": "Custom PSR-15 Handlers",
+      "cookbook/golang-library": "Integrate Golang service to PHP",
+      "cookbook/custom-dispatcher": "Custom Dispatcher"
+    }
+  },
+  {
+    "title": "Components",
+    "links": {
+      "component/encrypter": "Data Encryption",
+      "component/pagination": "Pagination",
+      "component/tokenizer": "Static Analysis Tools",
+      "component/metrics": "Prometheus Metrics"
+    }
+  },
+  {
+    "title": "Console",
+    "links": {
+      "console/configuration": "Installation and Configuration",
+      "console/commands": "User Commands"
+    }
+  },
+  {
+    "title": "HTTP",
+    "links": {
+      "http/configuration": "Installation and Configuration",
+      "http/lifecycle": "Request Lifecycle",
+      "http/request-response": "Request and Response",
+      "http/routing": "Routing",
+      "http/errors": "Error Pages",
+      "http/middleware": "Middleware",
+      "http/golang": "Golang Middleware",
+      "http/cookies": "Cookies"
+    }
+  },
+  {
+    "title": "Queue and Jobs",
+    "links": {
+      "queue/configuration": "Installation and Configuration",
+      "queue/commands": "Console Commands",
+      "queue/jobs": "Running Jobs",
+      "queue/standalone": "Standalone Usage"
+    }
+  },
+  {
+    "title": "Views",
+    "links": {
+      "views/native": "Plain PHP templates",
+      "views/twig": "Twig templates"
+    }
+  },
+  {
+    "title": "Stempler templates",
+    "links": {
+      "stempler/visitors": "AST Modifications"
+    }
+  },
+  {
+    "title": "Databases",
+    "links": {
+      "database/transactions": "Transactions",
+      "database/introspection": "Schema Introspection",
+      "database/declaration": "Schema Declaration",
+      "database/migrations": "Migrations",
+      "database/errata": "Errata"
+    }
+  },
+  {
+    "title": "Cycle DataMapper ORM",
+    "links": {
+      "cycle/configuration": "Installation and Configuration",
+      "cycle/transactions": "Transactions",
+      "cycle/documentation": "Full Documentation",
+      "cycle/commands": "Console Commands"
+    }
+  },
+  {
+    "title": "Debug and Profiling",
+    "links": {
+      "debug/dumps": "Dumping Variables",
+      "debug/exceptions": "Handling Exceptions"
+    }
+  },
+  {
+    "title": "Extensions",
+    "links": {
+      "extension/code-style": "Code Style",
+      "extension/dotenv": "Dotenv",
+      "extension/monolog": "Monolog"
+    }
+  }
+]
