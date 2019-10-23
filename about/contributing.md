@@ -3,7 +3,7 @@ Feel free to contribute to the development of the framework or its components. P
  requirements are satisfied before submitting your pull request:
 
 * KISS
-* PSR-2 ([your PRs will be automatically tested](https://github.com/spiral/framework/blob/master/.travis.yml#L30))
+* PSR-12
 * `declare(strict_types=1);` is mandratory
 * Your code must include tests
 
