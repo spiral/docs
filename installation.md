@@ -38,7 +38,7 @@ Default spiral application and framework core utilize [dotenv package](https://g
 > Enviroment file `.env` will be automatically created and pre-configured as moment of application installation.
 
 ## Configuration
-Your application configuration files are located in `app/config` directory, every configuration configuration file are represented by a simple PHP script which has to return array as it's result:
+Your application configuration files are located in `app/config` directory, every configuration file are represented by a simple PHP script which has to return array as it's result:
 
 ```php
 <?php
@@ -60,6 +60,6 @@ return [
 
 If you wish to make your configuration depend on environment settings, use function `env(key, default)`.
 
-> Attention, your configuration files will be cached relatively to current enviroment, you should not inlude any code which does not depend of `env` values!
+> Attention, your configuration files will be cached relatively to current enviroment, you should not include any code which does not depend of `env` values!
 
 Check `ConfiguratorInterface` and `ConfigFactory` in order to implement additional config loading methods (i.e. yaml).
