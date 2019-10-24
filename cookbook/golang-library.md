@@ -1,4 +1,5 @@
 # Cookbook - Integrate Golang service to PHP via RPC
+> Fun fact, the search on this website works via [blevesearch](https://github.com/blevesearch/bleve) integrated to spiral app.
 You are able to extend the functionality of your application by including PHP or Golang libraries. While for the PHP library
 you only need to run `composer require`, the Golang will require you to build your own version of [application server](/framework/application-server.md).
 
