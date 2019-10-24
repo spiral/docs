@@ -164,3 +164,5 @@ snapshots | Spiral\Snapshots\SnapshotterInterface
 storage | Spiral\Storage\StorageInterface
 validator | Spiral\Validation\ValidationInterface
 views | Spiral\Views\ViewsInterface
+auth | Spiral\Auth\AuthScope
+authTokens | Spiral\Auth\TokenStorageInterface
