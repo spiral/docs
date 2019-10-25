@@ -103,7 +103,7 @@
     * [Schema Declaration](database/declaration.md)
     * [Migrations](database/migrations.md)
     * [Errata](database/errata.md)
-* Cycle DataMapper ORM
+* Cycle ORM
     * [Installation and Configuration](cycle/configuration.md)
     * [Transactions](cycle/transactions.md)
     * [Full Documentation](cycle/documentation.md)

@@ -106,7 +106,7 @@
     }
   },
   {
-    "title": "Cycle DataMapper ORM",
+    "title": "Cycle ORM",
     "links": {
       "cycle/configuration": "Installation and Configuration",
       "cycle/transactions": "Transactions",
