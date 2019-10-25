@@ -32,7 +32,6 @@
     * [Website Scraper](cookbook/scraper.md)
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
-    * Write an Extension       
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
     * Domain Core and Controllers
     * Testing Application
