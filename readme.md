@@ -34,6 +34,7 @@
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * Write an Extension       
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
+    * Domain Core and Controllers
     * Testing Application
 * Components
     * Files and Directories
