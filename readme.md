@@ -119,6 +119,7 @@
     * [Dumping Variables](debug/dumps.md)
     * RoadRunner Gotchas
     * Logging
+    * Profiling (coming soon)
     * [Handling Exceptions](debug/exceptions.md)
     * XDebug
 * Extensions
