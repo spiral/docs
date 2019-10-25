@@ -108,7 +108,7 @@
     * [Transactions](cycle/transactions.md)
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
- * WebSocket Broadcasting
+* WebSocket Broadcasting
     * Installation and Configuration
     * JavaScript Client
     * Topics and Authorization
