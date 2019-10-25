@@ -7,7 +7,7 @@
     * [Contributing](about/contributing.md)
     * [LICENSE](license.md)
 * Basics
-    * [Worker Lifecycle](basic/workers.md)
+    * [Application Workers](basic/workers.md)
     * [Application Structure](basic/structure.md)
     * [Default Configuration](basic/configuration.md)
     * [Console Commands](basic/commands.md)
