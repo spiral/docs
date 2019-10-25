@@ -2,7 +2,7 @@
 You are able to extend the functionality of your application by including PHP or Golang libraries. While for the PHP library
 you only need to run `composer require`, the Golang will require you to build your own version of [application server](/framework/application-server.md).
 
-> The fun fact, the full-text search on this website works via [blevesearch](https://github.com/blevesearch/bleve) integrated to spiral app.
+> The fun fact, the full-text search on this website works via [blevesearch](https://github.com/blevesearch/bleve) integrated to the spiral app.
 
 In this tutorial, we will show how to integrate https://github.com/russross/blackfriday library to the application server and
 write PHP SDK for your application. 
