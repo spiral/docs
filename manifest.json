@@ -46,10 +46,15 @@
   {
     "title": "Components",
     "links": {
-      "component/encrypter": "Data Encryption",
       "component/pagination": "Pagination",
       "component/tokenizer": "Static Analysis Tools",
       "component/metrics": "Prometheus Metrics"
+    }
+  },
+  {
+    "title": "Security",
+    "links": {
+      "component/encrypter": "Data Encryption"
     }
   },
   {

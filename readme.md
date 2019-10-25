@@ -38,13 +38,14 @@
 * Components
     * Files and Directories
     * Code Generation
-    * [Data Encryption](component/encrypter.md)
-    * Validation
     * [Pagination](component/pagination.md)
-    * RBAC Authorization
-    * User Authentication
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
+* Security
+    * [Data Encryption](component/encrypter.md)
+    * Validation
+    * RBAC Authorization
+    * User Authentication
 * Console
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
