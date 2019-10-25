@@ -13,7 +13,7 @@
   {
     "title": "Basics",
     "links": {
-      "basic/workers": "Workers and Application Lifecycle",
+      "basic/workers": "Worker Lifecycle",
       "basic/structure": "Application Structure",
       "basic/configuration": "Default Configuration",
       "basic/commands": "Console Commands"
