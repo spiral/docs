@@ -42,7 +42,7 @@
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
 * Security
-    * [Data Encryption](component/encrypter.md)
+    * [Data Encryption](security/encrypter.md)
     * Validation
     * RBAC Authorization
     * User Authentication

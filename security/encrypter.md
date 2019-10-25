@@ -1,4 +1,4 @@
-# Data Encryption
+# Security - Data Encryption
 Both Web and GRPC application skeletons include encryption component by default. To install encrypter in other builds:
 
 ```bash
