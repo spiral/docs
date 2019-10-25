@@ -3,7 +3,7 @@ A lot of Spiral components are based on automatic code discovery and analysis. T
 
 > Tokenizer component is pre-installed with all framework bundles.
 
-## ClassLocator
+## Class Locator
 Use `Spiral\Tokenizer\ClassesInterface` to find available classes by their name, interface or trait:
 
 ```php
