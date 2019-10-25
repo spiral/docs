@@ -1,31 +1,119 @@
-# Embedded Commands
-Spiral provides big set of commands you might use if your application:
+# Console - User Commands
+You can add new console commands to your application or register plugin commands using bootloaders. By default, Console
+component configured to automatically find commands in `app/src` directory.
 
-Command            | Description                                                              
----                | ---                                                                      
-configure          | Configure file permissions, install modules and render view file             
-register           | Register module configs and publish it's resources                           
-publish            | Publish specific module resources                                            
-server             | Run Spiral Development server on specified host and port                 
-update             | Perform application schemas and cache update                             
-console:reload     | **Reindex console commands (run after creating command in application)** 
-app:key            | Update encryption key for current environment                            
-app:reload         | Reload application boot-loading list *(only when cache is enabled)*      
-app:extensions     | Get list of available php extensions
-app:clean          | Clean application runtime cache                  
-db:describe        | Describe table schema of specific database                               
-db:list            | Get list of available databases, their tables and records count      
-migrate:init       | Init migrations component (create migrations table)
-migrate:replay     | Replay (down, up) one or multiple migrations
-migrate:rollback   | Rollback one (default) or multiple migrations
-migrate:status     | Get list of all available migrations and their statuses
-i18n:dump          | Dump given locale using specified dumper and path                        
-i18n:reload        | Force Translator to reload locales                                       
-i18n:index         | Index all declared translation strings and usages                        
-orm:schema         | Update ORM schema.                                                       
-views:compile      | Compile every available view file                                        
-views:reset        | Clear view cache for all environments                                    
+To add new `symfony/console` based command simply drop it into your application. 
 
-> You can get list of currently available commands by calling `ConsoleDisptacher->getCommands()`.
+## Command class
+To create a new command you can either extend `Symfony\Component\Console\Command\Command` or `Spiral\Console\Command` which 
+provides some syntax sugar.
 
-You can disable automatic command location and define your own set of commands in console config.
+```php
+use Spiral\Console\Command;
+
+class MyCommand extends Command
+{
+    const NAME        = 'my:command';
+    const DESCRIPTION = 'This is my command';
+
+    const ATTRIBUTES = [];
+    const OPTIONS    = [];
+
+    /**
+     * Perform command
+     */
+    protected function perform()
+    {
+    }
+}
+```
+
+Use constants `NAME` and `DESCRIPTION` to give a name to your command. You can invoke it now using:
+
+```bash
+$ php app.php my:command 
+```
+
+## Arguments and Options
+Spiral's `Command` class makes easy to define needed arguments and options:
+
+```php
+const ARGUMENTS = [
+    ['argument', InputArgument::REQUIRED, 'Argument name.']
+];
+    
+const OPTIONS = [
+    ['option', 'c', InputOption::VALUE_NONE, 'Some option.']
+];
+```
+
+To get user's data via arguments and/or options, you can make use of `$this->argument("argName")` or 
+`$this->option("optName")`. 
+
+## Perform method
+You can put your user code into the `perform` method. The `perform` support method injection and provide `$this->input` and
+ `$this->output` properties to work with user input.
+
+```php
+protected function perform(MyService $service)
+{
+    $this->output->writeln($service->doSomething());
+}
+```
+
+## Helper Methods
+You can use a set of helper methods available inside the `Spiral\Console\Command`. Given examples are intended to be called in
+the `perform` method.
+
+To write into output:
+
+```php
+$this->writeln("hello world");
+```
+
+To write into output without advancing to the new line:
+
+```php
+$this->write("hello world");
+```
+
+To write formatted output without advancing to the new line:
+
+```php
+$this->sprintf("Hello, <comment>%s</comment>", $name);
+```
+
+> This method is compatible with `sprintf` definition.
+
+To check if current verbosity mode is higher than `OutputInterface::VERBOSITY_VERBOSE`:
+
+```php
+dump($this->isVerbose());
+```
+
+> You can freely use `dump` method in console commands.
+
+To render table:
+
+```php
+$table = $this->table([
+    'Column #1:',
+    'Column #2:',
+]);
+
+foreach ($data as $row)
+{
+    $table->addRow([
+        $row[1],
+        $row[2]
+    ])
+}
+
+$table->render();
+```
+
+To add table separator:
+
+```php
+$table->addRow(new Symfony\Component\Console\Helper\TableSeparator());
+```

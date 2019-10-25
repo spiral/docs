@@ -1,44 +1,35 @@
 # Migrations
-Spiral ships with set of embedded commands to control your database migrations, [component](https://github.com/spiral/migrations) is build upon DBAL and support virtual databases and prefixes.
+Spiral ships with a set of embedded commands to control your database migrations, [component](https://github.com/spiral/migrations) 
+is build upon DBAL and support virtual databases and prefixes.
 
-## Init migrations
-You can configure what database and table to use to store information about schema version in migrations config:
+## Configure Migrations (optional)
+You can configure what database and table to use to store information about schema version in migrations config. Create
+`app/config/migrations.php` to alter default values:
 
 ```php
 return [
-    /*
-     * Directory to store migration files
-     */
+    // directory to store migration files
     'directory' => directory('application') . 'migrations/',
 
-    /*
-     * Database name to store information about migrations status
-     */
-    'database'  => 'primary',
-
-    /*
-     * Table name to store information about migrations status
-     */
-    'table'     => 'migrations',
-
-    /*
-     * When set to true no confirmation will be requested on migration run.
-     */
+    // Table name to store information about migrations status (per database)
+    table'     => 'migrations',
+   
+    // When set to true no confirmation will be requested on migration run. 
     'safe'      => env('SPIRAL_ENV') == 'develop'
 ];
 ```
 
-Migration state table can be automatically initiated using command `migrate:init`.
+Migration state table can be automatically initiated using the command `migrate:init`.
 
-## Create migration
-We can create our migrations manually or use scaffolder module for such purposes with set of helper options:
+## Create a migration
+We can create our migrations manually or use scaffolder module for such purposes with a set of helper options:
 
-```
-./spiral create:migration -t sample_table -f id:primary -f name:string my_migration
+```bash
+$ php app.php create:migration -t sample_table -f id:primary -f name:string my_migration
 Declaration of 'MyMigrationMigration' has been successfully written into '20170401.160544_0_my_migration.php'.
 ```
 
-Migration will be automatically placed into your `app/migrations` directory:
+The migration will be automatically placed into your `app/migrations` directory:
 
 ```php
 class MyMigrationMigration extends Migration
@@ -64,17 +55,19 @@ class MyMigrationMigration extends Migration
 }
 ```
 
-> Install [scaffolder module](/modules/scaffolder.md) first.
+> Install [scaffolder module](/cookbook/scaffolding.md) first.
 
 ## Working with migrations
 You can run all outstanding migrations using `migrate` command.
 
-`./spiral migrate`
-
-You can now view your table using `db:describe` command:
-
+```bash
+$ php app.php migrate
 ```
-> spiral db:describe sample_table
+
+You can now view your table using `db:table` command:
+
+```bash
+$ php app.php db:table sample_table
 Columns of primary.sample_table:
 +---------+----------------+----------------+-----------+----------------+
 | Column: | Database Type: | Abstract Type: | PHP Type: | Default Value: |
@@ -84,10 +77,10 @@ Columns of primary.sample_table:
 +---------+----------------+----------------+-----------+----------------+
 ```
 
-Use '-vv' flag to get more information about generated queries:
+Use `-vv` flag to get more information about generated queries:
 
-```
-> spiral migrate:replay -vv
+```bash
+$ php app.php migrate:replay -vv
 Rolling back executed migration(s)...
 [MySQLDriver] SELECT COUNT(*) FROM `information_schema`.`tables` WHERE `table_schema` = 'sample_2' AND `table_name` = 'migrations'
 [MySQLDriver] SELECT COUNT(*) FROM `information_schema`.`tables` WHERE `table_schema` = 'sample_2' AND `table_name` = 'migrations'
@@ -139,10 +132,10 @@ Migration my_migration was successfully executed.
 
 > Enable DEBUG mode first.
 
-You commands `migrate:rollback` and `migrate:replay` to rollback your migrations.
+Run command `migrate:rollback` and `migrate:replay` to rollback your migrations.
 
 ## Update existed schema
-Create migrations ot alter existed table schema:
+Create migrations to alter existed table schema:
 
 ```php
 class NewFieldMigration extends Migration
@@ -164,7 +157,7 @@ class NewFieldMigration extends Migration
 ```
 
 ```
-> spiral migrate -vv
+$ php app.php migrate -vv
 [MySQLDriver] SELECT COUNT(*) FROM `information_schema`.`tables` WHERE `table_schema` = 'sample_2' AND `table_name` = 'migrations'
 [MySQLDriver] SELECT COUNT(*) FROM `information_schema`.`tables` WHERE `table_schema` = 'sample_2' AND `table_name` = 'migrations'
 [MySQLDriver] SELECT
@@ -204,6 +197,7 @@ WHERE `migration` = 'new_field'
 ```
 
 ## Compatibility with DBAL
-All migration methods are based on DBAL functions, feel free to use same abstract types as in [direct schema declarations](/database/declaration.md).
+All migration methods are based on DBAL functions, feel free to use same abstract types as in 
+[direct schema declarations](/database/declaration.md).
 
 > Note that ORM component can create migrations automatically.

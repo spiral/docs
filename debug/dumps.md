@@ -1,5 +1,5 @@
-# Dumps
-Use `Dumper` class or function `dump` to view content of your variables and instances without xDebug:
+# Debug - Dumping Variables
+Use `Spirl\Debug\Dumper` class or function `dump` to view content of your variables and instances without xDebug:
 
 ```php
 protected function indexAction(Dumper $dumper, MemcacheStore $memcacheStore)
@@ -18,37 +18,63 @@ protected function indexAction(MemcacheStore $memcacheStore)
 
 The Spiral `Dumper` supports the `__debugInfo` [method](http://php.net/manual/en/language.oop5.magic.php) which allows you to dump only important information. 
 
-To hide certain fields of your objects without __debugInfo method, add an "@invisible" annotation to your property.
+## Usage
+In your code (works in web and CLI SAPIs):
 
 ```php
-class TestService extends Service
+use Spiral\Debug;
+
+$d = new Debug\Dumper();
+
+$d->dump($variable);
+```
+
+Dump to Log:
+
+```php
+use Spiral\Debug;
+
+$d = new Debug\Dumper($loggerInterface);
+
+$d->dump($variable, Debug\Dumper::LOGGER);
+```
+
+Dump to STDERR:
+
+```php
+use Spiral\Debug;
+
+$d = new Debug\Dumper($loggerInterface);
+
+$d->dump($variable, Debug\Dumper::STDERR);
+```
+
+Force dump to STDERR with color support:
+
+```php
+use Spiral\Debug;
+
+$d = new Debug\Dumper($loggerInterface);
+$d->setRenderer(Debug\Dumper::STDERR, new Debug\Renderer\ConsoleRenderer());
+
+$d->dump($variable, Debug\Dumper::STDERR);
+```
+
+> You can use function `dump` as a shortcut. Use `dumprr` to dump to RoadRunner error log.
+
+## Internal Fields
+To hide certain fields of your objects without `__debugInfo` method, add an "@internal" annotation to your property.
+
+```php
+class TestService
 {
     /**
-     * Dumping this property will give us nothing, so we can hide it.
-     *
-     * @invisible
+     * @internal
      * @var ContainerInterface
      */
     protected $container = null;
 }
 ```
 
-Dump function support multiple return and destination options.
-
-```php
-protected function indexAction(MemcacheStore $memcacheStore)
-{
-    //Output buffer
-    dump($memcacheStore, Dumper::OUTPUT_ECHO);
-    
-    //Dump information in Spiral\Debug\Debugger log using print_r
-    dump($memcacheStore, Dumper::OUTPUT_LOG);
-
-    //Dump information in Spiral\Debug\Debugger log with nice formatting
-    dump($memcacheStore, Dumper::OUTPUT_LOG_NICE);
-
-    //Return dump as string
-    $dump = dump($memcacheStore, Dumper::OUTPUT_RETURN);
-
-}
-```
+## In RoadRunner
+You can dump variable into roadrunner debug log using function `dumprr`. Make sure to use this function in your job handlers.

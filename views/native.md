@@ -1,21 +1,43 @@
-# Native Views
-You can use plain php files as your views without any compilation or cache layer.
+# Views - Plain PHP
+You can use plain php files as your views without any compilation or cache layer. This engine is enabled by default
+and available in Web application skeleton.
 
-## Accessing Container inside view
-You can access `Spiral\Views\Engines\Native\NativeView` instance inside your template.
+## Create view
+To create plain PHP view simply put file with `.php` extension into `views` directory. Template can be rendered by it's 
+filename:
+
+```php
+<?php // test.php
+echo "hello world";
+```
+
+```php
+public function index(ViewsInterface $views)
+{
+    return $views->render('test'); // no need to specify the extension
+}
+```
+
+All the passed parameters will be available as PHP variables:
+
+```php
+public function index(ViewsInterface $views)
+{
+    return $views->render('test', ['name' => 'Antony']); 
+}
+```
+
+Where `test.php`:
+
+```php
+Hello , <?= $name ?>!
+```
+
+## Container
+You can access the container in your view files via `$this->container`:
 
 ```php
 Hello world, <?= $name ?>!
 
 <?php dump($this->container->get(MyService::class)); ?>
-```
-
-NativeView declares IoC scope for static container, you can use `app` or `spiral`:
-
-```php
-Hello world, <?= $name ?>!
-
-<?= spiral(MyService::class)->someMethod(); ?>
-<?= spiral('faker')->someMethod(); ?>
-<?= app()->faker->name ?>
 ```

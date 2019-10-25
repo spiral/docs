@@ -1,142 +1,181 @@
-# Bootloaders
-The Bootloader classes responsible for pre-initialization of your application, use them to configure proper container bindings and environment initialization (i.e. http routes). 
+# Framework - Bootloaders
+Bootloaders are the central piece in Spiral Framework and your application. This objects are responsible for [Container](/framework/container.md)
+configuration, default configuration and etc.
 
-> Make sure you read about [Container and DI](/framework/container.md).
+Bootloaders only executed once while loading your application. Since your application will stay in memory for long - you can
+add as many functionality to your bootloaders as you want. It will not cause any performance effect on runtime.
 
-## Booting bindings
-Ordinary, the application will require a lots of interfaces and aliases to be binded to their implementations, you can define bindings in your code using following constructions:
+![Application Control Phases](https://user-images.githubusercontent.com/796136/64906478-e213ff80-d6ef-11e9-839e-95bac78ef147.png)
 
-```php
-$this->container->bind(SomeInterface::class, SomeClass::class);
-
-//or if concrete object needed
-$this->container->bind(SomeInterface::class, function(...) {
-    return new SomeClass(...);
-});
-```
-
-Example of binding usage:
+## Simple Bootloader
+You can create simple bootloader by extending `Spiral\Boot\Bootloader\Bootloader`:
 
 ```php
-public function indexAction(SomeInterface $some)
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+
+class MyBootloader extends Bootloader 
 {
-    dump($some);
-    assert($some instanceof SomeClass);
+
 }
 ```
 
-Bootloaders make such definitions easier, faster and provide a way to merge multiple bindings into one group:
+Every bootloader must be activated in your application kernel. Add the class reference into `LOAD` or `APP` lists:
 
 ```php
-class SomeBootloader extends Bootloader
+class App extends Kernel
+{
+    protected const LOAD = [
+        // ...
+    ];
+
+    protected const APP = [
+        RoutesBootloader::class,
+        LoggingBootloader::class,
+        MyBootloader::class
+    ];
+}
+```
+
+Currently, your bootloader doesn't do anything. We can start by adding some container bindings.
+
+> `APP` bootloader namespace is always loaded after `LOAD`, keep domain-specific bootloaders in it.
+
+## Configuring Container
+The most common use-case of bootloaders is to configure DI container, for example, we might want to bind multiple
+implementations to their interfaces and/or construct some service.
+
+We can use the method `boot` for these purposes. Method support method injection, so we can request any services we need:
+
+```php
+use Spiral\Core\Container;
+
+class MyBootloader extends Bootloader 
+{
+    public function boot(Container $container) 
+    {
+        $container->bind(MyInterface::class, MyClass::class);
+        
+        $container->bindSingleton(MyService::class, function(MyClass $myClass) {
+            return new MyService($myClass); 
+        });
+    }
+}
+```
+
+Bootloaders provide the ability to simplify container binding definition using constants `BINDINGS` and `SINGLETONS`. 
+
+```php
+use Spiral\Core\Container;
+
+class MyBootloader extends Bootloader 
 {
     const BINDINGS = [
-        SomeInterface::class => SomeClass::class
+        MyInterface::class => MyClass::class
     ];
-    
+
+    public function boot(Container $container) 
+    {
+        $container->bindSingleton(MyService::class, function(MyClass $myClass) {
+            return new MyService($myClass); 
+        });
+    }
+}
+```
+
+You can also replace factory closures with factory methods:
+
+```php
+class MyBootloader extends Bootloader 
+{
+    const BINDINGS = [
+        MyInterface::class => MyClass::class
+    ];
+
     const SINGLETONS = [
-        OtherInterface::class => [self::class, 'createOther']
+        MyService::class => [self::class, 'myService']
     ];
-    
-    protected function createOther(SomeInterface $class, ...)
+
+    public function myService(MyClass $myClass): MyService
     {
-        return new OtherClass($class);
+        return new MyService($myClass); 
     }
 }
 ```
 
-> Note that you can make your factory methods private and protected, container will bypass this restriction.
-
-The only thing we have to do now is to add such bootloader class into our application, modify constant `LOAD` in your App class.
-
-```php
-const LOAD = [
-    //...
-    Bootloaders\SomeBootloader::class
-];
-```
-
-> You can enable bootloaders cache in your .env file to speed up application initialization a bit.
-
-## Booting code
-To load or execute custom code at moment of application initialization, set constant `BOOT` to true and define method `boot`:
+## Configuring Application
+Another common use case of bootloaders is to configure the framework prior to application launch. For example, we can declare
+new route for our application or module:
 
 ```php
-class AppBootloader extends Bootloader 
+class MyBootloader extends Bootloader 
 {
-    const BOOT = true;
-
-    const BINDIGNS = [
-        SomeInterface::class => SomeClass::class
-    ];
-    
-    const SINGLETONS = [
-        OtherInterface::class => [self::class, 'createOther']
-    ];
-    
-    //Automatically resolved by container
-    public function createOther(SomeInterface $class, ...)
+    public function boot(RouterInterface $router)
     {
-        return new OtherClass($class);
-    }
-
-    /**
-     * @param HttpDispatcher $http
-     */
-    public function boot(HttpDispatcher $http)
-    {
-        $http->addRoute(new Route(
-            'route', 'route/<section:[a-z\-]*>',
-            'Vendor\Controllers\SomeController::action'
-        ));
+        $router->setRoute(
+            'my-route',
+            new Route('/<action>', new Controller(MyController::class))
+        );
     }
 }
 ```
 
-> Cache is ignored for such bootloaders.
+> Identically you can mount middleware, change tokenizer directories and much more.
 
-## Bootloading outside of core
-If you want to load your bootloader based on some condition use `getBootloader()` method of your core application:
-
-```php
-public function indexAction()
-{
-    $this->app->bootloader()->bootload([
-        \Vendor\Module\VendorBootloader::class
-    ]);
-}
-```
-
-## Short bindings and Shortcuts
-Bootloaders can also be used to define shortcuts to your services:
+## Depending on other Bootloaders
+Some framework bootloaders can be used as a simple path to configure application settings. For example, we can
+use `Spiral\Bootloader\Http\HttpBootloader` to add global PSR-15 middleware:
 
 ```php
-class MyBootloader extends Bootloader
+class MyBootloader extends Bootloader 
 {
-    /**
-     * @return array
-     */
-    const BINDINGINS = [
-        'someTable' => [self::class, 'someTable']
-    ];
-
-    /**
-     * @param DatabaseManager $databases
-     */
-    public function someTable(DatabaseManager $databases): Table
+    public function boot(HttpBootloader $http)
     {
-        return $databases->database('default')->table('some');
+        $http->addMiddleware(MyMiddleware::class);
     }
 }
 ```
 
-Now you can use such table shortcut in your controllers or service:
+If you want to ensure that `HttpBootloader` has always been initiated prior to `MyBootloader` use constant `DEPENDENCIES`:
+
 
 ```php
-public function indexAction()
+class MyBootloader extends Bootloader 
 {
-    dump($this->someTable);
+    const DEPENDENCIES = [
+        HttpBootloader::class
+    ];
+
+    public function boot(HttpBootloader $http)
+    {
+        $http->addMiddleware(MyMiddleware::class);
+    }
 }
 ```
 
-> You can treat shortcuts/[factory methods] as inline functions in C but in a context of active container scope.
+> Note, you are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another bootloader). The framework would not allow you to change any configuration value after component initialization.
+
+## Cascade Bootloading
+You are able to control bootloading process using bootloader itself, simply request `Spiral\Boot\BootloadManager`:
+
+```php
+namespace App\Bootloader;
+
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Boot\BootloadManager;
+use Spiral\Bootloader\DebugBootloader;
+
+class AppBootloader extends Bootloader
+{
+    public function boot(BootloadManager $bootloadManager)
+    {
+        if (env('DEBUG')) {
+            $bootloadManager->bootload([
+                DebugBootloader::class
+            ]);
+        }
+    }
+}
+```

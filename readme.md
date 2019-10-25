@@ -1,142 +1,125 @@
-# Spiral Framework Table of Contents
-[![License](https://poser.pugx.org/spiral/framework/license)](https://packagist.org/packages/spiral/framework) 
+# Table of Contents
 
-* Overview
-	* [Installation and Configuration](installation.md)
-	* [Contribute](contributing.md)
-	* [Forum](https://groups.google.com/forum/#!forum/spiral-framework)
-	* [License](license.md)  	
-	* [Video Tutorials](https://www.youtube.com/watch?v=zJ4fqW4M86I&list=PLHZNig4c1SXGVt8hUVHxZTrlJqqdn8ktW)
+* Getting Started
+    * [About Framework](about/spiral.md)
+    * [Installation](about/install.md)
+    * [Versioning](about/semver.md)
+    * [Contributing](about/contributing.md)
+    * [LICENSE](license.md)
+* Basics
+    * [Workers and Application Lifecycle](basic/workers.md)
+    * [Application Structure](basic/structure.md)
+    * [Default Configuration](basic/configuration.md)
+    * [Console Commands](basic/commands.md)
 * Framework
-    * [Container, Factory, DI](framework/container.md)
-    * [Components and IoC Scope](framework/components.md)
-    * [ServiceLocator Shortcuts](framework/shortcuts.md)
+    * Design Approach
+    * [Application Server](framework/application-server.md)
+    * Kernel, Environment
+    * [Container and Factories](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
-    * [Shared Memory](framework/memory.md)
-    * [Configs Objects](framework/configs.md)
-    * [Modules](framework/modules.md)
-* Application
-	* [Directory Structure](application/directories.md)
-	* [Startup Flow](application/startup.md)
-	* [Controllers and Cores](application/controllers.md)
-	* [Services](application/services.md)
-	* [View Templates](application/views.md)
-	* [Database Models](application/database.md)
-	* [Environment](application/environment.md)
-	* [Testing Application](application/testing.md)
-* Http Dispatcher
-	* [PSR-7 Flow](http/flow.md)
-	* [Request and Input](http/input.md)
-	* [Response and Response Wrapper](http/response.md)
-	* [Middlewares](http/middlewares.md)
-	* [Routing](http/routing.md)
-	* [Cookies](http/cookies.md)
-	* [Http Errors](http/errors.md)
-	* [Request Validation](http/validation.md)
-* Session
-	* [Overview](session/overview.md)
-	* [Working with Session](session/usage.md)
-* Console Dispatcher
-   	* [Overview](console/overview.md)
-   	* [Embedded Commands](console/commands.md)
-   	* [User Commands](console/scaffolding.md)
-* Debug and Profiling
-	* [Logging](debug/logging.md)
- 	* [Profiling](debug/profiling.md)
-	* [Error Handling](debug/errors.md)
-    * [Dump your data](debug/dumps.md)
-* Common Components
-   	* [Files](components/files.md)
-   	* [Encryption](components/encrypter.md)
-   	* [DataEntity Model](components/data-entity.md)
-   	* [Security/RBAC](components/security.md)
-   	* [Code Generation](components/reactor.md)
-   	* [Validation](components/validation.md)
-   	* [Pagination](components/pagination.md)
+    * [Singletons](framework/singletons.md)
+    * [Config Objects](framework/config.md)
+    * [IoC scopes](framework/scopes.md)
+    * [Auto Wiring](framework/auto-wiring.md)
+    * [Static Memory](framework/memory.md)
+    * [Finalizers](framework/finalizers.md)
+* Cookbook
+    * Quick Start
+    * Scaffolding
+    * [Prototyping](cookbook/prototype.md)
+    * Database Scaffolding
+    * MVC Application
+    * [Website Scraper](cookbook/scraper.md)
+    * [Custom PSR-15 Handlers](cookbook/psr-15.md)
+    * [Integrate Golang service to PHP](cookbook/golang-library.md)
+    * Write an Extension       
+    * [Custom Dispatcher](cookbook/custom-dispatcher.md)
+    * Testing Application
+* Components
+    * Files and Directories
+    * Code Generation
+    * [Data Encryption](component/encrypter.md)
+    * Validation
+    * [Pagination](component/pagination.md)
+    * RBAC Authorization
+    * User Authentication
+    * [Static Analysis Tools](component/tokenizer.md)
+    * [Prometheus Metrics](component/metrics.md)
+* Console
+    * [Installation and Configuration](console/configuration.md)
+    * [User Commands](console/commands.md)
+* HTTP
+    * [Installation and Configuration](http/configuration.md)
+    * [Request Lifecycle](http/lifecycle.md)
+    * [Request and Response](http/request-response.md)
+    * [Routing](http/routing.md)
+    * [Error Pages](http/errors.md)
+    * [Middleware](http/middleware.md)
+    * [Golang Middleware](http/golang.md)
+    * [Cookies](http/cookies.md)
+    * Session
+    * [CSRF protection](http/csrf.md)
+* Request/Filter Objects
+    * Installation and Configuration
+    * Filter Entity
+    * Nested Filters
+    * Error Mapping
+* Queue and Jobs
+    * [Installation and Configuration](queue/configuration.md)
+    * [Console Commands](queue/commands.md)
+    * [Running Jobs](queue/jobs.md)
+    * [Standalone Usage](queue/standalone.md)
+* GRPC
+    * Installation and Configuration
+    * Generating Service Code
+    * Passing Metadata and Errors
+    * Golang Services
+    * GRPC client code
+* Views
+    * Installation and Configuration
+    * Cache Management
+    * View object
+    * [Plain PHP templates](views/native.md)
+    * [Twig templates](views/twig.md)
+* Stempler templates
+    * Installation and Configuration
+    * Basic Usage
+    * Inheritance
+    * Components and Props
+    * Directives
+    * [AST Modifications](stempler/visitors.md)
 * Internalization
-   	* [Overview](i18n/overview.md)
-   	* [Usage in Views](i18n/views.md)
-   	* [Usage in Models/Controllers](i18n/say-trait.md)
-   	* [Indexation](i18n/indexation.md)
-* Views and Engines
-	* [Overview](views/overview.md)
-	* [Twig Templates](views/twig.md)
-	* [Native Templates](views/native.md)
-    * [Stempler Views](views/stempler.md)
-	* [View Processors](views/processors.md)
-* Stempler Views
-	* [Basic Usage](stempler/basics.md)
- 	* [Extended Usage (widgets tags, tips'n'tricks)](stempler/expert.md)
-   	* [Dark Syntax](stempler/dark.md)
-* Static Analysis/Tokenizer
-    * [Overview](tokenizer/overview.md)
-    * [Looking for Classes](tokenizer/classes.md)
-    * [Looking for Invocations](tokenizer/invocations.md)
-    * [PHP Code Isolation](tokenizer/isolator.md)
-* Storage Manager
-    * [Overview](storage/overview.md)
-    * [Buckets and Servers](storage/entities.md)
-    * [Server Configuration](storage/servers.md)
-    * [Uploading Files](storage/uploading.md)
-* Database Layer (SQL)
-	* [Overview](database/overview.md)
-    * [Databases and Drivers](database/databases.md)
-    * [PDO Queries](database/pdo.md)
-    * [Query Builders](database/builders.md)
+    * Installation and Configuration
+    * Import and Export
+    * Translate Views
+    * Say Trait
+* Databases
+    * Installation and Configuration
+    * Databases and Drivers
+    * Database Isolation
+    * Query Builders
     * [Transactions](database/transactions.md)
     * [Schema Introspection](database/introspection.md)
     * [Schema Declaration](database/declaration.md)
     * [Migrations](database/migrations.md)
     * [Errata](database/errata.md)
-* ORM Engine
-	* [Overview](orm/overview.md)
-	* [Record and RecordEntity](orm/entities.md)
-	* [Repositories and Selectors](orm/repositories.md)
-	* [Accessors and Filters](orm/accessors.md)
-	* [Column Objects](orm/columns.md)
-	* [Scaffolding and Migrations](orm/scaffolding.md)
-	* [Transactions](orm/transactions.md)
-	* [Relations](orm/relations.md)
-	* [Morphed Relations](orm/morphed-relations.md)
-	* [Pre-compiled Relations](orm/late-binding.md)
-	* [Query Models](orm/query.md)
-	* [Eager loading](orm/loading.md)
-	* [Recursive Relations](orm/recursive-relations.md)
-	* [Hybrid Databases](orm/odm-bridge.md)
-	* [Custom Relations](orm/custom-relations.md)
-* ODM Engine (MongoDB)
-	* [Overview](odm/overview.md)
-	* [MongoDB Databases](odm/databases.md)
-	* [Documents and DocumentEntity](odm/entities.md)
-    * [Accessors and Filters](odm/accessors.md)
-	* [Repositories and Selectors](odm/repositories.md)
-	* [Scaffolding](odm/scaffolding.md)
-	* [Compositions and Aggregations](odm/oop.md)
-	* [Inheritance](odm/inheritance.md)
-* External Modules
-    * [Profiler](modules/profiler.md)
-	* [User Authentication](modules/auth.md)
-	* [Vault Core](modules/vault.md)
-	* [Scaffolder](modules/scaffolder.md)
-	* [IDE helper](modules/ide-helper.md)
-	* [Cache Bridges](modules/cache.md)
-
-# I want to read code (not docs)!
-If you want to see more examples of the framework's functionality in the real world without 
-digging into the documentation, you can check out these existing test suites:
-
-* [Framework, Http, Sessions, Validations](https://github.com/spiral/spiral/tree/develop/tests)
-* [Database and Query Builders](https://github.com/spiral/database/tree/master/tests/Database)
-* [Generating Migrations](https://github.com/spiral/migrations/tree/master/tests/Migrations)
-* [ORM and Relations](https://github.com/spiral/orm/tree/master/tests/ORM)
-* [ODM and MongoDB](https://github.com/spiral/odm/tree/master/tests/ODM)
-* [Tokenizer and Static Analysis](https://github.com/spiral/tokenizer/tree/master/tests/Tokenizer)
-* [Skeleton Application](https://github.com/spiral/application/tree/master/tests)
-* [Common Functionality and IoC](https://github.com/spiral/common/tree/master/tests)
-* [Work with Cloud Storage](https://github.com/spiral/storage/tree/master/tests/Storage)
-* [Security](https://github.com/spiral/security/tree/master/tests/Security)
-* [Stempler Templates](https://github.com/spiral/stempler/tree/master/tests/Stempler)
-* [DataEntity models](https://github.com/spiral/models/tree/master/tests/Models)
-* [Authorization](https://github.com/spiral-modules/auth/tree/master/tests/Auth)
-* [Hybrid Databases](https://github.com/spiral-modules/hybrid-db/tree/master/tests/HybridDB)
-* [Vault](https://github.com/spiral-modules/vault/tree/master/tests)
+* Cycle DataMapper ORM
+    * [Installation and Configuration](cycle/configuration.md)
+    * [Transactions](cycle/transactions.md)
+    * [Full Documentation](cycle/documentation.md)
+    * [Console Commands](cycle/commands.md)
+ * WebSocket Broadcasting
+    * Installation and Configuration
+    * JavaScript Client
+    * Topics and Authorization
+    * Standalone Usage
+* Debug and Profiling
+    * [Dumping Variables](debug/dumps.md)
+    * RoadRunner Gotchas
+    * Logging
+    * [Handling Exceptions](debug/exceptions.md)
+    * XDebug
+* Extensions
+    * [Code Style](extension/code-style.md)
+    * [Dotenv](extension/dotenv.md)   
+    * [Monolog](extension/monolog.md)

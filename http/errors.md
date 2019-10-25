@@ -1,65 +1,162 @@
-# Http Error Handling
-HttpDispatcher does not provide direct functionality for a error conversion, though it supplies spiral application with `Spiral\Http\Middlewares\ExceptionWrapper` middleware used to handle and represent client exception (not found, forbidden and etc) by rendering appropriate view. 
+# HTTP - Error Pages
+Your application will expose a number of errors and exceptions, some of which must be delivered
+to the client and some of them don't.
 
-> Please read about [application level error handling](/debug/errors.md) to understand how error exceptions are handled.
+The HTTP component includes the default error handling middleware which can be used to intercept and log critical errors
+and user level exceptions.
 
-## Exposing errors
-HttpDispatcher provides ability to expose error exceptions to the client in a form of snapshots (see error handling), by default exception rendering will be dedicated to `SnaphotInterface` which will show stack stace and environment details.
+The enable such middleware add the `Spiral\Bootloader\Http\ErrorHandlerBootloader` to your application:
 
-Once application moved to production consider disabling debug mode which will force HttpDispatcher replace snapshot response with regular 500 error. Check `.env` file to locate option to enable and disable debug mode.
+```php
+namespace App;
 
-> By default HttpDispatcher is capable to expose exception in html and json formats, if you need more specific error responses use using external middlewares such as Whoops.
+use Spiral\Bootloader as Framework;
+use Spiral\DotEnv\Bootloader as DotEnv;
+use Spiral\Framework\Kernel;
+use Spiral\Prototype\Bootloader as Prototype;
+use Spiral\Scaffolder\Bootloader as Scaffolder;
+
+class App extends Kernel
+{
+    /*
+     * List of components and extensions to be automatically registered
+     * within system container on application start.
+     */
+    protected const LOAD = [
+        // ...
+
+        Framework\Http\HttpBootloader::class,
+        Framework\Http\RouterBootloader::class,
+        Framework\Http\ErrorHandlerBootloader::class,
+
+        // ...
+    ];
+}
+```
+
+## Application Exceptions
+The middleware will handle application exceptions and will render them in a developer friendly mode. To suppress the delivery 
+of the exception details to the browser set the env variable `DEBUG` to `false`. In this case the default 500 error page will
+be displayed.
+
+> Do not deploy your application to production with enabled debug mode.
 
 ## Client Exceptions
-HttpDispatcher defines a set of "soft" client exceptions you can use in your code to force some HTTP error to happen. For example:
+There a number of exceptions you can throw from your controllers and middleware to cause HTTP level error page, for example
+we can trigger `404 Not Found` using `NotFoundException`:
 
 ```php
-protected function indexAction()
+namespace App\Controller;
+
+use Spiral\Core\Container\SingletonInterface;
+use Spiral\Http\Exception\ClientException\NotFoundException;
+
+class HomeController implements SingletonInterface
 {
-     throw new ClientException(ClientException::NOT_FOUND);
+    public function index()
+    {
+        throw new NotFoundException();
+    }
 }
 ```
 
-Exceptions like that will be handled by `ExceptionWrapper`, and rendered using view component with associated status code. To define a custom view for your error, edit the http configuration file to link error code to view name:
+Other exceptions include:
+
+Code | Exception 
+--- | ---
+400 | Spiral\Http\Exception\ClientException\BadRequestException
+401 | Spiral\Http\Exception\ClientException\UnauthorizedException
+403 | Spiral\Http\Exception\ClientException\ForbiddenException
+404 | Spiral\Http\Exception\ClientException\NotFoundException
+500 | Spiral\Http\Exception\ClientException\ServerErrorException
+
+> Do not use http exceptions inside your services and repositories as it will couple your implementation to http dispatcher.
+> Use domain specific exceptions and their mapping to http exception instead.
+
+## Page Renderer
+By default the middleware will use a simple error page without any styles attached. To implement your own error page renderer
+implement and bind in container the `Spiral\Http\ErrorHandler\RendererInterface` interface:
 
 ```php
-    'httpErrors'   => [
-        400 => 'spiral:http/badRequest',
-        403 => 'spiral:http/forbidden',
-        404 => 'spiral:http/notFound',
-        500 => 'spiral:http/serverError',
-    ]
-```
+namespace App\Errors;
 
-There are a few exceptions predefined for generic scenarios:
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Spiral\Http\ErrorHandler\RendererInterface;
+use Spiral\Views\ViewsInterface;
 
-| Code | Exception class       |
-| ---  | ---                   |
-| 400  | BadRequestException   |
-| 401  | UnauthorizedException |
-| 403  | ForbiddenException    |
-| 404  | NotFoundException     |
-| 500  | ServerErrorException  |
-
-```php
-protected function indexAction()
+class NiceRenderer implements RendererInterface
 {
-     throw new ForbiddenException();
+    private $responseFactory;
+    
+    private $views;
+
+    public function __construct(
+        ResponseFactoryInterface $responseFactory,
+        ViewsInterface $views
+    ) {
+        $this->responseFactory = $responseFactory;
+        $this->views = $views;
+    }
+
+    public function renderException(Request $request, int $code, string $message): Response
+    {
+        $response = $this->responseFactory->createResponse($code);
+
+        $response->getBody()->write(
+            $this->views->render('errors/' . (string)$code)
+        );
+
+        return $response->withStatus($code, $message);
+    }
 }
 ```
 
-> You can also define your own exception handler middleware or custom exception classes.
-
-## Custom Errors
-You can also automatically convert your domains into http errors by creating a middleware:
+Bind it via bootloader:
 
 ```php
-public function __invoke(Request $request, Response $response, callable $next)
+namespace App\Bootloader;
+
+use App\Errors\NiceRenderer;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Bootloader\Http\ErrorHandlerBootloader;
+use Spiral\Http\ErrorHandler\RendererInterface;
+
+class NiceErrorsBootloader extends Bootloader
 {
-    try {
-        return $next($request, $response);
-    } catch (\DomainException $e) {
-        throw new ServerErrorException($e->getMessage());
+    public const DEPENDENCIES = [
+        ErrorHandlerBootloader::class
+    ];
+
+    public const SINGLETONS = [
+        RendererInterface::class => NiceRenderer::class
+    ];
+}
+```
+
+## Logging
+The default application include Monolog handler which, by default, subscribed to the messages send by the `ErrorHandlerMiddleware`.
+The http error log is located in `app/runtime/logs/http.log` and configured in `App\Bootloaders\LoggingBootloader`:
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Http\Middleware\ErrorHandlerMiddleware;
+use Spiral\Monolog\Bootloader\MonologBootloader;
+
+class LoggingBootloader extends Bootloader
+{
+    /**
+     * @param MonologBootloader $monolog
+     */
+    public function boot(MonologBootloader $monolog)
+    {
+        $monolog->addHandler(
+            ErrorHandlerMiddleware::class,
+            $monolog->logRotate(directory('runtime') . 'logs/http.log')
+        );
     }
 }
 ```

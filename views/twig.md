@@ -1,74 +1,63 @@
-# Twig Views
-The Spiral application bundle includes Twig rendering engine by default. 
+# Views - Twig
+Framework provides deep integration with [Twig Template](https://twig.symfony.com/) engine including access to IoC
+scopes, i18n integration and caching.
 
-```php
-$this->views->render('@application/home.twig');
+## Installation and Configuration
+To install Twig:
+
+```bash
+$ composer require spiral/twig-bridge
 ```
 
-You can skip extension when no view conflicts are expected and/or use default namespace notation:
+The extension can be enabled using `Spiral\Twig\Bootloader\TwigBootloader`.
 
 ```php
-$this->views->render('application:home');
+protected const LOAD = [
+    // ...
+    Spiral\Bootloader\Views\ViewsBootloader::class,
+    Spiral\Bootloader\Views\TranslatedCacheBootloader::class, // keep localized views in separate cache files
+    Spiral\Twig\Bootloader\TwigBootloader::class,
+    // ...
+];
 ```
 
-> Twig engine follows same cache settings as other engines, see views config.
+You can add any custom extension to Twig via `addExtension` method of `TwigBootloader`:
 
-## Definition
-TwigEngine defined in views config:
 ```php
-'twig'   => [
-    'class'      => Engines\TwigEngine::class,
-    'extension'  => 'twig',
-    'options'    => [
-        'auto_reload' => true
-    ],
-
-    /*
-    * Modifiers applied to imported or extended view source before it's getting parsed by
-    * HtmlTemplater, every modifier has to implement ModifierInterface and as result view
-    * name, namespace and filename are available for it. Modifiers is the best to connect
-    * custom syntax processors (for example Laravel's Blade).
-    */
-    'modifiers'  => [
-        //Automatically replaces [[string]] with their translations
-        Processors\TranslateProcessor::class,
-
-        //Mounts view environment variables using @{name} pattern.
-        Processors\EnvironmentProcessor::class,
-
-        /*{{twig.modifiers}}*/
-    ],
-
-    /*
-    * Here you define list of extensions to be mounted into twig engine, every extension
-    * class will be resolved using container so you can use constructor dependencies.
-    */
-    'extensions' => [
-        //Provides access to dump() and spiral() functions inside twig templates
-        Engines\Twig\Extensions\SpiralExtension::class
-        /*{{twig.extension}}*/
-    ]
-],
+class TwigExtensionBootloader extends Bootloader
+{
+    public function boot(TwigBootloader $twig)
+    {
+        $twig->addExtension(MyExtension::class);
+    
+        // custom options
+        $twig->setOption('name', 'value');
+    }
+}
 ```
 
-Use `options` array to pass values into `Twig_Environment`. View translation using `[[]]` and environment values `@{name}` are allowed in twig templates due to `TranslateProcessor` and `EnvironmentProcessor`.
-
-## Twig Extension
-Use `extensions` section or twig config to define `Twig_Extension` list (resolved via container).
-
-Default `SpiralExtension` extension provides access to IoC scope and `spiral` function:
+## Usage
+You can use twig views immediately. Create view with `.twig` extension in `app/views` directory.
 
 ```twig
- <script>
-    window.csrfToken = "{{ spiral('request').getAttribute('csrfToken') }}";
-</script>
+Hello, {{ name }}!
 ```
 
-> `dump` function is available as well.
-
-## Direct Access
-Access twig directly in your code and bootloaders:
+You can use this view without an extension in your controllers:
 
 ```php
-$this->views->engine('twig')->getTwig(); //Twig_Environment
+public function index()
+{
+    return $this->views->render('filename', ['name' => 'User']);
+}
+```
+
+> You can freely use twig `include` and `extends` directives.
+
+To access the value from the IoC scope:
+
+```php
+Hello, {{ name }}!
+
+{{ get("Spiral\\Http\\Request\\InputManager").attribute('csrfToken') }}
 ```
