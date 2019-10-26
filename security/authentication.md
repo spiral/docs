@@ -174,7 +174,7 @@ object via method injection.
 ```php
 public function index(AuthContextInterface $auth)
 {
-    // auth with auth context
+    // work with auth context
 }
 ```
 
