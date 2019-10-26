@@ -249,7 +249,7 @@ public function login(LoginRequest $login)
 }
 ```
 
-In order to authorize user for the following requests you must create token with the payload compatible with your
+In order to authenticate user for the following requests you must create token with the payload compatible with your
 `ActorProviderInterface` (userID => id). 
 
 We will need an instance of `AuthContextInterface` and `TokenStorageInterface`
