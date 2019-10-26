@@ -7,7 +7,7 @@ by editing the file(s) in `app/config/`.
 ## Environment
 Web and GRPC templates use DotEnv extension to read environment values from `.env` file located in the root of your project.
 
-```dotenv
+```env
 # Debug mode disabled view cache and enabled higher verbosity.
 DEBUG = true
 
