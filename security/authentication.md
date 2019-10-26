@@ -29,13 +29,17 @@ The package `spiral/auth` provides common interfaces without the relation to any
 
 // todo: keep writing
 
+### Session Token Storage
+
+### Database Token Storage
+
+## Actor Provider and Token Payload
+
 ## Authenticate User
 
-## define actor provide
+### login
 
-## login
-
-## logout
+### logout
 
 ## RBAC security
 
