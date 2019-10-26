@@ -69,11 +69,16 @@ The extension will modify your class into given form:
 
 
 ```php
+namespace App\Controller;
+
+use App\Database\Repository\UserRepository;
+use Spiral\Views\ViewsInterface;
+
 class HomeController
 {
     /** @var ViewsInterface */
     private $views;
-
+    
     /** @var UserRepository */
     private $users;
 
@@ -94,7 +99,6 @@ class HomeController
         ]);
     }
 }
-
 ```
 
 > The formatting around the injected lines will be affected.
