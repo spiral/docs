@@ -28,3 +28,14 @@ The package `spiral/auth` provides common interfaces without the relation to any
 `spiral/auth-http` includes HTTP Middleware, Token transport (Cookie, Header) and Firewall components.
 
 // todo: keep writing
+
+## Authenticate User
+
+## define actor provide
+
+## login
+
+## logout
+
+## RBAC security
+
