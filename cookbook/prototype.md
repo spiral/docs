@@ -48,7 +48,9 @@ class HomeController
 
     public function index()
     {
-        $select = $this->users->select();
+        return $this->views->render('profile', [
+            'user' => $this->users->findByName('Antony')
+        ]);
     }
 }
 ```
@@ -67,28 +69,32 @@ The extension will modify your class into given form:
 
 
 ```php
-namespace App\Controller;
-
-use App\UserRepository;
-
 class HomeController
 {
+    /** @var ViewsInterface */
+    private $views;
+
     /** @var UserRepository */
     private $users;
 
     /**
+     * @param ViewsInterface $views
      * @param UserRepository $users
      */
-    public function __construct(UserRepository $users)
+    public function __construct(ViewsInterface $views, UserRepository $users)
     {
         $this->users = $users;
+        $this->views = $views;
     }
 
     public function index()
     {
-        $select = $this->users->select();
+        return $this->views->render('profile', [
+            'user' => $this->users->findByName('Antony')
+        ]);
     }
 }
+
 ```
 
 > The formatting around the injected lines will be affected.
