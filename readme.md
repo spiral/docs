@@ -45,7 +45,7 @@
     * [Data Encryption](security/encrypter.md)
     * Validation
     * RBAC Authorization
-    * User Authentication
+    * [User Authentication](security/authentication.md)
 * Console
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
