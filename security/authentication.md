@@ -37,9 +37,11 @@ The package `spiral/auth` provides common interfaces without the relation to any
 
 ## Authenticate User
 
-### login
+### Login
 
-### logout
+### Check Authenticated
+
+### Logout
 
 ## RBAC security
 
