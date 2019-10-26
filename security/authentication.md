@@ -35,6 +35,8 @@ The package `spiral/auth` provides common interfaces without the relation to any
 
 ## Actor Provider and Token Payload
 
+## Auth Scope
+
 ## Authenticate User
 
 ### Login
