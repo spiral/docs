@@ -149,7 +149,7 @@ public function index(Transaction $t)
 }
 ```
 
-We have to register our actor provider to enable it, create and activate the bootloader in your application:
+Register actor provider to enable it, create and activate the bootloader in your application:
 
 ```php
 namespace App\Bootloader;
