@@ -46,6 +46,7 @@
   {
     "title": "Components",
     "links": {
+      "component/reactor": "Code Generation",
       "component/pagination": "Pagination",
       "component/tokenizer": "Static Analysis Tools",
       "component/metrics": "Prometheus Metrics"

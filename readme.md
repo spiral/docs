@@ -37,7 +37,7 @@
     * Testing Application
 * Components
     * Files and Directories
-    * Code Generation
+    * [Code Generation](component/reactor.md)
     * [Pagination](component/pagination.md)
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
