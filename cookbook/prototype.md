@@ -33,7 +33,7 @@ Now you can run `php app.php configure` to generate IDE tooltips.
 To use prototyping abilities of framework add `Spiral\Prototype\Traits\PrototypeTrait` to any of your classes. 
 Once complete your IDE will immediately suggest you available classes and Cycle Repositories:
 
-![IDE Tooltips](/resources/virtual-bindings.gif)
+![IDE Tooltips](https://user-images.githubusercontent.com/796136/67619538-8f0c8c80-f805-11e9-9cd8-0597133bf33a.gif)
 
 You can use this suggestion directly, without need for any import:
 
@@ -48,7 +48,9 @@ class HomeController
 
     public function index()
     {
-        $select = $this->users->select();
+        return $this->views->render('profile', [
+            'user' => $this->users->findByName('Antony')
+        ]);
     }
 }
 ```
@@ -69,24 +71,32 @@ The extension will modify your class into given form:
 ```php
 namespace App\Controller;
 
-use App\UserRepository;
+use App\Database\Repository\UserRepository;
+use Spiral\Views\ViewsInterface;
 
 class HomeController
 {
+    /** @var ViewsInterface */
+    private $views;
+    
     /** @var UserRepository */
     private $users;
 
     /**
+     * @param ViewsInterface $views
      * @param UserRepository $users
      */
-    public function __construct(UserRepository $users)
+    public function __construct(ViewsInterface $views, UserRepository $users)
     {
         $this->users = $users;
+        $this->views = $views;
     }
 
     public function index()
     {
-        $select = $this->users->select();
+        return $this->views->render('profile', [
+            'user' => $this->users->findByName('Antony')
+        ]);
     }
 }
 ```
