@@ -27,7 +27,7 @@ class MyClass
 
 You can get access to most of the declaration directly from the class.
 
-#### Property
+### Property
 To render class property:
 
 ```php
@@ -54,7 +54,7 @@ class MyClass
 }
 ```
 
-#### Constant
+### Constant
 To render constant:
 
 ```php
@@ -68,7 +68,7 @@ $class->constant('MY_CONSTANT')
 dump($class->render());
 ```
 
-#### Traits
+### Traits
 To add trait declaration:
 
 ```php
@@ -88,7 +88,7 @@ class MyClass
 }
 ```
 
-#### Interface and Extends
+### Interface and Extends
 To implement given interface or extend base class:
 
 ```php
@@ -110,7 +110,7 @@ class MyClass extends Cycle\ORM\Select\Repository implements Countable
 }
 ```
 
-#### Methods
+### Methods
 To generate class method:
 
 ```php
