@@ -29,11 +29,11 @@
     * [Prototyping](cookbook/prototype.md)
     * Database Scaffolding
     * MVC Application
+    * Domain Core and Controllers
     * [Website Scraper](cookbook/scraper.md)
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
-    * Domain Core and Controllers
     * Testing Application
 * Components
     * Files and Directories
