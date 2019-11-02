@@ -97,7 +97,6 @@ class CoreBootloader extends Bootloader
         CoreInterface::class => [self::class, 'core']
     ];
 
-
     private function core(Core $core): CoreInterface
     {
         $customCore = new InterceptableCore($core);
@@ -117,10 +116,13 @@ To activate the core for the specific route:
 $customCore = new InterceptableCore($core);
 $customCore->addInterceptor(new CustomInterceptor());
 
-$router->setRoute('home', new Route(
-    '/home/<action>',
-    (new Controller(HomeController::class))->withCore($customCore)
-));
+$router->setRoute(
+    'home',
+    new Route(
+        '/home/<action>',
+        (new Controller(HomeController::class))->withCore($customCore)
+    )
+);
 ```
 
 ## Domain Core Builder
@@ -154,7 +156,7 @@ Use `Spiral\Domain\CycleInterceptor` to automatically resolve entity injections 
 $router->setRoute(
     'home',
       new Route(
-          '/home/index/<id>',
+          '/home/<action>/<id>',
           new Controller(HomeController::class)
       )
 );
