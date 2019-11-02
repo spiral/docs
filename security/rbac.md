@@ -1,6 +1,6 @@
 # Security - Role Based Access Control
 The framework includes the component `spiral/security` which provides the ability to authorize user/actor access to the
-specific resources and actions based on list of associated privileges. The components implements "Flat RBAC" patterns
+specific resources or actions based on list of associated privileges. The components implements "Flat RBAC" patterns
 described in [NIST RBAC research](https://csrc.nist.gov/projects/role-based-access-control). 
 
 Implementation includes multiple additions such as:
