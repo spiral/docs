@@ -4,8 +4,7 @@ specific resources or actions based on list of associated privileges. The compon
 described in [NIST RBAC research](https://csrc.nist.gov/projects/role-based-access-control). 
 
 Implementation includes multiple additions such as:
-- an additional layer of *rules* which provides the ability to control the privilege based on 
-resource context (for example "only admins and post authors can edit target post").
+- an additional layer of *rules* to control the privilege/permission context
 - the ability to assign the role to multiple privileges using wildcard pattern
 - the ability to overwrite the role to permission assignment using higher priority rule
 
