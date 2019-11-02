@@ -75,7 +75,7 @@ class HomeController
 }
 ```
 
-You can use interceptors to alter the target controller, action or parameters. Multiple interceptors are available
+You can use interceptors to alter the target controller, action or parameters. Multiple interceptors are possible
 as well.
 
 ## Global Domain Core
