@@ -36,7 +36,7 @@
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
     * Testing Application
 * Components
-    * Files and Directories
+    * [Files and Directories](component/files.md)
     * [Code Generation](component/reactor.md)
     * [Pagination](component/pagination.md)
     * [Static Analysis Tools](component/tokenizer.md)

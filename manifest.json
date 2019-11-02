@@ -47,6 +47,7 @@
   {
     "title": "Components",
     "links": {
+      "component/files": "Files and Directories",
       "component/reactor": "Code Generation",
       "component/pagination": "Pagination",
       "component/tokenizer": "Static Analysis Tools",
