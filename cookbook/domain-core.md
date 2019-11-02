@@ -459,7 +459,7 @@ Method would not allow to invoke the method with user id `1`.
 
 > Make sure to enable `CycleInterceptor` prior to `GuardInterceptor` in domain core.
 
-### All Together
+## All Together
 Use all interceptors together to implement rich domain logic and secure controller actions:
 
 ```php
