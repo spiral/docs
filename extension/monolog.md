@@ -6,12 +6,24 @@ Extension does not require any default configuration. Use `Spiral\Monolog\Bootlo
 declare handler and formatter for specific channel:
 
 ```php
-public function boot(MonologBootloader $monolog)
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Monolog\Bootloader\MonologBootloader;
+
+class LoggingBootloader extends Bootloader
 {
-    $monolog->addHandler(
-        'my-channel',
-        $monolog->logRotate(directory('runtime') . 'logs/my-channel.log')
-    );
+    protected const DEPENDENCIES = [
+        MonologBootloader::class
+    ];
+    
+    public function boot(MonologBootloader $monolog)
+    {
+        $monolog->addHandler(
+            'my-channel',
+            $monolog->logRotate(directory('runtime') . 'logs/my-channel.log')
+        );
+    }
 }
 ``` 
 
@@ -39,11 +51,40 @@ public function index(LogsInterface $logs)
 }
 ```
 
+Make sure to enable default handler to save content to the file:
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Monolog\Bootloader\MonologBootloader;
+
+class LoggingBootloader extends Bootloader
+{
+    protected const DEPENDENCIES = [
+        MonologBootloader::class
+    ];
+
+    /**
+     * @param MonologBootloader $monolog
+     */
+    public function boot(MonologBootloader $monolog)
+    {
+        $monolog->addHandler(
+            'default',
+            $monolog->logRotate(directory('runtime') . 'logs/debug.log')
+        );
+    }
+}
+```
+
 ## LoggerTrait
 You can use `Spiral\Logger\Traits\LoggerTrait` to quickly assign Logger to any class, the class name will be used as 
 channel name:
 
 ```php
+use Spiral\Logger\Traits\LoggerTrait;
+
 class HomeController
 {
     use LoggerTrait;
@@ -68,3 +109,39 @@ public function boot(MonologBootloader $monolog)
 ```
 
 > LoggerTrait works only inside `$app->serve()` method via global IoC scope.
+
+## Errors
+To aggregate all application errors into single log file subscribe to `default` channel:
+
+```php
+namespace App\Bootloader;
+
+use Monolog\Logger;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Monolog\Bootloader\MonologBootloader;
+
+class LoggingBootloader extends Bootloader
+{
+    protected const DEPENDENCIES = [
+        MonologBootloader::class
+    ];
+
+    /**
+     * @param MonologBootloader $monolog
+     */
+    public function boot(MonologBootloader $monolog)
+    {
+        $monolog->addHandler(
+            'default',
+            $monolog->logRotate(directory('runtime') . 'logs/errors.log', Logger::ERROR) // only ERROR and above
+        );
+    }
+}
+```
+
+## Debug
+Use the second argument of `dump` function to dump directly into `default` log channel:
+
+```php
+dump('hello', \Spiral\Debug\Dumper::LOGGER); 
+```
