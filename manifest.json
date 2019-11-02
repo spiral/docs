@@ -57,6 +57,7 @@
     "title": "Security",
     "links": {
       "security/encrypter": "Data Encryption",
+      "security/rbac": "Role Based Access Control",
       "security/authentication": "User Authentication"
     }
   },
