@@ -369,6 +369,26 @@ class HomeController
 
 > Use the actor interface to create more complex rules.
 
+Pass domain entities as context to check the authority:
+
+```php
+if ($this->guard->allows('post.edit', ['post' => $post])) {
+    echo 'yay';
+}
+```
+
+And the rule to check if user if author:
+
+```php
+class SampleRule implements RuleInterface
+{
+    public function allows(ActorInterface $actor, string $permission, array $context): bool
+    {
+        return $context['post']->user === $actor;
+    }
+}
+```
+
 ### Abstract Rule
 To simplify the rule creation use the `Spiral\Security\Rule` which enables the method injection with on method `check`.
 
