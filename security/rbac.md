@@ -8,11 +8,11 @@ Implementation includes multiple additions such as:
 - the ability to assign role to multiple privileges using wildcard pattern
 - the ability to overwrite role-to-permission assignment using higher priority rule
 
-Such additions make possible to use the component as the framework for ACL, DAC and ABAC security models.
-
-> The component is enabled in Web and GRPC bundles by default.
+> Such additions make possible to use the component as the framework for ACL, DAC and ABAC security models.
 
 Make sure to enable the `Spiral\Bootloader\Security\GuardBootloader` to activate the component, no configuration is 
 required.
+
+> The component is enabled in Web and GRPC bundles by default.
 
 // keep writing
