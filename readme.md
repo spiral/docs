@@ -27,6 +27,7 @@
     * [Prototyping](cookbook/prototype.md)
     * Database Scaffolding
     * MVC Application
+    * [Injectors](cookbook/injector.md)
     * [Domain Core and Controllers](cookbook/domain-core.md)
     * [Website Scraper](cookbook/scraper.md)
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)

@@ -35,6 +35,7 @@
     "title": "Cookbook",
     "links": {
       "cookbook/prototype": "Prototyping",
+      "cookbook/injector": "Injectors",
       "cookbook/domain-core": "Domain Core and Controllers",
       "cookbook/scraper": "Website Scraper",
       "cookbook/psr-15": "Custom PSR-15 Handlers",
