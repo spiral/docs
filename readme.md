@@ -15,12 +15,10 @@
     * Design Approach
     * [Application Server](framework/application-server.md)
     * Kernel, Environment
-    * [Container and Factories](framework/container.md)
+    * [Container](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
-    * [Singletons](framework/singletons.md)
     * [Config Objects](framework/config.md)
     * [IoC scopes](framework/scopes.md)
-    * [Auto Wiring](framework/auto-wiring.md)
     * [Static Memory](framework/memory.md)
     * [Finalizers](framework/finalizers.md)
 * Cookbook

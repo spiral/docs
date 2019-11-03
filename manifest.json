@@ -23,12 +23,10 @@
     "title": "Framework",
     "links": {
       "framework/application-server": "Application Server",
-      "framework/container": "Container and Factories",
+      "framework/container": "Container",
       "framework/bootloaders": "Bootloaders",
-      "framework/singletons": "Singletons",
       "framework/config": "Config Objects",
       "framework/scopes": "IoC scopes",
-      "framework/auto-wiring": "Auto Wiring",
       "framework/memory": "Static Memory",
       "framework/finalizers": "Finalizers"
     }
