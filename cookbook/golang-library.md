@@ -117,3 +117,6 @@ public function index(Blackfriday $bf)
 ## Performance
 The selected library in this example shows double the performance of classic https://github.com/erusev/parsedown. Read how to optimize
 performance even more by switching to unix sockets for RCP communications in **Performance Tuning** section.
+
+> Obviously, such communication method is not free, make sure to properly balance between the socket connection speed
+and the complexity of computation.  
