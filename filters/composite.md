@@ -22,6 +22,50 @@ This filter can accept the following data format:
 ```
 
 ## Child Filter
+You can create complex filters by nesting other filters inside them. Simply declare field origin as external field class
+to do that:
+
+```php
+class ProfileFilter extends Filter
+{
+    protected const SCHEMA = [
+        'name'       => 'data:name',
+        'address' => AddressFilter::class
+    ];
+}
+```
+
+This filter will accept the data in a format:
+
+```json
+{
+  "name": "Antony",
+  "address": {
+    "city": "San Francisco", 
+    "address": "Address"
+  }
+}
+```
+
+You can get access to the nested filter using `getField` or magic `__get`:
+
+```php
+public function index(ProfileFilter $p)
+{
+    dump($p->address->city); // San Francisco
+}
+```
+
+Both filters will be validated together. In case of error in `address` filter the error will be mounted in sub-array:
+
+```json
+{
+  "name": "This field is required.",
+  "address": {
+    "city": "This field is required."
+  }
+}
+```
 
 ### Custom Prefix
 
