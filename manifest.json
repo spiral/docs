@@ -83,6 +83,12 @@
     }
   },
   {
+    "title": "Filter Objects",
+    "links": {
+      "filters/configuration": "Installation and Configuration"
+    }
+  },
+  {
     "title": "Queue and Jobs",
     "links": {
       "queue/configuration": "Installation and Configuration",

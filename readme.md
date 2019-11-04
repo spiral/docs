@@ -59,10 +59,10 @@
     * [Cookies](http/cookies.md)
     * Session
     * [CSRF protection](http/csrf.md)
-* Request/Filter Objects
-    * Installation and Configuration
+* Filter Objects
+    * [Installation and Configuration](filters/configuration.md)
     * Filter Entity
-    * Nested Filters
+    * Composite Filters
     * Error Mapping
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)
