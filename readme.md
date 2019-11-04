@@ -63,7 +63,6 @@
     * [Installation and Configuration](filters/configuration.md)
     * Filter Entity
     * [Composite Filters](filters/composite.md)
-    * Error Mapping
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)
     * [Console Commands](queue/commands.md)
