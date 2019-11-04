@@ -61,7 +61,7 @@
     * [CSRF protection](http/csrf.md)
 * Filter Objects
     * [Installation and Configuration](filters/configuration.md)
-    * [Filter Entity](filters/filter.md)
+    * [Filter Object](filters/filter.md)
     * [Composite Filters](filters/composite.md)
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)
