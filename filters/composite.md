@@ -26,9 +26,48 @@ This filter can accept the following data format:
 ### Custom Prefix
 
 ## Array of Filters
-You can populate an array of filters at the same time.
+You can populate an array of filters at the same time. Use array with single element pointing to filter class
+to declare the array filter:
 
+```php
+class MultipleAddressesFilter extends Filter
+{
+    protected const SCHEMA = [
+        'key'       => 'data:key',
+        'addresses' => [AddressFilter::class]
+    ];
+}
+```
 
+Such filter can accept following data format:
+
+```json
+{
+  "key": "value",
+  "addresses": [
+    {
+      "city": "San Francisco", 
+      "address": "Address"
+    },
+    {
+      "city": "Minsk", 
+      "address": "Address #2"
+    }
+  ]
+}
+```
+
+You can get access to the array filters via array accessor:
+
+```php
+public function index(MultipleAddressesFilter $ma)
+{
+    dump($ma->addresses[0]->city); // San Francisco
+    dump($ma->addresses[1]->city); // Minsk
+}
+```
+
+> The errors will be mounted accordingly.
 
 ### Custom Prefix
 
