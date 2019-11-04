@@ -461,7 +461,7 @@ scalar|    is_scalar
 string|    is_string
 match|     mixed::match
 
-### Type Checker- prefix type::
+### Type - prefix type::
 | Rule          | Parameters             | Description         
 | ---           | ---                    | ---       
 | notEmpty      | asString:*bool* - true | Value should not be empty (same as `!empty`).                                             
@@ -472,7 +472,7 @@ match|     mixed::match
 
 > All of the rules of this checker are available without prefix.
 
-### Required Checker - prefix required::
+### Required - prefix required::
 | Rule          | Parameters             | Description    
 | ---           | ---                    | ---  
 | notEmpty      | asString:*bool* - true | Value should not be empty.                                             
@@ -498,7 +498,7 @@ Examples:
 ]
 ```
 
-### Mixed Checker - prefix mixed::
+### Mixed - prefix mixed::
 | Rule          | Parameters                            | Description                                      
 | ---           | ---                                   | ---                                              
 | cardNumber    | ---                                   | Check credit card passed by Luhn algorithm.      
@@ -506,7 +506,7 @@ Examples:
 
 > All of the rules of this checker are available without prefix.
 
-### Address Checker - prefix address::
+### Address - prefix address::
 | Rule          | Parameters                    | Description              
 | ---           | ---                           | ---                      
 | email         | ---                           | Check if email is valid. 
@@ -514,7 +514,7 @@ Examples:
 
 > All of the rules of this checker are available without prefix.
 
-### Number Checker - prefix number::
+### Number - prefix number::
 | Rule          | Parameters                 | Description           
 | ---           | ---                        | ---                   
 | range         | begin:*float*, end:*float* | Check if the number is in a specified range.
@@ -522,7 +522,7 @@ Examples:
 | lower         | limit:*float*              | Check if the value is smaller or equal to that which is specified.
 
 
-### String Checker - prefix string::
+### String - prefix string::
 | Rule          | Parameters              | Description           
 | ---           | ---                     | ---                   
 | regexp        | expression:*string*     | Check string using regexp.                  
