@@ -70,8 +70,46 @@ public function index(MultipleAddressesFilter $ma)
 > The errors will be mounted accordingly.
 
 ### Custom Prefix
+You can create array of filters based on data prefix different from the key name in the filter, use second value
+or the array in the schema. Unlike single child you must specify the `.*` to indicate that value is array:
 
-### Iterate Source
+```php
+class MultipleAddressesFilter extends Filter
+{
+    protected const SCHEMA = [
+        'key'       => 'data:key',
+        'addresses' => [AddressFilter::class, 'addr.*']
+    ];
+}
+```
+
+The following data format is supported by this filter:
+
+```json
+{
+  "key": "value",
+  "addr": [
+    {
+      "city": "San Francisco", 
+      "address": "Address"
+    },
+    {
+      "city": "Minsk", 
+      "address": "Address #2"
+    }
+  ]
+}
+```
+
+You can still access the nested array filters using `address` key:
+
+```php
+public function index(MultipleAddressesFilter $ma)
+{
+    dump($ma->getField('addresses')[0]->getField('city')); // San Francisco
+    dump($ma->getField('addresses')[1]->getField('city')); // Minsk
+}
+```
 
 ## Composite Filters
 You are use nested child filters as part of larger composite filter. Use prefix `.` (root) in order to do that:
