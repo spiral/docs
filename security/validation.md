@@ -431,39 +431,37 @@ The most used rule-set is available thought the set of shortcuts:
 
 Alias | Rule
 --- | ---
+notEmpty|  type::notEmpty
+required|   type::notEmpty
+datetime|  type::datetime
+timezone|  type::timezone
+bool|      type::boolean
+boolean|   type::boolean
+cardNumber|mixed::cardNumber
+regexp|    string::regexp
+email|     address::email
+url|       address::url
+file|      file::exists
+uploaded|  file::uploaded
+filesize|  file::size
+image|     image::valid
+array|     is_array
+callable|  is_callable
+double|    is_double
+float|     is_float
+int|       is_int
+integer|   is_integer
+numeric|   is_numeric
+long|      is_long
+null|      is_null
+object|    is_object
+real|      is_real
+resource|  is_resource
+scalar|    is_scalar
+string|    is_string
+match|     mixed::match
 
-    "notEmpty"   => "type::notEmpty",
-    "required"   => "type::notEmpty",
-    "datetime"   => "type::datetime",
-    "timezone"   => "type::timezone",
-    "bool"       => "type::boolean",
-    "boolean"    => "type::boolean",
-    "cardNumber" => "mixed::cardNumber",
-    "regexp"     => "string::regexp",
-    "email"      => "address::email",
-    "url"        => "address::url",
-    "file"       => "file::exists",
-    "uploaded"   => "file::uploaded",
-    "filesize"   => "file::size",
-    "image"      => "image::valid",
-    "array"      => "is_array",
-    "callable"   => "is_callable",
-    "double"     => "is_double",
-    "float"      => "is_float",
-    "int"        => "is_int",
-    "integer"    => "is_integer",
-    "numeric"    => "is_numeric",
-    "long"       => "is_long",
-    "null"       => "is_null",
-    "object"     => "is_object",
-    "real"       => "is_real",
-    "resource"   => "is_resource",
-    "scalar"     => "is_scalar",
-    "string"     => "is_string",
-    "match"      => "mixed::match",
-
-
-### Type Checker (prefix "type::")
+### Type Checker- prefix type::
 | Rule          | Parameters             | Description         
 | ---           | ---                    | ---       
 | notEmpty      | asString:*bool* - true | Value should not be empty (same as `!empty`).                                             
@@ -474,7 +472,7 @@ Alias | Rule
 
 > All of the rules of this checker are available without prefix.
 
-### Required Checker (prefix "required::")
+### Required Checker - prefix required::
 | Rule          | Parameters             | Description    
 | ---           | ---                    | ---  
 | notEmpty      | asString:*bool* - true | Value should not be empty.                                             
@@ -500,7 +498,7 @@ Examples:
 ]
 ```
 
-### Mixed Checker (prefix "mixed::")
+### Mixed Checker - prefix mixed::
 | Rule          | Parameters                            | Description                                      
 | ---           | ---                                   | ---                                              
 | cardNumber    | ---                                   | Check credit card passed by Luhn algorithm.      
@@ -508,7 +506,7 @@ Examples:
 
 > All of the rules of this checker are available without prefix.
 
-### Address Checker (prefix "address::")
+### Address Checker - prefix address::
 | Rule          | Parameters                    | Description              
 | ---           | ---                           | ---                      
 | email         | ---                           | Check if email is valid. 
@@ -516,7 +514,7 @@ Examples:
 
 > All of the rules of this checker are available without prefix.
 
-### Number Checker (prefix "number::")
+### Number Checker - prefix number::
 | Rule          | Parameters                 | Description           
 | ---           | ---                        | ---                   
 | range         | begin:*float*, end:*float* | Check if the number is in a specified range.
@@ -524,7 +522,7 @@ Examples:
 | lower         | limit:*float*              | Check if the value is smaller or equal to that which is specified.
 
 
-### String Checker (prefix "string::")
+### String Checker - prefix "string::
 | Rule          | Parameters              | Description           
 | ---           | ---                     | ---                   
 | regexp        | expression:*string*     | Check string using regexp.                  
@@ -544,7 +542,7 @@ Examples:
 ]
 ```
 
-### File Checker (prefix "file::")
+### File Checker - prefix file::
 File checker fully supports the filename provided in a string form or using `UploadedFileInterface` (PSR-7).
 This makes the checker very useful for uploading files.
 
@@ -555,7 +553,7 @@ This makes the checker very useful for uploading files.
 | size          | size:*int*            | Check if file size less that specified value in KB.
 | extension     | extensions:*array*    | Check if file extension in whitelist. Client name of uploaded file will be used!
 
-### Image Checker (prefix "image::")
+### Image Checker - prefix image::
 Image checker extends the file checker and fully supports it's features.
 
 | Rule          | Parameters                | Description           |
