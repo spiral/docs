@@ -42,7 +42,7 @@
     * [Prometheus Metrics](component/metrics.md)
 * Security
     * [Data Encryption](security/encrypter.md)
-    * Validation
+    * [Validation](security/validation.md)
     * [Role Based Access Control](security/rbac.md)
     * [User Authentication](security/authentication.md)
 * Console
