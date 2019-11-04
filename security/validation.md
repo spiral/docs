@@ -522,7 +522,7 @@ Examples:
 | lower         | limit:*float*              | Check if the value is smaller or equal to that which is specified.
 
 
-### String Checker - prefix "string::
+### String Checker - prefix string::
 | Rule          | Parameters              | Description           
 | ---           | ---                     | ---                   
 | regexp        | expression:*string*     | Check string using regexp.                  
