@@ -29,7 +29,7 @@ to do that:
 class ProfileFilter extends Filter
 {
     protected const SCHEMA = [
-        'name'       => 'data:name',
+        'name'    => 'data:name',
         'address' => AddressFilter::class
     ];
 }
@@ -68,6 +68,31 @@ Both filters will be validated together. In case of error in `address` filter th
 ```
 
 ### Custom Prefix
+In some cases you might need to use data prefix different from the actual key assigned to the nested filter, use array
+notation in which first element is filter class name and second is data prefix:
+
+```php
+class ProfileFilter extends Filter
+{
+    protected const SCHEMA = [
+        'name'    => 'data:name',
+        'address' => [AddressFilter::class, 'addr']
+    ];
+}
+```
+
+This filter can accept the following data format:
+
+```json
+{
+  "name": "This field is required.",
+  "addr": {
+    "city": "This field is required."
+  }
+}
+```
+
+> You can skill use `address` key internally, errors will be mounted accordingly.
 
 ## Array of Filters
 You can populate an array of filters at the same time. Use array with single element pointing to filter class
