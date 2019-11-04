@@ -62,7 +62,7 @@
 * Filter Objects
     * [Installation and Configuration](filters/configuration.md)
     * Filter Entity
-    * Composite Filters
+    * [Composite Filters](filters/composite.md)
     * Error Mapping
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)

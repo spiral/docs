@@ -85,7 +85,8 @@
   {
     "title": "Filter Objects",
     "links": {
-      "filters/configuration": "Installation and Configuration"
+      "filters/configuration": "Installation and Configuration",
+      "filters/composite": "Composite Filters"
     }
   },
   {
