@@ -1,11 +1,34 @@
 # Composite Filters
-The component provide the ability to create nested filters and nested array of filters.
+The component provide the ability to create nested filters and nested array of filters. To demonstrate the composition
+we will use sample filter:
+
+```php
+class AddressFilter extends Filter
+{
+    protected const SCHEMA = [
+        'city'    => 'data:city', 
+        'address' => 'data:address'
+    ];
+}
+```
+
+This filter can accept the following data format:
+
+```json
+{
+  "city": "San Francisco", 
+  "address": "Address"
+}
+```
 
 ## Child Filter
 
 ### Custom Prefix
 
 ## Array of Filters
+You can populate an array of filters at the same time.
+
+
 
 ### Custom Prefix
 
