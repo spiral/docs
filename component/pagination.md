@@ -92,3 +92,17 @@ public function index()
     dump($paginator->isRequired()); // false when only 1 page is presented
 }
 ```
+
+## Manual Creation
+Create pagination object manually to set the limit and page numbers using any parameter source:
+
+```php
+use Spiral\Pagination\Paginator();
+
+$p = new Paginator(
+    100,    // limit
+    10000   // count
+);
+
+$p->withPage(10)->paginate($target);
+```
