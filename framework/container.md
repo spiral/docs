@@ -152,6 +152,45 @@ public function makeClass(FactoryInterface $factory)
 }
 ```
 
+## ResolverInterface
+If you want to resolve method arguments to dynamic target (i.e. controller method) use `Spiral\Core\ResolverInterface`:
+
+```php
+abstract class Handler
+{
+    /** @var ResolverInterface */
+    protected $resolver;
+
+    public function __construct(ResolverInterface $resolver)
+    {
+        $this->resolver = $resolver;
+    }
+
+    public function run(array $params)
+    {
+        $method = new \ReflectionMethod($this, 'do'); // the method to invoke with method injection
+        $method->setAccessible(true);
+
+        return $method->invokeArgs(
+            $this, 
+            $this->resolver->resolveArguments($method, $params) // resolve missing arguments
+        );
+    }
+}
+```
+
+Method `do` now can request method injection:
+
+```php
+class MyHandler extends Handler
+{
+    public function do(SomeClass $some)
+    {
+        // ...    
+    }
+}
+```
+
 ## Auto Wiring
 Spiral Framework attempts to hide the container implementation and configuration from your domain layer by providing rich auto-wiring functionality. Though, auto-wiring rules are very simple it's important to learn them to avoid framework misbehavior.
 
