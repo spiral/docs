@@ -181,7 +181,7 @@ public function index(MultipleAddressesFilter $ma)
 ```
 
 ## Composite Filters
-You are use nested child filters as part of larger composite filter. Use prefix `.` (root) in order to do that:
+You can use nested child filters as part of larger composite filter. Use prefix `.` (root) in order to do that:
 
 ```php
 class CompositeFilter extends Filter
