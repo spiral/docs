@@ -162,269 +162,179 @@ The validation component will always return one error and first fired error per 
 > Error messages can be localized using `spiral/translator`.
 
 ## Validation DSL
-
-
-
-## Validation Rules and Messages
-To define multiple validation rules for one field:
+The default spiral validator accepts validation rules in a form or nested array. They key is the name of property
+to be validated, where the value is array of rules to be applied to the value sequentially:
 
 ```php
-protected function indexAction(FactoryInterface $factory)
-{
-    /**
-     * @var ValidatorInterface $validator
-     */
-    $validator = $factory->make(
-        ValidatorInterface::class, 
-        [
-            'data'  => [
-                'name' => $this->input->query('name')
-            ],
-            'rules' => [
-                'name' => [
-                    'notEmpty',
-                    'email'     //We want our name field to contain a valid email address
-                ]
-            ]
+$validator = $validation->validate(
+    ['key' => null],
+    [
+        'key' => [
+            'notEmpty', // key must not be empty
+            'string'    // must be string
         ]
-    );
+    ]
+);
 
+if (!$validator->isValid()) {
     dump($validator->getErrors());
 }
 ```
 
+The rule in this case is name of checker method or any available PHP function which can accept `value` as first argument.
+
+For example we can use `is_numeric` directly inside your rule:
 
 ```php
-'rules' => [
-    'name' => [
-        'notEmpty',
-        'is_numeric'
-    ]
-]
-```
-
-
-```php
-[
-    'name' => "Condition 'is_numeric' does not meet."
-]
-```
-
-### Validation Messages and Complex Rule Definition
-Based on the given example, validator will create a default error message if some condition fails. We can provide a custom error message by switching the rule definition from a simple to complex form. For this purpose, our rule must be defined as an array and must declare an additional key "message":
-
-```php
-'rules' => [
-    'name' => [
-        'notEmpty',
-        ['is_numeric', 'message' => 'Must be numeric.']
-    ]
-]
-```
-
-Every existing rule can be declared in a complex form by putting it's name into an array. Let's rewrite our rules to demonstrate that:
-
-```php
-'rules' => [
-    'name' => [
-        ['notEmpty'],
-        ['is_numeric', 'message' => 'Must be numeric.']
-    ]
-]
-```
-
-> You can only use a simple rule definition form when you want to use a default error message without any rule parameters (see below). Validator performs an automatic translation only for default error messages!
-
-### Rule parameters
-It was mentioned before that the complex form lets you set custom error message and provide a set of arguments to be passed into your validation method. We can perform that by listing the necessary arguments after the rule name/function. Let's try to use the 'in_array' function for example:
-
-```php
-'rules' => [
-    'name' => [
-        ['notEmpty'],
-        ['in_array', ['a', 'b', 'c'], 'message' => 'Invalid value.']
-    ]
-]
-```
-
-> You can use any function as a validation rule, including your own method declared in a form "Class::method". The only requirement is that value needs to be the first argument.
-
-Let's try to create our own validation method in our controller or service.
-
-```php
-protected function indexAction(FactoryInterface $factory)
-{
-    /**
-     * @var ValidatorInterface $validator
-     */
-    $validator = $factory->make(
-        ValidatorInterface::class, 
-        [
-            'data'  => [
-                'name' => $this->input->query('name')
-            ],
-            'rules' => [
-                'name' => [
-                    ['notEmpty'],
-                    ['Controllers\HomeController::validate', 'abc', 'message' => 'Invalid value.']
-                ]
-            ]
+$validator = $validation->validate(
+    ['key' => null],
+    [
+        'key' => [
+            'notEmpty',  // key must not be empty
+            'is_numeric' // must be numeric
         ]
-    );
-
-    dump($validator->getErrors());
-}
-
-public function validate($value, $compare)
-{
-    return $value == $compare;
-}
-```
-
-> As you can see, we declared our method as non static. This is because Validator will resolve the rule class using container. This allows us to create specialized services to perform logical validations (for example ensure that outer record exists by it's ID) and much more (technically you can use something like that UserService::findByPK to validate foreign key value).
-
-## Checkers
-In some cases, you may want to create a set of rules with predefined error messages and skip the step where you have to create an alias for every rule. For such purposes, the spiral Validator lets you create your own `Checker` class. Checkers are dedicated to organizing a set of validation rules with their error messages and provide access to such validations using a simple prefix.
-
-If you check the validation configuration file, you will see some checkers already present:
-
-```php
-'checkers'        => [
-    "type"     => Checkers\TypeChecker::class,
-    "required" => Checkers\RequiredChecker::class,
-    "number"   => Checkers\NumberChecker::class,
-    "mixed"    => Checkers\MixedChecker::class,
-    "address"  => Checkers\AddressChecker::class,
-    "string"   => Checkers\StringChecker::class,
-    "file"     => Checkers\FileChecker::class,
-    "image"    => Checkers\ImageChecker::class,
-],
-```
-
-Every checker must has it's own name. This name can be used as prefix (using :: separator) while defining the validation rules. For example, StringChecker provides a method named "regexp" that has the ability to apply regular expression to a field value. Lets try it:
-
-```php
-/**
- * Check string using regexp.
- *
- * @param string $string
- * @param string $expression
- * @return bool
- */
-public function regexp($string, $expression)
-{
-    return is_string($string) && preg_match($expression, $string);
-}
-```
-
-```php
-'rules' => [
-    'name'  => [
-        ['notEmpty'],
-        ['string::regexp', '/^a+$/i']
-    ]               
-]
-```
-
-As you may have noticed, the default error message will look something like "Your value does not match the required pattern.". This is possible because Checkers allow us to define their own default messages. Let's try to create our own Checker (every Checker has Translation support by default):
-
-```php
-class MyChecker extends Checker
-{
-    /**
-     * Default error messages associated with checker method by name.
-     *
-     * @var array
-     */
-    const MESSAGES = [
-        'abc' => '[[Invalid value, only a,b,c are allowed.]]'
-    ];
-
-    public function abc($value): bool
-    {
-        return in_array($value, ['a', 'b', 'c']);
-    }
-}
-```
-
-> You may notice that the error message for method check is surrounded by `[[]]`. This technique allows spiral Translator to index and pre-cache checker translations. Read more about it in the section dedicated to Translator.
-
-Now we can register our checker in the validation config under the name "my" and use it our rules:
-
-```php
-'rules' => [
-    'name' => [
-        'notEmpty',
-        'my::abc'
     ]
-]
+);
 ```
 
-> You can create aliases for checker methods.
-
-Besides the ability to aggregate many validation methods under one roof, Checkers is more similar with integration with Validator than the usual validation functions. We can demonstrate such ability by accessing the validator instance from the inside of our checker method:
-
-```php
-class MyChecker extends Checker
-{
-    /**
-     * Default error messages associated with checker method by name.
-     *
-     * @var array
-     */
-    const MESSAGES = [
-        'abc'   => '[[Invalid value, only a,b,c are allowed.]]',
-        'equal' => '[[Two fields must equal.]]'
-    ];
-
-    public function abc($value): bool
-    {
-        return in_array($value, ['a', 'b', 'c']);
-    }
-
-    public function equal($value, string $field): bool
-    {
-        return $value == $this->getValidator()->getValue($field, null);
-    }
-}
-```
-
-We can now modify our validation code within controller:
+### Extended Declaration
+In many cases you would need to declare additional rule parameters, conditions or custom error messages. This can 
+be done by wrapping rule into `[]`.
 
 ```php
-protected function indexAction(FactoryInterface $factory)
-{
-    /**
-     * @var ValidatorInterface $validator
-     */
-    $validator = $factory->make(
-        ValidatorInterface::class,
-        [
-            'data'  => [
-                'name'  => $this->input->query('name'),
-                'email' => $this->input->query('email'),
-            ],
-            'rules' => [
-                'name'  => [
-                    'notEmpty',
-                    'my::abc'
-                ],
-                'email' => [
-                    'notEmpty',
-                    ['my::equal', 'name']
-                ]
-            ]
+$validator = $validation->validate(
+    ['key' => null],
+    [
+        'key' => [
+            ['notEmpty'],  // key must not be empty
+            ['is_numeric'] // must be numeric
         ]
-    );
+    ]
+);
+``` 
 
-    dump($validator->getErrors());
-}
+> You can omit the `[]` if rule does not need any parameters.
+
+### Checker Rules
+You can split your rule name using `::` prefix, where first part is checker name and second is method name, for example:
+
+```php
+$validator = $validation->validate(
+    ['file' => null],
+    [
+        'file' => [
+            'file::uploaded'
+        ]
+    ]
+);
 ```
 
-As result, we have a method that will check two validation fields.
+### Parameters
+All values listed in rule array will be passed as rule arguments. For example to check value using `in_array`:
+
+```php
+$validator = $validation->validate(
+    ['name' => 'f'],
+    [
+        'name' => [
+            'notEmpty',
+            ['in_array', ['a', 'b', 'c']] // in_array($value, ['a', 'b', 'c'])
+        ]
+    ]
+);
+```
+
+To specify regexp pattern:
+
+```php
+$validator = $validation->validate(
+    ['name' => 'b'],
+    [
+        'name' => [
+            'notEmpty',
+            ['regexp', '/^a+$/'] // aaa...
+        ]
+    ]
+);
+```
+
+### Error Messages
+Validator will render default error message for any custom rule, to set custom error message set the rule
+attribute:
+
+```php
+$validator = $validation->validate(
+    ['file' => 'b'],
+    [
+        'file' => [
+            'notEmpty',
+            ['regexp', '/^a+$/', 'error' => 'Invalid pattern, "a+" wanted.'] // aaa...
+        ]
+    ]
+);
+```
+
+> You can assign custom error messages to any rule.
+
+### Conditions
+In some cases the rule must only be activated based on some external condition, use rule attribute `if` for this
+purpose:
+
+```php
+$validator = $validation->validate(
+    [
+        'password'        => '',
+        'confirmPassword' => ''
+    ],
+    [
+        'password'        => [
+            ['notEmpty']
+        ],
+        'confirmPassword' => [
+            ['notEmpty', 'if' => ['withAll' => ['password']]]
+        ]
+    ]
+);
+```
+
+> In the given example the required error on `confirmPassword` will show if `password` is filled.
+
+You can use multiple conditions or combine them with complex rules:
+
+```php
+ $validator = $validation->validate(
+    [
+        'password'        => 'abc',
+        'confirmPassword' => 'cde'
+    ],
+    [
+        'password'        => [
+            ['notEmpty']
+        ],
+        'confirmPassword' => [
+            ['notEmpty', 'if' => ['withAll' => ['password']]],
+            ['match', 'password', 'error' => 'Passwords do not match.']
+        ]
+    ]
+);
+```
+
+### Available Conditions
+Following conditions available for the usage:
+
+Name | Arguments | Description
+--- | --- | ---
+withAny | fields:*array* | When at least one field is not empty.
+withoutAny | fields:*array* | When at least one field is empty.
+withAll | fields:*array* | When all fields are not empty.
+withoutAll | fields:*array* | When all fields are empty.
+
+> You can create your own conditions using `Spiral\Validation\ConditionInterface`.
 
 ## Validation Rules
 The following validation rules are available.
+
+> You can create your own validation rules using `Spiral\Validation\AbstractChecker` or `Spiral\Validation\CheckerInterface`.
 
 ### Rules Aliases
 The most used rule-set is available thought the set of shortcuts:
@@ -562,87 +472,3 @@ Image checker extends the file checker and fully supports it's features.
 | valid         | ---                       | Shortcut to check if the image has a valid type (JPEG, PNG and GIF are allowed).
 | smaller       | width:*int*, height:*int* | Check if image is smaller than a specified shape (height check if optional).
 | bigger        | width:*int*, height:*int* | Check if image is bigger than a specified shape (height check is optional).
-
-
-
-
-
-
-
-## Checker Conditions - WIP
-Sometimes we want to validate field only in certain cases, for example when creating a blog post you want it to have a 
-thumbnail. Thumbnail is required for a new post, but is optional when you update it (unless you upload a new thumnail for it).
-
-Conditions are provided by `\Spiral\Validation\CheckerConditionInterface` interface, to see basic implementation refer to `\Spiral\Validation\Prototypes\AbstractCheckerCondition` class
-```php
-interface CheckerConditionInterface
-{
-    /**
-     * @param ValidatorInterface $validator
-     *
-     * @return CheckerConditionInterface
-     */
-    public function withValidator(ValidatorInterface $validator): CheckerConditionInterface;
-
-    /**
-     * @return bool
-     */
-    public function isMet(): bool;
-}
-```
-
-### Example usage
-Request filter:
-```php
-class Request extends RequestFilter
-{
-    const SCHEMA = ['file' => 'file:image'];
-
-    const VALIDATES = [
-        'file' => [
-            ['file::uploaded', 'condition' => NewPostOrUpdatedFileCondition::class],
-            ['image::valid', 'condition' => NewPostOrUpdatedFileCondition::class]
-        ],
-    ];
-
-    public function getFile(): UploadedFileInterface
-    {
-        return $this->file;
-    }
-}
-```
-
-Condition file:
-
-```php
-class NewPostOrUpdatedFileCondition extends AbstractCheckerCondition
-{
-    use FileTrait;
-
-    /**
-     * @return bool
-     */
-    public function isMet(): bool
-    {
-        $context = $this->validator->getContext();
-
-        /** @var \Spiral\ORM\RecordEntity $entity */
-        $entity = $context['entity'] ?? null;
-
-        /** @var \Psr\Http\Message\UploadedFileInterface $entity */
-        $file = $context['file'] ?? null;
-
-        //Entity is new
-        if (empty($entity) || !$entity->isLoaded()) {
-            return true;
-        }
-
-        //File is provided and uploaded
-        if (!empty($file) && $this->isUploaded($file)) {
-            return true;
-        }
-
-        return false;
-}
-```
-So in this case request filter will require file when there's no entity yet or (entity exists) file is uploaded again.
