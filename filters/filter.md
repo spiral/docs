@@ -1,339 +1,421 @@
-# Filter Object _ WIP
-
-From 1.0.
-
-# Request Filters
-In many cases you might want to validate user request before any further action, you can do that by manually creating Validator instance in your controllers or dedicate such functionality to RequestFilters.
-
-> It may be best to read about [DataEntities](/v1.0.0/components/data-entity.md) and [Validations](/v1.0.0/components/validation.md) first.
-
-## Scaffolding
-You can create a new `Filter` by using the command `create:filter user` (make sure `spiral/scaffolder` module is installed). 
-Generated class will look like:
+# Filter Object
+The filter object used to perform complex data validation and filtration using PSR-7 or any other input. You 
+can create filter manually or using scaffolder `php app.php create:filter my`:
 
 ```php
-use Spiral\Filter\Filter;
+namespace App\Filter;
 
-class UserFilter extends Filter
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
 {
-    const SCHEMA    = [];
-    const SETTERS   = [];
-    const VALIDATES = [];
-}
-```
-
-// move down
-
-In many cases you might want to pre-create request with a specific set of fields without manually entering them every time, scaffolder config provides you ability to define shortcuts for field definitions:
-
-```php
-'request'        => [
-    'namespace' => 'Requests',
-    'postfix'   => 'Request',
-    'class'     => Declarations\RequestDeclaration::class,
-    'mapping'   => [
-        'int'    => [
-            'source'    => 'data',
-            'setter'    => 'intval',
-            'validates' => [
-                'notEmpty',
-                'integer'
-            ]
-        ],
-        'float'  => [
-            'source'    => 'data',
-            'setter'    => 'floatval',
-            'validates' => [
-                'notEmpty',
-                'float'
-            ]
-        ],
-        'string' => [
-            'source'    => 'data',
-            'setter'    => 'strval',
-            'validates' => [
-                'notEmpty',
-                'string'
-            ]
-        ],
-        'bool'   => [
-            'source'    => 'data',
-            'setter'    => 'boolval',
-            'validates' => [
-                'notEmpty',
-                'boolean'
-            ]
-        ],
-        'email'  => [
-            'source'    => 'data',
-            'type'      => 'string',
-            'setter'    => 'strval',
-            'validates' => [
-                'notEmpty',
-                'string',
-                'email'
-            ]
-        ],
-        'file'   => [
-            'source'    => 'file',
-            'type'      => '\Psr\Http\Message\UploadedFileInterface',
-            'validates' => [
-                'file::uploaded'
-            ]
-        ],
-        'image'  => [
-            'source'    => 'file',
-            'type'      => '\Psr\Http\Message\UploadedFileInterface',
-            'validates' => [
-                "image::uploaded",
-                "image::valid"
-            ]
-        ],
-        /*{{request.mapping}}*/
-    ]
-],
-```
-
-Let's create new request: `spiral create:request sample -f image:image -f name:string -f test:int`
-
-Our generated class is going to look like:
-
-```php
-class SampleRequest extends RequestFilter
-{
-    const SCHEMA = [
-        'image' => 'file:image',
-        'name'  => 'data:name',
-        'test'  => 'data:test'
+    protected const SCHEMA    = [  
     ];
-
-    const SETTERS = [
-        'name' => 'strval',
-        'test' => 'intval'
+    
+    protected const VALIDATES = [
     ];
-
-    const VALIDATES = [
-        'image' => [
-            'image::uploaded',
-            'image::valid'
-        ],
-        'name'  => [
-            'notEmpty',
-            'string'
-        ],
-        'test'  => [
-            'notEmpty',
-            'integer'
-        ]
+    
+    protected const SETTERS   = [       
     ];
 }
 ```
 
-## Using RequestFilters
-Let's check out an example of request usage in controller method and then walk through it's schema definition:
+Use `Spiral\Filter\FilterProviderInterface`->`createFilter` or simply request filter dependency to create an instance:
 
 ```php
-public function createUser(SampleRequest $request)
+use App\Filter\MyFilter;
+
+class HomeController
 {
-    if(!$request->isValid()) {
-        dump($request->getErrors());
-    }
-    
-    //Doing something with request data
-}
-```
-
-Requests will be automatically created and populated with data received from request active in current IoC scope, we can define field/input mapping using our SCHEMA:
-
-```php
-const SCHEMA = [
-    'image' => 'file:image',
-    'name'  => 'data:name',
-    'test'  => 'data:test'
-];
-```
-
-Schema definition will include the target field name, it's source and origin (client name) name can specified using dot notation. Let's switch request to read values from query string:
-
-```php
-const SCHEMA = [
-    'name'  => 'query:name',
-    'test'  => 'query:test'
-];
-```
-
-And demonstrate dot notation:
-
-```php
-const SCHEMA = [
-    'name'    => 'query:user.name',  //user[status]
-    'test'    => 'query:user.test'   //user[test]
-];
-```
-
-RequestFilter supports different sources you can use for definition.  Any method in `InputManager` can be used as source:
-
-```php
-protected $schema = [
-  'name'   => 'post:name',           //identical to "data:name"
-  'field'  => 'query:field',         
-  'file'   => 'file:images.preview', //Will be represented by UploadedFile Interface
-  'secure' => 'isSecure'             //Alias for InputManager->isSecure()
-];
-```
-
-### Input Sources
-You can use following sources for your request filters:
-
-* uri (UriInterface)
-* path (PAGE URI PATH)
-* method (HTTP METHOD)
-* isSecure (bool)
-* isAjax (bool)
-* isJsonExpected (bool)
-* remoteAddress (string)
-* header:**origin**
-* data:**origin**
-* post:**origin**
-* query:**origin**
-* cookie:**origin**
-* file:**origin**
-* server:**origin**
-* attribute:**origin**
-
-> Read more about InputManager [here](/v1.0.0/httphttp/input.md).
-
-## Getting request fields
-You can always access request values using DataEntity methods:
-
-```php
-public function doSomething(SomeRequest $request)
-{
-    if (!$request->isValid()) {
-        //Working with errors
-    }
-    
-    $data = $request->getFields();
-    
-    //You can also access some fields using magic methods
-    dump($request->image);
-}
-```
-
-> You can also set fields using `setField` method, this can be beneficial when using requests in non http environment.
-
-## Validation context
-You can add some context to request, it can be used in request filters or in checkers later:
-```php
-public function doSomething(SomeRequest $request)
-{
-    $request->setContext(['some', 'context']);
-}
-
-/**
- * Inside request:
- * Perform data validation. Method might include custom validations and errors
- */
-protected function validate()
-{
-    //Configuring validator
-    if (!empty($this->getContext())) {
-        //do something
+    public function index(MyFilter $filter)
+    {
+        dump($filter);
     }
 }
 ```
 
-## Errors
-Every error generated by request or target entity will be mapped to it's origin name. 
+## Filter Schema
+The core of any filter object is `SCHEMA`, this constant defines mapping between fields and values provided by input.
+Every key pair is defined as `field` => `source:origin` or `field` => `source`. The **source** is the subset of data from
+user input, in HTTP scope the sources can be `cookie`, `data`, `query`, `input` (`data`+`query`), `header`, `file`,
+`server`. The **origin** is the name of external field, dot notation is supported.
+
+> You can use any input bag from [InputManager](/http/request-response.md) as source.
+
+For example we can tell our filter to point field `login` to the QUERY param `username`:
 
 ```php
-const SCHEMA = [
-    'name'    => 'query:user.name'
-];
-```
+namespace App\Filter;
 
-Fox example, if the request within a given schema returns any errors related to "name" field `getErrors`, method will return the following structure:
-```php
-[
-    'user' => [
-        'name' => 'Error message.'
-    ]
-];
-```
+use Spiral\Filters\Filter;
 
-## Nested Validations
-You can nest RequestFilters into each other to create more complex validations:
-
-```php
-class AddressRequest extends RequestFilter
+class MyFilter extends Filter
 {
-    const SCHEMA = [
-        'country' => 'data:countryCode',
-        'city'    => 'data',
-        'address' => 'data',
-    ];
-
-    const VALIDATES = [
-        'country' => ['notEmpty'],
-        'city'    => ['notEmpty'],
-        'address' => ['notEmpty'],
+    protected const SCHEMA = [
+        'login' => 'query:username'
     ];
 }
 ```
 
-Now we can use this classes as sub-requests:
+You can combine multiple source inside the filter:
 
 ```php
-class DemoRequest extends RequestFilter
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
 {
-    const SCHEMA = [
-        'name'    => 'data',
-        'address' => AddressRequest::class
+    protected const SCHEMA = [
+        'redirectTo'   => 'query:redirectURL',
+        'memberCookie' => 'cookie:memberCookie',
+        'username'     => 'data:username',
+        'password'     => 'data:password',
+        'rememberMe'   => 'data:rememberMe'
+    ];
+}
+```
+
+> The most common source is `data` (points to PSR-7 - parsed body), you can use this data to fetch values from incoming
+> json payloads. 
+
+### Dot Notation
+The data **origin** can be specified using dot notation pointing to some nested structure. For example:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [
+        'firstName' => 'data:name.first'
     ];
 
-    const VALIDATES = [
-        'name'    => ['notEmpty'],
-        'uploads' => [
-            ['notEmpty', 'message' => '[[Please upload at least one file]]']
+    protected const VALIDATES = [
+        'firstName' => [
+            ['notEmpty']
         ]
     ];
 
-    const SETTERS = [
-        'name' => 'strval'
+    protected const SETTERS = [
+        'firstName' => 'strval'
     ];
 }
 ```
 
-In a given request AddressRequest will be automatically populated based on values located in a sub-array "address" in incoming request:
+We can accept and validate the following data structure:
 
 ```json
 {
-  "address":{
-    "city": "value", 
-    ...
+  "names": {
+    "first": "Antony" 
   }
 }
 ```
 
-And will be represented as property in a parent request:
+> The error messages will be properly mounted into original location. You can also use composite filters for more complex
+> use-cases.
+
+### Other Sources
+By design you can use any method of `[InputManager](/http/request-response.md)` as source where origin is passed
+parameter. Following sources are available:
+
+Source | Description
+--- | ---
+uri | Current page Uri in a form of `Psr\Http\Message\UriInterface`
+path | Current page path
+method | Http method (GET|POST|...)
+isSecure | If https used.
+isAjax | If `X-Requested-With` set as `xmlhttprequest`
+isJsonExpected | When client expects `application/json`
+remoteAddress | User ip address
+
+> Read more about InputManager [here](/v1.0.0/httphttp/input.md).
+
+For example to check if request is made over https:
 
 ```php
-dump($demoRequest->address->getField('city'));
-```
+namespace App\Filter;
 
-> All nested requests will be validated with parent.
+use Spiral\Filters\Filter;
 
-### Array of Sub Requests 
-
-todo: WRITE ABOUT IT
-
-On another end, UploadRequest will be represented as array of requests:
-
-```php
-foreach($demoRequest->uploads as $upload)
+class MyFilter extends Filter
 {
-    dump($upload->upload->getClientFilename());
+    protected const SCHEMA = [
+        'httpsRequest' => 'isSecure'
+    ];
+
+    protected const VALIDATES = [
+        'httpsRequest' => [
+            ['notEmpty', 'error' => 'Connection is not secure.']
+        ]
+    ];
 }
 ```
 
-> You can find demonstration of how nested requests work [here](https://github.com/spiral/spiral/blob/master/tests/Http/RequestFilters/DemoRequestTest.php).
+> Read more about validation below. 
+
+### Setters
+Use setters to typecast the incoming value before passing it to validator. The filter will assign null to the value
+in case of typecast error:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [
+        'number' => 'query:number'
+    ];
+
+    protected const VALIDATES = [
+        'number' => [
+            ['notEmpty'],
+            ['number::higher', 5]
+        ]
+    ];
+
+    protected const SETTERS = [
+        'number' => 'intval'
+    ];
+}
+```
+
+> You can use any of the default PHP functions like `intval`, `strval` and etc.
+
+```php
+namespace App\Controller;
+
+use App\Filter\MyFilter;
+
+class HomeController
+{
+    public function index(MyFilter $filter)
+    {
+        dump($filter->number); // always int
+    }
+}
+```
+
+## Validation
+The validation rules can be defined using same approach as in [validation](/security/validation.md) component.
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [
+        'name' => 'data:name'
+    ];
+
+    protected const VALIDATES = [
+        'name' => [
+            ['notEmpty']
+        ]
+    ];
+}
+```
+
+You can use all the checkers, conditions and rules.
+
+### Custom Errors
+You can specify custom error message to any of the rule similar way as in validation component.
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [
+        'name' => 'data:name'
+    ];
+
+    protected const VALIDATES = [
+        'name' => [
+            ['notEmpty', 'error' => 'Name must not be empty']
+        ]
+    ];
+}
+```
+
+If you plan to later localize error message to another language wrap the text in `[[]]` to automatically index and
+replace the translation:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [
+        'name' => 'data:name'
+    ];
+
+    protected const VALIDATES = [
+        'name' => [
+            ['notEmpty', 'error' => '[[Name must not be empty]]']
+        ]
+    ];
+}
+```
+
+## Usage
+Once the filter is configured you can access it's fields (filtered data), check if the data valid and return the set
+of errors in case of failure.
+
+> Use [Domain Core Interceptors](/cookbook/domain-core.md) to validate your filters before they will arrive to the 
+> controller.
+
+### Get Fields
+To get filtered list of fields use methods `getField` and `getFields`. For the filter like that:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [
+        'name'  => 'data:name',
+        'email' => 'data:email'
+    ];
+
+    protected const VALIDATES = [
+        'name' => [
+            ['notEmpty']
+        ]
+    ];
+
+    protected const SETTERS = [
+
+    ];
+}
+```
+
+Following fields are available:
+
+```php
+public function index(MyFilter $filter)
+{
+    dump($filter->getFields()); // {name: ..., email: ...}
+
+    dump($filter->getField('name'));
+
+    // same as above
+    dump($filter->email);
+}
+```
+
+### Errors
+To check if filter is valid use `isValid`, list of field errors is available via `getErrors`:
+
+```php
+public function index(MyFilter $filter)
+{
+    if (!$filter->isValid()) {
+        dump($filter->getErrors());
+    }
+}
+```
+
+The errors will be automatically mapped to origin property name, for example:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [
+        'name' => 'data:names.name.0'
+    ];
+
+    protected const VALIDATES = [
+        'name' => [
+            ['notEmpty']
+        ]
+    ];
+
+    protected const SETTERS = [
+
+    ];
+}
+```
+
+Will produce the following error if field `name` is invalid:
+
+```json
+{
+  "status": 400,
+  "errors": {
+    "names": {
+      "name": "This value is required."
+    } 
+  } 
+}
+```
+
+## Inheritance 
+You can extend one filter from another, the schema, validation and setters will be inherited:
+
+```php
+namespace App\Filter;
+
+class MyFilter extends BaseFilter
+{
+    protected const SCHEMA = [
+        'name' => 'data:name'
+    ];
+
+    protected const VALIDATES = [
+        'name' => [
+            ['notEmpty']
+        ]
+    ];
+}
+```
+
+Where `BaseFilter` is:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class BaseFilter extends Filter
+{
+    protected const SCHEMA = [
+        'token' => 'data:token'
+    ];
+
+    protected const VALIDATES = [
+        'token' => [
+            ['notEmpty']
+        ]
+    ];
+}
+```
+
+Now filter `MyFilter` will require `token` value as well:
+
+```json
+{
+  "status": 400,
+  "errors": {
+    "token": "This value is required.",
+    "name": "This value is required."
+  }
+}
+```
