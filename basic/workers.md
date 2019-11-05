@@ -111,4 +111,4 @@ Any service declared as singleton will remain in the application memory till the
 or open resources in such services. 
 
 > Framework includes a set of instruments to simplify the development process and avoid memory/state leaks such as 
-IoC Scopes, Cycle ORM, Immutable Configs, Routes and Middleware.
+IoC Scopes, Cycle ORM, Immutable Configs, Domain Cores, Routes and Middleware.
