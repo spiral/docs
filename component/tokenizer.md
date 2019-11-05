@@ -30,3 +30,34 @@ public function boot(TokenizerBootloader $tokenizer)
 ## PHP-Parser
 The [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser) is available in Web and GRPC bundle by default. Use this dependency for deeper
 analysis of AST-tree.
+
+## ORM Introspection
+To get list of all available entity roles:
+
+```php
+use Cycle\ORM\ORMInterface;
+
+// ...
+
+public function index(ORMInterface $orm)
+{
+    dump($orm->getSchema()->getRoles());
+}
+```
+
+To get all classes for all ORM entities:
+
+```php
+use Cycle\ORM\ORMInterface;
+use Cycle\ORM\Schema;
+
+// ...
+
+public function index(ORMInterface $orm)
+{
+    foreach($orm->getSchema()->getRoles() as $role) {
+        dump($orm->getSchema()->define($role, Schema::ENTITY));
+    }
+}
+```
+
