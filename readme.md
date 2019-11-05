@@ -86,7 +86,7 @@
     * Components and Props
     * Directives
     * [AST Modifications](stempler/visitors.md)
-* Translation
+* Internalization
     * Installation and Configuration
     * Import and Export
     * Translate Views
