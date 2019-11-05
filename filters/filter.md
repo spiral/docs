@@ -317,7 +317,7 @@ public function index(MyFilter $filter)
 }
 ```
 
-### Errors
+### Get Errors
 To check if filter is valid use `isValid`, list of field errors is available via `getErrors`:
 
 ```php
@@ -366,6 +366,8 @@ Will produce the following error if field `name` is invalid:
   } 
 }
 ```
+
+> The error format is identical to one described in [validation](/security/validation.md).
 
 ## Inheritance 
 You can extend one filter from another, the schema, validation and setters will be inherited:
