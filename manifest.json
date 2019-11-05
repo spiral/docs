@@ -84,7 +84,7 @@
     }
   },
   {
-    "title": "Filter Objects",
+    "title": "Filter / Request Form",
     "links": {
       "filters/configuration": "Installation and Configuration",
       "filters/filter": "Filter Object",

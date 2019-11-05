@@ -59,7 +59,7 @@
     * [Cookies](http/cookies.md)
     * Session
     * [CSRF protection](http/csrf.md)
-* Filter Objects
+* Filter / Request Form
     * [Installation and Configuration](filters/configuration.md)
     * [Filter Object](filters/filter.md)
     * [Composite Filters](filters/composite.md)
