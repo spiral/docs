@@ -86,7 +86,7 @@
     * Components and Props
     * Directives
     * [AST Modifications](stempler/visitors.md)
-* Internalization
+* Translation
     * Installation and Configuration
     * Import and Export
     * Translate Views
@@ -114,9 +114,9 @@
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * RoadRunner Gotchas
-    * Profiling (coming soon)
-    * [Handling Exceptions](debug/exceptions.md)
     * XDebug
+    * [Handling Exceptions](debug/exceptions.md)
+    * Profiling (coming soon)
 * Extensions
     * [Code Style](extension/code-style.md)
     * [Dotenv](extension/dotenv.md)   
