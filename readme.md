@@ -42,7 +42,7 @@
     * [Prometheus Metrics](component/metrics.md)
 * Security
     * [Data Encryption](security/encrypter.md)
-    * Validation
+    * [Validation](security/validation.md)
     * [Role Based Access Control](security/rbac.md)
     * [User Authentication](security/authentication.md)
 * Console
@@ -61,7 +61,7 @@
     * [CSRF protection](http/csrf.md)
 * Filter Objects
     * [Installation and Configuration](filters/configuration.md)
-    * Filter Entity
+    * [Filter Object](filters/filter.md)
     * [Composite Filters](filters/composite.md)
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)

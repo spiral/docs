@@ -57,6 +57,7 @@
     "title": "Security",
     "links": {
       "security/encrypter": "Data Encryption",
+      "security/validation": "Validation",
       "security/rbac": "Role Based Access Control",
       "security/authentication": "User Authentication"
     }
@@ -86,6 +87,7 @@
     "title": "Filter Objects",
     "links": {
       "filters/configuration": "Installation and Configuration",
+      "filters/filter": "Filter Object",
       "filters/composite": "Composite Filters"
     }
   },

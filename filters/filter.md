@@ -1,19 +1,28 @@
+# Filter Object _ WIP
+
+From 1.0.
+
 # Request Filters
 In many cases you might want to validate user request before any further action, you can do that by manually creating Validator instance in your controllers or dedicate such functionality to RequestFilters.
 
 > It may be best to read about [DataEntities](/v1.0.0/components/data-entity.md) and [Validations](/v1.0.0/components/validation.md) first.
 
 ## Scaffolding
-You can create a new `RequestFilter` by using the command `create:request user` (make sure spiral/scaffolder module is installed). Generated class will look like:
+You can create a new `Filter` by using the command `create:filter user` (make sure `spiral/scaffolder` module is installed). 
+Generated class will look like:
 
 ```php
-class UserRequest extends RequestFilter
+use Spiral\Filter\Filter;
+
+class UserFilter extends Filter
 {
     const SCHEMA    = [];
     const SETTERS   = [];
     const VALIDATES = [];
 }
 ```
+
+// move down
 
 In many cases you might want to pre-create request with a specific set of fields without manually entering them every time, scaffolder config provides you ability to define shortcuts for field definitions:
 
