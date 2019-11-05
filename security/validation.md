@@ -238,7 +238,7 @@ $validator = $validation->validate(
     [
         'name' => [
             'notEmpty',
-            ['in_array', ['a', 'b', 'c']] // in_array($value, ['a', 'b', 'c'])
+            ['in_array', ['a', 'b', 'c'], true] // in_array($value, ['a', 'b', 'c'], true)
         ]
     ]
 );
