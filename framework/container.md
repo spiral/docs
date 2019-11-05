@@ -115,9 +115,11 @@ $container->removeBinding(MyService::class);
 ```
 
 ## Lazy Singletons
-You can skip singleton binding by implementing `piral\Core\Container\SingletonInterface` in your class:
+You can skip singleton binding by implementing `Spiral\Core\Container\SingletonInterface` in your class:
 
 ```php
+use Spiral\Core\Container\SingletonInterface;
+
 class MyService implements SingletonInterface
 {
     public function method()
