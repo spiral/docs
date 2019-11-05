@@ -75,9 +75,8 @@
     * Golang Services
     * GRPC client code
 * Views
-    * Installation and Configuration
-    * Cache Management
-    * View object
+    * [Installation and Configuration](views/configuration.md)
+    * Rendering Views
     * [Plain PHP templates](views/native.md)
     * [Twig templates](views/twig.md)
 * Stempler templates
@@ -107,6 +106,11 @@
     * [Transactions](cycle/transactions.md)
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
+* WebSocket Broadcasting
+    * Installation and Configuration
+    * JavaScript Client
+    * Topics and Authorization
+    * Standalone Usage
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * RoadRunner Gotchas

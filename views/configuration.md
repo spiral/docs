@@ -1,0 +1,104 @@
+# Views - Installation and Configuration
+The `spiral/views` component is available in Web bundle by default, to install it in alternative builds:
+
+```bash
+$ composer require spiral/views
+```
+
+To activate the component use bootloader `Spiral\Bootloaders\Views\ViewsBootloader`:
+
+```php
+[
+    // ...
+    Spiral\Bootloaders\Views\ViewsBootloader::class,
+    // ...
+]
+```
+
+The component is able to work with multiple rendering engines (Twig, Stempler or native PHP templates) and
+store view files in multiple namespaces.
+
+## Configuration
+To change the default component configuration create and edit file `app/config/views.php`:
+
+```php
+<?php
+declare(strict_types=1);
+
+use Spiral\Views\Engine\Native\NativeEngine;
+
+return [
+    'cache'        => [
+        'enabled'   => !env('DEBUG', false),
+        'directory' => directory('cache') . 'views'
+    ],
+    'namespaces'   => [
+        'default' => [
+            directory('views')
+        ]
+    ],
+    'dependencies' => [],
+    'engines'      => [
+        NativeEngine::class
+    ]
+];
+```
+
+## Auto-Configuration
+You are able to alter some of the component settings using bootloader `Spiral\Bootloaders\Views\ViewsBootloader`.
+
+### View Namespace
+To assign new directory to view namespace:
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Bootloader\Views\ViewsBootloader;
+
+class AppBootloader extends Bootloader
+{
+    public function boot(ViewsBootloader $views)
+    {
+        $views->addDirectory('default', directory('root') . 'views');
+    }
+}
+```
+
+### View Engine
+To register new view engine make sure to implement `Spiral\Views\EngineInterface`:
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Bootloader\Views\ViewsBootloader;
+
+class AppBootloader extends Bootloader
+{
+    public function boot(ViewsBootloader $views)
+    {
+        $views->addEngine(MyEngine::class);
+    }
+}
+```
+
+## Caching
+By default, the view caching is turned off if env variable `DEBUG` set to true. The cache files are stored in 
+`runtime/cache/views`.
+
+## Purge
+To delete view cache run console command `views:reset`:
+
+```bash
+$ php app.php views:reset
+```
+
+## Warmup
+To warmup cache before run `views:compile` or `configure`:
+
+```php
+$ php app.php views:compile
+``` 
+
+> Always warmup view cache before switching worker pool under load.
