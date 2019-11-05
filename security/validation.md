@@ -322,12 +322,12 @@ You can use multiple conditions or combine them with complex rules:
 ### Available Conditions
 Following conditions available for the usage:
 
-Name | Arguments | Description
+Name | Options | Description
 --- | --- | ---
-withAny | fields:*array* | When at least one field is not empty.
-withoutAny | fields:*array* | When at least one field is empty.
-withAll | fields:*array* | When all fields are not empty.
-withoutAll | fields:*array* | When all fields are empty.
+withAny | *array* | When at least one field is not empty.
+withoutAny | *array* | When at least one field is empty.
+withAll | *array* | When all fields are not empty.
+withoutAll | *array* | When all fields are empty.
 
 > You can create your own conditions using `Spiral\Validation\ConditionInterface`.
 
