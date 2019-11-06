@@ -109,7 +109,7 @@
 * Event Broadcasting
     * Installation and Configuration
     * WebSocket Client
-    * State Machines and Locks
+    * Distributed Locks
     * Standalone Usage
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
