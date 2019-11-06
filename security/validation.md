@@ -1,4 +1,4 @@
-# Validation - WIP
+# Validation
 You can validate your data using `spiral/validation` component. The component provides array based DSL to construct
 complex validation chains.
 
