@@ -107,10 +107,10 @@
     * [Transactions](cycle/transactions.md)
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
-* WebSocket Broadcasting
+* Event Broadcasting
     * Installation and Configuration
-    * JavaScript Client
-    * Topics and Authorization
+    * WebSocket Client
+    * State Machines and Locks
     * Standalone Usage
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
