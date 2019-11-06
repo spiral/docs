@@ -349,5 +349,30 @@ And activate the bootloader `Spiral\Bootloader\Auth\SecurityActorBootloader` to 
 ]
 ```
 
+## Firewall Middleware
+You can protect some of your route targets by attaching firewall middleware to prevent unauthorized access.
 
- 
+By default spiral provides only one firewall which will overwrite the target url: 
+
+```php
+use Spiral\Auth\Middleware\Firewall\OverwriteFirewall;
+
+// ...
+
+(new Route('/account/<controller>/<action>', $accountTarget))
+        ->withMiddleware(new OverwriteFirewall(new Uri('/account/login')));
+```
+
+### Custom Firewall
+To implement your own firewall extend `Spiral\Auth\Middleware\Firewall\AbstractFirewall`:
+
+```php
+final class OverwriteFirewall extends AbstractFirewall
+{
+    protected function denyAccess(Request $request, RequestHandlerInterface $handler): Response
+    {
+        // user is not authenticated
+        return $handler->handle($request);
+    }
+}
+```

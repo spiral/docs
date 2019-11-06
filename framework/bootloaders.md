@@ -21,7 +21,7 @@ class MyBootloader extends Bootloader
 }
 ```
 
-Every bootloader must be activated in your application kernel. Add the class reference into `LOAD` or `APP` lists:
+Every bootloader must be activated in your application kernel. Add the class reference into `LOAD` or `APP` lists of your `App\App` class:
 
 ```php
 class App extends Kernel

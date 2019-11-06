@@ -115,9 +115,11 @@ $container->removeBinding(MyService::class);
 ```
 
 ## Lazy Singletons
-You can skip singleton binding by implementing `piral\Core\Container\SingletonInterface` in your class:
+You can skip singleton binding by implementing `Spiral\Core\Container\SingletonInterface` in your class:
 
 ```php
+use Spiral\Core\Container\SingletonInterface;
+
 class MyService implements SingletonInterface
 {
     public function method()
@@ -147,6 +149,45 @@ public function makeClass(FactoryInterface $factory)
         'parameter' => 'value'
         // other dependencies will be resolved automatically
     ]); 
+}
+```
+
+## ResolverInterface
+If you want to resolve method arguments to dynamic target (i.e. controller method) use `Spiral\Core\ResolverInterface`:
+
+```php
+abstract class Handler
+{
+    /** @var ResolverInterface */
+    protected $resolver;
+
+    public function __construct(ResolverInterface $resolver)
+    {
+        $this->resolver = $resolver;
+    }
+
+    public function run(array $params)
+    {
+        $method = new \ReflectionMethod($this, 'do'); // the method to invoke with method injection
+        $method->setAccessible(true);
+
+        return $method->invokeArgs(
+            $this, 
+            $this->resolver->resolveArguments($method, $params) // resolve missing arguments
+        );
+    }
+}
+```
+
+Method `do` now can request method injection:
+
+```php
+class MyHandler extends Handler
+{
+    public function do(SomeClass $some)
+    {
+        // ...    
+    }
 }
 ```
 

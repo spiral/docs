@@ -59,7 +59,7 @@
     * [Cookies](http/cookies.md)
     * Session
     * [CSRF protection](http/csrf.md)
-* Filter Objects
+* Filter / Request Form
     * [Installation and Configuration](filters/configuration.md)
     * [Filter Object](filters/filter.md)
     * [Composite Filters](filters/composite.md)
@@ -75,9 +75,8 @@
     * Golang Services
     * GRPC client code
 * Views
-    * Installation and Configuration
-    * Cache Management
-    * View object
+    * [Installation and Configuration](views/configuration.md)
+    * Rendering Views
     * [Plain PHP templates](views/native.md)
     * [Twig templates](views/twig.md)
 * Stempler templates
@@ -115,9 +114,9 @@
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * RoadRunner Gotchas
-    * Profiling (coming soon)
-    * [Handling Exceptions](debug/exceptions.md)
     * XDebug
+    * [Handling Exceptions](debug/exceptions.md)
+    * Profiling (coming soon)
 * Extensions
     * [Code Style](extension/code-style.md)
     * [Dotenv](extension/dotenv.md)   
