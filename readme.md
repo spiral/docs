@@ -121,3 +121,4 @@
     * [Code Style](extension/code-style.md)
     * [Dotenv](extension/dotenv.md)   
     * [Monolog](extension/monolog.md)
+    * [Sentry](extension/sentry.md)

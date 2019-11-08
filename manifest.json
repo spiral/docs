@@ -145,7 +145,8 @@
     "links": {
       "extension/code-style": "Code Style",
       "extension/dotenv": "Dotenv",
-      "extension/monolog": "Monolog"
+      "extension/monolog": "Monolog",
+      "extension/sentry": "Sentry"
     }
   }
 ]
