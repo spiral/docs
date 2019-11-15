@@ -1,4 +1,4 @@
-# DBAL - Schema Introspection
+# Schema Introspection
 Spiral Database layer provides the ability to read and analyze basic properties of a given database or a given table.
 DBAL layer include set of "abstract" types assigned to each column based on DBMS specific mapping in order to unify 
 different engines.
