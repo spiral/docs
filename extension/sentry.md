@@ -20,6 +20,8 @@ protected const LOAD = [
 
 > Remove default `Spiral\Bootloader\SnapshotsBootloader`.
 
+The component will look at `SENTRY_DSN` env value.
+
 ## Additional Data
 To expose current application logs, PSR-7 request state and etc enable additional
 debug extensions:
