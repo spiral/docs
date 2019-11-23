@@ -40,6 +40,7 @@
     * [Pagination](component/pagination.md)
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
+    * Data Grids
 * Security
     * [Data Encryption](security/encrypter.md)
     * [Validation](security/validation.md)
