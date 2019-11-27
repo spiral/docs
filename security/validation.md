@@ -382,16 +382,10 @@ match|     mixed::match
 
 > All of the rules of this checker are available without prefix.
 
-### Required - prefix required::
+### Required
 | Rule          | Parameters             | Description    
 | ---           | ---                    | ---  
 | notEmpty      | asString:*bool* - true | Value should not be empty.                                             
-| with          | with:*array*           | Check if field is not empty but only if any of listed fields presented or not empty.
-| withAll       | with:*array*           | Check if field is not empty but only if all of listed fields presented and not empty.
-| without       | without:*array*        | Check if field is not empty but only if one of listed fields missing or empty.
-| withoutAll    | without:*array*        | Check if field is not empty but only if all of listed fields missing or empty.
-
-> All of the rules of this checker are available without prefix.
 
 Examples:
 
@@ -400,10 +394,6 @@ Examples:
     'name'  => [
         ['notEmpty'],
         ['my::abc']
-    ],
-    'email' => [
-        ['required::with', ['name']], //Only required when name is not empty
-        ['email']
     ]
 ]
 ```
