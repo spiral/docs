@@ -343,8 +343,8 @@ Alias | Rule
 --- | ---
 notEmpty|  type::notEmpty
 required|   type::notEmpty
-datetime|  type::datetime
-timezone|  type::timezone
+datetime|  datetime::valid
+timezone|  datetime::timezone
 bool|      type::boolean
 boolean|   type::boolean
 cardNumber|mixed::cardNumber
@@ -371,14 +371,12 @@ scalar|    is_scalar
 string|    is_string
 match|     mixed::match
 
-### Type - prefix type::
+### Type - prefix `type::`
 | Rule          | Parameters             | Description         
 | ---           | ---                    | ---       
 | notEmpty      | asString:*bool* - true | Value should not be empty (same as `!empty`).                                             
 | notNull       | ---                    | Value should not be null.                                            
-| boolean       | ---                    | Value has to be boolean or integer[0,1].                            
-| datetime      | ---                    | Value has to be valid datetime definition including numeric timestamp. 
-| timezone      | ---                    | Value has to be valid timezone.                                        
+| boolean       | ---                    | Value has to be boolean or integer[0,1].                                  
 
 > All of the rules of this checker are available without prefix.
 
@@ -398,7 +396,7 @@ Examples:
 ]
 ```
 
-### Mixed - prefix mixed::
+### Mixed - prefix `mixed::`
 | Rule          | Parameters                            | Description                                      
 | ---           | ---                                   | ---                                              
 | cardNumber    | ---                                   | Check credit card passed by Luhn algorithm.      
@@ -406,7 +404,7 @@ Examples:
 
 > All of the rules of this checker are available without prefix.
 
-### Address - prefix address::
+### Address - prefix `address::`
 | Rule          | Parameters                    | Description              
 | ---           | ---                           | ---                      
 | email         | ---                           | Check if email is valid. 
@@ -414,15 +412,14 @@ Examples:
 
 > All of the rules of this checker are available without prefix.
 
-### Number - prefix number::
+### Number - prefix `number::`
 | Rule          | Parameters                 | Description           
 | ---           | ---                        | ---                   
 | range         | begin:*float*, end:*float* | Check if the number is in a specified range.
 | higher        | limit:*float*              | Check if the value is bigger or equal to that which is specified.
 | lower         | limit:*float*              | Check if the value is smaller or equal to that which is specified.
 
-
-### String - prefix string::
+### String - prefix `string::`
 | Rule          | Parameters              | Description           
 | ---           | ---                     | ---                   
 | regexp        | expression:*string*     | Check string using regexp.                  
@@ -442,7 +439,7 @@ Examples:
 ]
 ```
 
-### File Checker - prefix file::
+### File Checker - prefix `file::`
 File checker fully supports the filename provided in a string form or using `UploadedFileInterface` (PSR-7).
 This makes the checker very useful for uploading files.
 
@@ -453,7 +450,7 @@ This makes the checker very useful for uploading files.
 | size          | size:*int*            | Check if file size less that specified value in KB.
 | extension     | extensions:*array*    | Check if file extension in whitelist. Client name of uploaded file will be used!
 
-### Image Checker - prefix image::
+### Image Checker - prefix `image::`
 Image checker extends the file checker and fully supports it's features.
 
 | Rule          | Parameters                | Description           |
@@ -462,3 +459,17 @@ Image checker extends the file checker and fully supports it's features.
 | valid         | ---                       | Shortcut to check if the image has a valid type (JPEG, PNG and GIF are allowed).
 | smaller       | width:*int*, height:*int* | Check if image is smaller than a specified shape (height check if optional).
 | bigger        | width:*int*, height:*int* | Check if image is bigger than a specified shape (height check is optional).
+
+### Datetime - prefix `datetime::`
+| Rule          | Parameters             | Description         
+| ---           | ---                    | ---       
+| future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value has to be a date in the future.
+| past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value has to be a date in the past.
+| format        | format:*string*                    | Value should match the specified date format
+| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value should come before a given threshold. 
+| after         |field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come after a given threshold.                
+| valid         | ---                    | Value has to be valid datetime definition including numeric timestamp. 
+| timezone      | ---                    | Value has to be valid timezone.         
+
+> Setting `useMicroSeconds` into true allows to check datetime with microseconds.<br/>
+Be carefull, two `new \DateTime('now')` objects will 99% have different microseconds values so they will never be equal.
