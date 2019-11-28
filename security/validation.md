@@ -49,8 +49,8 @@ return [
     'aliases'    => [
         'notEmpty'   => 'type::notEmpty',
         'required'   => 'type::notEmpty',
-        'datetime'   => 'type::datetime',
-        'timezone'   => 'type::timezone',
+        'datetime'   => 'datetime::valid',
+        'timezone'   => 'datetime::timezone',
         'bool'       => 'type::boolean',
         'boolean'    => 'type::boolean',
         'cardNumber' => 'mixed::cardNumber',
