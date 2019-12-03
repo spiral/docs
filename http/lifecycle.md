@@ -14,20 +14,20 @@ and etc. You can read more about PSR standards used here:
 - [PSR-17: HTTP Factories](https://www.php-fig.org/psr/psr-17/)
 
 ## Flow Description
-The user request comes to the RoadRunner application server. The server will pass it thought the number of middleware
-layers, some of which used to enable web-socket broadcasting, serve static files or [implement domain specific logic](/http/golang.md).
+The user request comes to the RoadRunner application server. The server will pass it through the number of middleware
+layers, some of which are used to enable web-socket broadcasting, serve static files or [implement domain specific logic](/http/golang.md).
 
-Once all the middleware processing complete, the `net/http` request will be converted into `PSR-7` format and passed
+Once all of the middleware processing is complete, the `net/http` request will be converted into `PSR-7` format and passed
 to the first available PHP worker. 
 
 The worker will handle this request using the `spiral/http` extension and `Spiral\Http\Http` core. The core will pass 
-PSR-7 request object (`ServerRequestInterface`) though the set of PSR-15 compatible middleware.
+the PSR-7 request object (`ServerRequestInterface`) through a set of PSR-15 compatible middleware.
  
-Once all the middleware processing is complete, the framework with create an [IoC scope](/framework/scopes.md) for the request object.
+Once all of the middleware processing is complete, the framework will create an [IoC scope](/framework/scopes.md) for the request object.
 Such approach allows you to use PSR-7 request as classic global object, while technically, it only exists during the user request.
 
-The request will be passed into PSR-15 handler on your choise (by default `spiral/router`). The handler must generate the response
-which will be send back to user should all middleware layers.
+The request will be passed into PSR-15 handler of your choice (by default `spiral/router`). The handler must generate the response
+which will be sent back to the user through all middleware layers.
 
 > Spiral Router provides the ability to associate custom middleware set with each route.
 
@@ -67,5 +67,5 @@ class HomeController implements SingletonInterface
 }
 ```
 
-> The IoC scopes can be nested, so all the functionality will work properly. However, aware that not all extensions will
-> allow nesting (you are not allowed create nested sessions yet).
+> The IoC scopes can be nested, so all the functionality will work properly. However, be aware that not all extensions will
+> allow nesting (you are not allowed to create nested sessions yet).
