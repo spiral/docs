@@ -27,7 +27,7 @@ interface ActorInterface
 
 > Use IoC scopes to set Actor during the user request.
 
-Read how to use authenticated used as an actor [here](/security/authentication.md).
+Read how to use authenticated user as an actor [here](/security/authentication.md).
 
 By default, the application use `Spiral\Security\Actor\Guest` as default actor. You can set the actor globally or inside
 IoC scope using the container binding. 
