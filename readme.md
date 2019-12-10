@@ -40,7 +40,7 @@
     * [Pagination](component/pagination.md)
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
-    * Data Grids
+    * [Data Grids](component/data-grid.md)
 * Security
     * [Data Encryption](security/encrypter.md)
     * [Validation](security/validation.md)
@@ -117,7 +117,6 @@
     * RoadRunner Gotchas
     * XDebug
     * [Handling Exceptions](debug/exceptions.md)
-    * Profiling (coming soon)
 * Extensions
     * [Code Style](extension/code-style.md)
     * [Dotenv](extension/dotenv.md)   
