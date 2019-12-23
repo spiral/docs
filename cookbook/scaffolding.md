@@ -796,31 +796,6 @@ class My
 }
 ```
 
-#### Example no inflection
-```bash
-$ php app.php create:entity my -f int_field:int -f stringField:string 
-```
-
-Output is:
-```php
-use Cycle\Annotated\Annotation as Cycle;
-
-/**
- * @Cycle\Entity()
- */
-class My
-{
-    /**
-     * @Cycle\Column(type = "int")
-     */
-    public $int_field;
-
-    /**
-     * @Cycle\Column(type = "string", name = "string_field")
-     */
-    public $stringField;
-}
-```
 #### Example with tableize inflection
 ```bash
 $ php app.php create:entity my -f int_field:int -f stringField:string -i t
@@ -846,6 +821,7 @@ class My
     public $stringField;
 }
 ```
+
 #### Example with camelize inflection
 ```bash
 $ php app.php create:entity my -f int_field:int -f stringField:string -i c
