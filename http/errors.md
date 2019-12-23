@@ -14,7 +14,7 @@ use Spiral\Bootloader as Framework;
 use Spiral\DotEnv\Bootloader as DotEnv;
 use Spiral\Framework\Kernel;
 use Spiral\Prototype\Bootloader as Prototype;
-use Spiral\Scaffolder\Bootloader as Scaffolder;
+use Spiral\Scaffolder\Bootloader\ScaffolderBootloader;
 
 class App extends Kernel
 {
