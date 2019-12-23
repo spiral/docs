@@ -218,6 +218,10 @@ return [
 ];
 ```
 
+```bash
+$ php app.php create:config my -r
+```
+
 Output is:
 ```php
 use Spiral\Core\InjectableConfig;
@@ -398,9 +402,10 @@ class MyController
 ```
 
 ### Create HTTP request filter
-```
+```bash
 $ php app.php create:filter <name>
 ```
+
 `<Name>Filter` class will be created.
 Using option `entity (e)` you can pass an `EntityClass` and the filter command will fetch the all the given
 class properties into the filter and try to define each property's type based on its type declaration (if php74),
@@ -411,11 +416,165 @@ Full field format is `name:type(source:origin)`. `type`, `origin` and `source:or
 * origin=\<name\>
 > See more about filters in [filters](https://github.com/spiral/filters) package
 
-### Create middleware
+#### Example with empty fields definition
+```bash
+$ php app.php create:filter my
 ```
+
+Output is:
+```php
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [];
+
+    protected const VALIDATES = [];
+
+    protected const SETTERS = [];
+}
+```
+
+#### Example with fields definition:
+```bash
+$ php app.php create:filter my -f unknown_val -f str_val:string -f int_val:int -f bool_val:bool(query:from_bool) -f float_val:float(query)
+```
+
+Output is:
+```php
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [
+        'unknown_val' => 'data:unknown_val',
+        'str_val'     => 'data:str_val',
+        'int_val'     => 'data:int_val',
+        'bool_val'    => 'query:from_bool',
+        'float_val'   => 'query:float_val'
+    ];
+
+    protected const VALIDATES = [
+        'unknown_val' => [
+            'notEmpty',
+            'string'
+        ],
+        'str_val'     => [
+            'notEmpty',
+            'string'
+        ],
+        'int_val'     => [
+            'notEmpty',
+            'integer'
+        ],
+        'bool_val'    => [
+            'notEmpty',
+            'boolean'
+        ],
+        'float_val'   => [
+            'notEmpty',
+            'float'
+        ]
+    ];
+
+    protected const SETTERS = [];
+}
+```
+
+#### Example with entity sourcing
+```php
+//...existing "MyEntity" class:
+class MyEntity
+{
+    protected bool $typedBool;
+
+    public $noTypeString;
+
+    /** @var SourceEntity74 */
+    public $obj;
+
+    /** @var int */
+    protected $intFromPhpDoc;
+
+    private $noTypeWithFloatDefault = 1.1;
+}
+```
+
+```bash
+$ php app.php create:filter my -e MyEntity
+```
+
+Output is:
+```php
+use Spiral\Filters\Filter;
+
+class Sample26Filter extends Filter
+{
+    protected const SCHEMA = [
+        'typedBool'              => 'data:typedBool',
+        'noTypeString'           => 'data:noTypeString',
+        'obj'                    => 'data:obj',
+        'intFromPhpDoc'          => 'data:intFromPhpDoc',
+        'noTypeWithFloatDefault' => 'data:noTypeWithFloatDefault'
+    ];
+
+    protected const VALIDATES = [
+        'typedBool'              => [
+            'notEmpty',
+            'boolean'
+        ],
+        'noTypeString'           => [
+            'notEmpty',
+            'string'
+        ],
+        'obj'                    => [
+            'notEmpty',
+            'string'
+        ],
+        'intFromPhpDoc'          => [
+            'notEmpty',
+            'integer'
+        ],
+        'noTypeWithFloatDefault' => [
+            'notEmpty',
+            'float'
+        ]
+    ];
+
+    protected const SETTERS = [];
+}
+```
+
+### Create middleware
+```bash
 $ php app.php create:middleware <name>
 ```
+
 `<Name>Middlweare` class will be created.
+
+#### Example
+```bash
+$ php app.php create:middleware my
+```
+
+Output is:
+```php
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+
+class My implements MiddlewareInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function process(Request $request, RequestHandlerInterface $handler): Response
+    {
+        return $handler->handle($request);
+    }
+}
+```
 
 ### Create migration
 ```
