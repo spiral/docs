@@ -43,21 +43,103 @@ create:repository  | Create Entity Repository declaration
 create:entity      | Create Entity declaration
 
 ### Create bootloader
-```
+```bash
 $ php app.php create:bootloader <name>
 ```
+
 `<Name>Bootloader` class will be created.
 
-### Create command
+#### Example
+```bash
+$ php app.php create:bootloader my
 ```
+
+Output is:
+```php
+use Spiral\Boot\Bootloader\Bootloader;
+
+class MyBootloader extends Bootloader
+{
+    protected const BINDINGS = [];
+
+    protected const SINGLETONS = [];
+
+    protected const DEPENDENCIES = [];
+
+    public function boot(): void
+    {
+    }
+}
+```
+
+### Create command
+```bash
 $ php app.php create:command <name> [<alias>]
 ```
+
 `<Name>Command` class will be created. Command executable name will be set to `name` or `alias` if alias is set.
 
-### Create config
+#### Example without `alias` option
+```bash
+$ php app.php create:bootloader my
 ```
+
+Output is:
+```php
+use Spiral\Console\Command;
+
+class MyCommand extends Command
+{
+    protected const NAME = 'my';
+
+    protected const DESCRIPTION = '';
+
+    protected const ARGUMENTS = [];
+
+    protected const OPTIONS = [];
+
+    /**
+     * Perform command
+     */
+    protected function perform(): void
+    {
+    }
+}
+```
+
+#### Example with `alias` option
+```bash
+$ php app.php create:bootloader my alias
+```
+
+Output is:
+```php
+use Spiral\Console\Command;
+
+class MyCommand extends Command
+{
+    protected const NAME = 'alias';
+
+    protected const DESCRIPTION = '';
+
+    protected const ARGUMENTS = [];
+
+    protected const OPTIONS = [];
+
+    /**
+     * Perform command
+     */
+    protected function perform(): void
+    {
+    }
+}
+```
+
+### Create config
+```bash
 $ php app.php create:config <name>
 ```
+
 `<Name>Config` class will be created. Also, `<app directory>/config/<name>.php` file will be created if doesn't exists.
 Available options:
 * `reverse (r)` - Using this flag, scaffolder will look for `<app directory>/config/<name>.php` file and create a rich `<Name>Config` class based on the given config file.
@@ -66,37 +148,67 @@ Class will include default values and getters, in some cases it will also includ
 If an array-value consists of more than 1 sub-values with the same types for keys and sub-values,
 scaffolder will try to create a by-key-getter method.
 If a generated key is conflicting with an existing method, by-key-getter will be omitted.
+#### Example with empty config file
+```bash
+$ php app.php create:config my
+```
+
+Output config file:
 ```php
-//...config file:
+return [];
+```
+
+Output config class:
+```php
+use Spiral\Core\InjectableConfig;
+
+class MyConfig extends InjectableConfig
+{
+    public const CONFIG = 'my';
+
+    /**
+     * @internal For internal usage. Will be hydrated in the constructor.
+     */
+    protected $config = [];
+}
+```
+
+#### Example with reversing
+```php
+//...existing "my.php" config file:
 return [
+    //will create "getParam()" by-key-getter (successfully singularized name)
     'params'      => [
         'one' => 'param',
         'two' => 'another param',
     ],
+    //will create "getParameterBy()" by-key-getter (unsuccessfully singularized name)
     'parameter'   => [
         'one' => 'parameter',
         'two' => 'another parameter',
     ],
+    //will create "getValueBy()" by-key-getter (because "getValue()" conflicts with the next "value" field)
     'values'      => [
         1 => 'value',
         2 => 'another value',
     ],
     'value'       => 'third value',
-    //won't create due to only 1 sub-value
+    //won't create by-key-getter due to only 1 sub-value
     'few'        => [
         'one' => 'value',
     ],
-    //won't create due to mixed values
+    //won't create by-key-getter due to mixed values
     'mixedValues' => [
         'one' => 'value',
         'two' => 2,
     ],
-    //won't create due to mixed keys
+    //won't create by-key-getter due to mixed keys
     'mixedKeys'   => [
         'one' => 'value',
         2     => 'another value',
     ],
-    //won't create due to name conflicts
+    //won't create by-key-getter to name conflicts
+    //(because "getConflict()" and "getConflictBy" conflicts with the next "conflict" and "conflictBy" field)
     'conflicts'   => [
         'one' => 'conflict',
         'two' => 'another conflict',
@@ -104,34 +216,186 @@ return [
     'conflict'    => 'third conflic',
     'conflictBy'  => 'fourth conflic',
 ];
+```
 
-//...config class
-class MyConfig{
-    //successful singularize name
-    public function param(string $param): string {
+Output is:
+```php
+use Spiral\Core\InjectableConfig;
+
+class MyConfig extends InjectableConfig
+{
+    public const CONFIG = 'my';
+
+    /**
+     * @internal For internal usage. Will be hydrated in the constructor.
+     */
+    protected $config = [
+        'params'      => [],
+        'parameter'   => [],
+        'values'      => [],
+        'value'       => '',
+        'few'         => [],
+        'mixedValues' => [],
+        'mixedKeys'   => [],
+        'conflicts'   => [],
+        'conflict'    => '',
+        'conflictBy'  => ''
+    ];
+
+    /**
+     * @return array|string[]
+     */
+    public function getParams(): array
+    {
+        return $this->config['params'];
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getParameter(): array
+    {
+        return $this->config['parameter'];
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getValues(): array
+    {
+        return $this->config['values'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return $this->config['value'];
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getFew(): array
+    {
+        return $this->config['few'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getMixedValues(): array
+    {
+        return $this->config['mixedValues'];
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getMixedKeys(): array
+    {
+        return $this->config['mixedKeys'];
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getConflicts(): array
+    {
+        return $this->config['conflicts'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getConflict(): string
+    {
+        return $this->config['conflict'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getConflictBy(): string
+    {
+        return $this->config['conflictBy'];
+    }
+
+    /**
+     * @param string param
+     * @return string
+     */
+    public function getParam(string $param): string
+    {
         return $this->config['params'][$param];
     }
 
-    //successful singularize name but having a conflict
-    public function valueBy(int $value): string {
-        return $this->config['values'][$value];
+    /**
+     * @param string parameter
+     * @return string
+     */
+    public function getParameterBy(string $parameter): string
+    {
+        return $this->config['parameter'][$parameter];
     }
 
-    //unsuccessful singularize name
-    public function parameterBy(string $parameter): string {
-        return $this->config['parameter'][$parameter];
+    /**
+     * @param int value
+     * @return string
+     */
+    public function getValueBy(int $value): string
+    {
+        return $this->config['values'][$value];
     }
 }
 ```
 
->No by-key-getters for `few`, `mixedValues`, `mixedKeys` and `conflicts` keys.
-
 ### Create controller
-```
+```bash
 $ php app.php create:controller <name>
 ```
 `<Name>Controller` class will be created.
 You can optionally specify controller actions using `action (a)` option (multiple values allowed).
+
+#### Example with empty actions list
+```bash
+$ php app.php create:controller my
+```
+
+Output is:
+```php
+class MyController
+{
+}
+```
+
+#### Example with actions list
+```bash
+$ php app.php create:controller my -a index -a create -a update -a delete
+```
+
+Output is:
+```php
+class MyController
+{
+    public function index()
+    {
+    }
+
+    public function create()
+    {
+    }
+
+    public function update()
+    {
+    }
+
+    public function delete()
+    {
+    }
+}
+```
 
 ### Create HTTP request filter
 ```
