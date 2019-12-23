@@ -198,18 +198,18 @@ return [
     'few'        => [
         'one' => 'value',
     ],
-    //won't create by-key-getter due to mixed values
+    //won't create by-key-getter due to mixed values' types
     'mixedValues' => [
         'one' => 'value',
         'two' => 2,
     ],
-    //won't create by-key-getter due to mixed keys
+    //won't create by-key-getter due to mixed keys' types
     'mixedKeys'   => [
         'one' => 'value',
         2     => 'another value',
     ],
     //won't create by-key-getter to name conflicts
-    //(because "getConflict()" and "getConflictBy" conflicts with the next "conflict" and "conflictBy" field)
+    //(because "getConflict()" and "getConflictBy()" conflicts with the next "conflict" and "conflictBy" fields)
     'conflicts'   => [
         'one' => 'conflict',
         'two' => 'another conflict',
@@ -508,7 +508,7 @@ class MyEntity
 
     public $noTypeString;
 
-    /** @var SourceEntity74 */
+    /** @var SomeOtherEntity */
     public $obj;
 
     /** @var int */
