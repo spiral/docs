@@ -23,9 +23,8 @@
     * [Finalizers](framework/finalizers.md)
 * Cookbook
     * Quick Start
-    * Scaffolding
+    * [Scaffolding](cookbook/scaffolding.md)
     * [Prototyping](cookbook/prototype.md)
-    * Database Scaffolding
     * MVC Application
     * [Injectors](cookbook/injector.md)
     * [Domain Core and Controllers](cookbook/domain-core.md)
