@@ -44,7 +44,7 @@ create:entity      | Create Entity declaration
 
 ### Create bootloader
 ```
-$ php app.php create:bootloader <name> [<alias>]
+$ php app.php create:bootloader <name>
 ```
 `<Name>Bootloader` class will be created.
 
