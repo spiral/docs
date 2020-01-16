@@ -160,5 +160,16 @@ public function createJob(QueueInterface $queue)
 }
 ```
 
+## Retrying
+To enable job retrying configure your pipeline with additional option `maxAttempts`:
+
+```yaml
+pipelines:
+    local:
+        broker: amqp
+        queue: my-queue
+        maxAttempts: 2
+```
+
 ## Debugging
 Make sure to user `dumprr` function, output to STDOUT will break the communication with application server. If you MUST write to the STDOUT use alternative relay communication method, such as unix or TCP sockets.
