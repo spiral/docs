@@ -68,12 +68,6 @@
     * [Console Commands](queue/commands.md)
     * [Running Jobs](queue/jobs.md)
     * [Standalone Usage](queue/standalone.md)
-* GRPC
-    * Installation and Configuration
-    * Generating Service Code
-    * Passing Metadata and Errors
-    * Golang Services
-    * GRPC client code
 * Views
     * [Installation and Configuration](views/configuration.md)
     * [Rendering Views](views/render.md)
@@ -110,6 +104,12 @@
     * Installation and Configuration
     * WebSocket Client
     * Standalone Usage
+* GRPC
+    * Installation and Configuration
+    * Generating Service Code
+    * Passing Metadata and Errors
+    * Golang Services
+    * GRPC client code
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * RoadRunner Gotchas
