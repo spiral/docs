@@ -77,14 +77,14 @@ To manually commit and close the session:
 $this->session->commit();
 ```
 
-## Abort
+### Abort
 To discard all the changes and close the session:
 
 ```php
 $this->session->abort();
 ```
 
-## Session ID
+### Get Session ID
 To get session ID (only when session resumed):
 
 ```php
@@ -97,14 +97,14 @@ To check if session has been started:
 dump($this->session->isStarted());
 ```
 
-## Destroy
+### Destroy
 To destroy the session and all the content:
 
 ```php
 $this->session->destroy();
 ``` 
 
-## Regenerate ID
+### Regenerate ID
 To issue new session ID without affecting the session content:
 
 ```php
