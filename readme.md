@@ -80,7 +80,7 @@
     * [Plain PHP templates](views/native.md)
     * [Twig templates](views/twig.md)
 * Stempler templates
-    * Installation and Configuration
+    * [Installation and Configuration](stempler/configuration.md)
     * Basic Usage
     * Inheritance
     * Components and Props
