@@ -25,7 +25,6 @@
     * Quick Start
     * [Scaffolding](cookbook/scaffolding.md)
     * [Prototyping](cookbook/prototype.md)
-    * MVC Application
     * [Injectors](cookbook/injector.md)
     * [Domain Core and Controllers](cookbook/domain-core.md)
     * [Website Scraper](cookbook/scraper.md)
