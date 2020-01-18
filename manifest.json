@@ -82,6 +82,7 @@
       "http/middleware": "Middleware",
       "http/golang": "Golang Middleware",
       "http/cookies": "Cookies",
+      "http/session": "Session",
       "http/csrf": "CSRF protection"
     }
   },

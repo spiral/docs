@@ -57,7 +57,7 @@
     * [Middleware](http/middleware.md)
     * [Golang Middleware](http/golang.md)
     * [Cookies](http/cookies.md)
-    * Session
+    * [Session](http/session.md)
     * [CSRF protection](http/csrf.md)
 * Filter / Request Form
     * [Installation and Configuration](filters/configuration.md)
