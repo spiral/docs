@@ -76,7 +76,7 @@
     * GRPC client code
 * Views
     * [Installation and Configuration](views/configuration.md)
-    * Rendering Views
+    * [Rendering Views](views/render.md)
     * [Plain PHP templates](views/native.md)
     * [Twig templates](views/twig.md)
 * Stempler templates

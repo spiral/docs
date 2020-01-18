@@ -106,6 +106,7 @@
     "title": "Views",
     "links": {
       "views/configuration": "Installation and Configuration",
+      "views/render": "Rendering Views",
       "views/native": "Plain PHP templates",
       "views/twig": "Twig templates"
     }
