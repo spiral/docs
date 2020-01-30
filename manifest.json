@@ -146,7 +146,6 @@
     "title": "Debug and Profiling",
     "links": {
       "debug/dumps": "Dumping Variables",
-      "debug/roadrunner": "RoadRunner Gotchas",
       "debug/exceptions": "Handling Exceptions"
     }
   },
