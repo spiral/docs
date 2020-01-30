@@ -60,7 +60,7 @@ The output:
 +------------+------------+---------+---------+-----------+---------+----------------+
 ```
 
-## View table schema
+### View table schema
 To view the details about particular table:
 
 ```bash
