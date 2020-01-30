@@ -39,6 +39,154 @@ protected const LOAD = [
 ];
 ```
 
+## Configuration
+By default, the database configuration is located in `app/config/database.php` file. Configuration include set of options 
+for each database driver, database-driver association and database aliases.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Spiral\Database\Driver;
+
+return [
+    'default'   => 'default',
+    'databases' => [
+        'default' => ['driver' => 'runtime'],
+    ],
+    'drivers'   => [
+        'runtime' => [
+            'driver'     => Driver\SQLite\SQLiteDriver::class,
+            'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+        ],
+    ]
+];
+```
+
+### Declare Connection
+To create new database connection add new section or alter existed options of `drivers` section of your configuration, 
+you are able to use `env` function to keep your passwords and usernames separately.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Spiral\Database\Driver;
+
+return [
+    'default'   => 'default',
+    'databases' => [
+        'default' => ['driver' => 'mysql'],
+    ],
+    'drivers'   => [
+        'mysql'     => [
+            'driver'     => Drivers\MySQL\MySQLDriver::class,
+            'connection' => 'mysql:host=127.0.0.1;dbname=' . env('DB_NAME'),
+            'username'   => env('DB_USERNAME'),
+            'password'   => env('DB_PASSWORD'),
+            'options'    => []
+        ],
+        'postgres'  => [
+            'driver'     => Drivers\Postgres\PostgresDriver::class,
+            'connection' => 'pgsql:host=127.0.0.1;dbname=' . env('DB_NAME'),
+            'username'   => env('DB_USERNAME'),
+            'password'   => env('DB_PASSWORD'),
+            'options'    => []
+        ],
+        'runtime'   => [
+            'driver'     => Drivers\SQLite\SQLiteDriver::class,
+            'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+            'username'   => 'sqlite',
+            'password'   => '',
+            'options'    => []
+        ],
+        'sqlServer' => [
+            'driver'     => Drivers\SQLServer\SQLServerDriver::class,
+            'connection' => 'sqlsrv:Server=MY-PC;Database=' . env('DB_NAME'),
+            'username'   => env('DB_USERNAME'),
+            'password'   => env('DB_PASSWORD'),
+            'options'    => []
+        ]
+    ]
+];
+```
+
+> Use connection option `options` to set PDO specific attributes.
+
+### Declare Database
+In order to access connected database we have to add it into `databases` section first:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Spiral\Database\Driver;
+
+return [
+    'default'   => 'primary',
+    'databases' => [
+        'primary' => [
+           'driver'  => 'mysql',
+           'prefix'  => 'primary_'
+        ],
+        'secondary'=> [
+            'driver'  => 'mysql',
+            'prefix'  => 'secondary_'
+        ]       
+    ],
+    'drivers'   => [
+        // ...
+    ]
+];
+```
+
+### Aliases
+You application and modules can access database multiple different ways. Database aliasing allows you to use separate 
+databases with relation to one physical database.
+
+> Use aliases to configure IoC autowiring.
+
+Example controller constructor:
+```
+public function __construct(Database $db, Database $other)
+{
+}
+```
+
+To point `db` and `other` to specific database instance:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Spiral\Database\Driver;
+
+return [
+    'default'   => 'primary',
+    'aliases'   => [
+        'db'    => 'primary',
+        'other' => 'secondary'
+    ],
+    'databases' => [
+        'primary' => [
+           'driver'  => 'mysql',
+           'prefix'  => 'primary_'
+        ],
+        'secondary'=> [
+            'driver'  => 'mysql',
+            'prefix'  => 'secondary_'
+        ]       
+    ],
+    'drivers'   => [
+        // ...
+    ]
+];
+```
+
 ## Console Commands
 The default Web and GRPC bundles include a set of console commands to view the database schema.
 
