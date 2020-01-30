@@ -1,6 +1,11 @@
 # Framework - Design Approach
-
-## Architecture Principles
+The framework components attempt to follow the principle of pragmatic design. 
+ 
+Practically, it means that each component must follow given rules:
+- KISS
+- avoid cross dependencies when possible
+- prioritize composition over inheritance
+- prefer smaller but richer interfaces
 
 ## Hybrid Runtime
 The framework relies on application server to run some of its services. PHP codebase is mostly centered around quick delivery
@@ -11,5 +16,3 @@ of efficient business logic. The application server, Golang based, are focused o
 ![High Level Architecture Diagram](https://user-images.githubusercontent.com/796136/64451724-762d0800-d0ed-11e9-8c34-9c054a7bb0bd.png)
 
 > Read about application lifecycle [here](/basic/workers.md).
-
-## Code Quality and Standards

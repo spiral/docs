@@ -22,6 +22,7 @@
   {
     "title": "Framework",
     "links": {
+      "framework/design": "Design Approach",
       "framework/application-server": "Application Server",
       "framework/container": "Container",
       "framework/bootloaders": "Bootloaders",

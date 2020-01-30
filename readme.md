@@ -12,7 +12,7 @@
     * [Default Configuration](basic/configuration.md)
     * [Console Commands](basic/commands.md)
 * Framework
-    * Design Approach
+    * [Design Approach](framework/design.md)
     * [Application Server](framework/application-server.md)
     * Kernel, Environment
     * [Container](framework/container.md)
