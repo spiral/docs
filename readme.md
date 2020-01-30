@@ -85,7 +85,7 @@
     * Translate Views
     * Say Trait
 * Databases
-    * Installation and Configuration
+    * [Installation and Configuration](database/configuration.md)
     * Databases and Drivers
     * [Database Isolation](database/isolation.md)
     * Query Builders

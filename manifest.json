@@ -122,6 +122,7 @@
   {
     "title": "Databases",
     "links": {
+      "database/configuration": "Installation and Configuration",
       "database/isolation": "Database Isolation",
       "database/transactions": "Transactions",
       "database/introspection": "Schema Introspection",
