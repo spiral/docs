@@ -1,7 +1,6 @@
 # Framework - Design Approach
-The framework components attempt to follow the principle of pragmatic (KISS) design.
- 
-Practically, it means that each component must follow given rules:
+The framework components attempt to follow the principle of pragmatic (KISS) design. Practically, it means that each 
+component must follow given rules:
 - avoid cross dependencies when possible
 - prioritize composition over inheritance
 - prefer smaller but richer interfaces
