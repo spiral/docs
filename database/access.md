@@ -31,7 +31,7 @@ class HomeController
 }
 ```
 
-## Method and Constructor Injections
+### Method and Constructor Injections
 DBAL component fully support [IoC injections](/framework/container.md) based on database name and their aliases:
 
 ```php
@@ -45,7 +45,7 @@ public function index(Database $database, Database $primary, Database $slave)
 }
 ```
 
-## Prototype
+### Prototype
 Access `Spiral\Database\DatabaseProviderInterface` and default database instance using `PrototypeTrait`:
 
 ```php
@@ -64,3 +64,32 @@ class HomeController
     }
 }
 ```
+
+## Run Query
+To run database query use method `query`:
+
+```php
+dump(
+    $db->query(
+        'SELECT * FROM users WHERE id > ?',
+        [
+            1
+        ]
+    )->fetchAll()
+);
+```
+
+To execute update or delete statement use alternative method `execute`:
+
+```php
+dump(
+    $db->execute(
+        'DELETE FROM users WHERE id > ?',
+        [
+            1
+        ]
+    ) // number of affected rows 
+);
+```
+
+> Read how to use query builders [here](/database/query-builders.md).
