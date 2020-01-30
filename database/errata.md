@@ -1,4 +1,4 @@
-# Errata
+# Database - Errata
 Documentation section lists non-obvious behaviors of DBAL component and ways to avoid them.
 
 ## Timestamps

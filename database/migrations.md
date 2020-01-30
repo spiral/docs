@@ -1,4 +1,4 @@
-# Migrations
+# Database - Migrations
 Spiral ships with a set of embedded commands to control your database migrations, [component](https://github.com/spiral/migrations) 
 is build upon DBAL and support virtual databases and prefixes.
 
