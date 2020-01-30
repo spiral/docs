@@ -111,7 +111,7 @@
     * GRPC client code
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
-    * RoadRunner Gotchas
+    * [RoadRunner Gotchas](debug/roadrunner.md)
     * XDebug
     * [Handling Exceptions](debug/exceptions.md)
 * Extensions

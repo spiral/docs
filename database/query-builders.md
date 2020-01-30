@@ -741,19 +741,6 @@ foreach ($select as $row) {
 }
 ```
 
-In addition, SelectQuery support [Pagination](/component/pagination.md) component and makes you able to manipulate with results easier:
-
-```php
-$select = $db->table('test')->select(['id', 'name', 'status']);
-
-//Uses "page" query value of active request
-$select->paginate(10);
-
-foreach ($select as $row) {
-    dump($row);
-}
-```
-
 ## UpdateQuery Builder
 Use "update" method of your table or database instance to get access to UpdateQuery builder, call `run` method of such query to execute result:
 
