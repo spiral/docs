@@ -8,7 +8,7 @@ component must follow given rules:
 
 ## Hybrid Runtime
 The framework relies on application server to run some of its services. PHP codebase is mostly centered around quick delivery
-of efficient business logic. The application server, Golang based, are focused on efficiently solving the infrastructure tasks.
+of efficient business logic. The application server, Golang based, is focused on efficiently solving the infrastructure tasks.
 
 > Spiral application server is customized version of [RoadRunner](https://roadrunner.dev).
 
