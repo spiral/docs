@@ -1,5 +1,5 @@
 # Database - Access Database
-Follow configuration instructions [here](/database/overview.md).
+Follow the configuration instructions [here](/database/overview.md).
 
 ## Access the Database
 Once DBAL component is configured properly you can access your databases in controllers and services multiple ways:
@@ -65,7 +65,7 @@ class HomeController
 }
 ```
 
-## Run Query
+## Run Queries
 To run database query use method `query`:
 
 ```php
