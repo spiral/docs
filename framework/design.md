@@ -1,4 +1,8 @@
-# Framework - Application Server
+# Framework - Design Approach
+
+## Architecture Principles
+
+## Hybrid Runtime
 The framework relies on application server to run some of its services. PHP codebase is mostly centered around quick delivery
 of efficient business logic. The application server, Golang based, are focused on efficiently solving the infrastructure tasks.
 
@@ -8,4 +12,4 @@ of efficient business logic. The application server, Golang based, are focused o
 
 > Read about application lifecycle [here](/basic/workers.md).
 
-// keep working on it
+## Code Quality and Standards
