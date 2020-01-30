@@ -124,6 +124,7 @@
     "links": {
       "database/configuration": "Installation and Configuration",
       "database/access": "Access Database",
+      "database/query-builders": "Query Builders",
       "database/isolation": "Database Isolation",
       "database/transactions": "Transactions",
       "database/introspection": "Schema Introspection",

@@ -88,7 +88,7 @@
     * [Installation and Configuration](database/configuration.md)
     * [Access Database](database/access.md)
     * [Database Isolation](database/isolation.md)
-    * Query Builders
+    * [Query Builders](database/query-builders.md)
     * [Transactions](database/transactions.md)
     * [Schema Introspection](database/introspection.md)
     * [Schema Declaration](database/declaration.md)
