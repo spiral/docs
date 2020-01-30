@@ -1,11 +1,11 @@
 # Framework - Design Approach
-The framework components attempt to follow the principle of pragmatic design. 
+The framework components attempt to follow the principle of pragmatic (KISS) design.
  
 Practically, it means that each component must follow given rules:
-- KISS
 - avoid cross dependencies when possible
 - prioritize composition over inheritance
 - prefer smaller but richer interfaces
+- avoid magic
 
 ## Hybrid Runtime
 The framework relies on application server to run some of its services. PHP codebase is mostly centered around quick delivery
