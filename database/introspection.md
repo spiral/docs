@@ -12,7 +12,7 @@ if ($database->hasTable('users')) {
 }
 ```
 
-> Read how to get Database instances [here](/database/entity.md).
+> Read how to get Database instances [here](/database/access.md).
 
 Receive all database tables (array of `Spiral\Database\Table`):
 
