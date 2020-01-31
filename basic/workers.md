@@ -1,7 +1,7 @@
 # Workers and Application Lifecycle
 Spiral Framework can work using classic Nginx/PHP-FPM setup. But the highest effectiveness can be achieved using an embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates the set of php processes for each of dispatching/communication method (HTTP, GRPC, Queue, etc).
 
-Every PHP process will only work within a single request/task. It allows you to write code as if you would normally do in classic frameworks. You can also use every library as in the past with only minor exceptions.
+Every PHP process will only work within a single request/task. It allows you to write code as if you would normally do in classic frameworks (share nothing approach). You can also use every library as in the past with only minor exceptions.
 
 By keeping application in resident memory you can drastically increase performance and also offload part of functionality to the application server.
 
