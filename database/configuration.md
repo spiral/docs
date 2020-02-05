@@ -82,28 +82,28 @@ return [
     ],
     'drivers'   => [
         'mysql'     => [
-            'driver'     => Drivers\MySQL\MySQLDriver::class,
+            'driver'     => Driver\MySQL\MySQLDriver::class,
             'connection' => 'mysql:host=127.0.0.1;dbname=' . env('DB_NAME'),
             'username'   => env('DB_USERNAME'),
             'password'   => env('DB_PASSWORD'),
             'options'    => []
         ],
         'postgres'  => [
-            'driver'     => Drivers\Postgres\PostgresDriver::class,
+            'driver'     => Driver\Postgres\PostgresDriver::class,
             'connection' => 'pgsql:host=127.0.0.1;dbname=' . env('DB_NAME'),
             'username'   => env('DB_USERNAME'),
             'password'   => env('DB_PASSWORD'),
             'options'    => []
         ],
         'runtime'   => [
-            'driver'     => Drivers\SQLite\SQLiteDriver::class,
+            'driver'     => Driver\SQLite\SQLiteDriver::class,
             'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
             'username'   => 'sqlite',
             'password'   => '',
             'options'    => []
         ],
         'sqlServer' => [
-            'driver'     => Drivers\SQLServer\SQLServerDriver::class,
+            'driver'     => Driver\SQLServer\SQLServerDriver::class,
             'connection' => 'sqlsrv:Server=MY-PC;Database=' . env('DB_NAME'),
             'username'   => env('DB_USERNAME'),
             'password'   => env('DB_PASSWORD'),
