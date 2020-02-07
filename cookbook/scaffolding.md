@@ -592,7 +592,7 @@ class MyJob extends JobHandler
 $ php app.php create:middleware <name>
 ```
 
-`<Name>Middlweare` class will be created.
+`<Name>` class will be created.
 
 #### Example
 ```bash
