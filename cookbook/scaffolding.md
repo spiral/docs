@@ -526,7 +526,7 @@ Output is:
 ```php
 use Spiral\Filters\Filter;
 
-class Sample26Filter extends Filter
+class MyFilter extends Filter
 {
     protected const SCHEMA = [
         'typedBool'              => 'data:typedBool',
