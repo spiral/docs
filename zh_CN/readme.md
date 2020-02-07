@@ -21,9 +21,9 @@
     * [IoC scopes](../framework/scopes.md)
     * [Static Memory](../framework/memory.md)
     * [Finalizers](../framework/finalizers.md)
-* Cookbook
+* 速查手册
     * Quick Start
-    * [Scaffolding](../cookbook/scaffolding.md)
+    * [脚手架](cookbook/scaffolding.md)
     * [Prototyping](../cookbook/prototype.md)
     * [Injectors](../cookbook/injector.md)
     * [Domain Core and Controllers](../cookbook/domain-core.md)
