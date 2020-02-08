@@ -5,6 +5,8 @@ complex validation chains.
 The component contains of Checkers, Conditions and Validation object. The Web and GRPC bundle of spiral includes
 this component by default.
 
+> Check [Filter/Request Object](/filters/configuration.md) for deep structural validations.
+
 ## Installation and Configuration
 The component can be installed:
 
