@@ -46,6 +46,7 @@ http:
     pool.numWorkers: 4
 ```
 
+### Developer Mode
 To force worker reload after every request (full debug mode) and limit processing to single worker:
 
 ```yaml
