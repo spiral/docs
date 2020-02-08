@@ -57,3 +57,22 @@ hello, {{ $name }}
 ``` 
 
 > The Stempler echo and directive syntax is similar to Laravel Blade.
+
+### Context Aware escaping
+The escape strategy will change based on where you echo your value. You can echo/embed your values inside `script` tags:
+
+```php
+<script>
+    var value = {{ $name }};
+</script>
+```
+
+> Do not use quotes whiles doing so.
+
+### Disable Escaping
+To echo value as is (**without anti-XSS**) use alternative syntax `{!! $value !!}`:
+
+```php
+{!! $value !!}
+```
+
