@@ -74,7 +74,7 @@
     * [Twig templates](views/twig.md)
 * Stempler templates
     * [Installation and Configuration](stempler/configuration.md)
-    * Basic Usage
+    * [Basic Usage](stempler/basics.md)
     * Inheritance
     * Components and Props
     * Directives

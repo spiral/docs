@@ -117,6 +117,7 @@
     "title": "Stempler templates",
     "links": {
       "stempler/configuration": "Installation and Configuration",
+      "stempler/basics": "Basic Usage",
       "stempler/visitors": "AST Modifications"
     }
   },
