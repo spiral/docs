@@ -4,7 +4,7 @@ The Stempler templates must have an extension `.dark.php`.
 
 To render view template store file in `app/views/welcome.dark.php`.
 
-```html
+```php
 hello word
 ```
 
