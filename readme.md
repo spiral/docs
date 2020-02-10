@@ -109,6 +109,7 @@
     * Passing Metadata and Errors
     * Golang Services
     * GRPC client code
+    * GRPC Streaming
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * XDebug
