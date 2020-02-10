@@ -7,6 +7,8 @@
     * [贡献指引](about/contributing.md)
     * [许可协议](/license.md)
 * Basics
-    * [Application Workers](basic/workers.md)
+    * [应用工作进程](basic/workers.md)
+    * [应用程序结构](basic/structure.md)
 * 速查手册
     * [脚手架](cookbook/scaffolding.md)
+    
