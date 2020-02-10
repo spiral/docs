@@ -76,3 +76,14 @@ To echo value as is (**without anti-XSS**) use alternative syntax `{!! $value !!
 {!! $value !!}
 ```
 
+## Directives
+Besides classic echo constructions the Stempler supports a number of Blade-like directives to control the business 
+logic of your templates:
+
+```php
+@foreach($values as $value)
+    {{$value}}
+@endforeach
+```
+
+Read more about available directives and custom directive creation [here](/stempler/directives.md).

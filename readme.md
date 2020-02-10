@@ -75,7 +75,7 @@
 * Stempler templates
     * [Installation and Configuration](stempler/configuration.md)
     * [Basic Usage](stempler/basics.md)
-    * Directives
+    * [Directives](stempler/directives.md)
     * Components and Props
     * Inheritance
     * [AST Modifications](stempler/visitors.md)
