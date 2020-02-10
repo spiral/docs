@@ -120,6 +120,7 @@
       "stempler/basics": "Basic Usage",
       "stempler/directives": "Directives",
       "stempler/inheritance": "Inheritance and Stacks",
+      "stempler/components": "Components and Props",
       "stempler/visitors": "AST Modifications"
     }
   },
