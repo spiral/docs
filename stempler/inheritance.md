@@ -367,7 +367,7 @@ You can locate stack definition before or after `push` and `prepend` tags:
 ```
 
 ### Deep Stacks
-The stack tag will only aggregate `push` and `prepend` values while located in a same tag tree. 
+The stack tag will only aggregate `push` and `prepend` values while located in a same tag tree level. 
 
 
 For example given example will work:
