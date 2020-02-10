@@ -371,3 +371,34 @@ The generated template:
   </select>
 </body>
 ```
+
+You are allowed to inject PHP blocks into default PHP tags, the `app/views/partial/select.dark.php` can be rewritten
+as follows:
+
+```html
+<select name="${name}">
+  <?php
+  $selectValues = array_map('strtoupper', inject('values', []));
+  ?>
+  @foreach($selectValues as $key => $label)
+    <option value="{{ $key }}">{{ $label }}</option>
+  @endforeach
+</select>
+```
+
+The generated template:
+
+```html
+<body class="default">
+  <select name="My Select">
+    <?php
+    $selectValues = array_map('strtoupper', $values);
+    ?>
+    <?php foreach($selectValues as $key => $label): ?>
+    <option value="<?php echo htmlspecialchars($key, ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8'); ?>"><?php echo htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8'); ?></option>
+    <?php endforeach; ?>
+  </select>
+</body>
+```
+
+> Attention, make sure to properly escape your values!
