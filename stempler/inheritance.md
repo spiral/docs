@@ -460,9 +460,130 @@ But example will work:
 </stack:prepend>
 ```
 
-> Combine stacks with inheritance and [components](/stempler/components.md) to create domain specific rendering DSL.
 
+### Stacks in Layouts
+You can push values to stacks defined in parent layouts. Modify `app/views/layout/base.dark.php` accordingly:
 
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${title|Default title}</title>
+  <stack:collect name="styles" level="2">
+    <link rel="stylesheet" href="/styles/welcome.css"/>
+  </stack:collect>
+  <block:resources/>
+</head>
+<body class="${body-class|default}">
+    <block:content>
+      Default content.
+    </block:content>
+</body>
+</html>
+```
+
+Now you can push the value from `app/views/home.dark.php`:
+
+```html
+<extends:layout.base title="Homepage" body-class="homepage ${parent}"/>
+
+<block:resources>
+  <stack:push name="styles">
+    <link rel="stylesheet" href="/styles/homepage.css"/>
+  </stack:push>
+</block:resources>
+
+<block:page>
+  Page content.
+</block:page>
+```
+
+> You have to make sure that `stack:push` is located in one of extended blocks. See below how to bypass it.
 
 ## Context and Hidden content
+As you can see in previous example it's is not convenient to use both stack and blocks as the same time. This is caused
+by the fact that stack collection happens after the extending of parent layout. Keeping stack outside of any `block` will
+leave it out of the template.
 
+All stempler blocks defined in child template outside of `block` tag will appear in system block `context`. We can modify
+the parent layout `app/views/layout/base.dark.html` as the following:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${title|Default title}</title>
+  <stack:collect name="styles" level="2">
+    <link rel="stylesheet" href="/styles/welcome.css"/>
+  </stack:collect>
+</head>
+<body class="${body-class|default}">
+    <block:content>
+      Default content.
+    </block:content>
+</body>
+<block:context/>
+</html>
+```
+
+No we can define the stack in `app/views/home.dark.php` as following:
+
+```html
+<extends:layout.base title="Homepage" body-class="homepage ${parent}"/>
+
+<stack:push name="styles">
+  <link rel="stylesheet" href="/styles/homepage.css"/>
+</stack:push>
+
+some random string
+
+<block:page>
+  Page content.
+</block:page>
+```
+
+To understand how context works take a look at generated HTML:
+
+```html
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Homepage</title>
+    <link rel="stylesheet" href="/styles/welcome.css"/>
+    <link rel="stylesheet" href="/styles/homepage.css"/>
+</head>
+<body class="homepage default">
+  Default content.
+</body>
+some random string
+</html>
+```
+
+Notice the `some random string` added at the place of `block:context`, this content has been declared by `app/views/home.dark.php`.
+Most likely you will use the areas between block definitions of your templates for comments and other control directives,
+to hide such content from end use use `<hidden></hidden>` tag in `app/views/layout/base.dark.php`:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${title|Default title}</title>
+  <stack:collect name="styles" level="2">
+    <link rel="stylesheet" href="/styles/welcome.css"/>
+  </stack:collect>
+</head>
+<body class="${body-class|default}">
+    <block:content>
+      Default content.
+    </block:content>
+</body>
+<hidden>
+  <block:context/>
+</hidden>
+</html>
+```
+
+Now, stacking will work as before however the `some random string` won't appear on a page.
+
+> Combine stacks with inheritance and [components](/stempler/components.md) to create domain specific rendering DSL.
