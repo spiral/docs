@@ -77,12 +77,12 @@
     * [Basic Usage](stempler/basics.md)
     * [Directives](stempler/directives.md)
     * Components and Props
-    * Inheritance
+    * Inheritance and Stacks
     * [AST Modifications](stempler/visitors.md)
 * Internalization
     * Installation and Configuration
     * Import and Export
-    * Translate Views
+    * View Localization
     * Say Trait
 * Databases
     * [Installation and Configuration](database/configuration.md)

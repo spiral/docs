@@ -82,7 +82,7 @@ logic of your templates:
 
 ```php
 @foreach($values as $value)
-    {{$value}}
+    {{ $value }}
 @endforeach
 ```
 
