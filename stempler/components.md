@@ -402,3 +402,55 @@ The generated template:
 ```
 
 > Attention, make sure to properly escape your values!
+
+### Dynamic Attributes
+In some cases you might want to bypass some attributes into element directly. For example in order to allow user driven
+`style` attribute for select we have to do the following:
+
+```html
+<select name="${name}" style="${style}">
+  @foreach(inject('values', []) as $key => $label)
+    <option value="{{ $key }}">{{ $label }}</option>
+  @endforeach
+</select>
+```
+
+Use `attr:aggregate` to scale such approach:
+
+```html
+<select name="${name}" attr:aggregate>
+  @foreach(inject('values', []) as $key => $label)
+    <option value="{{ $key }}">{{ $label }}</option>
+  @endforeach
+</select>
+```
+
+Now we can pass arbitrary attributes to our component from `app/views/home.dark.php`:
+
+```html
+<extends:layout.base title="Homepage"/>
+<use:element path="partial/select" as="my:select"/>
+
+<block:content>
+  <my:select name="My Select" values="{{ $values }}" style="color: red" class="custom-select"/>
+</block:content>
+```
+
+The resulted HTML:
+
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Homepage</title>
+  <link rel="stylesheet" href="/styles/welcome.css"/>
+</head>
+<body class="default">
+  <select name="My Select" style="color: red" class="custom-select">
+    <option value="1">first</option>
+    <option value="2">second</option>
+  </select>
+</body>
+</html>
+```

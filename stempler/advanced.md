@@ -100,3 +100,41 @@ In both cases the produced HTML:
 ## UI Assembly
 Another example is related to the ability to assemble complex UI interfaces using custom DSL.
 
+### Base Layout
+To demonstrate complex UI assembly we are going to create interface with the ability to easily push CSS, JS resources
+and define context using multiple tabs instead of single content block. Create `app/views/tabs/layout.dark.php`:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${title|Default title}</title>
+  <stack:collect name="styles" level="2"/>
+</head>
+<body>
+  <div class="tab-headers">
+    <stack:collect name="tab-headers" level="2"/>
+  </div>
+  <div class="tab-body">
+    <stack:collect name="tab-body" level="2"/>
+  </div>
+</body>
+<stack:collect name="scripts" level="2"/>
+<hidden>${context}</hidden>
+</html>
+```
+
+### Style and Script elements
+To simplify registration of style and script elements create components `app/views/tabs/script.dark.php` and `app/views/tabs/style.dark.php`:
+
+```html
+
+```
+
+Style:
+```html
+<stack:push name="styles">
+  <link rel="stylesheet" href="${src}"/>
+</stack:push>
+```
+
