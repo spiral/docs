@@ -33,7 +33,7 @@ Create element `app/views/grid/cell.dark.php` to declare single table cell with 
 
 ```html
 <stack:push name="thead">
-  <tr>${title}</tr>
+  <th>${title}</th>
 </stack:push>
 
 <stack:push name="tbody">
@@ -86,8 +86,8 @@ In both cases the produced HTML:
 <body class="default">
   <table class="grid-table">
     <thead>
-      <tr>First cell</tr>
-      <tr>Second cell</tr>
+      <th>First cell</th>
+      <th>Second cell</th>
     </thead>
     <tbody>
       <td>my value</td>
@@ -211,8 +211,8 @@ The generated HTML:
       <div class="tab-body" id="body-second">
         <table class="grid-table">
           <thead>
-            <tr>First cell</tr>
-            <tr>Second cell</tr>
+            <th>First cell</th>
+            <th>Second cell</th>
           </thead>
           <tbody>
             <td>my value</td>
