@@ -175,16 +175,13 @@ To render complex UI modify the `app/views/home.dark.php`.
 <use:bundle path="grid/bundle"/>
 <use:bundle path="tabs/bundle"/>
 
-// import needed resources
 <import:style src="/resources/my-style.css"/>
 <import:script src="/resources/my-script.js"/>
 
-// first tab
 <ui:tab id="first" title="Information">
   Hello world!
 </ui:tab>
 
-// some grid
 <ui:tab id="second" title="Some Grid">
   <grid:table>
     <grid:cell title="First cell">my value</grid:cell>
