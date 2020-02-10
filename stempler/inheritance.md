@@ -397,7 +397,7 @@ While this example won't work:
   // and here
 </div>
 
-// stack my-stack is no active at this level
+// stack my-stack is not active at this level
 
 <stack:prepend name="my-stack">
   my value
