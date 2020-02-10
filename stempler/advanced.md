@@ -11,7 +11,7 @@ The approach described in this article is possible due to the fact that stacks c
 ## Grid
 Let's create grid component to describe how to use stacks in combination with stacks. The grid will consist of multiple view files.
 
-### Grid Element
+### Table
 Create root element for the component `app/views/grid/table.dark.php`:
 
 ```html
@@ -29,7 +29,7 @@ Create root element for the component `app/views/grid/table.dark.php`:
 > Note the `<hidden>${context}</hidden>`, it allows the component to handle content declared between open and close tags
 > without the need of `block` tags.
 
-### Cell Element
+### Cell
 Create element `app/views/grid/cell.dark.php` to declare single table cell with it's header and value:
 
 ```html
