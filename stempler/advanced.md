@@ -8,7 +8,7 @@ language for page definitions.
 The approach described in this article is possible due to the fact that stacks can be defined within imported components.
 
 ## Grid
-Let's create grid component to describe how to use stacks in combination with stacks. The grid will consist of multiple view files.
+Let's create grid component to describe how to use stacks in combination with partials. The grid will consist of multiple view files.
 
 ### Table
 Create root element for the component `app/views/grid/table.dark.php`:
