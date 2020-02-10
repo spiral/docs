@@ -236,3 +236,138 @@ To isolate imported bundle via prefix use `ns` attribute of `use:bundle` tag:
   <my:article-alt title="Article" preview="This is article preview."/>
 </block:content>
 ```
+
+## Props
+The ability to pass values into components provides the ability to create complex elements condensed into simple tags.
+You are allowed to pass PHP values and echoes into your components.
+
+Modify your controller to invoke template as following:
+
+```php
+return $this->views->render('home', ['value' => 'Hello&world!']);
+```
+
+Create `app/views/partial/input.dark.php`:
+
+```html
+<div class="input">
+  <label>${label}</label>
+  <input type="text" value="${value}"/>
+</div>
+```
+
+You can invoke this component in your template with the user supplied value:
+
+```html
+<extends:layout.base title="Homepage"/>
+<use:element path="partial/input" as="my:input"/>
+
+<block:content>
+  <my:input label="Some Value" value="{{ $value }}"/>
+</block:content>
+```
+
+The generated PHP:
+
+```php
+...
+<body class="default">
+    <div class="input">
+        <label>Some Value</label>
+        <input type="text" value="<?php echo htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8'); ?>"/>
+    </div>
+</body>
+...
+```
+
+### PHP in Components
+You can not only inject values into plain HTML but also inject source code into component PHP. This can be achieved
+using AST modification of underlying template via marco function `inject("name", default)`.
+
+> The injection will automatically extract the variable or statement from the passed `{{ echo }}`, `<?php $variable ?>`
+> or `<?=$variable?>` attributes.
+
+To demonstrate it, modify `app/views/partial/input.dark.php`:
+
+```html
+<div class="input">
+  <label>${label}</label>
+  <input type="text" value="{{ strtoupper(inject('value')) }}"/>
+</div>
+```
+
+Now the generated code will look like:
+
+```html
+<body class="default">
+  <div class="input">
+    <label>Some Value</label>
+    <input type="text" value="<?php echo htmlspecialchars(strtoupper($value), ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8'); ?>"/>
+  </div>
+</body>
+```
+
+You can pass PHP values in combination with string prefixes, in `app/views/home.dark.php`:
+
+```html
+<extends:layout.base title="Homepage"/>
+<use:element path="partial/input" as="my:input"/>
+
+<block:content>
+  <my:input label="Some Value" value="hello {{ $value }} world"/>
+</block:content>
+```
+
+The compiled template:
+
+```html
+<body class="default">
+  <div class="input">
+    <label>Some Value</label>
+    <input type="text" value="<?php echo htmlspecialchars(strtoupper('hello '.$value.' world'), ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8'); ?>"/>
+  </div>
+</body>
+```
+
+### Complex Props
+You can inject your props not only to echo statements but into any PHP code in your component. Let's create `select`
+component `app/views/partial/select.dark.php`:
+
+```html
+<select name="${name}">
+  @foreach(inject('values', []) as $key => $label)
+    <option value="{{ $key }}">{{ $label }}</option>
+  @endforeach
+</select>
+```
+
+Modify your controller to pass an array:
+
+```php
+return $this->views->render('home', [
+    'values' => [1 => 'first', 2 => 'second']
+]);
+```
+
+You can use this component in your template:
+
+```html
+<extends:layout.base title="Homepage"/>
+<use:element path="partial/select" as="my:select"/>
+
+<block:content>
+  <my:select name="My Select" values="{{ $values }}"/>
+</block:content>
+```
+
+The generated template:
+
+```html
+<body class="default">
+  <select name="My Select">
+    <?php foreach($values as $key => $label): ?>
+      <option value="<?php echo htmlspecialchars($key, ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8'); ?>"><?php echo htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8'); ?></option>
+    <?php endforeach; ?>
+  </select>
+</body>
+```
