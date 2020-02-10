@@ -98,7 +98,7 @@ You can pass values similar way as in `extend` control tag:
 </block:content>
 ```
 
-> You can include original block content using `block:parent` tag. Extending partials is also allowed.
+> You can include original block content using `block:parent` tag. Extending components is also allowed.
 
 The resulted HTML:
 
