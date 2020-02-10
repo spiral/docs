@@ -440,7 +440,7 @@ The attribute `level` configures stack to be active multiple levels above. For e
 </stack:prepend>
 ```
 
-But example will work:
+But this example will work:
 
 ```html
 <div>
