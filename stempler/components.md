@@ -138,4 +138,101 @@ The resulted HTML:
 
 > Components does not cause any performance penalty, use as many components as you need.
 
-## Import partials
+## Import Components
+Stempler provides multiple options to import components into your template.
+
+### Import Element
+To import single component use `<use:element path=""/>` before component invocation.
+
+```html
+<extends:layout.base title="Homepage"/>
+<use:element path="partial/article"/>
+
+<block:content>
+  <article title="Article" preview="This is article preview."/>
+</block:content>
+```
+
+The component will be available using the filename, in this case it's `article`. To define custom import alias use
+`as` tag attribute:
+
+```html
+<extends:layout.base title="Homepage"/>
+<use:element path="partial/article" as="custom-article"/>
+
+<block:content>
+  <custom-article title="Article" preview="This is article preview."/>
+</block:content>
+```
+
+### Import Directory
+To import all partials from a given directory use `<use:dir dir="" ns=""/>`. You must specify the
+namespace prefix to avoid collisions with other components and default HTML tags:
+
+```html
+<extends:layout.base title="Homepage"/>
+<use:dir dir="partial" ns="partials"/>
+
+<block:content>
+  <partials:article title="Article" preview="This is article preview."/>
+</block:content>
+```
+
+### Inline Import
+To define component specific to the given template without the creation of physical view file use `<use:inline name=""></use:inline>`
+control tag. In `app/views/home.dark.php`:
+
+```html
+<extends:layout.base title="Homepage"/>
+
+<use:inline name="article">
+  <div class="article">
+    <div class="title">${title}</div>
+    <div class="preview">${preview}</div>
+  </div>
+</use:inline>
+
+<block:content>
+  <article title="Article" preview="This is article preview."/>
+</block:content>
+```
+
+### Bundle Import
+Import multiple directories, components and/or inline components using bundled import via `<use:bundle path="">`.
+
+Create view file `app/views/my-bundle.dark.php` to define your bundle:
+
+```html
+<use:element path="partial/article" as="article"/>
+
+<use:inline name="article-alt">
+  <div class="article">
+    <div class="title">${title}</div>
+    <div class="preview">${preview}</div>
+  </div>
+</use:inline>
+```
+
+You can use any of defined components in your `app/views/home.dark.php` template:
+
+```html
+<extends:layout.base title="Homepage"/>
+<use:bundle path="my-bundle"/>
+
+<block:content>
+  <article title="Article" preview="This is article preview."/>
+  <article-alt title="Article" preview="This is article preview."/>
+</block:content>
+```
+
+To isolate imported bundle via prefix use `ns` attribute of `use:bundle` tag:
+
+```html
+<extends:layout.base title="Homepage"/>
+<use:bundle path="my-bundle" ns="my"/>
+
+<block:content>
+  <my:article title="Article" preview="This is article preview."/>
+  <my:article-alt title="Article" preview="This is article preview."/>
+</block:content>
+```
