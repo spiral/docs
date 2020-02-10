@@ -545,7 +545,6 @@ some random string
 To understand how context works take a look at generated HTML:
 
 ```html
-
 <!DOCTYPE html>
 <html>
 <head>
