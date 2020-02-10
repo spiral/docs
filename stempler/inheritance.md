@@ -202,3 +202,48 @@ The output:
 </body>
 </html>
 ```
+
+### Multiple Layouts
+It is possible to create layouts based on other layouts, create `app/views/layout/page.dark.php`:
+
+```html
+<extends:layout.base body-class="page ${parent}"/>
+
+<block:content>
+  <div class="page-wrapper">
+    <block:page/>
+  </div>
+</block:content>
+```
+
+> Extend tags always require full path specification, make sure to include `layout` directory.
+
+You can extend this layout instead of `base` in `app/views/home.dark.php`:
+
+```html
+<extends:layout.page title="Homepage" body-class="homepage ${parent}"/>
+
+<block:page>
+  Page content.
+</block:page>
+```
+
+The produced HTML:
+
+```html
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Homepage</title>
+  <link rel="stylesheet" href="/styles/welcome.css"/>
+</head>
+<body class="homepage page default">
+  <div class="page-wrapper"> 
+    Page content.
+  </div>
+</body>
+</html>
+```
+
+> You can nest as many templates as you need, only the compilation speed will be affected.
