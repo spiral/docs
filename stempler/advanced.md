@@ -208,18 +208,18 @@ The generated HTML:
       <div class="tab-body" id="body-first">
         Hello world!
       </div>
-    <div class="tab-body" id="body-second">
-      <table class="grid-table">
-        <thead>
-          <tr>First cell</tr>
-          <tr>Second cell</tr>
-        </thead>
-        <tbody>
-          <td>my value</td>
-          <td>second value</td>
-        </tbody>
-      </table>
-    </div>
+      <div class="tab-body" id="body-second">
+        <table class="grid-table">
+          <thead>
+            <tr>First cell</tr>
+            <tr>Second cell</tr>
+          </thead>
+          <tbody>
+            <td>my value</td>
+            <td>second value</td>
+          </tbody>
+        </table>
+      </div>
   </div>
 </body>
 <script src="/resources/my-script.js"></script>
