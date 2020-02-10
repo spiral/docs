@@ -119,6 +119,7 @@
       "stempler/configuration": "Installation and Configuration",
       "stempler/basics": "Basic Usage",
       "stempler/directives": "Directives",
+      "stempler/inheritance": "Inheritance and Stacks",
       "stempler/visitors": "AST Modifications"
     }
   },
