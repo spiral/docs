@@ -9,6 +9,8 @@
 * Basics
     * [应用工作进程](basic/workers.md)
     * [应用程序结构](basic/structure.md)
+    * [默认配置](basic/configuration.md)
+    * [控制台命令](basic/commands.md)
 * 速查手册
     * [脚手架](cookbook/scaffolding.md)
     
