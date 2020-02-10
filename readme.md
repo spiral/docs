@@ -78,7 +78,8 @@
     * [Basic Usage](stempler/basics.md)
     * [Directives](stempler/directives.md)
     * [Inheritance and Stacks](stempler/inheritance.md)
-    * Components and Props    
+    * Components and Props
+    * Advancing DSL
     * [AST Modifications](stempler/visitors.md)
 * Internalization
     * Installation and Configuration
