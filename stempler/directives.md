@@ -23,7 +23,7 @@ To embed PHP logic in your template use classic `<?php` and `?>` tags or alterna
 Use directive `@for` and `@endfor` to render the loop:
 
 ```php
-@for($i=0;$i<100;$i++)
+@for($i=0; $i<100; $i++)
     hello
 @endfor
 ```
