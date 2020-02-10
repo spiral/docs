@@ -2,25 +2,28 @@
 [![Latest Stable Version](https://poser.pugx.org/spiral/framework/version)](https://packagist.org/packages/spiral/framework)
 [![Build Status](https://travis-ci.org/spiral/framework.svg?branch=master)](https://travis-ci.org/spiral/framework)
 [![Codecov](https://codecov.io/gh/spiral/framework/graph/badge.svg)](https://codecov.io/gh/spiral/framework)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/spiral/framework/badges/quality-score.png)](https://scrutinizer-ci.com/g/spiral/framework/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/spiral/framework/badges/quality-score.png)](https://scrutinizer-ci.com/g/spiral/framework/?branch=master) <a href="https://discord.gg/TFeEmCs"><img src="https://img.shields.io/badge/discord-chat-magenta.svg"></a>
+
 
 <img src="https://user-images.githubusercontent.com/796136/67560465-9d827780-f723-11e9-91ac-9b2fafb027f2.png" height="135px" alt="Spiral Framework" align="left"/>
 
 Spiral Framework 让 PHP 开发重新令人振奋。它利用 PHP 的快速，易部署特性来实现快速开发业务逻辑，同时独特地借助 Golang 来优雅地构建起原生支持 HTTP/2, GRPC, Queue 等特性的基础架构层。Spiral Framework 非常灵活且完全遵守 PSR 规范。开发者在用它构建更快、更高效的应用时一定会感到非常愉悦。
 
-[官网](https://spiral-framework.com) | [WEB 项目框架](https://github.com/spiral/app) ([命令行项目框架](https://github.com/spiral/app-cli), [ GRPC 项目框架](https://github.com/spiral/app-grpc)) | [**框架文档**](https://github.com/spiral/guide) | [Twitter](https://twitter.com/spiralphp) | [更新日志](/CHANGELOG.md) | [贡献指引](https://github.com/spiral/guide/blob/master/contributing.md)
+[WEB 项目框架](https://github.com/spiral/app) ([命令行项目框架](https://github.com/spiral/app-cli), [ GRPC 项目框架](https://github.com/spiral/app-grpc)) | [官网](https://spiral.dev/) | [**文档**](https://github.com/spiral/guide) | [Twitter](https://twitter.com/spiralphp) | [更新日志](/CHANGELOG.md) | [贡献指引](https://github.com/spiral/guide/blob/master/contributing.md)
+
 <br/>
 
 ## 功能特性
 - 从 2013 年以来经历了充分的实战检验
-- [超高性能的 PHP 全栈开发框架](https://www.techempower.com/benchmarks/#section=test&runid=61b3287c-3afc-4c7a-85bb-4cd48df51e7a&hw=ph&test=fortune&l=zik073-v&c=6&d=4&o=e)
+- [超高性能的 PHP 全栈开发框架](https://www.techempower.com/benchmarks/#section=test&runid=92383925-3ba7-40fd-88cf-19f55751f01c&hw=ph&test=fortune&l=zik073-v&c=6)
+
 - 遵守 PSR-{2,3,4,6,7,11,15,16,17}
 - 强大的 [应用服务器](https://roadrunner.dev/), 常驻内存式应用内核
 - 原生支持队列（ AMQP, SQS, Beanstalk ）和 PHP 后台工作进程
 - GRPC 服务和客户端
-- Pub/Sub, WebSocket broadcasting
+- 发布/订阅, 事件广播
 - HTTPS, HTTP/2+Push, 加密 cookies, sessions, CSRF 防护
-- 支持 MySQL, MariaDB, SQLite, Postgres, SQLServer, 自动数据迁移（migration)
+- 支持 MySQL, MariaDB, SQLite, PostgreSQL, SQLServer, 自动数据迁移（migration)
 - 未来 25 年你都要用的 [ORM](https://github.com/cycle/orm)
 - 直观的脚手架和原型（它确实可以帮您编写代码）
 - 基于静态分析的有用的类型发现
@@ -70,21 +73,24 @@ spiral/security | [![Latest Stable Version](https://poser.pugx.org/spiral/securi
 spiral/validation | [![Latest Stable Version](https://poser.pugx.org/spiral/validation/version)](https://packagist.org/packages/spiral/validation) [![Build Status](https://travis-ci.org/spiral/validation.svg?branch=master)](https://travis-ci.org/spiral/validation) [![Codecov](https://codecov.io/gh/spiral/validation/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/validation/)
 spiral/filters | [![Latest Stable Version](https://poser.pugx.org/spiral/filters/version)](https://packagist.org/packages/spiral/filters) [![Build Status](https://travis-ci.org/spiral/filters.svg?branch=master)](https://travis-ci.org/spiral/filters) [![Codecov](https://codecov.io/gh/spiral/filters/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/filters/)
 spiral/auth | [![Latest Stable Version](https://poser.pugx.org/spiral/auth/version)](https://packagist.org/packages/spiral/auth) [![Build Status](https://travis-ci.org/spiral/auth.svg?branch=master)](https://travis-ci.org/spiral/auth) [![Codecov](https://codecov.io/gh/spiral/auth/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/auth/)
+spiral/auth-http | [![Latest Stable Version](https://poser.pugx.org/spiral/auth-http/version)](https://packagist.org/packages/spiral/auth-http) [![Build Status](https://travis-ci.org/spiral/auth-http.svg?branch=master)](https://travis-ci.org/spiral/auth-http) [![Codecov](https://codecov.io/gh/spiral/auth-http/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/auth-http/)
+
 
 ## 数据库组件
 | 组件 | 当前状态        
 | ---       | ---
-spiral/database | [![Latest Stable Version](https://poser.pugx.org/spiral/database/version)](https://packagist.org/packages/spiral/database) [![Build Status](https://travis-ci.org/spiral/database.svg?branch=master)](https://travis-ci.org/spiral/database) [![Codecov](https://codecov.io/gh/spiral/database/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/database/)
+spiral/database | [![Latest Stable Version](https://poser.pugx.org/spiral/database/version)](https://packagist.org/packages/spiral/database) [![Build Status](https://github.com/spiral/database/workflows/build/badge.svg)](https://github.com/spiral/database/actions) [![Codecov](https://codecov.io/gh/spiral/database/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/database/)
 spiral/migrations | [![Latest Stable Version](https://poser.pugx.org/spiral/migrations/version)](https://packagist.org/packages/spiral/migrations) [![Build Status](https://travis-ci.org/spiral/migrations.svg?branch=master)](https://travis-ci.org/spiral/migrations) [![Codecov](https://codecov.io/gh/spiral/migrations/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/migrations/)
 
 ## Cycle ORM
 | 组件 | 当前状态        
 | ---       | ---
-cycle/orm   | [![Latest Stable Version](https://poser.pugx.org/cycle/orm/version)](https://packagist.org/packages/cycle/orm) [![Build Status](https://travis-ci.org/cycle/orm.svg?branch=master)](https://travis-ci.org/cycle/orm) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/orm/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/orm/?branch=master) [![Codecov](https://codecov.io/gh/cycle/orm/graph/badge.svg)](https://codecov.io/gh/cycle/orm)
-cycle/schema-builder | [![Latest Stable Version](https://poser.pugx.org/cycle/schema-builder/version)](https://packagist.org/packages/cycle/schema-builder) [![Build Status](https://travis-ci.org/cycle/schema-builder.svg?branch=master)](https://travis-ci.org/cycle/schema-builder) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/schema-builder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/schema-builder/?branch=master) [![Codecov](https://codecov.io/gh/cycle/schema-builder/graph/badge.svg)](https://codecov.io/gh/cycle/schema-builder)
-cycle/annotated | [![Latest Stable Version](https://poser.pugx.org/cycle/annotated/version)](https://packagist.org/packages/cycle/annotated) [![Build Status](https://travis-ci.org/cycle/annotated.svg?branch=master)](https://travis-ci.org/cycle/annotated) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/annotated/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/annotated/?branch=master) [![Codecov](https://codecov.io/gh/cycle/annotated/graph/badge.svg)](https://codecov.io/gh/cycle/annotated)
-cycle/proxy-factory | [![Latest Stable Version](https://poser.pugx.org/cycle/proxy-factory/version)](https://packagist.org/packages/cycle/proxy-factory) [![Build Status](https://travis-ci.org/cycle/proxy-factory.svg?branch=master)](https://travis-ci.org/cycle/proxy-factory) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/proxy-factory/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/proxy-factory/?branch=master) [![Codecov](https://codecov.io/gh/cycle/proxy-factory/graph/badge.svg)](https://codecov.io/gh/cycle/proxy-factory)
-cycle/migrations | [![Latest Stable Version](https://poser.pugx.org/cycle/migrations/version)](https://packagist.org/packages/cycle/migrations) [![Build Status](https://travis-ci.org/cycle/migrations.svg?branch=master)](https://travis-ci.org/cycle/migrations) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/migrations/?branch=master) [![Codecov](https://codecov.io/gh/cycle/migrations/graph/badge.svg)](https://codecov.io/gh/cycle/migrations)
+cycle/orm   | [![Latest Stable Version](https://poser.pugx.org/cycle/orm/version)](https://packagist.org/packages/cycle/orm) [![Build Status](https://github.com/cycle/orm/workflows/build/badge.svg)](https://github.com/cycle/orm/actions) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/orm/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/orm/?branch=master) [![Codecov](https://codecov.io/gh/cycle/orm/graph/badge.svg)](https://codecov.io/gh/cycle/orm)
+cycle/schema-builder | [![Latest Stable Version](https://poser.pugx.org/cycle/schema-builder/version)](https://packagist.org/packages/cycle/schema-builder) [![Build Status](https://github.com/cycle/schema-builder/workflows/build/badge.svg)](https://github.com/cycle/schema-builder/actions) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/schema-builder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/schema-builder/?branch=master) [![Codecov](https://codecov.io/gh/cycle/schema-builder/graph/badge.svg)](https://codecov.io/gh/cycle/schema-builder)
+cycle/annotated | [![Latest Stable Version](https://poser.pugx.org/cycle/annotated/version)](https://packagist.org/packages/cycle/annotated) [![Build Status](https://github.com/cycle/annotated/workflows/build/badge.svg)](https://github.com/cycle/annotated/actions) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/annotated/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/annotated/?branch=master) [![Codecov](https://codecov.io/gh/cycle/annotated/graph/badge.svg)](https://codecov.io/gh/cycle/annotated)
+cycle/proxy-factory | [![Latest Stable Version](https://poser.pugx.org/cycle/proxy-factory/version)](https://packagist.org/packages/cycle/proxy-factory) [![Build Status](https://github.com/cycle/proxy-factory/workflows/build/badge.svg)](https://github.com/cycle/proxy-factory/actions) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/proxy-factory/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/proxy-factory/?branch=master) [![Codecov](https://codecov.io/gh/cycle/proxy-factory/graph/badge.svg)](https://codecov.io/gh/cycle/proxy-factory)
+cycle/migrations | [![Latest Stable Version](https://poser.pugx.org/cycle/migrations/version)](https://packagist.org/packages/cycle/migrations) [![Build Status](https://github.com/cycle/migrations/workflows/build/badge.svg)](https://github.com/cycle/migrations/actions) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/migrations/?branch=master) [![Codecov](https://codecov.io/gh/cycle/migrations/graph/badge.svg)](https://codecov.io/gh/cycle/migrations)
+
 
 ## Stempler 模板引擎
 | 组件 | 当前状态        
@@ -111,6 +117,7 @@ spiral/storage | [![Latest Stable Version](https://poser.pugx.org/spiral/storage
 spiral/reactor | [![Latest Stable Version](https://poser.pugx.org/spiral/reactor/version)](https://packagist.org/packages/spiral/reactor) [![Build Status](https://travis-ci.org/spiral/reactor.svg?branch=master)](https://travis-ci.org/spiral/reactor) [![Codecov](https://codecov.io/gh/spiral/reactor/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/reactor/)
 spiral/annotations | [![Latest Stable Version](https://poser.pugx.org/spiral/annotations/version)](https://packagist.org/packages/spiral/annotations) [![Build Status](https://travis-ci.org/spiral/annotations.svg?branch=master)](https://travis-ci.org/spiral/annotations) [![Codecov](https://codecov.io/gh/spiral/annotations/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/annotations/)
 spiral/broadcast | [![Latest Stable Version](https://poser.pugx.org/spiral/broadcast/version)](https://packagist.org/packages/spiral/broadcast) [![Build Status](https://travis-ci.org/spiral/broadcast.svg?branch=master)](https://travis-ci.org/spiral/broadcast) [![Codecov](https://codecov.io/gh/spiral/broadcast/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/broadcast/)
+spiral/data-grid | [![Latest Stable Version](https://poser.pugx.org/spiral/data-grid/version)](https://packagist.org/packages/spiral/data-grid) [![Build Status](https://travis-ci.org/spiral/data-grid.svg?branch=master)](https://travis-ci.org/spiral/data-grid) [![Codecov](https://codecov.io/gh/spiral/data-grid/branch/master/graph/badge.svg)](https://codecov.io/gh/spiral/data-grid/)
 
 ## 协同组件
 | 组件 | 当前状态        
