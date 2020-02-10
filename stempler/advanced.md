@@ -5,7 +5,6 @@ language for page definitions.
 > Attention, make sure to learn all other aspects of Stempler before jumping into this section. You will also need good 
 > cup of coffee.
 
-## Prerequisites
 The approach described in this article is possible due to the fact that stacks can be defined within imported components.
 
 ## Grid
@@ -97,3 +96,7 @@ In both cases the produced HTML:
   </table>
 </body>
 ```
+
+## Complex Interfaces
+Another example is related to the ability to assemble complex UI interfaces using custom DSL.
+
