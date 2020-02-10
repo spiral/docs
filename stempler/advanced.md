@@ -97,6 +97,6 @@ In both cases the produced HTML:
 </body>
 ```
 
-## Complex Interfaces
+## UI Assembly
 Another example is related to the ability to assemble complex UI interfaces using custom DSL.
 
