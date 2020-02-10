@@ -249,7 +249,7 @@ The produced HTML:
 > You can nest as many templates as you need, only the compilation speed will be affected.
 
 ## Stacks
-Stempler includes the ability to collect blocks aggregation multiple nested templates. 
+Stempler includes the ability to aggregation multiple blocks defined within the template. 
 
 ### Classic Approach
 Often you would need to add custom JS or CSS resource to your layout. To achieve it using `block` directives
