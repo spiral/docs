@@ -121,6 +121,7 @@
       "stempler/directives": "Directives",
       "stempler/inheritance": "Inheritance and Stacks",
       "stempler/components": "Components and Props",
+      "stempler/advanced": "Advancing DSL",
       "stempler/visitors": "AST Modifications"
     }
   },

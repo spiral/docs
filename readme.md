@@ -79,7 +79,7 @@
     * [Directives](stempler/directives.md)
     * [Inheritance and Stacks](stempler/inheritance.md)
     * [Components and Props](stempler/components.md)
-    * Advancing DSL
+    * [Advancing DSL](stempler/advanced.md)
     * [AST Modifications](stempler/visitors.md)
 * Internalization
     * Installation and Configuration
