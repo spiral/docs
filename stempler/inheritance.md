@@ -203,7 +203,7 @@ The output:
 </html>
 ```
 
-### Multiple Layouts
+### Nested Layouts
 It is possible to create layouts based on other layouts, create `app/views/layout/page.dark.php`:
 
 ```html
@@ -247,3 +247,222 @@ The produced HTML:
 ```
 
 > You can nest as many templates as you need, only the compilation speed will be affected.
+
+## Stacks
+Stempler includes the ability to collect blocks aggregation multiple nested templates. 
+
+### Classic Approach
+Often you would need to add custom JS or CSS resource to your layout. To achieve it using `block` directives
+wrap needed resources into block and append content to it in your child template.
+
+Modify `app/views/layout/base.dark.php` as:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${title|Default title}</title>
+    <block:styles>
+      <link rel="stylesheet" href="/styles/welcome.css"/>
+    </block:styles>
+</head>
+<body class="${body-class|default}">
+    <block:content>
+      Default content.
+    </block:content>
+</body>
+</html>
+``` 
+
+To add custom style resource in your page template:
+
+```html
+<extends:layout.base title="Homepage" body-class="homepage ${parent}"/>
+
+<block:styles>
+  <block:parent/>
+  <link rel="stylesheet" href="/styles/homepage.css"/>
+</block:styles>
+
+<block:page>
+  Page content.
+</block:page>
+```
+
+The produced HTML:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Homepage</title>
+  <link rel="stylesheet" href="/styles/welcome.css"/>
+  <link rel="stylesheet" href="/styles/homepage.css"/>
+</head>
+<body class="homepage default">
+  Default content.
+</body>
+</html>
+```
+
+### Create Stack
+To demonstrate how the following can be achieved using stacks we should start with simple example in `app/home.dark.php`.
+Create stack placeholder using `<stack:collect name="name"/>`: 
+
+```html
+<stack:collect name="my-stack">
+  default content
+</stack:collect>
+
+```
+
+To append value to stack:
+
+```html
+<stack:collect name="my-stack">
+  default content
+</stack:collect>
+
+<stack:push name="my-stack">
+  my value
+</stack:push>
+```
+
+The resulted HTML:
+
+```html
+  default content
+  my value
+```
+
+To prepend value to stack:
+
+```html
+<stack:collect name="my-stack">
+  default content
+</stack:collect>
+
+<stack:prepend name="my-stack">
+  my value
+</stack:prepend>
+```
+
+The output:
+
+```html
+  my value  
+  default content
+```
+
+You can locate stack definition before or after `push` and `prepend` tags:
+
+```html
+<stack:prepend name="my-stack">
+  my value
+</stack:prepend>
+
+<stack:collect name="my-stack">
+  default content
+</stack:collect>
+```
+
+### Deep Stacks
+The stack tag will only aggregate `push` and `prepend` values while located in a same tag tree. 
+
+
+For example given example will work:
+
+```html
+<stack:collect name="my-stack">
+  default content
+</stack:collect>
+
+// stack my-stack is active here
+<div>
+  // and here
+  <stack:prepend name="my-stack">
+    my value
+  </stack:prepend>
+</div>
+```
+
+While this example won't work:
+
+```html
+<div>
+  // stack my-stack is active here
+  <stack:collect name="my-stack">
+    default content
+  </stack:collect>
+  // and here
+</div>
+
+// stack my-stack is no active at this level
+
+<stack:prepend name="my-stack">
+  my value
+</stack:prepend>
+```
+
+> This limitation is caused by AST nature of stack collectors.
+
+To bypass such limitation without moving the placeholder level above use `stack:collect` attribute `level`:
+
+```html
+<div>
+  <stack:collect name="my-stack" level="1">
+    default content
+  </stack:collect>
+</div>
+
+<stack:prepend name="my-stack">
+  my value
+</stack:prepend>
+```
+
+The attribute `level` configures stack to be active multiple levels above. For example given example **won't work**:
+
+```html
+<div>
+  // stack my-stack is active here
+  <div>
+    // stack my-stack is active here
+    <stack:collect name="my-stack" level="1">
+      default content
+    </stack:collect>
+  </div>
+</div>
+
+// stack my-stack is no active at this level
+
+<stack:prepend name="my-stack">
+  my value
+</stack:prepend>
+```
+
+But example will work:
+
+```html
+<div>
+  // stack my-stack is active here
+  <div>
+    // stack my-stack is active here
+    <stack:collect name="my-stack" level="2">
+      default content
+    </stack:collect>
+  </div>
+</div>
+
+// stack my-stack is active here
+
+<stack:prepend name="my-stack">
+  my value
+</stack:prepend>
+```
+
+> Combine stacks with inheritance and [components](/stempler/components.md) to create domain specific rendering DSL.
+
+
+
+## Context and Hidden content
+
