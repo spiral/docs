@@ -128,7 +128,9 @@ and define context using multiple tabs instead of single content block. Create `
 To simplify registration of style and script elements create components `app/views/tabs/script.dark.php` and `app/views/tabs/style.dark.php`:
 
 ```html
-
+<stack:push name="scripts">
+  <script src="${src}"></script>
+</stack:push>
 ```
 
 Style:
@@ -138,3 +140,91 @@ Style:
 </stack:push>
 ```
 
+### Tab Element
+Create the tab element similar to `grid:cell` in `app/views/tabs/tab.dark.php`:
+
+```html
+<stack:push name="tab-headers">
+  <div class="tab-head" data-tab-body="${id}">${title}</div>
+</stack:push>
+
+<stack:push name="tab-body">
+  <div class="tab-body" id="body-${id}">${context}</div>
+</stack:push>
+```
+
+### Bundle
+Create bundle to represent the DSL for your UI framework `app/views/tabs/bundle.dark.php`:
+
+```html
+# resources
+<use:element path="tabs/style" as="import:style"/>
+<use:element path="tabs/script" as="import:script"/>
+
+# tab
+<use:element path="tabs/tab" as="ui:tab"/>
+```
+
+### Example
+To render complex UI modify the `app/views/home.dark.php`. 
+
+> You can import more than one bundle.
+
+```html
+<extends:tabs.layout title="Homepage"/>
+<use:bundle path="grid/bundle"/>
+<use:bundle path="tabs/bundle"/>
+
+// import needed resources
+<import:style src="/resources/my-style.css"/>
+<import:script src="/resources/my-script.js"/>
+
+// first tab
+<ui:tab id="first" title="Information">
+  Hello world!
+</ui:tab>
+
+// some grid
+<ui:tab id="second" title="Some Grid">
+  <grid:table>
+    <grid:cell title="First cell">my value</grid:cell>
+    <grid:cell title="Second cell">second value</grid:cell>
+  </grid:table>
+</ui:tab>
+```
+
+The generated HTML:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Homepage</title>
+  <link rel="stylesheet" href="/resources/my-style.css"/>
+</head>
+<body>
+  <div class="tab-headers">
+    <div class="tab-head" data-tab-body="first">Information</div>
+    <div class="tab-head" data-tab-body="second">Some Grid</div>
+  </div>
+    <div class="tab-body">
+      <div class="tab-body" id="body-first">
+        Hello world!
+      </div>
+    <div class="tab-body" id="body-second">
+      <table class="grid-table">
+        <thead>
+          <tr>First cell</tr>
+          <tr>Second cell</tr>
+        </thead>
+        <tbody>
+          <td>my value</td>
+          <td>second value</td>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+<script src="/resources/my-script.js"></script>
+</html>
+```
