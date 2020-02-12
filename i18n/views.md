@@ -21,3 +21,5 @@ Embrace the string to be translated with `[[ string ]]` in your template:
 ```html
 [[hello world]]
 ```
+
+> Change the locale in your application to switch translation in view.
