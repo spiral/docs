@@ -14,7 +14,7 @@
 * Framework
     * [Design Approach](framework/design.md)
     * [Application Server](framework/application-server.md)
-    * Kernel, Environment
+    * [Kernel, Environment](framework/kernel.md)
     * [Container](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
     * [Config Objects](framework/config.md)

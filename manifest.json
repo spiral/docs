@@ -24,6 +24,7 @@
     "links": {
       "framework/design": "Design Approach",
       "framework/application-server": "Application Server",
+      "framework/kernel": "Kernel, Environment",
       "framework/container": "Container",
       "framework/bootloaders": "Bootloaders",
       "framework/config": "Config Objects",
