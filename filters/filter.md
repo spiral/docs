@@ -162,6 +162,15 @@ Every route writes matched parameters into ServerRequestInterface attribute `mat
 inside your filter using `attribute:matches.{name}` notation:
 
 ```php
+$router->setRoute(
+    'sample',
+    new Route('/action/<id>.html', new Controller(HomeController::class))
+);
+```
+
+Filter definition:
+
+```php
 namespace App\Filter;
 
 use Spiral\Filters\Filter;
