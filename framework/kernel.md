@@ -6,7 +6,7 @@ method automatically, based on connected `Spiral\Boot\DispatcherInterface` insta
 The base kernel implementation is located in `spiral/boot` repository.
 
 ## Kernel Responsibilities
-The `Spiral\Boot\Kernel` class only responsible for the following aspects of your application:
+The `Spiral\Boot\AbstractKernel` class only responsible for the following aspects of your application:
 - container initialization via set of application specific bootloaders
 - environment and directory structure initialization
 - selection of appropriate dispatching method
