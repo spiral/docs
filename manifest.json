@@ -129,6 +129,7 @@
   {
     "title": "Internalization",
     "links": {
+      "i18n/export": "Import and Export",
       "i18n/views": "View Localization",
       "i18n/say-trait": "Say Trait"
     }

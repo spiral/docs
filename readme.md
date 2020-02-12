@@ -83,7 +83,7 @@
     * [AST Modifications](stempler/visitors.md)
 * Internalization
     * Installation and Configuration
-    * Import and Export
+    * [Import and Export](i18n/export.md)
     * [View Localization](i18n/views.md)
     * [Say Trait](i18n/say-trait.md)
 * Databases
