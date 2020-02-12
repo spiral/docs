@@ -82,7 +82,7 @@
     * [Advancing DSL](stempler/advanced.md)
     * [AST Modifications](stempler/visitors.md)
 * Internalization
-    * Installation and Configuration
+    * [Installation and Configuration](i18n/configuration.md)
     * [Import and Export](i18n/export.md)
     * [View Localization](i18n/views.md)
     * [Say Trait](i18n/say-trait.md)
