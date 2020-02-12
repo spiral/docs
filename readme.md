@@ -84,8 +84,8 @@
 * Internalization
     * Installation and Configuration
     * Import and Export
-    * View Localization
-    * Say Trait
+    * [View Localization](i18n/views.md)
+    * [Say Trait](i18n/say-trait.md)
 * Databases
     * [Installation and Configuration](database/configuration.md)
     * [Access Database](database/access.md)

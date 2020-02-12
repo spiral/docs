@@ -127,6 +127,13 @@
     }
   },
   {
+    "title": "Internalization",
+    "links": {
+      "i18n/views": "View Localization",
+      "i18n/say-trait": "Say Trait"
+    }
+  },
+  {
     "title": "Databases",
     "links": {
       "database/configuration": "Installation and Configuration",
