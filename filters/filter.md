@@ -157,7 +157,7 @@ class MyFilter extends Filter
 
 > Read more about validation below. 
 
-### Route Attributes
+### Route Parameters
 Every route writes matched parameters into ServerRequestInterface attribute `matches`, is it possible to access route values
 inside your filter using `attribute:matches.{name}` notation:
 
