@@ -475,3 +475,62 @@ Image checker extends the file checker and fully supports it's features.
 
 > Setting `useMicroSeconds` into true allows to check datetime with microseconds.<br/>
 Be carefull, two `new \DateTime('now')` objects will 99% have different microseconds values so they will never be equal.
+
+## Custom Validation Rules
+Is it possible to create application specific validation rules via custom checker implementation.
+
+```php
+namespace App\Security;
+
+use Spiral\Database\Database;
+use Spiral\Validation\AbstractChecker;
+
+class DBChecker extends AbstractChecker
+{
+    public const MESSAGES = [
+        'user' => 'No such user.'
+    ];
+
+    /** @var Database */
+    private $db;
+
+    /**
+     * @param Database $db
+     */
+    public function __construct(Database $db)
+    {
+        $this->db = $db;
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function user($id): bool
+    {
+        return $this->db->table('users')->select()->where('id', $id)->count() === 1;
+    }
+}
+``` 
+
+> Use prebuild constant MESSAGES to define custom error template.
+
+To activate checker register it in `ValidationBootloader`:
+
+```php
+namespace App\Bootloader;
+
+use App\Security\DBChecker;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Bootloader\Security\ValidationBootloader;
+
+class CheckerBootloader extends Bootloader
+{
+    public function boot(ValidationBootloader $validation)
+    {
+        $validation->addChecker('db', DBChecker::class);
+    }
+}
+```
+
+You can use the validation now via `db::user` rule.
