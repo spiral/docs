@@ -157,6 +157,23 @@ class MyFilter extends Filter
 
 > Read more about validation below. 
 
+### Route Attributes
+Every route writes matched parameters into ServerRequestInterface attribute `matches`, is it possible to access route values
+inside your filter using `attribute:matches.{name}` notation:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [
+        'routeID' => 'attribute:matches.id'
+    ];
+}
+```
+
 ### Setters
 Use setters to typecast the incoming value before passing it to validator. The filter will assign null to the value
 in case of typecast error:
