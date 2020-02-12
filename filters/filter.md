@@ -126,13 +126,13 @@ Source | Description
 --- | ---
 uri | Current page Uri in a form of `Psr\Http\Message\UriInterface`
 path | Current page path
-method | Http method (GET|POST|...)
+method | Http method (GET, POST, ...)
 isSecure | If https used.
 isAjax | If `X-Requested-With` set as `xmlhttprequest`
 isJsonExpected | When client expects `application/json`
 remoteAddress | User ip address
 
-> Read more about InputManager [here](/v1.0.0/httphttp/input.md).
+> Read more about InputManager [here](/http/request-response.md).
 
 For example to check if request is made over https:
 
