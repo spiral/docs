@@ -1,4 +1,4 @@
-# Errata
+# Database - Errata
 Documentation section lists non-obvious behaviors of DBAL component and ways to avoid them.
 
 ## Timestamps
@@ -17,7 +17,7 @@ Default table engine is set to `InnoDB`.
 
 ### Postgres Driver
 Postgres driver includes custom implementation of `InsertQuery` in order to address the return value of
-auto-incremental PK, it will automatically add `RETURNING {primary key}` to generated SQL query.
+auto-incremental PK, it will automatically add `RETURNING {primary key}` to the generated SQL query.
 
 ### SQLServer Driver
 SQLServer includes a fallback mechanism to limit your selection without orderBy specified. In some cases, it might add

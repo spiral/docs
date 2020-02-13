@@ -1,4 +1,4 @@
-# Transactions
+# Database - Transactions
 Both Database and Driver instances provide access to transaction management for your queries.
 You can manage transactions manually or use pre-created Closure based flow.
 

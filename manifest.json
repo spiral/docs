@@ -22,7 +22,9 @@
   {
     "title": "Framework",
     "links": {
+      "framework/design": "Design Approach",
       "framework/application-server": "Application Server",
+      "framework/kernel": "Kernel, Environment",
       "framework/container": "Container",
       "framework/bootloaders": "Bootloaders",
       "framework/config": "Config Objects",
@@ -82,6 +84,7 @@
       "http/middleware": "Middleware",
       "http/golang": "Golang Middleware",
       "http/cookies": "Cookies",
+      "http/session": "Session",
       "http/csrf": "CSRF protection"
     }
   },
@@ -106,6 +109,7 @@
     "title": "Views",
     "links": {
       "views/configuration": "Installation and Configuration",
+      "views/render": "Rendering Views",
       "views/native": "Plain PHP templates",
       "views/twig": "Twig templates"
     }
@@ -113,12 +117,31 @@
   {
     "title": "Stempler templates",
     "links": {
+      "stempler/configuration": "Installation and Configuration",
+      "stempler/basics": "Basic Usage",
+      "stempler/directives": "Directives",
+      "stempler/inheritance": "Inheritance and Stacks",
+      "stempler/components": "Components and Props",
+      "stempler/advanced": "Advancing DSL",
       "stempler/visitors": "AST Modifications"
+    }
+  },
+  {
+    "title": "Internalization",
+    "links": {
+      "i18n/configuration": "Installation and Configuration",
+      "i18n/export": "Import and Export",
+      "i18n/views": "View Localization",
+      "i18n/say-trait": "Say Trait"
     }
   },
   {
     "title": "Databases",
     "links": {
+      "database/configuration": "Installation and Configuration",
+      "database/access": "Access Database",
+      "database/query-builders": "Query Builders",
+      "database/isolation": "Database Isolation",
       "database/transactions": "Transactions",
       "database/introspection": "Schema Introspection",
       "database/declaration": "Schema Declaration",

@@ -48,6 +48,7 @@ To resolve directory alias within your application use `Spiral\Boot\DirectoriesI
 function test(DirectoriesInterface $dirs)
 {
     dump($dirs->get('app'));
+    // output: <your root path>/app/
 }
 ```
 
@@ -57,6 +58,7 @@ You can also use function `directory` inside global IoC scope (config files, con
 function test()
 {
     dump(directory('app'));
+    // output: <your root path>/app/
 }
 ```
 

@@ -1,4 +1,4 @@
-# Database Schema Declaration
+# Database - Schema Declaration
 Spiral/Database ships with an included mechanism to declare table structures, FKS and indexes using declarative approach and schema comparison.
 
 > Practically, table changes can be executed using an external migration system.

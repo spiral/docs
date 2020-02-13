@@ -126,13 +126,13 @@ Source | Description
 --- | ---
 uri | Current page Uri in a form of `Psr\Http\Message\UriInterface`
 path | Current page path
-method | Http method (GET|POST|...)
+method | Http method (GET, POST, ...)
 isSecure | If https used.
 isAjax | If `X-Requested-With` set as `xmlhttprequest`
 isJsonExpected | When client expects `application/json`
 remoteAddress | User ip address
 
-> Read more about InputManager [here](/v1.0.0/httphttp/input.md).
+> Read more about InputManager [here](/http/request-response.md).
 
 For example to check if request is made over https:
 
@@ -156,6 +156,32 @@ class MyFilter extends Filter
 ```
 
 > Read more about validation below. 
+
+### Route Parameters
+Every route writes matched parameters into ServerRequestInterface attribute `matches`, is it possible to access route values
+inside your filter using `attribute:matches.{name}` notation:
+
+```php
+$router->setRoute(
+    'sample',
+    new Route('/action/<id>.html', new Controller(HomeController::class))
+);
+```
+
+Filter definition:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class MyFilter extends Filter
+{
+    protected const SCHEMA = [
+        'routeID' => 'attribute:matches.id'
+    ];
+}
+```
 
 ### Setters
 Use setters to typecast the incoming value before passing it to validator. The filter will assign null to the value

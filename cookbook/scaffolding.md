@@ -526,7 +526,7 @@ Output is:
 ```php
 use Spiral\Filters\Filter;
 
-class Sample26Filter extends Filter
+class MyFilter extends Filter
 {
     protected const SCHEMA = [
         'typedBool'              => 'data:typedBool',
@@ -592,7 +592,7 @@ class MyJob extends JobHandler
 $ php app.php create:middleware <name>
 ```
 
-`<Name>Middlweare` class will be created.
+`<Name>` class will be created.
 
 #### Example
 ```bash

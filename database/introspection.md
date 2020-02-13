@@ -1,4 +1,4 @@
-# Schema Introspection
+# Database - Schema Introspection
 Spiral Database layer provides the ability to read and analyze basic properties of a given database or a given table.
 DBAL layer include set of "abstract" types assigned to each column based on DBMS specific mapping in order to unify 
 different engines.
@@ -12,7 +12,7 @@ if ($database->hasTable('users')) {
 }
 ```
 
-> Read how to get Database instances [here](/database/entity.md).
+> Read how to get Database instances [here](/database/access.md).
 
 Receive all database tables (array of `Spiral\Database\Table`):
 
