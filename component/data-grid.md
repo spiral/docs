@@ -89,4 +89,66 @@ To sort by id in ASC or DESC: `?sort[id]=desc`.
 ## Available Specifications
 There are number of specifications available for grids.
 
+### Select specification
+This specification represents a set of available expressions, passing a value from the input will pick a single or several specifications from this set.
+> You just need pass a key or an array of keys. Note that no ValueInterface should be declared.
+
+Example with a single value:
+```php
+
+use Spiral\DataGrid\Specification\Filter;
+
+//Note, that we have integer keys here
+$select = new Filter\Select([
+    new Filter\Equals('name', 'value'),
+    new Filter\Any(
+        new Filter\Equals('price', 2),
+        new Filter\Gt('quantity', 5)
+    ),
+    new Filter\Equals('email', 'email@example.com'),
+]);
+
+$filter = $select->withValue(1); //the second filter
+```
+> Filter will be equal to `Filter\Any` specification.
+
+Example with multiple values:
+```php
+
+use Spiral\DataGrid\Specification\Filter;
+
+//Note, that we have integer keys here
+$select = new Filter\Select([
+    'one'  => new Filter\Equals('name', 'value'),
+    'two'  => new Filter\Any(
+        new Filter\Equals('price', 2),
+        new Filter\Gt('quantity', 5)
+    ),
+    'three' => new Filter\Equals('email', 'email@example.com'),
+]);
+
+$filter = $select->withValue(['one', 'two']);
+```
+> Filter will contain both embedded filters as `Filter\All` specification.
+
+Example with an unknown value:
+```php
+
+use Spiral\DataGrid\Specification\Filter;
+
+//Note, that we have integer keys here
+$select = new Filter\Select([
+    'one'  => new Filter\Equals('name', 'value'),
+    'two'  => new Filter\Any(
+        new Filter\Equals('price', 2),
+        new Filter\Gt('quantity', 5)
+    ),
+    'three' => new Filter\Equals('email', 'email@example.com'),
+]);
+
+$filter = $select->withValue('four');
+```
+> Filter will be equal to null
+
+
 > TBD.
