@@ -279,7 +279,7 @@ $container->bindInjector(MyClass::class, Injector::class);
 As result we can request instance of `MyClass` using method arguments:
 
 ```php
-public function method(Name $john, Name $bob)
+public function method(MyClass $john, MyClass $bob)
 {
     dump($john);
     dump($bob);
@@ -289,7 +289,7 @@ public function method(Name $john, Name $bob)
 You can always bypass contextual injection in `Spiral\Core\FactoryInterface`:
 
 ```php
-dump($factory->make(Name::class, ['name' => 'abc']));
+dump($factory->make(MyClass::class, ['name' => 'abc']));
 ```
 
 ## Singletons
