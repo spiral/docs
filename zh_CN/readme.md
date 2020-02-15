@@ -15,7 +15,7 @@
     * [设计理念](framework/design.md)
     * [应用服务器](framework/application-server.md)
     * [内核，环境](framework/kernel.md)
-    * [容器]（framework/container.md)
+    * [容器](framework/container.md)
 * 速查手册
     * [脚手架](cookbook/scaffolding.md)
     
