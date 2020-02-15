@@ -28,9 +28,6 @@ class App extends Kernel
 
 ## 配置
 
-You can customize scaffolder component by replacing declaration generators and their options using `scaffolder` configuration file.
-Default configuration is located in the `ScaffolderBootloader`
-
 您可以使用 `scaffolder` 配置文件（`app/config/scaffolder.php`）替换声明生成器及其选项，从而自定义 scaffolder 组件。
 默认配置位于可以在 `ScaffolderBootloader` 中找到。
 
