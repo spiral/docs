@@ -162,7 +162,8 @@
     "title": "Event Broadcasting",
     "links": {
       "broadcast/configuration": "Installation and Configuration",
-      "broadcast/publish": "Publish and Consume"
+      "broadcast/publish": "Publish and Consume",
+      "broadcast/websockets": "WebSockets"
     }
   },
   {

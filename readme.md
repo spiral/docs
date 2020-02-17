@@ -104,7 +104,7 @@
 * Event Broadcasting
     * [Installation and Configuration](broadcast/configuration.md)
     * [Publish and Consume](broadcast/publish.md)
-    * WebSocket Consumer
+    * [WebSockets](broadcast/websockets.md)
 * GRPC
     * Installation and Configuration
     * Generating Service Code
