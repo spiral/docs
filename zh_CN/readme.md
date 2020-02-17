@@ -16,6 +16,9 @@
     * [应用服务器](framework/application-server.md)
     * [内核，环境](framework/kernel.md)
     * [容器](framework/container.md)
+    * [引导程序](framework/bootloader.md)
+    * [配置对象](framework/config.md)
+    * [IoC 作用域](framework/scopes.md)
 * 速查手册
     * [脚手架](cookbook/scaffolding.md)
     
