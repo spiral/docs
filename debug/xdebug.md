@@ -38,6 +38,6 @@ event-service:
     - -o
     - http.workers.command=php -d zend_extension=xdebug.so app.php
     environment:
-      PHP_IDE_CONFIG: serverName=event-service.loc
+      PHP_IDE_CONFIG: serverName=application.loc
       XDEBUG_CONFIG: remote_host=host.docker.internal max_nesting_level=250 remote_enable=1 remote_connect_back=0 var_display_max_depth=5 idekey='PHPSTORM'
 ```
