@@ -162,6 +162,7 @@
     "title": "Debug and Profiling",
     "links": {
       "debug/dumps": "Dumping Variables",
+      "debug/xdebug": "XDebug",
       "debug/exceptions": "Handling Exceptions"
     }
   },

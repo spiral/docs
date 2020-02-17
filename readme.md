@@ -114,6 +114,7 @@
     * GRPC client code
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
+    * [XDebug](debug/xdebug.md)
     * [Handling Exceptions](debug/exceptions.md)
 * Extensions
     * [Code Style](extension/code-style.md)
