@@ -103,8 +103,9 @@
     * [Console Commands](cycle/commands.md)
 * Event Broadcasting
     * Installation and Configuration
-    * WebSocket Client
-    * Standalone Usage
+    * Broadcasting Events
+    * Golang Client
+    * WebSocket Consumer
 * GRPC
     * Installation and Configuration
     * Generating Service Code
@@ -113,7 +114,6 @@
     * GRPC client code
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
-    * XDebug
     * [Handling Exceptions](debug/exceptions.md)
 * Extensions
     * [Code Style](extension/code-style.md)
