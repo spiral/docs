@@ -103,7 +103,7 @@ class TopicsBootloader extends Bootloader
 }
 ```
 
-> You should observe the confirmation message `{"topic":"@join","payload":["topic"]}` after the connection is made.
+> You should observe the confirmation message `{"topic":"@join", "payload":["topic"]}` after the connection is made.
 
 Method `authorizeTopic` support method injection and can be used to access container. Use it to read client cookies:
 
