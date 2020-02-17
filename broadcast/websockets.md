@@ -6,7 +6,7 @@ To activate the component enable the `ws` section `.rr.yaml` config file with th
 ws.path: "/ws"
 ```
 
-Enable the `Spiral\Bootloader\Broadcast\WebsocketsBootloader` in your application:
+Enable the `Spiral\Bootloader\Http\WebsocketsBootloader` in your application:
 
 ```php
 protected const LOAD = [
@@ -15,6 +15,8 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+> The HTTP component is required for WebSockets to function.
 
 ## Native JavaScript Client
 Use native JavaScript websockets functionality to connect to the server on `/ws`:
