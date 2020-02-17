@@ -159,6 +159,12 @@
     }
   },
   {
+    "title": "Event Broadcasting",
+    "links": {
+      "broadcast/configuration": "Installation and Configuration"
+    }
+  },
+  {
     "title": "Debug and Profiling",
     "links": {
       "debug/dumps": "Dumping Variables",

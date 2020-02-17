@@ -102,7 +102,7 @@
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
 * Event Broadcasting
-    * Installation and Configuration
+    * [Installation and Configuration](broadcast/configuration.md)
     * Broadcasting Events
     * Golang Client
     * WebSocket Consumer
