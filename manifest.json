@@ -161,7 +161,8 @@
   {
     "title": "Event Broadcasting",
     "links": {
-      "broadcast/configuration": "Installation and Configuration"
+      "broadcast/configuration": "Installation and Configuration",
+      "broadcast/publish": "Publish and Consume"
     }
   },
   {

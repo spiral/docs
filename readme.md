@@ -103,8 +103,7 @@
     * [Console Commands](cycle/commands.md)
 * Event Broadcasting
     * [Installation and Configuration](broadcast/configuration.md)
-    * Broadcasting Events
-    * Golang Client
+    * [Publish and Consume](broadcast/publish.md)
     * WebSocket Consumer
 * GRPC
     * Installation and Configuration
