@@ -910,6 +910,6 @@ You are able to use Expression object to create complex, driver specific, SQL in
 ```php
 $db->table('test')
     ->select()
-    ->where(new Expression('SUM(column) = ?', $value)
+    ->where(new Expression('SUM(column) = ?', $value))
     ->run();
 ```
