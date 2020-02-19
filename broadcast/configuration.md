@@ -25,6 +25,6 @@ broadcast:
   # optional, redis broker configuration
   redis:
     addr:      "localhost:6379"
-    passsword: ""
+    password: ""
     db:        0
 ```
