@@ -117,7 +117,6 @@ Example with multiple values:
 
 use Spiral\DataGrid\Specification\Filter;
 
-//Note, that we have integer keys here
 $select = new Filter\Select([
     'one'  => new Filter\Equals('name', 'value'),
     'two'  => new Filter\Any(
@@ -136,7 +135,6 @@ Example with an unknown value:
 
 use Spiral\DataGrid\Specification\Filter;
 
-//Note, that we have integer keys here
 $select = new Filter\Select([
     'one'  => new Filter\Equals('name', 'value'),
     'two'  => new Filter\Any(
