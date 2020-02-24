@@ -19,7 +19,13 @@ In order to compile `.proto` files into target language you will have to install
 
 You can download the latest `protoc` binaries from [https://github.com/protocolbuffers/protobuf/releases](https://github.com/protocolbuffers/protobuf/releases).
 
-### Install Protobuf extension
+### PHP Server Plugin 
+Download and install `protoc-gen-php-grpc` from [spiral/php-grpc releases page](https://github.com/spiral/php-grpc/releases). 
+This plugin is require to generate service code for your applications.
+
+> Make sure that plugin is available in your PATH.
+
+### Install Protobuf extension (optional)
 The `spiral/php-gprc` extension able to work with proto messages using PHP library. However, in order to achieve higher
 performance on larger messages make sure to install `protobuf` extension for PHP.
 
@@ -35,40 +41,6 @@ $ sudo pecl install protobuf
 ```bash
 $ sudo pecl install protobuf-3.10.0
 ```
-
-### PHP Plugin
-The PHP proto code generation will require `protoc-gen-php` plugin which we have to compile by ourselves.
-
-```bash
-$ git clone -b v1.27.0 https://github.com/grpc/grpc
-$ cd grpc
-$ git submodule update --init
-$ make grpc_php_plugin
-```
-
-Make sure to install `grpc` extension to make your clients work:
-
-```bash
-$ sudo pecl install grpc
-```
-
-> Read more about the extension [here](https://grpc.io/docs/quickstart/php/).
-
-### PHP Server Plugin 
-Download and install `protoc-gen-php-grpc` from [spiral/php-grpc releases page](https://github.com/spiral/php-grpc/releases). 
-This plugin is require to generate service code for your applications.
-
-> Make sure that plugin is available in your PATH.
-
-### Golang Client Plugin (optional)
-To generate code for golang clients use [`protoc-gen-go` library](https://github.com/golang/protobuf):
-
-```bash
-$ go get -u google.golang.org/grpc
-$ go get -u github.com/golang/protobuf/protoc-gen-go
-```
-
-Read how to install Golang server code generator [here](https://github.com/grpc/grpc-go) and [here](https://www.grpc.io/docs/quickstart/go/).
 
 ## Generate Certificate
 It is possible to run GRPC without any encryption layer. However in other to secure our application we must issue proper
