@@ -31,7 +31,6 @@
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
-    * Streaming and Batch processing
     * Testing Application
 * Components
     * [Files and Directories](component/files.md)
@@ -110,6 +109,7 @@
     * Generating Service Code
     * Passing Metadata and Errors
     * Golang Services
+    * Streaming and Batch processing
     * GRPC client code
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)

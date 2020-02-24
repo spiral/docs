@@ -132,4 +132,4 @@ func (s *Service) Serve() error {
 ```
 
 > Spiral does not provide the default way to consume messages from PHP due to the blocking nature of PHP execution. Read 
-> about [Streaming and Batch processing](/cookbook/streaming.md) to understand how to bypass such limitation.
+> about [Streaming and Batch processing](/grpc/streaming.md) to understand how to bypass such limitation.
