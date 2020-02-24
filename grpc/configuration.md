@@ -1,6 +1,6 @@
 # GRPC - Installation and Configuration
 The [GRPC](https://grpc.io/) protocol provides extremely efficient way of cross-service communication for distributed 
-application. The public toolkit include instruments to generate client and server code-bases for many languages
+applications. The public toolkit include instruments to generate client and server code-bases for many languages
 allowing the developer to use the most optimal language for the task.
 
 The default [GRPC build](https://github.com/spiral/app-grpc) includes pre-installed version of [spiral/php-grpc](https://github.com/spiral/php-grpc) 
