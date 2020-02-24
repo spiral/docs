@@ -29,7 +29,7 @@ You can compile the extension manually or install it via [PECL](https://pecl.php
 $ sudo pecl install protobuf
 ```
 
-> Note, in case of `Segmentation Fault` error try to install different `protobuf` library. We recommend using `3.10.1` 
+> Note, in case of `Segmentation Fault` error try to install different `protobuf` library. We recommend using `3.10.0` 
 > at start. 
 
 ```bash
@@ -40,12 +40,19 @@ $ sudo pecl install protobuf-3.10.0
 The PHP proto code generation will require `protoc-gen-php` plugin which we have to compile by ourselves.
 
 ```bash
-$ wget https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protobuf-php-3.10.1.tar.gz
-$ tar -xzvf protobuf-php-3.10.1.tar.gz
-$ cd protobuf-php-3.10.1
-$ ./configure
-$ 
+$ git clone -b v1.27.0 https://github.com/grpc/grpc
+$ cd grpc
+$ git submodule update --init
+$ make grpc_php_plugin
 ```
+
+Make sure to install `grpc` extension to make your clients work:
+
+```bash
+$ sudo pecl install grpc
+```
+
+> Read more about the extension [here](https://grpc.io/docs/quickstart/php/).
 
 ### PHP Server Plugin 
 Download and install `protoc-gen-php-grpc` from [spiral/php-grpc releases page](https://github.com/spiral/php-grpc/releases). 
