@@ -111,7 +111,6 @@
     * Passing Metadata and Errors
     * Golang Services
     * Streaming and Batch processing
-    * GRPC client code
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * [XDebug](debug/xdebug.md)
