@@ -167,6 +167,12 @@
     }
   },
   {
+    "title": "GRPC",
+    "links": {
+      "grpc/configuration": "Installation and Configuration"
+    }
+  },
+  {
     "title": "Debug and Profiling",
     "links": {
       "debug/dumps": "Dumping Variables",

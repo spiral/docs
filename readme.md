@@ -105,7 +105,7 @@
     * [Publish and Consume](broadcast/publish.md)
     * [WebSockets](broadcast/websockets.md)
 * GRPC
-    * Installation and Configuration
+    * [Installation and Configuration](grpc/configuration.md)
     * Generating Service Code
     * Passing Metadata and Errors
     * Golang Services
