@@ -42,19 +42,6 @@ $ sudo pecl install protobuf
 $ sudo pecl install protobuf-3.10.0
 ```
 
-## Generate Certificate
-It is possible to run GRPC without any encryption layer. However in other to secure our application we must issue proper
-server key and certificate. You can use any normal SSL certificate (for example issued by [https://letsencrypt.org/](https://letsencrypt.org/)) or
-issue it manually via [OpenSSL](https://www.openssl.org/).
-
-To issue server key and certificate:
-
-```bash
-$ openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -out app.crt
-```
-
-> Make sure to use proper domain name or `localhost`, it will required to make your clients connect properly.
-
 ## Component Installation
 To install the component in alternative bundles: 
 
@@ -96,6 +83,19 @@ limit:
   services:
     grpc.maxMemory: 100
 ```
+
+## Generate Certificate
+It is possible to run GRPC without any encryption layer. However in other to secure our application we must issue proper
+server key and certificate. You can use any normal SSL certificate (for example issued by [https://letsencrypt.org/](https://letsencrypt.org/)) or
+issue it manually via [OpenSSL](https://www.openssl.org/).
+
+To issue server key and certificate:
+
+```bash
+$ openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -out app.crt
+```
+
+> Make sure to use proper domain name or `localhost`, it will required to make your clients connect properly.
 
 ## GRPC UI
 Use https://github.com/fullstorydev/grpcui to connect to GRPC from the web browser. You will need to install Golang
