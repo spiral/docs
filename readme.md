@@ -106,7 +106,7 @@
     * [WebSockets](broadcast/websockets.md)
 * GRPC
     * [Installation and Configuration](grpc/configuration.md)
-    * Generating Service Code
+    * Generate Service Code
     * Passing Metadata and Errors
     * Golang Services
     * Streaming and Batch processing
