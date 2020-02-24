@@ -903,3 +903,13 @@ $db->table('test')
     ])
     ->run();
 ```
+
+## Complex Expressions
+You are able to use Expression object to create complex, driver specific, SQL injections with included parameters.
+
+```php
+$db->table('test')
+    ->select()
+    ->where(new Expression('SUM(column) = ?', $value))
+    ->run();
+```
