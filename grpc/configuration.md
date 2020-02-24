@@ -26,8 +26,7 @@ This plugin is require to generate service code for your applications.
 > Make sure that plugin is available in your PATH.
 
 ### Install Protobuf extension (optional)
-The `spiral/php-gprc` extension able to work with proto messages using PHP library. However, in order to achieve higher
-performance on larger messages make sure to install `protobuf` extension for PHP.
+In order to achieve higher performance on larger messages make sure to install `protobuf` extension for PHP.
 
 You can compile the extension manually or install it via [PECL](https://pecl.php.net/package/protobuf).
 
