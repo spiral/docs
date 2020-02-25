@@ -1,4 +1,36 @@
-# Cookbook - Streaming and Batching
+# GRPC - Streaming and Batching
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 An ability to handle an incoming steam of data is essential in many application domains, such as IoC, analytics, social 
 networking.
 
