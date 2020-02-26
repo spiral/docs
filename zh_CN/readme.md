@@ -19,6 +19,8 @@
     * [引导程序](framework/bootloader.md)
     * [配置对象](framework/config.md)
     * [IoC 作用域](framework/scopes.md)
+    * [静态高速缓存](framework/memory.md)
+    * [终结器](framework/finalizers.md)
 * 速查手册
     * [脚手架](cookbook/scaffolding.md)
     
