@@ -8,6 +8,7 @@ Create bootloader to describe and bind your schema to `Cycle\ORM\SchemaInterface
 namespace App\Bootloader;
 
 use App\Database\User;
+use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Spiral\Boot\Bootloader\Bootloader;
