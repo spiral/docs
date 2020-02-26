@@ -98,6 +98,7 @@
 * Cycle ORM
     * [Installation and Configuration](cycle/configuration.md)
     * [Transactions](cycle/transactions.md)
+    * [Without Annotations](cycle/manual.md)
     * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
 * Event Broadcasting

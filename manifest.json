@@ -154,6 +154,7 @@
     "links": {
       "cycle/configuration": "Installation and Configuration",
       "cycle/transactions": "Transactions",
+      "cycle/manual": "Without Annotations",
       "cycle/documentation": "Full Documentation",
       "cycle/commands": "Console Commands"
     }
