@@ -36,7 +36,9 @@
   {
     "title": "速查手册",
     "links": {
-      "cookbook/scaffolding": "脚手架"
+      "cookbook/scaffolding": "脚手架",
+      "cookbook/prototype": "开发辅助",
+      "cookbook/injector": "注入器"
     }
   }
 ]

@@ -23,4 +23,6 @@
     * [终结器](framework/finalizers.md)
 * 速查手册
     * [脚手架](cookbook/scaffolding.md)
+    * [开发辅助](cookbook/prototype.md)
+    * [注入器](cookbook/injector.md)
     
