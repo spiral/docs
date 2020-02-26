@@ -22,15 +22,15 @@ class ORMBootloader extends Bootloader
     {
         return new Schema([
             User::class => [
-                    Schema::ROLE        => 'user',
-                    Schema::MAPPER      => Mapper::class,
-                    Schema::DATABASE    => 'default',
-                    Schema::TABLE       => 'user',
-                    Schema::PRIMARY_KEY => 'id',
-                    Schema::COLUMNS     => ['id', 'email', 'balance'],
-                    Schema::SCHEMA      => [],
-                    Schema::RELATIONS   => []
-                ]
+                Schema::ROLE        => 'user',
+                Schema::MAPPER      => Mapper::class,
+                Schema::DATABASE    => 'default',
+                Schema::TABLE       => 'user',
+                Schema::PRIMARY_KEY => 'id',
+                Schema::COLUMNS     => ['id', 'email', 'balance'],
+                Schema::SCHEMA      => [],
+                Schema::RELATIONS   => []
+            ]
         ]);
     }
 }
