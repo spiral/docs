@@ -58,7 +58,7 @@ Use native JavaScript websockets functionality to connect to the server on `/ws`
 > You should observe `DEBU[0003] [ws] [::1]:51350 connected` if everything is configured properly.
 
 ## Consume Topic
-To consume topic using JavaScript client your must send command message in a form of `{"cmd":"join", "args": ["topic-name"]}`.
+To consume topic using JavaScript client your must send command message in a form of `{"topic":"join", "payload": ["topic-name"]}`.
 Modify your script to automatically consume `topic`:
 
 ```html
@@ -68,7 +68,7 @@ Modify your script to automatically consume `topic`:
 
         ws.onopen = function (evt) {
             print("open");
-            ws.send(`{"cmd":"join", "args":["topic"]}`);
+            ws.send(`{"topic":"join", "payload":["topic"]}`);
         };
 
        // ...
