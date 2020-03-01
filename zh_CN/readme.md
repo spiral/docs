@@ -25,4 +25,6 @@
     * [脚手架](cookbook/scaffolding.md)
     * [开发辅助](cookbook/prototype.md)
     * [注入器](cookbook/injector.md)
+    * [领域内核](cookbook/domain-core.md)
+    * [网站爬虫](cookbook/scraper.md)
     
