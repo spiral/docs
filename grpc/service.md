@@ -1,4 +1,4 @@
-# GRPC - Generate Service Code
+# GRPC - Service Code
 Unlike classic HTTP and REST endpoints GRPC enforce most strict request/response format driven by `.proto` files declaration
 and compiled into binary messages using `protoc` compiler.
 
