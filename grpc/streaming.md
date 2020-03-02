@@ -132,9 +132,3 @@ message JoinMessage {
 > Make sure to read [gRPC Basics - Go](https://grpc.io/docs/tutorials/basic/go/). 
 
 The producer code will locate in `producer` directory, server will locate in `server`. Generate the producer client code:
-
-```bash
-$ protoc proto/items.proto --go_out=plugins=grpc:.
-$ cp proto/items.pb.go producer/items.pb.go
-
-```
