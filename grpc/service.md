@@ -231,8 +231,8 @@ The recommended approach of designing the GRPC API for spiral application is to 
 and client code in a separate repository. 
 
 Common:
-- Image-SDK - v1.2.0
+- *Image-SDK* - v1.2.0
 
 Services:
-- **Image-Service** - implements Image-SDK v1.2.0
-- **Account-Service** - requires Image-SDK v1.1.0
+- **Image-Service** - implements *Image-SDK* v1.2.0
+- **Account-Service** - requires *Image-SDK* v1.1.0
