@@ -156,7 +156,7 @@ public function Sum(GRPC\ContextInterface $ctx, Sum $in): Result
 
 > Read more about auth practices [here](https://grpc.io/docs/guides/auth/).
 
-## Respond Headers
+### Response Headers
 You can add any custom metadata to response using Context specific response headers:
 
 ```php
