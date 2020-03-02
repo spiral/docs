@@ -78,12 +78,10 @@ $client = new \App\Calculator\CalculatorClient(
 );
 
 [$result, $mt] = $client->Sum(
-    new \App\Calculator\Sum(
-        [
+    new \App\Calculator\Sum([
             'a' => 1,
             'b' => 2
-        ]
-    )
+    ])
 )->wait();
 
 print_r($result->getResult());
@@ -112,11 +110,9 @@ class Calculator implements CalculatorInterface
         dumprr($ctx->getValue('client-key'));
         $ctx->getValue(GRPC\ResponseHeaders::class)->set('server-key', 'serverValue');
 
-        return new Result(
-            [
-                'result' => $in->getB() + $in->getA()
-            ]
-        );
+        return new Result([
+            'result' => $in->getB() + $in->getA()
+        ]);
     }
 }
 ```
@@ -138,12 +134,10 @@ $client = new \App\Calculator\CalculatorClient(
 );
 
 $call = $client->Sum(
-    new \App\Calculator\Sum(
-        [
+    new \App\Calculator\Sum([
             'a' => 1,
             'b' => 2
-        ]
-    ),
+    ]),
     [
         'client-key' => ['value']
     ]
