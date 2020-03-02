@@ -153,8 +153,7 @@ You can now observe the metadata passing from client and server.
 GRPC allows you to create client SDK on any supported language. To create client on Golang run install the GRPC toolkit first:
 
 ```bash
-$ go mod init client
-$ go get google.golang.org/grpc
+$ go get -u github.com/golang/protobuf/protoc-gen-go
 ```
 
 > Read more about how to create Golang GRPC clients and server [here](https://grpc.io/docs/tutorials/basic/go/). 
@@ -162,6 +161,8 @@ $ go get google.golang.org/grpc
 Init the the project in the same folder as PHP client to reuse `.proto` and `.crt` files. To generate client stub code:
 
 ```bash
+$ go mod init client
+$ go get google.golang.org/grpc
 $ mkdir calculator
 $ protoc -I proto/ proto/calculator.proto --go_out=plugins=grpc:calculator
 ```
