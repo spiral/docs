@@ -18,6 +18,7 @@ If you want to help but don't know where to start:
 * Check [Open Issues](https://github.com/spiral/framework/issues)
 * More tests are always welcome 
 * Typos
+* Documentation translation
 
 Feel free to propose any ideas related to architecture, guide (___docs are never complete___),  adaptation or community.
 
