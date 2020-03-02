@@ -188,12 +188,12 @@ Spiral/GRPC component provides a number of exceptions to indicate the server or 
 
 Exception | Error Code
 ---       | ---        
-Spiral\GRPC\Exception\**GRPCException** | UNKNOWN(2)
-Spiral\GRPC\Exception\**InvokeException** | UNAVAILABLE(14)
-Spiral\GRPC\Exception\**NotFoundException** | NOT_FOUND(5) 
-Spiral\GRPC\Exception\**ServiceException** | INTERNAL(13) 
-Spiral\GRPC\Exception\**UnauthenticatedException** | UNAUTHENTICATED(16) 
-Spiral\GRPC\Exception\**UnimplementedException** | UNIMPLEMENTED(12) 
+Spiral\GRPC\Exception\\**GRPCException** | UNKNOWN(2)
+Spiral\GRPC\Exception\\**InvokeException** | UNAVAILABLE(14)
+Spiral\GRPC\Exception\\**NotFoundException** | NOT_FOUND(5) 
+Spiral\GRPC\Exception\\**ServiceException** | INTERNAL(13) 
+Spiral\GRPC\Exception\\**UnauthenticatedException** | UNAUTHENTICATED(16) 
+Spiral\GRPC\Exception\\**UnimplementedException** | UNIMPLEMENTED(12) 
 
 > See all status codes in `Spiral\GRPC\StatusCode`. Read more about GRPC error codes [here](https://github.com/grpc/grpc/blob/master/doc/statuscodes.md).
 
