@@ -109,7 +109,7 @@
     * [Installation and Configuration](grpc/configuration.md)
     * [Service Code](grpc/service.md)
     * [Client SDK](grpc/client.md)
-    * Golang Services
+    * [Golang Services](grpc/golang.md)
     * Streaming and Batch processing
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
