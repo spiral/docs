@@ -116,7 +116,11 @@ grpc:
   tls.cert: "app.crt"
 ```
 
-## Test the Service
+### Multiple Services
+Use `import` directive of proto declarations to combine multiple services in one application or store message declarations
+separately.
+
+### Test the Service
 You can test your service now:
 
 ```bash
@@ -130,10 +134,6 @@ $ grpcui -insecure -import-path ./proto/ -proto calculator.proto localhost:50051
 ```
 
 > Read how to write PHP client in [next article](/grpc/client.md).
-
-### Multiple Services
-Use `import` directive of proto declarations to combine multiple services in one application or store message declarations
-separately.
 
 ## Metadata
 Use `Spiral\GRPC\ContextInterface` to access the request metadata. There are number of system metadata properties you can read:
