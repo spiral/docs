@@ -109,7 +109,6 @@
     * [Installation and Configuration](grpc/configuration.md)
     * [Generate Service Code](grpc/service.md)
     * Generate Client Code
-    * Passing Metadata and Errors
     * Golang Services
     * Streaming and Batch processing
 * Debug and Profiling
