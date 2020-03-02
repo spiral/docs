@@ -170,7 +170,8 @@
   {
     "title": "GRPC",
     "links": {
-      "grpc/configuration": "Installation and Configuration"
+      "grpc/configuration": "Installation and Configuration",
+      "grpc/service": "Generate Service Code"
     }
   },
   {
