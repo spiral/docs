@@ -108,7 +108,7 @@
 * GRPC
     * [Installation and Configuration](grpc/configuration.md)
     * [Service Code](grpc/service.md)
-    * Client SDK
+    * [Client SDK](grpc/client.md)
     * Golang Services
     * Streaming and Batch processing
 * Debug and Profiling

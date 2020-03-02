@@ -171,7 +171,8 @@
     "title": "GRPC",
     "links": {
       "grpc/configuration": "Installation and Configuration",
-      "grpc/service": "Generate Service Code"
+      "grpc/service": "Service Code",
+      "grpc/client": "Client SDK"
     }
   },
   {
