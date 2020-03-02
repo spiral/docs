@@ -19,7 +19,7 @@ In order to compile `.proto` files into target language you will have to install
 
 You can download the latest `protoc` binaries from [https://github.com/protocolbuffers/protobuf/releases](https://github.com/protocolbuffers/protobuf/releases).
 
-### PHP Server Plugin 
+### PHP Server Plugin
 Download and install `protoc-gen-php-grpc` from [spiral/php-grpc releases page](https://github.com/spiral/php-grpc/releases). 
 This plugin is require to generate service code for your applications.
 
