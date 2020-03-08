@@ -230,4 +230,4 @@ class Produce extends JobHandler
 
 > You can split the streaming into multiple smaller jobs.
 
-Run server and then client to test the streaming.
+Run server and then the client to test the streaming.
