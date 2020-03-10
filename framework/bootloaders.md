@@ -1,14 +1,14 @@
 # Framework - Bootloaders
 Bootloaders are the central piece in Spiral Framework and your application. This objects are responsible for [Container](/framework/container.md)
-configuration, default configuration and etc.
+configuration, default configuration, etc.
 
-Bootloaders only executed once while loading your application. Since your application will stay in memory for long - you can
-add as many functionality to your bootloaders as you want. It will not cause any performance effect on runtime.
+Bootloaders only executed once while loading your application. Since the app will stay in memory for long - you can
+add as many code to your bootloaders as you want. It will not cause any performance effect on runtime.
 
 ![Application Control Phases](https://user-images.githubusercontent.com/796136/64906478-e213ff80-d6ef-11e9-839e-95bac78ef147.png)
 
 ## Simple Bootloader
-You can create simple bootloader by extending `Spiral\Boot\Bootloader\Bootloader`:
+You can create simple Bootloader by extending `Spiral\Boot\Bootloader\Bootloader`:
 
 ```php
 namespace App\Bootloader;
@@ -21,7 +21,7 @@ class MyBootloader extends Bootloader
 }
 ```
 
-Every bootloader must be activated in your application kernel. Add the class reference into `LOAD` or `APP` lists of your `App\App` class:
+Every Bootloader must be activated in your application kernel. Add the class reference into `LOAD` or `APP` lists of your `App\App` class:
 
 ```php
 class App extends Kernel
@@ -38,13 +38,13 @@ class App extends Kernel
 }
 ```
 
-Currently, your bootloader doesn't do anything. We can start by adding some container bindings.
+Currently, your Bootloader doesn't do anything. We can start by adding some container bindings.
 
-> `APP` bootloader namespace is always loaded after `LOAD`, keep domain-specific bootloaders in it.
+> `APP` bootloader namespace always loaded after `LOAD`, keep domain-specific bootloaders in it.
 
 ## Configuring Container
 The most common use-case of bootloaders is to configure DI container, for example, we might want to bind multiple
-implementations to their interfaces and/or construct some service.
+implementations to their interfaces or construct some service.
 
 We can use the method `boot` for these purposes. Method support method injection, so we can request any services we need:
 
@@ -105,7 +105,7 @@ class MyBootloader extends Bootloader
 ```
 
 ## Configuring Application
-Another common use case of bootloaders is to configure the framework prior to application launch. For example, we can declare
+Another common use case of bootloaders is to configure the framework before the application launch. For example, we can declare
 new route for our application or module:
 
 ```php
@@ -121,7 +121,7 @@ class MyBootloader extends Bootloader
 }
 ```
 
-> Identically you can mount middleware, change tokenizer directories and much more.
+> Identically, you can mount middleware, change tokenizer directories, and much more.
 
 ## Depending on other Bootloaders
 Some framework bootloaders can be used as a simple path to configure application settings. For example, we can
@@ -137,7 +137,7 @@ class MyBootloader extends Bootloader
 }
 ```
 
-If you want to ensure that `HttpBootloader` has always been initiated prior to `MyBootloader` use constant `DEPENDENCIES`:
+If you want to ensure that `HttpBootloader` has always been initiated before `MyBootloader` uses constant `DEPENDENCIES`:
 
 
 ```php
@@ -157,7 +157,7 @@ class MyBootloader extends Bootloader
 > Note, you are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another bootloader). The framework would not allow you to change any configuration value after component initialization.
 
 ## Cascade Bootloading
-You are able to control bootloading process using bootloader itself, simply request `Spiral\Boot\BootloadManager`:
+You can control the bootload process using Bootloader itself, simply request `Spiral\Boot\BootloadManager`:
 
 ```php
 namespace App\Bootloader;

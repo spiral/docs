@@ -33,7 +33,7 @@
       "framework/design": "Design Approach",
       "framework/application-server": "Application Server",
       "framework/kernel": "Kernel and Environment",
-      "framework/container": "Container",
+      "framework/container": "Container and Factories",
       "framework/bootloaders": "Bootloaders",
       "framework/config": "Config Objects",
       "framework/scopes": "IoC scopes",

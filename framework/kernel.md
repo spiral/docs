@@ -1,17 +1,17 @@
 # Framework - Kernel and Environment
-Each spiral build will contain domain specific kernel with the set of application specific services. Unlike Symfony, 
-Spiral need only one Kernel for all the dispatching methods (HTTP, Queue, GRPC, Console). Kernel will select dispatching
+Each spiral build will contain a kernel object with a set of application-specific services. Unlike Symfony, 
+The Spiral needs only one Kernel for all the dispatching methods (HTTP, Queue, GRPC, Console). The kernel will select the dispatching
 method automatically, based on connected `Spiral\Boot\DispatcherInterface` instances.
 
-The base kernel implementation is located in `spiral/boot` repository.
+> The base kernel implementation located in `spiral/boot` repository.
 
 ## Kernel Responsibilities
 The `Spiral\Boot\AbstractKernel` class only responsible for the following aspects of your application:
-- container initialization via set of application specific bootloaders
+- container initialization via a set of application-specific bootloaders
 - environment and directory structure initialization
 - selection of appropriate dispatching method
 
-To create your own kernel extend `Spiral\Boot\AbstractKernel`. 
+To create your kernel extends `Spiral\Boot\AbstractKernel`. 
 
 ```php
 namespace App;
@@ -85,8 +85,8 @@ dump($myapp->get(\Spiral\Boot\DirectoriesInterface::class)->getAll());
 ```
 
 ## Environment
-Use `Spiral\Boot\EnviromentInterface` to access list of ENV variables. By default framework relies on system level 
-environment values. To redefine env values while initializing the kernel pass custom `EnviromentInterface` to `init` method.
+Use `Spiral\Boot\EnviromentInterface` to access the list of ENV variables. By default, the framework relies on system-level 
+environment values. To redefine env values while initializing the kernel pass custom `EnvironmentInterface` to the `init` method.
 
 ```php
 $myapp = MyApp::init(
@@ -100,4 +100,4 @@ $myapp = MyApp::init(
 dump($myapp->get(\Spiral\Boot\EnvironmentInterface::class)->getAll());
 ```
 
-> Such approach can be used to bootstrap application for testing purposes.
+> Such approach can be used to bootstrap the application for testing purposes.

@@ -1,13 +1,13 @@
 # Framework - Config Objects
-Spiral framework exposes all the underlying configuration of its components using config objects. The core purpose of config
-objects is to separate the bootloading phase and runtime phase and provide easily accessible source of configuration.
+The spiral framework exposes all the underlying configuration of its components using config objects. The core purpose of config
+objects is to separate the bootload and runtime phase and provide an easily accessible source of the configuration.
 
 ![Application Control Phases](https://user-images.githubusercontent.com/796136/64906478-e213ff80-d6ef-11e9-839e-95bac78ef147.png)
 
 While configuration can change during the bootload process, at runtime all the values are frozen and forbidden for modification.
 
 ## Configuration Provider
-All of the configuration values can be accessed via `Spiral\Config\ConfiguratorInterface` in a form of array.
+All of the configuration values can be accessed via `Spiral\Config\ConfiguratorInterface` in the form of an array.
 
 To demonstrate that we can create config file `app/config/app.php`:
 
@@ -39,8 +39,7 @@ public function index(ConfiguratorInterface $configurator)
 > You can check if configuration exists using method `exists`. 
 
 ## Config Object
-It is not very convenient to read the configuration in a form of arrays. The framework provides the OOP abstraction to 
-read your values. We can create this class manually or automatically generate it via `spiral/scaffolder`:
+It is not very convenient to read the configuration in the form of arrays. The framework provides the OOP abstraction to read your values. We can create this class manually or automatically generate it via `spiral/scaffolder`:
 
 ```php
 $ php app.php create:config app -r
@@ -48,7 +47,7 @@ $ php app.php create:config app -r
 
 > Use option `-r` to reverse engineer the configuration structure.
 
-The resulted config class will be located in `app/src/config/AppConfig.php`:
+The resulted config class located in `app/src/config/AppConfig.php`:
 
 ```php
 namespace App\Config;
@@ -87,13 +86,13 @@ public function index(AppConfig $appConfig)
 }
 ```
 
-> The config object provide read-only API, changing values at runtime is not possible in order to prevent unwanted side-effect
+> The config object provides read-only API, changing values at runtime is not possible to prevent unwanted side-effect
 in long-running applications.
 
 Every spiral component provides the config object you can use in your application.
 
 ## Default Configuration in Bootloader
-In many cases the default configuration might be enough for most of the applications. Use custom bootloader to define default
+In many cases, the default configuration might be enough for most of the applications. Use custom bootloader to define default
 configuration values to avoid the need to create unnecessary files.
 
 ```php
@@ -118,13 +117,13 @@ The file `app/config/app.php` will overwrite default configuration values. Remov
 > The overwrite is done on the first level keys of configuration array.
 
 ## Auto-Configuration
-Some components will expose auto-configuration API to change it's settings during the application bootload time. Usually 
-such API is available though the component bootloader. 
+Some components will expose auto-configuration API to change its settings during the application bootload time. Usually, 
+such API is available through the component bootloader. 
 
 > For example `HttpBootloader`->`addMiddleware`.
 
-We can provide our own auto-configuration API in our bootloader. Use `ConfiguratorInterface`->`modify` for this purpose.
-Our bootloader will be declared as Singleton to speed up processing a bit. 
+We can provide our auto-configuration API in our Bootloader. Use `ConfiguratorInterface`->`modify` for this purpose.
+Our Bootloader will be declared as Singleton to speed up processing a bit. 
 
 ```php
 namespace App\Bootloader;
@@ -174,10 +173,10 @@ class ValueBootloader extends Bootloader
 }
 ```
 
-> Make sure to locate the bootloader after the `AppBootloader` or use `DEPENDENCIES` constant.
+> Make sure to locate the Bootloader after the `AppBootloader` or use `DEPENDENCIES` constant.
 
 ## Config Lifecycle
-The framework provides security mechanism to make sure that you are not changing config values after the config object
+The framework provides a security mechanism to make sure that you are not changing config values after the config object
 is requested by any of the components (a.k.a. config is frozen).
 
 To demonstrate it, inject `AppConfig` to `ValueBootloader`:

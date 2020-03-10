@@ -1,4 +1,5 @@
-o# Cookbook - Scaffolding
+# Scaffolding
+Most of the application code can be generated using the set of console commands.
 
 ## Installation
 To install the extension:
