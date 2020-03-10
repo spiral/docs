@@ -1,5 +1,5 @@
-# Application Structure
-The framework does not enforce any specific namespace or directory structure, you can freely change them.
+# Directory Structure
+The framework does not enforce any specific namespace or directory structur. Youu can freely change them.
 
 ## Directories
 The directory structure can be controlled via `mapDirectories` method of Kernel class. By
@@ -52,7 +52,7 @@ function test(DirectoriesInterface $dirs)
 }
 ```
 
-You can also use function `directory` inside global IoC scope (config files, controllers, service code).
+You can also use function `directory` inside the global IoC scope (config files, controllers, service code).
 
 ```php
 function test()

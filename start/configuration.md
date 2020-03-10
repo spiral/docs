@@ -1,4 +1,4 @@
-# Default Configuration
+# Configuration
 All of the provided application skeletons are already pre-configured using optimal settings. You can edit any of the settings
 by editing the file(s) in `app/config/`.
 
@@ -11,14 +11,14 @@ Web and GRPC templates use DotEnv extension to read environment values from `.en
 # Debug mode disabled view cache and enabled higher verbosity.
 DEBUG = true
 
-# Set to application-specific value, used to encrypt/decrypt cookies and etc.
+# Set to application-specific value, used to encrypt/decrypt cookies, etc.
 ENCRYPTER_KEY = {encrypt-key}
 
 # Set to TRUE to disable confirmation in `migrate` commands.
 SAFE_MIGRATIONS = true
 ```
 
-You can access these values using `Spiral\Boot\EnvironmentInterface` or via short function `env`.
+You can access these values using `Spiral\Boot\EnvironmentInterface` or via a short function `env`.
 
 ```php
 public function index(EnvironmentInterface $env)
@@ -29,8 +29,9 @@ public function index(EnvironmentInterface $env)
 ```
 
 ## Configuration
-Default component configuration is located inside the related Bootloader. You can alter such configuration using other
- bootloaders (see Auto-Configuration) or by creating a *default configuration* file in `app/config`.
+The default component configuration located inside the related Bootloader. You can alter such configuration using other bootloaders (see Auto-Configuration) or by creating a *default configuration* file in `app/config`.
+
+> Each of the documentation sections will include the content of the default component configuration.
 
 Web and GRPC skeletons include `app/config/database.php` config file:
 
@@ -66,7 +67,7 @@ return [
 ];
 ```
 
-To find which config file corresponds to proper config object check the value of [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php#L17):
+To find which config file corresponds to the proper config object, check the value of [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php#L17):
 
 ```php
 final class HttpConfig extends InjectableConfig
