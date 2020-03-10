@@ -23,7 +23,7 @@
     "title": "The Basics",
     "links": {
       "basics/quick-start": "Quick Start",
-      "basics/scaffolding": "Application Workers",
+      "basics/scaffolding": "Scaffolding",
       "basics/prototype": "Prototyping"
     }
   },
