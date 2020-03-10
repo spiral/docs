@@ -1,7 +1,6 @@
 # Cookbook - Injectors
-You are able to control the creation process of any interface or abstract class 
-children using injection interface. Following demonstrates how to create class
-instance with assign it unique value, no matter what children implements it.
+You can control the creation process of any interface or abstract class children using an injection interface. This article demonstrates how to create a class
+instance and assign a unique value to it, no matter what children implement it.
 
 ```php
 abstract class Model
@@ -42,7 +41,7 @@ class ModelBootloader extends Bootloader implements Container\InjectorInterface,
 
 > Do not forget to activate the bootloader.
 
-Multiple children is allowed:
+Multiple children are allowed:
 
 ```php
 namespace App;
@@ -64,7 +63,7 @@ class B extends Model
 }
 ```
 
-Now, any model request will include unique id, for example in controller method:
+Now, any model request will include unique id, for example in the controller method:
 
 ```php
 namespace App\Controller;

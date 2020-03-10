@@ -1,6 +1,6 @@
 # Cookbook - Integrate Golang service to PHP via RPC
-You are able to extend the functionality of your application by including PHP or Golang libraries. While for the PHP library
-you only need to run `composer require`, the Golang will require you to build your own version of [application server](/framework/application-server.md).
+You can extend the functionality of your application by including PHP or Golang libraries. While for the PHP library,
+you only need to run `composer require`, the Golang will require you to build your version of [application server](/framework/application-server.md).
 
 > The fun fact, the full-text search on this website works via [blevesearch](https://github.com/blevesearch/bleve) integrated to the spiral app.
 
@@ -16,7 +16,7 @@ Make sure to require the go module dependency first:
 $ go get github.com/russross/blackfriday
 ```
 
-Since our service doesn't need any configuration we can locate all the code in a single file `markdown/service.go`:
+Since our service doesn't need any configuration, we can locate all the code in a single file `markdown/service.go`:
 
 ```go
 package markdown
@@ -28,7 +28,7 @@ import (
 
 const ID = "markdown"
 
-// to be registered in app server
+// to be registered in the app server
 type Service struct{}
 
 func (s *Service) Init(rpc *rpc.Service) (bool, error) {
@@ -56,7 +56,7 @@ rr.Container.Register(markdown.ID, &markdown.Service{})
 
 > Read more about RoadRunner services [here](https://roadrunner.dev/docs/beep-beep-service).
 
-Build and start your application in order to activate the service.
+Build and start your application to activate the service.
 
 ## PHP SDK
 You can invoke newly created service immediately via `Spiral\Goridge\RPC`: 
@@ -118,5 +118,5 @@ public function index(Blackfriday $bf)
 The selected library in this example shows double the performance of classic https://github.com/erusev/parsedown. Read how to optimize
 performance even more by switching to unix sockets for RCP communications in **Performance Tuning** section.
 
-> Obviously, such communication method is not free, make sure to properly balance between the socket connection speed
+> Obviously, such communication method is not free. Make sure to properly balance between the socket connection speed
 and the complexity of computation.  

@@ -1,13 +1,12 @@
 # Cookbook - Domain Cores
-You can invoke controller actions not only via routes but also from your services and other controllers (HMVC). Every 
-action invocation must be made via `Spiral\Core\CoreInterface`. The `CoreInterface` or *Domain Core* provides developer
-the ability to alter the invocation flow and implement domain specific functionality for controllers.
+You can invoke controller actions not only via routes but also from your services and other controllers (HMVC). Every controller action invocation made via `Spiral\Core\CoreInterface`. The `CoreInterface` or *Domain Core* provides the developer with
+the ability to alter the invocation flow and implement domain-specific functionality for controllers.
 
 > The package `spiral/hmvc` required for the domain cores. The web bundle includes this package by default.
 
 ## Invoke Controller Action
-Spiral controllers are clean classes built to be invoked from any dispatcher. Framework does not provide the direct
-coupling between controller and route. Such approach makes possible to invoke methods manually:
+Spiral controllers are clean classes built to be invoked from any dispatcher. The framework does not provide the direct
+coupling between controller and route. Such approach makes it possible to invoke methods manually:
 
 ```php
 namespace App\Controller;
@@ -28,7 +27,7 @@ class HomeController
 }
 ```
 
-By default `CoreInterface` implemented by `Spiral\Core\Core` class and only provides the support for the method injection.
+By default, `CoreInterface` implemented by `Spiral\Core\Core` class and only provides support for the method injection.
 
 ## Core Interceptors
 Use `Spiral\Core\InterceptableCore` and `Spiral\Core\CoreInterceptorInterface` to implement custom invoke logic:
@@ -75,11 +74,11 @@ class HomeController
 }
 ```
 
-You can use interceptors to alter the target controller, action or parameters. Multiple interceptors are possible
+You can use interceptors to alter the target controller, action, or parameters. Multiple interceptors are possible
 as well.
 
 ## Global Domain Core
-By default, the `CoreInterface` only used to drive targets for the framework routing. You can change the default
+By default, the `CoreInterface` only used to drive targets for framework routing. You can change the default
 target via `Spiral\Core\CoreInterface` binding:
 
 ```php
@@ -107,7 +106,7 @@ class CoreBootloader extends Bootloader
 }
 ```
 
-Activate the bootloader to make all route targets to be intercepted.
+Activate the Bootloader to make all route targets to be intercepted.
 
 ### Route Specific Core
 To activate the core for the specific route:
@@ -126,7 +125,7 @@ $router->setRoute(
 ```
 
 ## Domain Core Builder
-The framework provides convenient bootloader to automatically configure core interceptors `Spiral\Bootloader\DomainBootloader`:
+The framework provides convenient Bootloader to configure core interceptors `Spiral\Bootloader\DomainBootloader` automatically:
 
 ```php
 namespace App\Bootloader;
@@ -147,7 +146,7 @@ class AppBootloader extends DomainBootloader
 }
 ```
 
-Use this bootloader to configure the application behaviour globally via the set of default interceptors.
+Use this Bootloader to configure the application behavior globally via the set of default interceptors.
 
 ### Cycle Entity Resolution
 Use `Spiral\Domain\CycleInterceptor` to automatically resolve entity injections based on parameter values:
@@ -183,8 +182,8 @@ class AppBootloader extends DomainBootloader
 }
 ```
 
-You can use any cycle entity injection in your HomeController methods, the `<id>` parameter will be used as primary key.
-If entity can't be found the 404 exception will be thrown.
+You can use any cycle entity injection in your HomeController methods, the `<id>` parameter will be used as the primary key.
+If an entity can't be found the 404 exception will be thrown.
 
 ```php
 namespace App\Controller;
@@ -200,7 +199,7 @@ class HomeController
 }
 ```
 
-You must use named parameters if more than one entity is expected:
+You must use named parameters if more than one entity expected:
 
 ```php
 $router->setRoute(
@@ -270,7 +269,7 @@ class HomeController
 
 > Use `/home/index?username=n&password=p` to pass the validation.
 
-In case of the error the following `application/json` payload will be send to the client:
+In case of the error, the following `application/json` payload will be sent to the client:
 
 ```json
 {
@@ -314,7 +313,7 @@ class AppBootloader extends DomainBootloader
 }
 ```
 
-You can use annotations to configure which permissions to use for the controller action:
+You can use annotations to configure which permissions to apply for the controller action:
 
 ```php
 namespace App\Controller;
@@ -355,9 +354,8 @@ public function other()
 
 > Allowed values: `notFound` (404), `forbidden` (401), `error` (500), `badAction` (400).
 
-Use the annotation `Spiral\Domain\Annotation\GuardNamespace` to specify controller RBAC namespace and remove prefix
-from every action. You can also skip permission definition in `Guarded` when namespace is specified (security component
- will use `namespace.methodName` as permission name).
+Use the annotation `Spiral\Domain\Annotation\GuardNamespace` to specify controller RBAC namespace and remove the prefix
+from every action. You can also skip the permission definition in `Guarded` when a namespace is specified (security component will use `namespace.methodName` as permission name).
  
 ```php
 namespace App\Controller;
@@ -389,7 +387,7 @@ class HomeController
 ```
 
 #### Rule Context
-You can use all method parameters as rule context, for example we can create rule:
+You can use all method parameters as rule context, for example, we can create a rule:
 
 ```php
 namespace App\Security;
@@ -455,9 +453,9 @@ public function index(User $user)
 }
 ```
 
-Method would not allow to invoke the method with user id `1`.
+The method would not allow invoking the method with user id `1`.
 
-> Make sure to enable `CycleInterceptor` prior to `GuardInterceptor` in domain core.
+> Make sure to enable `CycleInterceptor` before `GuardInterceptor` in domain core.
 
 ## All Together
 Use all interceptors together to implement rich domain logic and secure controller actions:
