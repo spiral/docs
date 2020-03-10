@@ -102,7 +102,7 @@ package stream
 import (
 	"encoding/json"
 	"github.com/spiral/broadcast"
-	"github.com/spiral/jobs"
+	"github.com/spiral/jobs/v2"
 	grpc "github.com/spiral/php-grpc"
 	grpc2 "google.golang.org/grpc"
 )
