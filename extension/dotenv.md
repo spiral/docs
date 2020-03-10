@@ -2,7 +2,7 @@
 Default application skeleton includes the ability to read ENV values from `.env` file located in the root of the project.
 
 ## Configuration
-To install Dotenv extension in non default application skeleton:
+To install Dotenv extension in non-default application skeleton:
 
 ```bash
 $ composer require spiral/dotenv-bridge
@@ -18,9 +18,11 @@ Add the following bootloader to your application:
     ]
 ```
 
-> Make sure to add bootloader at top of the list in order to alter Env.
+> Make sure to add a bootloader at the top of the list to alter Env.
 
-The values from the `.env` file will be copied into your env and available via `Spiral\Boot\EnvironmentInterface` or `env` function.
+The values from the `.env` the file will be copied into your env and available via `Spiral\Boot\EnvironmentInterface` or `env` function.
+
+> Attention, this component overwrites system ENV values.
 
 ## Pre-Processing
 Please remember that values in `.env` will be pre-processed, following changes will occure:

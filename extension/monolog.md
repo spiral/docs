@@ -2,8 +2,8 @@
 Web and GRPC bundles include default integration with https://github.com/Seldaek/monolog to manage logs.
 
 ## Configuration
-Extension does not require any default configuration. Use `Spiral\Monolog\Bootloader\MonologBootloader` to
-declare handler and formatter for specific channel:
+The extension does not require any default configuration. Use `Spiral\Monolog\Bootloader\MonologBootloader` to
+declare handler and log-formatter for specific channel:
 
 ```php
 namespace App\Bootloader;
@@ -27,7 +27,7 @@ class LoggingBootloader extends Bootloader
 }
 ``` 
 
-> You can use any monolog handler as the second argument.
+> You can use any monolog handler as the second argument. Make sure to add your Bootloader at the top of the LOAD list.
 
 ## Write to Log
 You receive `default` logger using `Psr\Log\LoggerInterface` dependency:
@@ -79,8 +79,7 @@ class LoggingBootloader extends Bootloader
 ```
 
 ## LoggerTrait
-You can use `Spiral\Logger\Traits\LoggerTrait` to quickly assign Logger to any class, the class name will be used as 
-channel name:
+You can use `Spiral\Logger\Traits\LoggerTrait` to assign Logger to any class quickly. The class name will be used as a channel name:
 
 ```php
 use Spiral\Logger\Traits\LoggerTrait;
@@ -111,7 +110,7 @@ public function boot(MonologBootloader $monolog)
 > LoggerTrait works only inside `$app->serve()` method via global IoC scope.
 
 ## Errors
-To aggregate all application errors into single log file subscribe to `default` channel:
+To aggregate all application errors into a single log file subscribe to `default` channel:
 
 ```php
 namespace App\Bootloader;

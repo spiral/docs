@@ -1,5 +1,5 @@
 # Extensions - Sentry
-You can automatically send the exceptions to sentry.
+You can automatically send the exceptions to the Sentry.
 
 ## Installation
 To install the extension:
@@ -23,7 +23,7 @@ protected const LOAD = [
 The component will look at `SENTRY_DSN` env value.
 
 ## Additional Data
-To expose current application logs, PSR-7 request state and etc enable additional
+To expose current application logs, PSR-7 request state, etc. enable additional
 debug extensions:
 
 ```php
