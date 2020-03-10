@@ -31,7 +31,6 @@
     * [Custom PSR-15 Handlers](cookbook/psr-15.md)
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
-    * Testing Application
 * Components
     * [Files and Directories](component/files.md)
     * [Code Generation](component/reactor.md)
