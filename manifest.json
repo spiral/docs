@@ -1,22 +1,30 @@
 [
   {
-    "title": "Getting Started",
+    "title": "Overview",
     "links": {
       "readme": "Table of Contents",
       "about/spiral": "About Framework",
-      "about/install": "Installation",
-      "about/semver": "Versioning",
       "about/contributing": "Contributing",
+      "about/semver": "Versioning",
       "license": "LICENSE"
     }
   },
   {
-    "title": "Basics",
+    "title": "Getting Started",
     "links": {
-      "basic/workers": "Application Workers",
-      "basic/structure": "Application Structure",
-      "basic/configuration": "Default Configuration",
-      "basic/commands": "Console Commands"
+      "start/install": "Installation",
+      "start/workers": "Long-Living Workers",
+      "start/structure": "Directory Structure",
+      "start/configuration": "Configuration",
+      "start/commands": "Console Commands"
+    }
+  },
+  {
+    "title": "The Basics",
+    "links": {
+      "basics/quick-start": "Quick Start",
+      "basics/scaffolding": "Application Workers",
+      "basics/prototype": "Prototyping"
     }
   },
   {
@@ -24,7 +32,7 @@
     "links": {
       "framework/design": "Design Approach",
       "framework/application-server": "Application Server",
-      "framework/kernel": "Kernel, Environment",
+      "framework/kernel": "Kernel and Environment",
       "framework/container": "Container",
       "framework/bootloaders": "Bootloaders",
       "framework/config": "Config Objects",
@@ -36,12 +44,8 @@
   {
     "title": "Cookbook",
     "links": {
-      "cookbook/scaffolding": "Scaffolding",
-      "cookbook/prototype": "Prototyping",
-      "cookbook/injector": "Injectors",
       "cookbook/domain-core": "Domain Core and Controllers",
-      "cookbook/scraper": "Website Scraper",
-      "cookbook/psr-15": "Custom PSR-15 Handlers",
+      "cookbook/injector": "Container Injectors",
       "cookbook/golang-library": "Integrate Golang service to PHP",
       "cookbook/custom-dispatcher": "Custom Dispatcher"
     }
@@ -51,19 +55,9 @@
     "links": {
       "component/files": "Files and Directories",
       "component/reactor": "Code Generation",
-      "component/pagination": "Pagination",
       "component/tokenizer": "Static Analysis Tools",
       "component/metrics": "Prometheus Metrics",
       "component/data-grid": "Data Grids"
-    }
-  },
-  {
-    "title": "Security",
-    "links": {
-      "security/encrypter": "Data Encryption",
-      "security/validation": "Validation",
-      "security/rbac": "Role Based Access Control",
-      "security/authentication": "User Authentication"
     }
   },
   {
@@ -85,54 +79,25 @@
       "http/golang": "Golang Middleware",
       "http/cookies": "Cookies",
       "http/session": "Session",
-      "http/csrf": "CSRF protection"
+      "http/csrf": "CSRF protection",
+      "http/psr-15": "Custom PSR-15 Handlers"
     }
   },
   {
-    "title": "Filter / Request Form",
+    "title": "Security",
+    "links": {
+      "security/encrypter": "Data Encryption",
+      "security/validation": "Validation Interfaces",
+      "security/rbac": "Role Based Access Control",
+      "security/authentication": "User Authentication"
+    }
+  },
+  {
+    "title": "Request Validation",
     "links": {
       "filters/configuration": "Installation and Configuration",
       "filters/filter": "Filter Object",
       "filters/composite": "Composite Filters"
-    }
-  },
-  {
-    "title": "Queue and Jobs",
-    "links": {
-      "queue/configuration": "Installation and Configuration",
-      "queue/commands": "Console Commands",
-      "queue/jobs": "Running Jobs",
-      "queue/standalone": "Standalone Usage"
-    }
-  },
-  {
-    "title": "Views",
-    "links": {
-      "views/configuration": "Installation and Configuration",
-      "views/render": "Rendering Views",
-      "views/native": "Plain PHP templates",
-      "views/twig": "Twig templates"
-    }
-  },
-  {
-    "title": "Stempler templates",
-    "links": {
-      "stempler/configuration": "Installation and Configuration",
-      "stempler/basics": "Basic Usage",
-      "stempler/directives": "Directives",
-      "stempler/inheritance": "Inheritance and Stacks",
-      "stempler/components": "Components and Props",
-      "stempler/advanced": "Advancing DSL",
-      "stempler/visitors": "AST Modifications"
-    }
-  },
-  {
-    "title": "Internalization",
-    "links": {
-      "i18n/configuration": "Installation and Configuration",
-      "i18n/export": "Import and Export",
-      "i18n/views": "View Localization",
-      "i18n/say-trait": "Say Trait"
     }
   },
   {
@@ -160,11 +125,43 @@
     }
   },
   {
-    "title": "Event Broadcasting",
+    "title": "Queue and Jobs",
     "links": {
-      "broadcast/configuration": "Installation and Configuration",
-      "broadcast/publish": "Publish and Consume",
-      "broadcast/websockets": "WebSockets"
+      "queue/configuration": "Installation and Configuration",
+      "queue/commands": "Console Commands",
+      "queue/jobs": "Running Jobs",
+      "queue/standalone": "Standalone Usage",
+      "queue/scraper": "Website Scraper"
+    }
+  },
+  {
+    "title": "Views",
+    "links": {
+      "views/configuration": "Installation and Configuration",
+      "views/render": "Rendering Views",
+      "views/native": "Plain PHP templates",
+      "views/twig": "Twig templates"
+    }
+  },
+  {
+    "title": "Stempler Templating",
+    "links": {
+      "stempler/configuration": "Installation and Configuration",
+      "stempler/basics": "Basic Usage",
+      "stempler/directives": "Directives",
+      "stempler/inheritance": "Inheritance and Stacks",
+      "stempler/components": "Components and Props",
+      "stempler/advanced": "Advancing DSL",
+      "stempler/visitors": "AST Modifications"
+    }
+  },
+  {
+    "title": "Internalization",
+    "links": {
+      "i18n/configuration": "Installation and Configuration",
+      "i18n/export": "Import and Export",
+      "i18n/views": "View Localization",
+      "i18n/say-trait": "Say Trait"
     }
   },
   {
@@ -175,6 +172,14 @@
       "grpc/client": "Client SDK",
       "grpc/golang": "Golang Services",
       "grpc/streaming": "Data Streaming"
+    }
+  },
+  {
+    "title": "Event Broadcasting",
+    "links": {
+      "broadcast/configuration": "Installation and Configuration",
+      "broadcast/publish": "Publish and Consume",
+      "broadcast/websockets": "WebSockets"
     }
   },
   {

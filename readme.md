@@ -20,7 +20,6 @@
     * [Application Server](framework/application-server.md)
     * [Kernel and Environment](framework/kernel.md)
     * [Container](framework/container.md)
-    * [Injectors](framework/injector.md) 
     * [Bootloaders](framework/bootloaders.md)
     * [Config Objects](framework/config.md)
     * [IoC scopes](framework/scopes.md)
@@ -28,6 +27,7 @@
     * [Finalizers](framework/finalizers.md)
 * Cookbook
     * [Domain Core and Controllers](cookbook/domain-core.md)
+    * [Container Injectors](cookbook/injector.md) 
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
 * Components
