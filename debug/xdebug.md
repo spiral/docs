@@ -1,5 +1,5 @@
 # Debug and Profiling - XDebug
-It is possible to debug Spiral application as any other classic PHP applications using xDebug extension.
+It is possible to debug the Spiral application like any other classic PHP applications using xDebug extension.
 
 ## IDE Configuration
 Read more about IDE configuration [here](https://roadrunner.dev/docs/php-debugging).
