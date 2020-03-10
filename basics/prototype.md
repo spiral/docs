@@ -1,9 +1,9 @@
 # Cookbook - Prototyping
-Spiral Framework comes with a development extension which speeds up the development of application services, controllers,
-middleware and other classes via AST modification (a.k.a. it writes code for you). Extension includes IDE friendly tooltips for most common framework components and Cycle Repositories.
+Spiral Framework comes with a development extension that speeds up the development of application services, controllers,
+middleware, and other classes via AST modification (a.k.a. it writes code for you). The extension includes IDE friendly tooltips for most common framework components and Cycle Repositories.
 
 ## Installation
-To install extension:
+To install the extension:
 
 ```bash
 $ composer require spiral/prototype
@@ -25,12 +25,12 @@ class App extends Kernel
 }
 ```
 
-> Attention, the extension will invoke `TokenizerConfig`, make sure it is add after the end of bootload chain.
+> Attention, the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
 
 Now you can run `php app.php configure` to generate IDE tooltips.
 
 ## Usage of Prototype Properties
-To use prototyping abilities of framework add `Spiral\Prototype\Traits\PrototypeTrait` to any of your classes. 
+To use the prototyping abilities of the framework, add `Spiral\Prototype\Traits\PrototypeTrait` to any of your classes. 
 Once complete your IDE will immediately suggest you available classes and Cycle Repositories:
 
 ![IDE Tooltips](https://user-images.githubusercontent.com/796136/67619538-8f0c8c80-f805-11e9-9cd8-0597133bf33a.gif)
@@ -57,7 +57,7 @@ class HomeController
 
 > The code will work via magic `__get` on the object.
 
-Once your prototyping phase is complete you can remove the trait and inject dependencies via:
+Once your prototyping phase is complete, you can remove the trait and inject dependencies via:
 
 ```bash
 $ php app.php prototype:inject -r
@@ -65,7 +65,7 @@ $ php app.php prototype:inject -r
 
 > Use `-r` flag to remove `PrototypeTrait`.
 
-The extension will modify your class into given form:
+The extension will modify your class into a given form:
 
 
 ```php
@@ -109,7 +109,7 @@ To view all the classes which use prototyped properties without modifying them:
 $ php app.php prototype:list
 ```
 
-> You can remove `spiral/prototype` extension after all injects are complete.
+> You can remove the `spiral/prototype` extension after all injects are complete.
 
 ## Custom Properties
 You can register any number of prototyped properties using `Spiral\Prototype\Bootloader\PrototypeBootloader` in your bootloader:

@@ -1,7 +1,7 @@
-# Cookbook - Scaffolding
+o# Cookbook - Scaffolding
 
 ## Installation
-To install extension:
+To install the extension:
 
 ```bash
 $ composer require spiral/scaffolder
@@ -23,11 +23,11 @@ class App extends Kernel
 }
 ```
 
-> Attention, the extension will invoke `TokenizerConfig`, make sure it is add after the end of bootload chain.
+> Attention, the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
 
 ## Configuration
-You can customize scaffolder component by replacing declaration generators and their options using `scaffolder` configuration file.
-Default configuration is located in the `ScaffolderBootloader`
+You can customize the scaffolder component by replacing declaration generators and their options using the `scaffolder` configuration file.
+The default configuration located in the `ScaffolderBootloader`.
 
 ## Available Commands
 Command            | Description
@@ -78,7 +78,7 @@ class MyBootloader extends Bootloader
 $ php app.php create:command <name> [alias]
 ```
 
-`<Name>Command` class will be created. Command executable name will be set to `name` or `alias` if is set.
+`<Name>Command` class will be created. Command name will be equal to `name` or `alias` (if this value set).
 
 #### Example without `alias`
 ```bash
@@ -144,9 +144,9 @@ $ php app.php create:config <name>
 `<Name>Config` class will be created. Also, `<app directory>/config/<name>.php` file will be created if doesn't exists.
 Available options:
 * `reverse (r)` - Using this flag, scaffolder will look for `<app directory>/config/<name>.php` file and create a rich `<Name>Config` class based on the given config file.
-Class will include default values and getters, in some cases it will also include by-key-getters for array values. Details below: <br/>
+The class will include default values and getters; in some cases, it will also include by-key-getters for array values. Details below: <br/>
 
-If an array-value consists of more than 1 sub-values with the same types for keys and sub-values,
+If an array-value consists of more than one sub-values with the same types for keys and sub-values,
 scaffolder will try to create a by-key-getter method.
 If a generated key is conflicting with an existing method, by-key-getter will be omitted.
 #### Example with empty config file
@@ -715,7 +715,7 @@ $ php app.php create:entity <name> [<format>]
 ```
 
 `<Name>Entity` class will be created.
-`format` is responsible for the declaration format, currently only [annotations](https://github.com/cycle/annotated) format is supported. 
+`format` is responsible for the declaration format. Currently, only [annotations](https://github.com/cycle/annotated) format supported. 
 Available options:
 * `role (r)` - Entity role, defaults to lowercase class name without a namespace
 * `mapper (m)` - Mapper class name, defaults to Cycle\ORM\Mapper\Mapper
