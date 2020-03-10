@@ -7,7 +7,7 @@
     * [LICENSE](license.md)
 * Getting Started
     * [Installation](start/install.md)
-    * [Long-Living Workers](start/workers.md)
+    * [Application Lifecycle](start/workers.md)
     * [Directory Structure](start/structure.md)
     * [Configuration](start/configuration.md)
     * [Console Commands](start/commands.md)
