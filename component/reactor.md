@@ -1,6 +1,6 @@
 # Code Generation
 You the component `spiral/reactor` to generate PHP classes code using fluent declarative wrappers. This component
-is the foundation of `spiral/scaffolder` exception but can be used separately from framework:
+is the foundation of `spiral/scaffolder` exception but can be used separately from the framework:
 
 ```bash
 $ composer require spiral/reactor

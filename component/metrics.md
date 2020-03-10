@@ -1,8 +1,8 @@
 # Application Metrics
-You can expose some of application metrics using Prometheus service embedded to Spiral application server.
+You can expose some of the application metrics using the [prometheus](https://prometheus.io/) service embedded to the Spiral application server.
 
 ## Configuration
-Metrics service does not require configuration in the application, however, you must activate this service in `.rr.yaml`:
+Metrics service does not require configuration in the application. However, you must activate this service in `.rr.yaml`:
 
 ```yaml
 metrics:

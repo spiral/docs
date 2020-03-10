@@ -1,9 +1,8 @@
 # Files and Directories
-The framework provides the simple component to work with filesystem. The component is 
-available in all of the application bundles.
+The framework provides a simple component to work with the filesystem. The component is available in all of the application bundles.
 
 ## Directory Registry
-Most of spiral components rely of the directory registry instead of hard-coded paths.
+Most of the spiral components rely on the directory registry instead of hard-coded paths.
 The registry represented using `Spiral\Boot\DirectoriesInterface`.
 
 You can configure application specific directories in the app enterpoint (app.php):
@@ -15,7 +14,7 @@ $app = \App\App::init([
 ]);
 ```
 
-Or using the bootloader:
+Or using the Bootloader:
 
 ```php
 namespace App\Bootloader;
@@ -58,7 +57,7 @@ class HomeController
 > function does not work outside of the framework as it relies on the global container scope.
 
 ## Files
-Use the `Spiral\Files\FilesInterface` component to work with filesystem:
+Use the `Spiral\Files\FilesInterface` component to work with the filesystem:
 
 ```php
 namespace App\Controller;
@@ -227,7 +226,7 @@ dump($files->tempFilename('php', __DIR__));
 ```
 
 ## Read and Write operations
-Component provides multiple methods to operate with file content in atomic way
+The component provides multiple methods to operate with file content in an atomic way
 (without acquiring the file resource):
 
 ### Write/Create file
@@ -249,7 +248,7 @@ To check and automatically create the file directory:
 $files->write('filename', 'data', 0777, true);
 ```
 
-> Make sure to handle `Spiral\Files\Exception\WriteErrorException` if file can not be written.
+> Make sure to handle `Spiral\Files\Exception\WriteErrorException` if the file can is not writable.
 
 ### Append Content
 To append file content:

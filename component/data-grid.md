@@ -1,6 +1,6 @@
 # Data Grids
 Use component `spiral/data-grid` and `spiral/data-grid-bridge` to generate Cycle and DBAL select queries automatically,
-based on specifications provided by the end user.
+based on specifications provided by the end-user.
 
 ## Installation
 To install the component:
@@ -20,7 +20,7 @@ protected const LOAD = [
 ```
 
 ## Usage
-To use the data grid you will need 2 base abstractions - grid factory and grid schema.
+To use the data grid, you will need two base abstractions - grid factory and grid schema.
 
 ### Grid Schema
 Grid Schema is the object which describes how the data selector should be configured based on user input. Use
@@ -45,10 +45,10 @@ $schema->addSorter('id', new Sorter('id'));
 $schema->addFilter('name', new Like('name', new StringValue()));
 ```
 
-> You can extend the GridSchema and initiate all the specifications in constructor.
+> You can extend the GridSchema and initiate all the specifications in the constructor.
 
 ### Grid Factory
-To use the defined grid schema you will have to obtain an instance of support data source. By default, the
+To use the defined grid schema, you will have to obtain an instance of a supported data source. By default, the
 Cycle Select and Database Select Query are supported.
 
 ```php
@@ -78,20 +78,20 @@ class HomeController
 }
 ```
 
-You can now invoke this controller, by default first users will be selected from the database. 
+You can now invoke this controller; by default, first users will be selected from the database. 
 
-To select users from second page open page with POST or QUERY data like: `?paginate[page]=2`.
+To select users from the second page open page with POST or QUERY data like: `?paginate[page]=2`.
 
 To activate the Like filter: `?filter[name]=antony`.
 
 To sort by id in ASC or DESC: `?sort[id]=desc`.
 
 ## Available Specifications
-There are number of specifications available for grids.
+There are many specifications available for grids.
 
 ### Select specification
 This specification represents a set of available expressions, passing a value from the input will pick a single or several specifications from this set.
-> You just need pass a key or an array of keys. Note that no ValueInterface should be declared.
+> You just need to pass a key or an array of keys. Note that no ValueInterface should be declared.
 
 Example with a single value:
 ```php
@@ -147,6 +147,3 @@ $select = new Filter\Select([
 $filter = $select->withValue('four');
 ```
 > Filter will be equal to null
-
-
-> TBD.

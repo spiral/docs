@@ -1,5 +1,5 @@
 # Static Analysis
-A lot of Spiral components are based on automatic code discovery and analysis. The most used functionality of locating class declarations is provided by `Spiral\Tokenizer\ClassesInterface`. 
+A lot of Spiral components based on automatic code discovery and analysis. The most used functionality of locating class declarations is provided by `Spiral\Tokenizer\ClassesInterface`. 
 
 > Tokenizer component is pre-installed with all framework bundles.
 
@@ -28,11 +28,11 @@ public function boot(TokenizerBootloader $tokenizer)
 > Attention, class lookup is not a fast process, only add necessary directories.
 
 ## PHP-Parser
-The [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser) is available in Web and GRPC bundle by default. Use this dependency for deeper
+The [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser) is available in Web and GRPC bundle by default. Use this dependency for a deeper
 analysis of AST-tree.
 
 ## ORM Introspection
-To get list of all available entity roles:
+To get a list of all available entity roles:
 
 ```php
 use Cycle\ORM\ORMInterface;
@@ -60,4 +60,3 @@ public function index(ORMInterface $orm)
     }
 }
 ```
-
