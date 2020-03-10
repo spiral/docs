@@ -93,7 +93,7 @@ class Calculator implements CalculatorInterface
 }
 ```
 
-> You can not use the method injection with GRPC services at the moment. Stick to [Prototype component](/cookbook/prototype.md).
+> You can not use the method injection with GRPC services at the moment. Stick to [Prototype component](/basics/prototype.md).
 
 Make sure that the service is available and activated via `php app.php grpc:services`:
 

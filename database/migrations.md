@@ -55,7 +55,7 @@ class MyMigrationMigration extends Migration
 }
 ```
 
-> Install [scaffolder module](/cookbook/scaffolding.md) first.
+> Install [scaffolder module](/basics/scaffolding.md) first.
 
 ## Working with migrations
 You can run all outstanding migrations using `migrate` command.

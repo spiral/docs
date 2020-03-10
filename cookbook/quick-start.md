@@ -1,1 +1,0 @@
-# Cookbook - Quick Start

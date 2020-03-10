@@ -35,7 +35,7 @@ class App extends Kernel
 }
 ```
 
-> See how to use custom PSR-15 handler [here](/cookbook/psr-15.md).
+> See how to use custom PSR-15 handler [here](/http/psr-15.md).
 
 Make sure to configure [routing](/http/routing.md).
 

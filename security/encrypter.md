@@ -72,7 +72,7 @@ interface EncrypterInterface
 }
 ```
 
-Encrypter is also available as [prototype property](/cookbook/prototype.md) `encrypter`:
+Encrypter is also available as [prototype property](/basics/prototype.md) `encrypter`:
 
 ```php
 protected function index(EncrypterInterface $encrypter)

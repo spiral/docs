@@ -14,4 +14,4 @@ of efficient business logic. The application server, Golang based, is focused on
 
 ![High Level Architecture Diagram](https://user-images.githubusercontent.com/796136/64451724-762d0800-d0ed-11e9-8c34-9c054a7bb0bd.png)
 
-> Read about application lifecycle [here](/basic/workers.md).
+> Read about application lifecycle [here](/start/workers.md).
