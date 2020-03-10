@@ -1,6 +1,6 @@
 # Broadcast - WebSockets
-The default GRPC and Web bundles include pre-build component to gain access to the broadcast topic via WebSocket client.
-To activate the component enable the `ws` section `.rr.yaml` config file with the desired path:
+The default GRPC and Web bundles include a pre-build component to gain access to the broadcast topic via WebSocket client.
+To activate the component, enable the `ws` section `.rr.yaml` config file with the desired path:
 
 ```yaml
 ws.path: "/ws"
@@ -76,9 +76,9 @@ Modify your script to automatically consume `topic`:
 </script>
 ```
 
-> Use command `leave` to leave the topic. You are able to consume multiple topics at the same time.
+> Use command `leave` to leave the topic. You can consume multiple topics at the same time.
 
-Currently, your websocket connection will be interrupted by the server, since client does not have the permission to consume
+Currently, your WebSocket connection will be interrupted by the server, since the client does not have the permission to consume
 the topic.
 
 ### Authorize Topic
@@ -107,7 +107,7 @@ class TopicsBootloader extends Bootloader
 
 > You should observe the confirmation message `{"topic":"@join", "payload":["topic"]}` after the connection is made.
 
-Method `authorizeTopic` support method injection and can be used to access container. Use it to read client cookies:
+Method `authorizeTopic` support method injection and can be used to access the container. Use it to read client cookies:
 
 ```php
 $ws->authorizeTopic(
@@ -134,7 +134,7 @@ $ws->authorizeTopic(
 ```
 
 ## Publish Messages
-You can publish messages to websockets using the default broadcast functionality. For example, we can use the console command:
+You can publish messages to WebSockets using the default broadcast functionality. For example, we can use the console command:
 
 ```php
 namespace App\Command;
@@ -158,4 +158,4 @@ class PostCommand extends Command
 }
 ```
 
-> Run `php app.php post hello` to observe message on a page.
+> Run `php app.php post hello` to observe messages on a page.

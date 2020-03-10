@@ -1,5 +1,5 @@
 # Broadcast - Installation and Configuration
-The default Web and GRPC bundles include Broadcast extension pre-enabled on application server level. To enable extension
+The default Web and GRPC bundles include Broadcast extension pre-enabled on the application server level. To enable extension
 in your application run:
 
 ```bash
@@ -18,7 +18,7 @@ protected const LOAD = [
 
 ## Configuration
 By default, the extension will carry event messages inside the application server memory. At the moment, you are able
-to use Redis as distributed pub/sub broker. To enable broadcasting using Redis, modify the `.rr.yaml` file:
+to use Redis as a distributed pub/sub broker. To enable broadcasting using Redis, modify the `.rr.yaml` file:
 
 ```yaml
 broadcast:

@@ -3,8 +3,7 @@ The broadcast component provides the ability to publish and consume messages (ev
 default broadcast implementation, can not be treated as persistent and durable, meaning you have to implement error handling
 and timeout strategy by yourself. 
 
-> Try to use broadcast extension for informative messages rather than control commands. Make sure to properly handle
-> timeouts and 2PC failures in alternative approaches.
+> Try to use broadcast extension for informative messages rather than control commands. Make sure to handle timeouts and 2PC failures in alternative approaches.
 
 ## Publish from PHP
 To publish message(s) into given topic use `Spiral/Broadcast/BroadcastInterface`. Each message must be wrapped using
@@ -26,18 +25,18 @@ class HomeController
 }
 ```
 
-In your message, you must specify the topic and the payload to be published. The payload can contain any json serializable
+In your message, you must specify the topic and the payload to be published. The payload can contain any JSON serializable
 value.
 
 > You can consume your messages using [WebSockets extension](/broadcast/websockets.md).
 
 ## Publish from Golang
-Is is possible to use Golang SDK to publish messages. Create your service as described [here](/cookbook/golang-library.md)
+It is possible to use the Golang SDK to publish messages. Create your service as described [here](/cookbook/golang-library.md)
 or [here](https://roadrunner.dev/docs/beep-beep-service).
 
-> We are going to create service to publish message to specified topic every second.
+> We are going to create a service to publish a message to the specified topic every second.
 
-To access broadcast functionality request the `github.com/spiral/broadcast` dependency and instance of `*broadcast.Service`:
+To access broadcast functionality, request the `github.com/spiral/broadcast` dependency and instance of `*broadcast.Service`:
 
 ```golang
 package demo
@@ -86,10 +85,10 @@ func (s *Service) Stop() {
 }
 ```
 
-> Read how to consume this messages below.
+> Read how to consume these messages below.
 
 ## Consume from Golang
-Subscribe and consume messages using Golang SDK. Modify `Serve` method to post all received messages from `topic` into stdout.
+Subscribe and consume messages using Golang SDK. Modify the `Serve` method to post all received messages from the `topic` into stdout.
 
 ```golang
 func (s *Service) Serve() error {
