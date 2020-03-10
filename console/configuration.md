@@ -1,5 +1,5 @@
 # Console - Installation and Configuration
-All of the provided application skeletons include Console component by default. To enable component in alternative builds make
+All of the provided application skeletons include the Console component by default. To enable component in alternative builds make
 sure to require composer package `spiral/console` and modify the application bootloader:
 
 ```php
@@ -51,10 +51,10 @@ public function test(Console $console)
 ```
 
 ## Symfony/Console
-Spiral Console dispatcher built at top of powerful [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html) 
+Spiral Console dispatcher built at the top of powerful [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html) 
 component.
 
-> You are able to register native Symfony Commands in your CLI application.
+> You can register native Symfony Commands in your CLI application.
 
 ## Configuration
 To apply the custom configuration to the Console component use `Spiral\Config\ConfiguratorInterface` or create a config file in `app/config/console.php`:
@@ -100,5 +100,5 @@ public function boot(ConsoleBootloader $console)
 ```
 
 ## Connection with RoadRunner
-Please note, console commands are invoked outside of RoadRunner server. Make sure to run an instance of application server
+Please note, console commands invoked outside of the RoadRunner server. Make sure to run an instance of application server
 if any of your commands must communicate with it.
