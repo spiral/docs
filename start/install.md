@@ -1,15 +1,14 @@
-# Install
-You can install Spiral components independently or use pre-build application skeleton which enables most of the framework 
-functions. You can either downgrade Web skeleton or use CLI skeleton with minimal number dependencies to start a new application.
+# Installation
+You can install Spiral components independently or use a pre-build application skeleton, which enables most of the framework functions. You can either downgrade Web skeleton or use the CLI skeleton with minimal number dependencies to start a new application.
 
 Default Web (full-stack) skeleton is available on https://github.com/spiral/app
 
-Installation includes a customized version of RoadRunner application server with additional extensions and framework-specific functions enabled.
+Installation includes a customized version of the RoadRunner application server with additional extensions and framework-specific functions enabled.
 <br/>
 
 Server Requirements
 --------
-Make sure that your server is configured with following PHP version and extensions:
+Make sure that your server configured with the following PHP version and extensions:
 * PHP 7.2+, 64bit
 * *mb-string* extension (spiral is UTF-8 centric framework)
 * PDO Extension with desired database drivers
@@ -37,7 +36,7 @@ composer create-project spiral/app
 
 > Application server will be downloaded automatically (`php-curl` and `php-zip` required).
 
-Once the application is installed you can ensure that it was configured properly by executing:
+Once the application installed, you can ensure that it was configured properly by executing:
 
 ```bash
 $ php ./app.php configure
