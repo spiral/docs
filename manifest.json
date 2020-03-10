@@ -13,7 +13,7 @@
     "title": "Getting Started",
     "links": {
       "start/install": "Installation",
-      "start/workers": "Long-Living Workers",
+      "start/workers": "Application Lifecycle",
       "start/structure": "Directory Structure",
       "start/configuration": "Configuration",
       "start/commands": "Console Commands"
