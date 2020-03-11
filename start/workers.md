@@ -7,6 +7,9 @@ By keeping the application in resident memory, you can drastically increase perf
 
 > Read more about Framework and application server symbiosis [here](/framework/design.md).
 
+## HTTP Request Flow
+Read about PSR-7 request flow [here](/http/lifecycle.md).
+
 ## Application Server
 You can configure the number of workers, memory limits, and other extensions using `.rr.yaml` file:
 
