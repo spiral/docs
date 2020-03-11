@@ -1,2 +1,2 @@
 # Quick Start
-WIP
+This is the last remaining article, sit tight.
