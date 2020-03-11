@@ -44,7 +44,7 @@ create:migration   | Create Migration declaration
 create:repository  | Create Entity Repository declaration
 create:entity      | Create Entity declaration
 
-### Create bootloader
+### Bootloader
 ```bash
 $ php app.php create:bootloader <name>
 ```
@@ -74,7 +74,7 @@ class MyBootloader extends Bootloader
 }
 ```
 
-### Create command
+### Command
 ```bash
 $ php app.php create:command <name> [alias]
 ```
@@ -137,7 +137,7 @@ class MyCommand extends Command
 }
 ```
 
-### Create config
+### Config
 ```bash
 $ php app.php create:config <name>
 ```
@@ -357,7 +357,7 @@ class MyConfig extends InjectableConfig
 }
 ```
 
-### Create controller
+### Controller
 ```bash
 $ php app.php create:controller <name>
 ```
@@ -419,7 +419,7 @@ class MyController
 }
 ```
 
-### Create HTTP request filter
+### HTTP request filter
 ```bash
 $ php app.php create:filter <name>
 ```
@@ -564,7 +564,7 @@ class MyFilter extends Filter
 }
 ```
 
-### Create job handler
+### Job Handler
 ```bash
 $ php app.php create:jobHandler <name>
 ```
@@ -588,7 +588,7 @@ class MyJob extends JobHandler
 }
 ```
 
-### Create middleware
+### Middleware
 ```bash
 $ php app.php create:middleware <name>
 ```
@@ -619,7 +619,7 @@ class My implements MiddlewareInterface
 }
 ```
 
-### Create migration
+### Migration
 ```bash
 $ php app.php create:migration <name>
 ```
@@ -687,7 +687,7 @@ class MyMigration extends Migration
 }
 ```
 
-### Create repository
+### Repository
 ```bash
 $ php app.php create:repository <name>
 ```
@@ -707,10 +707,8 @@ class MyRepository extends Repository
 {
 }
 ```
- 
- 
 
-### Create entity
+### ORM Entity
 ```bash
 $ php app.php create:entity <name> [<format>]
 ```
