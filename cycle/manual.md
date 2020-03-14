@@ -1,8 +1,8 @@
 # Cycle - Use without Annotations
-You are able to define ORM schema manually, without need to use annotations.
+You can define ORM Schema manually, without need to use annotations.
 
 ## Bootloader
-Create bootloader to describe and bind your schema to `Cycle\ORM\SchemaInterface`:
+Create Bootloader to describe and bind your Schema to `Cycle\ORM\SchemaInterface`:
 
 ```php
 namespace App\Bootloader;
@@ -37,7 +37,7 @@ class ORMBootloader extends Bootloader
 }
 ```
 
-Bind the bootloader instead of `Cycle\AnnotatedBootloader`:
+Bind the Bootloader instead of `Cycle\AnnotatedBootloader`:
 
 ```php
 protected const LOAD = [

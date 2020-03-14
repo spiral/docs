@@ -1,5 +1,5 @@
 # Cycle ORM - Console Commands
-Cycle ORM integration provides multiple commands for easier control. You can get help for any of command using
+Cycle ORM integration provides multiple commands for easier control. You can get help for any of the commands using
 
 ```bash
 $ php app.php help cycle...
@@ -36,4 +36,4 @@ You can also run generated migration automatically:
 $ php app.php cycle:migrate -r
 ```
 
-> You can run any cycle command with `-vv` flag to see list of modified tables.
+> You can run any cycle command with `-vv` flag to see a list of modified tables.
