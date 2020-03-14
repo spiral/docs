@@ -1,6 +1,6 @@
-# Filter Object
+(# Filter Object
 The filter object used to perform complex data validation and filtration using PSR-7 or any other input. You 
-can create filter manually or using scaffolder `php app.php create:filter my`:
+can create Filter manually or using scaffolder `php app.php create:filter my`:
 
 ```php
 namespace App\Filter;
@@ -35,14 +35,14 @@ class HomeController
 ```
 
 ## Filter Schema
-The core of any filter object is `SCHEMA`, this constant defines mapping between fields and values provided by input.
+The core of any filter object is `SCHEMA`; this constant defines mapping between fields and values provided by input.
 Every key pair is defined as `field` => `source:origin` or `field` => `source`. The **source** is the subset of data from
-user input, in HTTP scope the sources can be `cookie`, `data`, `query`, `input` (`data`+`query`), `header`, `file`,
-`server`. The **origin** is the name of external field, dot notation is supported.
+user input. In the HTTP scope, the sources can be `cookie`, `data`, `query`, `input` (`data`+`query`), `header`, `file`,
+`server`. The **origin** is the name of the external field (dot notation is supported).
 
 > You can use any input bag from [InputManager](/http/request-response.md) as source.
 
-For example we can tell our filter to point field `login` to the QUERY param `username`:
+For example we can tell our Filter to point field `login` to the QUERY param `username`:
 
 ```php
 namespace App\Filter;
@@ -57,7 +57,7 @@ class MyFilter extends Filter
 }
 ```
 
-You can combine multiple source inside the filter:
+You can combine multiple sources inside the Filter:
 
 ```php
 namespace App\Filter;
@@ -77,7 +77,7 @@ class MyFilter extends Filter
 ```
 
 > The most common source is `data` (points to PSR-7 - parsed body), you can use this data to fetch values from incoming
-> json payloads. 
+> JSON payloads. 
 
 ### Dot Notation
 The data **origin** can be specified using dot notation pointing to some nested structure. For example:
@@ -115,8 +115,7 @@ We can accept and validate the following data structure:
 }
 ```
 
-> The error messages will be properly mounted into original location. You can also use composite filters for more complex
-> use-cases.
+> The error messages will be correctly mounted into the original location. You can also use composite filters for more complex use-cases.
 
 ### Other Sources
 By design you can use any method of `[InputManager](/http/request-response.md)` as source where origin is passed
@@ -134,7 +133,7 @@ remoteAddress | User ip address
 
 > Read more about InputManager [here](/http/request-response.md).
 
-For example to check if request is made over https:
+For example to check if a user request made over https:
 
 ```php
 namespace App\Filter;
@@ -155,7 +154,7 @@ class MyFilter extends Filter
 }
 ```
 
-> Read more about validation below. 
+> Read more about the validation below. 
 
 ### Route Parameters
 Every route writes matched parameters into ServerRequestInterface attribute `matches`, is it possible to access route values
@@ -184,7 +183,7 @@ class MyFilter extends Filter
 ```
 
 ### Setters
-Use setters to typecast the incoming value before passing it to validator. The filter will assign null to the value
+Use setters to typecast the incoming value before passing it to the validator. The Filter will assign null to the value
 in case of typecast error:
 
 ```php
@@ -211,7 +210,7 @@ class MyFilter extends Filter
 }
 ```
 
-> You can use any of the default PHP functions like `intval`, `strval` and etc.
+> You can use any of the default PHP functions like `intval`, `strval` etc.
 
 ```php
 namespace App\Controller;
@@ -249,10 +248,10 @@ class MyFilter extends Filter
 }
 ```
 
-You can use all the checkers, conditions and rules.
+You can use all the checkers, conditions, and rules.
 
 ### Custom Errors
-You can specify custom error message to any of the rule similar way as in validation component.
+You can specify the custom error message to any of the rules similar way as in the validation component.
 
 ```php
 namespace App\Filter;
@@ -273,7 +272,7 @@ class MyFilter extends Filter
 }
 ```
 
-If you plan to later localize error message to another language wrap the text in `[[]]` to automatically index and
+If you plan to localize error message later, wrap the text in `[[]]` to automatically index and
 replace the translation:
 
 ```php
@@ -296,14 +295,14 @@ class MyFilter extends Filter
 ```
 
 ## Usage
-Once the filter is configured you can access it's fields (filtered data), check if the data valid and return the set
+Once the Filter configured you can access its fields (filtered data), check if the data valid and return the set
 of errors in case of failure.
 
 > Use [Domain Core Interceptors](/cookbook/domain-core.md) to validate your filters before they will arrive to the 
 > controller.
 
 ### Get Fields
-To get filtered list of fields use methods `getField` and `getFields`. For the filter like that:
+To get a filtered list of fields, use methods `getField` and `getFields`. For the Filter like that:
 
 ```php
 namespace App\Filter;
@@ -355,7 +354,7 @@ public function index(MyFilter $filter)
 }
 ```
 
-The errors will be automatically mapped to origin property name, for example:
+The errors automatically mapped to the origin property name, for example:
 
 ```php
 namespace App\Filter;
@@ -380,7 +379,7 @@ class MyFilter extends Filter
 }
 ```
 
-Will produce the following error if field `name` is invalid:
+Will produce the following error if the field `name` is invalid:
 
 ```json
 {
@@ -396,7 +395,7 @@ Will produce the following error if field `name` is invalid:
 > The error format is identical to one described in [validation](/security/validation.md).
 
 ## Inheritance 
-You can extend one filter from another, the schema, validation and setters will be inherited:
+You can extend one filter from another, the schema, validation, and setters will be inherited:
 
 ```php
 namespace App\Filter;

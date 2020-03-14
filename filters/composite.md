@@ -1,6 +1,5 @@
 # Composite Filters
-The component provide the ability to create nested filters and nested array of filters. To demonstrate the composition
-we will use sample filter:
+The component provides the ability to create nested filters and a nested array of filters. To demonstrate the composition, we will use a sample filter:
 
 ```php
 class AddressFilter extends Filter
@@ -12,7 +11,7 @@ class AddressFilter extends Filter
 }
 ```
 
-This filter can accept the following data format:
+This Filter can accept the following data format:
 
 ```json
 {
@@ -22,7 +21,7 @@ This filter can accept the following data format:
 ```
 
 ## Child Filter
-You can create complex filters by nesting other filters inside them. Simply declare field origin as external field class
+You can create compound filters by nesting other filters inside them. Simply declare field origin as external field class
 to do that:
 
 ```php
@@ -35,7 +34,7 @@ class ProfileFilter extends Filter
 }
 ```
 
-This filter will accept the data in a format:
+This Filter will accept the data in a format:
 
 ```json
 {
@@ -56,7 +55,7 @@ public function index(ProfileFilter $p)
 }
 ```
 
-Both filters will be validated together. In case of error in `address` filter the error will be mounted in sub-array:
+Both filters will be validated together. In case of an error in `address` filter the error will be mounted in sub-array:
 
 ```json
 {
@@ -68,8 +67,8 @@ Both filters will be validated together. In case of error in `address` filter th
 ```
 
 ### Custom Prefix
-In some cases you might need to use data prefix different from the actual key assigned to the nested filter, use array
-notation in which first element is filter class name and second is data prefix:
+In some cases, you might need to use data prefix different from the actual key assigned to the nested Filter, use array
+notation in which the first element filter class name and second is data prefix:
 
 ```php
 class ProfileFilter extends Filter
@@ -81,7 +80,7 @@ class ProfileFilter extends Filter
 }
 ```
 
-This filter can accept the following data format:
+This Filter can accept the following data format:
 
 ```json
 {
@@ -92,7 +91,7 @@ This filter can accept the following data format:
 }
 ```
 
-> You can skill use `address` key internally, errors will be mounted accordingly.
+> You can skip using the `address` key internally, errors will be mounted accordingly.
 
 ## Array of Filters
 You can populate an array of filters at the same time. Use array with single element pointing to filter class
@@ -108,7 +107,7 @@ class MultipleAddressesFilter extends Filter
 }
 ```
 
-Such filter can accept following data format:
+Such Filter can accept the following data format:
 
 ```json
 {
@@ -139,8 +138,8 @@ public function index(MultipleAddressesFilter $ma)
 > The errors will be mounted accordingly.
 
 ### Custom Prefix
-You can create array of filters based on data prefix different from the key name in the filter, use second value
-or the array in the schema. Unlike single child you must specify the `.*` to indicate that value is array:
+You can create an array of filters based on data prefix different from the key name in the Filter, use the second value
+or the array in the schema. Unlike a single child, you must specify the `.*` to indicate that value is an array:
 
 ```php
 class MultipleAddressesFilter extends Filter
@@ -152,7 +151,7 @@ class MultipleAddressesFilter extends Filter
 }
 ```
 
-The following data format is supported by this filter:
+This Filter supports the following data format:
 
 ```json
 {
@@ -181,7 +180,7 @@ public function index(MultipleAddressesFilter $ma)
 ```
 
 ## Composite Filters
-You can use nested child filters as part of larger composite filter. Use prefix `.` (root) in order to do that:
+You can use nested child filters as part of a larger composite Filter. Use prefix `.` (root) to do that:
 
 ```php
 class CompositeFilter extends Filter
@@ -193,7 +192,7 @@ class CompositeFilter extends Filter
 }
 ```
 
-The `AddressFilter` will receive data from top level, meaning you can send request like that:
+The `AddressFilter` will receive data from the top-level, meaning you can send a request like that:
 
 ```json
 {

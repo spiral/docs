@@ -1,6 +1,6 @@
 # Filter Objects
-The framework component `spiral/filters` provides support for request validation, composite validation, error message
-mapping and locations and etc.
+The framework component `spiral/filters` provides support for request validation, composite validation, an error message
+mapping and locations, etc.
 
 > The component relies on [Validation](/security/validation.md) library, make sure to read it first.
 
@@ -16,7 +16,7 @@ The component does not require any configuration and can be activated using the 
 ```
 
 ## Input Binding
-The filter components operate using the `Spiral\Filter\InputInterface` as primary data source:
+The filter components operate using the `Spiral\Filter\InputInterface` as a primary data source:
 
 ```php
 interface InputInterface
@@ -27,8 +27,8 @@ interface InputInterface
 }
 ```
 
-By default, this interface is binded to [InputManager](/http/request-response.md) and which makes possible to access
-any request attribute using **source** and **origin** pair with dot-notation support. For example:
+By default, this interface is binded to [InputManager](/http/request-response.md) and which makes it possible to access
+any request's attribute using **source** and **origin** pair with dot-notation support. For example:
 
 ```php
 namespace App\Controller;
@@ -50,10 +50,10 @@ class HomeController
 }
 ```
 
-Input binding is primary way of delivering data into filter object.
+Input binding is a primary way of delivering data into the filter object.
 
 ## Create Filter
-The filter object implement might vary from package to package, the default implementation is provided via abstract class
+The filter object implement might vary from package to package. The default implementation provided via abstract class
 `Spiral\Filter\Filter`. To create custom filter to validate query: 
 
 ```php
@@ -78,7 +78,7 @@ class MyFilter extends Filter
 
 > Or use the scaffolding `php app.php create:filter my -f "abc:string(query)"`. 
 
-You can request the filter as method injection (it will be automatically binded to current http input):
+You can request the Filter as method injection (it will be automatically binded to current http input):
 
 ```php
 namespace App\Controller;
