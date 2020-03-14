@@ -95,6 +95,8 @@ Domain | string | The domain that the cookie is available. To make the cookie av
 Secure | bool | Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client. When set to true, the cookie will only set if a secure connection exists. On the server-side, it's on the programmer to send this kind of cookie only on a secure connection (e.g., for $_SERVER["HTTPS"]).
 HttpOnly | bool | When true, the cookie will be made accessible only through the HTTP protocol. This flag means that the cookie won't be available by scripting languages, such as JavaScript. This setting can effectively help to reduce identity theft through XSS attacks (although, not all browsers support it).
 
+> Same arguments for `Spiral\Cookies\CookieManager`->`set`.
+
 ## Usage with Singletons
 You can not use `CookieQuery` as `__construct` argument. Queue is only available withing IoC context of CookieMiddleware
 and must be requested from container directly (use use method injection as showed above):
