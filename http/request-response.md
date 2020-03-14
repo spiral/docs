@@ -1,11 +1,11 @@
 # HTTP - Request and Response
 You controllers or endpoints will require a way to access active PSR-7 request and ability to generate
-the response. In this section we will cover the use of request/responses in controllers setup. 
+the response. In this section, we will cover the use of requests/responses in the MVC setup. 
 
 > The middleware and native PSR-15 handlers can receive PSR-7 objects directly.
 
 ## The Request Scope
-The fastest way to get access to user request is to create `Psr\Http\Message\ServerRequestInterface` method injection.
+The fastest way to get access to the user request is to create `Psr\Http\Message\ServerRequestInterface` method injection.
 
 ```php
 namespace App\Controller;
@@ -24,11 +24,11 @@ class HomeController implements SingletonInterface
 
 > Attention, you are **not allowed** to use `ServerRequestInterface` as constructor injection in singletons.
 
-Once request is obtained you can use all read methods available per [PSR-7 Standard](https://www.php-fig.org/psr/psr-7/).
+Once the request obtained, you can use it to all read methods available per [PSR-7 Standard](https://www.php-fig.org/psr/psr-7/).
 
 ## InputManager
-Alternatively you can use context-manager `Spiral\Http\Request\InputManager` which can be stored inside singleton
-services/controllers and always point to current user request. This object provides a number of user-friendly methods
+Alternatively, you can use context-manager `Spiral\Http\Request\InputManager`, which can be stored inside singleton
+services/controllers and always point to the current user request. This object provides several user-friendly methods
 to read the incoming data.
 
 ```php
@@ -75,7 +75,7 @@ class HomeController
 > Note, is it recommended to avoid direct access to `ServerRequestInterface` and `InputManager` unless necessary, 
 > use **Request Filters** instead.
 
-You can use input manager to access full array of input data or any specific field by it's name (dot notation is allowed for nested structures). 
+You can use `InputManager` to access the full array of input data or any specific field by its name (dot notation is allowed for nested structures). 
 Every input structure are represented using `InputBag` class with set of common methods, let's review query accessing as example:
 
 ```php
@@ -114,7 +114,7 @@ dump($input->query('name'));
 
 
 ### Input headers
-We can use 'headers' input bad and `header` method in `InputManager` to access input headers. HeadersBag has few additions we have to mention:
+We can use the 'headers' input bad and `header` method in `InputManager` to access input headers. HeadersBag has a few additions we have to mention:
 * HeaderBad will automatically normalize requested header name
 * "get" method will implode header values using ',' by default
 
@@ -159,7 +159,7 @@ dump($input->post('name'));
 ```
 
 ### Post/Data with fallback to Query parameters
-If you want to read value from POST data and then from Query simply use method `input`.
+If you want to read the value from POST data and then from Query, simply use the method `input`.
 
 ```php
 dump($input->input('name'));
@@ -172,18 +172,18 @@ dump($input->attribute('name'));
 ```
 
 #### Uploaded Files
-To get a list of the uploaded files or individual file use the `files` bag and `file` method. Every uploaded file instance is represented
-using `UploadedFileInterface` which is part of PSR7.
+To get a list of the uploaded files or individual files, use the `files` bag and `file` method. Every uploaded file instance represented
+using `UploadedFileInterface`, which is part of PSR7.
 
 ```php
 dump($this->input->files->all());
 dump($this->input->file('upload'));
 ```
 
-> Per PSR all files will be organized to valid hierarchy, which differs from default way php handle uploaded files, you can use dot notation to access nested file instances.
+> Per PSR, all files organized to logical hierarchy, which differs from default way php handle uploaded files. You can use dot notation to access nested file instances.
 
 ### Simplified methods
-In addition to data methods and InputBags `InputManager` provides set of methods to read various properties of active request.
+In addition to data methods and InputBags, `InputManager` provides a set of methods to read various properties of active requests.
 
 ```php
 //Request Uri path, will always include leading /
@@ -215,7 +215,7 @@ dump($input->bag('data')->all());
 ```
 
 ## InputInterface
-The `InputManager` does not have `get` prefix for it's methods. The reason for that is located in external package
+The `InputManager` does not have `get` prefix for its methods. The reason for that located in an external package
 `spiral/filters` which require data source provider via `Spiral\Filters\InputInterface`:
 
 ```php
@@ -231,8 +231,7 @@ interface InputInterface
 }
 ```
 
-The `InputManager` used as default source provider for this interface allowing you to invoke `InputManager` methods via short notation.
-Both approaches will produce the same set of data.
+You can invoke `InputManager` methods via short notation of `InputInterface`. Both approaches will produce the same set of data.
 
 ```php
 public function index(InputInterface $inputSource, InputManager $inputManager)
@@ -250,7 +249,7 @@ This approach used to map incoming data into Request Filter.
 > You must activate `Spiral\Bootloader\Security\FiltersBootloader` in order to access `Spiral\Filters\InputInterface`.
 
 ## Generate Response
-You can return an instance of `Psr\Http\Message\ResponseInterface` from your controller, it will be send directly to the user.
+You can return an instance of `Psr\Http\Message\ResponseInterface` from your controller, and it will be sent directly to the user.
 
 ```php
 namespace App\Controller;
@@ -299,11 +298,10 @@ class HomeController
 }
 ```
 
-> We recommend to use output buffer only during the development, to display debug information. Stick to strict
-> return types.
+> We recommend using output buffer only during the development to display debug information. Stick to strict return types.
 
 ## JSON responses
-The default PSR-15 also support array and `JsonSerializable` responses which will be converted into JSON:
+The default PSR-15 also supports array and `JsonSerializable` responses which will convert into JSON:
 
 ```php
 namespace App\Controller;
@@ -412,4 +410,4 @@ public function index()
 }
 ```
 
-> You can also use StreamInterface as first argument and specify your own mimetype as third option.
+> You can also use StreamInterface as the first argument and specify your mime-type as the third option.

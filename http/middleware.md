@@ -21,7 +21,7 @@ class MyMiddleware implements MiddlewareInterface
 ```
 
 ## Global Middleware
-To activate middleware for every user request use `Spiral\Bootloader\Http\HttpBootloader`. You can only set this value in application bootloaders.
+To activate middleware for every user request, use `Spiral\Bootloader\Http\HttpBootloader`. You can only set this value in application bootloaders.
 
 ```php
 use Spiral\Bootloader\Http\HttpBootloader;
@@ -38,11 +38,11 @@ class MyMiddlewareBootloader extends Bootloader
 
 Middleware object will be instantiated on demand. 
 
-> Make sure to add this bootloader before `RoutesBootloader` in your app.
+> Make sure to add this Bootloader before `RoutesBootloader` in your app.
 
 ## Route Specific Middleware
 To add middleware to the route object use `withMiddleware` method, make sure to use newly created route instance (example 
-is given for bootloader):
+is given for Bootloader):
 
 ```php
 use App\Controller\HomeController;
@@ -63,7 +63,7 @@ public function boot(RouterInterface $router)
 ```
 
 ## Combine with IoC scopes
-You can combine middleware with IoC scope to create a request-specific application context.
+You can combine middleware with the IoC scope to create a request-specific application context.
 
 ```php
 class UserContext

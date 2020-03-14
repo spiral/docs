@@ -100,4 +100,4 @@ $myapp = MyApp::init(
 dump($myapp->get(\Spiral\Boot\EnvironmentInterface::class)->getAll());
 ```
 
-> Such approach can be used to bootstrap the application for testing purposes.
+> Such an approach can be used to bootstrap the application for testing purposes.

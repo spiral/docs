@@ -1,18 +1,16 @@
 # HTTP - Golang Middleware
-You can implement some middleware on Golang end, inside the application server. Such approach makes possible
-to handle high-throughput and filter requests prior to their arrival to your PHP application. This is the best spot to 
-implement rate-limiters, geolocation filters and other type of middleware.
+You can implement some middleware on Golang end, inside the application server. Such an approach makes it possible to handle high-throughput and filter requests before their arrival to your PHP application. It is the best spot to implement rate-limiters, geolocation filters, and other types of middleware.
 
 > Make sure to read how to build [application server](/framework/application-server.md) first.
 
 ## Passing values from Golang to PHP
-In order to implement more complex logic you would need to pass middleware specific values into your PHP application safely.
-You can not use headers for this purpose as it will be possible to hijack values from client end. Instead, use
+To implement more complex logic, you would need to pass middleware specific values into your PHP application safely.
+You can not use headers for this purpose, as it will be possible to hijack values from the client's end. Instead, use
 `github.com/spiral/roadrunner/service/http/attributes` package to set PSR-7 attribute on your request:
 
 ## RoadRunner Service Middleware
-For example we can detect if the incoming request is made by bot and notify underlying PHP application about that.
-We will use `https://github.com/avct/uasurfer` package. The service is required in order to register our middleware:
+For example, we can detect if the incoming request made by a bot and notify the underlying PHP application about that.
+We will use `https://github.com/avct/uasurfer` package. Create a service to register our middleware:
 
 ```golang
 package bdetect
@@ -75,7 +73,7 @@ func main() {
 ```
 
 ## PHP Middleware
-We can consume this PSR-7 attributes in PHP Middleware. Use `php .\app.php create:middleware botDetect` to quickly scaffold it:
+We can consume these PSR-7 attributes in PHP Middleware. Use `php .\app.php create:middleware botDetect` to quickly scaffold it:
 
 ```php
 namespace App\Middleware;
@@ -103,7 +101,7 @@ class BotDetect implements MiddlewareInterface
 }
 ```
 
-Create and register bootloader to activate the middleware:
+Create and register Bootloader to activate the middleware:
 
 ```php
 namespace App\Bootloader;

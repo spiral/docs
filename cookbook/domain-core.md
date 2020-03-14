@@ -6,7 +6,7 @@ the ability to alter the invocation flow and implement domain-specific functiona
 
 ## Invoke Controller Action
 Spiral controllers are clean classes built to be invoked from any dispatcher. The framework does not provide the direct
-coupling between controller and route. Such approach makes it possible to invoke methods manually:
+coupling between controller and route. Such an approach makes it possible to invoke methods manually:
 
 ```php
 namespace App\Controller;

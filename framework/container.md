@@ -364,4 +364,4 @@ class Service implements SingletonService
 }   
 ```
 
-Using such approach, you can perform complex computations only once and rely on RAM cache on later user requests.
+Using such an approach, you can perform complex computations only once and rely on RAM cache on later user requests.

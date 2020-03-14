@@ -1,5 +1,5 @@
 # HTTP - CSRF protection
-The default Web bundle including CSRF protection middleware. To install it in alternative bundles:
+The default Web bundle includes CSRF protection middleware. To install it in alternative bundles:
 
 ```bash
 $ composer require spiral/csrf
@@ -14,11 +14,11 @@ To activate the extension:
 ]
 ```
 
-The extension will activate `Spiral\Csrf\Middleware\CsrfMiddleware` in order to issue unique token for every user.
+The extension will activate `Spiral\Csrf\Middleware\CsrfMiddleware` to issue a unique token for every user.
 
 ## Enable Firewall
-The extension provides two middleware which activates the protection on your routes and/or globally. To protect all the requests
-except GET, HEAD, OPTIONS use `Spiral\Csrf\Middleware\CsrfFirewall`:
+The extension provides two middleware, which activates the protection on your routes or globally. To protect all the requests
+except for `GET`, `HEAD`, `OPTIONS `use `Spiral\Csrf\Middleware\CsrfFirewall`:
 
 ```php
 use Spiral\Csrf\Middleware\CsrfFirewall;
@@ -39,7 +39,7 @@ public function boot(RouterInterface $router)
 > To protect againt all the HTTP verbs use `Spiral\Csrf\Middleware\StrictCsrfFirewall`. 
 
 ## Usage
-Once the protection is activated you must sign every request with the token available via PSR-7 attribute `csrfToken`.
+Once the protection is activated, you must sign every request with the token available via PSR-7 attribute `csrfToken`.
 
 To receive this token in the controller or view:
 
@@ -50,8 +50,8 @@ public function index(ServerRequestInterface $request)
 }
 ``` 
 
-Every POST/PUT/DELETE request from user must include this token as POST parameter `csrf-token` or header `X-CSRF-Token`.
-User will receive `412 Bad CSRF Token` if token is missing or not set.
+Every `POST`/`PUT`/`DELETE` request from the user must include this token as POST parameter `csrf-token` or header `X-CSRF-Token`.
+Users will receive `412 Bad CSRF Token` if a token is missing or not set.
 
 ```php
 public function index(ServerRequestInterface $request)

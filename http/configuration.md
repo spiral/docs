@@ -1,5 +1,5 @@
 # HTTP - Installation and Configuration
-The web application bundle (`spiral/app`) ships with pre-configured http component. You will need a number of extensions
+The web application bundle (`spiral/app`) ships with a pre-configured HTTP component. You will need several extensions
 to enable it in alternative builds.
 
 ## Installation
@@ -9,7 +9,7 @@ To install the extension:
 $ composer require spiral/http spiral/router spiral/nyholm-bridge
 ```
 
-Extension can be activated by adding two bootloaders:
+Activate the extension by adding two bootloaders:
 
 ```php
 class App extends Kernel
@@ -63,9 +63,9 @@ return [
 ];
 ```
 
-> The default configuration will be used if such file does not exists.
+> The default configuration will be used if such file does not exist.
 
-You can register middleware during the bootload phase via `HttpBootloader`:
+You can register Middleware during the bootload phase via `HttpBootloader`:
 
 ```php
 namespace App\Bootloader;
@@ -85,7 +85,7 @@ class AppBootloader extends Bootloader
 ```
 
 ## Middleware
-HTTP extension include multiple middleware you might want to activate in your project:
+HTTP extension includes multiple middlewares you might want to activate in your project:
 
 Bootloader | Middleware
 --- | ---

@@ -415,7 +415,7 @@ In some cases you might want to bypass some attributes into element directly. Fo
 </select>
 ```
 
-Use `attr:aggregate` to scale such approach:
+Use `attr:aggregate` to scale such an approach:
 
 ```html
 <select name="${name}" attr:aggregate>

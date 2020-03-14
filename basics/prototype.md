@@ -121,7 +121,7 @@ public function boot(PrototypeBootloader $prototype)
 }
 ```
 
-> You can combine such approach with automatic class discovery to achieve better integration of domain layer architecture into your development process.
+> You can combine such an approach with automatic class discovery to achieve better integration of domain layer architecture into your development process.
 
 ## Annotation Based
 Alternatively, you can use annotations to register prototype classes and services. Use annotation `Spiral\Prototype\Annotation\Prototyped` in the class you want to inject:

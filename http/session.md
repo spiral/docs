@@ -1,7 +1,7 @@
 # HTTP - Session
-Default application skeleton enables session integration by default.
+The default application skeleton enables session integration by default.
  
-If you need to enable session it in alternative bundle require composer package `spiral/session` and add 
+If you need to enable session it in an alternative bundle, require composer package `spiral/session` and add 
 bootloader `Spiral\Bootloader\Http\SessionBootloader` into your app.
 
 ## SessionInterface
@@ -23,7 +23,7 @@ public function index(SessionInterface $session)
 
 ## Session Section
 By default, you are not allowed to work with session directly, but rather allocate the isolated and named section
-which provides classing `set`, `get`, `delete` and etc functionality. Use `getSection` of session object for this purposes:
+which provides classing `set`, `get`, `delete` and etc functionality. Use `getSection` of session object for these purposes:
 
 ```php
 public function index(SessionInterface $session)
@@ -37,7 +37,7 @@ public function index(SessionInterface $session)
 ```
 
 ## Session Scope
-To simplify the usage of session in singleton services and controllers use `Spiral\Session\SessionScope`. This component
+To simplify the usage of the session in singleton services and controllers, use `Spiral\Session\SessionScope`. This component
 is also available via prototype property `session`. The component can be used within singleton services and always
 point to active session context:
 
@@ -58,7 +58,7 @@ class HomeController
 ```
 
 ## Session Lifecycle
-The session will be automatically started on first data access and committed when request will leave `SessionMiddleware`.
+The session will be automatically started on first data access and committed when the request will leave `SessionMiddleware`.
 To control session manually use methods of `Spiral\Session\SessionInterface` object.
 
 > SessionScope fully implements SessionInterface.
@@ -137,10 +137,10 @@ return [
 ```
 
 ### Custom Session Handler
-The session component based on native PHP session implementation. By default, session content is stored in file system
-in `runtime/session` directory.
+The session component based on native PHP session implementation. By default, session content stored in the file system
+in the `runtime/session` directory.
 
-To change the session storage driver use any `SessionHandlerInterface` [compatible handler](https://www.php.net/manual/en/class.sessionhandlerinterface.php).
+To change the session storage driver, use any `SessionHandlerInterface` [compatible handler]https://www.php.net/manual/en/class.sessionhandlerinterface.php).
 
 ```php
 <?php
@@ -149,5 +149,4 @@ return [
 ];
 ```
 
-> You can use Autowire instead of class name to configure additional parameters.
-
+> You can use Autowire instead of the class name to configure additional parameters.

@@ -300,7 +300,7 @@ if (!$guard->allows('home.read', ['key' => 'value'])) {
 }
 ``` 
 
-Such approach allows you to create complex rule association between role and the set of permissions.
+Such an approach allows you to create complex rule association between role and the set of permissions.
 
 > The default rules `AllowRule` and `ForbidRule` are always returning `true` and `fast` accordingly.
 
