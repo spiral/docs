@@ -1,4 +1,4 @@
-(# Filter Object
+# Filter Object
 The filter object used to perform complex data validation and filtration using PSR-7 or any other input. You 
 can create Filter manually or using scaffolder `php app.php create:filter my`:
 
