@@ -51,4 +51,4 @@ The application server includes it's own set of commands, to list all available 
 $ ./spiral
 ```
 
-You can read more about server commands [here](https://roadrunner.dev/docs/usage-server-commands).
+You can read more about server commands [here](https://roadrunner.dev/docs/beep-beep-cli).
