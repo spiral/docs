@@ -419,7 +419,7 @@ class MyController
 }
 ```
 
-### HTTP request filter
+### HTTP Request Filter
 ```bash
 $ php app.php create:filter <name>
 ```
@@ -432,7 +432,8 @@ default value or a PhpDoc. Otherwise you can optionally specify filter schema us
 `type`, `origin` and `source:origin` are optional and can be omitted, defaults are:
   * type=string
   * source=data
-  * origin=\<name\>
+  * origin=<name>
+  
 > See more about filters in [filters](https://github.com/spiral/filters) package
 
 #### Example with empty fields definition
