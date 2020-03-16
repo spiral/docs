@@ -2,7 +2,7 @@
 The framework does not enforce any specific namespace or directory structure. You can freely change them.
 
 ## Directories
-The directory structure can be controlled via `mapDirectories` method of Kernel class. By
+The default directory structure can be controlled via `mapDirectories` method of Kernel class. By
 default, all application directories will be calculated based on `root` using the following pattern:
 
 Directory | Value 
