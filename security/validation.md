@@ -1,4 +1,4 @@
-# Validation
+# Validation Interfaces
 You can validate your data using the `spiral/validation` component. The component provides an array-based DSL to construct
 complex validation chains.
 
