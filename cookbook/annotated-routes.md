@@ -97,7 +97,7 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
-Run CLI command to a check the list of available routes:
+Run CLI command to check the list of available routes:
 
 ```bash
 $ php app.php route:list
