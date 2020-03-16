@@ -1,22 +1,30 @@
 [
   {
-    "title": "快速开始",
+    "title": "总览",
     "links": {
       "readme": "文档目录",
       "about/spiral": "框架介绍",
-      "about/install": "安装指引",
-      "about/semver": "版本说明",
       "about/contributing": "贡献指引",
+      "about/semver": "版本说明",
       "license": "许可协议"
+    }
+  },
+  {
+    "title": "入门指引",
+    "links": {
+      "start/install": "安装指引",
+      "start/workers": "应用工作进程",
+      "start/structure": "应用程序结构",
+      "start/configuration": "默认配置",
+      "start/commands": "控制台命令"
     }
   },
   {
     "title": "基础知识",
     "links": {
-      "basic/workers": "应用工作进程",
-      "basic/structure": "应用程序结构",
-      "basic/configuration": "默认配置",
-      "basic/commands": "控制台命令"
+      "basics/quick-start": "快速开始",
+      "basics/scaffolding": "脚手架",
+      "basics/prototype": "原型开发辅助"
     }
   },
   {
@@ -36,9 +44,20 @@
   {
     "title": "速查手册",
     "links": {
-      "cookbook/scaffolding": "脚手架",
-      "cookbook/prototype": "开发辅助",
-      "cookbook/injector": "注入器"
+      "cookbook/injector": "容器注入器",
+      "cookbook/domain-core": "领域内核、控制器",
+      "cookbook/golang-library": "Golang 服务集成",
+      "cookbook/custom-dispatcher": "自定义调度器"
     }
-  }
+  },
+  {
+    "title": "常用组件",
+    "links": {
+      "component/files": "文件和目录",
+      "component/reactor": "代码生成",
+      "component/tokenizer": "Static Analysis Tools",
+      "component/metrics": "Prometheus Metrics",
+      "component/data-grid": "Data Grids"
+    }
+  },
 ]

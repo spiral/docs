@@ -15,4 +15,4 @@ Spiral 框架依赖应用服务器来提供它的部分服务。PHP 代码主要
 
 ![顶层架构图](https://user-images.githubusercontent.com/796136/64451724-762d0800-d0ed-11e9-8c34-9c054a7bb0bd.png)
 
-> 请参阅应用生命周期的[说明](/basic/workers.md).
+> 请参阅应用生命周期的[说明](/zh_CN/start/workers.md).
