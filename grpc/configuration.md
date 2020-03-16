@@ -1,4 +1,4 @@
- GRPC - Installation and Configuration
+# GRPC - Installation and Configuration
 The [GRPC](https://grpc.io/) protocol provides an extremely efficient way of cross-service communication for distributed applications. The public toolkit includes instruments to generate client and server code-bases for many languages
 allowing the developer to use the most optimal language for the task.
 
