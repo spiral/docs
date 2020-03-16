@@ -1,10 +1,10 @@
 # Views - Rendering Views
-In order to render view you must obtain an instance of `Spiral\Views\ViewsInterface`.
+To render view, you must obtain an instance of `Spiral\Views\ViewsInterface`.
 
 > The component is available via prototyped property `views`.
 
 ## Rendering
-To render view in controller or other service simply invoke `render` method of `ViewsInterface`. The view name
+To render view in the controller or other service simply invoke the `render` method of `ViewsInterface`. The view name
 does not need to include extension or namespace (default to be used).
 
 ```php
@@ -18,7 +18,7 @@ public function index(ViewsInterface $views)
 }
 ```
 
-To render view with passed data use second array argument:
+To render the view with passed data, use the second array argument:
 
 ```php
 use Spiral\Views\ViewsInterface;

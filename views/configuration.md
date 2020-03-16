@@ -15,7 +15,7 @@ To activate the component use bootloader `Spiral\Bootloaders\Views\ViewsBootload
 ]
 ```
 
-The component is able to work with multiple rendering engines (Twig, Stempler or native PHP templates) and
+The component can work with multiple rendering engines (Twig, Stempler or native PHP templates) and
 store view files in multiple namespaces.
 
 ## Configuration
@@ -45,10 +45,10 @@ return [
 ```
 
 ## Auto-Configuration
-You are able to alter some of the component settings using bootloader `Spiral\Bootloaders\Views\ViewsBootloader`.
+You can alter some of the component settings using bootloader `Spiral\Bootloaders\Views\ViewsBootloader`.
 
 ### View Namespace
-To assign new directory to view namespace:
+To assign a new directory to view namespace:
 
 ```php
 namespace App\Bootloader;
@@ -66,7 +66,7 @@ class AppBootloader extends Bootloader
 ```
 
 ### View Engine
-To register new view engine make sure to implement `Spiral\Views\EngineInterface`:
+To register a new view engine make sure to implement `Spiral\Views\EngineInterface`:
 
 ```php
 namespace App\Bootloader;
@@ -84,11 +84,11 @@ class AppBootloader extends Bootloader
 ```
 
 ## Caching
-By default, the view caching is turned off if env variable `DEBUG` set to true. The cache files are stored in 
+By default, the view caching turned off if env variable `DEBUG` set to true. The cache files are stored in 
 `runtime/cache/views`.
 
 ## Purge
-To delete view cache run console command `views:reset`:
+Run the console command `views:reset` to delete view cache:
 
 ```bash
 $ php app.php views:reset

@@ -1,6 +1,5 @@
 # Views - Plain PHP
-You can use plain php files as your views without any compilation or cache layer. This engine is enabled by default
-and available in Web application skeleton.
+You can use plain php files as your views without any compilation or cache layer. This engine enabled by default and available in the Web application skeleton.
 
 ## Create view
 To create plain PHP view simply put file with `.php` extension into `views` directory. Template can be rendered by it's 

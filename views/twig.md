@@ -1,6 +1,6 @@
 # Views - Twig
-Framework provides deep integration with [Twig Template](https://twig.symfony.com/) engine including access to IoC
-scopes, i18n integration and caching.
+The framework provides deep integration with [Twig Template](https://twig.symfony.com/) engine including access to IoC
+scopes, i18n integration, and caching.
 
 ## Installation and Configuration
 To install Twig:
@@ -37,7 +37,7 @@ class TwigExtensionBootloader extends Bootloader
 ```
 
 ## Usage
-You can use twig views immediately. Create view with `.twig` extension in `app/views` directory.
+You can use twig views immediately. Create a view with `.twig` extension in `app/views` directory.
 
 ```twig
 Hello, {{ name }}!
