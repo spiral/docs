@@ -7,13 +7,13 @@ You can run `spiral/jobs` as a standalone extension.
 The RoadRunner build with enabled jobs extension is available [here](https://github.com/spiral/framework/releases).
 
 ## PHP Worker
-You would have to create a PHP worker in order to consume tasks from the queue. The primary class you have to implement is 
+You would have to create a PHP worker to consume tasks from the queue. The primary class you have to implement is 
 `Spiral\Jobs\HandlerRegistryInterface` which is responsible for providing job handler for a given job type.
 
 For our purposes, we can use `Spiral\Jobs\Registry\ContainerRegistry` which can automatically convert job name into the class
 name and request class instance from the associated PSR-11 container.
 
-> We can use spiral container provided by `spiral/core`.
+> We can use a spiral container provided by `spiral/core`.
 
 ```php
 use Spiral\Jobs\Registry\ContainerRegistry;
@@ -22,7 +22,7 @@ use Spiral\Core\Container;
 $registry = new ContainerRegistry(new Container());
 ```
 
-Now we can to configure our worker:
+Now we can configure our worker:
 
 ```php
 use Spiral\Core\Container;

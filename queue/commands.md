@@ -1,5 +1,5 @@
 # Queue and Jobs - Console Commands
-Application server provides multiple commands used to control `spiral/jobs` extension.
+The application server provides multiple commands used to control the `spiral/jobs` extension.
 
 ## Start and Stop
 You can start the extension and init connection to brokers using the default `serve` command, `-v` and `-d` are supported:

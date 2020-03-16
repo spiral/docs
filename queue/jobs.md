@@ -1,13 +1,13 @@
 # Queue and Jobs - Running Jobs
 You can run queue jobs in your application right after the installation of the application server. Web and GRPC bundles
-come with pre-configured `jobs` service capable of running your tasks using `ephemeral` broker.
+come with pre-configured `jobs` service capable of running your tasks using an `ephemeral` broker.
 
 > Read how to run `spiral/jobs` outside of the framework [here](/queue/standalone.md).
 
 ## Create Handler
-In order to run a job, you must create a proper job handler. The handler must implement `Spiral\Jobs\HandlerInterface`. Handlers
+To run a job, you must create a proper job handler. The handler must implement `Spiral\Jobs\HandlerInterface`. Handlers are
 responsible for job payload serialization and execution. Use `Spiral\Jobs\JobHanlder` to simplify your abstraction
-and implement dependency injection in your handler method `invoke`:
+and perform dependency injection in your handler method `invoke`:
 
 ```php
 namespace App\Jobs;
@@ -39,7 +39,7 @@ class SampleJob extends JobHandler
 
 ## Dispatch Job
 You can dispatch your job via `Spiral\Jobs\QueueInterface` or via prototype property `queue`. The method `push` of 
-`QueueInterface` accepts job name, the payload in array form and additional options.
+`QueueInterface` accepts job name, the payload in array form, and additional options.
 
 ```php
 public function createJob(QueueInterface $queue)
@@ -48,10 +48,10 @@ public function createJob(QueueInterface $queue)
 }
 ``` 
 
-You can use your handler name as job name, it will be automatically converted into `-` identifier, for example, 
+You can use your handler name as a job name. It will be automatically converted into `-` identifier, for example, 
 `App\Jobs\SampleJob` will be presented as `app-jobs-sampleJob`.
 
-Use this identification to properly configure dispatching your `.rr` configuration:
+Use this identification to configure dispatching configuration:
 
 ```yaml
 jobs:
@@ -68,8 +68,7 @@ jobs:
 ```
 
 ## Passing Parameters
-Job handlers can accept any number of job parameters via the second argument of `QueueInterface->push()`. Parameters
-must be provided in array form. No objects are supported (see below how to bypass it) to ensure compatibility with consumers written on other languages.
+Job handlers can accept any number of job parameters via the second argument of `QueueInterface->push()`. Parameters provided in array form. No objects are supported (see below how to bypass it) to ensure compatibility with consumers written on other languages.
 
 ```php
 public function createJob(QueueInterface $queue)
@@ -161,7 +160,7 @@ public function createJob(QueueInterface $queue)
 ```
 
 ## Retrying
-To enable job retrying configure your pipeline with additional option `maxAttempts`:
+To enable job retrying, configure your pipeline with additional option `maxAttempts`:
 
 ```yaml
 pipelines:
@@ -172,4 +171,4 @@ pipelines:
 ```
 
 ## Debugging
-Make sure to user `dumprr` function, output to STDOUT will break the communication with application server. If you MUST write to the STDOUT use alternative relay communication method, such as unix or TCP sockets.
+Make sure to use the `dumprr` function. Output to STDOUT will break the communication with the application server. If you MUST write to the STDOUT, use an alternative communication method, such as Unix or TCP sockets.

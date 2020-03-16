@@ -1,13 +1,13 @@
 # Cookbook - Website Scraper
 We can use Spiral Queue and RoadRunner server to implement applications different from classic web setup. In this
-tutorial we will try to implement a simple web-scraper application for CLI usage.
+tutorial, we will try to implement a simple web-scraper application for CLI usage.
 
 The scraped data will be stored in a `runtime` folder. 
 
 > The produced code only demonstrates the capabilities and can be improved a lot.
 
 ## Installing Dependencies
-We will base our application on [spiral/app-cli](https://github.com/spiral/app-cli) - the minimalistic spiral build without ORM, HTTP and other extensions.
+We will base our application on [spiral/app-cli](https://github.com/spiral/app-cli) - the minimalistic spiral build without ORM, HTTP, and other extensions.
 
 ```bash
 $ composer create-project spiral/app-cli scraper
@@ -56,7 +56,7 @@ class App extends Kernel
 Make sure to run `php app.php configure` to ensure proper installation.
 
 ## Configure App Server
-Let's configure application server with one default queue in memory. Create `.rr.yaml` file in a root of the project:
+Let's configure the application server with one default queue in memory. Create `.rr.yaml` file in the root of the project:
 
 ```yaml
 jobs:
@@ -75,13 +75,13 @@ jobs:
   workers:
     command: "php app.php"
   
-    # increase number of workers for IO bound applications
+    # increase number of workers for IO-bound applications
     pool.numWorkers: 16
 ```
 
 ## Create Job Handler
-Now, let's write a simple job handler which will scan website, get the HTML content and jump by links util the specific
-depth is reached. All the content will be stored in `runtime` directory.
+Now, let's write a simple job handler which will scan the website, get the HTML content, and jump by links util the specific
+depth reached. All the content will be stored in `runtime` directory.
 
 > Create JobHandler via `php app.php create:job scrape`. We are not going to use CURL for simplicity.
 
@@ -158,7 +158,7 @@ class ScrapeJob extends JobHandler
 ```
 
 ## Create command
-Create command to start scraping `php app.php create:command scrape`:
+Create a Command to start scraping `php app.php create:command scrape`:
 
 ```php
 namespace App\Command;
@@ -202,10 +202,10 @@ Scape any URL via console command (keep the server running):
 $ php app.php scrape https://some-website.com/ 5
 ```
 
-To observe how many pages are being scraped via interactive console:
+To observe how many pages scraped via interactive console:
 
 ```bash
 $ ./spiral jobs:stat -i
 ```
 
-> The demo solution will scan some pages multiple times, use proper database or lock mechanism to avoid that.
+> The demo solution will scan some pages multiple times, use a proper database or lock mechanism to avoid that.

@@ -1,8 +1,7 @@
 # Queue and Jobs - Installation and Configuration
-Web and GRPC bundles of Spiral Framework support background PHP processing and a queue out of the box. You are able
-to work with one or multiple message brokers such as Beanstalk, AMQP (RabbitMQ) or Amazon SQS.
+Web and GRPC bundles of Spiral Framework support background PHP processing and a queue out of the box. You can work with one or multiple message brokers such as Beanstalk, AMQP (RabbitMQ), or Amazon SQS.
 
-In order to install the extensions in alternative bundles:
+To install the extensions in alternative bundles:
 
 ```bash
 $ composer require spiral/jobs
@@ -13,8 +12,8 @@ Make sure to add `Spiral\Bootloader\Jobs\JobsBootloader` to your application ker
 > Read how to setup standalone worker [here](/queue/standalone.md).
 
 ## Configuration
-Jobs extension does not require configuration on application end, however, you must specify broker connections and
-available queue pipelines in `.rr` file. The extension configuration must be located in the `jobs` section:
+Jobs extension does not require configuration on application end. However, you must specify broker connections and
+available queue pipelines in `.rr` file. Locate the extension configuration in the `jobs` section:
 
 ```yaml
 jobs:
@@ -34,8 +33,8 @@ jobs:
 ```
 
 ## Pipelines
-Every issues job must be placed into a designated queue pipeline. Spiral is able to push and consume tasks from multiple
-pipelines, however, you must clearly outline which pipelines are available.
+Every issued job must go into a designated queue pipeline. Spiral can push and consume tasks from multiple
+pipelines. However, you must clearly outline which pipelines are available.
 
 Each pipeline has to be associated with a queue broker:
 
@@ -45,14 +44,14 @@ pipelines:
     broker: "ephemeral"
 ``` 
 
-You are able to use shorter declaration when only one YAML value is presented:
+You can use shorter declaration when only one YAML value needed:
 
 ```yaml
 pipelines:
   local.broker: "ephemeral"
 ```
 
-Some brokers will require you to specify additional pipeline options, specific to the implementation. For example Amazon SQS:
+Some brokers will require you to specify additional pipeline options, specific to the implementation. For example, Amazon SQS:
 
 ```yaml
 pipelines:
@@ -66,17 +65,17 @@ pipelines:
 > See below.
 
 ## Dispatching
-Each created job must be assigned to a pipeline. You can either specify pipeline directly in your application or let
-application server resolve it automatically. 
+Each created job must correlate to a pipeline. You can either specify the pipeline directly in your application or let
+the application server resolve it automatically. 
 
-Use the `dispatch` option to specify how to assign job or job namespace with specific pipeline and/or additional options:
+Use the `dispatch` option to specify how to assign job or job namespace with specific pipeline or additional options:
 
 ```yaml
 dispatch:
   app-job-ping.pipeline: "local"
 ```
 
-> Job names are calculated automatically based on handler class name, namespace separator replaced with `-`. 
+> Job names calculated automatically based on handler class name, namespace separator replaced with `-`. 
 
 We can use `*` to dispatch multiple jobs into a single pipeline, for example, to dispatch all jobs from namespace `App\Job`:
 
@@ -106,11 +105,11 @@ consume: ["local"]
 > You can always start and stop pipeline consuming via CLI command.
 
 ## Local Pipeline
-One of the pipelines extremely useful in application development is pipelines associated with `ephemeral` broker.
-This pipelines does not require an external broker and can run directly in application server memory. Use this pipeline
+One of the pipelines extremely useful in application development is pipelines associated with an `ephemeral` broker.
+These pipelines do not require an external broker and can run directly in application server memory. Use this pipeline
 to run non-critical background tasks.
 
-> Note, `ephemeral` broker is **not reliable**, any server failure will erase application server memory and your jobs
+> Note, `ephemeral` broker is **not reliable**, any server failure will erase application server memory, and your jobs
 > will be lost. Use it in development or for non-critical tasks.
 
 You can have multiple ephemeral pipelines in your application.
@@ -128,7 +127,7 @@ jobs:
   # ...
 ```
 
-The pipelines must be assigned to `amqp` broker and must specify the `queue` name:
+The pipelines must be assigned to the `amqp` broker and must specify the `queue` name:
 
 ```php
 pipelines:
@@ -144,7 +143,7 @@ Option   | Default                      | Comment
 exchange | `amqp.direct`                | Exchange type
 consumer | rr-**pipeline-name**-**pid** | Consumer ID
 
-> Queue will be created automatically if not exists.
+> Queue will create automatically if not exists.
 
 ### Beanstalk
 To enable [Beanstalk](https://beanstalkd.github.io/) broker:
@@ -181,7 +180,7 @@ jobs:
     region:   us-west-1
 ```
 
-Each SQS pipeline require `queue` option pointing to SQS queue name:
+Each SQS pipeline requires `queue` option pointing to SQS queue name:
 
 ```yaml
 pipelines:
@@ -206,7 +205,7 @@ You can find a list of available declare options [here](https://docs.aws.amazon.
 > Note, Amazon SQS does not support jobs delayed for longer than 15 minutes.
 
 ## Monitoring
-The extensions automatically register Prometheus metrics in the application server, the metrics are available on `localhost:2112`
+The extensions automatically register Prometheus metrics in the application server. The metrics are available on `localhost:2112`
  by default.
  
 > Make sure to enable metrics extension.
