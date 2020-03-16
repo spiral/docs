@@ -10,7 +10,7 @@
     }
   },
   {
-    "title": "入门指引",
+    "title": "快速开始",
     "links": {
       "start/install": "安装指引",
       "start/workers": "应用工作进程",
@@ -20,7 +20,7 @@
     }
   },
   {
-    "title": "基础知识",
+    "title": "入门基础",
     "links": {
       "basics/quick-start": "快速开始",
       "basics/scaffolding": "脚手架",

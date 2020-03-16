@@ -1,7 +1,5 @@
 # 速查手册 - 自定义调度器
 
-It is possible to invoke application kernel using a custom data source, for example, Kafka, state-machine events, or attach to user-defined interrupt. In this section, we will try to demonstrate how to write RoadRunner service and kernel dispatcher to consume
-data from this service. In this example, we will be sending "ticks" to the kernel every second.
 在 Spiral 中，可以通过自定义数据源（例如 Kafka, 状态机事件或附加到用户定义的中断）来调用应用内核。在本章节中，我们来演示如何编写 RoadRunner 服务和内核调度器，并用该内核调度器来消费服务产生的数据。在示例中，我们每秒钟向内核发送一次“tick”。
 
 > 提示：请务必先阅读[应用服务器](/framework/application-server)章节。本文涉及的内容需要您精通 Golang 编程语言。
@@ -132,7 +130,6 @@ func (s *Service) Stop() {
 }
 ```
 
-We can enable this service in our roadrunner build and `.rr` configuration:
 代码写完之后，可以在构建 roadrunner 时启用刚刚创建的服务，也可以在 `.rr` 配置中启用：
 
 在 RoadRunner 中启用：
