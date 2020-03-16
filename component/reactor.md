@@ -1,5 +1,5 @@
 # Code Generation
-You the component `spiral/reactor` to generate PHP classes code using fluent declarative wrappers. This component
+You can use the component `spiral/reactor` to generate PHP classes code using fluent declarative wrappers. This component
 is the foundation of `spiral/scaffolder` exception but can be used separately from the framework:
 
 ```bash
@@ -66,6 +66,18 @@ $class->constant('MY_CONSTANT')
     ->setComment(['My constant']);
 
 dump($class->render());
+```
+
+The output:
+
+```php
+class MyClass
+{
+    /**
+     * My constant
+     */
+    public const MY_CONSTANT = 'default';
+}
 ```
 
 ### Traits
@@ -143,7 +155,7 @@ class MyClass
 ```
 
 ## Namespace
-To place generated class into interface:
+To place generated class into a namespace:
 
 ```php
 use Spiral\Reactor\ClassDeclaration;
