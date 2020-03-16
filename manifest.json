@@ -44,6 +44,7 @@
   {
     "title": "Cookbook",
     "links": {
+      "cookbook/annotated-routes": "Annotated Routing",
       "cookbook/domain-core": "Domain Core and Controllers",
       "cookbook/injector": "Container Injectors",
       "cookbook/golang-library": "Integrate Golang service to PHP",

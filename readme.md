@@ -26,6 +26,7 @@
     * [Static Memory](framework/memory.md)
     * [Finalizers](framework/finalizers.md)
 * Cookbook
+    * [Annotated Routing](cookbook/annotated-routes.md)
     * [Domain Core and Controllers](cookbook/domain-core.md)
     * [Container Injectors](cookbook/injector.md) 
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
