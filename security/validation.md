@@ -1,14 +1,14 @@
 # Validation
-You can validate your data using `spiral/validation` component. The component provides array based DSL to construct
+You can validate your data using the `spiral/validation` component. The component provides an array-based DSL to construct
 complex validation chains.
 
-The component contains of Checkers, Conditions and Validation object. The Web and GRPC bundle of spiral includes
+The component contains Checkers, Conditions, and Validation object. The Web and GRPC bundle of spiral includes
 this component by default.
 
 > Check [Filter/Request Object](/filters/configuration.md) for deep structural validations.
 
 ## Installation and Configuration
-The component can be installed:
+To install the component:
 
 ```bash
 $ composer install spiral/validation
@@ -26,7 +26,7 @@ declare(strict_types=1);
 use Spiral\Validation;
 
 return [
-    // Checkers are resolved using container and provide ability to isolate some validation rules
+    // Checkers are resolved using container and provide the ability to isolate some validation rules
     // under common name and class. You can register new checkers at any moment without any
     // performance issues.
     'checkers'   => [
@@ -114,11 +114,11 @@ class HomeController
 }
 ```
 
-> You can use `validator` prototype property.
+> You can use the `validator` prototype property.
 
 ## The ValidationInterface
 The result of `ValidationInterface`->`validate` method is `ValidationInterface`. The interface provides basic 
-api to get result errors and allows to attach to new data or context (immutable).
+API to get result errors and allows them to attach to new data or context (immutable).
 
 ```php
 interface ValidatorInterface
@@ -149,7 +149,7 @@ public function index(Validation\ValidationInterface $validation)
 ```
 
 ### Validated Data
-Validator can accept any array data source, but internally it will be converted into array form (unless ArrayAccess). 
+A validator can accept any array data source, but internally it will be converted into array form (unless ArrayAccess). 
 
 ### Error Format
 The validation component will always return one error and first fired error per key.
@@ -161,11 +161,11 @@ The validation component will always return one error and first fired error per 
 ]
 ```
 
-> Error messages can be localized using `spiral/translator`.
+> Error messages can be localized using a `spiral/translator`.
 
 ## Validation DSL
-The default spiral validator accepts validation rules in a form or nested array. They key is the name of property
-to be validated, where the value is array of rules to be applied to the value sequentially:
+The default spiral validator accepts validation rules in a form or nested array. The key is the name of the property
+to be validated, where the value is an array of rules to be applied to the value sequentially:
 
 ```php
 $validator = $validation->validate(
@@ -183,7 +183,7 @@ if (!$validator->isValid()) {
 }
 ```
 
-The rule in this case is name of checker method or any available PHP function which can accept `value` as first argument.
+The rule, in this case, is the name of the checker method or any available PHP function, which can accept `value` as the first argument.
 
 For example we can use `is_numeric` directly inside your rule:
 
@@ -200,8 +200,7 @@ $validator = $validation->validate(
 ```
 
 ### Extended Declaration
-In many cases you would need to declare additional rule parameters, conditions or custom error messages. This can 
-be done by wrapping rule into `[]`.
+In many cases, you would need to declare additional rule parameters, conditions, or custom error messages. To achieve that, wrap the rule declaration into an array (`[]`).
 
 ```php
 $validator = $validation->validate(
@@ -215,7 +214,7 @@ $validator = $validation->validate(
 );
 ``` 
 
-> You can omit the `[]` if rule does not need any parameters.
+> You can omit the `[]` if the rule does not need any parameters.
 
 ### Checker Rules
 You can split your rule name using `::` prefix, where first part is checker name and second is method name, for example:
@@ -299,7 +298,7 @@ $validator = $validation->validate(
 );
 ```
 
-> In the given example the required error on `confirmPassword` will show if `password` is filled.
+> In the example, the required error on `confirmPassword` will show if `password` is not empty.
 
 You can use multiple conditions or combine them with complex rules:
 
@@ -331,7 +330,7 @@ withoutAny | *array* | When at least one field is empty.
 withAll | *array* | When all fields are not empty.
 withoutAll | *array* | When all fields are empty.
 
-> You can create your own conditions using `Spiral\Validation\ConditionInterface`.
+> You can create your conditions using `Spiral\Validation\ConditionInterface`.
 
 ## Validation Rules
 The following validation rules are available.
@@ -443,7 +442,6 @@ Examples:
 
 ### File Checker - prefix `file::`
 File checker fully supports the filename provided in a string form or using `UploadedFileInterface` (PSR-7).
-This makes the checker very useful for uploading files.
 
 | Rule          | Parameters            | Description           
 | ---           | ---                   | ---                   
@@ -453,12 +451,12 @@ This makes the checker very useful for uploading files.
 | extension     | extensions:*array*    | Check if file extension in whitelist. Client name of uploaded file will be used!
 
 ### Image Checker - prefix `image::`
-Image checker extends the file checker and fully supports it's features.
+The image checker extends the file checker and fully supports its features.
 
 | Rule          | Parameters                | Description           |
 | ---           | ---                       | ---                   |
-| type          | types:*array*             | Check if image is within a list of allowed image types.
-| valid         | ---                       | Shortcut to check if the image has a valid type (JPEG, PNG and GIF are allowed).
+| type          | types:*array*             | Check if the image is within a list of allowed image types.
+| valid         | ---                       | Shortcut to check if the image has an allowed type (JPEG, PNG, and GIF are allowed).
 | smaller       | width:*int*, height:*int* | Check if image is smaller than a specified shape (height check if optional).
 | bigger        | width:*int*, height:*int* | Check if image is bigger than a specified shape (height check is optional).
 
@@ -477,7 +475,7 @@ Image checker extends the file checker and fully supports it's features.
 Be carefull, two `new \DateTime('now')` objects will 99% have different microseconds values so they will never be equal.
 
 ## Custom Validation Rules
-Is it possible to create application specific validation rules via custom checker implementation.
+It is possible to create application-specific validation rules via custom checker implementation.
 
 ```php
 namespace App\Security;
@@ -513,9 +511,9 @@ class DBChecker extends AbstractChecker
 }
 ``` 
 
-> Use prebuild constant MESSAGES to define custom error template.
+> Use prebuild constant `MESSAGES` to define a custom error template.
 
-To activate checker register it in `ValidationBootloader`:
+To activate checker, register it in `ValidationBootloader`:
 
 ```php
 namespace App\Bootloader;

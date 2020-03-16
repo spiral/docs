@@ -1,14 +1,14 @@
-# Security - Role Based Access Control
-The framework includes the component `spiral/security` which provides the ability to authorize user/actor access to the
-specific resources or actions based on list of associated privileges. The components implements "Flat RBAC" patterns
+# Security - Role-Based Access Control
+The framework includes the component `spiral/security`, which provides the ability to authorize user/actor access to the
+specific resources or actions based on the list of associated privileges. The components implements "Flat RBAC" patterns
 described in [NIST RBAC research](https://csrc.nist.gov/projects/role-based-access-control). 
 
 Implementation includes multiple additions such as:
 - an additional layer of *rules* to control the privilege/permission context
-- the ability to assign role to multiple privileges using wildcard pattern
+- the ability to assign a role to multiple privileges using wildcard pattern
 - the ability to overwrite role-to-permission assignment using higher priority rule
 
-> Such additions make possible to use the component as the framework for ACL, DAC and ABAC security models.
+> Such additions make it possible to use the component as the framework for ACL, DAC, and ABAC security models.
 
 Make sure to enable the `Spiral\Bootloader\Security\GuardBootloader` to activate the component, no configuration is 
 required.
@@ -29,7 +29,7 @@ interface ActorInterface
 
 Read how to use authenticated user as an actor [here](/security/authentication.md).
 
-By default, the application use `Spiral\Security\Actor\Guest` as default actor. You can set the actor globally or inside
+By default, the application use `Spiral\Security\Actor\Guest` as the default actor. You can set the Actor globally or inside
 IoC scope using the container binding. 
 
 ```php
@@ -52,9 +52,9 @@ class HomeController
 }
 ```
 
-> You can set the active actor using domain core interceptors, GRPC interceptors, HTTP middleware, custom IoC scopes and etc.
+> You can set the active Actor using domain core interceptors, GRPC interceptors, HTTP middleware, custom IoC scopes, etc.
 
-For the simplicity of this guide we will see the default actor globally, via custom bootloader:
+For the simplicity of this guide, we will see the default actor globally, via custom Bootloader:
 
 ```php
 namespace App\Bootloader;
@@ -74,8 +74,8 @@ class SecurityBootloader extends Bootloader
 ```
 
 ## GuardInterface
-In order to use RBAC component we must register available roles and create association between the role and the permission, 
-use the same bootloader and `Spiral\Security\PermissionsInterface` for this purpose. 
+To use the RBAC component, we must register available roles and create an association between the role and the permission, 
+use the same Bootloader, and `Spiral\Security\PermissionsInterface` for this purpose. 
 
 ```php
 namespace App\Bootloader;
@@ -98,11 +98,11 @@ class ActorBootloader extends Bootloader
 }
 ```
 
-> The role-rule-permission association will be explained in details down below.
+> The role-rule-permission association will be explained in detail down below.
 
-Once the bootloader is activated you can use the `Spiral\Core\GuardInterface` to check the access to the specific permissions,
-the guard will resolve active actor automatically via active scope using `Spiral\Security\GuardScope`. The interface
-provides the method `allows` which we can use to check if the actor has the access to the specific permission:
+Once the Bootloader is activated, you can use the `Spiral\Core\GuardInterface` to check the access to the specific permissions,
+the guard will resolve active Actor automatically via dynamic scope using `Spiral\Security\GuardScope`. The interface
+provides the method `allows` which we can use to check if the Actor has access to the specific permission:
 
 ```php
 namespace App\Controller;
@@ -146,11 +146,11 @@ class HomeController
 }
 ```
 
-> You can use `GuardInterface` in controllers, services and views.
+> You can use `GuardInterface` in controllers, services, and views.
 
 ### Permission Context
 The `allows` method of the guard object supports the second argument which defines the permission context, usually
-it must contain the instance of the target entity which current actor is trying to access or edit.
+it must contain the instance of the target entity which current Actor is trying to access or edit.
 
 ```php
 namespace App\Controller;
@@ -170,14 +170,14 @@ class HomeController
 }
 ``` 
 
-Down below we will explain how to use the context to create more complex role-permission associations.
+Down below, we will explain how to use the context to create more complex role-permission associations.
 
 ## Permissions Management
-The core part of the RBAC component is `Spiral\Security\PermissionInterface`. While you can use your own implementation
-with dynamic role and permission configuration, by default, it's intended to configure mapping in the bootloader.
+The core part of the RBAC component is `Spiral\Security\PermissionInterface`. While you can use your implementation
+with dynamic role and permission configuration, by default, it's intended to configure mapping in the Bootloader.
 
 ### Create Role
-Every application user role must first be register in the RBAC component, use method `addRole`:
+Every application must register available user roles in the RBAC component, use method `addRole`:
 
 ```php
 namespace App\Bootloader;
@@ -195,7 +195,7 @@ class SecurityBootloader extends Bootloader
 ```
 
 ### Permission
-Once the role or roles are created you can associate them to the permission using method `associate`:
+Once the role or roles created, you can associate them to the permission using the method `associate`:
 
 ```php
 namespace App\Bootloader;
@@ -236,8 +236,8 @@ $rbac->associate('guest', 'home.*.*');
 ```
 
 ### Exclude Permission
-In some cases you need to grant access to all of the namespace permissions excluding specific ones. Overwrite the permissions
-using 3rd argument which can specify the rule. To forbid access use `Spiral\Security\Rule\ForbidRule`:
+In some cases, you need to grant access to all of the namespace permissions, excluding specific ones. Overwrite the permissions
+using the 3rd argument, which can specify the Rule. To forbid role access use `Spiral\Security\Rule\ForbidRule`:
 
 ```php
 namespace App\Bootloader;
@@ -258,7 +258,7 @@ class SecurityBootloader extends Bootloader
 }
 ```
 
-The default rule used to create an association is `AllowRule`, the previous example can be explained better using:
+The default rule used to create an association is `AllowRule`. The previous example can be explained better using:
 
 ```php
 namespace App\Bootloader;
@@ -279,10 +279,10 @@ class SecurityBootloader extends Bootloader
 }
 ```
 
-> The Guard will check the all of the actor roles, at least one of them must allow the access in order to grant the permission.
+> The Guard will check all of the actor roles, at least one of them must grant the permission.
 
 ## Rules
-As mentioned above all of the role-to-permission associated are controlled using set of rules. Each rule must implement
+As mentioned above, all of the role-to-permission associated controlled using a set of rules. Each Rule must implement
 `Spiral\Security\RuleInterface`. 
 
 ```php
@@ -300,13 +300,13 @@ if (!$guard->allows('home.read', ['key' => 'value'])) {
 }
 ``` 
 
-Such an approach allows you to create complex rule association between role and the set of permissions.
+Such an approach allows you to create a complex rule association between the role and the set of permissions.
 
 > The default rules `AllowRule` and `ForbidRule` are always returning `true` and `fast` accordingly.
 
 ### Custom Rules
-To create custom rule simply implement the `Spiral\Security\RuleInterface` interface, for example we can create the rule
-which will only allow the access when the context has `key` equals `value`:
+To create custom rule simply implement the `Spiral\Security\RuleInterface` interface, for example, we can create the Rule
+which will only allow access when the context has `key` equals `value`:
 
 ```php
 namespace App\Security;
@@ -323,7 +323,7 @@ class SampleRule implements RuleInterface
 }
 ```
 
-You can assign this rule to the role-to-permission association using class name:
+You can assign this Rule to the role-to-permission association using class name:
 
 ```php
 namespace App\Bootloader;
@@ -377,7 +377,7 @@ if ($this->guard->allows('post.edit', ['post' => $post])) {
 }
 ```
 
-And the rule to check if user if author:
+And the Rule to check if the user if author:
 
 ```php
 class SampleRule implements RuleInterface
@@ -390,7 +390,7 @@ class SampleRule implements RuleInterface
 ```
 
 ### Abstract Rule
-To simplify the rule creation use the `Spiral\Security\Rule` which enables the method injection with on method `check`.
+To simplify the rule creation, use the `Spiral\Security\Rule`, which enables the method injection with on method `check`.
 
 ```php
 namespace App\Security;
@@ -408,7 +408,7 @@ class SampleRule extends Rule
 
 > You can access to any application services via method injection.
 
-It is recommended to declare rules as singletons to improve the performance of the application.
+We recommend declaring rules as singletons to improve the performance of the application.
 
 
 ```php
