@@ -1,4 +1,4 @@
-# Cookbook - Custom PSR-15 handlers
+# HTTP - Custom PSR-15 handlers
 Spiral Framework is compliant with `PSR-7`, `PSR-15`, and `PSR-17` community standards; it allows you to swap HTTP layer implementation to any alternative.
 
 > By default, `Psr\Http\Server\RequestHandlerInterface` is implemented and binded to `Spiral\Router\Router`. You would have to disable
