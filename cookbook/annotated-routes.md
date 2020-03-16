@@ -1,8 +1,9 @@
+
 # Cookbook - Annotated Routing
 At this moment, Spiral Framework does not provide annotated-routes support out of the box like in Symfony. Combine extensions
-`spiral/annotated` and `spiral/router` in order to build your own domain routing logic.
+`spiral/annotated` and `spiral/router` to build your domain-specific routing logic.
 
-> Route parsing will take some time during the bootload phase of your application but it won't affect the runtime
+> Route parsing will take some time during the bootload phase of your application, but it won't affect the runtime
 > performance. 
 
 ## Annotation
@@ -55,7 +56,7 @@ class DemoController
 > You can use route patterns and parameters as described [here](/http/routing.md).
 
 ## Bootloader
-Alter `RoutesBootloader` bootloader in order to convert annotations into routes. Use class `Spiral\Annotations\AnnotationLocator`
+Alter `RoutesBootloader` Bootloader to convert annotations into routes. Use class `Spiral\Annotations\AnnotationLocator`
 to find available annotations across application codebase.
 
 ```php
@@ -102,4 +103,4 @@ Run CLI command to check list of available routes:
 $ php app.php route:list
 ```
 
-> Use additional route parameters to configure middleware, common prefix and etc.
+> Use additional route parameters to configure middleware, common prefix, etc.
