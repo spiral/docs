@@ -18,6 +18,96 @@ protected const LOAD = [
 
 > The HTTP component is required for WebSockets to function.
 
+## Spiral Framework WebSocket client
+
+Recommended way to consume broadcast events is to use Spiral Framework WebSocket client
+
+### Installation
+
+SFSocket available for installing with npm or yarn
+
+```bash
+    npm install @spiralscout/websockets -D  
+```
+
+```bash
+    yarn add @spiralscout/websockets 
+```
+
+Next use it like so
+
+```js
+    import { SFSocket } from '@spiralscout/websockets';
+```
+
+Alternatively download [socket.js bundle file](https://github.com/spiral/websocket-client/tree/master/build) and use it directly 
+
+```html
+    <script src="/build/socket.js"></script>
+    <script type="text/javascript">
+        var Socket = SFSocket.SFSocket;
+        var connection = new Socket({ host: 'localhost'});
+    </script>
+```
+
+### Usage sample for broadcast events
+
+```js
+import { SFSocket } from '@spiralscout/websockets';
+
+const socketOptions = { host: 'localhost' };
+
+// create an instance of SFSocket
+const ws = new SFSocket(socketOptions);
+
+const prepareEvent = event => doSomething(event);
+
+// subscribe to server
+ws.subscribe('message', prepareEvent);
+
+// runtime ready for all instances
+SFSocket.ready();
+
+// unsubscribe from server 
+ws.unsubscribe('message', prepareEvent);
+
+// disconnect from server 
+ws.disconnect();
+```
+
+### Usage sample to listen a specific channel
+
+```js
+import { SFSocket } from '@spiralscout/websockets';
+
+const socketOptions = { host: 'localhost' };
+
+const ws = new SFSocket(socketOptions);
+
+SFSocket.ready();
+
+// create a channel and it is automatically connected to server
+const channel1 = ws.joinChannel('channel_1');
+const channel2 = ws.joinChannel('channel_2', true); // This one wont auto-join now
+
+// subscribe the channel to server 
+channel1.subscribe('message', (event) => doSomething(event));
+channel2.subscribe('message', (event) => doSomething(event));
+
+channel2.join(); // Start receiving messages for channel2 
+
+// disconnect the channel from server 
+channel1.leave();
+channel2.leave();
+
+// disconnect everything
+ws.disconnect()
+```
+
+### Detailed API
+
+Detailed API description is [available on GitHub](https://github.com/spiral/websocket-client) 
+
 ## Native JavaScript Client
 Use native JavaScript websockets functionality to connect to the server on `/ws`:
 
