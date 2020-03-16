@@ -1,5 +1,5 @@
 # Internalization - Import and Export
-It is possible to export application locale bundles into following formats:
+It is possible to export application locale bundles into the following formats:
 - raw PHP
 - GetText PO
 - CSV
@@ -12,7 +12,7 @@ To export application locate bundles run:
 $ php app.php i18n:export en ./
 ```
 
-> Export `en` locale into current directory.
+> Export `en` locale into the current directory.
 
 You should observe file `messages.en.php` created in this directory. To export in alternative formats:
 
@@ -20,10 +20,10 @@ You should observe file `messages.en.php` created in this directory. To export i
 $ php app.php i18n:export en ./ -d po
 ```
 
-This command will export the locale into gettext format.
+This command will export the locale into the GetText format.
 
 ## Generate Locale
-The framework is capable to automatically generate locale files using static code indexation. Run command `i18n:index` 
+The framework is capable of generating locale files using static code indexation automatically. Run command `i18n:index` 
 to find all declared stings.
 
 ```bash
@@ -31,4 +31,4 @@ $ php app.php i18n:index -vv
 ```
 
 ## Import Locale
-To import locate into the project simply locate the locale files in `app/locale/{lang}` directory.
+Import locate into the project by placing files `app/locale/{lang}` directory. Use GetText, PHP, or JSON formats.
