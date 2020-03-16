@@ -1,13 +1,13 @@
 # GRPC - Streaming
-In some cases you might need to provide the large portions of data for the consumer. Combine the ability to write custom
-Golang GRPC service, Jobs and Broadcast to stream data from PHP application.
+In some cases, you might need to provide large portions of data for the consumer. Combine the ability to write a custom
+Golang GRPC service, Jobs, and Broadcast to stream data from PHP application.
 
 > Attention, this article an example implementation. Make sure to implement proper backoff strategy and timeout management
-> before going to production. Make sure to read other GRPC articles prior to this section.
+> before going to production. Make sure to read other GRPC articles before this section.
 
 ## Service Definition
-We can define the service as singular endpoint with streaming response. The client will connect the streaming
-service and must stop consuming after the null message received. The consuming will be initiated using given `id`.
+We can define the service as a singular endpoint with a streaming response. The client will connect the streaming
+service and must stop consuming after the null message received. The consuming will initiate based on the provided `id`.
  
 ```json
 syntax = "proto3";
@@ -37,14 +37,14 @@ $ protoc -I proto/ proto/stream.proto --go_out=plugins=grpc:strea
 ```
 
 ## Consumer
-The client/consumer application will be displaying all streamed content directly into `strdout`. You can create it in a 
+The client/consumer application will be displaying all streamed content directly into `stdout`. You can create it in a 
 separate directory. Copy the `stream` directory and `app.crt` to your client application. 
 
 ```bash
 $ go mod init client
 ```
 
-Application will look as following:
+The application will look as follows:
 
 ```golang 
 package main
@@ -91,7 +91,7 @@ func main() {
 ```
 
 ## Producer
-The producer application will be split into Golang and PHP part. The Golang will route message to backgroud PHP process
+The producer application contains Golang and PHP parts. The Golang will route message to backgroud PHP process
 using spiral/jobs package and later read the produced response using unique broadcast topic.
 
 The service will look as following:
@@ -230,4 +230,4 @@ class Produce extends JobHandler
 
 > You can split the streaming into multiple smaller jobs.
 
-Run server and then the client to test the streaming.
+Run the server and then the client to test the streaming.

@@ -1,5 +1,5 @@
 # GRPC - Client SDK
-You must generate the client SDK in order to access your endpoints. This article is based on proto file described
+You must generate the client SDK to access your endpoints. This article based on proto file described
 [earlier](/grpc/service.md).
 
 ## Prerequisites 
@@ -41,7 +41,7 @@ $ protoc -I proto/ --plugin=protoc-gen-grpc=grpc/bins/opt/grpc_php_plugin --php_
 You can observe the generated client code in `App/Calculator/CalculatorClient.php`.
 
 ### Composer
-Make sure to create the `composer.json` and run `composer update` in order to make generate SDK loadable:
+Make sure to create the `composer.json` and run `composer update` to make the generated code loadable:
 
 ```json
 {
@@ -58,7 +58,7 @@ Make sure to create the `composer.json` and run `composer update` in order to ma
 ```
 
 ### Certificate
-In order to connect to the running server make sure to copy `app.crt` to your client application.
+To connect to the running server, make sure to copy `app.crt` to your client application.
 
 ## Example
 We can create the client now in `client.php`:
@@ -90,7 +90,7 @@ print_r($result->getResult());
 Run `php client.php` to test your client.
 
 ### Passing Metadata
-You can pass the metadata using second argument of the `Sum` function, use `$mt->metadata` to read the response metadata.
+You can pass the metadata using the second argument of the `Sum` function, use `$mt->metadata` to read the response metadata.
 
 To read and send metadata in `Calculator`:
 
@@ -147,10 +147,10 @@ print_r($call->wait()[0]->getResult());
 print_r($call->getMetadata()['server-key']);
 ```
 
-You can now observe the metadata passing from client and server.
+You can now observe the metadata passing from the client and server.
 
 ## Golang Clients
-GRPC allows you to create client SDK on any supported language. To create client on Golang run install the GRPC toolkit first:
+GRPC allows you to create client SDK on any supported language. To generate client on Golang, install the GRPC toolkit first:
 
 ```bash
 $ go get -u github.com/golang/protobuf/protoc-gen-go

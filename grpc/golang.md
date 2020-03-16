@@ -35,8 +35,7 @@ $ protoc -I proto/ proto/multiplier.proto --go_out=plugins=grpc:multiplier
 > Make sure to install `protoc-gen-go`. Read about installation [here](/grpc/client.md).
 
 ## Create Service
-Create RoadRunner compatible service in multipler directory. To register GRPC service request the `*grpc.Service` dependency
-and invoke `AddService`:
+Create RoadRunner compatible service in the `multiplier` directory. Register GRPC service using the `*grpc.Service`->`AddService`:
 
 ```golang
 package multiplier
@@ -63,7 +62,7 @@ func (s *Service) Mult(ctx context.Context, in *Mult) (*MultResult, error) {
 }
 ```
 
-To activate the service make sure to create and build custom application server: 
+To activate the service, make sure to create and build a custom application server: 
 
 ```bash
 $ go mod init demo
@@ -174,4 +173,4 @@ You can run the server now:
 $ go run main.go serve -v -d
 ```
 
-> Read [here](/grpc/streaming.md) how to implement streaming and batch processing using hybrid PHP/Go approach.
+> Read [here](/grpc/streaming.md) how to implement streaming and batch processing using a hybrid PHP/Go approach.
