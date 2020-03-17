@@ -74,7 +74,7 @@ Delete following files and directories as not longer required `app/locale`, `app
 > Alternatively, start from `spiral/app-cli` build and add needed components on-demand.
 
 ### Developer Mode
-To simplify the tweaking of application restart the application server in developer mode. In this mode the server use
+To simplify the tweaking of application restart the application server in developer mode. In this mode the server uses
 only one worker and reloads it after every request.
 
 ```bash
