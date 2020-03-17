@@ -1,11 +1,11 @@
 # Database - Query Builders
 You can read how to work with Database using manually written queries [here](/database/access.md). 
 
-DBAL component includes set of query builders used to unify the way of working with different databases
-and simplify migration to different DBMS over the lifetime of application.
+DBAL component includes a set of query builders used to unify the way of working with different databases
+and simplify migration to different DBMS over the lifetime of the application.
 
 ## Before we start
-In order to demonstrate query building abilities let's declare sample table in our default database first:
+To demonstrate query building abilities let's declare sample table in our default database first:
 
 ```php
 namespace App\Controller;
@@ -97,7 +97,7 @@ dump($table->insertOne([
 ]));
 ```
 
-> Table class will automatically run query and return last inserted id. You can also check `insertMultiple` method of Table.
+> Table class will automatically run a query and return the last inserted id. You can also check the `insertMultiple` method of Table.
 
 ## SelectQuery Builder
 SelectQuery builder can be retrieved two very similar ways, you can either get it from database or from table instances:
@@ -113,8 +113,7 @@ $select = $db->test->select();
 ```
 
 ### Select Columns
-By default SelectQuery selects every column (`*`) from it's related table. We can always change set of requested columns
- using `columns` method.
+By default, SelectQuery selects every column (`*`) from its related table. We can always change the set of requested columns using the `columns` method.
 
 ```php
 $db->users->select()
@@ -173,7 +172,7 @@ FROM `primary_test`
 WHERE `status` = 'active'        
 ```
 
-> Note, that prepared statement will be used behind the scenes.
+> Note that prepared statements used behind the scenes.
 
 You can skip '=' in your conditions:
 
@@ -312,7 +311,7 @@ FROM `primary_test`
 WHERE (`id` = 1 AND `status` = 'active')
 ```
 
-You can also specify custom comparision operators using nested arrays:
+You can also specify custom comparison operators using nested arrays:
 
 ```php
 $select->where([
@@ -321,7 +320,7 @@ $select->where([
 ]);
 ```
 
-> Attention, you have to wrap all array arguments using Parameter class, scalar arguments will be wrapped automatically.
+> Attention, you have to wrap all array arguments using Parameter class. Scalar arguments will be wrapped automatically.
 
 Resulted SQL:
 
@@ -380,11 +379,11 @@ FROM `primary_test`
 WHERE ((`id` BETWEEN 10 AND 100 AND `name` = 'Anton') OR `status` = 'disabled')
 ```
 
-You can experiment with both ways to declare where conditions and pick one you like more.
+You can experiment with both ways to declare where conditions and pick the one you like more.
 
 #### Parameters
 Spiral mocks all given values using `Parameter` class internally, in some cases (array) you might need to pass `Parameter` 
-directly. You can alter parameter value at any moment, but before query `run` method:
+directly. You can alter the parameter value at any moment, but before the query `run` method:
 
 ```php
 use Spiral\Database\Injection\Parameter;
@@ -405,9 +404,9 @@ foreach ($select as $row) {
 ```
 
 > You can also pass requested PDO parameter type as second argument: `new Parameter(1, PDO::PARAM_INT)`.
-> Internally every value passed into where method are going to be wrapped using Parameter class.
+> Internally, every value passed into the `where` method is going to be wrapped using the Parameter class.
 
-You can implement ParameterInterface if you want to declare your own parameter wrappers with custom logic.
+You can implement ParameterInterface if you want to declare your parameter wrappers with custom logic.
 
 #### SQL Fragments and Expressions
 QueryBuilders allow you to replace some of where statements with custom SQL code or expression. Use `Spiral\Database\Injections\Fragment`
@@ -429,7 +428,7 @@ FROM `primary_test`
 WHERE `id` = DAYOFYEAR('2015-09-12')
 ```
 
-If you wish to compare complex value to user parameter replace where column with expression:
+If you wish to compare complex value to user parameter, replace where the column with the expression:
 
 ```php
 use Spiral\Database\Injection\Expression;
@@ -463,7 +462,7 @@ FROM `primary_test`
 WHERE CONCAT(`id`, '-', `status`) = '1-active'
 ```
 
-Expressions are extremely useful when you Database have non empty prefix:
+Expressions are handy when your Database has a non-empty prefix:
 
 ```php
 $select->where(
@@ -479,9 +478,9 @@ FROM `primary_test`
 WHERE CONCAT(`primary_test`.`id`, '-', `primary_test`.`status`) = '1-active'
 ```
 
-You can also use expressions and fragments as column values in insert and update statements.
+You can also use expressions and fragments as column values in the insert and update statements.
 
-> Please keep client data as far from Expressions and Fragments as it possible.
+> Please keep client data as far from Expressions and Fragments as possible.
 
 ### Table and Column aliases
 QueryBuilders support user defined table and column aliases:
@@ -616,10 +615,10 @@ FROM `primary_users`
 WHERE `id` = `primary_test`.`id` AND `id` != 100) = 'Anton'
 ```
 
-> Nested queries will only work when nested query belongs to the same database as primary builder. 
+> Nested queries will only work when the nested query belongs to the same database as a primary builder. 
 
 ### Having
-Use methods `having`, `orHaving` and `andHaving` methods to define HAVING conditions. Syntax is identical to WHERE statement. 
+Use methods `having`, `orHaving`, and `andHaving` methods to define HAVING conditions. The syntax is identical to the WHERE statement. 
 
 > Yep, it was quick.
 
@@ -760,7 +759,7 @@ ORDER BY `primary_test`.`name` DESC, `primary_test`.`id` ASC
 > You can also use Fragments instead of sorting identifiers (by default identifiers are treated as column name or expression).
 
 ### GroupBy and Distinct
-If you wish to select only unique results from your selection use method `distinct` (always use `distinct` while loading 
+If you wish to select unique results from your selection use method `distinct` (always use `distinct` while loading 
 HAS_MANY/MANY_TO_MANY relations in ORM).
 
 ```php
@@ -905,7 +904,7 @@ $db->table('test')
 ```
 
 ## Complex Expressions
-You are able to use Expression object to create complex, driver specific, SQL injections with included parameters.
+You can use Expression object to create complex, driver-specific, SQL injections with included parameters.
 
 ```php
 $db->table('test')

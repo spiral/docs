@@ -1,6 +1,6 @@
 # Database - Schema Introspection
-Spiral Database layer provides the ability to read and analyze basic properties of a given database or a given table.
-DBAL layer include set of "abstract" types assigned to each column based on DBMS specific mapping in order to unify 
+The Spiral Database layer provides the ability to read and analyze the basic properties of a given database or a given table.
+DBAL layer include set of "abstract" types assigned to each column based on DBMS specific mapping to unify 
 different engines.
 
 ## List of database tables
@@ -22,7 +22,7 @@ foreach ($database->getTables() as $table) {
 }
 ```
 
-> Only tables specific to database prefix (if any) are resulted.
+> Only tables specific to database prefix (if any) returned.
 
 Schema Reader/Builder (`AbstractTable`) is available using `getSchema` method:
 
@@ -33,8 +33,8 @@ foreach ($database->getTables() as $table) {
 ```
 
 ## Reading table properties using AbstractTable
-The AbstractTable provides low level access to table information such as column types (internal and abstract), indexes,
-foreign keys and etc. You can use this information to perform database export, build your own ORM or migration mechanism 
+The AbstractTable provides low-level access to table information such as column types (internal and abstract), indexes,
+foreign keys, etc. You can use this information to perform database export, build your own ORM or migration mechanism 
 (see [schema declaration](/database/declaration.md)).
 
 Table primary keys:
@@ -95,7 +95,7 @@ foreach ($schema->getColumns() as $column) {
 }
 ```
 
-> Some types can be mapped incorrectly if the table was created outside migrations or ORM.
+> Some types can be mapped incorrectly if the table created outside migrations or ORM.
 
 You can find a complete list of available abstract types [here](/database/declaration.md).
 
@@ -104,8 +104,8 @@ You can also use console commands to get information about configured tables and
 
 Command         | Description 
 ---             | ---
-db:list         | Get list of databases, their tables and records count.
-db:table        | View table schema of default or specific database.
+db:list         | Get the list of databases, their tables, and records count.
+db:table        | View table schema of default or a specific database.
 
 ```
 > ./spiral.cli db:table people --database=postgres

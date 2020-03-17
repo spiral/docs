@@ -1,9 +1,9 @@
 # Database - Migrations
 Spiral ships with a set of embedded commands to control your database migrations, [component](https://github.com/spiral/migrations) 
-is build upon DBAL and support virtual databases and prefixes.
+is build upon DBAL and supports virtual databases and prefixes.
 
 ## Configure Migrations (optional)
-You can configure what database and table to use to store information about schema version in migrations config. Create
+You can configure what database and table to use to store information about the schema version in migrations config. Create
 `app/config/migrations.php` to alter default values:
 
 ```php
@@ -19,17 +19,17 @@ return [
 ];
 ```
 
-Migration state table can be automatically initiated using the command `migrate:init`.
+Migration state table can automatically initiate using the command `migrate:init`.
 
 ## Create a migration
-We can create our migrations manually or use scaffolder module for such purposes with a set of helper options:
+We can create our migrations manually or use a scaffolder module for such purposes with a set of helper options:
 
 ```bash
 $ php app.php create:migration -t sample_table -f id:primary -f name:string my_migration
 Declaration of 'MyMigrationMigration' has been successfully written into '20170401.160544_0_my_migration.php'.
 ```
 
-The migration will be automatically placed into your `app/migrations` directory:
+The migration will automatically place into your `app/migrations` directory:
 
 ```php
 class MyMigrationMigration extends Migration
@@ -200,4 +200,4 @@ WHERE `migration` = 'new_field'
 All migration methods are based on DBAL functions, feel free to use same abstract types as in 
 [direct schema declarations](/database/declaration.md).
 
-> Note that ORM component can create migrations automatically.
+> Note that the Cycle ORM component can create migrations automatically.

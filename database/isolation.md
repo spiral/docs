@@ -1,19 +1,12 @@
 # Database - Logical Isolation
-The spiral/database component provides the ability to use single connection for multiple, logically isolated, databases.
-The isolation is performed using table prefix which is automatically added to every SQL identifier.
+The spiral/database component provides the ability to use a single connection for multiple, logically isolated databases.
+The isolation performed using table prefix, which automatically added to every SQL identifier.
 
 ## Configuration
 To enable database prefix use option `prefix` of your database in `app/config/database.php`:
 
 ```php
 <?php
-
-/**
- * Spiral Framework.
- *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J)
- */
 
 declare(strict_types=1);
 
@@ -47,5 +40,5 @@ public function index(Database $db)
 }
 ```
 
-> The schema introspection and declaration will work with isolated database by automatically adding prefix to all declared
+> The schema introspection and declaration will work with the isolated database by automatically adding a prefix to all declared
 > tables.

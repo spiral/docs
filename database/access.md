@@ -2,7 +2,7 @@
 Follow the configuration instructions [here](/database/overview.md).
 
 ## Access the Database
-Once DBAL component is configured properly you can access your databases in controllers and services multiple ways:
+Once DBAL component configured properly, you can access your databases in controllers and services multiple ways:
 
 ```php
 namespace App\Controller;
@@ -66,7 +66,7 @@ class HomeController
 ```
 
 ## Run Queries
-To run database query use method `query`:
+To run the database query use method `query`:
 
 ```php
 dump(
@@ -79,7 +79,7 @@ dump(
 );
 ```
 
-To execute update or delete statement use alternative method `execute`:
+To execute update or delete statement use the alternative method `execute`:
 
 ```php
 dump(

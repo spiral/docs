@@ -1,13 +1,12 @@
 # Database - Installation and Configuration
-The `spiral/database` component is included by default in Web and GRPC builds. The DBAL focuses mainly on unifying database 
-access rather than trying to get 100% of the specific DBMS feature set.
+The `spiral/database` component is included by default in Web and GRPC builds. The DBAL focuses mainly on unifying database access rather than trying to get 100% of the specific DBMS feature set.
  
 However, you can always use direct queries to bypass the spiral abstractions.
 
-> Spiral DBAL supports MySQL, MariaDB, SQLite, PostgresSQL and SQLServer (Windows) databases.
+> Spiral DBAL supports MySQL, MariaDB, SQLite, PostgresSQL, and SQLServer (Windows) databases.
 
 ## Installation
-To install the component in alternative bundles or as standalone library: 
+To install the component in alternative bundles or as a standalone library: 
 
 ```bash
 $ composer require spiral/database
@@ -29,7 +28,7 @@ To enable migrations component:
 $ composer require spiral/migrations
 ```
 
-And corresponding bootloader:
+And the corresponding bootloader:
 
 ```php
 protected const LOAD = [
@@ -40,8 +39,7 @@ protected const LOAD = [
 ```
 
 ## Configuration
-By default, the database configuration is located in `app/config/database.php` file. Configuration include set of options 
-for each database driver, database-driver association and database aliases.
+By default, the database configuration located in `app/config/database.php` file. The configuration includes a set of options for each database driver, database-driver association, and database aliases.
 
 ```php
 <?php
@@ -65,8 +63,8 @@ return [
 ```
 
 ### Declare Connection
-To create new database connection add new section or alter existed options of `drivers` section of your configuration, 
-you are able to use `env` function to keep your passwords and usernames separately.
+To create new database connection add a new section or alter existed options of `drivers` section of your configuration, 
+you can use `env` function to keep your passwords and usernames separately.
 
 ```php
 <?php
@@ -144,10 +142,9 @@ return [
 ```
 
 ### Aliases
-You application and modules can access database multiple different ways. Database aliasing allows you to use separate 
-databases with relation to one physical database.
+Your application and modules can access the database in multiple different ways. Database aliasing allows you to use separate databases with relation to one physical database.
 
-> Use aliases to configure IoC autowiring.
+> Use aliases to configure IoC auto wiring.
 
 Example controller constructor:
 ```
@@ -191,7 +188,7 @@ return [
 The default Web and GRPC bundles include a set of console commands to view the database schema.
 
 ### View available drivers and tables
-To view available databases, drivers and tables:
+To view available databases, drivers, and tables:
 
 ```bash
 $ php app.php db:list
@@ -209,7 +206,7 @@ The output:
 ```
 
 ### View table schema
-To view the details about particular table:
+To view the details about a particular table:
 
 ```bash
 $ php app.php db:table posts
@@ -243,7 +240,7 @@ Foreign Keys of default.posts:
 ```
 
 ## Standalone Usage
-You can initiate DBAL component as standalone library. The configuration can be provided in a form of array:
+You can initiate the DBAL component as a standalone library. Provide the configuration in array form:
 
 ```php
 use Spiral\Database;
