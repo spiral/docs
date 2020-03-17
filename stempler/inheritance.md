@@ -1,6 +1,6 @@
 # Stempler - Inheritance and Stacks
-As your templates become bigger it's crucial to properly separate page and layout specific content between templates.
-Stempler provides a number of control statements to achieve such goal.
+As your views become more complex, it's crucial to separate page and layout specific content between templates properly.
+Stempler provides several control statements to achieve such a goal.
 
 ## Extend Layout
 To start let's create standard HTML template for our page (`app/views/home.dark.php`):
@@ -18,11 +18,11 @@ To start let's create standard HTML template for our page (`app/views/home.dark.
 </html>
 ```
 
-Most likely, your application will contain more than one page template. In order to avoid code duplication Stempler
+Most likely, your application will contain more than a one-page template. To avoid code duplication Stempler
 provides the ability to inherit parent layout.
 
-> Stempler will compile tamplate and parent layout into optimized PHP code, you can exclude as many layouts as you want
-> without performance penalty.
+> Stempler will compile template and parent layout into an optimized PHP code. You can exclude as many layouts as you want
+> without a performance penalty.
 
 Create layour in `app/views/layout/base.dark.php`:
 
@@ -56,8 +56,8 @@ Alternatively use the syntax:
 > You can use view namespaces in such declaration, for example: `<extends path="default:layout/base"/>`.
 
 ### Replace Blocks
-The extending of the parent layout does not make much sense unless we can redefine some of it's content. To define
-replaceable block use tag `<block:name>`. Change the `layout/base.dark.php`
+The extending of the parent layout does not make much sense unless we can redefine some of its content. To define
+replaceable block, use tag `<block:name>`. Change the `layout/base.dark.php`
 accordingly:
 
 ```html
@@ -252,8 +252,8 @@ The produced HTML:
 Stempler includes the ability to aggregate multiple blocks defined within the template. 
 
 ### Classic Approach
-Often you would need to add custom JS or CSS resource to your layout. To achieve it using `block` directives
-wrap needed resources into block and append content to it in your child template.
+Often you would need to add custom JS or CSS resource to your layout. To achieve it use `block` directives
+wrap needed resources into the block and append content to it in your child template.
 
 Modify `app/views/layout/base.dark.php` as:
 
@@ -306,7 +306,7 @@ The produced HTML:
 ```
 
 ### Create Stack
-To demonstrate how the following can be achieved using stacks we should start with simple example in `app/home.dark.php`.
+To demonstrate how the following can be achieved using stacks, we should start with a simple example in `app/home.dark.php`.
 Create stack placeholder using `<stack:collect name="name"/>`: 
 
 ```html
@@ -404,7 +404,7 @@ While this example won't work:
 </stack:prepend>
 ```
 
-> This limitation is caused by AST nature of stack collectors.
+> This limitation is caused by the AST nature of stack collectors.
 
 To bypass such limitation without moving the placeholder level above use `stack:collect` attribute `level`:
 
@@ -420,7 +420,7 @@ To bypass such limitation without moving the placeholder level above use `stack:
 </stack:prepend>
 ```
 
-The attribute `level` configures stack to be active multiple levels above. For example given example **won't work**:
+The attribute `level` configures stack to be multiple active levels above. For example, given example **won't work**:
 
 ```html
 <div>
@@ -498,11 +498,10 @@ Now you can push the value from `app/views/home.dark.php`:
 </block:page>
 ```
 
-> You have to make sure that `stack:push` is located in one of extended blocks. See below how to bypass it.
+> You have to make sure that `stack:push` is located in one of the extended blocks. See below how to bypass it.
 
 ## Context and Hidden content
-As you can see in previous example it's is not convenient to use both stack and blocks as the same time. This is caused
-by the fact that stack collection happens after the extending of parent layout. Keeping stack outside of any `block` will
+As you can see in the previous example, it's is not convenient to use both stack and blocks at the same time. It is happening because that stack collection occurs after the extension of the parent layout. Keeping stack outside of any `block` will
 leave it out of the template.
 
 All stempler blocks defined in child template outside of `block` tag will appear in system block `context`. We can modify
@@ -583,6 +582,6 @@ to hide such content from end use use `<hidden></hidden>` tag in `app/views/layo
 </html>
 ```
 
-Now, stacking will work as before however the `some random string` won't appear on a page.
+Now, stacking will work as before. However, the `some random string` won't appear on a page.
 
 > Combine stacks with inheritance and [components](/stempler/components.md) to create domain specific rendering DSL.

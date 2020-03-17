@@ -1,12 +1,11 @@
 # Stempler - Directives
-Besides classic echo constructions the Stempler supports a number of Blade-like directives to control the business 
-logic of your templates.
+Besides classic echo constructions, the Stempler supports many Blade-like directives to control the business logic of your templates.
 
 Unlike Blade or Twig, the Stempler directives only responsible for business logic management. See [Components and Props](/stempler/components.md) 
 and [Inheritance](/stempler/inheritance.md) to check how to extend your templates and implement virtual components.
 
 ## Loop Directives
-To loop over list of template variables use the following directives.
+To loop over a list of template variables, use the following directives.
 
 > Directive declaration is similar to native PHP syntax.
 
@@ -52,10 +51,10 @@ Use `@break` and `@continue` directives to interrupt your loops:
 @endwhile
 ```
 
-> `@break(2)` is equvalent to `break 2`. Read more about `if` directives below.
+> `@break(2)` is equivalent to `break 2`. Read more about `if` directives below.
 
 ## Conditional Directives
-Stempler provides a number of conditional directives which are transcribed into native PHP code.
+Stempler provides some conditional directives which transcribed into native PHP code.
 
 The examples are given with the following variables:
 
@@ -105,7 +104,7 @@ Use `@unless` directive to declare negative condition:
 @endunless
 ```
 
-> You can use `@else` and `@elseif` with `@unless` directive.
+> You can use `@else` and `@elseif` with a `@unless` directive.
 
 ### Empty and Isset
 Use `@empty` and `@isset` conditions and `@endempty`, `@endisset` accordingly:
@@ -176,7 +175,7 @@ In both cases the generated view will look like:
 ```
 
 ## Framework specific directives
-Spiral provides a number of framework specific directives.
+Spiral provides a number of framework-specific directives.
 
 ### Container
 To invoke container dependency into template use `@inject($variable, "class")` directive:
@@ -220,7 +219,7 @@ The result `/index.html?id=10`.
 > Read more about routing and named routes [here](/http/routing.md).
 
 ## Custom Directives
-You can declare and register custom directives. To create custom directive create class which extends 
+You can declare and register custom directives. To create custom directive create a class which extends 
 `Spiral\Stempler\Directive\AbstractDirective`. Directive methods must be prefixed with `render` and accept
 `Spiral\Stempler\Node\Dynamic\Directive` as parameter:
 
@@ -243,7 +242,7 @@ class CustomDirective extends AbstractDirective
 }
 ```
 
-> You can also implement `Spiral\Stempler\Directive\DirectiveRendererInterface` to gain lower level access to functionality.
+> You can also implement `Spiral\Stempler\Directive\DirectiveRendererInterface` to gain lower-level access to functionality.
 
 Register your directive in one of your bootloaders via `StemplerBootloader`->`addDirective` method:
 

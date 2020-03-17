@@ -1,9 +1,10 @@
-# Stempler - Installation and Configuration
-Stempler engine provides powerful and flexible template engine with an ability to customize it on lexer, parser and AST
-compilation levels. By default engine is enabled with web build of spiral skeleton application and provide support
-for Blade-like directives and echoing, html components, stacks and others.
 
-In order to install the extensions in alternative bundles:
+# Stempler - Installation and Configuration
+The Stempler engine provides a powerful and flexible template engine with an ability to customize it on lexer, parser, and AST
+compilation levels. By default, the driver is enabled with web build of spiral skeleton application and provides support
+for Blade-like directives and echoing, HTML components, stacks, and others.
+
+To install the extensions in alternative bundles:
 
 ```bash
 $ composer require spiral/stempler-bridge
@@ -12,7 +13,7 @@ $ composer require spiral/stempler-bridge
 Make sure to add `Spiral\Stempler\Bootloader\StemplerBootloader` to your application kernel.
 
 ## Configuration
-The stempler bridge comes pre-configured. To replace and alter the default configuration create file `app/config/views/stempler.php`
+The Stempler bridge comes pre-configured. To replace and alter the default configuration create file `app/config/views/stempler.php`
 with the following content:
 
 ```php
@@ -62,10 +63,9 @@ return [
 ];
 ``` 
 
-However, it is recommend to use `StemplerBootloader` in order to properly configure the component. A number of configuration
-options is available.
+However, it recommended using `StemplerBootloader` to properly configure the component. Several configuration options are available.
 
-> Grammar and Parser configurations are not exposed in current Stempler Bridge version.
+> Grammar and Parser configurations not exposed in the current Stempler Bridge version.
 
 ### Register custom Directive
 To register custom directive.
@@ -88,7 +88,7 @@ class CustomBootloader extends Bootloader
 ```
 
 ### Register custom AST Visitor
-To register custom AST visitor.
+To register a custom AST visitor.
 
 ```php
 namespace App\Bootloader;

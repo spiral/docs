@@ -7,7 +7,7 @@ You can create magical (in both ways) workflows and helpers by implementing your
 > You can read more about how traversing works [here](https://github.com/nikic/PHP-Parser/blob/master/doc/2_Usage_of_basic_components.markdown#node-traversation).
 
 ## Create Visitor
-To create AST visitor you must implement interface provided by Stempler engine - `Spiral\Stempler\VisitorInterface`. 
+To create an AST visitor, you must implement interface provided by the Stempler engine - `Spiral\Stempler\VisitorInterface`. 
 
 We will try to create visitor which automatically adds `alt` attribute to all `img` tags found in your templates:
 
@@ -44,7 +44,7 @@ class AltImageVisitor implements VisitorInterface
 > You can inject other tags or even PHP into your templates.
 
 ## Register Visitor
-Call `StemplerBootloader`->`addVistitor` to register visitor in the template engine. We can do it using application bootloader:
+Call `StemplerBootloader`->`addVistitor` to register visitors in the template engine. We can do it using application bootloader:
 
 ```php
 namespace App\Bootloader;
@@ -62,6 +62,32 @@ class AltImageBootloader extends Bootloader
 }
 ```
 
-> You have clean view cache to view newly applied changes.
+> You have to clean view cache to view newly applied changes.
 
 Now all the `img` tags will always include `alt` attribute.
+
+## Standalone Usage
+You can use the Stempler to process any HTML content.
+
+```php
+use Spiral\Stempler;
+
+$parser = new Stempler\Parser();
+$parser->addSyntax(
+    new Stempler\Lexer\Grammar\HTMLGrammar(), 
+    new Stempler\Parser\Syntax\HTMLSyntax()
+);
+
+$template = $parser->parse(new Stempler\Lexer\StringStream("<BODY>content</BODY>"));
+
+$traverser = new Stempler\Traverser();
+$traverser->addVisitor(new CustomVisitor());
+
+$template->nodes = $traverser->traverse($template->nodes);
+
+$compiler = new Stempler\Compiler();
+$compiler->addRenderer(new Stempler\Compiler\Renderer\CoreRenderer());
+$compiler->addRenderer(new Stempler\Compiler\Renderer\HTMLRenderer());
+
+dump($compiler->compile($template)->getContent());
+```

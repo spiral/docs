@@ -1,14 +1,13 @@
 # Stempler - Advancing DSL
-Combine Stempler features such as props, AST code injections, stacks and inheritance to develop feature rich domain 
-language for page definitions. 
+Combine Stempler features such as props, AST code injections, stacks, and inheritance to develop feature-rich domain language for page definitions. 
 
 > Attention, make sure to learn all other aspects of Stempler before jumping into this section. You will also need good 
 > cup of coffee.
 
-The approach described in this article is possible due to the fact that stacks can be defined within imported components.
+The approach described in this article is possible since stacks can be defined within imported components.
 
 ## Grid
-Let's create grid component to describe how to use stacks in combination with partials. The grid will consist of multiple view files.
+Let's create a grid component to describe how to use stacks in combination with partials. The grid will consist of multiple view files.
 
 ### Table
 Create root element for the component `app/views/grid/table.dark.php`:
@@ -26,7 +25,7 @@ Create root element for the component `app/views/grid/table.dark.php`:
 ```
 
 > Note the `<hidden>${context}</hidden>`, it allows the component to handle content declared between open and close tags
-> without the need of `block` tags.
+> without the need for `block` tags.
 
 ### Cell
 Create element `app/views/grid/cell.dark.php` to declare single table cell with it's header and value:
@@ -101,8 +100,7 @@ In both cases the produced HTML:
 Another example is related to the ability to assemble complex UI interfaces using custom DSL.
 
 ### Base Layout
-To demonstrate complex UI assembly we are going to create interface with the ability to easily push CSS, JS resources
-and define context using multiple tabs instead of single content block. Create `app/views/tabs/layout.dark.php`:
+To demonstrate complex UI assembly, we are going to create an interface with the ability to push CSS, JS resources easily, and define context using multiple tabs instead of a single content block. Create `app/views/tabs/layout.dark.php`:
 
 ```html
 <!DOCTYPE html>

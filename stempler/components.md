@@ -1,5 +1,5 @@
 # Stempler - Components and Props
-Stempler provides the ability to create developer driven template components in a form of virtual tags.
+Stempler provides the ability to create developer-driven template components in the form of virtual tags.
 
 ## Simple Component
 In many cases your templates will reuse not only parent layout but also template partials, for example:
@@ -8,7 +8,7 @@ In many cases your templates will reuse not only parent layout but also template
 <extends:layout.base title="Homepage"/>
 
 <block:content>
-  This is homepage.
+  This is the homepage.
 
   <div class="article">
     <div class="title">Article title</div>
@@ -43,7 +43,7 @@ To use this partial on your page make sure to import it first using `<use:elemen
 <use:element path="partial/article"/>
 
 <block:content>
-  This is homepage.
+  This is the homepage.
 
   <article/>
   <article/>
@@ -78,7 +78,7 @@ You can pass values similar way as in `extend` control tag:
 <use:element path="partial/article"/>
 
 <block:content>
-  This is homepage.
+  This is the homepage.
 
   <article>
     <block:title>Article 1 title</block:title>
@@ -281,8 +281,8 @@ The generated PHP:
 ```
 
 ### PHP in Components
-You can not only inject values into plain HTML but also inject source code into component PHP. This can be achieved
-using AST modification of underlying template via marco function `inject("name", default)`.
+You can not only inject values into plain HTML but also inject source code into component PHP. It can be achieved
+using AST modification of the underlying template via macro function `inject("name", default)`.
 
 > The injection will automatically extract the variable or statement from the passed `{{ echo }}`, `<?php $variable ?>`
 > or `<?=$variable?>` attributes.
@@ -372,8 +372,7 @@ The generated template:
 </body>
 ```
 
-You are allowed to inject PHP blocks into default PHP tags, the `app/views/partial/select.dark.php` can be rewritten
-as follows:
+You are allowed to inject PHP blocks into default PHP tags. The `app/views/partial/select.dark.php` can be changed as follows:
 
 ```html
 <select name="${name}">
@@ -401,10 +400,10 @@ The generated template:
 </body>
 ```
 
-> Attention, make sure to properly escape your values!
+> Attention, make sure to escape your values properly!
 
 ### Dynamic Attributes
-In some cases you might want to bypass some attributes into element directly. For example in order to allow user driven
+In some cases, you might want to bypass some attributes into elements directly. For example to allow user-driven
 `style` attribute for select we have to do the following:
 
 ```html
