@@ -728,6 +728,7 @@ $ php app.php create:entity <name> [<format>]
 
 `<Name>Entity` class will be created.
 `format` is responsible for the declaration format. Currently, only [annotations](https://github.com/cycle/annotated) format supported. 
+
 Available options:
 * `role (r)` - Entity role, defaults to lowercase class name without a namespace
 * `mapper (m)` - Mapper class name, defaults to Cycle\ORM\Mapper\Mapper
