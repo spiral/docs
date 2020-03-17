@@ -109,7 +109,7 @@ class MyCommand extends Command
 }
 ```
 
-#### Example with `alias`
+#### Example with Alias
 ```bash
 $ php app.php create:bootloader my alias
 ```
@@ -150,6 +150,7 @@ The class will include default values and getters; in some cases, it will also i
 If an array-value consists of more than one sub-values with the same types for keys and sub-values,
 scaffolder will try to create a by-key-getter method.
 If a generated key is conflicting with an existing method, by-key-getter will be omitted.
+
 #### Example with empty config file
 ```bash
 $ php app.php create:config my
@@ -225,6 +226,7 @@ $ php app.php create:config my -r
 ```
 
 Output is:
+
 ```php
 use Spiral\Core\InjectableConfig;
 
@@ -770,6 +772,7 @@ $ php app.php create:entity my -f field:string -a protected
 ```
 
 Output is:
+
 ```php
 
 use Cycle\Annotated\Annotation as Cycle;
@@ -802,6 +805,7 @@ $ php app.php create:entity my -f int_field:int -f stringField:string -i t
 ```
 
 Output is:
+
 ```php
 use Cycle\Annotated\Annotation as Cycle;
 
@@ -828,6 +832,7 @@ $ php app.php create:entity my -f int_field:int -f stringField:string -i c
 ```
 
 Output is:
+
 ```php
 use Cycle\Annotated\Annotation as Cycle;
 
@@ -854,6 +859,7 @@ $ php app.php create:entity my -r myRole -m MyMapper -t my_table -d my_db -e
 ```
 
 Output is:
+
 ```php
 use Cycle\Annotated\Annotation as Cycle;
 
@@ -864,7 +870,9 @@ class My
 {
 }
 ```
+
 And the repository class is also created:
+
 ```php
 use Cycle\ORM\Select\Repository;
 
