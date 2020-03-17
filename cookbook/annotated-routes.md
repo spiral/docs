@@ -56,7 +56,7 @@ class DemoController
 > You can use route patterns and parameters as described [here](/http/routing.md).
 
 ## Bootloader
-Alter `RoutesBootloader` Bootloader to convert annotations into routes. Use class `Spiral\Annotations\AnnotationLocator`
+Use `RoutesBootloader` to convert annotations into routes. Use class `Spiral\Annotations\AnnotationLocator`
 to find available annotations across application codebase.
 
 ```php
@@ -97,7 +97,7 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
-Run CLI command to a checklist of available routes:
+Run CLI command to check the list of available routes:
 
 ```bash
 $ php app.php route:list
