@@ -639,6 +639,7 @@ $ php app.php create:migration <name>
 `<Name>Migration` class will be created. Available options:
 * `table (t)` for table name
 * `column (c)` (multiple values allowed) for column(s) definition. Will work only with `table` option. Column format is `name:type`.
+
 > See more about migrations in [migrations](https://github.com/spiral/migrations) package
 
 #### Example
