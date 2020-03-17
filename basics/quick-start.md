@@ -4,7 +4,7 @@ In this article we will show how to create demo blog application with REST API,
 ORM, Queue and user authorization.
 
 > The components and approaches will be covered at basic levels only. Read the corresponding 
-section to gain more information.
+sections to gain more information.
 
 ## Installation
 
