@@ -109,7 +109,7 @@ class MyCommand extends Command
 }
 ```
 
-#### Example with Alias
+#### Example with alias
 ```bash
 $ php app.php create:bootloader my alias
 ```
@@ -442,9 +442,8 @@ default value or a PhpDoc. Otherwise you can optionally specify filter schema us
 
 Full field format is `name:type(source:origin)`. Where `type`, `origin` and `source:origin` are optional and can be omitted, defaults are:
   * type=string
-  * source=data
-  * origin=<name>
-  
+  * source={data}
+    
 > See more about filters in [filters](https://github.com/spiral/filters) package
 
 #### Example with empty fields definition
