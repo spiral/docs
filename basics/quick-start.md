@@ -14,6 +14,8 @@ $ composer create-project spiral/app spiral-demo
 $ cd spiral-demo
 ```
 
+> Use the opposite build `spiral/app-cli` to install spiral with minimal dependencies.
+
 If everything installed correctly you can open your application immediately:
 
 ```bash
@@ -30,11 +32,59 @@ By default, the application will be available on `http://localhost:8080`. Build 
 > and middleware included in the default build. We will turn some of them off. 
 
 ## Configure
+Spiral applications configured using ENV variables which can be used in config files. Default configuration is located
+in `app/config` in a form of .PHP files. You can also tweak the application server and its plugins via `.rr.yaml` file.
 
+The list of application dependencies located in `composer.json` and activated in a form of Bootloaders in `app/src/App.php`.
 
-### Lighter up
+### Lighter Up
+We won't need translation, session and cookies in our application. Remove this components and their bootloaders.
+
+Delete following bootloaders from `app/src/App.php`:
+
+```php
+Framework\I18nBootloader::class,
+Framework\Security\EncrypterBootloader::class,
+
+// from http
+Framework\Http\CookiesBootloader::class,
+Framework\Http\SessionBootloader::class,
+Framework\Http\CsrfBootloader::class,
+Framework\Http\PaginationBootloader::class,
+
+// from views 
+Framework\Views\TranslatedCacheBootloader::class,
+
+// from APP
+Bootloader\LocaleSelectorBootloader::class,
+```
+
+You can delete the corresponding dependencies in `composer.json` as well:
+
+```bash
+"spiral/cookies": "^1.0",
+"spiral/csrf": "^1.0",
+"spiral/session": "^1.1",
+"spiral/translator": "^1.2",
+"spiral/encrypter": "^1.1",
+```
+
+Delete following files and directories as not longer required `app/locale`, `app/src/Bootloader/LocaleSelectorBootloader.php`, `app/src/Middleware`.
+
+> Alternatively, start from `spiral/app-cli` build and add needed components.
 
 ### Developer Mode
+To simplify the tweaking of application restart the application server in developer mode. In this mode the server use
+only one worker and reloads it after every request.
+
+```bash
+$ .\spiral.exe serve -v -d -o "http.workers.pool.maxJobs=1" -o "http.workers.pool.numWorkers=1"
+```
+
+You can also create and use alternative configuration file via `-c` flag of `spiral` application.
+
+> Note that the application is currently in non functional state (check the Exception message) as the `app/views/layout/base.dark.php` still
+> refers to application locale. 
 
 ### HTTP Components
 
