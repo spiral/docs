@@ -32,7 +32,7 @@ sections to gain more information.
 
 ## Service
 
-### Enable Prototyping
+### Prototyping
 
 ### Persist Entity
 
