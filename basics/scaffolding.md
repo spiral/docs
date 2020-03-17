@@ -115,6 +115,7 @@ $ php app.php create:bootloader my alias
 ```
 
 Output is:
+
 ```php
 use Spiral\Console\Command;
 
@@ -144,12 +145,13 @@ $ php app.php create:config <name>
 
 `<Name>Config` class will be created. Also, `<app directory>/config/<name>.php` file will be created if doesn't exists.
 Available options:
-* `reverse (r)` - Using this flag, scaffolder will look for `<app directory>/config/<name>.php` file and create a rich `<Name>Config` class based on the given config file.
-The class will include default values and getters; in some cases, it will also include by-key-getters for array values. Details below: <br/>
 
+`reverse (r)` - Using this flag, scaffolder will look for `<app directory>/config/<name>.php` file and create a rich `<Name>Config` class based on the given config file.
+The class will include default values and getters; in some cases, it will also include by-key-getters for array values.
+
+Details below: 
 If an array-value consists of more than one sub-values with the same types for keys and sub-values,
-scaffolder will try to create a by-key-getter method.
-If a generated key is conflicting with an existing method, by-key-getter will be omitted.
+scaffolder will try to create a by-key-getter method. If a generated key is conflicting with an existing method, by-key-getter will be omitted.
 
 #### Example with empty config file
 ```bash
@@ -157,11 +159,13 @@ $ php app.php create:config my
 ```
 
 Output config file:
+
 ```php
 return [];
 ```
 
 Output config class:
+
 ```php
 use Spiral\Core\InjectableConfig;
 
@@ -363,6 +367,7 @@ class MyConfig extends InjectableConfig
 ```bash
 $ php app.php create:controller <name>
 ```
+
 `<Name>Controller` class will be created. Available options:
 * `action (a)` (multiple values allowed) - you can add actions using this option
 * `prototype (p)` - if set, `PrototypeTrait` will be added
@@ -373,6 +378,7 @@ $ php app.php create:controller my
 ```
 
 Output is:
+
 ```php
 class MyController
 {
@@ -385,6 +391,7 @@ $ php app.php create:controller my -p
 ```
 
 Output is:
+
 ```php
 use Spiral\Prototype\Traits\PrototypeTrait;
 
@@ -400,6 +407,7 @@ $ php app.php create:controller my -a index -a create -a update -a delete
 ```
 
 Output is:
+
 ```php
 class MyController
 {
@@ -430,8 +438,9 @@ $ php app.php create:filter <name>
 * `entity (e)` - you can pass an `EntityClass` and the filter command will fetch the all the given
 class properties into the filter and try to define each property's type based on its type declaration (if php74),
 default value or a PhpDoc. Otherwise you can optionally specify filter schema using `field` option.
-* `field (f)` (multiple values allowed). Full field format is `name:type(source:origin)`.
-`type`, `origin` and `source:origin` are optional and can be omitted, defaults are:
+* `field (f)` (multiple values allowed). 
+
+Full field format is `name:type(source:origin)`. Where `type`, `origin` and `source:origin` are optional and can be omitted, defaults are:
   * type=string
   * source=data
   * origin=<name>
