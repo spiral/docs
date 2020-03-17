@@ -1,4 +1,4 @@
-# Quick Start
+# Quick Start [Work in Progress]
 Spiral framework contains a lot of components build to operate seamlessly with each other.
 In this article we will show how to create a demo blog application with REST API, ORM, Migrations, request validation, 
 queue and user authorization.
@@ -71,7 +71,7 @@ You can delete the corresponding dependencies in `composer.json` as well:
 
 Delete following files and directories as not longer required `app/locale`, `app/src/Bootloader/LocaleSelectorBootloader.php`, `app/src/Middleware`.
 
-> Alternatively, start from `spiral/app-cli` build and add needed components.
+> Alternatively, start from `spiral/app-cli` build and add needed components on-demand.
 
 ### Developer Mode
 To simplify the tweaking of application restart the application server in developer mode. In this mode the server use
