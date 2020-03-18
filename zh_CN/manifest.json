@@ -55,9 +55,16 @@
     "links": {
       "component/files": "文件和目录",
       "component/reactor": "代码生成",
-      "component/tokenizer": "Static Analysis Tools",
-      "component/metrics": "Prometheus Metrics",
-      "component/data-grid": "Data Grids"
+      "component/tokenizer": "静态分析工具",
+      "component/metrics": "应用指标",
+      "component/data-grid": "数据网格"
     }
   },
+  {
+    "title": "控制台",
+    "links":{
+      "console/configuration": "安装与配置",
+      "console/commands": "控制台命令"
+    }
+  }
 ]

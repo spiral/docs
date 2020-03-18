@@ -33,9 +33,12 @@
 * 常用组件
     * [文件和目录](components/files.md)
     * [代码生成](components/reactor.md)
-    * Static Analysis Tools
-    * Prometheus Metrics
-    * Data Grids
+    * [静态分析工具](components/tokenizer.md)
+    * [应用指标](components/metrics.md)
+    * [数据网格](components/data-grid.md)
+* 控制台
+    * [安装配置](console/configuration.md)
+    * [控制台命令](console/commands.md)
 * 队列任务
     * 安装配置
     * 控制台命令
