@@ -1,10 +1,10 @@
 # Quick Start [Work in Progress]
 Spiral framework contains a lot of components build to operate seamlessly with each other.
-In this article we will show how to create a demo blog application with REST API, ORM, Migrations, request validation, 
-queue and user authorization.
+In this article we will show how to create a demo blog application with REST API, ORM, Migrations,
+request validation, queue and user authorization.
 
 > The components and approaches will be covered at basic levels only. Read the corresponding 
-sections to gain more information.
+sections to gain more information. 
 
 ## Installation
 Use composer to install the default `spiral/app` bundle with most of components out of the box:
