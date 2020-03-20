@@ -1,11 +1,11 @@
 # Console - User Commands
-You can add new console commands to your application or register plugin commands using bootloaders. By default, Console
-component configured to automatically find commands in `app/src` directory.
+You can add new console commands to your application or register plugin commands using bootloaders. By default, the Console
+component configured to automatically find commands in the `app/src` directory.
 
-To add new `symfony/console` based command simply drop it into your application. 
+To add a new `symfony/console` based Command, simply drop it into your application. 
 
 ## Command class
-To create a new command you can either extend `Symfony\Component\Console\Command\Command` or `Spiral\Console\Command` which 
+To create a new command, you can either extend `Symfony\Component\Console\Command\Command` or `Spiral\Console\Command` which 
 provides some syntax sugar.
 
 ```php
@@ -28,14 +28,14 @@ class MyCommand extends Command
 }
 ```
 
-Use constants `NAME` and `DESCRIPTION` to give a name to your command. You can invoke it now using:
+Use constants `NAME` and `DESCRIPTION` to give a name to your Command. You can invoke it now using:
 
 ```bash
 $ php app.php my:command 
 ```
 
 ## Arguments and Options
-Spiral's `Command` class makes easy to define needed arguments and options:
+Spiral's `Command` class makes it easy to define needed arguments and options:
 
 ```php
 const ARGUMENTS = [
@@ -83,7 +83,7 @@ To write formatted output without advancing to the new line:
 $this->sprintf("Hello, <comment>%s</comment>", $name);
 ```
 
-> This method is compatible with `sprintf` definition.
+> This method is compatible with the `sprintf` definition.
 
 To check if current verbosity mode is higher than `OutputInterface::VERBOSITY_VERBOSE`:
 
@@ -91,7 +91,7 @@ To check if current verbosity mode is higher than `OutputInterface::VERBOSITY_VE
 dump($this->isVerbose());
 ```
 
-> You can freely use `dump` method in console commands.
+> You can freely use the `dump` method in console commands.
 
 To render table:
 
