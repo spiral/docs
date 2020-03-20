@@ -106,7 +106,7 @@ foreach ($data as $row)
     $table->addRow([
         $row[1],
         $row[2]
-    ])
+    ]);
 }
 
 $table->render();
