@@ -413,6 +413,8 @@ $ php app.php db:table migrations
 
 You can write the migration manually, or let Cycle ORM generate it for you.
 
+> Read more about migrations [here](/database/migrations.md). Use [Scaffolder](/basics/scaffolding.md) component to create migrations manually. 
+
 ### Define ORM Entities
 
 ### Generate Migration
