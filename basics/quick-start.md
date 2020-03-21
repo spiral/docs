@@ -154,8 +154,58 @@ $ php app.php db:list
 ```
 
 ### Connect Faker
+We will need some sample data for the application. Let's connect the library and bootload the library `fzaninotto/faker`.
+
+```bash
+$ composer require fzaninotto/faker
+``` 
+
+To generate the stub data we will need an instance of `Faker\Generator`, create bootloader in `app/src/Bootloader` to resolve such
+instance as singleton. Use factory method for that purposes.
+
+```php
+namespace App\Bootloader;
+
+use Faker\Factory;
+use Faker\Generator;
+use Spiral\Boot\Bootloader\Bootloader;
+
+class FakerBootloader extends Bootloader
+{
+    protected const SINGLETONS = [
+        Generator::class => [self::class, 'fakerGenerator']
+    ];
+
+    private function fakerGenerator(): Generator
+    {
+        return Factory::create(Factory::DEFAULT_LOCALE);
+    }
+}
+```
+
+Add the bootloader to `LOAD` or `APP` in `app/src/App.php` to activate the component.
+
+> You can request dependencies as method arguments in the factory method `faker`.
+
+Use the `Faker\Generator` in your controller to view the stub data at `http://localhost:8080/`:
+
+```php
+namespace App\Controller;
+
+use Faker\Generator;
+
+class HomeController
+{
+    public function index(Generator $generator)
+    {
+        return $generator->sentence(128);
+    }
+}
+```
 
 ### Routing
+
+
 
 ### Annotated Routing
 
