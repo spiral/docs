@@ -526,7 +526,103 @@ $ php app.php migrate -vv
 
 You can now observe the generated tables using `db:list` command.
 
-### Create Relations 
+### Create Relations
+Use [annotations](https://cycle-orm.dev/docs/annotated-relations) to define the relations between entities. Configure
+Post and Comment to belong to User and Post has many Comments. 
+
+Post:
+
+```php
+namespace App\Database;
+
+use Cycle\Annotated\Annotation as Cycle;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * @Cycle\Entity(repository = "post")
+ */
+class Post
+{
+    /**
+     * @Cycle\Column(type = "primary")
+     */
+    public $id;
+
+    /**
+     * @Cycle\Column(type = "string")
+     */
+    public $title;
+
+    /**
+     * @Cycle\Column(type = "text")
+     */
+    public $content;
+
+    /**
+     * @Cycle\Relation\BelongsTo(target = "User", nullable = false)
+     * @var User
+     */
+    public $author;
+
+    /**
+     * @Cycle\Relation\HasMany(target = "Comment")
+     * @var ArrayCollection|Comment
+     */
+    public $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
+}
+```
+
+Comment:
+
+```php
+namespace App\Database;
+
+use Cycle\Annotated\Annotation as Cycle;
+
+/**
+ * @Cycle\Entity()
+ */
+class Comment
+{
+    /**
+     * @Cycle\Column(type = "primary")
+     */
+    public $id;
+
+    /**
+     * @Cycle\Column(type = "string")
+     */
+    public $message;
+
+    /**
+     * @Cycle\Relation\BelongsTo(target = "User", nullable = false, cascade = false)
+     * @var User
+     */
+    public $author;
+}
+``` 
+
+Once again generate and run the migration:
+
+```bash
+$ php app.php cycle:migrate -v
+$ php app.php migrate -vv
+```
+
+> You can generate and run the migration in one command using `php app.php cycle:migrate -r`.
+
+You can check the presence of Foreign Keys:
+
+```bash
+$ php app.php db:table comments
+```
+
+> Do not forget to run `php app.php cycle:migrate` when you change any of your entity.
 
 ## Service
 
