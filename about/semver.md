@@ -17,4 +17,4 @@ As of 2019 the framework and its components support:
 Language | Version
 ---      | ---
 PHP      | ≥ 7.2.0
-Golang   | ≥ 1.13
+Golang   | ≥ 1.14
