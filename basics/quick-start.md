@@ -16,29 +16,44 @@ $ cd spiral-demo
 
 > Use the opposite build `spiral/app-cli` to install spiral with minimal dependencies.
 
-If everything installed correctly you can open your application immediately:
+If everything installed correctly you can open your application immediately by starting the server:
 
 ```bash
 $ ./spiral serve -v -d
 ```
 
-You just started [application server](/framework/application-server.md). The same server can used on production making your
+You just started an [application server](/framework/application-server.md). The same server can used on production, making your
 development environment similar to the final setup. Out of the box server includes instruments to write portable applications
-with HTTP/2, GRPC, Queue, WebSockets, etc.
+with HTTP/2, GRPC, Queue, WebSockets, etc and does not require external brokers to operate.
 
-By default, the application will be available on `http://localhost:8080`. Build includes multiple pre-defined pages.
+By default, the application available on `http://localhost:8080`. The build includes multiple pre-defined pages you can play with.
 
 > Check the exception page `http://localhost:8080/exception.html`, at the right part of this page you can see all interceptors
-> and middleware included in the default build. We will turn some of them off. 
+> and middleware included in the default build. We will turn some of them off to make the application runtime smaller. 
 
 ## Configure
-Spiral applications configured using ENV variables which can be used in config files. Default configuration is located
-in `app/config` in a form of .PHP files. You can also tweak the application server and its plugins via `.rr.yaml` file.
+Spiral applications are configured using config files located in `app/config`, you can use the hardcoded values for the configuration, 
+or get the values using available functions `env` and `directory`. The `spiral/app` bundle use DotEnv extension which 
+will load ENV variables from the `.env` file.
+
+> Tweak the application server and its plugins using `.rr.yaml` file.
 
 The list of application dependencies located in `composer.json` and activated in a form of Bootloaders in `app/src/App.php`.
+The default build includes quite a lot of pre-configured components.
+
+### Developer Mode
+To simplify the tweaking of the application, restart the application server in developer mode. In this mode the server uses
+only one worker and reloads it after every request, it emulates the PHP-FPM flow.
+
+```bash
+$ .\spiral.exe serve -v -d -o "http.workers.pool.maxJobs=1" -o "http.workers.pool.numWorkers=1"
+```
+
+You can also create and use an alternative configuration file via `-c` flag of `spiral` application.
 
 ### Lighter Up
-We won't need translation, session and cookies in our application. Remove this components and their bootloaders.
+We won't need translation, session, cookies, CSRF and encryption in our demo application. Remove these components and their 
+bootloaders.
 
 Delete following bootloaders from `app/src/App.php`:
 
@@ -69,28 +84,76 @@ You can delete the corresponding dependencies in `composer.json` as well:
 "spiral/encrypter": "^1.1",
 ```
 
-Delete following files and directories as not longer required `app/locale`, `app/src/Bootloader/LocaleSelectorBootloader.php`, `app/src/Middleware`.
+Delete following files and directories as no longer required:
+- `app/locale`
+- `app/src/Bootloader/LocaleSelectorBootloader.php`
+- `app/src/Middleware`.
 
-> Alternatively, start from `spiral/app-cli` build and add needed components on-demand.
-
-### Developer Mode
-To simplify the tweaking of application restart the application server in developer mode. In this mode the server uses
-only one worker and reloads it after every request.
-
-```bash
-$ .\spiral.exe serve -v -d -o "http.workers.pool.maxJobs=1" -o "http.workers.pool.numWorkers=1"
-```
-
-You can also create and use alternative configuration file via `-c` flag of `spiral` application.
-
-> Note that the application is currently in non functional state (check the Exception message) as the `app/views/layout/base.dark.php` still
-> refers to application locale. 
-
-### HTTP Components
+> Note, the application won't work at the moment as we removed the dependency required to render `app/views/home.dark.php`.
 
 ### Database Connection
+Our application need a database to operation. By the default, the database configuration is located in `app/config/database.php` file.
+The demo application comes with pre-configured SQLite database located in `runtime/runtime.db`.
 
-### Connect Faker 
+```php
+// database.php 
+
+use Spiral\Database\Driver;
+
+return [
+    'default'   => 'default',
+    'databases' => [
+        'default' => ['driver' => 'runtime'],
+    ],
+    'drivers'   => [
+        'runtime' => [
+            'driver'     => Driver\SQLite\SQLiteDriver::class,
+            'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+        ],
+    ]
+];
+```
+
+We can store the database name, username and password in `.env` file, add the following lines into it:
+
+```dotenv
+DB_HOST = localhost
+DB_NAME = name
+DB_USER = username
+DB_PASSWORD = password
+```
+
+> Change the values to match your database parameters.
+
+To change the default database to MySQL, change the `drivers` section of the configuration, use `env` function to access
+the ENV variables.
+
+```php
+return [
+    'default'   => 'default',
+    'databases' => [
+        'default' => ['driver' => 'default'],
+    ],
+    'drivers'   => [
+        'default' => [
+            'driver'     => Driver\MySQL\MySQLDriver::class,
+            'connection' => sprintf('mysql:host=%s;dbname=%s', env('DB_HOST'), env('DB_NAME')),
+            'username'   => env('DB_USER'),
+            'password'   => env('DB_PASSWORD'),
+        ],
+    ]
+];
+```
+
+> Note that `default` database now points to the `default` connection.
+
+To check the the database connection was successful run:
+
+```bash
+$ php app.php db:list
+```
+
+### Connect Faker
 
 ### Routing
 
