@@ -416,8 +416,115 @@ You can write the migration manually, or let Cycle ORM generate it for you.
 > Read more about migrations [here](/database/migrations.md). Use [Scaffolder](/basics/scaffolding.md) component to create migrations manually. 
 
 ### Define ORM Entities
+The demo application comes with [Cycle ORM](https://cycle-orm.dev). By the default you can use annotations to configure
+your entities.
+
+Let's create `Post`, `User` and `Comment` entities and their repositories using the Scaffolder extension:
+
+```bash
+$ php app.php create:entity post -f id:primary -f title:string -f content:text -e
+$ php app.php create:entity user -f id:primary -f name:string -e
+$ php app.php create:entity comment -f id:primary -f message:string
+``` 
+
+> Observe the classes generated in `app/src/Database` and `app/src/Repository`.
+
+Post: 
+
+```php
+namespace App\Database;
+
+use Cycle\Annotated\Annotation as Cycle;
+
+/**
+ * @Cycle\Entity(repository = "post")
+ */
+class Post
+{
+    /**
+     * @Cycle\Column(type = "primary")
+     */
+    public $id;
+
+    /**
+     * @Cycle\Column(type = "string")
+     */
+    public $title;
+
+    /**
+     * @Cycle\Column(type = "text")
+     */
+    public $content;
+}
+
+```
+
+User:
+
+```php
+namespace App\Database;
+
+use Cycle\Annotated\Annotation as Cycle;
+
+/**
+ * @Cycle\Entity(repository = "user")
+ */
+class User
+{
+    /**
+     * @Cycle\Column(type = "primary")
+     */
+    public $id;
+
+    /**
+     * @Cycle\Column(type = "string")
+     */
+    public $name;
+}
+```
+
+Comment:
+
+```php
+namespace App\Database;
+
+use Cycle\Annotated\Annotation as Cycle;
+
+/**
+ * @Cycle\Entity()
+ */
+class Comment
+{
+    /**
+     * @Cycle\Column(type = "primary")
+     */
+    public $id;
+
+    /**
+     * @Cycle\Column(type = "string")
+     */
+    public $message;
+}
+```
+
+You can change the default directory mapping, headers and others using [Scaffolder config](/basics/scaffolding.md).
+
+> Read more about Cycle [here](/cycle/configuration.md). Configure auto-timestamps using [custom mapper](https://cycle-orm.dev/docs/advanced-timestamp).
 
 ### Generate Migration
+To generate the database schema run:
+
+```bash
+$ php app.php cycle:migrate -v
+```
+
+The generated migration can be found in `app/migrations/`. Execute it using:
+
+```bash
+$ php app.php migrate -vv
+```
+
+You can now observe the generated tables using `db:list` command.
 
 ### Create Relations 
 
