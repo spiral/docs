@@ -565,7 +565,7 @@ class Post
     public $author;
 
     /**
-     * @Cycle\Relation\HasMany(target = "Comment")
+     * @Cycle\Relation\HasMany(target = "Comment", inverse = @Cycle\Relation\Inverse(as = "post", type = "belongsTo"))
      * @var ArrayCollection|Comment
      */
     public $comments;
@@ -625,12 +625,20 @@ $ php app.php db:table comments
 > Do not forget to run `php app.php cycle:migrate` when you change any of your entity.
 
 ## Service
+Isolate the business logic into separate Service layer. Let's create `PostService` in `app/src/Service`.
+
+```php
+
+```
 
 ### Prototyping
 
 ### Persist Entity
 
 ## Console Command
+
+
+--------------
 
 ## Controller
 
