@@ -204,10 +204,150 @@ class HomeController
 ```
 
 ### Routing
+By the default, the routing rules located in `app/src/Bootloader/RoutingBootloader.php`. You have many options how
+to configure routing. Point route to actions, controllers, controller groups, set the default pattern parameters, 
+verbs, middleware, etc.
 
+Create a simple route to point all of the URLs to the `App\Controller\HomeController`:
 
+```php
+namespace App\Bootloader;
+
+use App\Controller\HomeController;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Router\Route;
+use Spiral\Router\RouterInterface;
+use Spiral\Router\Target\Controller;
+
+class RoutesBootloader extends Bootloader
+{
+    public function boot(RouterInterface $router): void
+    {
+        $route = new Route('/[<action>[/<id>]]', new Controller(HomeController::class));
+        $route = $route->withDefaults(['action' => 'index']);
+
+        $router->setRoute('home', $route);
+    }
+}
+```
+
+In the given setup the action and id are the optional parts of the URL (see the `[]`), the action defaults to `index`.
+Open `HomeController`->`index` using `http://localhost:8080/` or `http://localhost:8080/index`.
+
+The route parameters can be addressed in method injection of the controller by their name, create the following 
+method in `HomeController`:
+
+```php
+public function open(string $id)
+{
+    dump($id);
+}
+```
+
+You can invoke this method using URL `http://localhost:8080/open/123`, the `id` parameter will be hydrated automatically.
 
 ### Annotated Routing
+Though the framework does not provide the annotated routing support out of the box yet, it is possible to [configure it](/cookbook/annotated-routes.md)
+manually using existing instruments. 
+
+#### Annotation
+Build simple annotation which later can be attached to public controller methods:
+
+```php
+namespace App\Annotation;
+
+use Doctrine\Common\Annotations\Annotation;
+
+/**
+ * @Annotation()
+ * @Annotation\Target({"METHOD"})
+ * @Annotation\Attributes({
+ *      @Annotation\Attribute("action", type="string", required=true),
+ *      @Annotation\Attribute("verbs", type="array"),
+ * })
+ */
+class Route
+{
+    /** @var string */
+    public $action;
+
+    /** @var string[]|null */
+    public $verbs;
+}
+```
+
+> Default Web build of application enables annotation support by default.
+
+We can use this annotation in our controller as follows:
+
+```php
+namespace App\Controller;
+
+use App\Annotation\Route;
+
+class HomeController
+{
+    /**
+     * @Route(action="/", verbs={"GET"})
+     */
+    public function index()
+    {
+        return 'hello world';
+    }
+}
+```
+
+> You can use route patterns and parameters as described [here](/http/routing.md).
+
+#### Bootloader
+Change `RoutesBootloader` to convert annotations into routes. Use class `Spiral\Annotations\AnnotationLocator`
+to find available annotations across application codebase.
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Annotations\AnnotationLocator;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Router\Route;
+use Spiral\Router\RouterInterface;
+use Spiral\Router\Target\Action;
+
+class RoutesBootloader extends Bootloader
+{
+    public function boot(AnnotationLocator $annotationLocator, RouterInterface $router): void
+    {
+        $methods = $annotationLocator->findMethods(\App\Annotation\Route::class);
+
+        foreach ($methods as $method) {
+            $name = sprintf(
+                "%s.%s",
+                $method->getClass()->getShortName(),
+                $method->getMethod()->getShortName()
+            );
+
+            $route = new Route(
+                $method->getAnnotation()->action,
+                new Action(
+                    $method->getClass()->getName(),
+                    $method->getMethod()->getName()
+                )
+            );
+
+            $route = $route->withVerbs(...(array)$method->getAnnotation()->verbs);
+
+            $router->setRoute($name, $route);
+        }
+    }
+}
+```
+
+Run CLI command to check the list of available routes:
+
+```bash
+$ php app.php route:list
+```
+
+> Use additional route parameters to configure middleware, common prefix, etc.
 
 ### Domain Core
 

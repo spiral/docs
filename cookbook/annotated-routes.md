@@ -1,4 +1,3 @@
-
 # Cookbook - Annotated Routing
 At this moment, Spiral Framework does not provide annotated-routes support out of the box like in Symfony. Combine extensions
 `spiral/annotated` and `spiral/router` to build your domain-specific routing logic.
