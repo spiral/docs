@@ -397,6 +397,21 @@ Enable the domain core in your application. We will demonstrate the use of the i
 > Read more about Domain Cores [here](/cookbook/domain-core.md).
 
 ## Scaffold Database
+The framework can configure the database schema using a set of migration files. To configure migrations in your application
+run:
+
+```bash
+$ php app.php migrate:init
+```
+
+You can now observe the migration table structure using:
+
+```bash
+$ php app.php db:list
+$ php app.php db:table migrations
+```
+
+You can write the migration manually, or let Cycle ORM generate it for you.
 
 ### Define ORM Entities
 
