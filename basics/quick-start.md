@@ -286,27 +286,6 @@ class Route
 
 > Default Web build of application enables annotation support by default.
 
-We can use this annotation in our controller as follows:
-
-```php
-namespace App\Controller;
-
-use App\Annotation\Route;
-
-class HomeController
-{
-    /**
-     * @Route(action="/", verbs={"GET"})
-     */
-    public function index()
-    {
-        return 'hello world';
-    }
-}
-```
-
-> You can use route patterns and parameters as described [here](/http/routing.md).
-
 #### Bootloader
 Change `RoutesBootloader` to convert annotations into routes. Use class `Spiral\Annotations\AnnotationLocator`
 to find available annotations across application codebase.
@@ -349,6 +328,34 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
+#### Controller
+We can use this annotation in our controller as follows:
+
+```php
+namespace App\Controller;
+
+use App\Annotation\Route;
+
+class HomeController
+{
+    /**
+     * @Route(action="/", verbs={"GET"})
+     */
+    public function index()
+    {
+        return 'hello world';
+    }
+    
+    /**
+     * @Route(action="/open/<id>", verbs={"GET"})
+     */
+    public function open(string $id)
+    {
+        dump($id);
+    }
+}
+```
+
 Run CLI command to check the list of available routes:
 
 ```bash
@@ -360,7 +367,33 @@ $ php app.php route:list
 In the following examples we will stick to the annotated routes for the simplicity.
 
 ### Domain Core
+Connect custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
+We can change the default behaviour of the application and enable Cycle Entity resolution using route parameter, 
+Filter validation and @Guard annotation.
 
+```php
+namespace App\Bootloader;
+
+use Spiral\Bootloader\DomainBootloader;
+use Spiral\Core\CoreInterface;
+use Spiral\Domain;
+
+class AppBootloader extends DomainBootloader
+{
+    protected const SINGLETONS = [
+        CoreInterface::class => [self::class, 'domainCore']
+    ];
+
+    protected const INTERCEPTORS = [
+        Domain\FilterInterceptor::class, 
+        Domain\CycleInterceptor::class,
+        Domain\GuardInterceptor::class,
+    ];
+}
+```
+
+Enable the domain core in your application. We will demonstrate the use of the interceptor below.
+  
 > Read more about Domain Cores [here](/cookbook/domain-core.md).
 
 ## Scaffold Database
