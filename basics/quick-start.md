@@ -349,6 +349,8 @@ $ php app.php route:list
 
 > Use additional route parameters to configure middleware, common prefix, etc.
 
+In a following examples we will stick to the annotated routes for the simplicity.
+
 ### Domain Core
 
 ## Scaffold Database
