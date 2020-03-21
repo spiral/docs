@@ -437,7 +437,7 @@ namespace App\Database;
 use Cycle\Annotated\Annotation as Cycle;
 
 /**
- * @Cycle\Entity(repository = "post")
+ * @Cycle\Entity(repository = "App\Repository\PostRepository")
  */
 class Post
 {
@@ -467,7 +467,7 @@ namespace App\Database;
 use Cycle\Annotated\Annotation as Cycle;
 
 /**
- * @Cycle\Entity(repository = "user")
+ * @Cycle\Entity(repository = "App\Repository\UserRepository")
  */
 class User
 {
@@ -539,7 +539,7 @@ use Cycle\Annotated\Annotation as Cycle;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @Cycle\Entity(repository = "post")
+ * @Cycle\Entity(repository = "App\Repository\PostRepository")
  */
 class Post
 {
@@ -626,19 +626,130 @@ $ php app.php db:table comments
 
 ## Service
 Isolate the business logic into separate Service layer. Let's create `PostService` in `app/src/Service`.
+We will need an instance of `Cycle\ORM\TransactionInterface` to persist the post.
 
 ```php
+namespace App\Service;
+
+use App\Database\Post;
+use App\Database\User;
+use Cycle\ORM\TransactionInterface;
+
+class PostService
+{
+    private $tr;
+
+    public function __construct(TransactionInterface $tr)
+    {
+        $this->tr = $tr;
+    }
+
+    public function createPost(User $user, string $title, string $content): Post
+    {
+        $post = new Post();
+        $post->author = $user;
+        $post->title = $title;
+        $post->content = $content;
+
+        return $post;
+    }
+}
+```
+
+> You can reuse the transaction after `run` method.
+
+### Prototyping
+One of the most powerful capabilities of the framework is [Prototyping](/basics/prototype.md). Declare the shortcut `postService` which points to `PostService`
+using annotation.
+
+```php
+namespace App\Service;
+
+use App\Database\Post;
+use App\Database\User;
+use Cycle\ORM\TransactionInterface;
+use Spiral\Prototype\Annotation\Prototyped;
+
+/**
+ * @Prototyped(property="postService")
+ */
+class PostService
+{
+    // ...
+}
+``` 
+
+Run the configure command to collect all available prototype classes:
+
+```bash
+$ php app.php configure
+```
+
+> Make sure to use proper IDE to gain access to the IDE tooltips.
+
+Now you can get access to the `PostService` using `PrototypeTrait`, see the example down below.
+
+## Console Command
+Let's create three commands to generate the data to our application. Use scaffolder extension to create command to seed our database:
+
+```bash
+$ php app.php create:command seed/user seed:user
+$ php app.php create:command seed/post seed:post
+$ php app.php create:command seed/comment seed:comment
+``` 
+
+Generated commands will be available in `app/src/Command/Seed`.
+
+#### UserCommand
+Use the method injection on `perform` in `UserCommand` to seed the users using Faker:
+
+```php
+// app/src/Command/Seed/UserCommand.php
+namespace App\Command\Seed;
+
+use App\Database\User;
+use Cycle\ORM\TransactionInterface;
+use Faker\Generator;
+use Spiral\Console\Command;
+
+class UserCommand extends Command
+{
+    protected const NAME = 'seed:user';
+
+    protected function perform(TransactionInterface $tr, Generator $faker): void
+    {
+        for ($i = 0; $i < 100; $i++) {
+            $user = new User();
+            $user->name = $faker->name;
+
+            $tr->persist($user);
+        }
+
+        $tr->run();
+    }
+}
+```
+
+Run the command:
+
+```bash
+$ php app.php seed:user
+```
+
+#### PostCommand
+Use the prototype extension to speed up the creation of the `seed:post` command. Call the `postService` and `users` (repository)
+as class properties.
+
+> Run `php app.php configure` if your IDE does not highlight repositories or other services.
+
+```php
+// app/src/Command/Seed/PostCommand.php
 
 ```
 
-### Prototyping
-
-### Persist Entity
-
-## Console Command
-
 
 --------------
+
 
 ## Controller
 
