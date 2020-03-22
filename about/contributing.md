@@ -14,9 +14,10 @@ If you want to help but don't know where to start:
 
 * TODOs
 * Updating to latest dev-dependencies (PHPUnit, Mockery, etc.)
-* Quality recommendations and improvements
+* RFCs
 * Check [Open Issues](https://github.com/spiral/framework/issues)
-* More tests are always welcome 
+* More tests are always welcome
+* More static analyzers and linters are welcome also
 * Typos
 * Documentation translation
 
