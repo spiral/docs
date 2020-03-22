@@ -12,13 +12,12 @@ Feel free to contribute to the development of the Framework or its components. P
 ## Help Needed In
 If you want to help but don't know where to start:
 
-* TODOs
+* TODOs, typos, comments
 * Updating to latest dev-dependencies (PHPUnit, Mockery, etc.)
 * RFCs
 * Check [Open Issues](https://github.com/spiral/framework/issues)
 * More tests are always welcome
 * More static analyzers and linters are welcome also
-* Typos
 * Documentation translation
 
 Feel free to propose any ideas related to architecture, docs (___docs are never complete___),  adaptation, or community.
