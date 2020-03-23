@@ -565,7 +565,7 @@ class Post
     public $author;
 
     /**
-     * @Cycle\Relation\HasMany(target = "Comment", inverse = @Cycle\Relation\Inverse(as = "post", type = "belongsTo"))
+     * @Cycle\Relation\HasMany(target = "Comment")
      * @var ArrayCollection|Comment
      */
     public $comments;
