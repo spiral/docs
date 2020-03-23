@@ -604,6 +604,12 @@ class Comment
      * @var User
      */
     public $author;
+
+    /**
+     * @Cycle\Relation\BelongsTo(target = "Post", nullable = false)
+     * @var User
+     */
+    public $post;
 }
 ``` 
 
@@ -850,7 +856,6 @@ Seed comments using random user and post relation. We will receive all the neede
 namespace App\Command\Seed;
 
 use App\Database\Comment;
-use App\Database\Post;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Cycle\ORM\TransactionInterface;
@@ -872,17 +877,14 @@ class CommentCommand extends Command
 
         for ($i = 0; $i < 1000; $i++) {
             $user = $users[array_rand($users)];
-
-            /** @var Post $post */
             $post = $posts[array_rand($posts)];
 
             $comment = new Comment();
             $comment->author = $user;
+            $comment->post = $post;
             $comment->message = $faker->sentence(12);
 
-            $post->comments->add($comment);
-
-            $tr->persist($post);
+            $tr->persist($comment);
             $tr->run();
         }
     }
@@ -894,8 +896,6 @@ Run the command:
 ```bash
 $ php app.php seed:comment -vv
 ```
-
-> Post comments will be selected upon insertion, use alternative relation Comment->belongsTo->Post to speed up the insertion.
 
 ## Controller
 
