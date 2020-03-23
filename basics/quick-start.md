@@ -703,7 +703,7 @@ $ php app.php create:command seed/comment seed:comment
 
 Generated commands will be available in `app/src/Command/Seed`.
 
-#### UserCommand
+### UserCommand
 Use the method injection on `perform` in `UserCommand` to seed the users using Faker:
 
 ```php
@@ -739,7 +739,7 @@ Run the command:
 $ php app.php seed:user
 ```
 
-#### PostCommand
+### PostCommand
 Use the prototype extension to speed up the creation of the `seed:post` command. Call the `postService` and `users` (repository)
 as class properties.
 
