@@ -895,6 +895,8 @@ Run the command:
 $ php app.php seed:comment -vv
 ```
 
+> Post comments will be selected upon insertion, use alternative relation Comment->belongsTo->Post to speed up the insertion.
+
 ## Controller
 
 ### Data Grid
