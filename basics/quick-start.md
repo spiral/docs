@@ -600,7 +600,7 @@ class Comment
     public $message;
 
     /**
-     * @Cycle\Relation\BelongsTo(target = "User", nullable = false, cascade = false)
+     * @Cycle\Relation\BelongsTo(target = "User", nullable = false)
      * @var User
      */
     public $author;
@@ -841,7 +841,59 @@ class PostCommand extends Command
 }
 ```
 
-> You can use prototype in parts of your codebase. Do not forget to remove the extension before going live. 
+> You can use prototype in any part of your codebase. Do not forget to remove the extension before going live. 
+
+### CommentCommand
+Seed comments using random user and post relation. We will receive all the needed instances using the method injection.
+
+```php
+namespace App\Command\Seed;
+
+use App\Database\Comment;
+use App\Database\Post;
+use App\Repository\PostRepository;
+use App\Repository\UserRepository;
+use Cycle\ORM\TransactionInterface;
+use Faker\Generator;
+use Spiral\Console\Command;
+
+class CommentCommand extends Command
+{
+    protected const NAME = 'seed:comment';
+
+    protected function perform(
+        Generator $faker,
+        TransactionInterface $tr,
+        UserRepository $userRepository,
+        PostRepository $postRepository
+    ): void {
+        $users = $userRepository->findAll();
+        $posts = $postRepository->findAll();
+
+        for ($i = 0; $i < 1000; $i++) {
+            $user = $users[array_rand($users)];
+
+            /** @var Post $post */
+            $post = $posts[array_rand($posts)];
+
+            $comment = new Comment();
+            $comment->author = $user;
+            $comment->message = $faker->sentence(12);
+
+            $post->comments->add($comment);
+
+            $tr->persist($post);
+            $tr->run();
+        }
+    }
+}
+```
+
+Run the command:
+
+```bash
+$ php app.php seed:comment -vv
+```
 
 ## Controller
 
