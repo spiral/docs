@@ -1,4 +1,6 @@
-# 入门基础 - 脚手架
+# 脚手架
+
+Spiral 应用中的大部分代码都可以通过脚手架提供的控制台命令来生成。
 
 ## 安装
 
@@ -118,11 +120,13 @@ class MyCommand extends Command
 ```
 
 #### 指定 `alias` 的示例：
+
 ```bash
 $ php app.php create:bootloader my alias
 ```
 
 生成的类（`<app directory>\src\Command\MyCommand.php`）代码如下
+
 ```php
 use Spiral\Console\Command;
 
@@ -154,7 +158,9 @@ $ php app.php create:config <name>
 
 可用选项:
 * `--reverse (-r)` - 指定此标志时, 脚手架会查找 `<app directory>/config/<name>.php` 文件并基于该文件创建对应的 `<Name>Config` 类。
-生成的类会包含默认值和 getters, 有时它还会为数组生成 by-key-getters. 具体如下：<br/>
+生成的类会包含默认值和 getters, 有时它还会为数组生成 by-key-getters. 
+
+具体如下：
 
 如果数值值包含有多个子值，且所有子值的具有相同类型的键和值时，脚手架会尝试创建 by-key-getter 方法。
 如果要生成的方法名称已经存在，by-key-getter 不会创建。
@@ -441,7 +447,7 @@ $ php app.php create:filter <name>
 * `--field (-f)` -（可以多次使用）。完整的字段格式是 `name:type(source:origin)`.
 `type`, `origin` 和 `source:origin` 是可选的，可以省略，默认值如下：
   * type=string
-  * source=data
+  * source={data}
   * origin=\<name\>
 
 > 了解更多有关过滤器的信息，可以查看 [filters](https://github.com/spiral/filters) 组件包
@@ -726,7 +732,7 @@ class MyRepository extends Repository
 }
 ```
 
-### 创建实体
+### 创建 ORM 实体
 
 ```bash
 $ php app.php create:entity <name> [<format>]

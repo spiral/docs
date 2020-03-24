@@ -18,4 +18,4 @@ Spiral 框架、 RoadRunner 服务器, Stempler 模板引擎, Cycle 组件和其
 开发语言 | 版本
 ---      | ---
 PHP      | ≥ 7.2.0
-Golang   | ≥ 1.12
+Golang   | ≥ 1.14

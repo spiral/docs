@@ -26,6 +26,7 @@
     * [静态高速缓存](framework/memory.md)
     * [终结器](framework/finalizers.md)
 * 速查手册
+    * [注解式路由](cookbook/annotated-routes.md)
     * [领域内核、控制器](cookbook/domain-core.md)
     * [容器注入器](cookbook/injector.md)
     * [Golang 服务集成](cookbook/golang-library.md)
@@ -38,7 +39,7 @@
     * [数据网格](components/data-grid.md)
 * 控制台
     * [安装配置](console/configuration.md)
-    * [控制台命令](console/commands.md)
+    * [用户命令](console/commands.md)
 * 队列任务
     * 安装配置
     * 控制台命令

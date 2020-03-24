@@ -44,6 +44,7 @@
   {
     "title": "速查手册",
     "links": {
+      "cookbook/annotated-routes": "注解式路由",
       "cookbook/injector": "容器注入器",
       "cookbook/domain-core": "领域内核、控制器",
       "cookbook/golang-library": "Golang 服务集成",
@@ -53,6 +54,7 @@
   {
     "title": "常用组件",
     "links": {
+
       "component/files": "文件和目录",
       "component/reactor": "代码生成",
       "component/tokenizer": "静态分析工具",
@@ -62,7 +64,7 @@
   },
   {
     "title": "控制台",
-    "links":{
+    "links": {
       "console/configuration": "安装与配置",
       "console/commands": "控制台命令"
     }

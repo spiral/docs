@@ -1,6 +1,6 @@
-# 速查手册 - 网站爬虫
+# 队列 - 网站爬虫
 
-Spiral 队列和 RoadRunner 服务器可以用来实现不同于传统 web 设置的应用程序。这篇教程中会演示开发一个在命令行下使用的简单网站爬虫程序。
+Spiral 队列和 RoadRunner 服务器可以用来实现不同于传统 web 设置的应用程序。在这篇教程中，我们来演示开发一个在命令行下使用的简单网站爬虫程序。
 
 爬取到的数据会存储在 `runtime` 文件夹中。
 
@@ -8,7 +8,7 @@ Spiral 队列和 RoadRunner 服务器可以用来实现不同于传统 web 设�
 
 ## 安装依赖
 
-我们会基于 Spiral 的命令行项目框架 [spiral/app-cli](https://github.com/spiral/app-cli) 创建这个命令行程序。`app-cli` 是 Spiral 提供的不含 ORM, HTTP 和其它扩展的精简项目模板，通常用于开发控制台应用程序。
+我们会基于 Spiral 的命令行项目框架 [spiral/app-cli](https://github.com/spiral/app-cli) 创建这个命令行程序。`app-cli` 是 Spiral 提供的不含 ORM, HTTP，以及其它扩展的精简项目模板，通常用于开发控制台应用程序。
 
 执行下面的命令创建新项目：
 
@@ -95,9 +95,9 @@ jobs:
     pool.numWorkers: 16
 ```
 
-## 创建任务处理程序
+## 创建任务处理器
 
-接下来创建一个简单的任务处理程序，它负责扫描网站，爬取 HTML 内容，并在指定的深度限制范围内跟随网页中的链接跳转和爬取。所有抓到的内容会存储在 `runtime` 文件夹下。
+接下来编写一个简单的任务处理器，它负责扫描网站，爬取 HTML 内容，并在指定的深度限制范围内跟随网页中的链接跳转和爬取。所有抓到的内容会存储在 `runtime` 文件夹下。
 
 > 因为安装了命令脚手架，可以通过 `php app.php create:job scrape` 来创建任务处理类。为了缩短篇幅，我们的示例中不使用 CURL 而是是用 `file_get_contents`.
 

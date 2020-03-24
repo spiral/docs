@@ -1,57 +1,137 @@
-# 控制台命令
+# 控制台 - 用户命令
 
-Spiral 框架一些命令来协助开发和控制构建。
+开发者可以向自己的应用添加新的控制台命令，或者通过引导程序注册插件提供的命令。默认配置下，控制台组件会自动发现 `app/src` 目录下的命令。
 
-列出所有可用的控制台命令：
+如果要添加新的基于 `symfony/console` 的命令，只要把它添加到应用中即可。
 
-```bash
-$ php app.php
+## 定义命令
+
+要创建新的命令，可以扩展 `Symfony\Component\Console\Command\Command` 或者 `Spiral\Console\Command` 类，后者在前者的基础上提供了一些方便的语法糖。
+
+```php
+use Spiral\Console\Command;
+
+class MyCommand extends Command
+{
+    const NAME        = 'my:command';
+    const DESCRIPTION = 'This is my command';
+
+    const ATTRIBUTES = [];
+    const OPTIONS    = [];
+
+    /**
+     * 执行命令
+     */
+    protected function perform()
+    {
+    }
+}
 ```
 
-查看特定命令的帮助：
+通过常量 `NAME` 和 `DESCRIPTION` 来提供命令的名称和描述。定义完之后，即可在命令行下调用这个命令：
 
 ```bash
-$ php app.php help db:table
+$ php app.php my:command 
 ```
 
-也可以使用简化的格式：
+## 参数和选项
+
+Spiral 的 `Command` 类让定义参数和选项变得非常简单：
+
+```php
+const ARGUMENTS = [
+    ['argument', InputArgument::REQUIRED, '参数说明。']
+];
+    
+const OPTIONS = [
+    ['option', 'c', InputOption::VALUE_NONE, '选项说明。']
+];
+```
+
+要通过参数和/或选项读取用户输入，可以使用 `$this->argument("argName")` 以及 `$this->option("optName")`.
+
+## 执行命令
+
+ 命令的具体执行过程放在 `perform` 方法中。`perfom` 方法也是支持 Spiral 的方法注入的，此外通过 `$this->input` 和 `$this->output` 属性可以处理输入和输出。
+
+```php
+protected function perform(MyService $service)
+{
+    $this->output->writeln($service->doSomething());
+}
+```
+
+## 辅助方法
+
+在继承自 `Spiral\Console\Command` 类的命令中，有很多辅助方法可以使用。下面给出的示例代码都可以在 `perform` 方法中使用：
+
+单行输出：
+
+```php
+$this->writeln("hello world");
+```
+
+输出内容但不换行：
+
+```php
+$this->write("hello world");
+```
+
+格式化输出并且不换行：
+
+```php
+$this->sprintf("Hello, <comment>%s</comment>", $name);
+```
+
+> 这个方法的签名与 PHP 内置的 `sprintf` 方法一致。
+
+检查当前命令被调用的信息详细模式是否高于 `OutputInterface::VERBOSITY_VERBOSE`（默认值）：
+
+```php
+dump($this->isVerbose());
+```
+
+> 在控制台命令中可以随意使用 `dump` 方法。
+
+还可以使用输出表格：
+
+```php
+$data = [
+    [1, 'foo'],
+    [2, 'bar'],
+    [3, 'baz'],
+];
+
+$table = $this->table([
+    '第一列',
+    '第二列',
+]);
+
+foreach ($data as $row)
+{
+    $table->addRow([
+        $row[0],
+        $row[1]
+    ]);
+}
+
+$table->render();
+```
+
+会输出带颜色的：
 
 ```bash
-$ php app.php db:table -h
++----------+----------+
+| 第一列    | 第二列    |
++----------+----------+
+| 1        | foo      |
+| 2        | bar      |
+| 3        | baz      |
++----------+----------+
 ```
 
-> 如果需要创建自己的命令，可以查看[相关章节](/zh_CN/console/commands.md)。
+还可以添加分隔行：
 
-## 别名
-
-Spiral 控制台的底层是 `Symfony/Console`, 因此开发者可以使用命令名称缩写，只要提供的缩写足以定位到目标命令即可：
-
-```bash
-# 解析到 `update` 命令
-$ php app.php up 
-
-# `configure`, `cache:clean`, `cycle:*` 命令都匹配，造成了冲突。
-$ php app.php c
+```php
+$table->addRow(new \Symfony\Component\Console\Helper\TableSeparator());
 ```
-
-## 配置
-
-Spiral 应用包含了一个核心命令 `configure`. 这个命令会按顺序执行一系列操作，以确保应用已正确配置，创建了必备目录并验证资源的权限正确。
-
-可以在执行命令的时候输出更详细的信息：
-
-```bash
-$ php app.php configure -vv
-```
-
-> 新创建（安装）的应用，一定要在首次运行前执行一次 `configure` 命令。
-
-## 应用服务器
-
-应用服务器有它自己的一系列命令，要列出所有可用的服务器命令，可以执行：
-
-```bash
-$ ./spiral
-```
-
-要了解有关应用服务器命令的更多信息，可以查看[相关文档](https://roadrunner.dev/docs/beep-beep-cli)。
