@@ -1258,6 +1258,8 @@ URL | Comment
 
 You can use sorters, filters and pagination in one request. Multiple filters can be activated at once.
 
+> Run the `php app.php prototype:inject -r` to clean up your injections and speed up application. You can also declare `PostController` as singleton. 
+
 ## Validate Request
 
 ### Hydrate Entity
