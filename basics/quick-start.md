@@ -1181,12 +1181,82 @@ Create method `list` in `PostController`:
 
 ### Data Grid
 An approached provided above has its limitation since you have to paginate, filter and order the result manually. 
-Use the Data Grid component to handle data formatting for you:
+Use the [Data Grid component](/component/data-grid.md) to handle data formatting for you:
 
 ```bash
 $ composer require spiral/data-grid-bridge
 ```
 
+Activate the `Spiral\DataGrid\Bootloader\GridBootloader` in your application.
+
+To use data grids we have to specify our data schema first, create `App\View\PostGrid` class:
+
+```php
+namespace App\View;
+
+use Spiral\DataGrid\GridSchema;
+use Spiral\DataGrid\Specification\Filter\Equals;
+use Spiral\DataGrid\Specification\Pagination\PagePaginator;
+use Spiral\DataGrid\Specification\Sorter\Sorter;
+use Spiral\DataGrid\Specification\Value\IntValue;
+use Spiral\Prototype\Annotation\Prototyped;
+
+/**
+ * @Prototyped(property="postGrid")
+ */
+class PostGrid extends GridSchema
+{
+    public function __construct()
+    {
+        $this->addFilter('author', new Equals('author.id', new IntValue()));
+
+        $this->addSorter('id', new Sorter('id'));
+        $this->addSorter('author', new Sorter('author.id'));
+
+        // default limit, available limits
+        $this->setPaginator(new PagePaginator(10, [10, 20, 50]));
+    }
+}
+```
+
+> We have added one filter and two sorting options to the grid. The pagination will be done using page limits.
+
+Connect the bootloader to your method using `Spiral\DataGrid\GridFactory`:
+
+```php
+/**
+ * @Route(action="/api/post", verbs={"GET"})
+ * @param GridFactory $grids
+ * @return array
+ */
+public function list(GridFactory $grids): array
+{
+    $grid = $grids->create($this->posts->findAllWithAuthor(), $this->postGrid);
+
+    return [
+        'posts' => array_map(
+            [$this->postView, 'map'],
+            iterator_to_array($grid->getIterator())
+        )
+    ];
+}
+```
+
+> Do not forget to run `php app.php configure` after adding prototyped class.
+
+The grids are very flexible component with many customization options. By the default, grid configured to read
+values from request query and data.
+ 
+URL | Comment
+--- | ---
+`http://localhost:8080/api/post?paginate[page]=2` | Open second page.
+`http://localhost:8080/api/post?paginate[page]=2&paginate[limit]=20` | Open second page with 20 posts per page.
+`http://localhost:8080/api/post?paginate[page]=2&paginate[limit]=20` | Open second page with 20 posts per page.
+`http://localhost:8080/api/post?sort[id]=desc` | Sort by post->id DESC.
+`http://localhost:8080/api/post?sort[author]=asc` | Sort by post->author->id.
+`http://localhost:8080/api/post?filter[author]=1` | Find only posts with given author id.
+
+You can use sorters, filters and pagination in one request. Multiple filters can be activated at once.
 
 ## Validate Request
 
