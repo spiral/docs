@@ -963,7 +963,7 @@ Open `http://localhost:8080/api/test/123` to observe the result.
 Alternatively, use the ResponseWrapper helper:
 
 ```php
-use use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 
 // ...
 
