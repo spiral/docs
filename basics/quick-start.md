@@ -46,7 +46,7 @@ To simplify the tweaking of the application, restart the application server in d
 only one worker and reloads it after every request, it emulates the PHP-FPM flow.
 
 ```bash
-$ .\spiral.exe serve -v -d -o "http.workers.pool.maxJobs=1" -o "http.workers.pool.numWorkers=1"
+$ ./spiral serve -v -d -o "http.workers.pool.maxJobs=1" -o "http.workers.pool.numWorkers=1"
 ```
 
 You can also create and use an alternative configuration file via `-c` flag of `spiral` application.
@@ -898,6 +898,97 @@ $ php app.php seed:comment -vv
 ```
 
 ## Controller
+Create a set of REST endpoints to retrieve the post data via API. We can start with a simple controller `App\Controller\PostController`.
+Create it using scaffolder:
+
+```bash
+$ php .\app.php create:controller post -a test -a get -p 
+```
+
+> Use option `-a` to pre-generate controller actions and option `-p` to pre-load prototype extension.
+
+The generated code:
+
+```php
+namespace App\Controller;
+
+use Spiral\Prototype\Traits\PrototypeTrait;
+
+class PostController
+{
+    use PrototypeTrait;
+
+    public function test()
+    {
+    }
+
+    public function get()
+    {
+    }
+}
+```
+
+### Test Method
+You can return various types of data from your controller methods. Following return values are valid:
+- string
+- PSR-7 response
+- array (as JSON)
+- JsonSerializable object
+
+> Use custom [domain core](/cookbook/domain-core.md) to perform domain-specific response transformations. You can also
+> use the `$this->response` helper to write the data into PSR-7 response object.
+
+For demo purposes return `array`, the `status` key will be automatically treated as response status.
+
+
+```php
+/**
+ * @Route(action="/api/test/<id>", verbs={"GET"})
+ * @param string $id
+ * @return array
+ */
+public function test(string $id)
+{
+    return [
+        'status' => 200,
+        'data'   => [
+            'id' => $id
+        ]
+    ];
+}
+``` 
+
+Open `http://localhost:8080/api/test/123` to observe the result.
+
+Alternatively, use the ResponseWrapper helper:
+
+```php
+use use Psr\Http\Message\ResponseInterface;
+
+// ...
+
+/**
+ * @Route(action="/api/test/<id>", verbs={"GET"})
+ * @param string $id
+ * @return ResponseInterface
+ */
+public function test(string $id): ResponseInterface
+{
+    return $this->response->json(
+        [
+            'data' => [
+                'id' => $id
+            ]
+        ],
+        200
+    );
+}
+```
+
+### Get Post
+
+
+### Get Multiple Posts
 
 ### Data Grid
 
