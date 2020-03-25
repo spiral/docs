@@ -985,12 +985,208 @@ public function test(string $id): ResponseInterface
 }
 ```
 
-### Get Post
+> We won't use test method going forward.
 
+### Get Post
+To get post details use `PostRepository`, request such dependency in constructor, `get` method, or use prototype shortcut 
+`posts`. You can access `id` via route parameter:
+
+```php
+namespace App\Controller;
+
+use App\Annotation\Route;
+use App\Database\Post;
+use Spiral\Http\Exception\ClientException\NotFoundException;
+use Spiral\Prototype\Traits\PrototypeTrait;
+
+class PostController
+{
+    use PrototypeTrait;
+
+    /**
+     * @Route(action="/api/post/<id:\d+>", verbs={"GET"})
+     * @param string $id
+     * @return array
+     */
+    public function get(string $id)
+    {
+        /** @var Post $post */
+        $post = $this->posts->findByPK($id);
+        if ($post === null) {
+            throw new NotFoundException("post not found");
+        }
+
+        return [
+            'post' => [
+                'id'      => $post->id,
+                'author'  => [
+                    'id'   => $post->author->id,
+                    'name' => $post->author->name
+                ],
+                'title'   => $post->title,
+                'content' => $post->content,
+            ]
+        ];
+    }
+}
+```
+
+You can replace direct repository access and use `Post` as method injection via connected `CycleInterceptor` (make sure that `AppBootloader` connected):
+
+```php
+namespace App\Controller;
+
+use App\Annotation\Route;
+use App\Database\Post;
+use Spiral\Prototype\Traits\PrototypeTrait;
+
+class PostController
+{
+    use PrototypeTrait;
+
+    /**
+     * @Route(action="/api/post/<post:\d+>", verbs={"GET"})
+     * @param Post $post
+     * @return array
+     */
+    public function get(Post $post)
+    {
+        return [
+            'post' => [
+                'id'      => $post->id,
+                'author'  => [
+                    'id'   => $post->author->id,
+                    'name' => $post->author->name
+                ],
+                'title'   => $post->title,
+                'content' => $post->content,
+            ]
+        ];
+    }
+}
+```
+
+> Consider using view object to map the response data into `JsonSerializable` form.
+
+### Post View Mapper
+You can use any existing serialization solution (like `jms/serializer`) or write your own. Create a prototyped view object
+to map post data into JSON format with comments:
+
+```php
+namespace App\View;
+
+use App\Database\Post;
+use Psr\Http\Message\ResponseInterface;
+use Spiral\Core\Container\SingletonInterface;
+use Spiral\Prototype\Annotation\Prototyped;
+use Spiral\Prototype\Traits\PrototypeTrait;
+
+/**
+ * @Prototyped(property="postView")
+ */
+class PostView implements SingletonInterface
+{
+    use PrototypeTrait;
+
+    public function map(Post $post): array
+    {
+        return [
+            'post' => [
+                'id'      => $post->id,
+                'author'  => [
+                    'id'   => $post->author->id,
+                    'name' => $post->author->name
+                ],
+                'title'   => $post->title,
+                'content' => $post->content,
+            ]
+        ];
+    }
+
+    public function json(Post $post): ResponseInterface
+    {
+        return $this->response->json($this->map($post), 200);
+    }
+}
+```
+
+> Run `php app.php configure` to generate the IDE highlight and register prototype class.
+
+Modify the controller as follows:
+
+```php
+namespace App\Controller;
+
+use App\Annotation\Route;
+use App\Database\Post;
+use Psr\Http\Message\ResponseInterface;
+use Spiral\Prototype\Traits\PrototypeTrait;
+
+class PostController
+{
+    use PrototypeTrait;
+
+    /**
+     * @Route(action="/api/post/<post:\d+>", verbs={"GET"})
+     * @param Post $post
+     * @return ResponseInterface
+     */
+    public function get(Post $post): ResponseInterface
+    {
+        return $this->postView->json($post);
+    }
+}
+```
+
+> You should observe no changes in the behaviour.
 
 ### Get Multiple Posts
+Use direct repository access to load multiple posts. To start, let's load all the available posts and their authors. 
+
+Create `findAllWithAuthors` method in `PostRepository`:
+
+```php
+namespace App\Repository;
+
+use Cycle\ORM\Select;
+use Cycle\ORM\Select\Repository;
+
+class PostRepository extends Repository
+{
+    public function findAllWithAuthor(): Select
+    {
+        return $this->select()->load('author');
+    }
+}
+``` 
+
+Create method `list` in `PostController`:
+
+```php
+/**
+     * @Route(action="/api/post", verbs={"GET"})
+     * @return array
+     */
+    public function list(): array
+    {
+        $posts = $this->posts->findAllWithAuthor();
+
+        return [
+            'posts' => array_map([$this->postView, 'map'], $posts->fetchAll())
+        ];
+    }
+```
+
+> You can see the JSON of all the posts using `http://localhost:8080/api/post`.
 
 ### Data Grid
+An approached provided above has its limitation since you have to paginate, filter and order the result manually. 
+Use the Data Grid component to handle data formatting for you:
+
+```bash
+$ composer require spiral/data-grid-bridge
+```
+
 
 ## Validate Request
 
