@@ -1387,7 +1387,8 @@ To post a valid comment:
 $ curl -X POST -H 'content-type: application/json' --data '{"message": "first comment"}' http://localhost:8080/api/post/1/comment
 ```
 
-> Read more about filters [here](/filters/filter.md).
+> Read more about filters [here](/filters/filter.md). Change the [scaffolder](/basics/scaffolding.md) configuration to 
+> alter the generated request postfix or default namespace.
 
 ## Render Template
 
