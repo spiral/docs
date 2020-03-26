@@ -1360,7 +1360,8 @@ public function comment(Post $post, CommentFilter $commentFilter)
 }
 ```
 
-> See how to use currently authenticated user instead of random one down below.
+> See how to use currently authenticated user instead of random one down below. Use `spiral/toolkit` Stempler extension
+> to create AJAX-native forms in HTML. 
 
 ### Execute
 Check the error format:
@@ -1536,14 +1537,6 @@ route name to generate link in `app/views/posts.dark.php`:
 ```
 
 > Read more about Stempler Directives [here](/stempler/directives.md).
-
-## Background Task
-
-### Create Endpoint
-
-### Create Job Handler
-
-### Push Background Task
 
 ## Authenticate User
 
