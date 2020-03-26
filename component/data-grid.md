@@ -205,61 +205,10 @@ $descSorter = $sorter->withDirection('desc'); //also -1, '-1' and SORT_DESC valu
 ## Available filter specifications
 Next specifications are available for grids for now:
 
-* [all](#all-specification)
-* [any](#any-specification)
-* [between](#between-specification)
-* [equals](#equals-specification)
-* [gt](#gt-specification)
-* [gte](#gte-specification)
-* [in array](#in-array-specification)
-* [like](#like-specification)
-* [lt](#lt-specification)
-* [lte](#lte-specification)
-* [map](#map-specification)
-* [not equals](#not-equals-specification)
-* [not in array](#not-in-array-specification)
 * [select](#select-specification)
-* [value between](#value-between-specification)
 
 > There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
-### All specification
-> TBD
 
-### Any specification
-> TBD
-
-### Between specification
-> TBD
-
-### Equals specification
-> TBD
-
-### Gt specification
-> TBD
-
-### Gte specification
-> TBD
-
-### In array specification
-> TBD
-
-### Like specification
-> TBD
-
-### Lt specification
-> TBD
-
-### Lte specification
-> TBD
-
-### Map specification
-> TBD
-
-### Not equals specification
-> TBD
-
-### Not in array specification
-> TBD
 
 ### Select specification
 This specification represents a set of available expressions.
@@ -321,8 +270,6 @@ $filter = $select->withValue('four');
 ```
 > Filter will be equal to null
 
-### Value between specification
-> TBD
 
 ## Filter values
 Filter values is the way of converting data types and validation.
