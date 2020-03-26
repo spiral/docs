@@ -84,7 +84,7 @@ class AppBootloader extends Bootloader
 ```
 
 ## Caching
-By default, the view caching turned off if env variable `DEBUG` set to true. The cache files are stored in 
+By default, view caching is turned off if the env variable `DEBUG` is set to true. The cache files are stored in 
 `runtime/cache/views`.
 
 ## Purge
