@@ -1538,9 +1538,7 @@ route name to generate link in `app/views/posts.dark.php`:
 > Read more about Stempler Directives [here](/stempler/directives.md).
 
 ## Next Steps
-Spiral provides a lot of pre-build functionality for you.
-
-Read the following sections to gain more insigns:
+Spiral provides a lot of pre-build functionality for you. Read the following sections to gain more insigns:
 - [Authenticating users](/security/authentication.md)
 - [Authorize Access](/security/rbac.md)
 - [Background Jobs](/queue/configuration.md)
