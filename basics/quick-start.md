@@ -1258,13 +1258,136 @@ URL | Comment
 
 You can use sorters, filters and pagination in one request. Multiple filters can be activated at once.
 
-> Run the `php app.php prototype:inject -r` to clean up your injections and speed up application. You can also declare `PostController` as singleton. 
-
 ## Validate Request
+Make sure to [validate](/security/validation.md) data from the client. Use low level validation interfaces or 
+[Request Filters](/filters/configuration.md) to validate, filter and map your data.
 
-### Hydrate Entity
+Create `CommentFilter` using the [scaffolder extension](/basics/scaffolding.md):
 
-### Combine 
+```bash
+$ php app.php create:filter comment
+```
+
+Configure filter as following:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Filter;
+
+class CommentFilter extends Filter
+{
+    protected const SCHEMA = [
+        'message' => 'data:message'
+    ];
+
+    protected const VALIDATES = [
+        'message' => ['notEmpty']
+    ];
+
+    protected const SETTERS = [
+        'message' => 'strval'
+    ];
+
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+}
+```
+
+### Service
+Create `App\Service\CommentService`:
+
+```php
+namespace App\Service;
+
+use App\Database\Comment;
+use App\Database\Post;
+use App\Database\User;
+use Cycle\ORM\TransactionInterface;
+use Spiral\Prototype\Annotation\Prototyped;
+
+/**
+ * @Prototyped(property="commentService")
+ */
+class CommentService
+{
+    private $tr;
+
+    public function __construct(TransactionInterface $tr)
+    {
+        $this->tr = $tr;
+    }
+
+    public function comment(Post $post, User $user, string $message): Comment
+    {
+        $comment = new Comment();
+        $comment->post = $post;
+        $comment->author = $user;
+        $comment->message = $message;
+
+        $this->tr->persist($comment);
+        $this->tr->run();
+
+        return $comment;
+    }
+}
+```
+
+### Controller Action
+Declare controller method and request filter instance. Since you use `FilterInterceptor` in your domain-core, the framework
+will guarantee that filter is valid. Create `comment` endpoint to post message to a given post:
+
+```php
+/**
+ * @Route(action="/api/post/<post:\d+>/comment", verbs={"POST"})
+ * @param Post          $post
+ * @param CommentFilter $commentFilter
+ * @return array
+ */
+public function comment(Post $post, CommentFilter $commentFilter)
+{
+    $this->commentService->comment(
+        $post,
+        $this->users->findOne(), // todo: use current user
+        $commentFilter->getMessage()
+    );
+
+    return ['status' => 201];
+}
+```
+
+> See how to use currently authenticated user instead of random one down below.
+
+### Execute
+Check the error format:
+
+```bash
+$ curl -X POST -H 'content-type: aapplication/json' --data '{}' http://localhost:8080/api/post/1/comment
+``` 
+
+Response:
+
+```json
+{"status":400,"errors":{"message":"This value is required."}}
+```
+
+Or not found exception when post can not be found:
+
+```bash
+$ curl -X POST -H 'content-type: application/json' --data '{}' http://localhost:8080/api/post/9999/comment
+``` 
+
+> Make sure to send `accept: application/json` to receive error in JSON format.
+
+To post a valid comment: 
+
+```bash
+$ curl -X POST -H 'content-type: application/json' --data '{"message": "first comment"}' http://localhost:8080/api/post/1/comment
+```
+
+> Read more about filters [here](/filters/filter.md).
 
 ## Render Template
 
