@@ -1392,9 +1392,15 @@ $ curl -X POST -H 'content-type: application/json' --data '{"message": "first co
 
 ## Render Template
 
+
 ### Create Layout
 
-### Implement View
+
+### List Posts
+
+
+### View Post
+
 
 ## Background Task
 
