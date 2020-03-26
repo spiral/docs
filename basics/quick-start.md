@@ -1,4 +1,4 @@
-# Quick Start [Work in Progress]
+# Quick Start
 Spiral framework contains a lot of components build to operate seamlessly with each other.
 In this article we will show how to create a demo blog application with REST API, ORM, Migrations,
 request validation, queue and user authorization.
@@ -1360,8 +1360,7 @@ public function comment(Post $post, CommentFilter $commentFilter)
 }
 ```
 
-> See how to use currently authenticated user instead of random one down below. Use `spiral/toolkit` Stempler extension
-> to create AJAX-native forms in HTML. 
+> Use `spiral/toolkit` Stempler extension to create AJAX-native forms in HTML. 
 
 ### Execute
 Check the error format:
@@ -1538,10 +1537,10 @@ route name to generate link in `app/views/posts.dark.php`:
 
 > Read more about Stempler Directives [here](/stempler/directives.md).
 
-## Authenticate User
+## Next Steps
+Spiral provides a lot of pre-build functionality for you.
 
-### Connect the Component
-
-### Authenticate User
-
-### Attach Middleware
+Read the following sections to gain more insigns:
+- [Authenticating users](/security/authentication.md)
+- [Authorize Access](/security/rbac.md)
+- [Background Jobs](/queue/configuration.md)
