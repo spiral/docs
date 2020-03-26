@@ -1,30 +1,28 @@
 # Quick Start
-Spiral framework contains a lot of components build to operate seamlessly with each other.
-In this article we will show how to create a demo blog application with REST API, ORM, Migrations,
-request validation, queue and user authorization.
+The spiral framework contains a lot of components built to operate seamlessly with each other.
+In this article, we will show how to create a demo blog application with REST API, ORM, Migrations, request validation, queue, and user authorization.
 
-> The components and approaches will be covered at basic levels only. Read the corresponding 
-sections to gain more information. 
+> The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more information. 
 
 ## Installation
-Use composer to install the default `spiral/app` bundle with most of components out of the box:
+Use composer to install the default `spiral/app` bundle with most of the components out of the box:
 
 ```bash
 $ composer create-project spiral/app spiral-demo
 $ cd spiral-demo
 ```
 
-> Use the opposite build `spiral/app-cli` to install spiral with minimal dependencies.
+> Use the different build `spiral/app-cli` to install the spiral with minimal dependencies.
 
-If everything installed correctly you can open your application immediately by starting the server:
+If everything installed correctly, you could open your application immediately by starting the server:
 
 ```bash
 $ ./spiral serve -v -d
 ```
 
-You just started an [application server](/framework/application-server.md). The same server can used on production, making your
-development environment similar to the final setup. Out of the box server includes instruments to write portable applications
-with HTTP/2, GRPC, Queue, WebSockets, etc and does not require external brokers to operate.
+You just started an [application server](/framework/application-server.md). The same server can be used on production, making your
+development environment similar to the final setup. Out of the box, the server includes instruments to write portable applications
+with HTTP/2, GRPC, Queue, WebSockets, etc. and does not require external brokers to operate.
 
 By default, the application available on `http://localhost:8080`. The build includes multiple pre-defined pages you can play with.
 
@@ -32,30 +30,29 @@ By default, the application available on `http://localhost:8080`. The build incl
 > and middleware included in the default build. We will turn some of them off to make the application runtime smaller. 
 
 ## Configure
-Spiral applications are configured using config files located in `app/config`, you can use the hardcoded values for the configuration, 
+Spiral applications configured using config files located in `app/config`, you can use the hardcoded values for the configuration, 
 or get the values using available functions `env` and `directory`. The `spiral/app` bundle use DotEnv extension which 
 will load ENV variables from the `.env` file.
 
 > Tweak the application server and its plugins using `.rr.yaml` file.
 
-The list of application dependencies located in `composer.json` and activated in a form of Bootloaders in `app/src/App.php`.
+The application dependencies defined in `composer.json` and activated in `app/src/App.php` as Bootloaders.
 The default build includes quite a lot of pre-configured components.
 
 ### Developer Mode
-To simplify the tweaking of the application, restart the application server in developer mode. In this mode the server uses
-only one worker and reloads it after every request, it emulates the PHP-FPM flow.
+To simplify the tweaking of the application, restart the application server in developer mode. In this mode, the server uses
+only one worker and reloads it after every request.
 
 ```bash
 $ ./spiral serve -v -d -o "http.workers.pool.maxJobs=1" -o "http.workers.pool.numWorkers=1"
 ```
 
-You can also create and use an alternative configuration file via `-c` flag of `spiral` application.
+You can also create and use an alternative configuration file via `-c` flag of the `spiral` application.
 
 > Read more about Workers and Lifecycle [here](/start/workers.md).
 
 ### Lighter Up
-We won't need translation, session, cookies, CSRF and encryption in our demo application. Remove these components and their 
-bootloaders.
+We won't need translation, session, cookies, CSRF, and encryption in our demo application. Remove these components and their bootloaders.
 
 Delete following bootloaders from `app/src/App.php`:
 
@@ -94,7 +91,7 @@ Delete following files and directories as no longer required:
 > Note, the application won't work at the moment as we removed the dependency required to render `app/views/home.dark.php`.
 
 ### Database Connection
-Our application need a database to operation. By the default, the database configuration is located in `app/config/database.php` file.
+Our application needs a database to operate. By default, the database configuration located in `app/config/database.php` file.
 The demo application comes with pre-configured SQLite database located in `runtime/runtime.db`.
 
 ```php
@@ -149,7 +146,7 @@ return [
 
 > Note that `default` database now points to the `default` connection.
 
-To check the the database connection was successful run:
+To check that the database connection was successful run:
 
 ```bash
 $ php app.php db:list
@@ -164,8 +161,8 @@ We will need some sample data for the application. Let's connect the library and
 $ composer require fzaninotto/faker
 ``` 
 
-To generate the stub data we will need an instance of `Faker\Generator`, create bootloader in `app/src/Bootloader` to resolve such
-instance as singleton. Use factory method for that purposes.
+To generate the stub data, we will need an instance of `Faker\Generator`, create bootloader in `app/src/Bootloader` to resolve such
+instance as a singleton. Use a factory method for that purpose.
 
 ```php
 namespace App\Bootloader;
@@ -210,7 +207,7 @@ class HomeController
 > Read more about Bootloaders [here](/framework/bootloaders.md).
 
 ### Routing
-By the default, the routing rules located in `app/src/Bootloader/RoutingBootloader.php`. You have many options how
+By default, the routing rules located in `app/src/Bootloader/RoutingBootloader.php`. You have many options on how
 to configure routing. Point route to actions, controllers, controller groups, set the default pattern parameters, 
 verbs, middleware, etc.
 
@@ -237,11 +234,10 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
-In the given setup the action and id are the optional parts of the URL (see the `[]`), the action defaults to `index`.
+In the given setup, the action and id are the optional parts of the URL (see the `[]`), the action defaults to `index`.
 Open `HomeController`->`index` using `http://localhost:8080/` or `http://localhost:8080/index`.
 
-The route parameters can be addressed in method injection of the controller by their name, create the following 
-method in `HomeController`:
+The route parameters can be addressed in method injection of the controller by their name, create the following method in `HomeController`:
 
 ```php
 public function open(string $id)
@@ -250,7 +246,7 @@ public function open(string $id)
 }
 ```
 
-You can invoke this method using URL `http://localhost:8080/open/123`, the `id` parameter will be hydrated automatically.
+You can invoke this method using URL `http://localhost:8080/open/123`. The `id` parameter will be hydrated automatically.
 
 > Read more about Routing [here](/http/routing.md).
 
@@ -364,13 +360,13 @@ $ php app.php route:list
 
 > Use additional route parameters to configure middleware, common prefix, etc.
 
-In the following examples we will stick to the annotated routes for the simplicity.
+In the following examples, we will stick to the annotated routes for simplicity.
 
 > Disable `ErrorHandlerBootloader` in `App` to view full error log.
 
 ### Domain Core
 Connect custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
-We can change the default behaviour of the application and enable Cycle Entity resolution using route parameter, 
+We can change the default behavior of the application and enable Cycle Entity resolution using route parameter, 
 Filter validation and @Guard annotation.
 
 ```php
@@ -418,7 +414,7 @@ You can write the migration manually, or let Cycle ORM generate it for you.
 > Read more about migrations [here](/database/migrations.md). Use [Scaffolder](/basics/scaffolding.md) component to create migrations manually. 
 
 ### Define ORM Entities
-The demo application comes with [Cycle ORM](https://cycle-orm.dev). By the default you can use annotations to configure
+The demo application comes with [Cycle ORM](https://cycle-orm.dev). By default, you can use annotations to configure
 your entities.
 
 Let's create `Post`, `User` and `Comment` entities and their repositories using the Scaffolder extension:
@@ -509,7 +505,7 @@ class Comment
 }
 ```
 
-You can change the default directory mapping, headers and others using [Scaffolder config](/basics/scaffolding.md).
+You can change the default directory mapping, headers, and others using [Scaffolder config](/basics/scaffolding.md).
 
 > Read more about Cycle [here](/cycle/configuration.md). Configure auto-timestamps using [custom mapper](https://cycle-orm.dev/docs/advanced-timestamp).
 
@@ -520,7 +516,7 @@ To generate the database schema run:
 $ php app.php cycle:migrate -v
 ```
 
-The generated migration can be found in `app/migrations/`. Execute it using:
+The generated migration located in `app/migrations/`. Execute it using:
 
 ```bash
 $ php app.php migrate -vv
@@ -630,10 +626,10 @@ You can check the presence of Foreign Keys:
 $ php app.php db:table comments
 ```
 
-> Do not forget to run `php app.php cycle:migrate` when you change any of your entity.
+> Do not forget to run `php app.php cycle:migrate` when you change any of your entities.
 
 ## Service
-Isolate the business logic into separate Service layer. Let's create `PostService` in `app/src/Service`.
+Isolate the business logic into a separate service layer. Let's create `PostService` in `app/src/Service`.
 We will need an instance of `Cycle\ORM\TransactionInterface` to persist the post.
 
 ```php
@@ -667,11 +663,10 @@ class PostService
 }
 ```
 
-> You can reuse the transaction after `run` method.
+> You can reuse the transaction after the `run` method.
 
 ### Prototyping
-One of the most powerful capabilities of the framework is [Prototyping](/basics/prototype.md). Declare the shortcut `postService` which points to `PostService`
-using annotation.
+One of the most powerful capabilities of the framework is [Prototyping](/basics/prototype.md). Declare the shortcut `postService`, which points to `PostService` using annotation.
 
 ```php
 namespace App\Service;
@@ -701,7 +696,7 @@ $ php app.php configure
 Now you can get access to the `PostService` using `PrototypeTrait`, see the example down below.
 
 ## Console Command
-Let's create three commands to generate the data to our application. Use scaffolder extension to create command to seed our database:
+Let's create three commands to generate the data for our application. Use scaffolder extension to create command to seed our database:
 
 ```bash
 $ php app.php create:command seed/user seed:user
@@ -849,7 +844,7 @@ class PostCommand extends Command
 }
 ```
 
-> You can use prototype in any part of your codebase. Do not forget to remove the extension before going live. 
+> You can use the prototype in any part of your codebase. Do not forget to remove the extension before going live. 
 
 ### CommentCommand
 Seed comments using random user and post relation. We will receive all the needed instances using the method injection.
@@ -900,7 +895,7 @@ $ php app.php seed:comment -vv
 ```
 
 ## Controller
-Create a set of REST endpoints to retrieve the post data via API. We can start with a simple controller `App\Controller\PostController`.
+Create a set of REST endpoints to retrieve the post data via API. We can start with a simple controller, `App\Controller\PostController`.
 Create it using scaffolder:
 
 ```bash
@@ -940,7 +935,7 @@ You can return various types of data from your controller methods. Following ret
 > Use custom [domain core](/cookbook/domain-core.md) to perform domain-specific response transformations. You can also
 > use the `$this->response` helper to write the data into PSR-7 response object.
 
-For demo purposes return `array`, the `status` key will be automatically treated as response status.
+For demo purposes return `array`, the `status` key will be treated as response status.
 
 
 ```php
@@ -987,10 +982,10 @@ public function test(string $id): ResponseInterface
 }
 ```
 
-> We won't use test method going forward.
+> We won't use the test method going forward.
 
 ### Get Post
-To get post details use `PostRepository`, request such dependency in constructor, `get` method, or use prototype shortcut 
+To get post details use `PostRepository`, request such dependency in the constructor, `get` method, or use prototype shortcut 
 `posts`. You can access `id` via route parameter:
 
 ```php
@@ -1068,7 +1063,7 @@ class PostController
 }
 ```
 
-> Consider using view object to map the response data into `JsonSerializable` form.
+> Consider using view object to map the response data into the `JsonSerializable` form.
 
 ### Post View Mapper
 You can use any existing serialization solution (like `jms/serializer`) or write your own. Create a prototyped view object
@@ -1112,7 +1107,7 @@ class PostView implements SingletonInterface
 }
 ```
 
-> Run `php app.php configure` to generate the IDE highlight and register prototype class.
+> Run `php app.php configure` to generate the IDE highlight and register prototyped class.
 
 Modify the controller as follows:
 
@@ -1140,7 +1135,7 @@ class PostController
 }
 ```
 
-> You should observe no changes in the behaviour.
+> You should observe no changes in the behavior.
 
 ### Get Multiple Posts
 Use direct repository access to load multiple posts. To start, let's load all the available posts and their authors. 
@@ -1182,7 +1177,7 @@ Create method `list` in `PostController`:
 > You can see the JSON of all the posts using `http://localhost:8080/api/post`.
 
 ### Data Grid
-An approached provided above has its limitation since you have to paginate, filter and order the result manually. 
+An approach provided above has its limitations since you have to paginate, filter, and order the result manually. 
 Use the [Data Grid component](/component/data-grid.md) to handle data formatting for you:
 
 ```bash
@@ -1191,7 +1186,7 @@ $ composer require spiral/data-grid-bridge
 
 Activate the `Spiral\DataGrid\Bootloader\GridBootloader` in your application.
 
-To use data grids we have to specify our data schema first, create `App\View\PostGrid` class:
+To use data grids, we have to specify our data schema first, create `App\View\PostGrid` class:
 
 ```php
 namespace App\View;
@@ -1221,7 +1216,7 @@ class PostGrid extends GridSchema
 }
 ```
 
-> We have added one filter and two sorting options to the grid. The pagination will be done using page limits.
+> We have added one filter and two sorting options to the grid. The pagination is done using page limits.
 
 Connect the bootloader to your method using `Spiral\DataGrid\GridFactory`:
 
@@ -1258,7 +1253,7 @@ URL | Comment
 `http://localhost:8080/api/post?sort[author]=asc` | Sort by post->author->id.
 `http://localhost:8080/api/post?filter[author]=1` | Find only posts with given author id.
 
-You can use sorters, filters and pagination in one request. Multiple filters can be activated at once.
+You can use sorters, filters, and pagination in one request. Multiple filters can activate at once.
 
 ## Validate Request
 Make sure to [validate](/security/validation.md) data from the client. Use low level validation interfaces or 
@@ -1381,7 +1376,7 @@ Or not found exception when post can not be found:
 $ curl -X POST -H 'content-type: application/json' --data '{}' http://localhost:8080/api/post/9999/comment
 ``` 
 
-> Make sure to send `accept: application/json` to receive error in JSON format.
+> Make sure to send `accept: application/json` to receive an error in JSON format.
 
 To post a valid comment: 
 
@@ -1427,7 +1422,7 @@ Create/edit layout file located in `app/views/layout/base.dark.php`:
 ```  
 
 ### List Posts
-Create view file `app/views/posts.dark.php` and extend parent layout.
+Create a view file `app/views/posts.dark.php` and extend parent layout.
 
 ```html
 <extends:layout.base title="Posts"/>
@@ -1446,7 +1441,7 @@ Create view file `app/views/posts.dark.php` and extend parent layout.
 > sorters (`http://localhost:8080/posts?paginate[page]=2`).   
 
 ### View Post
-To view post and all of it's comments, create new controller method in `PostController`. Load post manually via repository
+To view post and all of its comments, create a new controller method in `PostController`. Load post manually via repository
 to preload all author and comment information.
 
 ```php
