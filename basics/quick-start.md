@@ -366,6 +366,8 @@ $ php app.php route:list
 
 In the following examples we will stick to the annotated routes for the simplicity.
 
+> Disable `ErrorHandlerBootloader` in `App` to view full error log.
+
 ### Domain Core
 Connect custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
 We can change the default behaviour of the application and enable Cycle Entity resolution using route parameter, 
@@ -1391,16 +1393,149 @@ $ curl -X POST -H 'content-type: application/json' --data '{"message": "first co
 > alter the generated request postfix or default namespace.
 
 ## Render Template
+To render post information into HTML form use [views](/views/configuration.md) and [Stempler](/stempler/configuration.md) component. 
+Pass post list to the view using Grid object.
 
+```php
+/**
+ * @Route(action="/posts", verbs={"GET"})
+ * @param GridFactory $grids
+ * @return string
+ */
+public function all(GridFactory $grids): string
+{
+    $grid = $grids->create($this->posts->findAllWithAuthor(), $this->postGrid);
+
+    return $this->views->render('posts', ['posts' => $grid]);
+}
+```
 
 ### Create Layout
+Create/edit layout file located in `app/views/layout/base.dark.php`:
 
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${title}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<block:body/>
+</body>
+</html>
+```  
 
 ### List Posts
+Create view file `app/views/posts.dark.php` and extend parent layout.
 
+```html
+<extends:layout.base title="Posts"/>
+
+<define:body>
+    @foreach($posts as $post)
+        <div class="post">
+            <div class="title">{{$post->title}}</div>
+            <div class="author">{{$post->author->name}}</div>
+        </div>
+    @endforeach
+</define:body>
+```
+
+> You can now see the list of posts on `http://localhost:8080/posts`, use URL Query parameters to control Data Grid filters,
+> sorters (`http://localhost:8080/posts?paginate[page]=2`).   
 
 ### View Post
+To view post and all of it's comments, create new controller method in `PostController`. Load post manually via repository
+to preload all author and comment information.
 
+```php
+use Spiral\Http\Exception\ClientException\NotFoundException;
+// ...
+
+/**
+ * @Route(action="/post/<id:\d+>", verbs={"GET"})
+ * @param string $id
+ * @return string
+ */
+public function view(string $id): string
+{
+    $post = $this->posts->findOneWithComments($id);
+    if ($post === null) {
+        throw new NotFoundException();
+    }
+
+    return $this->views->render('post', ['post' => $post]);
+}
+```
+
+Where the repository method is:
+
+```php
+public function findOneWithComments(string $id): ?Post
+{
+    return $this
+        ->select()
+        ->wherePK($id)
+        ->load('author')
+        ->load(
+            'comments.author',
+            [
+                'load' => function (Select\QueryBuilder $q) {
+                    // last comments at top
+                    $q->orderBy('id', 'DESC');
+                }
+            ]
+        )
+        ->fetchOne();
+}
+```
+
+And corresponding view `app/views/post.dark.php`:
+
+```html
+<extends:layout.base title="Posts"/>
+
+<define:body>
+    <div class="post">
+        <div class="title">{{$post->title}}</div>
+        <div class="author">{{$post->author->name}}</div>
+    </div>
+    <div class="comments">
+        @foreach($post->comments as $comment)
+            <div class="comment">
+                <div class="message">{{$comment->message}}</div>
+                <div class="author">{{$comment->author->name}}</div>
+            </div>
+        @endforeach
+    </div>
+</define:body>
+```
+
+Open the post page using `http://localhost:8080/post/1`.
+
+> We are leaving styling and comment timestamps up to you.
+
+### Route
+We used pattern `ControllerName.methodName` in `RoutesBootloader` to automatically name routes. Use `PostController.view`
+route name to generate link in `app/views/posts.dark.php`:
+
+```html
+<extends:layout.base title="Posts"/>
+       
+<define:body>
+   @foreach($posts as $post)
+       <div class="post">
+           <div class="title">
+               <a href="@route('PostController.view', ['id' => $post->id])">{{$post->title}}</a>
+           </div>
+           <div class="author">{{$post->author->name}}</div>
+       </div>
+   @endforeach
+</define:body>
+```
+
+> Read more about Stempler Directives [here](/stempler/directives.md).
 
 ## Background Task
 
