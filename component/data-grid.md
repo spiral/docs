@@ -48,8 +48,8 @@ $schema->addFilter('name', new Like('name', new StringValue()));
 > You can extend the GridSchema and initiate all the specifications in the constructor.
 
 ### Grid Factory
-To use the defined grid schema, you will have to obtain an instance of a supported data source. By default, the
-Cycle Select and Database Select Query are supported.
+To use the defined grid schema, you will have to obtain an instance of a supported data source.
+By default, the Cycle Select and Database Select Query are supported.
 
 ```php
 namespace App\Controller;
@@ -78,20 +78,193 @@ class HomeController
 }
 ```
 
-You can now invoke this controller; by default, first users will be selected from the database. 
+If you want any of the specifications be applied by default, you can pass them next way:
+```php
+/** @var Spiral\DataGrid\GridFactory $factory */
+$factory = $factory->withDefaults([
+    GridFactory::KEY_SORT     => ['id' => 'desc'],
+    GridFactory::KEY_FILTER   => ['name' => 'Antony'],
+    GridFactory::KEY_PAGINATE => ['page' => 3, 'limit' => 100]
+]);
+```
+To select users from the second page open page with POST or QUERY data like: `?paginate[page]=2`.<br/>
+To activate the Like filter: `?filter[name]=antony`.<br/>
+To sort by id in ASC or DESC: `?sort[id]=desc`.<br/>
+To get count of total values: `?fetchCount=1`.
+> These params are defined in the `GridFactory`, you can overwrite them.
 
-To select users from the second page open page with POST or QUERY data like: `?paginate[page]=2`.
+If you need to count items using a complex function, you can pass a callable function via `withCounter` method:
+```php
+/** @var Spiral\DataGrid\GridFactory $factory */
+$factory = $factory->withCounter(static function ($select): int {
+    return count($select) * 2;
+});
+```
+> This is a simple example, but this function might be very helpful in case of complex SQL requests with joins.
 
-To activate the Like filter: `?filter[name]=antony`.
+## Available pagination specifications
+### Page Paginator specification
+This is a simple page+limit pagination:
+```php
+namespace App\Controller;
 
-To sort by id in ASC or DESC: `?sort[id]=desc`.
+use Spiral\DataGrid\GridSchema;
+use Spiral\DataGrid\Specification\Pagination\PagePaginator;
 
-## Available Specifications
-There are many specifications available for grids.
+class HomeController
+{
+    public function index()
+    {
+        $schema = new GridSchema();
+        $schema->setPaginator(new PagePaginator(10, [25, 50, 100, 500]));
+        //...
+    }
+}
+```
+From the user input, such paginator accepts an array with 2 keys, `limit` and `page`.
+If limit is set it should be presented in the `allowedLimits` constructor param. 
+```php
+use Spiral\DataGrid\Specification\Pagination\PagePagination;
+
+$paginator = new PagePaginator(10, [25, 50, 100, 500]);
+
+$paginator->withValue(['limit' => 123]); //won't apply
+$paginator->withValue(['limit' => 10]); //will apply
+$paginator->withValue(['limit' => 100]); //will apply
+
+$paginator->withValue(['limit' => 100, 'page' => 2]);
+```
+Under the hood, this paginator converts `limit` and `page` into the `Limit` and `Offset` specification.
+You are free to write your own paginator, like cursor-based one (for example: `lastID`+`limit`). 
+
+## Available sorter specifications
+Next specifications are available for grids for now:
+
+* [ordered sorters](#ordered-sorters-specification)
+* [directional sorter](#directional-sorter-specification)
+* [sorter](#sorter-specification)
+* [sorter set](#sorter-set-specification)
+
+### Ordered sorters specification
+`AscSorter` and `DescSorter` contain the expressions that should be applied with ascending (or descending) sorting order:
+```php
+use Spiral\DataGrid\Specification\Sorter\AscSorter;
+use Spiral\DataGrid\Specification\Sorter\DescSorter;
+
+$ascSorter = new AscSorter('first_name', 'last_name'); // variadic param inside
+$descSorter = new DescSorter('first_name', 'last_name'); // variadic param inside
+```
+
+### Directional sorter specification
+This sorter contains 2 independent sorters each for ascending and descending order.
+By receiving the order via `withValue` we will get one of the sorters:
+```php
+use Spiral\DataGrid\Specification\Sorter\AscSorter;
+use Spiral\DataGrid\Specification\Sorter\DescSorter;
+use Spiral\DataGrid\Specification\Sorter\DirectionalSorter;
+
+$sorter = new DirectionalSorter(new AscSorter('first_name'), new DescSorter('last_name'));
+//will sort by first_name asc
+$ascSorter = $sorter->withDirection('asc'); //also 1, '1' and SORT_ASC values allowed
+//will sort by last_name desc
+$descSorter = $sorter->withDirection('desc'); //also -1, '-1' and SORT_DESC values allowed
+```
+> Note that you can sort using different set of fields in both sorters.
+> If you have the same set of fields, use [sorter](#sorter-specification) instead.
+
+### Sorter specification
+This is a sorter wrapper for a directional sorter in case you have the same fields for sorting in both directions:
+```php
+use Spiral\DataGrid\Specification\Sorter\Sorter;
+
+$sorter = new Sorter('first_name', 'last_name');
+//will sort by first_name and last_name asc
+$ascSorter = $sorter->withDirection('asc'); //also 1, '1' and SORT_ASC values allowed
+//will sort by first_name and last_name desc
+$descSorter = $sorter->withDirection('desc'); //also -1, '-1' and SORT_DESC values allowed
+```
+### Sorter set specification
+This is just a way of combining sorters into one set, passing direction will apply it to the whole set:
+```php
+use Spiral\DataGrid\Specification\Sorter\AscSorter;
+use Spiral\DataGrid\Specification\Sorter\DescSorter;
+use Spiral\DataGrid\Specification\Sorter\SorterSet;
+
+$sorter = new SorterSet(
+    new AscSorter('first_name'),
+    new DescSorter( 'last_name'),
+    new Sorter('email', 'username')
+    //...
+);
+//will sort by first_name, email and username asc
+$ascSorter = $sorter->withDirection('asc'); //also 1, '1' and SORT_ASC values allowed
+//will sort by last_name, email and username desc
+$descSorter = $sorter->withDirection('desc'); //also -1, '-1' and SORT_DESC values allowed
+```
+
+## Available filter specifications
+Next specifications are available for grids for now:
+
+* [all](#all-specification)
+* [any](#any-specification)
+* [between](#between-specification)
+* [equals](#equals-specification)
+* [gt](#gt-specification)
+* [gte](#gte-specification)
+* [in array](#in-array-specification)
+* [like](#like-specification)
+* [lt](#lt-specification)
+* [lte](#lte-specification)
+* [map](#map-specification)
+* [not equals](#not-equals-specification)
+* [not in array](#not-in-array-specification)
+* [select](#select-specification)
+* [value between](#value-between-specification)
+
+> There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
+### All specification
+> TBD
+
+### Any specification
+> TBD
+
+### Between specification
+> TBD
+
+### Equals specification
+> TBD
+
+### Gt specification
+> TBD
+
+### Gte specification
+> TBD
+
+### In array specification
+> TBD
+
+### Like specification
+> TBD
+
+### Lt specification
+> TBD
+
+### Lte specification
+> TBD
+
+### Map specification
+> TBD
+
+### Not equals specification
+> TBD
+
+### Not in array specification
+> TBD
 
 ### Select specification
-This specification represents a set of available expressions, passing a value from the input will pick a single or several specifications from this set.
-> You just need to pass a key or an array of keys. Note that no ValueInterface should be declared.
+This specification represents a set of available expressions.
+Passing a value from the input will pick a single or several specifications from this set.
+> You just need to pass a key or an array of keys. Note that no `ValueInterface` should be declared.
 
 Example with a single value:
 ```php
@@ -147,3 +320,13 @@ $select = new Filter\Select([
 $filter = $select->withValue('four');
 ```
 > Filter will be equal to null
+
+### Value between specification
+> TBD
+
+## Filter values
+Filter values is the way of converting data types and validation.
+> TBD
+
+## Value accessors
+> TBD
