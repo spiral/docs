@@ -337,7 +337,7 @@ $equals = $equals->withValue('2');
 
 // the price should not be equal to 2
 $notEquals = new Filter\NotEquals('price', new Value\NumericValue());
-$notEquals = $equals->withValue('2');
+$notEquals = $notEquals->withValue('2');
 ```
 
 ### Compare specification
