@@ -314,7 +314,7 @@ $any = $any->withValue(5);
 ```
 
 ### (Not) equals specification
-These are simple expression filter for logic `=`, `!=` operations.<br/>
+These are simple expression filters for logic `=`, `!=` operations.<br/>
 Examples with a fixed value:
 ```php
 use Spiral\DataGrid\Specification\Filter;
@@ -383,7 +383,7 @@ $lte = $lte->withValue('2');
 ```
 
 ### (Not) in array specification
-These are simple expression filter for logic `in`, `not in` operations.<br/>
+These are simple expression filters for logic `in`, `not in` operations.<br/>
 Examples with a fixed value:
 ```php
 use Spiral\DataGrid\Specification\Filter;
@@ -411,7 +411,7 @@ $notInArray = $notInArray->withValue(['2', '5']);
 ```
 
 ### Like specification
-This is a  simple expression filter for `like` operation.<br/>
+This is a simple expression filter for `like` operation.<br/>
 Examples with a fixed value:
 ```php
 use Spiral\DataGrid\Specification\Filter;
