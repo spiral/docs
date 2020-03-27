@@ -212,12 +212,94 @@ $descSorter = $sorter->withDirection('desc');
 ```
 
 ## Available filter specifications
+Filters are specifications that carry values.
+Values can be passed via the constructor directly. In this case the filter value is fixed and will be applied as is.
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+// name should be 'Antony'
+$filter = new Filter\Equals('name', 'Antony');
+
+// name is still 'Antony' 
+$filter = $filter->withValue('John');   
+```
+If you pass the `ValueInterface` to the constructor then you can use `withValue()` method.
+Then the incoming value will be checked if it matches the `ValueInterface` type and be converted.
+
+```php
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
+
+// price is not defined yet
+$filter = new Filter\Equals('price', new Value\NumericValue());
+
+// the value will be converted to int and the price will be equal to 7  
+$filter = $filter->withValue('7'); 
+
+// this value is not applicable due to it is not numeric  
+$filter = $filter->withValue([123]);
+```
+
 Next specifications are available for grids for now:
 
+* [all](#available-filter-specifications-all-specification)
+* [any](#available-filter-specifications-any-specification)
 * [select](#available-filter-specifications-select-specification)
 
 > There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
+### All specification
+This is a union filter for logic `and` operation.
+```php
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
 
+$select = new Filter\All(
+    new Filter\Equals('price', 2),
+    new Filter\Gt('quantity', 5)
+);
+```
+> The result query declares the `price` be equal to `2` and the `quantity` be greater than `5`
+
+Passed value will be applied to all sub-filters:
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+$select = new Filter\All(
+    new Filter\Equals('price', new Value\NumericValue()),
+    new Filter\Gt('quantity', new Value\IntValue()),
+    new Filter\Lt('option_id', 4)
+);
+
+$filter = $select->withValue(5);
+```
+> The result query declares the `price` be equal to `5`, the `quantity` be greater than `5` and the `option_id` less than `4`
+
+### Any specification
+This is a union filter for logic `or` operation.
+```php
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
+
+$select = new Filter\Any(
+    new Filter\Equals('price', 2),
+    new Filter\Gt('quantity', 5)
+);
+```
+> The result query declares the `price` be equal to `2` or the `quantity` be greater than `5`
+
+Passed value will be applied to all sub-filters:
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+$select = new Filter\Any(
+    new Filter\Equals('price', new Value\NumericValue()),
+    new Filter\Gt('quantity', new Value\IntValue()),
+    new Filter\Lt('option_id', 4)
+);
+
+$filter = $select->withValue(5);
+```
+> The result query declares the `price` be equal to `5` or the `quantity` be greater than `5` or the `option_id` less than `4`
 
 ### Select specification
 This specification represents a set of available expressions.
