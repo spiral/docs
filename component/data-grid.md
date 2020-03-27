@@ -140,10 +140,10 @@ You are free to write your own paginator, like cursor-based one (for example: `l
 ## Available sorter specifications
 Next specifications are available for grids for now:
 
-* [ordered sorters](#ordered-sorters-specification)
-* [directional sorter](#directional-sorter-specification)
-* [sorter](#sorter-specification)
-* [sorter set](#sorter-set-specification)
+* [ordered sorters](#available-sorter-specifications-ordered-sorters-specification)
+* [directional sorter](#available-sorter-specifications-directional-sorter-specification)
+* [sorter](#available-sorter-specifications-sorter-specification)
+* [sorter set](#available-sorter-specifications-sorter-set-specification)
 
 ### Ordered sorters specification
 `AscSorter` and `DescSorter` contain the expressions that should be applied with ascending (or descending) sorting order:
@@ -205,7 +205,7 @@ $descSorter = $sorter->withDirection('desc'); //also -1, '-1' and SORT_DESC valu
 ## Available filter specifications
 Next specifications are available for grids for now:
 
-* [select](#select-specification)
+* [select](#available-filter-specifications-select-specification)
 
 > There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
 
