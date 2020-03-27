@@ -233,7 +233,7 @@ use Spiral\DataGrid\Specification\Value;
 // price is not defined yet
 $filter = new Filter\Equals('price', new Value\NumericValue());
 
-// the value will be converted to int and the price will be equal to 7  
+// the value will be converted to int and the price should be equal to 7  
 $filter = $filter->withValue('7'); 
 
 // this value is not applicable due to it is not numeric  
@@ -244,62 +244,129 @@ Next specifications are available for grids for now:
 
 * [all](#available-filter-specifications-all-specification)
 * [any](#available-filter-specifications-any-specification)
+* [equals](#available-filter-specifications-equals-specification)
+* [compare gt/gte lt/lte](#available-filter-specifications-compare-specification)
 * [select](#available-filter-specifications-select-specification)
 
 > There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
 ### All specification
-This is a union filter for logic `and` operation.
+This is a union filter for logic `and` operation.<br/>
+Examples with fixed values:
 ```php
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value;
 
-$select = new Filter\All(
+$all = new Filter\All(
     new Filter\Equals('price', 2),
     new Filter\Gt('quantity', 5)
 );
 ```
 > The result query declares the `price` be equal to `2` and the `quantity` be greater than `5`
 
-Passed value will be applied to all sub-filters:
+Passed value will be applied to all sub-filters:<br/>
+Examples with `ValueInterface` usage:
 ```php
 use Spiral\DataGrid\Specification\Filter;
 
-$select = new Filter\All(
+$all = new Filter\All(
     new Filter\Equals('price', new Value\NumericValue()),
     new Filter\Gt('quantity', new Value\IntValue()),
     new Filter\Lt('option_id', 4)
 );
 
-$filter = $select->withValue(5);
+// the price should be equal to 5, the quantity be greater than 5 and the option_id less than 4
+$all = $all->withValue(5);
 ```
-> The result query declares the `price` be equal to `5`, the `quantity` be greater than `5` and the `option_id` less than `4`
 
 ### Any specification
-This is a union filter for logic `or` operation.
+This is a union filter for logic `or` operation.<br/>
+Examples with fixed values:
 ```php
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value;
 
-$select = new Filter\Any(
+// the price should be equal to 2 or the quantity be greater than 5
+$any = new Filter\Any(
     new Filter\Equals('price', 2),
     new Filter\Gt('quantity', 5)
 );
 ```
-> The result query declares the `price` be equal to `2` or the `quantity` be greater than `5`
 
-Passed value will be applied to all sub-filters:
+Passed value will be applied to all sub-filters.<br/>
+Examples with `ValueInterface` usage:
 ```php
 use Spiral\DataGrid\Specification\Filter;
 
-$select = new Filter\Any(
+$any = new Filter\Any(
     new Filter\Equals('price', new Value\NumericValue()),
     new Filter\Gt('quantity', new Value\IntValue()),
     new Filter\Lt('option_id', 4)
 );
 
-$filter = $select->withValue(5);
+// the price should be equal to 5 or the quantity be greater than 5 or the option_id less than 4
+$any = $any->withValue(5);
 ```
-> The result query declares the `price` be equal to `5` or the `quantity` be greater than `5` or the `option_id` less than `4`
+
+### Equals specification
+This is a simple expression filter for logic `=` operation.
+```php
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
+
+// the price should be equal to 2
+$equals = new Filter\Equals('price', 2);
+```
+
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+$equals = new Filter\Equals('price', new Value\NumericValue());
+
+// the price should be equal to 2
+$equals = $equals->withValue('2');
+```
+
+### Compare specification
+These are simple expression filters for logic `>`, `>=`, `<`, `<=` operations.<br/>
+Examples with a fixed value:
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+// the price should be greater than 2
+$gt = new Filter\Gt('price', 2);
+
+// the price should be greater than 2 or equal
+$gte = new Filter\Gte('price', 2);
+
+// the price should be less than 2
+$lt = new Filter\Lt('price', 2);
+
+// the price should be less than 2 or equal
+$lte = new Filter\Lte('price', 2);
+```
+
+Examples with `ValueInterface` usage:
+```php
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
+
+//the price should be greater than 2
+$gt = new Filter\Gt('price', new Value\NumericValue());
+$gt = $gt->withValue('2');
+
+//the price should be greater than 2 or equal
+$gte = new Filter\Gte('price', new Value\NumericValue());
+$gte = $gte->withValue('2');
+
+//the price should be less than 2
+$lt = new Filter\Lt('price', new Value\NumericValue());
+$lt = $lt->withValue('2');
+
+//the price should be less than 2 or equal
+$lte = new Filter\Lte('price', new Value\NumericValue());
+$lte = $lte->withValue('2');
+```
+
 
 ### Select specification
 This specification represents a set of available expressions.
@@ -321,9 +388,9 @@ $select = new Filter\Select([
     new Filter\Equals('email', 'email@example.com'),
 ]);
 
-$filter = $select->withValue(1); //the second filter
+// the second filter, will be equal to 'any' specification.
+$filter = $select->withValue(1);
 ```
-> Filter will be equal to `Filter\Any` specification.
 
 Example with multiple values:
 ```php
@@ -339,9 +406,9 @@ $select = new Filter\Select([
     'three' => new Filter\Equals('email', 'email@example.com'),
 ]);
 
+// the filter will contain both sub-filters as 'all' specification
 $filter = $select->withValue(['one', 'two']);
 ```
-> Filter will contain both embedded filters as `Filter\All` specification.
 
 Example with an unknown value:
 ```php
@@ -357,10 +424,9 @@ $select = new Filter\Select([
     'three' => new Filter\Equals('email', 'email@example.com'),
 ]);
 
+// filter will be equal to null
 $filter = $select->withValue('four');
 ```
-> Filter will be equal to null
-
 
 ## Filter values
 Filter values is the way of converting data types and validation.
