@@ -253,6 +253,7 @@ Next specifications are available for grids for now:
 * [like](#filter-specifications-like-specification)
 * [map](#filter-specifications-map-specification)
 * [select](#filter-specifications-select-specification)
+* [between](#filter-specifications-between-specification)
 
 > There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
 
@@ -469,7 +470,6 @@ Passing a value from the input will pick a single or several specifications from
 
 Example with a single value:
 ```php
-
 use Spiral\DataGrid\Specification\Filter;
 
 //Note, that we have integer keys here
@@ -482,13 +482,12 @@ $select = new Filter\Select([
     new Filter\Equals('email', 'email@example.com'),
 ]);
 
-// the second filter, will be equal to 'any' specification.
+// select the second filter, will be equal to 'any' specification.
 $filter = $select->withValue(1);
 ```
 
 Example with multiple values:
 ```php
-
 use Spiral\DataGrid\Specification\Filter;
 
 $select = new Filter\Select([
@@ -500,13 +499,12 @@ $select = new Filter\Select([
     'three' => new Filter\Equals('email', 'email@example.com'),
 ]);
 
-// the filter will contain both sub-filters as 'all' specification
+// the filter will contain both sub-filters wrapped in 'all' specification
 $filter = $select->withValue(['one', 'two']);
 ```
 
 Example with an unknown value:
 ```php
-
 use Spiral\DataGrid\Specification\Filter;
 
 $select = new Filter\Select([
@@ -521,6 +519,67 @@ $select = new Filter\Select([
 // filter will be equal to null
 $filter = $select->withValue('four');
 ```
+
+### Between specification
+This filter represents the SQL `between` operation, but can be presented as two `gt/gte` and `lt/lte` filters.
+You have an ability to define whether the boundary values should be included or not.
+If the boundary values aren't included, this filter will be converted into `gt`+`lt` filters, otherwise when getting
+filters via `getFilters()` method you can specify either use the original `between` operator or `gte`+`lte` filters.
+> Not all databases support `between` operation, that's why converion to `gt/gte`+`lt/lte` is by default.
+
+Between filter has two modifications: field-based and value-based:
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+$fieldBetween  = new Filter\Between('field', [10, 20]);
+$valueBetween  = new Filter\ValueBetween('2020 Apr, 10th', ['start_date', 'end_date']);
+```
+Examples above are similar to the next SQL queries:
+```sql
+# field-based
+select * from table_name where field between 10 and 20;
+# or using gte/lte conversion
+select * from table_name where field >= 10 and field <= 20;
+
+# value-based
+select * from table_name where '2020 Apr, 10th' between start_date and end_date;
+# or using gte/lte conversion
+select * from table_name where start_date <= '2020 Apr, 10th' end_date >= '2020 Apr, 10th';
+```
+
+Example using `ValueInterface`:
+```php
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
+
+// the price should be between 10 and 20
+$fieldBetween  = new Filter\Between('price', new Value\NumericValue());
+$fieldBetween = $fieldBetween->withValue([10, '20']);
+
+// the '2020 Apr, 10th' should be between start_date and end_date
+$valueBetween  = new Filter\ValueBetween(new Value\DatetimeValue(), ['start_date', 'end_date']);
+$valueBetween = $valueBetween->withValue('2020 Apr, 10th');
+```
+
+Select render type:
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+$between  = new Filter\Between('price', [10, 20]);
+
+// will be converted to gte+lte
+$between->getFilters();
+
+// will be presented as is
+$between->getFilters(true);
+
+$notIncludingBetween  = new Filter\Between('price', [10, 20], false, false);
+
+// will be converted to gte+lte anyway
+$notIncludingBetween->getFilters();
+$notIncludingBetween->getFilters(true);
+```
+> The same is for `ValueBetween` filter
 
 ## Filter values
 Filter values is the way of converting data types and validation.
