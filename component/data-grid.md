@@ -177,7 +177,7 @@ $ascSorter = $sorter->withDirection('asc');
 $descSorter = $sorter->withDirection('desc');
 ```
 > Note that you can sort using different set of fields in both sorters.
-> If you have the same set of fields, use [sorter](#sorter-specification) instead.
+> If you have the same set of fields, use [sorter](#sorter-specifications-sorter-specification) instead.
 
 ### Sorter specification
 This is a sorter wrapper for a directional sorter in case you have the same fields for sorting in both directions:
@@ -247,8 +247,10 @@ Next specifications are available for grids for now:
 
 * [all](#filter-specifications-all-specification)
 * [any](#filter-specifications-any-specification)
-* [equality](#filter-specifications-equality-specification)
+* [(not) equals](#filter-specifications-not-equals-specification)
 * [compare gt/gte lt/lte](#filter-specifications-compare-specification)
+* [(not) in array](#filter-specifications-not-in-array-specification)
+* [(like](#filter-specifications-like-specification)
 * [select](#filter-specifications-select-specification)
 
 > There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
@@ -311,7 +313,7 @@ $any = new Filter\Any(
 $any = $any->withValue(5);
 ```
 
-### Equality specification
+### (Not) equals specification
 These are simple expression filter for logic `=`, `!=` operations.<br/>
 Examples with a fixed value:
 ```php
@@ -378,6 +380,58 @@ $lt = $lt->withValue('2');
 //the price should be less than 2 or equal
 $lte = new Filter\Lte('price', new Value\NumericValue());
 $lte = $lte->withValue('2');
+```
+
+### (Not) in array specification
+These are simple expression filter for logic `in`, `not in` operations.<br/>
+Examples with a fixed value:
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+// the price should be in array of 2 and 5
+$inArray = new Filter\InArray('price', [2, 5]);
+
+// the price should not be in array of 2 and 5
+$notInArray = new Filter\NotInArray('price', [2, 5]);
+```
+
+Examples with `ValueInterface` usage:
+```php
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
+
+$inArray = new Filter\InArray('price', new Value\NumericValue());
+$notInArray = new Filter\NotInArray('price', new Value\NumericValue());
+
+// the price should be in array of 2 and 5
+$inArray = $inArray->withValue(['2', '5']);
+
+// the price should not be in array of 2 and 5
+$notInArray = $notInArray->withValue(['2', '5']);
+```
+
+### Like specification
+This is a  simple expression filter for `like` operation.<br/>
+Examples with a fixed value:
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+// the name should be like '%Tony%'
+$like = new Filter\Like('name', 'Tony', '%%%s%%');
+
+// the name should be like 'Tony%'
+$like = new Filter\Like('name', 'Tony', '%s%%');
+```
+
+Examples with `ValueInterface` usage:
+```php
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
+
+$like = new Filter\Like('name', new Value\StringValue());
+
+// the name should be like '%Tony%'
+$like = $like->withValue('Tony');
 ```
 
 ### Select specification
