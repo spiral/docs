@@ -260,19 +260,19 @@ This is a union filter for logic `and` operation.<br/>
 Examples with fixed values:
 ```php
 use Spiral\DataGrid\Specification\Filter;
-use Spiral\DataGrid\Specification\Value;
 
+// the price should be equal to 2 and the quantity be greater than 5
 $all = new Filter\All(
     new Filter\Equals('price', 2),
     new Filter\Gt('quantity', 5)
 );
 ```
-> The result query declares the `price` be equal to `2` and the `quantity` be greater than `5`
 
 Passed value will be applied to all sub-filters:<br/>
 Examples with `ValueInterface` usage:
 ```php
 use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
 
 $all = new Filter\All(
     new Filter\Equals('price', new Value\NumericValue()),
@@ -289,7 +289,6 @@ This is a union filter for logic `or` operation.<br/>
 Examples with fixed values:
 ```php
 use Spiral\DataGrid\Specification\Filter;
-use Spiral\DataGrid\Specification\Value;
 
 // the price should be equal to 2 or the quantity be greater than 5
 $any = new Filter\Any(
@@ -302,6 +301,7 @@ Passed value will be applied to all sub-filters.<br/>
 Examples with `ValueInterface` usage:
 ```php
 use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
 
 $any = new Filter\Any(
     new Filter\Equals('price', new Value\NumericValue()),
@@ -429,6 +429,36 @@ use Spiral\DataGrid\Specification\Value;
 // the name should be like '%Tony%'
 $like = new Filter\Like('name', new Value\StringValue());
 $like = $like->withValue('Tony');
+```
+
+### Map specification
+Map is a complex filter representing a map of filters with their own values.
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+// the price should be greater than 2 and the quantity be less than 5
+$map = new Filter\Map([
+    'from' => new Filter\Gt('price', 2),
+    'to'   => new Filter\Lt('quantity', 5)
+]);
+```
+
+Passed values will be applied to all sub-filters, all values are required:<br/>
+Examples with `ValueInterface` usage:
+```php
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
+
+$map = new Filter\Map([
+    'from' => new Filter\Gt('price', new Value\NumericValue()),
+    'to'   => new Filter\Lt('quantity', new Value\NumericValue())
+]);
+
+// the price should be greater than 2 and the quantity be less than 5
+$map = $map->withValue(['from' => 2, 'to' => 5]);
+
+// invalid input, map will be set to null
+$map = $map->withValue(['to' => 5]);
 ```
 
 ### Select specification
