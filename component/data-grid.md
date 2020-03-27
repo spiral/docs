@@ -244,7 +244,7 @@ Next specifications are available for grids for now:
 
 * [all](#available-filter-specifications-all-specification)
 * [any](#available-filter-specifications-any-specification)
-* [equals](#available-filter-specifications-equals-specification)
+* [equality](#available-filter-specifications-equality-specification)
 * [compare gt/gte lt/lte](#available-filter-specifications-compare-specification)
 * [select](#available-filter-specifications-select-specification)
 
@@ -307,23 +307,32 @@ $any = new Filter\Any(
 $any = $any->withValue(5);
 ```
 
-### Equals specification
-This is a simple expression filter for logic `=` operation.
+### Equality specification
+These are simple expression filter for logic `=`, `!=` operations.<br/>
+Examples with a fixed value:
+```php
+use Spiral\DataGrid\Specification\Filter;
+
+// the price should be equal to 2
+$equals = new Filter\Equals('price', 2);
+
+// the price should not be equal to 2
+$notEquals = new Filter\NotEquals('price', 2);
+```
+
+Examples with `ValueInterface` usage:
 ```php
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value;
 
-// the price should be equal to 2
-$equals = new Filter\Equals('price', 2);
-```
-
-```php
-use Spiral\DataGrid\Specification\Filter;
-
 $equals = new Filter\Equals('price', new Value\NumericValue());
+$notEquals = new Filter\NotEquals('price', new Value\NumericValue());
 
 // the price should be equal to 2
 $equals = $equals->withValue('2');
+
+// the price should not be equal to 2
+$notEquals = $equals->withValue('2');
 ```
 
 ### Compare specification
@@ -366,7 +375,6 @@ $lt = $lt->withValue('2');
 $lte = new Filter\Lte('price', new Value\NumericValue());
 $lte = $lte->withValue('2');
 ```
-
 
 ### Select specification
 This specification represents a set of available expressions.
