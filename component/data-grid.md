@@ -415,10 +415,10 @@ Examples with a fixed value:
 use Spiral\DataGrid\Specification\Filter;
 
 // the name should be like '%Tony%'
-$like = new Filter\Like('name', 'Tony', '%%%s%%');
+$likeFull = new Filter\Like('name', 'Tony', '%%%s%%');
 
 // the name should be like 'Tony%'
-$like = new Filter\Like('name', 'Tony', '%s%%');
+$likeEnding = new Filter\Like('name', 'Tony', '%s%%');
 ```
 
 Examples with `ValueInterface` usage:
