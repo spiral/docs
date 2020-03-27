@@ -102,7 +102,7 @@ $factory = $factory->withCounter(static function ($select): int {
 ```
 > This is a simple example, but this function might be very helpful in case of complex SQL requests with joins.
 
-## Available pagination specifications
+## Pagination specifications
 ### Page Paginator specification
 This is a simple page+limit pagination:
 ```php
@@ -137,17 +137,19 @@ $paginator->withValue(['limit' => 100, 'page' => 2]);
 Under the hood, this paginator converts `limit` and `page` into the `Limit` and `Offset` specification.
 You are free to write your own paginator, like cursor-based one (for example: `lastID`+`limit`). 
 
-## Available sorter specifications
+## Sorter specifications
+Sorters are specifications that carry sorting direction.
+For sorters that can apply direction, you can pass one of the next values:
+- `1`, `'1'`, `'asc'`, `SORT_ASC` for ascending order
+- `-1`, `'-1'`, `'desc'`, `SORT_DESC` for descending order
+
 Next specifications are available for grids for now:
 
-* [ordered sorters](#available-sorter-specifications-ordered-sorters-specification)
-* [directional sorter](#available-sorter-specifications-directional-sorter-specification)
-* [sorter](#available-sorter-specifications-sorter-specification)
-* [sorter set](#available-sorter-specifications-sorter-set-specification)
+* [ordered sorters](#sorter-specifications-ordered-sorters-specification)
+* [directional sorter](#sorter-specifications-directional-sorter-specification)
+* [sorter](#sorter-specifications-sorter-specification)
+* [sorter set](#sorter-specifications-sorter-set-specification)
 
-For sorters that can apply direction, you can pass one of the next values:
-- 1, '1', 'asc', SORT_ASC for ascending order
-- -1, '-1', 'desc', SORT_DESC for descending order
 ### Ordered sorters specification
 `AscSorter` and `DescSorter` contain the expressions that should be applied with ascending (or descending) sorting order:
 ```php
@@ -190,6 +192,7 @@ $ascSorter = $sorter->withDirection('asc');
 //will sort by first_name and last_name desc
 $descSorter = $sorter->withDirection('desc');
 ```
+
 ### Sorter set specification
 This is just a way of combining sorters into one set, passing direction will apply it to the whole set:
 ```php
@@ -211,7 +214,7 @@ $ascSorter = $sorter->withDirection('asc');
 $descSorter = $sorter->withDirection('desc');
 ```
 
-## Available filter specifications
+## Filter specifications
 Filters are specifications that carry values.
 Values can be passed via the constructor directly. In this case the filter value is fixed and will be applied as is.
 ```php
@@ -242,11 +245,11 @@ $filter = $filter->withValue([123]);
 
 Next specifications are available for grids for now:
 
-* [all](#available-filter-specifications-all-specification)
-* [any](#available-filter-specifications-any-specification)
-* [equality](#available-filter-specifications-equality-specification)
-* [compare gt/gte lt/lte](#available-filter-specifications-compare-specification)
-* [select](#available-filter-specifications-select-specification)
+* [all](#filter-specifications-all-specification)
+* [any](#filter-specifications-any-specification)
+* [equality](#filter-specifications-equality-specification)
+* [compare gt/gte lt/lte](#filter-specifications-compare-specification)
+* [select](#filter-specifications-select-specification)
 
 > There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
 
