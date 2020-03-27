@@ -249,6 +249,7 @@ Next specifications are available for grids for now:
 * [select](#available-filter-specifications-select-specification)
 
 > There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
+
 ### All specification
 This is a union filter for logic `and` operation.<br/>
 Examples with fixed values:
