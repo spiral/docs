@@ -250,7 +250,8 @@ Next specifications are available for grids for now:
 * [(not) equals](#filter-specifications-not-equals-specification)
 * [compare gt/gte lt/lte](#filter-specifications-compare-specification)
 * [(not) in array](#filter-specifications-not-in-array-specification)
-* [(like](#filter-specifications-like-specification)
+* [like](#filter-specifications-like-specification)
+* [map](#filter-specifications-map-specification)
 * [select](#filter-specifications-select-specification)
 
 > There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
