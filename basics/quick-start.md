@@ -1,6 +1,6 @@
 # Long Start
 The spiral framework contains a lot of components built to operate seamlessly with each other.
-In this article, we will show how to create a demo blog application with REST API, ORM, Migrations, request validation, queue, and user authorization.
+In this article, we will show how to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations (optional) and domain interceptors.
 
 > The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more information. 
 
