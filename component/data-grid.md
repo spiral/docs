@@ -331,13 +331,12 @@ Examples with `ValueInterface` usage:
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value;
 
-$equals = new Filter\Equals('price', new Value\NumericValue());
-$notEquals = new Filter\NotEquals('price', new Value\NumericValue());
-
 // the price should be equal to 2
+$equals = new Filter\Equals('price', new Value\NumericValue());
 $equals = $equals->withValue('2');
 
 // the price should not be equal to 2
+$notEquals = new Filter\NotEquals('price', new Value\NumericValue());
 $notEquals = $equals->withValue('2');
 ```
 
@@ -400,13 +399,12 @@ Examples with `ValueInterface` usage:
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value;
 
-$inArray = new Filter\InArray('price', new Value\NumericValue());
-$notInArray = new Filter\NotInArray('price', new Value\NumericValue());
-
 // the price should be in array of 2 and 5
+$inArray = new Filter\InArray('price', new Value\NumericValue());
 $inArray = $inArray->withValue(['2', '5']);
 
 // the price should not be in array of 2 and 5
+$notInArray = new Filter\NotInArray('price', new Value\NumericValue());
 $notInArray = $notInArray->withValue(['2', '5']);
 ```
 
@@ -428,9 +426,8 @@ Examples with `ValueInterface` usage:
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value;
 
-$like = new Filter\Like('name', new Value\StringValue());
-
 // the name should be like '%Tony%'
+$like = new Filter\Like('name', new Value\StringValue());
 $like = $like->withValue('Tony');
 ```
 
