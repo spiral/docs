@@ -145,14 +145,17 @@ Next specifications are available for grids for now:
 * [sorter](#available-sorter-specifications-sorter-specification)
 * [sorter set](#available-sorter-specifications-sorter-set-specification)
 
+For sorters that can apply direction, you can pass one of the next values:
+- 1, '1', 'asc', SORT_ASC for ascending order
+- -1, '-1', 'desc', SORT_DESC for descending order
 ### Ordered sorters specification
 `AscSorter` and `DescSorter` contain the expressions that should be applied with ascending (or descending) sorting order:
 ```php
 use Spiral\DataGrid\Specification\Sorter\AscSorter;
 use Spiral\DataGrid\Specification\Sorter\DescSorter;
 
-$ascSorter = new AscSorter('first_name', 'last_name'); // variadic param inside
-$descSorter = new DescSorter('first_name', 'last_name'); // variadic param inside
+$ascSorter = new AscSorter('first_name', 'last_name');
+$descSorter = new DescSorter('first_name', 'last_name');
 ```
 
 ### Directional sorter specification
@@ -164,10 +167,12 @@ use Spiral\DataGrid\Specification\Sorter\DescSorter;
 use Spiral\DataGrid\Specification\Sorter\DirectionalSorter;
 
 $sorter = new DirectionalSorter(new AscSorter('first_name'), new DescSorter('last_name'));
+
 //will sort by first_name asc
-$ascSorter = $sorter->withDirection('asc'); //also 1, '1' and SORT_ASC values allowed
+$ascSorter = $sorter->withDirection('asc');
+
 //will sort by last_name desc
-$descSorter = $sorter->withDirection('desc'); //also -1, '-1' and SORT_DESC values allowed
+$descSorter = $sorter->withDirection('desc');
 ```
 > Note that you can sort using different set of fields in both sorters.
 > If you have the same set of fields, use [sorter](#sorter-specification) instead.
@@ -178,10 +183,12 @@ This is a sorter wrapper for a directional sorter in case you have the same fiel
 use Spiral\DataGrid\Specification\Sorter\Sorter;
 
 $sorter = new Sorter('first_name', 'last_name');
+
 //will sort by first_name and last_name asc
-$ascSorter = $sorter->withDirection('asc'); //also 1, '1' and SORT_ASC values allowed
+$ascSorter = $sorter->withDirection('asc');
+
 //will sort by first_name and last_name desc
-$descSorter = $sorter->withDirection('desc'); //also -1, '-1' and SORT_DESC values allowed
+$descSorter = $sorter->withDirection('desc');
 ```
 ### Sorter set specification
 This is just a way of combining sorters into one set, passing direction will apply it to the whole set:
@@ -196,10 +203,12 @@ $sorter = new SorterSet(
     new Sorter('email', 'username')
     //...
 );
-//will sort by first_name, email and username asc
-$ascSorter = $sorter->withDirection('asc'); //also 1, '1' and SORT_ASC values allowed
-//will sort by last_name, email and username desc
-$descSorter = $sorter->withDirection('desc'); //also -1, '-1' and SORT_DESC values allowed
+
+//will sort by first_name, email and username asc, also last_name desc
+$ascSorter = $sorter->withDirection('asc');
+
+//will sort by last_name, email and username desc, also first_name asc
+$descSorter = $sorter->withDirection('desc');
 ```
 
 ## Available filter specifications
