@@ -586,4 +586,33 @@ Filter values is the way of converting data types and validation.
 > TBD
 
 ## Value accessors
-> TBD
+Accessors act like values from the section above but have another purpose - you can use them to perform not-type
+transformations, for example using strings, you may want to trim the value or convert it to uppercase. 
+They can be applied only if the value applicable by a given `ValueInterface`. Examples Below:
+```php
+use Spiral\DataGrid\Specification\Value;
+use Spiral\DataGrid\Specification\Value\Accessor;
+
+(new Accessor\ToUpper(new Value\StringValue()))->convert('abc'); // 'ABC'
+(new Accessor\ToUpper(new Value\StringValue()))->convert('ABC'); // 'ABC'
+(new Accessor\ToUpper(new Value\StringValue()))->convert(123);   // '123'
+(new Accessor\ToUpper(new Value\ScalarValue()))->convert(123);   // 123
+```
+
+All supported accessors have the next handling order: perform own operations first, then pass them to a lower level.
+For example, we have `add` and `multiply` accessors:
+```php
+use Spiral\DataGrid\Specification\Value;
+use Spiral\DataGrid\Specification\Value\Accessor;
+
+$multiply = new Accessor\Multiply(new Accessor\Add(new Value\IntValue(), 2), 2);
+$multiply->convert(2); // 2*2+2=6
+
+$add = new Accessor\Add(new Accessor\Multiply(new Value\IntValue(), 2), 2);
+$add->convert(2); // (2+2)*2=8
+```
+
+Next accessors are available for grids for now:
+- `trim`
+- `toUpper`
+- `toLower`
