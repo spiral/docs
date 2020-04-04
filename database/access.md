@@ -14,19 +14,19 @@ class HomeController
     public function index(DatabaseManager $dbal)
     {
         //Default database
-        dump($dbal->database());
+        dump($dbal->db());
         
         //Default database over shortcut
         dump($this->db);
     
         //Using alias default which points to primary database
-        dump($dbal->database('default'));
+        dump($dbal->db('default'));
     
         //Secondary
-        dump($dbal->database('slave'));
+        dump($dbal->db('slave'));
     
         //Short binding + database name
-        dump($this->dbal->database('secondary'));
+        dump($this->dbal->db('secondary'));
     }
 }
 ```
