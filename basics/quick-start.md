@@ -107,7 +107,9 @@ return [
     'drivers'   => [
         'runtime' => [
             'driver'     => Driver\SQLite\SQLiteDriver::class,
-            'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+            'options'    => [
+                'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+            ]
         ],
     ]
 ];
@@ -136,9 +138,11 @@ return [
     'drivers'   => [
         'default' => [
             'driver'     => Driver\MySQL\MySQLDriver::class,
-            'connection' => sprintf('mysql:host=%s;dbname=%s', env('DB_HOST'), env('DB_NAME')),
-            'username'   => env('DB_USER'),
-            'password'   => env('DB_PASSWORD'),
+            'options'    => [
+                'connection' => sprintf('mysql:host=%s;dbname=%s', env('DB_HOST'), env('DB_NAME')),
+                'username'   => env('DB_USER'),
+                'password'   => env('DB_PASSWORD'),
+            ]
         ],
     ]
 ];
