@@ -56,7 +56,9 @@ return [
     'drivers'   => [
         'runtime' => [
             'driver'     => Driver\SQLite\SQLiteDriver::class,
-            'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+            'options'    => [
+                'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+            ]
         ],
     ]
 ];
@@ -81,31 +83,35 @@ return [
     'drivers'   => [
         'mysql'     => [
             'driver'     => Driver\MySQL\MySQLDriver::class,
-            'connection' => 'mysql:host=127.0.0.1;dbname=' . env('DB_NAME'),
-            'username'   => env('DB_USERNAME'),
-            'password'   => env('DB_PASSWORD'),
-            'options'    => []
+            'options'    => [
+                'connection' => 'mysql:host=127.0.0.1;dbname=' . env('DB_NAME'),
+                'username'   => env('DB_USERNAME'),
+                'password'   => env('DB_PASSWORD'),
+            ]
         ],
         'postgres'  => [
             'driver'     => Driver\Postgres\PostgresDriver::class,
-            'connection' => 'pgsql:host=127.0.0.1;dbname=' . env('DB_NAME'),
-            'username'   => env('DB_USERNAME'),
-            'password'   => env('DB_PASSWORD'),
-            'options'    => []
+            'options'    => [
+                'connection' => 'pgsql:host=127.0.0.1;dbname=' . env('DB_NAME'),
+                'username'   => env('DB_USERNAME'),
+                'password'   => env('DB_PASSWORD'),
+            ]
         ],
         'runtime'   => [
             'driver'     => Driver\SQLite\SQLiteDriver::class,
-            'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
-            'username'   => 'sqlite',
-            'password'   => '',
-            'options'    => []
+            'options'    => [
+                'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+                'username'   => 'sqlite',
+                'password'   => '',
+            ]
         ],
         'sqlServer' => [
             'driver'     => Driver\SQLServer\SQLServerDriver::class,
-            'connection' => 'sqlsrv:Server=MY-PC;Database=' . env('DB_NAME'),
-            'username'   => env('DB_USERNAME'),
-            'password'   => env('DB_PASSWORD'),
-            'options'    => []
+            'options'    => [
+                'connection' => 'sqlsrv:Server=MY-PC;Database=' . env('DB_NAME'),
+                'username'   => env('DB_USERNAME'),
+                'password'   => env('DB_PASSWORD'),
+            ]
         ]
     ]
 ];
