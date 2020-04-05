@@ -28,7 +28,7 @@ class App extends Kernel
 
 ## Configuration
 You can customize the scaffolder component by replacing declaration generators and their options using the `scaffolder` configuration file.
-The default configuration located in the `ScaffolderBootloader`.
+The default configuration located in the [ScaffolderBootloader](https://github.com/spiral/scaffolder/blob/master/src/Bootloader/ScaffolderBootloader.php#L59).
 
 ## Available Commands
 Command            | Description
