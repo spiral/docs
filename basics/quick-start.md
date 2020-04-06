@@ -256,6 +256,8 @@ You can invoke this method using URL `http://localhost:8080/open/123`. The `id` 
 Though the framework does not provide the annotated routing support out of the box yet, it is possible to [configure it](/cookbook/annotated-routes.md)
 manually using existing instruments. 
 
+> This is optional segment for Symfony users.
+
 #### Annotation
 Build simple annotation which later can be attached to public controller methods:
 
