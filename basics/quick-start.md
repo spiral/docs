@@ -607,7 +607,7 @@ class Comment
 
     /**
      * @Cycle\Relation\BelongsTo(target = "Post", nullable = false)
-     * @var User
+     * @var Post
      */
     public $post;
 }
