@@ -2,7 +2,7 @@
 The spiral framework contains a lot of components built to operate seamlessly with each other.
 In this article, we will show how to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations (optional) and domain interceptors.
 
-> The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more information. Source code of demo project - https://github.com/spiral/demo
+> The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more information.
 
 ## Installation
 Use composer to install the default `spiral/app` bundle with most of the components out of the box:
@@ -1541,3 +1541,13 @@ Spiral provides a lot of pre-build functionality for you. Read the following sec
 - [Authenticating users](/security/authentication.md)
 - [Authorize Access](/security/rbac.md)
 - [Background Jobs](/queue/configuration.md)
+
+## Source Code
+Source code of demo project - https://github.com/spiral/demo 
+
+Make sure to run to install the project:
+
+```bash
+$ vendor/bin/spiral get
+$ php app.php configure
+```
