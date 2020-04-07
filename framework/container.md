@@ -318,7 +318,7 @@ The alternative approach does not require Bootloader and can be defined via clas
 to declare to the container that class must be constructed only once:
 
 ```php
-use piral\Core\Container\SingletonInterface;
+use Spiral\Core\Container\SingletonInterface;
 
 class Service implements SingletonInterface
 {

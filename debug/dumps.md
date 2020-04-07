@@ -1,5 +1,5 @@
 # Debug - Dumping Variables
-Use `Spirl\Debug\Dumper` class or function `dump` to view content of your variables and instances without xDebug:
+Use `Spiral\Debug\Dumper` class or function `dump` to view content of your variables and instances without xDebug:
 
 ```php
 protected function indexAction(Dumper $dumper, MemcacheStore $memcacheStore)

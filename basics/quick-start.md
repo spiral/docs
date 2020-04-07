@@ -2,7 +2,7 @@
 The spiral framework contains a lot of components built to operate seamlessly with each other.
 In this article, we will show how to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations (optional) and domain interceptors.
 
-> The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more information. 
+> The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more information.
 
 ## Installation
 Use composer to install the default `spiral/app` bundle with most of the components out of the box:
@@ -107,7 +107,9 @@ return [
     'drivers'   => [
         'runtime' => [
             'driver'     => Driver\SQLite\SQLiteDriver::class,
-            'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+            'options'    => [
+                'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
+            ]
         ],
     ]
 ];
@@ -184,9 +186,21 @@ class FakerBootloader extends Bootloader
 }
 ```
 
-Add the bootloader to `LOAD` or `APP` in `app/src/App.php` to activate the component.
+Add the bootloader to `LOAD` or `APP` in `app/src/App.php` to activate the component:
 
-> You can request dependencies as method arguments in the factory method `faker`.
+```diff
+--- a/app/src/App.php
++++ b/app/src/App.php
+@@ -85,5 +85,6 @@ class App extends Kernel
+
+         // fast code prototyping
+         Prototype\PrototypeBootloader::class,
++        Bootloader\FakerBootloader::class,
+     ];
+ }
+```
+
+> You can request dependencies as method arguments in the factory method `fakerGenerator`.
 
 Use the `Faker\Generator` in your controller to view the stub data at `http://localhost:8080/`:
 
@@ -207,7 +221,7 @@ class HomeController
 > Read more about Bootloaders [here](/framework/bootloaders.md).
 
 ### Routing
-By default, the routing rules located in `app/src/Bootloader/RoutingBootloader.php`. You have many options on how
+By default, the routing rules located in `app/src/Bootloader/RoutesBootloader.php`. You have many options on how
 to configure routing. Point route to actions, controllers, controller groups, set the default pattern parameters, 
 verbs, middleware, etc.
 
@@ -253,6 +267,8 @@ You can invoke this method using URL `http://localhost:8080/open/123`. The `id` 
 ### Annotated Routing
 Though the framework does not provide the annotated routing support out of the box yet, it is possible to [configure it](/cookbook/annotated-routes.md)
 manually using existing instruments. 
+
+> This is optional segment for Symfony users.
 
 #### Annotation
 Build simple annotation which later can be attached to public controller methods:
@@ -605,7 +621,7 @@ class Comment
 
     /**
      * @Cycle\Relation\BelongsTo(target = "Post", nullable = false)
-     * @var User
+     * @var Post
      */
     public $post;
 }
@@ -1537,3 +1553,13 @@ Spiral provides a lot of pre-build functionality for you. Read the following sec
 - [Authenticating users](/security/authentication.md)
 - [Authorize Access](/security/rbac.md)
 - [Background Jobs](/queue/configuration.md)
+
+## Source Code
+Source code of demo project - https://github.com/spiral/demo 
+
+Make sure to run to install the project:
+
+```bash
+$ vendor/bin/spiral get
+$ php app.php configure
+```
