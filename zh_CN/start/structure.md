@@ -1,7 +1,7 @@
-# 应用程序结构
+# 目录结构
 Spiral 框架对命名空间和目录结构不做强制要求，你可以根据自己的喜好和习惯来组织它们。
 
-## 目录结构
+## 目录说明
 目录结构可以通过内核类的 `mapDirectories` 方法来控制。默认状态下，所有的应用相关目录都按照以下模式基于 `root` 来计算：
 
 目录 | 值 
@@ -23,7 +23,7 @@ spiral/views      | views      | **app**/views
 spiral/translator | locale     | **app**/locale
 spiral/migrations | migrations | **app**/migrations
 
-## 初始目录
+## 初始化目录
 你可以在你的 `app.php` 文件中，通过给 `App` 的 `init` 方法传入参数来指定你的目录：
 
 ```php
