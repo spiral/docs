@@ -591,6 +591,7 @@ Next values are available for grids for now:
 * [bool](#filter-values-bool)
 * [zero compare](#filter-values-zero-compare)
 * [numbers](#filter-values-numbers)
+* [datetime](#filter-values-datetime)
 
 ### Any
 This value accepts any input and doesn't convert them:
@@ -655,6 +656,20 @@ $numeric = new Value\NumericValue(); // converts to int/float
 ```
 
 >To be continued
+
+### Datetime
+This value expects a string representing a timestamp or a datetime, converts to a `\DateTimeImmutable`:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$value = new Value\DatetimeValue();
+ 
+$value->accepts('abc'); // false
+$value->accepts('123'); // true
+$value->accepts('-1 year'); // true
+
+$value->convert('-1 year');
+```
 
 ## Value accessors
 Accessors act like values from the section above but have another purpose - you can use them to perform not-type
