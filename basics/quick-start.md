@@ -186,7 +186,19 @@ class FakerBootloader extends Bootloader
 }
 ```
 
-Add the bootloader to `LOAD` or `APP` in `app/src/App.php` to activate the component.
+Add the bootloader to `LOAD` or `APP` in `app/src/App.php` to activate the component:
+
+```diff
+--- a/app/src/App.php
++++ b/app/src/App.php
+@@ -85,5 +85,6 @@ class App extends Kernel
+
+         // fast code prototyping
+         Prototype\PrototypeBootloader::class,
++        Bootloader\FakerBootloader::class,
+     ];
+ }
+```
 
 > You can request dependencies as method arguments in the factory method `faker`.
 
@@ -209,7 +221,7 @@ class HomeController
 > Read more about Bootloaders [here](/framework/bootloaders.md).
 
 ### Routing
-By default, the routing rules located in `app/src/Bootloader/RoutingBootloader.php`. You have many options on how
+By default, the routing rules located in `app/src/Bootloader/RoutesBootloader.php`. You have many options on how
 to configure routing. Point route to actions, controllers, controller groups, set the default pattern parameters, 
 verbs, middleware, etc.
 
