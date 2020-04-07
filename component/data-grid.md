@@ -658,7 +658,7 @@ $numeric = new Value\NumericValue(); // converts to int/float
 >To be continued
 
 ### Datetime
-This value expects a string representing a timestamp or a datetime, converts to a `\DateTimeImmutable`:
+This value expects a string representing a timestamp or a datetime and converts it into a `\DateTimeImmutable`:
 ```php
 use Spiral\DataGrid\Specification\Value;
 
