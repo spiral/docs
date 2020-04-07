@@ -592,6 +592,9 @@ Next values are available for grids for now:
 * [zero compare](#filter-values-zero-compare)
 * [numbers](#filter-values-numbers)
 * [datetime](#filter-values-datetime)
+* [enum](#filter-values-enum)
+* [intersect](#filter-values-intersect)
+* [subset](#filter-values-subset)
 
 ### Any
 This value accepts any input and doesn't convert them:
@@ -670,6 +673,53 @@ $value->accepts('-1 year'); // true
 
 $value->convert('-1 year');
 ```
+
+### Enum
+This value expects an input to be a part of a given enum array and converts it according to the base value type.
+All enum values are converted also:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+// expects an array of int values
+$value = new Value\EnumValue(new Value\IntValue(), 1, '2', 3);
+ 
+$value->accepts('3'); // true
+$value->accepts(4); // false
+
+$value->convert('3'); // 3
+```
+
+### Intersect
+This value is based on an enum value, the difference is that at least one of the array input elements should match the given enum array:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+// expects an array of int values
+$value = new Value\IntersectValue(new Value\IntValue(), 1, '2', 3);
+ 
+$value->accepts('3'); // true
+$value->accepts(4); // false
+$value->accepts([3, 4]); // true
+
+$value->convert('3'); // [3]
+```
+
+### Subset
+This value is based on an enum value, the difference is that all one of the array input elements should match the given enum array:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+// expects an array of int values
+$value = new Value\SubsetValue(new Value\IntValue(), 1, '2', 3);
+ 
+$value->accepts('3'); // true
+$value->accepts(4); // false
+$value->accepts([3, 4]); // false
+$value->accepts([2, 3]); // true
+
+$value->convert('3'); // [3]
+```
+
 
 ## Value accessors
 Accessors act like values from the section above but have another purpose - you can use them to perform not-type
