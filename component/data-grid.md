@@ -595,6 +595,11 @@ Next values are available for grids for now:
 * [enum](#filter-values-enum)
 * [intersect](#filter-values-intersect)
 * [subset](#filter-values-subset)
+* [string](#filter-values-string)
+* [scalar](#filter-values-scalar)
+* [regex](#filter-values-regex)
+* [uuid](#filter-values-uuid)
+* [range](#filter-values-range)
 
 ### Any
 This value accepts any input and doesn't convert them:
@@ -720,6 +725,48 @@ $value->accepts([2, 3]); // true
 $value->convert('3'); // [3]
 ```
 
+### String
+Applies string-like values, also empty strings (if a corresponding constructor param passed):
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$value = new Value\StringValue();
+$value->accepts(''); // false
+$value->accepts(false); // false
+$value->accepts('3'); // true
+$value->accepts(4); // true
+
+$value->convert(3); // '3'
+
+$allowEmptyValue = new Value\StringValue(true);
+$allowEmptyValue->accepts(''); // true
+```
+
+### Scalar
+Applies scalar values, also empty strings (if a corresponding constructor param passed):
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$value = new Value\ScalarValue();
+$value->accepts(''); // false
+$value->accepts(false); // true
+$value->accepts('3'); // true
+$value->accepts(4); // true
+
+$value->convert(3); // '3'
+
+$allowEmptyValue = new Value\ScalarValue(true);
+$allowEmptyValue->accepts(''); // true
+```
+
+### Regex
+>To be continued
+
+### Uuid
+>To be continued
+
+### Range
+>To be continued
 
 ## Value accessors
 Accessors act like values from the section above but have another purpose - you can use them to perform not-type
