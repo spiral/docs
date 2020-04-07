@@ -580,7 +580,7 @@ class Post
 
     /**
      * @Cycle\Relation\HasMany(target = "Comment")
-     * @var ArrayCollection|Comment
+     * @var ArrayCollection|Comment[]
      */
     public $comments;
 
@@ -700,6 +700,22 @@ class PostService
     // ...
 }
 ``` 
+
+Do the same thing to `app/src/Repository/UserRepository.php`. Declare the shortcut `users` to `UserRepository`:
+
+```php
+namespace App\Repository;
+
+use Cycle\ORM\Select\Repository;
+use Spiral\Prototype\Annotation\Prototyped;
+
+/**
+ * @Prototyped(property="users")
+ */
+class UserRepository extends Repository
+{
+}
+```
 
 Run the configure command to collect all available prototype classes:
 
