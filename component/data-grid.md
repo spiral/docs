@@ -710,7 +710,7 @@ $value->convert('3'); // [3]
 ```
 
 ### Subset
-This value is based on an enum value, the difference is that all one of the array input elements should match the given enum array:
+This value is based on an enum value, the difference is that all of the array input elements should match the given enum array:
 ```php
 use Spiral\DataGrid\Specification\Value;
 
