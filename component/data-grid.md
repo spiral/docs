@@ -117,7 +117,7 @@ class HomeController
     {
         $schema = new GridSchema();
         $schema->setPaginator(new PagePaginator(10, [25, 50, 100, 500]));
-        //...
+        // ...
     }
 }
 ```
@@ -128,9 +128,9 @@ use Spiral\DataGrid\Specification\Pagination\PagePagination;
 
 $paginator = new PagePaginator(10, [25, 50, 100, 500]);
 
-$paginator->withValue(['limit' => 123]); //won't apply
-$paginator->withValue(['limit' => 10]); //will apply
-$paginator->withValue(['limit' => 100]); //will apply
+$paginator->withValue(['limit' => 123]); // won't apply
+$paginator->withValue(['limit' => 10]); // will apply
+$paginator->withValue(['limit' => 100]); // will apply
 
 $paginator->withValue(['limit' => 100, 'page' => 2]);
 ```
@@ -170,10 +170,10 @@ use Spiral\DataGrid\Specification\Sorter\DirectionalSorter;
 
 $sorter = new DirectionalSorter(new AscSorter('first_name'), new DescSorter('last_name'));
 
-//will sort by first_name asc
+// will sort by first_name asc
 $ascSorter = $sorter->withDirection('asc');
 
-//will sort by last_name desc
+// will sort by last_name desc
 $descSorter = $sorter->withDirection('desc');
 ```
 > Note that you can sort using different set of fields in both sorters.
@@ -186,10 +186,10 @@ use Spiral\DataGrid\Specification\Sorter\Sorter;
 
 $sorter = new Sorter('first_name', 'last_name');
 
-//will sort by first_name and last_name asc
+// will sort by first_name and last_name asc
 $ascSorter = $sorter->withDirection('asc');
 
-//will sort by first_name and last_name desc
+// will sort by first_name and last_name desc
 $descSorter = $sorter->withDirection('desc');
 ```
 
@@ -204,13 +204,13 @@ $sorter = new SorterSet(
     new AscSorter('first_name'),
     new DescSorter( 'last_name'),
     new Sorter('email', 'username')
-    //...
+    // ...
 );
 
-//will sort by first_name, email and username asc, also last_name desc
+// will sort by first_name, email and username asc, also last_name desc
 $ascSorter = $sorter->withDirection('asc');
 
-//will sort by last_name, email and username desc, also first_name asc
+// will sort by last_name, email and username desc, also first_name asc
 $descSorter = $sorter->withDirection('desc');
 ```
 
@@ -366,19 +366,19 @@ Examples with `ValueInterface` usage:
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value;
 
-//the price should be greater than 2
+// the price should be greater than 2
 $gt = new Filter\Gt('price', new Value\NumericValue());
 $gt = $gt->withValue('2');
 
-//the price should be greater than 2 or equal
+// the price should be greater than 2 or equal
 $gte = new Filter\Gte('price', new Value\NumericValue());
 $gte = $gte->withValue('2');
 
-//the price should be less than 2
+// the price should be less than 2
 $lt = new Filter\Lt('price', new Value\NumericValue());
 $lt = $lt->withValue('2');
 
-//the price should be less than 2 or equal
+// the price should be less than 2 or equal
 $lte = new Filter\Lte('price', new Value\NumericValue());
 $lte = $lte->withValue('2');
 ```
@@ -472,7 +472,7 @@ Example with a single value:
 ```php
 use Spiral\DataGrid\Specification\Filter;
 
-//Note, that we have integer keys here
+// note, that we have integer keys here
 $select = new Filter\Select([
     new Filter\Equals('name', 'value'),
     new Filter\Any(
@@ -544,7 +544,7 @@ select * from table_name where field >= 10 and field <= 20;
 # value-based
 select * from table_name where '2020 Apr, 10th' between start_date and end_date;
 # or using gte/lte conversion
-select * from table_name where start_date <= '2020 Apr, 10th' end_date >= '2020 Apr, 10th';
+select * from table_name where start_date <= '2020 Apr, 10th' and end_date >= '2020 Apr, 10th';
 ```
 
 Example using `ValueInterface`:
@@ -582,8 +582,79 @@ $notIncludingBetween->getFilters(true);
 > The same is for `ValueBetween` filter
 
 ## Filter values
-Filter values is the way of converting data types and validation.
-> TBD
+Filter values is the way of converting input type and its validation.
+They can tell you is the input acceptable and converts it to a desired type if possible.
+Next values are available for grids for now:
+
+* [any](#filter-values-any)
+* [array](#filter-values-array)
+* [bool](#filter-values-bool)
+* [zero compare](#filter-values-zero-compare)
+* [numbers](#filter-values-numbers)
+
+### Any
+This value accepts any input and doesn't convert them:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$value = new Value\AnyValue();
+ 
+$value->accepts('123'); // always true
+$value->convert('123'); // always equal to the input
+```
+
+### Array
+This value expects an array and converts all of them according to the base value type. The input should not be empty:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+// expects an array of int values
+$value = new Value\ArrayValue(new Value\IntValue());
+ 
+$value->accepts('123'); // false
+$value->accepts([]); // false
+$value->accepts(['123']); // true
+
+$value->convert(['123']); // [123]
+```
+
+### Bool
+This value expects a bool input, 1/0 (as int or strings), and `true`/`false` strings:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$value = new Value\BoolValue();
+ 
+$value->accepts('123'); // false
+$value->accepts('0'); // true
+$value->accepts(['123']); // false
+
+$value->convert(['1']); // true
+$value->convert(['false']); // false
+```
+
+### Zero-compare
+These values are supposed to check your input if it is positive/negative/non-positive/non-negative according to the base value type:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$positive = new Value\PositiveValue(new Value\IntValue()); // as int should be > 0
+$negative = new Value\NegativeValue(new Value\IntValue()); // as int should be < 0
+$nonPositive = new Value\NonPositiveValue(new Value\IntValue());  // as int should be >= 0
+$nonNegative = new Value\NonNegativeValue(new Value\IntValue());  // as int should be <= 0
+```
+
+### Numbers
+Applies numeric values, also empty strings (zero is also a value):
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$int = new Value\IntValue(); // converts to int
+$float = new Value\FloatValue(); // converts to float
+$numeric = new Value\NumericValue(); // converts to int/float
+```
+
+>To be continued
 
 ## Value accessors
 Accessors act like values from the section above but have another purpose - you can use them to perform not-type
