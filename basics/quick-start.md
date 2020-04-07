@@ -188,7 +188,7 @@ class FakerBootloader extends Bootloader
 
 Add the bootloader to `LOAD` or `APP` in `app/src/App.php` to activate the component.
 
-> You can request dependencies as method arguments in the factory method `faker`.
+> You can request dependencies as method arguments in the factory method `fakerGenerator`.
 
 Use the `Faker\Generator` in your controller to view the stub data at `http://localhost:8080/`:
 
