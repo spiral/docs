@@ -153,7 +153,10 @@ By receiving the order via `withValue` we will get one of the sorters:
 ```php
 use Spiral\DataGrid\Specification\Sorter;
 
-$sorter = new Sorter\DirectionalSorter(new Sorter\AscSorter('first_name'), new Sorter\DescSorter('last_name'));
+$sorter = new Sorter\DirectionalSorter(
+    new Sorter\AscSorter('first_name'),
+    new Sorter\DescSorter('last_name')
+);
 
 // will sort by first_name asc
 $ascSorter = $sorter->withDirection('asc');
