@@ -1376,7 +1376,7 @@ public function comment(Post $post, CommentFilter $commentFilter)
 Check the error format:
 
 ```bash
-$ curl -X POST -H 'content-type: aapplication/json' --data '{}' http://localhost:8080/api/post/1/comment
+$ curl -X POST -H 'content-type: application/json' --data '{}' http://localhost:8080/api/post/1/comment
 ``` 
 
 Response:
