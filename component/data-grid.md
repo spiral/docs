@@ -550,6 +550,7 @@ $notIncludingBetween->getFilters(true);
 
 ## Filter values
 Filter values is the way of converting input type and its validation.
+Please don't use `convert()` method without validating the input via `accepts()` method.
 They can tell you is the input acceptable and converts it to a desired type if possible.
 Next values are available for grids for now:
 
@@ -575,8 +576,8 @@ use Spiral\DataGrid\Specification\Value;
 
 $value = new Value\AnyValue();
  
-$value->accepts('123'); // always true
-$value->convert('123'); // always equal to the input
+print_r($value->accepts('123')); // always true
+print_r($value->convert('123')); // always equal to the input
 ```
 
 ### Array
@@ -587,11 +588,10 @@ use Spiral\DataGrid\Specification\Value;
 // expects an array of int values
 $value = new Value\ArrayValue(new Value\IntValue());
  
-$value->accepts('123'); // false
-$value->accepts([]); // false
-$value->accepts(['123']); // true
-
-$value->convert(['123']); // [123]
+print_r($value->accepts('123'));   // false
+print_r($value->accepts([]));      // false
+print_r($value->accepts(['123'])); // true
+print_r($value->convert(['123'])); // [123]
 ```
 
 ### Bool
@@ -601,12 +601,11 @@ use Spiral\DataGrid\Specification\Value;
 
 $value = new Value\BoolValue();
  
-$value->accepts('123'); // false
-$value->accepts('0'); // true
-$value->accepts(['123']); // false
-
-$value->convert(['1']); // true
-$value->convert(['false']); // false
+print_r($value->accepts('123'));   // false
+print_r($value->accepts('0'));     // true
+print_r($value->accepts(['123'])); // false
+print_r($value->convert('1'));     // true
+print_r($value->convert('false')); // false
 ```
 
 ### Zero-compare
@@ -614,10 +613,10 @@ These values are supposed to check your input if it is positive/negative/non-pos
 ```php
 use Spiral\DataGrid\Specification\Value;
 
-$positive = new Value\PositiveValue(new Value\IntValue()); // as int should be > 0
-$negative = new Value\NegativeValue(new Value\IntValue()); // as int should be < 0
-$nonPositive = new Value\NonPositiveValue(new Value\IntValue());  // as int should be >= 0
-$nonNegative = new Value\NonNegativeValue(new Value\IntValue());  // as int should be <= 0
+$positive = new Value\PositiveValue(new Value\IntValue());       // as int should be > 0
+$negative = new Value\NegativeValue(new Value\IntValue());       // as int should be < 0
+$nonPositive = new Value\NonPositiveValue(new Value\IntValue()); // as int should be >= 0
+$nonNegative = new Value\NonNegativeValue(new Value\IntValue()); // as int should be <= 0
 ```
 
 ### Numbers
@@ -625,8 +624,8 @@ Applies numeric values, also empty strings (zero is also a value):
 ```php
 use Spiral\DataGrid\Specification\Value;
 
-$int = new Value\IntValue(); // converts to int
-$float = new Value\FloatValue(); // converts to float
+$int = new Value\IntValue();         // converts to int
+$float = new Value\FloatValue();     // converts to float
 $numeric = new Value\NumericValue(); // converts to int/float
 ```
 
@@ -639,11 +638,10 @@ use Spiral\DataGrid\Specification\Value;
 
 $value = new Value\DatetimeValue();
  
-$value->accepts('abc'); // false
-$value->accepts('123'); // true
-$value->accepts('-1 year'); // true
-
-$value->convert('-1 year');
+print_r($value->accepts('abc'));     // false
+print_r($value->accepts('123'));     // true
+print_r($value->accepts('-1 year')); // true
+print_r($value->convert('-1 year')); // DateTimeImmutable object
 ```
 
 ### Enum
@@ -655,10 +653,9 @@ use Spiral\DataGrid\Specification\Value;
 // expects an array of int values
 $value = new Value\EnumValue(new Value\IntValue(), 1, '2', 3);
  
-$value->accepts('3'); // true
-$value->accepts(4); // false
-
-$value->convert('3'); // 3
+print_r($value->accepts('3')); // true
+print_r($value->accepts(4));   // false
+print_r($value->convert('3')); // 3
 ```
 
 ### Intersect
@@ -669,11 +666,10 @@ use Spiral\DataGrid\Specification\Value;
 // expects an array of int values
 $value = new Value\IntersectValue(new Value\IntValue(), 1, '2', 3);
  
-$value->accepts('3'); // true
-$value->accepts(4); // false
-$value->accepts([3, 4]); // true
-
-$value->convert('3'); // [3]
+print_r($value->accepts('3'));    // true
+print_r($value->accepts(4));      // false
+print_r($value->accepts([3, 4])); // true
+print_r($value->convert('3'));    // [3]
 ```
 
 ### Subset
@@ -684,12 +680,11 @@ use Spiral\DataGrid\Specification\Value;
 // expects an array of int values
 $value = new Value\SubsetValue(new Value\IntValue(), 1, '2', 3);
  
-$value->accepts('3'); // true
-$value->accepts(4); // false
-$value->accepts([3, 4]); // false
-$value->accepts([2, 3]); // true
-
-$value->convert('3'); // [3]
+print_r($value->accepts('3'));    // true
+print_r($value->accepts(4));      // false
+print_r($value->accepts([3, 4])); // false
+print_r($value->accepts([2, 3])); // true
+print_r($value->convert('3'));    // [3]
 ```
 
 ### String
@@ -698,15 +693,14 @@ Applies string-like input, also empty strings (if a corresponding constructor pa
 use Spiral\DataGrid\Specification\Value;
 
 $value = new Value\StringValue();
-$value->accepts(''); // false
-$value->accepts(false); // false
-$value->accepts('3'); // true
-$value->accepts(4); // true
+$allowEmpty = new Value\StringValue(true);
 
-$value->convert(3); // '3'
-
-$allowEmptyValue = new Value\StringValue(true);
-$allowEmptyValue->accepts(''); // true
+print_r($value->accepts(''));      // false
+print_r($value->accepts(false));   // false
+print_r($value->accepts('3'));     // true
+print_r($value->accepts(4));       // true
+print_r($value->convert(3));       // '3'
+print_r($allowEmpty->accepts('')); // true
 ```
 
 ### Scalar
@@ -715,15 +709,14 @@ Applies scalar values, also empty strings (if a corresponding constructor param 
 use Spiral\DataGrid\Specification\Value;
 
 $value = new Value\ScalarValue();
-$value->accepts(''); // false
-$value->accepts(false); // true
-$value->accepts('3'); // true
-$value->accepts(4); // true
+$allowEmpty = new Value\ScalarValue(true);
 
-$value->convert(3); // '3'
-
-$allowEmptyValue = new Value\ScalarValue(true);
-$allowEmptyValue->accepts(''); // true
+print_r($value->accepts(''));       // false
+print_r($value->accepts(false));    // true
+print_r($value->accepts('3'));      // true
+print_r($value->accepts(4));        // true
+print_r($value->convert(3));        // '3'
+print_r($allowEmpty->accepts('')); // true
 ```
 
 ### Regex
@@ -732,11 +725,11 @@ Applies string-like input and check if it matches the given regex pattern, conve
 use Spiral\DataGrid\Specification\Value;
 
 $value = new Value\RegexValue('/\d+/');
-$value->accepts(''); // false
-$value->accepts(3); // true
-$value->accepts('4'); // true
 
-$value->convert(3); // '3'
+print_r($value->accepts(''));  // false
+print_r($value->accepts(3));   // true
+print_r($value->accepts('4')); // true
+print_r($value->convert(3));   // '3'
 ```
 
 ### Uuid
@@ -749,12 +742,12 @@ The output is converted to string.
 use Spiral\DataGrid\Specification\Value;
 
 $v4 = new Value\UuidValue('v4');
-$v4->accepts(''); // false
-$v4->accepts('00000000-0000-0000-0000-000000000000'); // false
-
 $valid = new Value\UuidValue();
-$valid->accepts(''); // false
-$valid->accepts('00000000-0000-0000-0000-000000000000'); // true
+
+print_r($v4->accepts(''));                                     // false
+print_r($v4->accepts('00000000-0000-0000-0000-000000000000')); // false
+print_r($valid->accepts(''));                                     // false
+print_r($valid->accepts('00000000-0000-0000-0000-000000000000')); // true
 ```
 
 ### Range
@@ -764,10 +757,14 @@ Range boundary values are converted also. You can specify either the input can b
 use Spiral\DataGrid\Specification\Value;
 
 // as it, expects the value be >=1 and <3
-$value = new Value\RangeValue(Value\RangeValue\Boundary::including(1), Value\RangeValue\Boundary::excluding(3));
+$value = new Value\RangeValue(
+    new Value\IntValue(),
+    Value\RangeValue\Boundary::including(1),
+    Value\RangeValue\Boundary::excluding(3)
+);
  
-$value->accepts('3'); // false
-$value->accepts(1); // false
+print_r($value->accepts('3')); // false
+print_r($value->accepts(1));   // false
 ```
 
 ## Value accessors
