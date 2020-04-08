@@ -1388,7 +1388,7 @@ Response:
 Or not found exception when post can not be found:
 
 ```bash
-$ curl -X POST -H 'content-type: application/json' --data '{}' http://localhost:8080/api/post/9999/comment
+$ curl -X POST -H 'content-type: application/json' --data '{"message":"test"}' http://localhost:8080/api/post/9999/comment
 ``` 
 
 > Make sure to send `accept: application/json` to receive an error in JSON format.
