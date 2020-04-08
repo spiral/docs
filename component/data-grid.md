@@ -117,7 +117,7 @@ use Spiral\DataGrid\Specification\Pagination\PagePagination;
 $paginator = new PagePaginator(10, [25, 50, 100, 500]);
 
 $paginator->withValue(['limit' => 123]); // won't apply
-$paginator->withValue(['limit' => 10]);  // will apply
+$paginator->withValue(['limit' => 50]);  // will apply
 $paginator->withValue(['limit' => 100]); // will apply
 
 $paginator->withValue(['limit' => 100, 'page' => 2]);
