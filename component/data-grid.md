@@ -716,7 +716,7 @@ print_r($value->accepts(false));    // true
 print_r($value->accepts('3'));      // true
 print_r($value->accepts(4));        // true
 print_r($value->convert(3));        // '3'
-print_r($allowEmpty->accepts('')); // true
+print_r($allowEmpty->accepts(''));  // true
 ```
 
 ### Regex
