@@ -1264,7 +1264,6 @@ URL | Comment
 --- | ---
 `http://localhost:8080/api/post?paginate[page]=2` | Open second page.
 `http://localhost:8080/api/post?paginate[page]=2&paginate[limit]=20` | Open second page with 20 posts per page.
-`http://localhost:8080/api/post?paginate[page]=2&paginate[limit]=20` | Open second page with 20 posts per page.
 `http://localhost:8080/api/post?sort[id]=desc` | Sort by post->id DESC.
 `http://localhost:8080/api/post?sort[author]=asc` | Sort by post->author->id.
 `http://localhost:8080/api/post?filter[author]=1` | Find only posts with given author id.
