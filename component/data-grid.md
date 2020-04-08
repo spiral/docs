@@ -576,8 +576,8 @@ use Spiral\DataGrid\Specification\Value;
 
 $value = new Value\AnyValue();
  
-print_r($value->accepts('123')); // always true
-print_r($value->convert('123')); // always equal to the input
+$value->accepts('123'); // always true
+$value->convert('123'); // always equal to the input
 ```
 
 ### Array
@@ -588,10 +588,10 @@ use Spiral\DataGrid\Specification\Value;
 // expects an array of int values
 $value = new Value\ArrayValue(new Value\IntValue());
  
-print_r($value->accepts('123'));   // false
-print_r($value->accepts([]));      // false
-print_r($value->accepts(['123'])); // true
-print_r($value->convert(['123'])); // [123]
+$value->accepts('123');   // false
+$value->accepts([]);      // false
+$value->accepts(['123']); // true
+$value->convert(['123']); // [123]
 ```
 
 ### Bool
@@ -601,11 +601,11 @@ use Spiral\DataGrid\Specification\Value;
 
 $value = new Value\BoolValue();
  
-print_r($value->accepts('123'));   // false
-print_r($value->accepts('0'));     // true
-print_r($value->accepts(['123'])); // false
-print_r($value->convert('1'));     // true
-print_r($value->convert('false')); // false
+$value->accepts('123');   // false
+$value->accepts('0');     // true
+$value->accepts(['123']); // false
+$value->convert('1');     // true
+$value->convert('false'); // false
 ```
 
 ### Zero-compare
@@ -638,10 +638,10 @@ use Spiral\DataGrid\Specification\Value;
 
 $value = new Value\DatetimeValue();
  
-print_r($value->accepts('abc'));     // false
-print_r($value->accepts('123'));     // true
-print_r($value->accepts('-1 year')); // true
-print_r($value->convert('-1 year')); // DateTimeImmutable object
+$value->accepts('abc');     // false
+$value->accepts('123');     // true
+$value->accepts('-1 year'); // true
+$value->convert('-1 year'); // DateTimeImmutable object
 ```
 
 ### Enum
@@ -653,9 +653,9 @@ use Spiral\DataGrid\Specification\Value;
 // expects an array of int values
 $value = new Value\EnumValue(new Value\IntValue(), 1, '2', 3);
  
-print_r($value->accepts('3')); // true
-print_r($value->accepts(4));   // false
-print_r($value->convert('3')); // 3
+$value->accepts('3'); // true
+$value->accepts(4);   // false
+$value->convert('3'); // 3
 ```
 
 ### Intersect
@@ -666,10 +666,10 @@ use Spiral\DataGrid\Specification\Value;
 // expects an array of int values
 $value = new Value\IntersectValue(new Value\IntValue(), 1, '2', 3);
  
-print_r($value->accepts('3'));    // true
-print_r($value->accepts(4));      // false
-print_r($value->accepts([3, 4])); // true
-print_r($value->convert('3'));    // [3]
+$value->accepts('3');    // true
+$value->accepts(4);      // false
+$value->accepts([3, 4]); // true
+$value->convert('3');    // [3]
 ```
 
 ### Subset
@@ -680,11 +680,11 @@ use Spiral\DataGrid\Specification\Value;
 // expects an array of int values
 $value = new Value\SubsetValue(new Value\IntValue(), 1, '2', 3);
  
-print_r($value->accepts('3'));    // true
-print_r($value->accepts(4));      // false
-print_r($value->accepts([3, 4])); // false
-print_r($value->accepts([2, 3])); // true
-print_r($value->convert('3'));    // [3]
+$value->accepts('3');    // true
+$value->accepts(4);      // false
+$value->accepts([3, 4]); // false
+$value->accepts([2, 3]); // true
+$value->convert('3');    // [3]
 ```
 
 ### String
@@ -695,12 +695,12 @@ use Spiral\DataGrid\Specification\Value;
 $value = new Value\StringValue();
 $allowEmpty = new Value\StringValue(true);
 
-print_r($value->accepts(''));      // false
-print_r($value->accepts(false));   // false
-print_r($value->accepts('3'));     // true
-print_r($value->accepts(4));       // true
-print_r($value->convert(3));       // '3'
-print_r($allowEmpty->accepts('')); // true
+$value->accepts('');      // false
+$value->accepts(false);   // false
+$value->accepts('3');     // true
+$value->accepts(4);       // true
+$value->convert(3);       // '3'
+$allowEmpty->accepts(''); // true
 ```
 
 ### Scalar
@@ -711,12 +711,12 @@ use Spiral\DataGrid\Specification\Value;
 $value = new Value\ScalarValue();
 $allowEmpty = new Value\ScalarValue(true);
 
-print_r($value->accepts(''));       // false
-print_r($value->accepts(false));    // true
-print_r($value->accepts('3'));      // true
-print_r($value->accepts(4));        // true
-print_r($value->convert(3));        // '3'
-print_r($allowEmpty->accepts(''));  // true
+$value->accepts('');       // false
+$value->accepts(false);    // true
+$value->accepts('3');      // true
+$value->accepts(4);        // true
+$value->convert(3);        // '3'
+$allowEmpty->accepts('');  // true
 ```
 
 ### Regex
@@ -726,10 +726,10 @@ use Spiral\DataGrid\Specification\Value;
 
 $value = new Value\RegexValue('/\d+/');
 
-print_r($value->accepts(''));  // false
-print_r($value->accepts(3));   // true
-print_r($value->accepts('4')); // true
-print_r($value->convert(3));   // '3'
+$value->accepts('');  // false
+$value->accepts(3);   // true
+$value->accepts('4'); // true
+$value->convert(3);   // '3'
 ```
 
 ### Uuid
@@ -744,10 +744,10 @@ use Spiral\DataGrid\Specification\Value;
 $v4 = new Value\UuidValue('v4');
 $valid = new Value\UuidValue();
 
-print_r($v4->accepts(''));                                     // false
-print_r($v4->accepts('00000000-0000-0000-0000-000000000000')); // false
-print_r($valid->accepts(''));                                     // false
-print_r($valid->accepts('00000000-0000-0000-0000-000000000000')); // true
+$v4->accepts('');                                        // false
+$v4->accepts('00000000-0000-0000-0000-000000000000');    // false
+$valid->accepts('');                                     // false
+$valid->accepts('00000000-0000-0000-0000-000000000000'); // true
 ```
 
 ### Range
@@ -763,8 +763,8 @@ $value = new Value\RangeValue(
     Value\RangeValue\Boundary::excluding(3)
 );
  
-print_r($value->accepts('3')); // false
-print_r($value->accepts(1));   // false
+$value->accepts('3'); // false
+$value->accepts(1);   // false
 ```
 
 ## Value accessors
@@ -775,10 +775,10 @@ They can be applied only if the value applicable by a given `ValueInterface`. Ex
 use Spiral\DataGrid\Specification\Value;
 use Spiral\DataGrid\Specification\Value\Accessor;
 
-print_r((new Accessor\ToUpper(new Value\StringValue()))->convert('abc')); // 'ABC'
-print_r((new Accessor\ToUpper(new Value\StringValue()))->convert('ABC')); // 'ABC'
-print_r((new Accessor\ToUpper(new Value\StringValue()))->convert(123));   // '123'
-print_r((new Accessor\ToUpper(new Value\ScalarValue()))->convert(123));   // 123
+(new Accessor\ToUpper(new Value\StringValue()))->convert('abc'); // 'ABC'
+(new Accessor\ToUpper(new Value\StringValue()))->convert('ABC'); // 'ABC'
+(new Accessor\ToUpper(new Value\StringValue()))->convert(123);   // '123'
+(new Accessor\ToUpper(new Value\ScalarValue()))->convert(123);   // 123
 ```
 
 All supported accessors have the next handling order: perform own operations first, then pass them to a lower level.
@@ -790,8 +790,8 @@ use Spiral\DataGrid\Specification\Value\Accessor;
 $multiply = new Accessor\Multiply(new Accessor\Add(new Value\IntValue(), 2), 2);
 $add = new Accessor\Add(new Accessor\Multiply(new Value\IntValue(), 2), 2);
 
-print_r($multiply->convert(2)); // 2*2+2=6
-print_r($add->convert(2));      // (2+2)*2=8
+$multiply->convert(2); // 2*2+2=6
+$add->convert(2);      // (2+2)*2=8
 ```
 
 Next accessors are available for grids for now:
