@@ -307,11 +307,8 @@ Examples with a fixed value:
 ```php
 use Spiral\DataGrid\Specification\Filter;
 
-// the price should be equal to 2
-$equals = new Filter\Equals('price', 2);
-
-// the price should not be equal to 2
-$notEquals = new Filter\NotEquals('price', 2);
+$equals = new Filter\Equals('price', 2);       // the price should be equal to 2
+$notEquals = new Filter\NotEquals('price', 2); // the price should not be equal to 2
 ```
 
 Examples with `ValueInterface` usage:
@@ -334,17 +331,10 @@ Examples with a fixed value:
 ```php
 use Spiral\DataGrid\Specification\Filter;
 
-// the price should be greater than 2
-$gt = new Filter\Gt('price', 2);
-
-// the price should be greater than 2 or equal
-$gte = new Filter\Gte('price', 2);
-
-// the price should be less than 2
-$lt = new Filter\Lt('price', 2);
-
-// the price should be less than 2 or equal
-$lte = new Filter\Lte('price', 2);
+$gt = new Filter\Gt('price', 2);   // the price should be greater than 2
+$gte = new Filter\Gte('price', 2); // the price should be greater than 2 or equal
+$lt = new Filter\Lt('price', 2);   // the price should be less than 2
+$lte = new Filter\Lte('price', 2); // the price should be less than 2 or equal
 ```
 
 Examples with `ValueInterface` usage:
@@ -375,11 +365,8 @@ Examples with a fixed value:
 ```php
 use Spiral\DataGrid\Specification\Filter;
 
-// the price should be in array of 2 and 5
-$inArray = new Filter\InArray('price', [2, 5]);
-
-// the price should not be in array of 2 and 5
-$notInArray = new Filter\NotInArray('price', [2, 5]);
+$inArray = new Filter\InArray('price', [2, 5]);       // the price should be in array of 2 and 5
+$notInArray = new Filter\NotInArray('price', [2, 5]); // the price should not be in array of 2 and 5
 ```
 
 Examples with `ValueInterface` usage:
@@ -402,11 +389,8 @@ Examples with a fixed value:
 ```php
 use Spiral\DataGrid\Specification\Filter;
 
-// the name should be like '%Tony%'
-$likeFull = new Filter\Like('name', 'Tony', '%%%s%%');
-
-// the name should be like 'Tony%'
-$likeEnding = new Filter\Like('name', 'Tony', '%s%%');
+$likeFull = new Filter\Like('name', 'Tony', '%%%s%%'); // the name should be like '%Tony%'
+$likeEnding = new Filter\Like('name', 'Tony', '%s%%'); // the name should be like 'Tony%'
 ```
 
 Examples with `ValueInterface` usage:
@@ -553,11 +537,8 @@ use Spiral\DataGrid\Specification\Filter;
 
 $between  = new Filter\Between('price', [10, 20]);
 
-// will be converted to gte+lte
-$between->getFilters();
-
-// will be presented as is
-$between->getFilters(true);
+$between->getFilters();     // will be converted to gte+lte
+$between->getFilters(true); // will be presented as is
 
 $notIncludingBetween  = new Filter\Between('price', [10, 20], false, false);
 
