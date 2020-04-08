@@ -133,12 +133,12 @@ For sorters that can apply direction, you can pass one of the next values:
 
 Next specifications are available for grids for now:
 
-* [ordered sorters](#sorter-specifications-ordered-sorters-specification)
-* [directional sorter](#sorter-specifications-directional-sorter-specification)
-* [sorter](#sorter-specifications-sorter-specification)
-* [sorter set](#sorter-specifications-sorter-set-specification)
+* [ordered sorters](#sorter-specifications-ordered-sorters)
+* [directional sorter](#sorter-specifications-directional-sorter)
+* [sorter](#sorter-specifications-sorter)
+* [sorter set](#sorter-specifications-sorter-set)
 
-### Ordered sorters specification
+### Ordered sorters
 `AscSorter` and `DescSorter` contain the expressions that should be applied with ascending (or descending) sorting order:
 ```php
 use Spiral\DataGrid\Specification\Sorter;
@@ -147,7 +147,7 @@ $ascSorter = new Sorter\AscSorter('first_name', 'last_name');
 $descSorter = new Sorter\DescSorter('first_name', 'last_name');
 ```
 
-### Directional sorter specification
+### Directional sorter
 This sorter contains 2 independent sorters each for ascending and descending order.
 By receiving the order via `withValue` we will get one of the sorters:
 ```php
@@ -167,7 +167,7 @@ $descSorter = $sorter->withDirection('desc');
 > Note that you can sort using different set of fields in both sorters.
 > If you have the same set of fields, use [sorter](#sorter-specifications-sorter-specification) instead.
 
-### Sorter specification
+### Sorter
 This is a sorter wrapper for a directional sorter in case you have the same fields for sorting in both directions:
 ```php
 use Spiral\DataGrid\Specification\Sorter;
@@ -181,7 +181,7 @@ $ascSorter = $sorter->withDirection('asc');
 $descSorter = $sorter->withDirection('desc');
 ```
 
-### Sorter set specification
+### Sorter set
 This is just a way of combining sorters into one set, passing direction will apply it to the whole set:
 ```php
 use Spiral\DataGrid\Specification\Sorter;
