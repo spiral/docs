@@ -231,19 +231,19 @@ $filter = $filter->withValue([123]);
 
 Next specifications are available for grids for now:
 
-* [all](#filter-specifications-all-specification)
-* [any](#filter-specifications-any-specification)
-* [(not) equals](#filter-specifications-not-equals-specification)
-* [compare gt/gte lt/lte](#filter-specifications-compare-specification)
-* [(not) in array](#filter-specifications-not-in-array-specification)
-* [like](#filter-specifications-like-specification)
-* [map](#filter-specifications-map-specification)
-* [select](#filter-specifications-select-specification)
-* [between](#filter-specifications-between-specification)
+* [all](#filter-specifications-all)
+* [any](#filter-specifications-any)
+* [(not) equals](#filter-specifications-not-equals)
+* [compare gt/gte lt/lte](#filter-specifications-compare)
+* [(not) in array](#filter-specifications-not-in-array)
+* [like](#filter-specifications-like)
+* [map](#filter-specifications-map)
+* [select](#filter-specifications-select)
+* [between](#filter-specifications-between)
 
 > There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
 
-### All specification
+### All
 This is a union filter for logic `and` operation.<br/>
 Examples with fixed values:
 ```php
@@ -272,7 +272,7 @@ $all = new Filter\All(
 $all = $all->withValue(5);
 ```
 
-### Any specification
+### Any
 This is a union filter for logic `or` operation.<br/>
 Examples with fixed values:
 ```php
@@ -301,7 +301,7 @@ $any = new Filter\Any(
 $any = $any->withValue(5);
 ```
 
-### (Not) equals specification
+### (Not) equals
 These are simple expression filters for logic `=`, `!=` operations.<br/>
 Examples with a fixed value:
 ```php
@@ -328,7 +328,7 @@ $notEquals = new Filter\NotEquals('price', new Value\NumericValue());
 $notEquals = $notEquals->withValue('2');
 ```
 
-### Compare specification
+### Compare
 These are simple expression filters for logic `>`, `>=`, `<`, `<=` operations.<br/>
 Examples with a fixed value:
 ```php
@@ -369,7 +369,7 @@ $lte = new Filter\Lte('price', new Value\NumericValue());
 $lte = $lte->withValue('2');
 ```
 
-### (Not) in array specification
+### (Not) in array
 These are simple expression filters for logic `in`, `not in` operations.<br/>
 Examples with a fixed value:
 ```php
@@ -396,7 +396,7 @@ $notInArray = new Filter\NotInArray('price', new Value\NumericValue());
 $notInArray = $notInArray->withValue(['2', '5']);
 ```
 
-### Like specification
+### Like
 This is a simple expression filter for `like` operation.<br/>
 Examples with a fixed value:
 ```php
@@ -419,7 +419,7 @@ $like = new Filter\Like('name', new Value\StringValue());
 $like = $like->withValue('Tony');
 ```
 
-### Map specification
+### Map
 Map is a complex filter representing a map of filters with their own values.
 ```php
 use Spiral\DataGrid\Specification\Filter;
@@ -449,7 +449,7 @@ $map = $map->withValue(['from' => 2, 'to' => 5]);
 $map = $map->withValue(['to' => 5]);
 ```
 
-### Select specification
+### Select
 This specification represents a set of available expressions.
 Passing a value from the input will pick a single or several specifications from this set.
 > You just need to pass a key or an array of keys. Note that no `ValueInterface` should be declared.
@@ -506,7 +506,7 @@ $select = new Filter\Select([
 $filter = $select->withValue('four');
 ```
 
-### Between specification
+### Between
 This filter represents the SQL `between` operation, but can be presented as two `gt/gte` and `lt/lte` filters.
 You have an ability to define whether the boundary values should be included or not.
 If the boundary values aren't included, this filter will be converted into `gt`+`lt` filters, otherwise when getting
