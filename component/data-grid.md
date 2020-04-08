@@ -188,7 +188,7 @@ use Spiral\DataGrid\Specification\Sorter;
 
 $sorter = new Sorter\SorterSet(
     new Sorter\AscSorter('first_name'),
-    new Sorter\DescSorter( 'last_name'),
+    new Sorter\DescSorter('last_name'),
     new Sorter\Sorter('email', 'username')
     // ...
 );
