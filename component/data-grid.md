@@ -737,6 +737,7 @@ Applies UUID-formatted strings, a user can choose which validation pattern to us
 - any (just check the string format)
 - nil (special uuid null value)
 - one of [1-5] versions
+
 The output is converted to string.
 ```php
 use Spiral\DataGrid\Specification\Value;
