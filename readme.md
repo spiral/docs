@@ -1,5 +1,7 @@
 # Table of Contents
 
+![CI](https://github.com/spiral/roadrunner-docs/workflows/CI/badge.svg)
+
 * Overview
     * [About Framework](about/spiral.md)
     * [Contributing](about/contributing.md)
@@ -28,7 +30,7 @@
 * Cookbook
     * [Annotated Routing](cookbook/annotated-routes.md)
     * [Domain Core and Controllers](cookbook/domain-core.md)
-    * [Container Injectors](cookbook/injector.md) 
+    * [Container Injectors](cookbook/injector.md)
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
 * Components
