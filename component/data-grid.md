@@ -52,9 +52,6 @@ To use the defined grid schema, you will have to obtain an instance of a support
 By default, the Cycle Select and Database Select Query are supported.
 
 ```php
-namespace App\Controller;
-
-use App\Database\UserRepository;
 use Spiral\DataGrid\GridFactory;
 use Spiral\DataGrid\GridSchema;
 use Spiral\DataGrid\Specification\Filter\Like;
@@ -62,20 +59,18 @@ use Spiral\DataGrid\Specification\Pagination\PagePaginator;
 use Spiral\DataGrid\Specification\Sorter\Sorter;
 use Spiral\DataGrid\Specification\Value\StringValue;
 
-class HomeController
-{
-    public function index(UserRepository $users, GridFactory $factory)
-    {
-        $schema = new GridSchema();
-        $schema->setPaginator(new PagePaginator(10));
-        $schema->addSorter('id', new Sorter('id'));
-        $schema->addFilter('name', new Like('name', new StringValue()));
+$schema = new GridSchema();
+$schema->setPaginator(new PagePaginator(10));
+$schema->addSorter('id', new Sorter('id'));
+$schema->addFilter('name', new Like('name', new StringValue()));
 
-        $result = $factory->create($users->select(), $schema);
+/**
+ * @var App\Database\UserRepository $users 
+ * @var GridFactory $factory
+ */
+$result = $factory->create($users->select(), $schema);
 
-        dump(iterator_to_array($result));
-    }
-}
+print_r(iterator_to_array($result));
 ```
 
 If you want any of the specifications be applied by default, you can pass them next way:
@@ -106,20 +101,12 @@ $factory = $factory->withCounter(static function ($select): int {
 ### Page Paginator specification
 This is a simple page+limit pagination:
 ```php
-namespace App\Controller;
-
 use Spiral\DataGrid\GridSchema;
 use Spiral\DataGrid\Specification\Pagination\PagePaginator;
 
-class HomeController
-{
-    public function index()
-    {
-        $schema = new GridSchema();
-        $schema->setPaginator(new PagePaginator(10, [25, 50, 100, 500]));
-        // ...
-    }
-}
+$schema = new GridSchema();
+$schema->setPaginator(new PagePaginator(10, [25, 50, 100, 500]));
+// ...
 ```
 From the user input, such paginator accepts an array with 2 keys, `limit` and `page`.
 If limit is set it should be presented in the `allowedLimits` constructor param. 
