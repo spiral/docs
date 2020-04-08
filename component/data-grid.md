@@ -726,7 +726,7 @@ $value->convert('3'); // [3]
 ```
 
 ### String
-Applies string-like values, also empty strings (if a corresponding constructor param passed):
+Applies string-like input, also empty strings (if a corresponding constructor param passed):
 ```php
 use Spiral\DataGrid\Specification\Value;
 
@@ -760,13 +760,48 @@ $allowEmptyValue->accepts(''); // true
 ```
 
 ### Regex
->To be continued
+Applies string-like input and check if it matches the given regex pattern, converts to string:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$value = new Value\RegexValue('/\d+/');
+$value->accepts(''); // false
+$value->accepts(3); // true
+$value->accepts('4'); // true
+
+$value->convert(3); // '3'
+```
 
 ### Uuid
->To be continued
+Applies UUID-formatted strings, a user can choose which validation pattern to use:
+- any (just check the string format)
+- nil (special uuid null value)
+- one of [1-5] versions
+The output is converted to string.
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$v4 = new Value\UuidValue('v4');
+$v4->accepts(''); // false
+$v4->accepts('00000000-0000-0000-0000-000000000000'); // false
+
+$valid = new Value\UuidValue();
+$valid->accepts(''); // false
+$valid->accepts('00000000-0000-0000-0000-000000000000'); // true
+```
 
 ### Range
->To be continued
+This value expects an input to be a inside of a given range and converts it according to the base value type.
+Range boundary values are converted also. You can specify either the input can be also equals to the boundary values or not:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+// as it, expects the value be >=1 and <3
+$value = new Value\RangeValue(Value\RangeValue\Boundary::including(1), Value\RangeValue\Boundary::excluding(3));
+ 
+$value->accepts('3'); // false
+$value->accepts(1); // false
+```
 
 ## Value accessors
 Accessors act like values from the section above but have another purpose - you can use them to perform not-type
