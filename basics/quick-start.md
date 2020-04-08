@@ -1023,7 +1023,7 @@ class PostController
      */
     public function get(string $id)
     {
-        /** @var Post $post */
+        /** @var \App\Repository\PostRepository $post */
         $post = $this->posts->findByPK($id);
         if ($post === null) {
             throw new NotFoundException("post not found");
