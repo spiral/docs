@@ -14,7 +14,7 @@ To install the component:
 $ composer install spiral/validation
 ```
 
-To install in spiral use bootloader `Spiral\Bootloader\Security\ValidationBootloader`. 
+To install in spiral use bootloader `Spiral\Bootloader\Security\ValidationBootloader`.
 
 To edit the default component configuration create and edit file `app/config/validation.php`:
 
@@ -117,7 +117,7 @@ class HomeController
 > You can use the `validator` prototype property.
 
 ## The ValidationInterface
-The result of `ValidationInterface`->`validate` method is `ValidationInterface`. The interface provides basic 
+The result of `ValidationInterface`->`validate` method is `ValidationInterface`. The interface provides basic
 API to get result errors and allows them to attach to new data or context (immutable).
 
 ```php
@@ -149,7 +149,7 @@ public function index(Validation\ValidationInterface $validation)
 ```
 
 ### Validated Data
-A validator can accept any array data source, but internally it will be converted into array form (unless ArrayAccess). 
+A validator can accept any array data source, but internally it will be converted into array form (unless ArrayAccess).
 
 ### Error Format
 The validation component will always return one error and first fired error per key.
@@ -212,7 +212,7 @@ $validator = $validation->validate(
         ]
     ]
 );
-``` 
+```
 
 > You can omit the `[]` if the rule does not need any parameters.
 
@@ -401,15 +401,15 @@ Examples:
 | Rule          | Parameters                            | Description                                      
 | ---           | ---                                   | ---                                              
 | cardNumber    | ---                                   | Check credit card passed by Luhn algorithm.      
-| match         | field:*string*, strict:*bool* - false | Check if value matches value from another field. 
+| match         | field:*string*, strict:*bool* - false | Check if value matches value from another field.
 
 > All of the rules of this checker are available without prefix.
 
 ### Address - prefix `address::`
 | Rule          | Parameters                    | Description              
 | ---           | ---                           | ---                      
-| email         | ---                           | Check if email is valid. 
-| url           | requireScheme:*bool* - true   | Check if URL is valid. 
+| email         | ---                           | Check if email is valid.
+| url           | requireScheme:*bool* - true   | Check if URL is valid.
 
 > All of the rules of this checker are available without prefix.
 
@@ -435,7 +435,7 @@ Examples:
 'rules' => [
     'name' => [
         ['notEmpty'],
-        ['string::length', 5] 
+        ['string::length', 5]
     ]
 ]
 ```
@@ -466,13 +466,13 @@ The image checker extends the file checker and fully supports its features.
 | future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value has to be a date in the future.
 | past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value has to be a date in the past.
 | format        | format:*string*                    | Value should match the specified date format
-| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value should come before a given threshold. 
+| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value should come before a given threshold.
 | after         |field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come after a given threshold.                
-| valid         | ---                    | Value has to be valid datetime definition including numeric timestamp. 
+| valid         | ---                    | Value has to be valid datetime definition including numeric timestamp.
 | timezone      | ---                    | Value has to be valid timezone.         
 
 > Setting `useMicroSeconds` into true allows to check datetime with microseconds.<br/>
-Be carefull, two `new \DateTime('now')` objects will 99% have different microseconds values so they will never be equal.
+Be careful, two `new \DateTime('now')` objects will 99% have different microseconds values so they will never be equal.
 
 ## Custom Validation Rules
 It is possible to create application-specific validation rules via custom checker implementation.
@@ -509,7 +509,7 @@ class DBChecker extends AbstractChecker
         return $this->db->table('users')->select()->where('id', $id)->count() === 1;
     }
 }
-``` 
+```
 
 > Use prebuild constant `MESSAGES` to define a custom error template.
 
