@@ -82,10 +82,11 @@ $factory = $factory->withDefaults([
     GridFactory::KEY_PAGINATE => ['page' => 3, 'limit' => 100]
 ]);
 ```
-To select users from the second page open page with POST or QUERY data like: `?paginate[page]=2`.<br/>
-To activate the Like filter: `?filter[name]=antony`.<br/>
-To sort by id in ASC or DESC: `?sort[id]=desc`.<br/>
-To get count of total values: `?fetchCount=1`.
+How to apply the specifications:
+- to select users from the second page open page with POST or QUERY data like: `?paginate[page]=2`
+- to activate the `like` filter: `?filter[name]=antony`
+- to sort by id in ASC or DESC: `?sort[id]=desc`
+- to get count of total values: `?fetchCount=1`
 > These params are defined in the `GridFactory`, you can overwrite them.
 
 If you need to count items using a complex function, you can pass a callable function via `withCounter` method:
@@ -116,7 +117,7 @@ use Spiral\DataGrid\Specification\Pagination\PagePagination;
 $paginator = new PagePaginator(10, [25, 50, 100, 500]);
 
 $paginator->withValue(['limit' => 123]); // won't apply
-$paginator->withValue(['limit' => 10]); // will apply
+$paginator->withValue(['limit' => 10]);  // will apply
 $paginator->withValue(['limit' => 100]); // will apply
 
 $paginator->withValue(['limit' => 100, 'page' => 2]);
@@ -140,22 +141,19 @@ Next specifications are available for grids for now:
 ### Ordered sorters specification
 `AscSorter` and `DescSorter` contain the expressions that should be applied with ascending (or descending) sorting order:
 ```php
-use Spiral\DataGrid\Specification\Sorter\AscSorter;
-use Spiral\DataGrid\Specification\Sorter\DescSorter;
+use Spiral\DataGrid\Specification\Sorter;
 
-$ascSorter = new AscSorter('first_name', 'last_name');
-$descSorter = new DescSorter('first_name', 'last_name');
+$ascSorter = new Sorter\AscSorter('first_name', 'last_name');
+$descSorter = new Sorter\DescSorter('first_name', 'last_name');
 ```
 
 ### Directional sorter specification
 This sorter contains 2 independent sorters each for ascending and descending order.
 By receiving the order via `withValue` we will get one of the sorters:
 ```php
-use Spiral\DataGrid\Specification\Sorter\AscSorter;
-use Spiral\DataGrid\Specification\Sorter\DescSorter;
-use Spiral\DataGrid\Specification\Sorter\DirectionalSorter;
+use Spiral\DataGrid\Specification\Sorter;
 
-$sorter = new DirectionalSorter(new AscSorter('first_name'), new DescSorter('last_name'));
+$sorter = new Sorter\DirectionalSorter(new Sorter\AscSorter('first_name'), new Sorter\DescSorter('last_name'));
 
 // will sort by first_name asc
 $ascSorter = $sorter->withDirection('asc');
@@ -169,9 +167,9 @@ $descSorter = $sorter->withDirection('desc');
 ### Sorter specification
 This is a sorter wrapper for a directional sorter in case you have the same fields for sorting in both directions:
 ```php
-use Spiral\DataGrid\Specification\Sorter\Sorter;
+use Spiral\DataGrid\Specification\Sorter;
 
-$sorter = new Sorter('first_name', 'last_name');
+$sorter = new Sorter\Sorter('first_name', 'last_name');
 
 // will sort by first_name and last_name asc
 $ascSorter = $sorter->withDirection('asc');
@@ -183,14 +181,12 @@ $descSorter = $sorter->withDirection('desc');
 ### Sorter set specification
 This is just a way of combining sorters into one set, passing direction will apply it to the whole set:
 ```php
-use Spiral\DataGrid\Specification\Sorter\AscSorter;
-use Spiral\DataGrid\Specification\Sorter\DescSorter;
-use Spiral\DataGrid\Specification\Sorter\SorterSet;
+use Spiral\DataGrid\Specification\Sorter;
 
-$sorter = new SorterSet(
-    new AscSorter('first_name'),
-    new DescSorter( 'last_name'),
-    new Sorter('email', 'username')
+$sorter = new Sorter\SorterSet(
+    new Sorter\AscSorter('first_name'),
+    new Sorter\DescSorter( 'last_name'),
+    new Sorter\Sorter('email', 'username')
     // ...
 );
 
