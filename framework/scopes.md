@@ -1,5 +1,5 @@
 # Framework - IoC Scopes
-An essential aspect of developing long-living applications is proper context management. In daemonized applications, 
+An essential aspect of developing long-living applications is proper context management. In daemonized applications,
 you are no longer allowed to treat user requests as global singleton object and store references to its instance in your services.
 
 Practically it means that you must explicitly request context while processing user input. Spiral framework simplifies
@@ -44,30 +44,30 @@ cause controller to lock on first scope value:
 class HomeController implements SingletonInterface
 {
     private $userContext; // not allowed!
-    
+
     public function __construct(UserContext $userContext)
     {
         $this->userContext = $userContext;
     }
 }
-``` 
+```
 
-Instead, it is recommended to use objects specifically crafted to provide access to IoC scopes from singletons - Context 
+Instead, it is recommended to use objects specifically crafted to provide access to IoC scopes from singletons - Context
 Managers. The simple context manager can be written as follows:
 
 ```php
-class UserScope 
+class UserScope
 {
     private $container;
-    
+
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
-    
-    public function getUserContext(): ?UserContext 
+
+    public function getUserContext(): ?UserContext
     {
-        // error checking is ommited
+        // error checking is omitted
         return $this->container->get(UserContext::class);
     }
 
@@ -84,7 +84,7 @@ You can use this manager in any of your services, including singletons.
 class HomeController implements SingletonInterface
 {
     private $userScope; // allowed
-    
+
     public function __construct(UserScope $userManager)
     {
         $this->userScope = $userManager;
