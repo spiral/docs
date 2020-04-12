@@ -42,6 +42,7 @@
   - [用户命令](console/commands.md)
 - HTTP
   - [安装配置](http/configuration.md)
+  - [请求生命周期](http/lifecycle.md)
 - 队列任务
   - 安装配置
   - 控制台命令

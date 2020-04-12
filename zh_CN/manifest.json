@@ -71,7 +71,8 @@
   {
     "title": "HTTP",
     "links": {
-      "http/configuration": "安装配置"
+      "http/configuration": "安装配置",
+      "http/lifecycle": "请求生命周期"
     }
   }
 ]
