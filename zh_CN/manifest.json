@@ -54,7 +54,6 @@
   {
     "title": "常用组件",
     "links": {
-
       "component/files": "文件和目录",
       "component/reactor": "代码生成",
       "component/tokenizer": "静态分析工具",
@@ -67,6 +66,12 @@
     "links": {
       "console/configuration": "安装与配置",
       "console/commands": "控制台命令"
+    }
+  },
+  {
+    "title": "HTTP",
+    "links": {
+      "http/configuration": "安装配置"
     }
   }
 ]
