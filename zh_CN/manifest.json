@@ -75,7 +75,8 @@
       "http/lifecycle": "请求生命周期",
       "http/request-response": "请求和响应",
       "http/routing": "路由",
-      "http/errors": "错误页面"
+      "http/errors": "错误页面",
+      "http/middleware": "中间件"
     }
   }
 ]
