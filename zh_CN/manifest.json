@@ -76,7 +76,9 @@
       "http/request-response": "请求和响应",
       "http/routing": "路由",
       "http/errors": "错误页面",
-      "http/middleware": "中间件"
+      "http/middleware": "中间件",
+      "http/golang": "Golang 中间件",
+      "http/cookies": "Cookies"
     }
   }
 ]
