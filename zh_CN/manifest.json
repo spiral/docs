@@ -74,7 +74,8 @@
       "http/configuration": "安装配置",
       "http/lifecycle": "请求生命周期",
       "http/request-response": "请求和响应",
-      "http/routing": "路由"
+      "http/routing": "路由",
+      "http/errors": "错误页面"
     }
   }
 ]
