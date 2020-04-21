@@ -503,11 +503,39 @@ Cycle ORM specific checker.
 
 | Rule   | Parameters             | Description         
 | ---    | ---                    | ---       
-| exists | class:*string*| If an entity is presented in the db by a given PK. `class` is an entity class name.
+| exists | class:*string*, field:*string* - null| If an entity is presented in the db by a given PK or a custom field. `class` is an entity class name.
 | unique | class:*string*, field:*string*, withFields:*string[]*| Value has to be unique. `withFields` represents an array of fields to be fetched from the validator input so all of them will be used in the unique check.
 
-For `unique` value you can pass a context that is expected to be a key:value array under `EntityChecker::class` section.
-If the value is presented in the context then it is counted as unchanged and the checker will return true, otherwise the checker will look into the database.
+#### exists
+Exists by PK example:
+```php
+class MyRequest extends \Spiral\Filters\Filter
+{
+    public const VALIDATES = [
+        'id' => [
+            ['entity::exists', \App\Database\User::class] 
+        ]
+    ];
+}
+```
+> Checks if the user exists by a given PK
+
+Exists by custom field example:
+```php
+class MyRequest extends \Spiral\Filters\Filter
+{
+    public const VALIDATES = [
+        'email' => [
+            ['entity::exists', \App\Database\User::class, 'email'] 
+        ]
+    ];
+}
+```
+> Checks if the user exists by a given email
+
+#### unique
+You can pass an active entity as a context object. If the value is presented in the context then it is counted
+as unchanged, and the checker will return true, otherwise the checker will look into the database.
 
 Example:
 ```php
@@ -520,16 +548,12 @@ class MyRequest extends \Spiral\Filters\Filter
     ];
 }
 ```
-> It says that the given value should be unique in the database as an `email` field in a combination with a `company` value  
+> It says that the given value should be unique in the database as an `email` field in a combination with a `company` value
  
 With the validator context you can pass the current values so they will not conflict with the current entity in the database:
 ```php
-$request->setContext([
-    EntityChecker::class => [
-        'company' => 'Spiral Scout',
-        'email'   => 'example@text.com'
-    ]
-]);
+/** @var \App\Database\User $user */
+$request->setContext($user);
 ``` 
 
 ## Custom Validation Rules
