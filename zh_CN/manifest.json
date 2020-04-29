@@ -78,7 +78,8 @@
       "http/errors": "错误页面",
       "http/middleware": "中间件",
       "http/golang": "Golang 中间件",
-      "http/cookies": "Cookies"
+      "http/cookies": "Cookies",
+      "http/session": "Session"
     }
   }
 ]
