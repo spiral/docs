@@ -79,7 +79,9 @@
       "http/middleware": "中间件",
       "http/golang": "Golang 中间件",
       "http/cookies": "Cookies",
-      "http/session": "Session"
+      "http/session": "Session",
+      "http/csrf": "CSRF 防护",
+      "http/psr-15": "定制 PSR-15 处理器"
     }
   }
 ]
