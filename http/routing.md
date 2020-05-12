@@ -15,6 +15,8 @@ And activate its Bootloader:
 ]
 ```
 
+> Read how to define routing using annotations [here](/http/annotated-routes.md).  
+
 ## Default Configuration
 The default web application bundle allows you to call any controller action located in `App\Controller`namespace using
 `/<controller>/<action>` pattern. See below how to alter this behavior.
