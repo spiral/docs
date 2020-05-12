@@ -8,7 +8,7 @@ Golang GRPC service, Jobs, and Broadcast to stream data from PHP application.
 ## Service Definition
 We can define the service as a singular endpoint with a streaming response. The client will connect the streaming
 service and must stop consuming after the null message received. The consuming will initiate based on the provided `id`.
- 
+
 ```json
 syntax = "proto3";
 
@@ -27,8 +27,8 @@ service Streamer {
     rpc Stream (Request) returns (stream Data) {
     }
 }
-``` 
- 
+```
+
 Create direction `stream` and generate client and server SDK for Golang using:
 
 ```bash
@@ -37,8 +37,8 @@ $ protoc -I proto/ proto/stream.proto --go_out=plugins=grpc:strea
 ```
 
 ## Consumer
-The client/consumer application will be displaying all streamed content directly into `stdout`. You can create it in a 
-separate directory. Copy the `stream` directory and `app.crt` to your client application. 
+The client/consumer application will be displaying all streamed content directly into `stdout`. You can create it in a
+separate directory. Copy the `stream` directory and `app.crt` to your client application.
 
 ```bash
 $ go mod init client
@@ -46,7 +46,7 @@ $ go mod init client
 
 The application will look as follows:
 
-```golang 
+```golang
 package main
 
 import (
@@ -91,7 +91,7 @@ func main() {
 ```
 
 ## Producer
-The producer application contains Golang and PHP parts. The Golang will route message to backgroud PHP process
+The producer application contains Golang and PHP parts. The Golang will route message to background PHP process
 using spiral/jobs package and later read the produced response using unique broadcast topic.
 
 The service will look as following:
@@ -176,7 +176,7 @@ Make sure to register service in `main.go`:
 rr.Container.Register(stream.ID, &stream.Service{})
 ```
 
-The application will require `jobs` and `broadcast` services enabled (in both `.rr` and application bootloaders). 
+The application will require `jobs` and `broadcast` services enabled (in both `.rr` and application bootloaders).
 You do not need any GRPC workers.
 
 ```yaml

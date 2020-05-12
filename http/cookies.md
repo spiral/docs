@@ -1,7 +1,7 @@
 # HTTP - Cookies
 The default application skeleton enables cookie integration by default.
- 
-If you need to enable cookies it in alternative builds, require composer package `spiral/cookies` and add 
+
+If you need to enable cookies it in alternative builds, require composer package `spiral/cookies` and add
 bootloader `Spiral\Bootloader\Http\CookiesBootloader` into your app.
 
 ## Cookie Manager
@@ -33,7 +33,7 @@ Read more about low-level cookie management down below.
 By default, the framework will encrypt and decrypt all cookies values using ENV key `ENCRYPTER_KEY`. Changing this value will
 automatically invalidate all cookie values set for all users.
 
-> You can also disable encryption for performance reasons or use alternative HMAC signature method (see below). 
+> You can also disable encryption for performance reasons or use alternative HMAC signature method (see below).
 
 Cookie component will decrypt all values and update the request object, so you can get all cookies values using default PSR-7 `ServerRequestInterface`:
 
@@ -70,10 +70,10 @@ class HomeController
 
 > You can also request cookie value in request filters.
 
-Note, if the cookie value is invalid and or can't be decrypted, its value will be set to NULL and not available to the application. 
+Note, if the cookie value is invalid and or can't be decrypted, its value will be set to NULL and not available to the application.
 
 ## Write Cookie
-Since all of the cookie values must be encrypted or signed, you must use the proper way to write them. 
+Since all of the cookie values must be encrypted or signed, you must use the proper way to write them.
 Use context-specific object `Spiral\Cookies\CookieQuery`.
 
 ```php
@@ -83,7 +83,7 @@ public function index(CookieQuery $cookies)
 }
 ```
 
-The method accepts the following arguments in the same order: 
+The method accepts the following arguments in the same order:
 
 Parameter | Type | Description
 --- | --- | ---
@@ -98,7 +98,7 @@ HttpOnly | bool | When true, the cookie will be made accessible only through the
 > Same arguments for `Spiral\Cookies\CookieManager`->`set`.
 
 ## Usage with Singletons
-You can not use `CookieQuery` as `__construct` argument. Queue is only available withing IoC context of CookieMiddleware
+You can not use `CookieQuery` as `__construct` argument. Queue is only available within IoC context of CookieMiddleware
 and must be requested from container directly (use use method injection as showed above):
 
 ```php
@@ -130,7 +130,7 @@ return $response->withAddedHeader('Set-Cookie', 'name=value');
 > Make sure to add a cookie to whitelist, otherwise, CookieMiddleware won't let it pass.
 
 ## Configuration
-You can configure `CookieQueue` behaviour using `Spiral\Bootloader\Http\CookiesBootloader`.
+You can configure `CookieQueue` behavior using `Spiral\Bootloader\Http\CookiesBootloader`.
 
 To whitelist cookie (disable protection) in your bootloader:
 
@@ -152,11 +152,11 @@ use Spiral\Cookies\Config\CookiesConfig;
 return [
     // by default all cookies will be set as .domain.com
     'domain'   => '.%s',
-    
+
     // protection method
     'method'   => CookiesConfig::COOKIE_ENCRYPT,
-    
+
     // whitelisted cookies (no ecnrypt/descrypt)
-    'excluded' => ['PHPSESSID', 'csrf-token'] 
+    'excluded' => ['PHPSESSID', 'csrf-token']
 ];
 ```

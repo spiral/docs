@@ -8,14 +8,14 @@ by editing the file(s) in `app/config/`.
 Web and GRPC templates use DotEnv extension to read environment values from `.env` file located in the root of your project.
 
 ```env
-# Debug mode disabled view cache and enabled higher verbosity.
-DEBUG = true
+# Debug mode set to TRUE disables view caching and enables higher verbosity.
+DEBUG=true
 
 # Set to application-specific value, used to encrypt/decrypt cookies, etc.
-ENCRYPTER_KEY = {encrypt-key}
+ENCRYPTER_KEY={encrypt-key}
 
 # Set to TRUE to disable confirmation in `migrate` commands.
-SAFE_MIGRATIONS = true
+SAFE_MIGRATIONS=true
 ```
 
 You can access these values using `Spiral\Boot\EnvironmentInterface` or via a short function `env`.

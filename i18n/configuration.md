@@ -1,4 +1,4 @@
-# Internalization - Installation and Configuration
+# Internationalization - Installation and Configuration
 The spiral i18n component is based on the `symfony/translator` package and provides compatible interfaces. The web bundle includes
 this extension by default.
 

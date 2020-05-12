@@ -14,7 +14,7 @@ To install the component:
 $ composer install spiral/validation
 ```
 
-To install in spiral use bootloader `Spiral\Bootloader\Security\ValidationBootloader`. 
+To install in spiral use bootloader `Spiral\Bootloader\Security\ValidationBootloader`.
 
 To edit the default component configuration create and edit file `app/config/validation.php`:
 
@@ -117,7 +117,7 @@ class HomeController
 > You can use the `validator` prototype property.
 
 ## The ValidationInterface
-The result of `ValidationInterface`->`validate` method is `ValidationInterface`. The interface provides basic 
+The result of `ValidationInterface`->`validate` method is `ValidationInterface`. The interface provides basic
 API to get result errors and allows them to attach to new data or context (immutable).
 
 ```php
@@ -149,7 +149,7 @@ public function index(Validation\ValidationInterface $validation)
 ```
 
 ### Validated Data
-A validator can accept any array data source, but internally it will be converted into array form (unless ArrayAccess). 
+A validator can accept any array data source, but internally it will be converted into array form (unless ArrayAccess).
 
 ### Error Format
 The validation component will always return one error and first fired error per key.
@@ -212,7 +212,7 @@ $validator = $validation->validate(
         ]
     ]
 );
-``` 
+```
 
 > You can omit the `[]` if the rule does not need any parameters.
 
@@ -343,7 +343,7 @@ The most used rule-set is available thought the set of shortcuts:
 Alias | Rule
 --- | ---
 notEmpty|  type::notEmpty
-required|   type::notEmpty
+required|  type::notEmpty
 datetime|  datetime::valid
 timezone|  datetime::timezone
 bool|      type::boolean
@@ -372,7 +372,9 @@ scalar|    is_scalar
 string|    is_string
 match|     mixed::match
 
-### Type - prefix `type::`
+### Type
+> prefix `type::`
+
 | Rule          | Parameters             | Description         
 | ---           | ---                    | ---       
 | notEmpty      | asString:*bool* - true | Value should not be empty (same as `!empty`).                                             
@@ -389,38 +391,49 @@ match|     mixed::match
 Examples:
 
 ```php
-'rules' => [
-    'name'  => [
-        ['notEmpty'],
-        ['my::abc']
-    ]
-]
+class MyRequest extends \Spiral\Filters\Filter
+{
+    public const VALIDATES = [
+        'name'  => [
+            ['notEmpty'],
+            ['my::abc']
+        ]
+    ];
+}
 ```
 
-### Mixed - prefix `mixed::`
+### Mixed
+> prefix `mixed::`
+
 | Rule          | Parameters                            | Description                                      
 | ---           | ---                                   | ---                                              
 | cardNumber    | ---                                   | Check credit card passed by Luhn algorithm.      
-| match         | field:*string*, strict:*bool* - false | Check if value matches value from another field. 
+| match         | field:*string*, strict:*bool* - false | Check if value matches value from another field.
 
 > All of the rules of this checker are available without prefix.
 
-### Address - prefix `address::`
+### Address
+> prefix `address::`
+
 | Rule          | Parameters                    | Description              
 | ---           | ---                           | ---                      
-| email         | ---                           | Check if email is valid. 
-| url           | requireScheme:*bool* - true   | Check if URL is valid. 
+| email         | ---                           | Check if email is valid.
+| url           | requireScheme:*bool* - true   | Check if URL is valid.
 
 > All of the rules of this checker are available without prefix.
 
-### Number - prefix `number::`
+### Number
+> prefix `number::`
+
 | Rule          | Parameters                 | Description           
 | ---           | ---                        | ---                   
 | range         | begin:*float*, end:*float* | Check if the number is in a specified range.
 | higher        | limit:*float*              | Check if the value is bigger or equal to that which is specified.
 | lower         | limit:*float*              | Check if the value is smaller or equal to that which is specified.
 
-### String - prefix `string::`
+### String
+> prefix `string::`
+
 | Rule          | Parameters              | Description           
 | ---           | ---                     | ---                   
 | regexp        | expression:*string*     | Check string using regexp.                  
@@ -432,15 +445,20 @@ Examples:
 Examples:
 
 ```php
-'rules' => [
-    'name' => [
-        ['notEmpty'],
-        ['string::length', 5] 
-    ]
-]
+class MyRequest extends \Spiral\Filters\Filter
+{
+    public const VALIDATES = [
+        'name' => [
+            ['notEmpty'],
+            ['string::length', 5]
+        ]
+    ];
+}
 ```
 
-### File Checker - prefix `file::`
+### File Checker
+> prefix `file::`
+
 File checker fully supports the filename provided in a string form or using `UploadedFileInterface` (PSR-7).
 
 | Rule          | Parameters            | Description           
@@ -450,7 +468,9 @@ File checker fully supports the filename provided in a string form or using `Upl
 | size          | size:*int*            | Check if file size less that specified value in KB.
 | extension     | extensions:*array*    | Check if file extension in whitelist. Client name of uploaded file will be used!
 
-### Image Checker - prefix `image::`
+### Image Checker
+> prefix `image::`
+
 The image checker extends the file checker and fully supports its features.
 
 | Rule          | Parameters                | Description           |
@@ -460,19 +480,81 @@ The image checker extends the file checker and fully supports its features.
 | smaller       | width:*int*, height:*int* | Check if image is smaller than a specified shape (height check if optional).
 | bigger        | width:*int*, height:*int* | Check if image is bigger than a specified shape (height check is optional).
 
-### Datetime - prefix `datetime::`
+### Datetime
+> prefix `datetime::`
+
 | Rule          | Parameters             | Description         
 | ---           | ---                    | ---       
 | future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value has to be a date in the future.
 | past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value has to be a date in the past.
 | format        | format:*string*                    | Value should match the specified date format
-| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value should come before a given threshold. 
+| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value should come before a given threshold.
 | after         |field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come after a given threshold.                
 | valid         | ---                    | Value has to be valid datetime definition including numeric timestamp. 
 | timezone      | ---                    | Value has to be valid timezone.         
 
 > Setting `useMicroSeconds` into true allows to check datetime with microseconds.<br/>
-Be carefull, two `new \DateTime('now')` objects will 99% have different microseconds values so they will never be equal.
+Be careful, two `new \DateTime('now')` objects will 99% have different microseconds values so they will never be equal.
+
+### Entity
+> prefix `entity::`
+      
+Cycle ORM specific checker.
+
+| Rule   | Parameters             | Description         
+| ---    | ---                    | ---       
+| exists | class:*string*, field:*string* - null| If an entity is presented in the db by a given PK or a custom field. `class` is an entity class name.
+| unique | class:*string*, field:*string*, withFields:*string[]*| Value has to be unique. `withFields` represents an array of fields to be fetched from the validator input so all of them will be used in the unique check.
+
+#### exists
+Exists by PK example:
+```php
+class MyRequest extends \Spiral\Filters\Filter
+{
+    public const VALIDATES = [
+        'id' => [
+            ['entity::exists', \App\Database\User::class] 
+        ]
+    ];
+}
+```
+> Checks if the user exists by a given PK
+
+Exists by custom field example:
+```php
+class MyRequest extends \Spiral\Filters\Filter
+{
+    public const VALIDATES = [
+        'email' => [
+            ['entity::exists', \App\Database\User::class, 'email'] 
+        ]
+    ];
+}
+```
+> Checks if the user exists by a given email
+
+#### unique
+You can pass an active entity as a context object. If the value is presented in the context then it is counted
+as unchanged, and the checker will return true, otherwise the checker will look into the database.
+
+Example:
+```php
+class MyRequest extends \Spiral\Filters\Filter
+{
+    public const VALIDATES = [
+        'email' => [
+            ['entity::unique', \App\Database\User::class, 'email', ['company']] 
+        ]
+    ];
+}
+```
+> It says that the given value should be unique in the database as an `email` field in a combination with a `company` value
+ 
+With the validator context you can pass the current values so they will not conflict with the current entity in the database:
+```php
+/** @var \App\Database\User $user */
+$request->setContext($user);
+``` 
 
 ## Custom Validation Rules
 It is possible to create application-specific validation rules via custom checker implementation.
@@ -509,7 +591,7 @@ class DBChecker extends AbstractChecker
         return $this->db->table('users')->select()->where('id', $id)->count() === 1;
     }
 }
-``` 
+```
 
 > Use prebuild constant `MESSAGES` to define a custom error template.
 

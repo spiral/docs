@@ -10,7 +10,7 @@ The authentication extension will create an IoC scope for `Spiral\Auth\AuthConte
 (User, API Client). The actor is fetched from `Spiral\Auth\ActorProviderInterface` using `Spiral\Auth\TokenInterface`.
 
 The token is managed by `Spiral\Auth\TokenStorageInterface` and always includes the payload (for example `["userID" => $id]`, LDAP creds, etc.). 
-The token payload uses to find current application user via `Spiral\Auth\ActorProviderInterface`.
+The token payload used to find current application user via `Spiral\Auth\ActorProviderInterface`.
 
 The token storage can either store token in the external source (such as database, Redis, or file) or decode it on a fly. The framework
 includes multiple token implementations out of the box for more comfortable use. 
@@ -291,7 +291,7 @@ public function index()
 > You can use RBAC Security to authenticate and authorize users at the same time. 
 
 ### Logout
-To log user out call method `close` or auth context or AuthScope:
+To log user out call method `close` of auth context or AuthScope:
 
 ```php
 public function logout()
