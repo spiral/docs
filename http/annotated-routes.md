@@ -16,7 +16,7 @@ protected const LOAD = [
 You can use the extension.
 
 ## Define the route
-To define the route make sure to use `Spiral\Router\Annotation\Route`: 
+To define the route, make sure to use `Spiral\Router\Annotation\Route`: 
 
 ```php
 namespace App\Controller;
@@ -39,7 +39,7 @@ Following route attributes are available:
 
 Attribute | Type | Description
 --- | --- | ---
-route | string | Route patterns, follows the same rules as the default [Router](/http/routing.md). Required.
+route | string | Route patterns, follow the same rules as the default [Router](/http/routing.md). Required.
 name | string | Route name. Required.
 methods | array|string | HTTP methods. Defaults to all methods. 
 defaults | array | Default values for route pattern.
@@ -47,7 +47,7 @@ group | string | Route group, defaults to `default`.
 middleware | array | Route specific middleware class names.
 
 ## Route Groups
-It is possible to apply common rules, middleware, [domain core](/cookbook/domain-core.md) or prefix to the group of routes. Create and register bootloader in order to achieve that:
+It is possible to apply shared rules, middleware, [domain core](/cookbook/domain-core.md), or prefix to the group of routes. Create and register bootloader to achieve that:
 
 ```php
 namespace App\Bootloader;
@@ -66,9 +66,9 @@ class APIRoutes extends Bootloader
 }
 ```
 
-> Make sure to register bootloader after `AnnotatedRoutesBootloader`. Use `default` group to configure all the routes.
+> Make sure to register bootloader after `AnnotatedRoutesBootloader`. Use the `default` group to configure all the routes.
 
-You can now assign the route to the group using `group` attribute. 
+You can now assign the route to the group using the `group` attribute. 
 
 ```php
 /**
@@ -79,10 +79,10 @@ public function index(){
 }
 ```
 
-> Route middleware, prefix and domain core will be added automatically.
+> Route middleware, prefix, and domain core will be added automatically.
 
 ## Route Cache
-By default all the annotated routes cached when `DEBUG` is off. To turn on/off route cache separately from `DEBUG` env variable
+By default, all the annotated routes cached when `DEBUG` is off. To turn on/off route-cache separately from `DEBUG` env variable
 set the `ROUTE_CACHE` env variable:
 
 ```dotenv
