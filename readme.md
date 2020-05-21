@@ -28,7 +28,6 @@
     * [Static Memory](framework/memory.md)
     * [Finalizers](framework/finalizers.md)
 * Cookbook
-    * [Annotated Routing](cookbook/annotated-routes.md)
     * [Domain Core and Controllers](cookbook/domain-core.md)
     * [Container Injectors](cookbook/injector.md)
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
@@ -47,6 +46,7 @@
     * [Request Lifecycle](http/lifecycle.md)
     * [Request and Response](http/request-response.md)
     * [Routing](http/routing.md)
+    * [Annotated Routes](http/annotated-routes.md)
     * [Error Pages](http/errors.md)
     * [Middleware](http/middleware.md)
     * [Golang Middleware](http/golang.md)

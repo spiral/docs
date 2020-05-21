@@ -2,7 +2,8 @@
 The spiral framework contains a lot of components built to operate seamlessly with each other.
 In this article, we will show how to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations (optional) and domain interceptors.
 
-> The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more information.
+> The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more information. You can find the demo
+> repository [here](https://github.com/spiral/demo).
 
 ## Installation
 Use composer to install the default `spiral/app` bundle with most of the components out of the box:
@@ -265,93 +266,18 @@ You can invoke this method using URL `http://localhost:8080/open/123`. The `id` 
 > Read more about Routing [here](/http/routing.md).
 
 ### Annotated Routing
-Though the framework does not provide the annotated routing support out of the box yet, it is possible to [configure it](/cookbook/annotated-routes.md)
-manually using existing instruments. 
-
-> This is optional segment for Symfony users.
-
-#### Annotation
-Build simple annotation which later can be attached to public controller methods:
-
-```php
-namespace App\Annotation;
-
-use Doctrine\Common\Annotations\Annotation;
-
-/**
- * @Annotation()
- * @Annotation\Target({"METHOD"})
- * @Annotation\Attributes({
- *      @Annotation\Attribute("action", type="string", required=true),
- *      @Annotation\Attribute("verbs", type="array"),
- * })
- */
-class Route
-{
-    /** @var string */
-    public $action;
-
-    /** @var string[]|null */
-    public $verbs;
-}
-```
-
-> Default Web build of application enables annotation support by default.
-
-#### Bootloader
-Change `RoutesBootloader` to convert annotations into routes. Use class `Spiral\Annotations\AnnotationLocator`
-to find available annotations across application codebase.
-
-```php
-namespace App\Bootloader;
-
-use Spiral\Annotations\AnnotationLocator;
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Router\Route;
-use Spiral\Router\RouterInterface;
-use Spiral\Router\Target\Action;
-
-class RoutesBootloader extends Bootloader
-{
-    public function boot(AnnotationLocator $annotationLocator, RouterInterface $router): void
-    {
-        $methods = $annotationLocator->findMethods(\App\Annotation\Route::class);
-
-        foreach ($methods as $method) {
-            $name = sprintf(
-                "%s.%s",
-                $method->getClass()->getShortName(),
-                $method->getMethod()->getShortName()
-            );
-
-            $route = new Route(
-                $method->getAnnotation()->action,
-                new Action(
-                    $method->getClass()->getName(),
-                    $method->getMethod()->getName()
-                )
-            );
-
-            $route = $route->withVerbs(...(array)$method->getAnnotation()->verbs);
-
-            $router->setRoute($name, $route);
-        }
-    }
-}
-```
-
-#### Controller
+In order to simplify the route definition we can use `spiral/annoted-routes` extension. Read more about the extension [here](/http/annotated-routes.md).
 We can use this annotation in our controller as follows:
 
 ```php
 namespace App\Controller;
 
-use App\Annotation\Route;
+use Spiral\Router\Annotation\Route;
 
 class HomeController
 {
     /**
-     * @Route(action="/", verbs={"GET"})
+     * @Route(action="/", name="index", verbs={"GET"})
      */
     public function index()
     {
@@ -359,7 +285,7 @@ class HomeController
     }
     
     /**
-     * @Route(action="/open/<id>", verbs={"GET"})
+     * @Route(route="/open/<id>", name="open", methods="GET")
      */
     public function open(string $id)
     {
@@ -374,11 +300,15 @@ Run CLI command to check the list of available routes:
 $ php app.php route:list
 ```
 
-> Use additional route parameters to configure middleware, common prefix, etc.
+> Use additional route parameters to configure middleware, route group, etc.
 
 In the following examples, we will stick to the annotated routes for simplicity.
 
-> Disable `ErrorHandlerBootloader` in `App` to view full error log.
+To flush route cache (when DEBUG disabled):
+
+```bash
+$ php app.php route:reset
+```
 
 ### Domain Core
 Connect custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
@@ -926,6 +856,7 @@ The generated code:
 namespace App\Controller;
 
 use Spiral\Prototype\Traits\PrototypeTrait;
+use Spiral\Router\Annotation\Route;
 
 class PostController
 {
@@ -956,7 +887,7 @@ For demo purposes return `array`, the `status` key will be treated as response s
 
 ```php
 /**
- * @Route(action="/api/test/<id>", verbs={"GET"})
+ * @Route(route="/api/test/<id>", methods="GET")
  * @param string $id
  * @return array
  */
@@ -977,11 +908,12 @@ Alternatively, use the ResponseWrapper helper:
 
 ```php
 use Psr\Http\Message\ResponseInterface;
+use Spiral\Router\Annotation\Route;
 
 // ...
 
 /**
- * @Route(action="/api/test/<id>", verbs={"GET"})
+ * @Route(route="/api/test/<id>", name="post.test", methods="GET")
  * @param string $id
  * @return ResponseInterface
  */
@@ -1007,17 +939,17 @@ To get post details use `PostRepository`, request such dependency in the constru
 ```php
 namespace App\Controller;
 
-use App\Annotation\Route;
 use App\Database\Post;
 use Spiral\Http\Exception\ClientException\NotFoundException;
 use Spiral\Prototype\Traits\PrototypeTrait;
+use Spiral\Router\Annotation\Route;
 
 class PostController
 {
     use PrototypeTrait;
 
     /**
-     * @Route(action="/api/post/<id:\d+>", verbs={"GET"})
+     * @Route(route="/api/post/<id:\d+>", name="post.get", methods="GET")
      * @param string $id
      * @return array
      */
@@ -1049,16 +981,16 @@ You can replace direct repository access and use `Post` as method injection via 
 ```php
 namespace App\Controller;
 
-use App\Annotation\Route;
 use App\Database\Post;
 use Spiral\Prototype\Traits\PrototypeTrait;
+use Spiral\Router\Annotation\Route;
 
 class PostController
 {
     use PrototypeTrait;
 
     /**
-     * @Route(action="/api/post/<post:\d+>", verbs={"GET"})
+     * @Route(route="/api/post/<post:\d+>", name="post.get", methods="GET")
      * @param Post $post
      * @return array
      */
@@ -1130,17 +1062,17 @@ Modify the controller as follows:
 ```php
 namespace App\Controller;
 
-use App\Annotation\Route;
 use App\Database\Post;
 use Psr\Http\Message\ResponseInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;
+use Spiral\Router\Annotation\Route;
 
 class PostController
 {
     use PrototypeTrait;
 
     /**
-     * @Route(action="/api/post/<post:\d+>", verbs={"GET"})
+     * @Route(route="/api/post/<post:\d+>", name="post.get", methods="GET")
      * @param Post $post
      * @return ResponseInterface
      */
@@ -1177,7 +1109,7 @@ Create method `list` in `PostController`:
 
 ```php
 /**
-     * @Route(action="/api/post", verbs={"GET"})
+     * @Route(route="/api/post", name="post.list", methods="GET")
      * @return array
      */
     public function list(): array
@@ -1238,7 +1170,7 @@ Connect the bootloader to your method using `Spiral\DataGrid\GridFactory`:
 
 ```php
 /**
- * @Route(action="/api/post", verbs={"GET"})
+ * @Route(route="/api/post", name="post.list", methods="GET")
  * @param GridFactory $grids
  * @return array
  */
@@ -1353,7 +1285,7 @@ will guarantee that filter is valid. Create `comment` endpoint to post message t
 
 ```php
 /**
- * @Route(action="/api/post/<post:\d+>/comment", verbs={"POST"})
+ * @Route(route="/api/post/<post:\d+>/comment", name="post.comment", methods="POST")
  * @param Post          $post
  * @param CommentFilter $commentFilter
  * @return array
@@ -1408,7 +1340,7 @@ Pass post list to the view using Grid object.
 
 ```php
 /**
- * @Route(action="/posts", verbs={"GET"})
+ * @Route(route="/posts", name="post.all", methods="GET")
  * @param GridFactory $grids
  * @return string
  */
@@ -1464,7 +1396,7 @@ use Spiral\Http\Exception\ClientException\NotFoundException;
 // ...
 
 /**
- * @Route(action="/post/<id:\d+>", verbs={"GET"})
+ * @Route(route="/post/<id:\d+>", name="post.view", methods="GET")
  * @param string $id
  * @return string
  */
@@ -1527,8 +1459,7 @@ Open the post page using `http://localhost:8080/post/1`.
 > We are leaving styling and comment timestamps up to you.
 
 ### Route
-We used pattern `ControllerName.methodName` in `RoutesBootloader` to automatically name routes. Use `PostController.view`
-route name to generate link in `app/views/posts.dark.php`:
+ Use `post.view` route name to generate link in `app/views/posts.dark.php`:
 
 ```html
 <extends:layout.base title="Posts"/>
@@ -1537,7 +1468,7 @@ route name to generate link in `app/views/posts.dark.php`:
    @foreach($posts as $post)
        <div class="post">
            <div class="title">
-               <a href="@route('PostController.view', ['id' => $post->id])">{{$post->title}}</a>
+               <a href="@route('post.view', ['id' => $post->id])">{{$post->title}}</a>
            </div>
            <div class="author">{{$post->author->name}}</div>
        </div>
@@ -1554,11 +1485,13 @@ Spiral provides a lot of pre-build functionality for you. Read the following sec
 - [Background Jobs](/queue/configuration.md)
 
 ## Source Code
-Source code of demo project - https://github.com/spiral/demo 
+Source code of demo project - https://github.com/spiral/demo
 
 Make sure to run to install the project:
 
 ```bash
 $ vendor/bin/spiral get
-$ php app.php configure
+$ php app.php migrate:init
+$ php app.php migrate
+$ php app.php configure -vv
 ```

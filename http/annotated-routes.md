@@ -5,7 +5,7 @@ Use `spiral/annotated-routes` extension to declare application routes using anno
 $ composer require spiral/annotated-routes
 ```
 
-Activate the bootloader `` in your application (you can disable the default `RoutesBootloader`):
+Activate the bootloader `Spiral\Router\Bootloader\AnnotatedRoutesBootloader` in your application (you can disable the default `RoutesBootloader`):
 
 ```php
 protected const LOAD = [
@@ -35,11 +35,10 @@ class HomeController
 }
 ```
 
-Following route attributes are avialable:
+Following route attributes are available:
 
 Attribute | Type | Description
 --- | --- | ---
-asd | asd | asa
 route | string | Route patterns, follows the same rules as the default [Router](/http/routing.md). Required.
 name | string | Route name. Required.
 methods | array|string | HTTP methods. Defaults to all methods. 
@@ -47,4 +46,17 @@ defaults | array | Default values for route pattern.
 group | string | Route group, defaults to `default`.
 middleware | array | Route specific middleware class names.
 
-## Route Groups
+## Route Cache
+By default all the annotated routes cached when `DEBUG` is off. To turn on/off route cache separately from `DEBUG` env variable
+set the `ROUTE_CACHE` env variable:
+
+```dotenv
+DEBUG = true
+ROUTE_CACHE=true
+```
+
+Run the `route:reset` to reset the route cache:
+
+```bash
+$ php app.php route:reset
+```
