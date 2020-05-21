@@ -46,6 +46,41 @@ defaults | array | Default values for route pattern.
 group | string | Route group, defaults to `default`.
 middleware | array | Route specific middleware class names.
 
+## Route Groups
+It is possible to apply common rules, middleware, [domain core](/cookbook/domain-core.md) or prefix to the group of routes. Create and register bootloader in order to achieve that:
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Router\GroupRegistry;
+
+class APIRoutes extends Bootloader
+{
+    public function boot(GroupRegistry $groups)
+    {
+        $groups->group('api')
+               ->setPrefix('/api/v1')
+               ->addMiddleware(SomeMiddelware::class);
+    }
+}
+```
+
+> Make sure to register bootloader after `AnnotatedRoutesBootloader`. Use `default` group to configure all the routes.
+
+You can now assign the route to the group using `group` attribute. 
+
+```php
+/**
+ * @Route(route="/", name="index", methods="GET", group="api")
+ */
+public function index(){
+    // ...    
+}
+```
+
+> Route middleware, prefix and domain core will be added automatically.
+
 ## Route Cache
 By default all the annotated routes cached when `DEBUG` is off. To turn on/off route cache separately from `DEBUG` env variable
 set the `ROUTE_CACHE` env variable:
