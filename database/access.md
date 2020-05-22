@@ -1,5 +1,5 @@
 # Database - Access Database
-Follow the configuration instructions [here](/database/overview.md).
+Follow the configuration instructions [here](/database/configuration.md).
 
 ## Access the Database
 Once DBAL component configured properly, you can access your databases in controllers and services multiple ways:
