@@ -59,7 +59,7 @@ class APIRoutes extends Bootloader
 {
     public function boot(GroupRegistry $groups)
     {
-        $groups->group('api')
+        $groups->getGroup('api')
                ->setPrefix('/api/v1')
                ->addMiddleware(SomeMiddelware::class);
     }
