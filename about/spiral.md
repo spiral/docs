@@ -135,4 +135,4 @@ spiral/code-style | [![Latest Stable Version](https://poser.pugx.org/spiral/code
 
 LICENSE
 --------
-MIT License (MIT). Please see [`LICENSE`](/LICENSE.md) for more information. Maintained by [Spiral Scout](https://spiralscout.com).
+MIT License (MIT). Please see [`LICENSE`](/license.md) for more information. Maintained by [Spiral Scout](https://spiralscout.com).
