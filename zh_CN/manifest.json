@@ -83,5 +83,12 @@
       "http/csrf": "CSRF 防护",
       "http/psr-15": "定制 PSR-15 处理器"
     }
+  },
+  {
+    "title": "安全",
+    "links": {
+      "security/encrypter": "数据加密",
+      "security/validation": "验证接口"
+    }
   }
 ]
