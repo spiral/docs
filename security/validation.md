@@ -116,8 +116,8 @@ class HomeController
 
 > You can use the `validator` prototype property.
 
-## The ValidationInterface
-The result of `ValidationInterface`->`validate` method is `ValidationInterface`. The interface provides basic
+## The ValidatorInterface
+The result of `ValidationInterface`->`validate` method is `ValidatorInterface`. The interface provides basic
 API to get result errors and allows them to attach to new data or context (immutable).
 
 ```php
@@ -164,7 +164,7 @@ The validation component will always return one error and first fired error per 
 > Error messages can be localized using a `spiral/translator`.
 
 ## Validation DSL
-The default spiral validator accepts validation rules in a form or nested array. The key is the name of the property
+The default spiral validator accepts validation rules in form of nested array. The key is the name of the property
 to be validated, where the value is an array of rules to be applied to the value sequentially:
 
 ```php
