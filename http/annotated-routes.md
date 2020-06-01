@@ -41,7 +41,7 @@ Attribute | Type | Description
 --- | --- | ---
 route | string | Route patterns, follow the same rules as the default [Router](/http/routing.md). Required.
 name | string | Route name. Required.
-methods | array|string | HTTP methods. Defaults to all methods. 
+methods | array/string | HTTP methods. Defaults to all methods. 
 defaults | array | Default values for route pattern.
 group | string | Route group, defaults to `default`.
 middleware | array | Route specific middleware class names.
