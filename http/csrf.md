@@ -36,7 +36,7 @@ public function boot(RouterInterface $router)
 }
 ```
 
-> To protect againt all the HTTP verbs use `Spiral\Csrf\Middleware\StrictCsrfFirewall`. 
+> To protect against all the HTTP verbs use `Spiral\Csrf\Middleware\StrictCsrfFirewall`. 
 
 ## Usage
 Once the protection is activated, you must sign every request with the token available via PSR-7 attribute `csrfToken`.
