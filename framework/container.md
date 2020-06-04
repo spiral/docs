@@ -306,7 +306,7 @@ you can bind class under its name:
 ```php
 class ServiceBootloader extends Bootloader
 {
-    protected const SIGNLETONS = [
+    protected const SINGLETONS = [
         Service::class => Service::class
     ];
 }
