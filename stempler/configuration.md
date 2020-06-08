@@ -46,14 +46,14 @@ return [
             // visitors to be invoked before transformations
             Visitor\DefineBlocks::class,
             Visitor\DefineAttributes::class,
-            Visitor\DefineHidden::class,
-            Visitor\DefineStacks::class
+            Visitor\DefineHidden::class
         ],
         Builder::STAGE_TRANSFORM => [
             // visitors to be invoked during transformations
         ],
         Builder::STAGE_FINALIZE  => [
             // visitors to be invoked on after the transformations is over
+            Visitor\DefineStacks::class,
             Finalizer\StackCollector::class,
         ],
         Builder::STAGE_COMPILE   => [
