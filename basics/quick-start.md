@@ -266,7 +266,7 @@ You can invoke this method using URL `http://localhost:8080/open/123`. The `id` 
 > Read more about Routing [here](/http/routing.md).
 
 ### Annotated Routing
-In order to simplify the route definition we can use `spiral/annoted-routes` extension. Read more about the extension [here](/http/annotated-routes.md).
+In order to simplify the route definition we can use `spiral/annotated-routes` extension. Read more about the extension [here](/http/annotated-routes.md).
 We can use this annotation in our controller as follows:
 
 ```php
