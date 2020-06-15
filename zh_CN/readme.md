@@ -54,9 +54,9 @@
   - [定制 PSR-15 处理器](http/psr-15.md)
 - 安全
   - [数据加密](security/encrypter.md)
-  - [验证接口](security/validation.md)
-  - Role Based Access Control
-  - User Authentication
+  - [数据验证](security/validation.md)
+  - [基于角色的访问控制](security/rbac.md)
+  - [用户认证](security/authentication.md)
 - Request Validation
   - installation and Configuration
   - Filter Object

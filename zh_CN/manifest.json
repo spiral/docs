@@ -88,7 +88,9 @@
     "title": "安全",
     "links": {
       "security/encrypter": "数据加密",
-      "security/validation": "验证接口"
+      "security/validation": "验证接口",
+      "security/rbac": "基于角色的访问控制",
+      "security/authentication": "用户认证"
     }
   }
 ]
