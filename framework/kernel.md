@@ -85,7 +85,7 @@ dump($myapp->get(\Spiral\Boot\DirectoriesInterface::class)->getAll());
 ```
 
 ## Environment
-Use `Spiral\Boot\EnviromentInterface` to access the list of ENV variables. By default, the framework relies on system-level 
+Use `Spiral\Boot\EnvironmentInterface` to access the list of ENV variables. By default, the framework relies on system-level 
 environment values. To redefine env values while initializing the kernel pass custom `EnvironmentInterface` to the `init` method.
 
 ```php
