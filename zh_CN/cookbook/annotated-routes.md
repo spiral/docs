@@ -1,104 +1,101 @@
 # 速查手册 - 注解式路由
 
-Spiral 框架当前的版本暂时没有默认支持类似 Symfony 那样的注解式路由，但 Spiral 提供了相关的组件。如果开发者希望使用这一特性，可以在项目中引入 `spiral/annotated` 和 `spiral/router` 组件，即可构建特定于业务的路由逻辑。
+Spiral 框架当前的版本暂时没有默认支持类似 Symfony 那样的注解式路由，但 Spiral 提供了相关的组件。如果开发者希望使用这一特性，可以在项目中引入 `spiral/annotated` 和 `spiral/router` 组件，即可构建特定于业务的路由逻辑。默认的 Web 项目模板中已经包含了 `spiral/router` 依赖，但还需要安装 `spiral/annotated`:
 
-> 注解式路由在应用的引导阶段会占用一点时间，但不会影响运行时的性能（得益于混合运行时提供的核心组件常驻内存）
-
-## 路由注解
-首先需要创建简单的注解，稍后将把该注解附加到控制器的 `public` 方法上：
-
-```php
-namespace App\Annotation;
-
-use Doctrine\Common\Annotations\Annotation;
-
-/**
- * @Annotation()
- * @Annotation\Target({"METHOD"})
- * @Annotation\Attributes({
- *      @Annotation\Attribute("action", type="string", required=true),
- *      @Annotation\Attribute("verbs", type="array"),
- * })
- */
-class Route
-{
-    /** @var string */
-    public $action;
-
-    /** @var string[]|null */
-    public $verbs;
-}
+```bash
+$ composer require spiral/annotated-routes
 ```
 
-> 官方的 Web 应用项目模板默认已经启用了注解支持。
+安装完成以后，在 `App.php` 中激活 `Spiral\Router\Bootloader\AnnotatedRoutesBootloader` 引导程序（可以禁用默认的应用级 `RoutesBootloader`）：
 
-定义好注解之后，就可以在控制器中如下面的示例这样使用该注解了：
+```php
+protected const LOAD = [
+    // 其它引导程序...
+    Spiral\Router\Bootloader\AnnotatedRoutesBootloader::class
+];
+```
+
+这样就能在项目中使用注解式路由扩展了。
+
+## 定义路由
+
+要定义一个路由定义，只需要在控制器方法上添加 `Spiral\Router\Annotation\Route` 注解：
 
 ```php
 namespace App\Controller;
 
-use App\Annotation\Route;
+use Spiral\Router\Annotation\Route;
 
-class DemoController
+class HomeController
 {
     /**
-     * @Route(action="/hello", verbs={"GET"})
+     * @Route(route="/", name="index", methods="GET")
      */
-    public function hello()
+    public function index()
     {
         return 'hello world';
     }
 }
 ```
 
-> 此处的 action 参数支持使用路由匹配模式和路由参数，与[路由文档](/zh_CN/http/routing.md)中一致。
+以下是在路由注解中可用的属性：
 
-## 引导程序
+属性 | 类型 | 说明
+--- | --- | ---
+route | string | 路由匹配，与 [Router](/zh_CN/http/routing.md) 的规则一致。必须提供
+name | string | 路由名称，必须提供
+methods | array/string | 支持的 HTTP 方法，默认是所有方法
+defaults | array | 路由匹配中参数的默认值
+group | string | 路由所属的组，默认是 `default`
+middleware | array | 该路由要使用的中间件
 
-为了让应用能够识别注解式路由，需要在 `RoutesBootloader` 引导程序中把路由注解转换为路由定义。可以通过 `Spiral\Annotations\AnnotationLocator` 这个类来查找项目代码中的可用注解：
+## 路由组
+
+注解式路由可以以路由分组的方式实现共享的规则、中间件、[领域核心](/zh_CN/cookbook/domain-core.md)、路径前缀等。如果要对路由分组，需要创建和注册引导程序来实现：
 
 ```php
 namespace App\Bootloader;
 
-use Spiral\Annotations\AnnotationLocator;
 use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Router\Route;
-use Spiral\Router\RouterInterface;
-use Spiral\Router\Target\Action;
+use Spiral\Router\GroupRegistry;
 
-class RoutesBootloader extends Bootloader
+class APIRoutes extends Bootloader
 {
-    public function boot(AnnotationLocator $annotationLocator, RouterInterface $router): void
+    public function boot(GroupRegistry $groups)
     {
-        $methods = $annotationLocator->findMethods(\App\Annotation\Route::class);
-
-        foreach ($methods as $method) {
-            $name = sprintf(
-                "%s.%s",
-                $method->getClass()->getShortName(),
-                $method->getMethod()->getShortName()
-            );
-
-            $route = new Route(
-                $method->getAnnotation()->action,
-                new Action(
-                    $method->getClass()->getName(),
-                    $method->getMethod()->getName()
-                )
-            );
-
-            $route = $route->withVerbs(...(array)$method->getAnnotation()->verbs);
-
-            $router->setRoute($name, $route);
-        }
+        $groups->getGroup('api')
+               ->setPrefix('/api/v1')
+               ->addMiddleware(SomeMiddelware::class);
     }
 }
 ```
 
-通过控制台命令的 `route:list` 可以列出所有可用的路由，来看定义的注解式路由是否生效：
+> 请确保这个引导程序的顺序要在 `AnnotatedRoutesBootloader` 之后。可以使用 `default` 路由组来配置所有路由。
 
-```bash
-$ php app.php route:list
+完成上述工作之后，就可以对路由的注解使用 `group` 属性来进行分组了。
+
+```php
+/**
+ * @Route(route="/", name="index", methods="GET", group="api")
+ */
+public function index(){
+    // ...    
+}
 ```
 
-> 可以使用额外的路由参数来配置中间件、通用前缀等等。
+> 在分组时已经指定的中间件、前缀和领域核心会自动添加。
+
+## 路由缓存
+
+默认情况下，在 `DEBUG` 选项关闭时所有的注解式路由都会被缓存。如果要让路由缓存独立于 `DEBUG` 配置进行设定，可以使用 `ROUTE_CACHE` 环境变量：
+
+```dotenv
+DEBUG = true
+ROUTE_CACHE=true
+```
+
+执行控制台命令 `route:reset` 可以重置路由缓存：
+
+```bash
+$ php app.php route:reset
+```
