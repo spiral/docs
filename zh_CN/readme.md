@@ -57,10 +57,10 @@
   - [数据验证](security/validation.md)
   - [基于角色的访问控制](security/rbac.md)
   - [用户认证](security/authentication.md)
-- Request Validation
-  - installation and Configuration
-  - Filter Object
-  - Composite Filters
+- 请求验证
+  - [安装和配置](filters/configuration.md)
+  - [过滤器对象](filters/filter.md)
+  - [复合过滤器](filters/composite.md)
 - 队列任务
   - 安装配置
   - 控制台命令

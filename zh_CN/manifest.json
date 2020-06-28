@@ -92,5 +92,13 @@
       "security/rbac": "基于角色的访问控制",
       "security/authentication": "用户认证"
     }
+  },
+  {
+    "title": "请求验证",
+    "links": {
+      "filters/configuration": "安装和配置",
+      "filters/filter": "过滤器对象",
+      "filters/composite": "复合过滤器"
+    }
   }
 ]
