@@ -46,7 +46,7 @@
     "links": {
       "cookbook/annotated-routes": "注解式路由",
       "cookbook/injector": "容器注入器",
-      "cookbook/domain-core": "领域内核、控制器",
+      "cookbook/domain-core": "领域核心、控制器",
       "cookbook/golang-library": "Golang 服务集成",
       "cookbook/custom-dispatcher": "自定义调度器"
     }

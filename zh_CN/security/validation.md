@@ -4,7 +4,7 @@
 
 该组件包含检查器、条件判断和验证对象。Web 和 GRPC 应用程序模板已经模板包含了这个组件。
 
-> 对于深层数据验证，请参考 [Filter/Request Object](/zh_CN/filters/configuration.md) 文档。
+> 对于深层数据验证，请参考 [请求验证](/zh_CN/filters/configuration.md) 文档。
 
 ## 安装和配置
 

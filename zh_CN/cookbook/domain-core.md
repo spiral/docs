@@ -1,8 +1,8 @@
-# 速查手册 - 领域内核
+# 速查手册 - 领域核心
 
-除了通过路由来调用控制器方法（action），Spiral 还允许从服务中甚至是从其它的控制器中调用控制器方法（HMVC: Hierarchical Model View Controller）。但是对控制器方法的方法的调用必须通过 `Spiral\Core\CoreInterface` 来进行。`CoreInterface` 以及*领域内核*使开发者能够更改调用流程，以及为控制器实现特定于域的功能。
+除了通过路由来调用控制器方法（action），Spiral 还允许从服务中甚至是从其它的控制器中调用控制器方法（HMVC: Hierarchical Model View Controller）。但是对控制器方法的方法的调用必须通过 `Spiral\Core\CoreInterface` 来进行。`CoreInterface` 以及*领域核心*使开发者能够更改调用流程，以及为控制器实现特定于域的功能。
 
-> 领域内核依赖 `spiral/hmvc` 组件。官方 Web 应用模板中已经默认包含了这个组件。
+> 领域核心依赖 `spiral/hmvc` 组件。官方 Web 应用模板中已经默认包含了这个组件。
 
 ## 调用控制器方法
 
@@ -80,7 +80,7 @@ class HomeController
 
 通过拦截器可以针对控制器、控制器方法和参数进行改动。根据需要也可使用多个拦截器。
 
-## 全局领域内核
+## 全局领域核心
 
 默认情况下，`CoreInterface` 只作用于 Spiral 框架路由的目标。通过把 `Spiral\Core\CoreInterface` 绑定到自定义的内核类，可以改变目标：
 
@@ -111,9 +111,9 @@ class CoreBootloader extends Bootloader
 
 别忘了激活上面的引导程序，激活之后即可拦截所有的路由目标。
 
-### 路由级领域内核
+### 路由级领域核心
 
-除了在引导程序中激活的全局领域内核以外，也可以只针对特定路由激活领域内核：
+除了在引导程序中激活的全局领域核心以外，也可以只针对特定路由激活领域核心：
 
 ```php
 $customCore = new InterceptableCore($core);
@@ -128,7 +128,7 @@ $router->setRoute(
 );
 ```
 
-## 领域内核构建器
+## 领域核心构建器
 
 Spiral 提供了 `Spiral\Bootloader\DomainBootloader` 这个引导程序，可以很方便地自动配置核心拦截器，可以创建一个继承 `DomainBootloader` 的引导程序：
 
@@ -280,11 +280,11 @@ class HomeController
 
 ```json
 {
-    "status": 400,
-    "errors": {
-        "username": "This value is required.",
-        "password": "This value is required."
-    }
+  "status": 400,
+  "errors": {
+    "username": "This value is required.",
+    "password": "This value is required."
+  }
 }
 ```
 
@@ -363,7 +363,7 @@ public function other()
 > 注意：`else` 属性可以使用的值包括：`notFound` 返回 404, `forbidden` 返回 401, `error` 返回 500, `badAction` 返回 400.
 
 另外，使用 `Spiral\Domain\Annotation\GuardNamespace` 注释还可以给控制器指定 RBAC 命名空间，这样在各个方法的注释中就可以省略掉控制器前缀。在控制器指定了 RBAC 命名空间的情况下，方法上的 `Guarded` 注释可以省略参数，安全组件会自动使用 `namespace.methodName` 作为权限名称。
- 
+
 ```php
 namespace App\Controller;
 
@@ -394,6 +394,7 @@ class HomeController
 ```
 
 #### 规则上下文
+
 所有的路由参数（控制器方法参数）可以可以作为规则上下文调用。比如，创建一个规则类：
 
 ```php

@@ -28,7 +28,7 @@ protected const LOAD = [
 网格模式是用于描述如何根据用户输入来配置数据库选择器的对象。可以通过 `Spiral\DataGrid\GridSchema` 类来创建：
 
 ```php
-use Spiral\DataGrid; 
+use Spiral\DataGrid;
 use Spiral\DataGrid\Specification\Filter\Like;
 use Spiral\DataGrid\Specification\Pagination\PagePaginator;
 use Spiral\DataGrid\Specification\Sorter\Sorter;
@@ -135,6 +135,7 @@ $select = new Filter\Select([
 $filter = $select->withValue(['one', 'two']);
 ```
 > 这种情况下筛选器会同时包含两个查询条件，类似 `Filter\All` 查询。
+
 
 传入未知值的示例：
 

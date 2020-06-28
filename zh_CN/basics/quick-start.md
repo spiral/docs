@@ -29,6 +29,7 @@ $ ./spiral serve -v -d
 > 访问 `http://localhost:8080/exception.html` 可以看到默认的报错页面。在页面右侧可以看到默认项目已经集成的所有拦截器和中间件。根据你的实际情况，可以把不需要的关闭，让应用运行时更小更省资源。
 
 ## 配置
+
 Spiral 应用程序通过 `app/config` 目录下的配置文件对项目进行配置。在配置文件中，你可以硬编码配置值，当然也可以而且推荐通过 `env` 和 `directory` 函数来获得所需的敏感信息。`spiral/app` 项目使用 [DotEnv 扩展](https://github.com/vlucas/phpdotenv)从项目根目录下的 `.env` 文件中读取环境变量。
 
 > 在 `.rr.yaml` 文件中可以对应用服务器及其插件的参数进行调整。
@@ -53,7 +54,7 @@ $ ./spiral serve -v -d -o "http.workers.pool.maxJobs=1" -o "http.workers.pool.nu
 
 打开 `app/src/App.php` 文件，找到并删除下面列出来的代码（注释是为了方便你定位代码，不必删除相关的注释行）：
 
-``` php
+```php
 // Core Services
 Framework\I18nBootloader::class,
 
@@ -96,7 +97,7 @@ Bootloader\LocaleSelectorBootloader::class,
 博客系统作为常见的数据库驱动的应用，当然需要一个可操作的数据库。数据库的配置文件默认在 `app/config/database.php` 这个位置。新创建的项目已经配置好了一个 SQLite 数据库，存放在 `runtime/runtime.db` 这个路径下。
 
 ```php
-// app/config/database.php 
+// app/config/database.php
 
 use Spiral\Database\Driver;
 
@@ -118,7 +119,7 @@ return [
 
 接下来我们配置一个 MySQL 的连接（如果你没有 MySQL 数据库，可以跳过这部分），连接 MySQL 的信息，最好不要直接硬编码到配置文件中，可以存放到项目根目录下的 `.env` 文件里（这个文件不要上传到你的代码仓库）。比如我们在 `.env` 文件中写入以下环境变量：
 
-``` ini
+```ini
 DB_HOST=localhost
 DB_NAME=name
 DB_USER=username
@@ -180,7 +181,7 @@ $ php app.php db:list
 
 ```bash
 $ composer require fzaninotto/faker
-``` 
+```
 
 为了生成数据，需要创建一个 `Faker\Generator` 实例，在 Spiral 中我们不必每次用到它的时候都去生成一次新的实例，可以在 `app/src/Bootloader` 目录下创建一个引导程序，该引导程序在每次我们需要这个类的时候就提供一个单例对象。这里使用的是设计模式中的工厂模式。
 
@@ -218,10 +219,9 @@ class FakerBootloader extends Bootloader
  }
 ```
 
-> 在 `fakerGenerator` 这个方法上，你可以添加依赖项作为参数，Spiral 容器会自动注入依赖项。 
+> 在 `fakerGenerator` 这个方法上，你可以添加依赖项作为参数，Spiral 容器会自动注入依赖项。
 
 然后我们修改一下 `app/src/Controllers/HomeController.php` 中的代码，通过 `http://localhost:8080/` 来看一下假数据生成工具是否正常工作了：
-
 
 ```php
 namespace App\Controller;
@@ -376,7 +376,7 @@ class HomeController
     {
         return 'hello world';
     }
-    
+
     /**
      * @Route(action="/open/<id>", verbs={"GET"})
      */
@@ -410,9 +410,9 @@ $ php app.php route:list
 
 > 如果你在调试过程中觉得日志不够详细，可以在 `App` 中禁用 `ErrorHandleRootLoader` 来查看完整的错误日志。
 
-### 领域内核
+### 领域核心
 
-连接自定义的控制器拦截器（领域内核）可以用附加功能来丰富应用的领域层。比如改变应用的默认行为、把路由参数自动解析为 Cycle 实体，进行请求参数的过滤和验证，或者实现 @Guard 注解等。
+连接自定义的控制器拦截器（领域核心）可以用附加功能来丰富应用的领域层。比如改变应用的默认行为、把路由参数自动解析为 Cycle 实体，进行请求参数的过滤和验证，或者实现 @Guard 注解等。
 
 首先创建一个引导程序 `AppBootloader` 来注入拦截器：
 
@@ -430,7 +430,7 @@ class AppBootloader extends DomainBootloader
     ];
 
     protected const INTERCEPTORS = [
-        Domain\FilterInterceptor::class, 
+        Domain\FilterInterceptor::class,
         Domain\CycleInterceptor::class,
         Domain\GuardInterceptor::class,
     ];
@@ -450,7 +450,7 @@ class AppBootloader extends DomainBootloader
     ];
 ```
 
-> 要深入了解领域内核，可以查询领域内核的[详细文档](/zh_CN/cookbook/domain-core.md)。
+> 要深入了解领域核心，可以查询领域核心的[详细文档](/zh_CN/cookbook/domain-core.md)。
 
 ## 数据库脚手架
 
@@ -481,7 +481,7 @@ $ php app.php db:table migrations
 $ php app.php create:entity post -f id:primary -f title:string -f content:text -e
 $ php app.php create:entity user -f id:primary -f name:string -e
 $ php app.php create:entity comment -f id:primary -f message:string
-``` 
+```
 
 > Observe the classes generated in `app/src/Database` and `app/src/Repository`.
 > 执行命令后请观察项目下 `app/src/Database` 和 `app/src/Repository` 目录，相关的类文件已经自动创建。
@@ -585,7 +585,7 @@ $ php app.php migrate -vv
 然后通过 `db:list` 命令就可以看到新生成的数据表。
 
 ### 创建实体关系
- 
+
 通过 [关系注解](https://cycle-orm.dev/docs/annotated-relations) 来定义实体之间的关系。配置 Post 和 Comment 属于 User、Post 拥有多个 Comment。
 
 Post:
@@ -669,7 +669,7 @@ class Comment
      */
     public $post;
 }
-``` 
+```
 
 实体发生变更之后，再次执行 `cycle:migrate` 生成迁移文件，`migrate` 执行迁移：
 
@@ -770,7 +770,7 @@ $ php app.php configure
 $ php app.php create:command seed/user seed:user
 $ php app.php create:command seed/post seed:post
 $ php app.php create:command seed/comment seed:comment
-``` 
+```
 
 生成的命令类，文件都在 `app/src/Command/Seed` 目录下。
 
@@ -875,7 +875,7 @@ use Spiral\Console\Command;
 class PostCommand extends Command
 {
     protected const NAME = 'seed:post';
-    
+
     /** @var UserRepository */
     private $users;
 
@@ -969,7 +969,7 @@ $ php app.php seed:comment -vv
 作为 Restful API 应用，我们需要创建一系列 REST 端点来提供访问数据的 API。首先创建一个简单的控制器，`App\Controller\PostController`, 可以通过脚手架命令来快速创建：
 
 ```bash
-$ php .\app.php create:controller post -a test -a get -p 
+$ php .\app.php create:controller post -a test -a get -p
 ```
 
 > 提示： `-a` 选项可以预创建控制器方法，`-p` 选项可以预加载原型开发辅助扩展。
@@ -1023,7 +1023,8 @@ public function test(string $id)
         ]
     ];
 }
-``` 
+```
+
 在浏览器中打开 `http://localhost:8080/api/test/123` 可以看到输出的 JSON 数据。
 
 上面这种方式，我们无法控制 HTTP 响应的状态码，响应的数据里的 `status` 只是 JSON 数据里的响应状态，而 HTTP 响应状态码始终是 200. 因此我们还有另外的方法，比如使用 `ResponseWrapper` 辅助类：
@@ -1227,7 +1228,7 @@ class PostRepository extends Repository
         return $this->select()->load('author');
     }
 }
-``` 
+```
 
 然后在 `PostController` 中创建一个 `list` 方法来调用它：
 
@@ -1294,7 +1295,6 @@ class PostGrid extends GridSchema
 
 然后通过 `Spiral\DataGrid\GridFactory` 把引导程序与方法连接起来：
 
-
 ```php
 /**
  * @Route(action="/api/post", verbs={"GET"})
@@ -1317,14 +1317,14 @@ public function list(GridFactory $grids): array
 > 如果刚才还没有做的话，别忘了每次添加 prototyped 类之后都要执行 `php app.php configure`
 
 数据网格是一个扩展性极强的组件，有大量可以个定制化的选项。默认配置下，数据网格组件从用户请求的查询字符串和请求数据中读取需要的参数值。
- 
-网址 | 说明
---- | ---
-`http://localhost:8080/api/post?paginate[page]=2` | 返回第二页数据，每页显示 10 条（上面指定的默认值）
-`http://localhost:8080/api/post?paginate[page]=2&paginate[limit]=20` | 返回第二页数据，每页显示 20 条
-`http://localhost:8080/api/post?sort[id]=desc` | 按照 post->id 倒序排列
-`http://localhost:8080/api/post?sort[author]=asc` | 按照 post->author->id 正序排列
-`http://localhost:8080/api/post?filter[author]=1` | 只返回指定 author->id 相关的 post
+
+| 网址                                                                 | 说明                                               |
+| -------------------------------------------------------------------- | -------------------------------------------------- |
+| `http://localhost:8080/api/post?paginate[page]=2`                    | 返回第二页数据，每页显示 10 条（上面指定的默认值） |
+| `http://localhost:8080/api/post?paginate[page]=2&paginate[limit]=20` | 返回第二页数据，每页显示 20 条                     |
+| `http://localhost:8080/api/post?sort[id]=desc`                       | 按照 post->id 倒序排列                             |
+| `http://localhost:8080/api/post?sort[author]=asc`                    | 按照 post->author->id 正序排列                     |
+| `http://localhost:8080/api/post?filter[author]=1`                    | 只返回指定 author->id 相关的 post                  |
 
 在同一个请求 URL 中可以同时使用排序、筛选和分页，也可以一次应用多个筛选条件。
 
@@ -1439,19 +1439,19 @@ public function comment(Post $post, CommentFilter $commentFilter)
 
 ```bash
 $ curl -X POST -H 'content-type: application/json' --data '{}' http://localhost:8080/api/post/1/comment
-``` 
+```
 
 响应内容：
 
 ```json
-{"status":400,"errors":{"message":"This value is required."}}
+{ "status": 400, "errors": { "message": "This value is required." } }
 ```
 
 或者当指定 ID 的文章不存在时响应 404:
 
 ```bash
 $ curl -X POST -H 'content-type: application/json' --data '{"message":"some comment"}' http://localhost:8080/api/post/9999/comment
-``` 
+```
 
 > 要获取 JSON 格式的错误响应，别忘了在请求头信息加上 `accept: application/json`.
 
@@ -1469,7 +1469,7 @@ $ curl -X POST -H 'content-type: application/json' --data '{"message": "first co
 
 在 Spiral 中，可以使用 [视图](/zh_CN/views/configuration.md) 和 [Stempler](/zh_CN/stempler/configuration.md) 组件来把数据渲染成 HTML 页面。在渲染列表页时可以直接把数据网格对象传递给模板。
 
-先创建一个控制器方法来处理 `http://localhost:8080/posts` 的请求： 
+先创建一个控制器方法来处理 `http://localhost:8080/posts` 的请求：
 
 ```php
 /**
@@ -1492,36 +1492,39 @@ public function all(GridFactory $grids): string
 ```html
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>${title}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<div class="container">
-<block:body/>
-</div>
-</body>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <block:body />
+    </div>
+  </body>
 </html>
-```  
+```
 
 ### 文章列表页面
 
 然后在 `app/views/posts.dark.php` 创建一个视图模板，继承刚才的布局。
 
 ```html
-<extends:layout.base title="Posts"/>
+<extends:layout.base title="Posts" />
 
 <define:body>
-    @foreach($posts as $post)
-        <div class="post">
-            <div class="title">{{$post->title}}</div>
-            <div class="author">{{$post->author->name}}</div>
-        </div>
-    @endforeach
+  @foreach($posts as $post)
+  <div class="post">
+    <div class="title">{{$post->title}}</div>
+    <div class="author">{{$post->author->name}}</div>
+  </div>
+  @endforeach
 </define:body>
 ```
 
-> 现在打开 `http://localhost:8080/posts` 就能看到文章列表，可以参考之前讲数据网格时介绍的URL查询参数来控制数据的筛选、排序、分页（比如 `http://localhost:8080/posts?paginate[page]=2`）
+> 现在打开 `http://localhost:8080/posts` 就能看到文章列表，可以参考之前讲数据网格时介绍的 URL 查询参数来控制数据的筛选、排序、分页（比如 `http://localhost:8080/posts?paginate[page]=2`）
 
 ### 文章详情页
 
@@ -1571,23 +1574,22 @@ public function findOneWithComments(string $id): ?Post
 
 类似地，创建 `app/views/post.dark.php` 模板：
 
-
 ```html
-<extends:layout.base title="Posts"/>
+<extends:layout.base title="Posts" />
 
 <define:body>
-    <div class="post">
-        <div class="title">{{$post->title}}</div>
-        <div class="author">{{$post->author->name}}</div>
+  <div class="post">
+    <div class="title">{{$post->title}}</div>
+    <div class="author">{{$post->author->name}}</div>
+  </div>
+  <div class="comments">
+    @foreach($post->comments as $comment)
+    <div class="comment">
+      <div class="message">{{$comment->message}}</div>
+      <div class="author">{{$comment->author->name}}</div>
     </div>
-    <div class="comments">
-        @foreach($post->comments as $comment)
-            <div class="comment">
-                <div class="message">{{$comment->message}}</div>
-                <div class="author">{{$comment->author->name}}</div>
-            </div>
-        @endforeach
-    </div>
+    @endforeach
+  </div>
 </define:body>
 ```
 
@@ -1596,20 +1598,21 @@ Open the post page using `http://localhost:8080/post/1`.
 > 网页的样式以及评论的时间显示就留给读者自己完成了。
 
 ### 路由
+
 在之前有关注解式路由的部分，我们在路由引导程序 `RoutesBootloader` 中为每个注解式路由都按照 `ControllerName.methodName` 的格式做了命名。所以在模板中要生成指向 `PostController` 的 `view` 方法的链接时，对应的路由名称为 `PostController.view`:
 
 ```html
-<extends:layout.base title="Posts"/>
-       
+<extends:layout.base title="Posts" />
+
 <define:body>
-   @foreach($posts as $post)
-       <div class="post">
-           <div class="title">
-               <a href="@route('PostController.view', ['id' => $post->id])">{{$post->title}}</a>
-           </div>
-           <div class="author">{{$post->author->name}}</div>
-       </div>
-   @endforeach
+  @foreach($posts as $post)
+  <div class="post">
+    <div class="title">
+      <a href="@route('PostController.view', ['id' => $post->id])">{{$post->title}}</a>
+    </div>
+    <div class="author">{{$post->author->name}}</div>
+  </div>
+  @endforeach
 </define:body>
 ```
 

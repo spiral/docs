@@ -27,7 +27,7 @@
   - [终结器](framework/finalizers.md)
 - 速查手册
   - [注解式路由](cookbook/annotated-routes.md)
-  - [领域内核、控制器](cookbook/domain-core.md)
+  - [领域核心、控制器](cookbook/domain-core.md)
   - [容器注入器](cookbook/injector.md)
   - [Golang 服务集成](cookbook/golang-library.md)
   - [自定义调度器](cookbook/custom-dispatcher.md)

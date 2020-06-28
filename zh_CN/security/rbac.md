@@ -3,7 +3,8 @@
 Spiral 框架包含 `spiral/security` 安全组件，提供了根据权限列表授权用户/行动者访问特定资源或行为的能力。安全组件实现了 [NIST RBAC 研究](https://csrc.nist.gov/projects/role-based-access-control) 中阐述的“扁平 RBAC”设计模式。
 
 该安全组件包括多项附加功能，比如：
-- 用于控制权限/许可上下文的额外的 *rules* 层
+
+- 用于控制权限/许可上下文的额外的 _rules_ 层
 - 通过通配符模式为一个角色分配多个权限
 - 用高优先级规则覆盖已分配给角色的权限
 
@@ -50,10 +51,9 @@ class HomeController
 }
 ```
 
-> 你可以使用领域内核拦截器、GRPC 拦截器、HTTP 中间件、自定义 IoC 作用域等手段来设置 Actor。
+> 你可以使用领域核心拦截器、GRPC 拦截器、HTTP 中间件、自定义 IoC 作用域等手段来设置 Actor。
 
 为了简化文档，下面的代码通过自定义的引导程序设置全局范围内可见的默认行为人：
-
 
 ```php
 namespace App\Bootloader;
@@ -73,7 +73,7 @@ class SecurityBootloader extends Bootloader
 ```
 
 ## 守卫接口（GuardInterface）
- 
+
 要使用 RBAC 组件，必须注册可用的角色，并在角色和权限之间创建关联，可以在设置行为人的同一个引导程序中，使用 `Spiral\Security\PermissionsInterface` 接口来完成这项工作：
 
 ```php
@@ -165,7 +165,7 @@ class HomeController
         return '可读';
     }
 }
-``` 
+```
 
 接下来，我们一起了解一下如何使用上下文来创建更为复杂的角色-权限关联。
 
@@ -207,7 +207,7 @@ class SecurityBootloader extends Bootloader
     public function boot(PermissionsInterface $rbac)
     {
         $rbac->addRole('guest');
-        
+
         $rbac->associate('guest', 'home.read');
     }
 }
@@ -298,7 +298,7 @@ interface RuleInterface
 if (!$guard->allows('home.read', ['key' => 'value'])) {
     return '不可读';
 }
-``` 
+```
 
 这样的实现允许你在角色和权限集之间建立复杂的规则关联。
 
@@ -342,7 +342,7 @@ class SecurityBootloader extends Bootloader
     }
 }
 ```
- 
+
 现在，改变 `allows` 方法中的上下文可以让权限检查通过或拒绝：
 
 ```php
@@ -365,7 +365,7 @@ class HomeController
         }
     }
 }
-``` 
+```
 
 > 可以使用行为人接口创建更负责的规则。
 
@@ -428,7 +428,7 @@ class SampleRule extends Rule implements SingletonInterface
 
 ## @Guarded 注解
 
-在控制器方法上，可以使用 `Guarded` 注解来自动检查对[领域内核](/zh_CN/cookbook/domain-core.md)的访问权限。
+在控制器方法上，可以使用 `Guarded` 注解来自动检查对[领域核心](/zh_CN/cookbook/domain-core.md)的访问权限。
 
 ```php
 namespace App\Controller;
