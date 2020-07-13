@@ -88,7 +88,7 @@ depth reached. All the content will be stored in `runtime` directory.
 ```php
 namespace App\Job;
 
-use PHPHtmlParser\Dom;
+use \PHPHtmlParser\Dom;
 use Spiral\Jobs\JobHandler;
 use Spiral\Prototype\Traits\PrototypeTrait;
 
