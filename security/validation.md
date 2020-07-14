@@ -11,7 +11,7 @@ this component by default.
 To install the component:
 
 ```bash
-$ composer install spiral/validation
+$ composer require spiral/validation
 ```
 
 To install in spiral use bootloader `Spiral\Bootloader\Security\ValidationBootloader`.
