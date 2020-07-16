@@ -138,11 +138,12 @@ pipelines:
 
 Additional options are supported:
 
-Option      | Default                      | Comment
----         | ---                          | ---
-exchange    | `amqp.direct`                | Exchange type
-consumer    | rr-**pipeline-name**-**pid** | Consumer ID
-routing-key | queue name                   | Routing Key
+Option        | Default                      | Comment
+---           | ---                          | ---
+exchange      | `amqp.direct`                | Exchange name
+exchange-type | `direct`                     | Exchange type ("direct", "fanout", "topic" or "headers")
+consumer      | rr-**pipeline-name**-**pid** | Consumer ID
+routing-key   | queue name                   | Routing Key
 
 > Queue will create automatically if not exists.
 
