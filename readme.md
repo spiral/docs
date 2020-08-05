@@ -98,7 +98,7 @@
     * [Components and Props](stempler/components.md)
     * [Advancing DSL](stempler/advanced.md)
     * [AST Modifications](stempler/visitors.md)
-* Internalization
+* Internationalization
     * [Installation and Configuration](i18n/configuration.md)
     * [Import and Export](i18n/export.md)
     * [View Localization](i18n/views.md)
