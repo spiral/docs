@@ -568,6 +568,7 @@ Next values are available for grids for now:
 * [regex](#filter-values-regex)
 * [uuid](#filter-values-uuid)
 * [range](#filter-values-range)
+* [not empty](#filter-values-not-empty)
 
 ### Any
 This value accepts any input and doesn't convert them:
@@ -628,8 +629,6 @@ $int = new Value\IntValue();         // converts to int
 $float = new Value\FloatValue();     // converts to float
 $numeric = new Value\NumericValue(); // converts to int/float
 ```
-
->To be continued
 
 ### Datetime
 This value expects a string representing a timestamp or a datetime and converts it into a `\DateTimeImmutable`:
@@ -766,6 +765,18 @@ $value = new Value\RangeValue(
  
 $value->accepts('3'); // false
 $value->accepts(1);   // false
+```
+
+### Not-Empty
+If you need to check the value to be not empty first, wrap the value with `NotEmpty()`:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$int = new Value\IntValue();
+$notEmpty = new Value\NotEmpty($int);
+
+$int->accepts(0);      // true
+$notEmpty->accepts(0); // false
 ```
 
 ## Value accessors
