@@ -495,7 +495,7 @@ This filter represents the SQL `between` operation, but can be presented as two 
 You have an ability to define whether the boundary values should be included or not.
 If the boundary values aren't included, this filter will be converted into `gt`+`lt` filters, otherwise when getting
 filters via `getFilters()` method you can specify either use the original `between` operator or `gte`+`lte` filters.
-> Not all databases support `between` operation, that's why converion to `gt/gte`+`lt/lte` is by default.
+> Not all databases support `between` operation, that's why conversion to `gt/gte`+`lt/lte` is by default.
 
 Between filter has two modifications: field-based and value-based:
 ```php
