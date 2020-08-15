@@ -6,7 +6,7 @@ come with pre-configured `jobs` service capable of running your tasks using an `
 
 ## Create Handler
 To run a job, you must create a proper job handler. The handler must implement `Spiral\Jobs\HandlerInterface`. Handlers are
-responsible for job payload serialization and execution. Use `Spiral\Jobs\JobHanlder` to simplify your abstraction
+responsible for job payload serialization and execution. Use `Spiral\Jobs\JobHandler` to simplify your abstraction
 and perform dependency injection in your handler method `invoke`:
 
 ```php

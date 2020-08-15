@@ -5,7 +5,7 @@ The framework provides a simple component to work with the filesystem. The compo
 Most of the spiral components rely on the directory registry instead of hard-coded paths.
 The registry represented using `Spiral\Boot\DirectoriesInterface`.
 
-You can configure application specific directories in the app enterpoint (app.php):
+You can configure application specific directories in the app entry point (app.php):
 
 ```php
 $app = \App\App::init([

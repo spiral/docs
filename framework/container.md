@@ -10,7 +10,7 @@ You can always access the container directly in your code by requesting `Psr\Con
 ```php
 use Psr\Container\ContainerInterface;
 
-class HomeContoller
+class HomeController
 {
     public function index(ContainerInterface $container)
     {
@@ -224,10 +224,10 @@ __construct(OtherClass $class, $value)
 // will use `null` as `value` if no other value provided
 __construct(OtherClass $class, $value = null) 
 
-// will fail if SomeInterface does not point to the concrete implemenation
+// will fail if SomeInterface does not point to the concrete implementation
 __construct(OtherClass $class, SomeInterface $some) 
 
-// will use null as value of `some` if no conrete implemation is provided
+// will use null as value of `some` if no concrete implementation is provided
 __construct(OtherClass $class, SomeInterface $some = null) 
 ```
 
