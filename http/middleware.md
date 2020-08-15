@@ -120,7 +120,7 @@ public function index(UserContext $ctx)
 ```
 
 ## Non-Direct Scope Configuration
-You can use already exists requets scope to carry user values. Create bootloader providing access method for the context specific value:
+You can use already exists requests scope to carry user values. Create bootloader providing access method for the context specific value:
 
 ```php
 use Psr\Http\Message\ResponseInterface;
