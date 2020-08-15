@@ -292,7 +292,7 @@ $schema->string('email')->setName('new_email');
 $schema->renameColumn('email', 'new_email');
 ```
 
-> Call the `save` method of `AbstactTable` to save your changes.
+> Call the `save` method of `AbstractTable` to save your changes.
 
 Use a similar approach to rename indexes and table names.
 
