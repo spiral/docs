@@ -395,7 +395,7 @@ $select = $db->select()
 
 $select->where('id', $id = new Parameter(null));
 
-//Bing new parameter value
+//Bind new parameter value
 $id->setValue(15);
 
 foreach ($select as $row) {
@@ -719,7 +719,7 @@ INNER JOIN `primary_users` as `uu`
 User `orderBy` to specify sort direction:
 
 ```php
-//We have a join, so table name is mandratory
+//We have a join, so table name is mandatory
 $select
     ->orderBy('test.id', SelectQuery::SORT_DESC);
 ```
