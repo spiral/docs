@@ -156,7 +156,7 @@ return [
     // protection method
     'method'   => CookiesConfig::COOKIE_ENCRYPT,
 
-    // whitelisted cookies (no ecnrypt/descrypt)
+    // whitelisted cookies (no encrypt/decrypt)
     'excluded' => ['PHPSESSID', 'csrf-token']
 ];
 ```
