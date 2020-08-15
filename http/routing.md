@@ -564,7 +564,7 @@ $router->setRoute('app',
 > `/demo` will trigger not-found error as `DemoController` does not defines method `index`.
 
 The default web-application bundle sets this route [as default](https://github.com/spiral/app/blob/master/app/src/Bootloader/RoutesBootloader.php#L42).
-You don't need to create a route for any of the controllers added to `App\Contoller`, simply use `/controller/action` URLs
+You don't need to create a route for any of the controllers added to `App\Controller`, simply use `/controller/action` URLs
 to access the required method. If no action is specified, the `index` will be used by the default. The routing will point
 to the public methods only.
 
