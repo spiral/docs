@@ -1,5 +1,5 @@
 # Framework - IoC Scopes
-An essential aspect of developing long-living applications is proper context management. In daemonized applications,
+An essential aspect of developing long-living applications is proper context management. In demonized applications,
 you are no longer allowed to treat user requests as global singleton object and store references to its instance in your services.
 
 Practically it means that you must explicitly request context while processing user input. Spiral framework simplifies
