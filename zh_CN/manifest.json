@@ -104,7 +104,10 @@
   {
     "title": "数据库",
     "links": {
-      "database/configuration": "安装和配置"
+      "database/configuration": "安装和配置",
+      "database/access.md": "访问数据",
+      "database/isolation": "逻辑隔离",
+      "database/query-builders": "查询构造"
     }
   }
 ]
