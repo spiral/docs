@@ -100,5 +100,11 @@
       "filters/filter": "过滤器对象",
       "filters/composite": "复合过滤器"
     }
+  },
+  {
+    "title": "数据库",
+    "links": {
+      "database/configuration": "安装和配置"
+    }
   }
 ]
