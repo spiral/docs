@@ -1,6 +1,5 @@
 # HTTP - CSRF 防护
 
-The default Web bundle includes CSRF protection middleware. To install it in alternative bundles:
 默认的 Web 应用模板包含 CSRF 防护中间件。但在非默认 Web 应用中可能需要先安装它：
 
 ```bash
