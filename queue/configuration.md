@@ -95,7 +95,7 @@ dispatch:
 ```
 
 ## Consuming
-Use option `consume` of jobs service to specify which pipelines much be consumed by the local application server. In some cases,
+Use option `consume` of jobs service to specify which pipelines must be consumed by the local application server. In some cases,
 you might want to disable consuming on a given instance to offload tasks to remove machine.
 
 ```yaml
