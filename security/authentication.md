@@ -24,6 +24,8 @@ To install authorization extension for Web bundle:
 $ composer require spiral/auth spiral/auth-http
 ```
 
+> Please note that the spiral/framework >= 2.6 already includes this component.
+
 The package `spiral/auth` provides standard interfaces without the relation to any specific dispatching method, while
 `spiral/auth-http` includes HTTP Middleware, Token transport (Cookie, Header), and Firewall components.
 

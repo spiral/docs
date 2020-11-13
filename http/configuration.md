@@ -5,8 +5,16 @@ to enable it in alternative builds.
 ## Installation
 To install the extension:
 
+#### spiral/framework < 2.6.0
+
 ```bash
 $ composer require spiral/http spiral/router spiral/nyholm-bridge
+```
+
+#### spiral/framework >= 2.6.0
+
+```bash
+$ composer require spiral/nyholm-bridge
 ```
 
 Activate the extension by adding two bootloaders:

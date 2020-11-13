@@ -5,6 +5,8 @@ The default Web bundle includes CSRF protection middleware. To install it in alt
 $ composer require spiral/csrf
 ```
 
+> Please note that the spiral/framework >= 2.6 already includes this component.
+
 To activate the extension:
 
 ```php

@@ -9,17 +9,15 @@ This documentation uses the term "metadata" to refer to both "attributes" and "a
 
 ## Installation
 
-> Please note that the spiral/framework >= 2.7 already includes this component.
-
 To install the component:
 
 ```bash
 $ composer require spiral/attributes
 ```
 
-### Framework Integration
+> Please note that the spiral/framework >= 2.7 already includes this component.
 
-Activate the bootloader `Spiral\Bootloader\AttributesBootloader` in your application.
+Make sure to add `Spiral\Bootloader\AttributesBootloader` to your App class:
 
 ```php
 protected const LOAD = [

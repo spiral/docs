@@ -3,11 +3,14 @@ Spiral Framework comes with a development extension that speeds up the developme
 middleware, and other classes via AST modification (a.k.a. it writes code for you). The extension includes IDE friendly tooltips for most common framework components and Cycle Repositories.
 
 ## Installation
+
 To install the extension:
 
 ```bash
 $ composer require spiral/prototype
 ```
+
+> Please note that the spiral/framework >= 2.7 already includes this component.
 
 Make sure to add `Spiral\Prototype\Bootloader\PrototypeBootloader` to your App class:
 

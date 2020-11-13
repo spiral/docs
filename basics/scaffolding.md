@@ -2,11 +2,14 @@
 Most of the application code can be generated using the set of console commands.
 
 ## Installation
+
 To install the extension:
 
 ```bash
 $ composer require spiral/scaffolder
 ```
+
+> Please note that the spiral/framework >= 2.7 already includes this component.
 
 Make sure to add `Spiral\Scaffolder\Bootloader\ScaffolderBootloader` to your App class:
 

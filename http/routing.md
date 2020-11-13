@@ -4,7 +4,9 @@ alternative builds:
 
 ```bash
 $ composer require spiral/router
-``` 
+```
+
+> Please note that the spiral/framework >= 2.6 already includes this component.
 
 And activate its Bootloader:
 

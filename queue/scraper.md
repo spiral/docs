@@ -25,9 +25,22 @@ paquettg/php-html-parser | Parsing HTML
 
 To install all needed packages and download app server:
 
+#### spiral/framework < 2.7.0
+
 ```bash
 $ composer require spiral/jobs spiral/scaffolder spiral/prototype paquettg/php-html-parser
-$ ./vendor/bin/spiral get 
+```
+
+#### spiral/framework >= 2.7.0
+
+```bash
+$ composer require spiral/jobs paquettg/php-html-parser
+```
+
+Then execute
+
+```bash
+$ ./vendor/bin/spiral get
 ```
 
 Activate the installed extensions in your `App\App`:
