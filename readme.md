@@ -34,6 +34,7 @@
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
 * Components
     * [Files and Directories](component/files.md)
+    * [Attributes](component/attributes.md)
     * [Code Generation](component/reactor.md)
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
