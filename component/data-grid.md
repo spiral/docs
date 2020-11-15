@@ -9,6 +9,8 @@ To install the component:
 $ composer require spiral/data-grid-bridge
 ```
 
+> Please note that the spiral/framework >= 2.7 already includes this component.
+
 Activate the bootloader `Spiral\DataGrid\Bootloader\GridBootloader` in your application after the Database and Cycle
 bootloaders:
 
