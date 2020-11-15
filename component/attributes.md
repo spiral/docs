@@ -156,6 +156,70 @@ $getter = $reader->firstFunctionMetadata($reflection, DTOGetter::class);
 // returns DTOGetter|null
 ```
 
+#### Constant Metadata
+
+To read the class constant metadata, use the `$reader->getConstantMetadata()` method. 
+It receives an argument of the `ReflectionClassConstant` type of the required function and
+returns a list of available metadata objects.
+
+```php
+$reflection = new ReflectionClassConstant(Example::class, 'CONSTANT_NAME');
+
+$attributes = $reader->getConstantMetadata($reflection); 
+// returns iterable<object>
+```
+
+The second optional argument `$name` of the method allows you to specify which specific metadata
+objects you want to retrieve.
+
+```php
+$reflection = new ReflectionClassConstant(Example::class, 'CONSTANT_NAME');
+
+$attributes = $reader->getConstantMetadata($reflection, Deprecated::class); 
+// returns iterable<Deprecated>
+```
+
+To get one metadata object, you can use the method `$reader->firstConstantMetadata()`.
+
+```php
+$reflection = new ReflectionClassConstant(Example::class, 'CONSTANT_NAME');
+
+$getter = $reader->firstConstantMetadata($reflection, Deprecated::class); 
+// returns Deprecated|null
+```
+
+#### Parameter Metadata
+
+To read the function/method parameter metadata, use the `$reader->getParameterMetadata()` method.
+It receives an argument of the `ReflectionParameter` type of the required function and
+returns a list of available metadata objects.
+
+```php
+$reflection = new ReflectionParameter('send_email', 'email');
+
+$attributes = $reader->getParameterMetadata($reflection); 
+// returns iterable<object>
+```
+
+The second optional argument `$name` of the method allows you to specify which specific metadata
+objects you want to retrieve.
+
+```php
+$reflection = new ReflectionParameter('send_email', 'email');
+
+$attributes = $reader->getParameterMetadata($reflection, PreCondition::class); 
+// returns iterable<PreCondition>
+```
+
+To get one metadata object, you can use the method `$reader->firstParameterMetadata()`.
+
+```php
+$reflection = new ReflectionParameter('send_email', 'email');
+
+$getter = $reader->firstConstantMetadata($reflection, PreCondition::class); 
+// returns PreCondition|null
+```
+
 ### Create Annotations
 
 > For details on using doctrine annotations, please see 
