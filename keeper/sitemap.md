@@ -279,7 +279,7 @@ class NavigationBootloader extends SitemapBootloader
                 $users->view('users.create', 'Create User');
                 $users->view('users.edit', 'Edit User');
             }
-            // [root]->[link]
+            // [root]->[users group]
             $group->link('groups.index', 'Groups', ['icon' => '...']);
         }
         // ...
