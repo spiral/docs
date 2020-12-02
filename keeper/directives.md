@@ -14,7 +14,7 @@ Wraps given logout url params and add current auth token:
 <a href="@logout(admin['auth:logout'])">[[Log out]]</a>
 ``` 
 This directive applies the full route name (it's expected to have logout endpoint outside of keeper namespaces).
-## Keeper logout directive
+## Keeper logout directive (TO BE ADDED)
 Wraps given logout url params and add current auth token:
 ```html
 <a href="@keeperLogout('admin', 'auth:logout')">[[Log out]]</a>
