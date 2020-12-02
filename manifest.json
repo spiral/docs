@@ -94,6 +94,16 @@
     }
   },
   {
+    "title": "Keeper",
+    "links": {
+      "keeper/into": "Intro",
+      "keeper/bootloaders": "Bootloaders",
+      "keeper/routing": "Routing",
+      "keeper/sitemap": "Sitemap and breadcrumbs",
+      "keeper/directives": "Stempler Directives"
+    }
+  },
+  {
     "title": "Request Validation",
     "links": {
       "filters/configuration": "Installation and Configuration",
