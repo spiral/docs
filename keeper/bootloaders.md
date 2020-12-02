@@ -71,7 +71,9 @@ You can list custom interceptors in the `INTERCEPTORS` const.
 ## Config
 Keeper config can be fully declared in the config file.
 ```php
-return             [
+<?php
+
+return [
    'routePrefix'   => '',
    'routeDefaults' => ['controller' => '', 'action' => ''],
    'loginView'     => 'keeper:login',
