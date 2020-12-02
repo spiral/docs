@@ -275,7 +275,7 @@ class NavigationBootloader extends SitemapBootloader
             // [root]->[users group]
             $users = $group->link('users.index', 'Users', ['icon' => '...']);
             if ($users !== null) {
-                // [root]->[users]->[view]
+                // [root]->[users group]->[view]
                 $users->view('users.create', 'Create User');
                 $users->view('users.edit', 'Edit User');
             }
