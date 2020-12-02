@@ -43,7 +43,9 @@ The next routes will be created (see `php app.php route:list` output):
 
 ## Register routes via annotations
 Annotations is a more convenient way because annotated routes allows you to use [sitemaps](/keeper/sitemap.md) - another powerful sub-module for building menu navigation and breadcrumbs.
+
 `\Spiral\Keeper\Annotation\Action` and `\Spiral\Keeper\Annotation\Controller` annotations are available. They should be used together.
+
 `Controller` defines:
  - current namespace (optional, `keeper` by default)
  - internal name/alias (required)
