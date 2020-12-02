@@ -203,7 +203,7 @@ class UsersController
 
 ## Nesting
 Any node may be a child of another parent node. Use `parent` attribute in annotations.
-If you are referring to the method within the same controller you can use only the name, otherwise use `controller.method`:
+If you are referring to the method within the same controller you can use only the name, otherwise use `controller.method` notation:
 ```php
 <?php
 
