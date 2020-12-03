@@ -78,7 +78,7 @@ return [
 <stack:push name="scripts" unique-id="datagrid-account-renderer">
     <script type="text/javascript">
         SFToolkit.tools._datagrid.register('status', function () {
-            return function (status) {
+            return function (status, item) {
                 let map = {
                     "active": 'badge-primary',
                     "disabled": 'badge-warning',
@@ -97,6 +97,9 @@ Additional `sort-dir="asc|desc"` and `sort-default="true"` enables default sorti
 
 `condition=""` allows showing/hiding the row if needed. `body="{firstName}"` is the name of the row column.
 
+`<grid:cell.render />` with `renderer` attribute allows using custom render template. Current item (grid row) and cell value are available inside.
+
+Grid example below:
 ```json
 {
   "status": 200,
