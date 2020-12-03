@@ -65,6 +65,7 @@
     * [Routing](keeper/routing.md)
     * [Sitemap](keeper/sitemap.md)
     * [Directives](keeper/directives.md)
+    * [Example](keeper/example.md)
 * Request Validation
     * [Installation and Configuration](filters/configuration.md)
     * [Filter Object](filters/filter.md)
