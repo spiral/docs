@@ -164,7 +164,7 @@ Note that keeper namespace isn't used here automatically because these annotatio
 Example with `@GuardNamespace` annotation:
 ```php
 /**
- * @Controller(name="with", prefix="/with", namespace="with")
+ * @Controller(name="with", prefix="/with", namespace="first")
  * @GuardNamespace(namespace="withNamespace")
  */
 class WithNamespaceController
@@ -192,7 +192,7 @@ class WithNamespaceController
 Example without `@GuardNamespace` annotation:
 ```php
 /**
- * @Controller(name="without", prefix="/without", namespace="without")
+ * @Controller(name="without", prefix="/without", namespace="second")
  */
 class WithoutNamespaceController
 {
