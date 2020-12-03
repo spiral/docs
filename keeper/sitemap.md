@@ -192,9 +192,9 @@ class WithNamespaceController
 Example without `@GuardNamespace` annotation:
 ```php
 /**
- * @Controller(name="with", prefix="/with", namespace="with")
+ * @Controller(name="without", prefix="/without", namespace="without")
  */
-class WithNamespaceController
+class WithoutNamespaceController
 {
     /**
      * @Link(title="A")
@@ -202,7 +202,7 @@ class WithNamespaceController
      */
     public function a(): void
     {
-        // permission is "with.a"
+        // permission is "without.a"
     }
 
     /**
@@ -212,7 +212,7 @@ class WithNamespaceController
      */
     public function b(): void
     {
-        // permission is "with.permission"
+        // permission is "without.permission"
     }
 }
 ```
