@@ -158,6 +158,65 @@ By default, all nodes are available for the user, `withVisibleNodes()` allows hi
 If any node is forbidden, it will be removed from the tree with all its children.
 Also, passing a `$targeNode` will mark all active nodes if match found, so it will allow you to use breadcrumbs.
 
+Permissions are taken from `@GuardNamespace` and `@Guarded` annotation: `<guard Namespace (or controller name)>.<guarded permission (or method name)>`.
+Note that keeper namespace isn't used here automatically because these annotations come from external module.
+
+Example with `@GuardNamespace` annotation
+```php
+/**
+ * @Controller(name="with", prefix="/with", namespace="with")
+ * @GuardNamespace(namespace="withNamespace")
+ */
+class WithNamespaceController
+{
+    /**
+     * @Link(title="A")
+     * ...
+     */
+    public function a(): void
+    {
+        // permission is "withNamespace.a"
+    }
+
+    /**
+     * @Link(title="B")
+     * @Guarded(permission="permission")
+     * ...
+     */
+    public function b(): void
+    {
+        // permission is "withNamespace.permission"
+    }
+}
+```
+Example without `@GuardNamespace` annotation
+```php
+/**
+ * @Controller(name="with", prefix="/with", namespace="with")
+ */
+class WithNamespaceController
+{
+    /**
+     * @Link(title="A")
+     * ...
+     */
+    public function a(): void
+    {
+        // permission is "with.a"
+    }
+
+    /**
+     * @Link(title="B")
+     * @Guarded(permission="permission")
+     * ...
+     */
+    public function b(): void
+    {
+        // permission is "with.permission"
+    }
+}
+```
+
 ## Sorting
 By default, sitemap sorts nodes in the way they are found in the classes or declared in the `Sitemap` directly.
 You can use `position` (float) attribute in the annotations or `position` option in the direct declaration options.
