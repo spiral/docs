@@ -100,8 +100,7 @@
       "keeper/bootloaders": "Bootloaders",
       "keeper/routing": "Routing",
       "keeper/sitemap": "Sitemap and breadcrumbs",
-      "keeper/directives": "Stempler Directives",
-      "keeper/example": "Example"
+      "keeper/views": "Views"
     }
   },
   {

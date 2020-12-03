@@ -4,11 +4,11 @@ dynamic forms, data grids, tabs and other layout partials.
 You can use Keeper to create complex Admin panels, User panels and other applications.
 
 ## Installation:
-Install the dependency:
+- Install the dependency:
 ```
 $ composer require spiral/keeper
 ```
-The further steps are described in [bootloaders](/keeper/bootloaders.md) section.
+- register keeper bootloader (see [bootloaders](/keeper/bootloaders.md) section)
 
 ## Namespace
 The basic idea of keeper is that all sub-modules are isolated code inside of a given `namespace`.
