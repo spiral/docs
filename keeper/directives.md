@@ -1,4 +1,5 @@
-#Stempler Directives
+# Stempler Directives
+There are several stempler directives available in the keeper package.
 
 ## Auth directive
 Provides a permission check with context, uses `GuardInterface` call under the hood.
@@ -13,16 +14,10 @@ Wraps given logout url params and add current auth token:
 ```html
 <a href="@logout(admin['auth:logout'])">[[Log out]]</a>
 ``` 
-This directive applies the full route name (it's expected to have logout endpoint outside of keeper namespaces).
-## Keeper logout directive (TO BE ADDED)
-Wraps given logout url params and add current auth token:
-```html
-<a href="@keeperLogout('admin', 'auth:logout')">[[Log out]]</a>
-``` 
-This directive applies the full route name (it's expected to have logout endpoint outside of keeper namespaces).
+For now this directive accepts the full route name.
 
-## Keeper directive
-There's a convenient directive for generating uri:
+## Route directive
+There's a convenient directive for generating uri in the given namespace:
 ```html
 <a href="@keeper('admin', 'createUser')">[[+ User]]</a>
 ```
