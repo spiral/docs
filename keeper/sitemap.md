@@ -152,6 +152,12 @@ class UsersController
     // ...
 }
 ```
+
+## Visibility
+By default, all nodes are available for the user, `withVisibleNodes()` allows hiding forbidden nodes.
+If any node is forbidden, it will be removed from the tree with all its children.
+Also, passing a `$targeNode` will mark all active nodes if match found, so it will allow you to use breadcrumbs.
+
 ## Sorting
 By default, sitemap sorts nodes in the way they are found in the classes or declared in the `Sitemap` directly.
 You can use `position` (float) attribute in the annotations or `position` option in the direct declaration options.
@@ -301,6 +307,7 @@ Sidebar doesn't render `View` nodes. Possible nesting hierarchy can be:
 
 You can use `icon` option to add icons to the sidebar.
  
+
 ## Breadcrumbs
 Opposite to the sidebar, breadcrumbs are able to render all the node types within the various nesting and depth.
 ```php
