@@ -161,7 +161,7 @@ Also, passing a `$targeNode` will mark all active nodes if match found, so it wi
 Permissions are taken from `@GuardNamespace` and `@Guarded` annotation: `<guard Namespace (or controller name)>.<guarded permission (or method name)>`.
 Note that keeper namespace isn't used here automatically because these annotations come from external module.
 
-Example with `@GuardNamespace` annotation
+Example with `@GuardNamespace` annotation:
 ```php
 /**
  * @Controller(name="with", prefix="/with", namespace="with")
@@ -189,7 +189,7 @@ class WithNamespaceController
     }
 }
 ```
-Example without `@GuardNamespace` annotation
+Example without `@GuardNamespace` annotation:
 ```php
 /**
  * @Controller(name="with", prefix="/with", namespace="with")
