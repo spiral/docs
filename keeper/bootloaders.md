@@ -4,7 +4,7 @@ Keeper contains the next bootloaders:
 - GuestBootloader grants full access to guest users (use it only for tests)
 - AnnotatedBootloader reads `Controller` and `Action` annotations (see [Routing](/keeper/routing.md))
 - SitemapBootloader reads the sitemap annotations, also can be used for `Sitemap` definition via code (see [Sitemap](/keeper/sitemap.md))
-- UIBootloader registers keeper views - layout, sidebar, breadcrumbs, grids, etc. (see [Sitemap](/keeper/sitemap.md))
+- UIBootloader registers keeper views - layout, sidebar, breadcrumbs, grids, etc. (see [Sitemap](/keeper/sitemap.md) and [Views](/keeper/views.md))
 
 ## Usage
 `KeeperBootloader` is abstract. First of all create your own inherited bootloader.
