@@ -58,7 +58,7 @@ It is possible to pass the `closure` as route handler, in this case our function
 arguments: `Psr\Http\Message\ServerRequestInterface` and `Psr\Http\Message\ResponseInterface`.
 
 ```php
-router->setRoute('home', new Route(
+$router->setRoute('home', new Route(
     '/<name>',
     function (ServerRequestInterface $request, ResponseInterface $response) {
         $response->getBody()->write("hello world");
