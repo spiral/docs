@@ -153,6 +153,45 @@ class UsersController
 }
 ```
 
+Also, if you have complex nesting structure, you can declare it in the bootloader and in the controller then use only the closest element:
+```php
+<?php
+
+declare(strict_types=1);
+
+use Spiral\Keeper\Bootloader\SitemapBootloader;
+use Spiral\Keeper\Module\Sitemap;
+
+class NavigationBootloader extends SitemapBootloader
+{
+    public function declareSitemap(Sitemap $sitemap): void
+    {
+        $sitemap
+            ->group('one', 'SuperGroup')
+            ->segment('two', 'SuperSegment')
+            ->group('three', 'FinalGroup');
+    }
+}
+```
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller\Keeper;
+
+use Spiral\Keeper\Annotation as Keeper;
+use Spiral\Views\ViewsInterface;
+
+/**
+ * @Keeper\Controller(name="users", prefix="/users")
+ * @Keeper\Sitemap\Group(name="three")
+ */
+class UsersController
+{
+    // ...
+}
+```
 ## Visibility
 By default, all nodes are available for the user, `withVisibleNodes()` allows hiding forbidden nodes.
 If any node is forbidden, it will be removed from the tree with all its children.
