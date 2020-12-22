@@ -30,13 +30,15 @@ return [
     // under common name and class. You can register new checkers at any moment without any
     // performance issues.
     'checkers'   => [
-        'type'    => Validation\Checker\TypeChecker::class,
-        'number'  => Validation\Checker\NumberChecker::class,
-        'mixed'   => Validation\Checker\MixedChecker::class,
-        'address' => Validation\Checker\AddressChecker::class,
-        'string'  => Validation\Checker\StringChecker::class,
-        'file'    => Validation\Checker\FileChecker::class,
-        'image'   => Validation\Checker\ImageChecker::class,
+        'type'     => Validation\Checker\TypeChecker::class,
+        'number'   => Validation\Checker\NumberChecker::class,
+        'mixed'    => Validation\Checker\MixedChecker::class,
+        'address'  => Validation\Checker\AddressChecker::class,
+        'string'   => Validation\Checker\StringChecker::class,
+        'file'     => Validation\Checker\FileChecker::class,
+        'image'    => Validation\Checker\ImageChecker::class,
+        'datetime' => Validation\Checker\DatetimeChecker::class,
+        'entity'   => Validation\Checker\EntityChecker::class,
     ],
 
     // Enable/disable validation conditions
