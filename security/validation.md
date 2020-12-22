@@ -446,9 +446,10 @@ class MyRequest extends \Spiral\Filters\Filter
 | Rule          | Parameters                    | Description              
 | ---           | ---                           | ---                      
 | email         | ---                           | Check if email is valid.
-| url           | requireScheme:*bool* - true   | Check if URL is valid.
+| url           | schemas:*?array* - null, defaultSchema:*?string* - null   | Check if URL is valid.
+| uri           | ---                           | Check if URI is valid.
 
-> All of the rules of this checker are available without prefix.
+> `email` and `url` rules are available without `address` prefix via aliases, for `uri` use `address::uri`.
 
 ### Number
 > prefix `number::`
