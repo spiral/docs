@@ -587,6 +587,20 @@ With the validator context you can pass the current values so they will not conf
 $request->setContext($user);
 ``` 
 
+### arrayOf
+Special composition checker to validate all array values:
+```php
+class MyRequest extends \Spiral\Filters\Filter
+{
+    public const VALIDATES = [
+        'emails' => [
+            ['arrayOf', 'address::email'] 
+        ]
+    ];
+}
+```
+
+
 ## Custom Validation Rules
 It is possible to create application-specific validation rules via custom checker implementation.
 
