@@ -320,6 +320,30 @@ You can use multiple conditions or combine them with complex rules:
 );
 ```
 
+There are two composition conditions: `anyOf` and `noneOf`, they contain nested conditions:
+```php
+ $validator = $validation->validate(
+    [
+        'password'        => 'abc',
+        'confirmPassword' => 'cde'
+    ],
+    [
+        'password'        => [
+            ['notEmpty']
+        ],
+        'confirmPassword' => [
+            ['notEmpty', 'if' => ['anyOf' => ['withAll' => ['password'], 'withoutAll' => ['otherField']]]],
+            [
+                'match', 
+                'password',
+                'error' => 'Passwords do not match.',
+                'if' => ['noneOf' => ['some condition', 'another condition']]
+            ]
+        ]
+    ]
+);
+```
+
 ### Available Conditions
 Following conditions available for the usage:
 
@@ -329,6 +353,10 @@ withAny | *array* | When at least one field is not empty.
 withoutAny | *array* | When at least one field is empty.
 withAll | *array* | When all fields are not empty.
 withoutAll | *array* | When all fields are empty.
+present | *array* | When all fields are presented in the request.
+absent | *array* | When all fields are absent in the request.
+noneOf | *array* | When none of nested conditions is met.
+anyOf | *array* | When any of nested conditions is met.
 
 > You can create your conditions using `Spiral\Validation\ConditionInterface`.
 
