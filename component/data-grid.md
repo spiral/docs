@@ -560,6 +560,7 @@ Next values are available for grids for now:
 * [zero compare](#filter-values-zero-compare)
 * [numbers](#filter-values-numbers)
 * [datetime](#filter-values-datetime)
+* [datetime format](#filter-values-datetime-format)
 * [enum](#filter-values-enum)
 * [intersect](#filter-values-intersect)
 * [subset](#filter-values-subset)
@@ -641,6 +642,23 @@ $value->accepts('abc');     // false
 $value->accepts('123');     // true
 $value->accepts('-1 year'); // true
 $value->convert('-1 year'); // DateTimeImmutable object
+```
+
+### Datetime Format
+This value expects a string representing a datetime formatted according to the given format.
+A datetime is converted into a `\DateTimeImmutable`, a datetime will be additionally formatted using the output format if the 2nd argument is passed:
+```php
+use Spiral\DataGrid\Specification\Value;
+
+$value = new Value\DatetimeFormatValue('Y-m-d');
+ 
+$value->accepts('2020 Jan 21st');  // false
+$value->accepts('2020-01-21');     // true
+
+$value->convert('2020-01-21'); // DateTimeImmutable object
+
+$value = new Value\DatetimeFormatValue('Y-m-d', 'F dS, y');
+$value->convert('2020-01-21'); // January 21st, 20
 ```
 
 ### Enum
