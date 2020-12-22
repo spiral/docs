@@ -520,7 +520,7 @@ The image checker extends the file checker and fully supports its features.
 | past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value has to be a date in the past.
 | format        | format:*string*                    | Value should match the specified date format
 | before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value should come before a given threshold.
-| after         |field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come after a given threshold.                
+| after         | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come after a given threshold.                
 | valid         | ---                    | Value has to be valid datetime definition including numeric timestamp. 
 | timezone      | ---                    | Value has to be valid timezone.         
 
