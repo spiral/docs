@@ -67,7 +67,6 @@ $ php app.php prototype:inject -r
 
 The extension will modify your class into a given form:
 
-
 ```php
 namespace App\Controller;
 
@@ -100,8 +99,46 @@ class HomeController
     }
 }
 ```
-
 > The formatting around the injected lines will be affected.
+
+For PHP 7.4 now available two additional flags:
+- `typedProperties (t)` will inject properties with a type
+- `no-phpdoc` will omit PHP doc block for typed properties
+> Note that these flags work only if the latest `nikic/php-parser` version with PHP 7.4 support is installed.
+
+```bash
+$ php app.php prototype:inject -r -t --no-phpdoc
+```
+```php
+namespace App\Controller;
+
+use App\Database\Repository\UserRepository;
+use Spiral\Views\ViewsInterface;
+
+class HomeController
+{
+    private ViewsInterface $views;
+    private UserRepository $users;
+
+    /**
+     * @param ViewsInterface $views
+     * @param UserRepository $users
+     */
+    public function __construct(ViewsInterface $views, UserRepository $users)
+    {
+        $this->users = $users;
+        $this->views = $views;
+    }
+
+    public function index()
+    {
+        return $this->views->render('profile', [
+            'user' => $this->users->findByName('Antony')
+        ]);
+    }
+}
+```
+
 
 To view all the classes which use prototyped properties without modifying them:
 
