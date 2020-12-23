@@ -515,6 +515,8 @@ The image checker extends the file checker and fully supports its features.
 ### Datetime
 > prefix `datetime::`
 
+This checker can apply `now` value in the constructor
+
 | Rule          | Parameters             | Description         
 | ---           | ---                    | ---       
 | future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false| Value has to be a date in the future.
