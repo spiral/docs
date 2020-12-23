@@ -197,8 +197,12 @@ By default, all nodes are available for the user, `withVisibleNodes()` allows hi
 If any node is forbidden, it will be removed from the tree with all its children.
 Also, passing a `$targeNode` will mark all active nodes if match found, so it will allow you to use breadcrumbs.
 
-Permissions are taken from `@GuardNamespace` and `@Guarded` annotation: `<guard Namespace (or controller name)>.<guarded permission (or method name)>`.
+Permissions are taken from `@GuardNamespace`, `@Guarded` and `@Link` annotations: `<guard Namespace (or controller name)>.<link permission (or guarded permission (or method name))>`.
+Use `@Link` permission in cases when method is protected by a context-based permission rule - 
+for rendering links in the sidebar and breadcrumbs the context can't be passed, so you have to use additional permission for navigation (and register it with allow rule).
+In other cases you can rely on standard `@Guarded` permission (or method name) flow
 Note that keeper namespace isn't used here automatically because these annotations come from external module.
+
 
 Example with `@GuardNamespace` annotation:
 ```php
