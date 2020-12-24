@@ -230,6 +230,16 @@ class WithNamespaceController
     {
         // permission is "withNamespace.permission"
     }
+
+    /**
+     * @Link(title="C", permission="methodC")
+     * @Guarded(permission="permission")
+     * ...
+     */
+    public function с(): void
+    {
+        // permission is "withNamespace.methodC"
+    }
 }
 ```
 Example without `@GuardNamespace` annotation:
@@ -256,6 +266,16 @@ class WithoutNamespaceController
     public function b(): void
     {
         // permission is "without.permission"
+    }
+
+    /**
+     * @Link(title="C", permission="methodC")
+     * @Guarded(permission="permission")
+     * ...
+     */
+    public function с(): void
+    {
+        // permission is "without.methodC"
     }
 }
 ```

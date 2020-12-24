@@ -3,6 +3,10 @@ Keeper routes are accessible via global `RouterInterface`.
 You can register them directly in the router or via keeper bootloader and annotations.
 The last options allow you to isolate all routes in the given namespace.
 
+## Permissions
+GuardInterceptor is added to the KeeperCore by default, use `@GuardNamespace` and `@Guarded` to create a permission. 
+If `@Guarded` annotation is missed, KeeperCore will protect a method using `namespace.controller.method` permission as a fallback.
+
 ## Register routes via bootloader or Router
 
 New route should be declared after the `parent::boot()` call. Controllers must be declared before the route declaration:
