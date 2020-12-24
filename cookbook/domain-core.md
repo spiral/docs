@@ -386,6 +386,76 @@ class HomeController
 }
 ```
 
+### DataGrid Interceptor
+You can automatically apply datagrid specifications to an iterable output using `@DataGrid` annotation and `DataGridInterceptor`
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller\Keeper;
+
+use App\Database\User;
+use App\Exception\DatabaseConstrainException;
+use App\Http\LogServerExceptionTrait;
+use App\Repository\UserRepository;
+use App\Request\Keeper\User\CreateRequest;
+use App\Request\Keeper\User\UpdateRequest;
+use App\Service\Keeper\UserManager;
+use App\View\Keeper\UserGrid;
+use Psr\Http\Message\ResponseInterface;
+use Spiral\DataGrid\Annotation\DataGrid;
+use Spiral\Domain\Annotation\Guarded;
+use Spiral\Domain\Annotation\GuardNamespace;
+use Spiral\Http\ResponseWrapper;
+use Spiral\Keeper\Annotation as Keeper;
+use Spiral\Keeper\Module\RouteRegistry;
+use Spiral\Security\ActorInterface;
+use Spiral\Translator\Traits\TranslatorTrait;
+use Spiral\Views\ViewsInterface;
+
+/**
+ * @GuardNamespace(namespace="keeper.users")
+ * @Keeper\Controller(name="users", prefix="/users")
+ * @Keeper\Sitemap\Group(name="control")
+ */
+class UsersController
+{
+    use LogServerExceptionTrait;
+    use TranslatorTrait;
+
+    private ViewsInterface $views;
+
+    public function __construct(ViewsInterface $views)
+    {
+        $this->views = $views;
+    }
+
+    /**
+     * @Guarded()
+     * @Keeper\Action(route="", methods="GET")
+     * @Keeper\Sitemap\Link(title="Users and Administrators", options={"icon": "user-friends"}, position=1.0)
+     */
+    public function index(): string
+    {
+        return $this->views->render('keeper:users/list');
+    }
+
+    /**
+     * @Guarded()
+     * @Keeper\Action(route="/list")
+     * @DataGrid(grid=UserGrid::class)
+     * @param UserRepository $userRepository
+     * @return iterable
+     */
+    public function list(UserRepository $userRepository): iterable
+    {
+        return $userRepository->select();
+    }
+   
+```
+
 #### Rule Context
 You can use all method parameters as rule context, for example, we can create a rule:
 
