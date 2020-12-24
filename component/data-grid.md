@@ -548,6 +548,32 @@ $notIncludingBetween->getFilters(true);
 ```
 > The same is for `ValueBetween` filter
 
+## Mixed Specifications
+`Spiral\DataGrid\Specification\Filter\SortedFilter` and `Spiral\DataGrid\Specification\Sorter\FilteredSorter` are special
+sequence specifications that allows using both filters and sorters under the single name. Usage:
+```php
+
+$schema->addFilter(
+    'filter',
+    new Filter\Select(
+        [
+            'upcoming'      => new Sorter\SortedFilter(
+                'upcoming',
+                new Filter\Gt('date', new DateTimeImmutable('now')),
+                new Sorter\AscSorter('date')
+            ),
+            'mostReviewed'  => new Sorter\SortedFilter(
+                'mostReviewed',
+                new Filter\Lte('date', new DateTimeImmutable('now')),
+                new Sorter\DescSorter('count_reviews')
+            )
+        ]
+    )
+);
+```
+> Using `upcoming` filter we apply both sorting and filtering.
+
+
 ## Filter values
 Filter values is the way of converting input type and its validation.
 Please don't use `convert()` method without validating the input via `accepts()` method.
