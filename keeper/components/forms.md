@@ -68,3 +68,19 @@ data-after-submit|no|-|name of callback function in global JS scope that will be
 
 If you need more fine-grain control over form and it's callbacks, refer to [source code](https://github.com/spiral/toolkit/blob/master/packages/form/src/Form.ts)
 
+### form:*
+
+Most form inputs share common properties listed here
+
+Parameter|Required|Default|Description
+--- | --- | --- |---
+label|no|-|Label to render before input
+required|no|false|If true, renders red `*` near label
+wrapper-id|no|-|Id to use for wrapper div
+wrapper-class|no|-|Class to add to wrapper
+size|no|12|Column size for grid system
+error|no|-|Pre-rendered error feedback text
+success|no|-|Pre-rendered success feedback text
+help|no|-|Description text
+
+
