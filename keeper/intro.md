@@ -34,6 +34,6 @@ Most notable components are:
 
 - [DatePicker](/keeper/components/datepicker.md)
 
-- [DataGrids](/keeper/components/data-grid.md)
+- [DataGrids](/keeper/components/datagrid.md)
 
 

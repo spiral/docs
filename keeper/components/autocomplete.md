@@ -33,7 +33,7 @@ See [Usage Samples](https://github.com/spiral/app-keeper/blob/master/app/views/k
 </form:autocomplete>
 ```
 
-![Simple Autocomplete](/keeper/components/autocomplete-simple.png)
+![Simple Autocomplete](/keeper/components/autocomplete.simple.png)
 
 Autocomplete uses same API as DataGrids. Autocomplete by default only operates values, not labels, so in pre-population phase it will make request to server to fetch current labels. I.e. sample above will make a request with `filter[id][]=1` body to `keeper/users/list` URL on load.
 
