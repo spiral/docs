@@ -472,8 +472,8 @@ You can specify grid defaults (such as default sorting, filtering, pagination) v
 ```php
 /**
  * @DataGrid(
-*      grid=UserGrid::class,
-*      defaults={"sort": {"name": "desc"}, "filter": {"status": "active"}, "paginate": {"limit": 50, "page": 10}})
+ *     grid=UserGrid::class,
+ *     defaults={"sort": {"name": "desc"}, "filter": {"status": "active"}, "paginate": {"limit": 50, "page": 10}})
  */
 ```
 
