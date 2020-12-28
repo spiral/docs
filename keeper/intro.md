@@ -20,4 +20,18 @@ All the Keeper functionality integrated with `spiral/security` and follows RBAC 
 
 Configuration can be performed via code or annotations.
 
-Demo project is available [here](https://github.com/spiral/app-keeper).
+## Components
+
+Keeper comes with a set of frontend components for [Stempler](/stempler/basics.md) engine, backed by [JavaScript Toolkit](https://github.com/spiral/toolkit)
+
+Demo project featuring usage of all components is available [here](https://github.com/spiral/app-keeper).
+
+Most notable components are:
+
+- [Forms](/keeper/components/forms.md)
+
+- [Autocomplete](/keeper/components/autocomplete.md)
+
+- [DataGrids](/keeper/components/data-grid.md)
+
+

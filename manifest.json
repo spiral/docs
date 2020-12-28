@@ -100,7 +100,9 @@
       "keeper/bootloaders": "Bootloaders",
       "keeper/routing": "Routing",
       "keeper/sitemap": "Sitemap and breadcrumbs",
-      "keeper/views": "Views"
+      "keeper/views": "Views",
+      "keeper/components/data-grid": "Component: DataGrids",
+      "keeper/components/forms": "Component: Forms"
     }
   },
   {
