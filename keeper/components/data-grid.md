@@ -102,7 +102,7 @@ Note filter form is a separate form to "search input" form and it's reset button
 </ui:grid>
 ```
 
-![Search Only](./data-grid-filter-search-only.png)
+![Search Only](/keeper/components/data-grid-filter-search-only.png)
 
 
 ### Search And Modal
@@ -117,7 +117,7 @@ Note filter form is a separate form to "search input" form and it's reset button
 </ui:grid>
 ``` 
 
-![Search Only](./data-grid-filter-search-modal.png)
+![Search Only](/keeper/components/data-grid-filter-search-modal.png)
 
 ## Cell Types
 
@@ -198,7 +198,7 @@ Separate kind of tags provided are action tags. Using any of them adds 'actions'
 
 To customize look of the button, use `action-*` parameters of `ui:grid`
 
-![Actions](./data-grid-actions.png)
+![Actions](/keeper/components/data-grid-actions.png)
 
 #### Actions: Link
 
@@ -344,8 +344,8 @@ JavaScript declaration allows to use most of flexibility, i.e. you can have mult
 [See DataGrid Source Code](https://github.com/spiral/toolkit/tree/master/packages/datagrid/src) for more details.
 
 
-![Custom](./data-grid-advanced.png)
-![Custom](./data-grid-advanced-footer.png)
+![Custom](/keeper/components/data-grid-advanced.png)
+![Custom](/keeper/components/data-grid-advanced-footer.png)
 
 ```xhtml
 <div class="sf-table">

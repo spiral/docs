@@ -51,7 +51,7 @@ Forms are mostly regular HTML forms that have ajax submission functionality on t
 </form:wrapper>
 ```
 
-![Form image](./form.png)
+![Form image](/keeper/components/form.png)
 
 ### form:wrapper
 
