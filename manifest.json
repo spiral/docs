@@ -105,7 +105,8 @@
       "keeper/components/forms": "Component: Forms",
       "keeper/components/autocomplete": "Component: Autocomplete",
       "keeper/components/datepicker": "Component: Datepicker",
-      "keeper/components/richtext": "Component: Rich Text"
+      "keeper/components/richtext": "Component: Rich Text",
+      "keeper/components/qrcode": "Component: QR Codes"
     }
   },
   {
