@@ -66,6 +66,8 @@ capture-filters|no|[empty]|JSON array of strings. Attaches instances of <a href=
 paginate-options|no|[empty]|JSON array of numbers. Options for default paginator.  
 action-*|no|[as in sample]|Set of parameters used to generate Actions button and corresponding column.
 
+**Limitation**: All filter forms should produce a flat object map without files. Nesting and/or arrays are not supported at the moment.  
+
 ## Filters (grid:filter)
 
 grid:filter component attaches filter and/or search forms directly to grid. Internally it works with 'capture-forms' parameter that technically allows to attach any number of forms to datagrid.

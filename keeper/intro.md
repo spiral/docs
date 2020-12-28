@@ -28,6 +28,10 @@ Demo project featuring usage of all components is available [here](https://githu
 
 Most notable components are:
 
+- [Forms](/keeper/components/forms.md)
+
+- [Autocomplete](/keeper/components/autocomplete.md)
+
 - [DataGrids](/keeper/components/data-grid.md)
 
 
