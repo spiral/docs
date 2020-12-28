@@ -53,7 +53,7 @@ enable-time|no|false|Enables time input. It's developer responsibility to change
 force-confirm-button|no|false|Force showing Apply button. It's recommended for calendars with time pickers
 no-calendar|no|false|Remove calendar and use only time picker. You may want to change format options to send time only as default sends full date
 
-![Date](/keeper/components/datepicker.png)
+![Date](https://user-images.githubusercontent.com/16134699/103222720-b7c27180-4935-11eb-9cc4-81ee3a2a0275.png)
 
 ## JavaScript date range picker form:date-range-double
 
@@ -83,4 +83,4 @@ enable-time|no|false|Enables time input. It's developer responsibility to change
 force-confirm-button|no|false|Force showing Apply button. It's recommended for calendars with time pickers
 no-calendar|no|false|Remove calendar and use only time picker. You may want to change format options to send time only as default sends full date
 
-![Date Range](/keeper/components/daterange.png)
+![Date Range](https://user-images.githubusercontent.com/16134699/103222719-b729db00-4935-11eb-876f-496a14a80cc3.png)

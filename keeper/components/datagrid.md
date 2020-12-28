@@ -102,7 +102,7 @@ Note filter form is a separate form to "search input" form and it's reset button
 </ui:grid>
 ```
 
-![Search Only](/keeper/components/datagrid.filtersearchonly.png)
+![Search Only](https://user-images.githubusercontent.com/16134699/103222727-b98c3500-4935-11eb-989a-801eb5649529.png)
 
 
 ### Search And Modal
@@ -117,7 +117,7 @@ Note filter form is a separate form to "search input" form and it's reset button
 </ui:grid>
 ``` 
 
-![Search Only](/keeper/components/datagrid.filtersearchmodal.png)
+![Search And Modal](https://user-images.githubusercontent.com/16134699/103222726-b8f39e80-4935-11eb-9c76-ec23e5cecd2c.png)
 
 ## Cell Types
 
@@ -198,7 +198,7 @@ Separate kind of tags provided are action tags. Using any of them adds 'actions'
 
 To customize look of the button, use `action-*` parameters of `ui:grid`
 
-![Actions](/keeper/components/datagrid.actions.png)
+![Actions](https://user-images.githubusercontent.com/16134699/103222723-b85b0800-4935-11eb-8683-87e3cbcfd28a.png)
 
 #### Actions: Link
 
@@ -344,8 +344,8 @@ JavaScript declaration allows to use most of flexibility, i.e. you can have mult
 [See DataGrid Source Code](https://github.com/spiral/toolkit/tree/master/packages/datagrid/src) for more details.
 
 
-![Custom](/keeper/components/datagrid.advanced.png)
-![Custom](/keeper/components/datagrid.advancedfooter.png)
+![Custom](https://user-images.githubusercontent.com/16134699/103222725-b8f39e80-4935-11eb-8b35-464ae0224906.png)
+![Custom](https://user-images.githubusercontent.com/16134699/103222724-b85b0800-4935-11eb-9c2f-5c4cd3eaa051.png)
 
 ```xhtml
 <div class="sf-table">
