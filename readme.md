@@ -65,7 +65,7 @@
     * [Routing](keeper/routing.md)
     * [Sitemap](keeper/sitemap.md)
     * [Views](keeper/views.md)
-    * [DataGrid](keeper/components/data-grid.md)
+    * [DataGrid](keeper/components/datagrid.md)
     * [Forms](keeper/components/forms.md)
     * [Autocomplete](keeper/components/autocomplete.md)
     * [DatePicker](keeper/components/datepicker.md)

@@ -83,4 +83,73 @@ error|no|-|Pre-rendered error feedback text
 success|no|-|Pre-rendered success feedback text
 help|no|-|Description text
 
+**Important**: Most input fields will proxy all unrecognized attributes to corresponding input inside.
+
+### form:input
+
+Simple form input
+
+Parameter|Required|Default|Description
+--- | --- | --- |---
+name|yes|-|Field name
+value|no|-|Field value
+placeholder|no|-|Field placeholder
+class|no|-|Additional class to render for field
+type|no|-|Field type attribute
+disabled|no|-|If field should be disabled
+
+```xhtml
+<form:input name="firstName" label="First Name" value="" size="6" required="true"/>
+```
+
+![input](/keeper/components/form.input.png)
+
+### form:textarea
+
+Simple form textarea
+
+Parameter|Required|Default|Description
+--- | --- | --- |---
+name|yes|-|Field name
+value|no|-|Field value
+placeholder|no|-|Field placeholder
+class|no|-|Additional class to render for field
+type|no|-|Field type attribute
+disabled|no|-|If field should be disabled
+
+### form:select
+
+Simple form select dropdown
+
+Parameter|Required|Default|Description
+--- | --- | --- |---
+name|yes|-|Field name
+value|no|-|Field value, note when used with 'multiple', should contain an array
+values|no|-|Select options, mapping values to labels
+placeholder|no|-|Field placeholder. Will be rendered as a separate option with empty value.
+class|no|-|Additional class to render for field
+type|no|-|Field type attribute
+disabled|no|-|If field should be disabled
+
+
+```xhtml
+    <form:select
+        name="single"
+        label="Select Something"
+        values="{{ [1 => 'First', 2 => 'Second', 3 => 'Third'] }}"
+        value="2"
+        placeholder="Select Value"
+    />
+
+    <form:select
+        multiple
+        name="multi[]"
+        label="Select Something"
+        values="{{ [1 => 'First', 2 => 'Second', 3 => 'Third'] }}"
+        value="{{[1,2]}}"
+        placeholder="Select Value"
+    />
+```
+
+![input](/keeper/components/form.select.png)
 

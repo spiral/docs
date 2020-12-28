@@ -83,4 +83,4 @@ enable-time|no|false|Enables time input. It's developer responsibility to change
 force-confirm-button|no|false|Force showing Apply button. It's recommended for calendars with time pickers
 no-calendar|no|false|Remove calendar and use only time picker. You may want to change format options to send time only as default sends full date
 
-![Date Range](/keeper/components/date-range.png)
+![Date Range](/keeper/components/daterange.png)
