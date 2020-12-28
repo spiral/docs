@@ -626,7 +626,7 @@ class AppBootloader extends DomainBootloader
 Using the prev bootloader we will get the next interceptors list:
 - Domain\CycleInterceptor
 - OtherInterceptor
-> All interceptors after pipeline will be omitted.
+> All interceptors after `PipelineInterceptor` will be omitted.
 
 ### Use cases
 For example, it can be helpful when an endpoint should not apply any interceptor or not all of them are required currently:
