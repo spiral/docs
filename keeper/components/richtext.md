@@ -43,4 +43,4 @@ Parameter|Required|Default|Description
 value|no|-|HTML to render
 name|yes|-|Field name
 
-![Rich Text](/keeper/components/richtext.png)
+![Rich Text](https://user-images.githubusercontent.com/16134699/103222716-b729db00-4935-11eb-8609-38785cca2d58.png)

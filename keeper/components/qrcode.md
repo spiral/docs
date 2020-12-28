@@ -50,7 +50,7 @@ logoMargin|no|-|renders background color space around logo. Specify 0 to render 
 <ui:qrcode value="HK3ARG6MYFMIDDHB"/>
 ```
 
-![QR Code](/keeper/components/qrcode2.png)
+![QR Code](https://user-images.githubusercontent.com/16134699/103222713-b6914480-4935-11eb-8499-07e9b2d57b52.png)
 
 ```xhtml
 <ui:qrcode
@@ -69,5 +69,5 @@ logoMargin|no|-|renders background color space around logo. Specify 0 to render 
 />
 ```
 
-![QR Code](/keeper/components/qrcode.png)
+![QR Code](https://user-images.githubusercontent.com/16134699/103222715-b729db00-4935-11eb-98f2-6c9adddd3124.png)
 

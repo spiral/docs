@@ -51,7 +51,7 @@ Forms are mostly regular HTML forms that have ajax submission functionality on t
 </form:wrapper>
 ```
 
-![Form image](/keeper/components/form.png)
+![Form image](https://user-images.githubusercontent.com/16134699/103222722-b85b0800-4935-11eb-9cb1-45a8c44f1834.png)
 
 ### form:wrapper
 
@@ -102,7 +102,7 @@ disabled|no|-|If field should be disabled
 <form:input name="firstName" label="First Name" value="" size="6" required="true"/>
 ```
 
-![input](/keeper/components/form.input.png)
+![input](https://user-images.githubusercontent.com/16134699/103222711-b6914480-4935-11eb-8bc7-a30dbacc9eaf.png)
 
 ### form:textarea
 
@@ -151,5 +151,5 @@ disabled|no|-|If field should be disabled
     />
 ```
 
-![input](/keeper/components/form.select.png)
+![input](https://user-images.githubusercontent.com/16134699/103222709-b5f8ae00-4935-11eb-8966-ec957fca8b6b.png)
 
