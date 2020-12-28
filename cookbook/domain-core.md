@@ -460,10 +460,10 @@ class UserGrid extends GridSchema
     public function __invoke(User $user): array
     {
         return [
-            'id'        => $user->id,
-            'name'      => $user->name,
-            'email'     => $user->email,
-            'status'    => $user->status
+            'id'     => $user->id,
+            'name'   => $user->name,
+            'email'  => $user->email,
+            'status' => $user->status
         ];
     }
 }
