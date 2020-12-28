@@ -473,7 +473,12 @@ You can specify grid defaults (such as default sorting, filtering, pagination) v
 /**
  * @DataGrid(
  *     grid=UserGrid::class,
- *     defaults={"sort": {"name": "desc"}, "filter": {"status": "active"}, "paginate": {"limit": 50, "page": 10}})
+ *     defaults={
+*         "sort": {"name": "desc"},
+*         "filter": {"status": "active"},
+*         "paginate": {"limit": 50, "page": 10}
+*     }
+* )
  */
 ```
 
