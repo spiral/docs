@@ -420,6 +420,9 @@ class UsersController
 
 ```php
 <?php
+
+declare(strict_types=1);
+
 namespace App\View;
 
 use Spiral\DataGrid\GridSchema;
@@ -442,6 +445,9 @@ class UserGrid extends GridSchema
 Optionally, you can specify `view` property to point to a callable presenter for every record.
 Without specifying it `GridInterceptor` will call `__invoke` in the declared grid.
 ```php
+<?php
+
+declare(strict_types=1);
 
 namespace App\View;
 
