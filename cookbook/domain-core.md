@@ -416,8 +416,8 @@ class UsersController
     }
 }   
 ```
+> `grid` property should refer to a `GridSchema` class with specifications declared in the constructor.
 
-`grid` property should refer to a `GridSchema` class with specifications declared in the constructor.
 ```php
 <?php
 namespace App\View;
