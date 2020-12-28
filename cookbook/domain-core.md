@@ -584,6 +584,70 @@ You can rename `data` property or pass the exact `status` code `options` or `get
  */
 ```
 
+### Pipeline Interceptor
+This interceptor allows customising endpoint interceptors using `@Pipeline` annotation.
+When declared in the domain core interceptors list, this interceptor injects the specified annotated interceptors on the position where the `PipelineInterceptor` is declared.
+ 
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Bootloader;
+
+use Spiral\Bootloader\DomainBootloader;
+use Spiral\Core\CoreInterface;
+use Spiral\DataGrid\Interceptor\GridInterceptor;
+use Spiral\Domain;
+
+class AppBootloader extends DomainBootloader
+{
+    protected const SINGLETONS = [
+        CoreInterface::class => [self::class, 'domainCore']
+    ];
+
+    protected const INTERCEPTORS = [
+        Domain\CycleInterceptor::class,
+        Domain\PipelineInterceptor::class, //all annotated interceptors go here
+        Domain\GuardInterceptor::class,
+        Domain\FilterInterceptor::class,
+        GridInterceptor::class,
+    ];
+}
+```
+`@Pipeline` annotation allows skipping the subsequent interceptors:
+```php
+    /**
+     * @Pipeline(pipeline={OtherInterceptor::class}, skipNext=true)
+     * @return mixed
+     */
+    public function action(){}
+ ```
+Using the prev bootloader we will get the next interceptors list:
+- Domain\CycleInterceptor
+- OtherInterceptor
+> All interceptors after pipeline will be omitted.
+
+### Use cases
+For example, it can be helpful when an endpoint should not apply any interceptor or not all of them are required currently:
+```php
+    /**
+     * @Route(name="emails", route="/show/<user:int>/email/<email:int>")
+     * @Pipeline(pipeline={CycleInterceptor::class, GuardInterceptor::class}, skipNext=true)
+     * @return mixed
+     */
+    public function email(User $user, Email $email, EmailFilter $filter){
+        $filter->setContext(compact('user', 'email'));
+        if (!$filter->isValid()) {
+            throw new ForbiddenException('Email doesn\'t belong to a user.');
+        }
+        //...
+    }
+ ```
+> `FilterInterceptor` should not be applied here because of a complicated context, so we set it manually and call a custom `isValid()` check. Also, `GridInterceptor` is redundant here.
+
+To have the full control over the interceptors list you need to specify `PipelineInterceptor` as the first one.
+
 ## All Together
 Use all interceptors together to implement rich domain logic and secure controller actions:
 
