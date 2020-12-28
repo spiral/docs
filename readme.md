@@ -65,6 +65,11 @@
     * [Routing](keeper/routing.md)
     * [Sitemap](keeper/sitemap.md)
     * [Views](keeper/views.md)
+    * [DataGrid](keeper/components/data-grid.md)
+    * [Forms](keeper/components/forms.md)
+    * [Autocomplete](keeper/components/autocomplete.md)
+    * [DatePicker](keeper/components/datepicker.md)
+    * [QR Codes](keeper/components/qrcode.md)
 * Request Validation
     * [Installation and Configuration](filters/configuration.md)
     * [Filter Object](filters/filter.md)

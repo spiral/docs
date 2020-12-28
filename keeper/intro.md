@@ -32,6 +32,8 @@ Most notable components are:
 
 - [Autocomplete](/keeper/components/autocomplete.md)
 
+- [DatePicker](/keeper/components/datepicker.md)
+
 - [DataGrids](/keeper/components/data-grid.md)
 
 
