@@ -96,11 +96,17 @@
   {
     "title": "Keeper",
     "links": {
-      "keeper/into": "Intro",
+      "keeper/intro": "Intro",
       "keeper/bootloaders": "Bootloaders",
       "keeper/routing": "Routing",
       "keeper/sitemap": "Sitemap and breadcrumbs",
-      "keeper/views": "Views"
+      "keeper/views": "Views",
+      "keeper/components/datagrid": "Component: DataGrids",
+      "keeper/components/forms": "Component: Forms",
+      "keeper/components/autocomplete": "Component: Autocomplete",
+      "keeper/components/datepicker": "Component: Datepicker",
+      "keeper/components/richtext": "Component: Rich Text",
+      "keeper/components/qrcode": "Component: QR Codes"
     }
   },
   {
