@@ -382,6 +382,17 @@ $inArray = $inArray->withValue(['2', '5']);
 $notInArray = new Filter\NotInArray('price', new Value\NumericValue());
 $notInArray = $notInArray->withValue(['2', '5']);
 ```
+Third param allows auto-wrapping the `ValueInterface` with `ArrayValue` (enabled by default).
+In case you have a non-trivial value (or wrapped with an accessor value) pass `false` as 3rd argument to control the filter wrapping:
+```php
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value;
+use Spiral\DataGrid\Specification\Value\Accessor\Split;
+use Spiral\DataGrid\SpecificationInterface;
+
+$inArray = new Filter\InArray('field', new Split(new Value\ArrayValue(new Value\IntValue()), '|'), false);
+$inArray->withValue('1|2|3')->getValue(); // [1, 2, 3]
+```
 
 ### Like
 This is a simple expression filter for `like` operation.<br/>
@@ -851,6 +862,7 @@ $add->convert(2);      // (2+2)*2=8
 ```
 
 Next accessors are available for grids for now:
-- `trim`
-- `toUpper`
-- `toLower`
+- `trim` trims a string
+- `toUpper` converts a string to upper case
+- `toLower` converts a string to lower case
+- `split` splits a string using a given char into an array
