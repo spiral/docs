@@ -158,10 +158,10 @@ $ php app.php db:list
 > Read more about Databases [here](/database/configuration.md).
 
 ### Connect Faker
-We will need some sample data for the application. Let's connect the library and bootload the library `fzaninotto/faker`.
+We will need some sample data for the application. Let's connect the library and bootload the library `fakerphp/faker`.
 
 ```bash
-$ composer require fzaninotto/faker
+$ composer require fakerphp/faker
 ``` 
 
 To generate the stub data, we will need an instance of `Faker\Generator`, create bootloader in `app/src/Bootloader` to resolve such
