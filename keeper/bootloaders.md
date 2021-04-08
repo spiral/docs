@@ -72,8 +72,6 @@ You can list custom interceptors in the `INTERCEPTORS` const.
 Keeper config can be fully declared in the config file.
 > Config file should be stored in the app `config` directory.
 ```php
-<?php
-
 return [
    'routePrefix'   => '',
    'routeDefaults' => ['controller' => '', 'action' => ''],
