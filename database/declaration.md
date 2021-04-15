@@ -258,7 +258,7 @@ In order to create FK we have to define local column and call `foreign` method o
 
 ```php
 $second->integer('first_id');
-$second->foreign(['first_id'])->references('first', ['id']);
+$second->foreignKey(['first_id'])->references('first', ['id']);
 ```
 
 If we using MySQL connection DBAL will generate following SQL:
@@ -271,7 +271,7 @@ ALTER TABLE `primary_second` ADD CONSTRAINT `primary_second_foreign_first_id_55f
 You can define custom DELETE and UPDATE rules for your FK:
 
 ```php
-$foreignKey =$second->foreign('first_id')->references('first', 'id');
+$foreignKey = $second->foreignKey('first_id')->references('first', 'id');
 
 $foreignKey->onDelete(ReferenceInterface::CASCADE);
 $foreignKey->onUpdate(ReferenceInterface::CASCADE);
@@ -345,7 +345,7 @@ $schema->primary('id');
 $schemaB = $database->table('table_b')->getSchema();
 $schemaB->primary('id');
 $schemaB->integer('a_id');
-$schemaB->foreign(['a_id'])->references('table_a', ['id']);
+$schemaB->foreignKey(['a_id'])->references('table_a', ['id']);
 
 $r = new Spiral\Database\Schema\Reflector();
 $r->addTable($schemaB);
