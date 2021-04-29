@@ -7,6 +7,8 @@ to be used in the same project.
 
 This documentation uses the term "metadata" to refer to both "attributes" and "annotations".
 
+Please note that you can use any reader regardless of the PHP version you are using.
+
 ## Installation
 
 To install the component:
@@ -15,7 +17,7 @@ To install the component:
 $ composer require spiral/attributes
 ```
 
-> Please note that the spiral/framework >= 2.7 already includes this component.
+> Please note that the spiral/framework >= 2.8 already includes this component.
 
 Make sure to add `Spiral\Bootloader\AttributesBootloader` to your App class:
 
@@ -27,23 +29,10 @@ protected const LOAD = [
 ```
 
 After that, the following interfaces will become available to you for access through the container:
-- `Spiral\Attributes\ManagerInterface`
 - `Spiral\Attributes\ReaderInterface`
 
+
 ## Usage
-
-To get a metadata reader, use the `Spiral\Attributes\Manager`. It allows you to correctly initialize available 
-readers and provides a method `$manager->get()` to get them.
-
-```php
-$manager = new Spiral\Attributes\Manager();
-
-$reader = $manager->get();
-```
-
-After receiving the reader, you can use it to get the required metadata.
-
-### Reading Metadata
 
 The reader provides a set of following methods:
 
@@ -53,14 +42,18 @@ interface ReaderInterface
     public function getClassMetadata(\ReflectionClass $class, string $name = null): iterable;
     public function getPropertyMetadata(\ReflectionProperty $property, string $name = null): iterable;
     public function getFunctionMetadata(\ReflectionFunctionAbstract $function, string $name = null): iterable;
+    public function getConstantMetadata(\ReflectionClassConstant $constant, string $name = null): iterable;
+    public function getParameterMetadata(\ReflectionParameter $parameter, string $name = null): iterable;
     
     public function firstClassMetadata(\ReflectionClass $class, string $name): ?object;
     public function firstPropertyMetadata(\ReflectionProperty $property, string $name): ?object;
     public function firstFunctionMetadata(\ReflectionFunctionAbstract $function, string $name): ?object;
+    public function firstConstantMetadata(\ReflectionClassConstant $constant, string $name): ?object;
+    public function firstParameterMetadata(\ReflectionParameter $parameter, string $name): ?object;
 }
 ```
 
-#### Class Metadata
+### Class Metadata
 
 To read the class metadata, use the `$reader->getClassMetadata()` method. It receives as 
 input the `ReflectionClass` of the required class and returns a list of available metadata 
@@ -92,7 +85,7 @@ $attribute = $reader->firstClassMetadata($reflection, Entity::class);
 // returns Entity|null
 ```
 
-#### Property Metadata
+### Property Metadata
 
 To read the property metadata, use the `$reader->getPropertyMetadata()` method. It receives as
 input the `ReflectionProperty` of the required property and returns a list of available metadata
@@ -124,7 +117,7 @@ $column = $reader->firstPropertyMetadata($reflection, Column::class);
 // returns Column|null
 ```
 
-#### Function Metadata
+### Function Metadata
 
 To read the function metadata, use the `$reader->getFunctionMetadata()` method. It receives an 
 argument of the `ReflectionFunction` or `ReflectionMethod` type of the required function and 
@@ -156,7 +149,7 @@ $getter = $reader->firstFunctionMetadata($reflection, DTOGetter::class);
 // returns DTOGetter|null
 ```
 
-#### Constant Metadata
+### Constant Metadata
 
 To read the class constant metadata, use the `$reader->getConstantMetadata()` method. 
 It receives an argument of the `ReflectionClassConstant` type of the required function and
@@ -188,7 +181,7 @@ $getter = $reader->firstConstantMetadata($reflection, Deprecated::class);
 // returns Deprecated|null
 ```
 
-#### Parameter Metadata
+### Parameter Metadata
 
 To read the function/method parameter metadata, use the `$reader->getParameterMetadata()` method.
 It receives an argument of the `ReflectionParameter` type of the required function and
@@ -220,7 +213,7 @@ $getter = $reader->firstConstantMetadata($reflection, PreCondition::class);
 // returns PreCondition|null
 ```
 
-### Create Annotations
+## Create Annotations
 
 > For details on using doctrine annotations, please see 
 > the [doctrine documentation](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html#create-an-annotation-class).
@@ -232,8 +225,8 @@ You should use "hybrid" syntax to create metadata classes that will work on any 
  * @Annotation
  * @Target({ "CLASS" })
  */
-#[Attribute(Attribute::TARGET_CLASS)]
-class Entity
+#[\Attribute(\Attribute::TARGET_CLASS)]
+class MyEntityMetadata
 {
     public string $table;
 }
@@ -245,34 +238,130 @@ In this case you can use this metadata class on any PHP version.
 /**
  * PHP 8.0 syntax
  */
-#[Entity(table: 'users')] class User {}
+#[MyEntityMetadata(table: 'users')] 
+class User {}
 
 /**
- * PHP 7.x syntax
- * @Entity(table="users")
+ * Doctrine syntax
+ * @MyEntityMetadata(table="users")
  */
 class User {}
 ```
 
-### Drivers
+### Instantiation
 
-The `Spiral\Attributes\Manager` encapsulates several implementations behind it and returns a 
+The package supports different ways of instantiating attributes, but by 
+default it uses Doctrine logic for compatibility.
+
+Let's say you use your metadata class as follows, passing in one 
+field "`property`" with the string value "`value`".
+
+```php
+/** @CustomMetadataClass(property="value") */
+#[CustomMetadataClass(property: "value")]
+class AnnotatedClass
+{
+}
+```
+
+In this case, the annotation class itself might look like this:
+
+#### Doctrine Basic Instantiator
+
+In this case, when declaring a metadata class, the attribute/annotation 
+properties will be filled.
+
+> See also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
+
+```php
+/** @Annotation */
+#[\Attribute]
+class CustomMetadataClass
+{
+    public $property;
+}
+```
+
+#### Doctrine Constructor Instantiator
+
+In the case of a constructor declaration, all data when using the metadata 
+class will be passed to this constructor as an array.
+
+> See also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
+
+```php
+/** @Annotation */
+#[\Attribute]
+class CustomMetadataClass
+{
+    public function __construct(array $properties)
+    {
+        // $properties = [ "property" => "value" ]
+    }
+}
+```
+
+#### Named Arguments (Interface Marker)
+
+If you want to use named constructor parameters 
+(see also [https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments)), 
+then you have to add an interface `Spiral\Attributes\NamedArgumentConstructorAttribute` 
+to the metadata class that will mark the required metadata class as one that 
+takes named arguments.
+
+```php
+/** @Annotation */
+#[\Attribute]
+class CustomMetadataClass implements \Spiral\Attributes\NamedArgumentConstructorAttribute
+{
+    public function __construct($property)
+    {
+        // $property = "value"
+    }
+}
+```
+
+#### Named Arguments (Metadata Marker)
+
+Please note that using the previous method will require you to have a
+`spiral/attributes` package and you will not be able to use these 
+classes in other projects where this package is missing.
+
+To solve this problem, you can use the metadata class, which will mean the 
+same thing (the metadata class uses named arguments), but does not directly 
+implement the interface, and therefore does not require a `spiral/attributes` 
+package in the project.
+
+```php
+/**
+ * @Annotation
+ * @Spiral\Attributes\NamedArgumentConstructor
+ */
+#[\Attribute]
+#[\Spiral\Attributes\NamedArgumentConstructor]
+class CustomMetadataClass
+{
+    public function __construct($property)
+    {
+        // $property = "value"
+    }
+}
+```
+
+## Drivers
+
+The `Spiral\Attributes\Factory` encapsulates several implementations behind it and returns a 
 [selective reader](#attributes-usage-drivers-selective-reader) implementation by default, which is 
-suitable for most cases. However, you can require a specific implementation  if available on your 
+suitable for most cases. However, you can require a specific implementation if available on your 
 platform and/or in your application.
 
 ```php
-use Spiral\Attributes\Manager;
-use Spiral\Attributes\Reader\DoctrineReader;
+use Spiral\Attributes\Factory;
 
-$reader = (new Manager())->get(DoctrineReader::class);
-
-// The "$reader" will be the implementation of the doctrine's reader
-// or throws "Spiral\Attributes\Exception\NotFoundException" in the
-// case that no implementation is available.
+$reader = (new Factory())->create();
 ```
 
-#### Doctrine Reader
+### Annotation Reader
 
 > Please note that in order for this reader to be available in the application, you 
 > need to require "doctrine/annotations" component.
@@ -283,29 +372,27 @@ This reader implementation allows reading doctrine annotations.
 /** @ExampleAnnotation */
 class Example {}
 
-$annotations = $manager->get(Spiral\Attributes\Reader\DoctrineReader::class)
-    ->getClassMetadata(new ReflectionClass(Example::class))
-;
+$reader = new \Spiral\Attributes\AnnotationReader();
+
+$annotations = $reader->getClassMetadata(new ReflectionClass(Example::class));
 // returns iterable<ExampleAnnotation>
 ```
 
-#### Native Reader
+### Attribute Reader
 
-> This implementation is only available since PHP 8.0
-
-This reader implementation allows reading native PHP attributes.
+This reader implementation allows reading native PHP attributes on any PHP version.
 
 ```php
 #[ExampleAttribute]
 class Example {}
 
-$attributes = $manager->get(Spiral\Attributes\Reader\NativeReader::class)
-    ->getClassMetadata(new ReflectionClass(Example::class))
-;
+$reader = new \Spiral\Attributes\AttributeReader();
+
+$attributes = $reader->getClassMetadata(new ReflectionClass(Example::class));
 // returns iterable<ExampleAttribute>
 ```
 
-#### Selective Reader
+### Selective Reader
 
 The implementation automatically selects the correct reader based on the syntax used in the 
 application. This behavior is required if you use both syntaxes at the same time in the same 
@@ -318,7 +405,10 @@ class ClassWithAnnotations {}
 #[ExampleAttribute]
 class ClassWithAttributes {}
 
-$reader = $manager->get(Spiral\Attributes\Reader\SelectiveReader::class);
+$reader = new \Spiral\Attributes\Composite\SelectiveReader([
+    new \Spiral\Attributes\AnnotationReader(),
+    new \Spiral\Attributes\AttributeReader(),
+]);
 
 $annotations = $reader->getClassMetadata(new ReflectionClass(ClassWithAnnotations::class));
 // returns iterable<ExampleAnnotation>
@@ -330,7 +420,7 @@ $attributes = $reader->getClassMetadata(new ReflectionClass(ClassWithAttributes:
 > When using both annotations and attributes in the same place, the 
 > behavior of this reader is non-deterministic.
 
-#### Merge Reader
+### Merge Reader
 
 The reader's implementation combines several syntaxes in one. This behavior is required 
 if you are working with multiple libraries at the same time that support either only the
@@ -341,8 +431,52 @@ old or only the new syntax.
 #[NativeAttribute]
 class ExampleClass {}
 
-$reader = $manager->get(Spiral\Attributes\Reader\MergeReader::class);
+$reader = new \Spiral\Attributes\Composite\MergeReader([
+    new \Spiral\Attributes\AnnotationReader(),
+    new \Spiral\Attributes\AttributeReader(),
+]);
 
 $metadata = $reader->getClassMetadata(new ReflectionClass(ExampleClass::class));
 // returns iterable { DoctrineAnnotation, NativeAttribute }
+```
+
+## Cache
+
+Some implementations can slow things down to some extent because they read 
+the metadata from scratch. This is especially true when there is a lot of 
+such data.
+
+To optimize and speed up the work of readers, it is recommended to use 
+the cache. The attribute package supports the 
+[PSR-6](https://www.php-fig.org/psr/psr-6/) and 
+[PSR-16](https://www.php-fig.org/psr/psr-16/) specifications. 
+To create them, you need to use the corresponding classes.
+
+```php
+use Spiral\Attributes\Psr6CachedReader;
+use Spiral\Attributes\Psr16CachedReader;
+use Spiral\Attributes\AttributeReader;
+
+$psr6reader = new Psr6CachedReader(
+    new AttributeReader(),
+    new SomePsr6CacheImplementation() // Any PSR-6 cache implementation
+);
+
+$psr16reader = new Psr16CachedReader(
+    new AttributeReader(),
+    new SomePsr6CacheImplementation() // Any PSR-16 cache implementation
+);
+```
+
+You can also pass a cache implementation instance to the factory class.
+
+```php
+use Spiral\Attributes\Factory;
+
+$reader = (new Factory)
+    ->withCache($cacheDriver)
+    ->create()
+;
+
+// Where $cacheDriver is PSR-6 or PSR-16 cache driver implementation
 ```
