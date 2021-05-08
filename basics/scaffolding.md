@@ -83,7 +83,7 @@ $ php app.php create:command <name> [alias]
 
 #### Example without `alias`
 ```bash
-$ php app.php create:bootloader my
+$ php app.php create:command my
 ```
 
 Output is:
