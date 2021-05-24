@@ -35,7 +35,7 @@ To change the locale, use the `setLocale` method.
 
 ## Default Configuration
 The framework supplies the default configuration automatically, inside the `I18nBootloader`. To alter the configuration
-create `app/config/i18n.php` file:
+create `app/config/translator.php` file:
 
 ```php
 <?php
