@@ -8,6 +8,8 @@ To enable the extension in alternative builds:
 $ composer require spiral/translator
 ```
 
+> Please note that the spiral/framework >= 2.6 already includes this component.
+
 Activate the bootloader `Spiral/Bootloader/I18nBootloader` in your application.
 
 ## Usage

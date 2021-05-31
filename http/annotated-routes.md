@@ -5,6 +5,8 @@ Use `spiral/annotated-routes` extension to declare application routes using anno
 $ composer require spiral/annotated-routes
 ```
 
+> Please note that the spiral/framework >= 2.6 already includes this component.
+
 Activate the bootloader `Spiral\Router\Bootloader\AnnotatedRoutesBootloader` in your application (you can disable the default `RoutesBootloader`):
 
 ```php

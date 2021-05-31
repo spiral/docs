@@ -14,6 +14,8 @@ To install the component:
 $ composer require spiral/validation
 ```
 
+> Please note that the spiral/framework >= 2.6 already includes this component.
+
 To install in spiral use bootloader `Spiral\Bootloader\Security\ValidationBootloader`.
 
 To edit the default component configuration create and edit file `app/config/validation.php`:

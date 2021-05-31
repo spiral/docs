@@ -10,6 +10,8 @@ To install the extensions in alternative bundles:
 $ composer require spiral/stempler-bridge
 ```
 
+> Please note that the spiral/framework >= 2.7 already includes this component.
+
 Make sure to add `Spiral\Stempler\Bootloader\StemplerBootloader` to your application kernel.
 
 ## Configuration

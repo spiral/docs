@@ -5,6 +5,8 @@ The `spiral/views` component is available in Web bundle by default, to install i
 $ composer require spiral/views
 ```
 
+> Please note that the spiral/framework >= 2.6 already includes this component.
+
 To activate the component use bootloader `Spiral\Bootloaders\Views\ViewsBootloader`:
 
 ```php

@@ -1,10 +1,13 @@
 # Code Generation
+
 You can use the component `spiral/reactor` to generate PHP classes code using fluent declarative wrappers. This component
 is the foundation of `spiral/scaffolder` exception but can be used separately from the framework:
 
 ```bash
 $ composer require spiral/reactor
-``` 
+```
+
+> Please note that the spiral/framework >= 2.7 already includes this component.
 
 ## Class Declaration
 To declare class use `Spiral\Reactor\ClassDeclaration`.

@@ -5,6 +5,8 @@ Both Web and GRPC application skeletons include encryption component by default.
 $ composer require spiral/encrypter
 ```
 
+> Please note that the spiral/framework >= 2.6 already includes this component.
+
 You must register bootloader `Spiral\Bootloader\Security\EncrypterBootloader` to activate the component. 
 
 ## Application Key
