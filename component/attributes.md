@@ -1,13 +1,18 @@
 # Attributes
 
-Component `spiral/attributes` provides a metadata reader bridge allowing both modern 
+The `spiral/attributes` component serves two very important purposes:
+- The ability to combine different types of metadata in one place. You shouldn't
+  care if the developer is using [Doctrine Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html) 
+  or [PHP Attributes](https://wiki.php.net/rfc/attributes_v2) added in PHP 8.
+- The ability to read attributes in any version of the language. This means that
+  you can use the PHP 8 Attributes right now, even if you are using PHP 7.2.
+
+Component provides a metadata reader bridge allowing both modern
 [PHP attributes](https://wiki.php.net/rfc/attributes_v2) and 
 [Doctrine annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html) 
 to be used in the same project.
 
 This documentation uses the term "metadata" to refer to both "attributes" and "annotations".
-
-Please note that you can use any reader regardless of the PHP version you are using.
 
 ## Installation
 
@@ -17,9 +22,13 @@ To install the component:
 $ composer require spiral/attributes
 ```
 
+### Framework Integration
+
 > Please note that the spiral/framework >= 2.8 already includes this component.
 
-Make sure to add `Spiral\Bootloader\AttributesBootloader` to your App class:
+To enable the component, you just need to add the
+`Spiral\Bootloader\AttributesBootloader` class to the bootloader
+list, which is located in the class of your application.
 
 ```php
 protected const LOAD = [
