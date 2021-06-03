@@ -20,7 +20,7 @@ To install the component:
 $ composer require spiral/storage
 ```
 
-### Framework Integration
+### Framework Integration (Outside The Framework)
 
 > Please note that the spiral/framework >= 2.8 already includes this component.
 

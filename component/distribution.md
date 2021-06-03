@@ -95,7 +95,7 @@ return [
 > Please note that this configuration is only available when used with a 
 > Spiral Framework.
 
-### Manual Configuration
+### Manual Configuration (Outside The Framework)
 
 This way of using the component is required only if it is installed separately,
 outside the framework.
@@ -109,9 +109,9 @@ desired name.
 
 $manager = new \Spiral\Distribution\Manager();
 
-$manager->add('name', new CustomResolver());
+$manager->add('resolver-name', new CustomResolver());
 
-$manager->resolver('name'); // object(CustomResolver)
+$manager->resolver('resolver-name'); // object(CustomResolver)
 ```
 
 After that, you can add there either your own managers, or provided by the
@@ -220,7 +220,7 @@ arbitrary and configured on a separate server designed to serve static content.
 
 Thus, if you pass an arbitrary file string to the `resolve()` method, you will
 receive a physical http link to this file. In the case that the base uri is 
-defined as "http://localhost", then the result will be as follows:
+defined as "`http://localhost`", then the result will be as follows:
 
 ```php
 /** @var \Spiral\Distribution\Resolver\StaticResolver $resolver */
