@@ -20,7 +20,7 @@ To install the component:
 $ composer require spiral/storage
 ```
 
-## Framework Integration (Outside The Framework)
+## Framework Integration
 
 > Please note that the spiral/framework >= 2.8 already includes this component.
 
@@ -119,7 +119,7 @@ return [
 > Please note that this configuration is only available when used with a
 > Spiral Framework.
 
-### Manual Configuration
+### Manual Configuration (Outside The Framework)
 
 This way of using the component is required only if it is installed separately,
 outside the framework.
