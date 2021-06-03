@@ -33,8 +33,10 @@
     * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
 * Components
-    * [Files and Directories](component/files.md)
     * [Attributes](component/attributes.md)
+    * [Distribution](component/distribution.md)
+    * [Storage](component/storage.md)
+    * [Files and Directories](component/files.md)
     * [Code Generation](component/reactor.md)
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
