@@ -54,7 +54,7 @@
     "title": "Components",
     "links": {
       "component/attributes": "Attributes",
-      "component/distribution": "Distribution",
+      "component/distribution": "Cloud Distribution",
       "component/storage": "Storage",
       "component/files": "Files and Directories",
       "component/reactor": "Code Generation",
