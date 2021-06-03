@@ -54,6 +54,8 @@
     "title": "Components",
     "links": {
       "component/attributes": "Attributes",
+      "component/distribution": "Cloud Distribution",
+      "component/storage": "Storage",
       "component/files": "Files and Directories",
       "component/reactor": "Code Generation",
       "component/tokenizer": "Static Analysis Tools",
