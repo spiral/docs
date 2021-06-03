@@ -527,6 +527,10 @@ $backup = $firstBucket->copy('from.txt', 'backup.txt');
 $moved  = $firstBucket->move('backup.txt', 'to.txt', $secondBucket);
 ```
 
+> Please note that when a file is moved (or copied) from a bucket with private
+> permissions to a distribution with public permissions, the visibility of the
+> file will also change to the one corresponding to this bucket.
+
 ### Delete
 
 To delete a file, just use the `delete()` method. This method accepts an

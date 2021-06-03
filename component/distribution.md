@@ -526,3 +526,7 @@ return [
     ]
 ];
 ```
+
+In some cases, this registration method may not work for you. In the event that
+any dependencies from the container are required in the parameters of the
+constructor, you should use [the bootloader](/framework/bootloaders.md).
