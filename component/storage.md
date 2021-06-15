@@ -312,6 +312,13 @@ return [
             // prefix.
             //
             'prefix' => '',
+
+            //
+            // (Available since v2.9).
+            // Any additional options you want to pass to S3 client that are not
+            // listed above (e.g. 'use_path_style_endpoint').
+            //
+            'options' => [],
         ],
     ],
 

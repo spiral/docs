@@ -539,8 +539,8 @@ Cycle ORM specific checker.
 
 | Rule   | Parameters             | Description         
 | ---    | ---                    | ---       
-| exists | class:*string*, field:*string* - null| If an entity is presented in the db by a given PK or a custom field. `class` is an entity class name.
-| unique | class:*string*, field:*string*, withFields:*string[]*| Value has to be unique. `withFields` represents an array of fields to be fetched from the validator input so all of them will be used in the unique check.
+| exists | class:*string*, field:*string* - null, ignoreCase:*bool* - false| If an entity is presented in the db by a given PK or a custom field. `class` is an entity class name. `ignoreCase` option is only available since v2.9.
+| unique | class:*string*, field:*string*, withFields:*string[]*, ignoreCase:*bool* - false| Value has to be unique. `withFields` represents an array of fields to be fetched from the validator input so all of them will be used in the unique check. `ignoreCase` option is only available since v2.9.
 
 #### exists
 Exists by PK example:
