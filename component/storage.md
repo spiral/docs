@@ -296,12 +296,6 @@ return [
             'expires' => env('S3_EXPIRES', null),
 
             //
-            // Optional key of S3 API endpoint URI. This value is required when
-            // using a server other than Amazon.
-            //
-            'endpoint' => env('S3_ENDPOINT', null),
-
-            //
             // Optional key of S3 files visibility. Visibility is "public"
             // by default.
             //
@@ -312,6 +306,24 @@ return [
             // prefix.
             //
             'prefix' => '',
+
+            //
+            // Optional key of S3 API endpoint URI. This value is required when
+            // using a server other than Amazon.
+            //
+            'endpoint' => env('S3_ENDPOINT', null),
+
+            //
+            // Optional additional S3 options.
+            // For example, option "use_path_style_endpoint" is required to work
+            // with a Minio S3 Server.
+            //
+            // Note: This "options" section is available since framework >= 2.8.5
+            // See also https://github.com/spiral/framework/issues/416
+            //
+            'options' => [
+                'use_path_style_endpoint' => true,
+            ]
         ],
     ],
 
