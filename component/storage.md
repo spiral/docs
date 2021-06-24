@@ -681,17 +681,17 @@ class UriController
     }
 
     // Using another URI resolver
-    public function getAnotherUri(BucketInterface $bucket, UriResolverInterface $dist): string
+    public function getAnotherUri(BucketInterface $bucket, UriResolverInterface $resolver): string
     {
         return (string)$bucket
             ->file('picture.jpg')
-            ->toUriFrom($dist);
+            ->toUriFrom($resolver);
     }
 }
 ```
 
 Some generators may accept additional options. Such arguments can be passed to
-the `toUri([...$arguments])` or `toUriFrom($dist, [...$arguments])` methods.
+the `toUri([...$arguments])` or `toUriFrom($resolver, [...$arguments])` methods.
 For example, if you create a link to the CloudFront, you can additionally specify
 the expiration time of this link.
 
@@ -699,15 +699,7 @@ You can read more about possible additional arguments on the corresponding page
 of the [distribution documentation](/component/distribution.md).
 
 ```php
-use Spiral\Storage\BucketInterface;
-
-class UriController
-{
-    public function getUri(BucketInterface $bucket): string
-    {
-        return (string)$bucket
-            ->file('picture.jpg')
-            ->toUri(new \DateInterval('PT30S'));
-    }
-}
+$uri = $file->toUri(new \DateInterval('PT30S'));
+// And
+$uri = $file->toUriFrom($resolver, new \DateInterval('PT30S'));
 ```
