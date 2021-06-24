@@ -456,6 +456,17 @@ return [
             // Optional key of S3 API endpoint URI.
             //
             'endpoint' => env('S3_ENDPOINT', null),
+
+            //
+            // Optional additional S3 options.
+            // For example, option "use_path_style_endpoint" is required to work
+            // with a Minio S3 Server.
+            //
+            // Note: This "options" section is available since framework >= 2.8.6
+            //
+            'options' => [
+                'use_path_style_endpoint' => true,
+            ]
         ],
     ]
 ];
