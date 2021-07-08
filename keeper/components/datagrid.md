@@ -61,7 +61,7 @@ url|yes|-|Url that implements DataGrid API
 method|no|GET|Http method to use, GET or POST
 id|no|[auto generated]|Id of datagrid to use
 namespace|no|[empty]|Prefix for field names that is used in datagrid filters serialization. Used when multiple datagrids present on page. I.e. if <code>namespace="foo"</code> filter value <code>bar=1</code> will end up as "foo-bar=1" in URL. It's developer responsibility to use namespaces if multiple datagrids present on page. Otherwise behavior is unpredictable.
-capture-forms|no|[empty]|JSON array of strings. Attaches forms by their ids to datagrid as filter fields source. Can be used for filters that are visually separated from datagrids, i.e. in nav panel or sidebar. Is used internally to attach filter defined with <ui:filter>
+capture-forms|no|[empty]|JSON array of strings. Attaches forms by their ids to datagrid as filter fields source. Can be used for filters that are visually separated from datagrids, i.e. in nav panel or sidebar. Is used internally to attach filter defined with `<ui:filter>`
 capture-filters|no|[empty]|JSON array of strings. Attaches instances of <a href="https://github.com/spiral/toolkit/tree/master/packages/datagrid/src/filter-toggle">filter toggle buttons.
 paginate-options|no|[empty]|JSON array of numbers. Options for default paginator.  
 action-*|no|[as in sample]|Set of parameters used to generate Actions button and corresponding column.
@@ -256,7 +256,7 @@ label|no|-|Text to use for link text if template param is not used. Supports tem
 icon|no|-|Name to use for link icon if template param is not used. Uses Font Awesome icons. Supports templates if passed as unescaped value, i.e. `icon = "{!! '{{variable}}' !!}"`
 body|no|-|JSON String to attach as request body. Supports templates if passed as unescaped value, i.e. `data = "{!! '{ "id": {{variable}} }' !!}"`
 refresh|no|-|boolean value indicating if success response from server should trigger datagrid refresh
-condition|no|-|Field name that contains boolean variable indicating if that action should be shown. Alternatively can be a handlebars template that should return '' for false value or anything else for positive value in case more complex logic is needed.</p>
+condition|no|-|Field name that contains boolean variable indicating if that action should be shown. Alternatively can be a handlebars template that should return '' for false value or anything else for positive value in case more complex logic is needed.
 toastError|no|-|Template for toast message to show on action error
 toastSuccess|no|-|Template for toast message to show on action success
 confirm|no|-|If specified, specify confirm-title, confirm-ok and confirm-cancel. Will show a confirm dialog before executing an action. <code>confirm</code> specifies handlebars template for confirm dialog body
@@ -482,12 +482,3 @@ JavaScript declaration allows to use most of flexibility, i.e. you can have mult
     </div>
 </div>
 ```
-
-
-
-
- 
-
- 
-
-
