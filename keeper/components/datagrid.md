@@ -62,7 +62,7 @@ method|no|GET|Http method to use, GET or POST
 id|no|[auto generated]|Id of datagrid to use
 namespace|no|[empty]|Prefix for field names that is used in datagrid filters serialization. Used when multiple datagrids present on page. I.e. if <code>namespace="foo"</code> filter value <code>bar=1</code> will end up as "foo-bar=1" in URL. It's developer responsibility to use namespaces if multiple datagrids present on page. Otherwise behavior is unpredictable.
 capture-forms|no|[empty]|JSON array of strings. Attaches forms by their ids to datagrid as filter fields source. Can be used for filters that are visually separated from datagrids, i.e. in nav panel or sidebar. Is used internally to attach filter defined with `<ui:filter>`
-capture-filters|no|[empty]|JSON array of strings. Attaches instances of <a href="https://github.com/spiral/toolkit/tree/master/packages/datagrid/src/filter-toggle">filter toggle buttons.
+capture-filters|no|[empty]|JSON array of strings. Attaches instances of <a href="https://github.com/spiral/toolkit/tree/master/packages/datagrid/src/filter-toggle">filter toggle buttons</a>.
 paginate-options|no|[empty]|JSON array of numbers. Options for default paginator.  
 action-*|no|[as in sample]|Set of parameters used to generate Actions button and corresponding column.
 
