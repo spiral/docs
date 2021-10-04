@@ -90,7 +90,7 @@ To redefine the block values use `block:name` or similar tags in `home.dark.php`
 ```
 
 ### Short Syntax
-In cases when your block define short string or operates as tag argument use alternative syntaxt `${name|defalt}`. Change the
+In cases when your block define short string or operates as tag argument use alternative syntaxt `${name|default}`. Change the
 layout to:
 
 ```html
