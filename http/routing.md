@@ -602,7 +602,7 @@ class RoutesBootloader extends Bootloader
 
 ## RESTful
 All of the route targets listed above support the third argument, which specifies the method selection behavior. Set this
-parameter as `TargetInterface::RESTFUL` to automatically prefix all the methods with HTTP verb.
+parameter as `AbstractTarget::RESTFUL` to automatically prefix all the methods with HTTP verb.
 
 For example, we can use the following controller:
 
