@@ -4,6 +4,14 @@ Besides classic echo constructions, the Stempler supports many Blade-like direct
 Unlike Blade or Twig, the Stempler directives only responsible for business logic management. See [Components and Props](/stempler/components.md) 
 and [Inheritance](/stempler/inheritance.md) to check how to extend your templates and implement virtual components.
 
+## Escaping control '@' letter
+
+Just double 'at' letter like
+```php
+@@ // -> will be rendered as '@'
+```
+
+
 ## Loop Directives
 To loop over a list of template variables, use the following directives.
 
