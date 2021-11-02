@@ -1,7 +1,7 @@
 # Table of Contents
 
 ![CI](https://github.com/spiral/roadrunner-docs/workflows/CI/badge.svg)
- 
+
 * Overview
     * [About Framework](about/spiral.md)
     * [Contributing](about/contributing.md)
@@ -80,13 +80,8 @@
 * Databases
     * [Installation and Configuration](database/configuration.md)
     * [Access Database](database/access.md)
-    * [Database Isolation](database/isolation.md)
     * [Query Builders](database/query-builders.md)
-    * [Transactions](database/transactions.md)
-    * [Schema Introspection](database/introspection.md)
-    * [Schema Declaration](database/declaration.md)
-    * [Migrations](database/migrations.md)
-    * [Errata](database/errata.md)
+    * [Full Documentation](database/full-db.md)
 * Cycle ORM
     * [Installation and Configuration](cycle/configuration.md)
     * [Transactions](cycle/transactions.md)
@@ -133,6 +128,6 @@
     * [Handling Exceptions](debug/exceptions.md)
 * Extensions
     * [Code Style](extension/code-style.md)
-    * [Dotenv](extension/dotenv.md)   
+    * [Dotenv](extension/dotenv.md)
     * [Monolog](extension/monolog.md)
     * [Sentry](extension/sentry.md)

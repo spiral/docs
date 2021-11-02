@@ -36,7 +36,7 @@ The default component configuration located inside the related Bootloader. You c
 Web and GRPC skeletons include `app/config/database.php` config file:
 
 ```php
-use Spiral\Database\Driver;
+use Cycle\Database\Driver;
 
 return [
     'default'   => 'default',

@@ -7,7 +7,7 @@ Once DBAL component configured properly, you can access your databases in contro
 ```php
 namespace App\Controller;
 
-use Spiral\Database\DatabaseManager;
+use Cycle\Database\DatabaseManager;
 
 class HomeController 
 {
@@ -46,12 +46,12 @@ public function index(Database $database, Database $primary, Database $slave)
 ```
 
 ### Prototype
-Access `Spiral\Database\DatabaseProviderInterface` and default database instance using `PrototypeTrait`:
+Access `Cycle\Database\DatabaseProviderInterface` and default database instance using `PrototypeTrait`:
 
 ```php
 namespace App\Controller;
 
-use Spiral\Prototype\Traits\PrototypeTrait;
+use Cycle\Prototype\Traits\PrototypeTrait;
 
 class HomeController
 {
