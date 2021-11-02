@@ -627,7 +627,7 @@ You can join any desired table to your query using `leftJoin`, `join`, `rightJoi
 
 ```php
 $select = $db->table('test')
-    ->select(['test.*', 'u.name as u']);
+    ->select('test.*', 'u.name as u');
 
 $select->leftJoin('users', 'u')
     ->on('users.id', 'test.id');
@@ -693,7 +693,7 @@ Second parameter in join methods are dedicated to table alias, feel free to use 
 
 ```php
 $select = $db->table('test')
-    ->select(['test.*', 'uu.name as user_name'])
+    ->select('test.*', 'uu.name as user_name')
     ->innerJoin('users', 'uu')
     ->onWhere('uu.name', 'Anton');
 ```
@@ -702,7 +702,7 @@ Alternatively:
 
 ```php
 $select = $db->table('test')
-    ->select(['test.*', 'uu.name as user_name'])
+    ->select('test.*', 'uu.name as user_name')
     ->innerJoin('users as uu')
     ->onWhere('uu.name', 'Anton');
 ```
@@ -770,7 +770,7 @@ Result grouping is available using `groupBy` method:
 
 ```php
 $select = $db->table('test')
-    ->select(['status', 'count(*) as count'])
+    ->select('status', new \Spiral\Database\Injection\Fragment('COUNT(*) as count'))
     ->groupBy('status');
 ```
 
@@ -778,7 +778,7 @@ As you might expect produced SQL looks like:
 
 ```sql
 SELECT
-`status`, count(*) as `count`
+`status`, COUNT(*) as `count`
 FROM `primary_test`
 GROUP BY `status`
 ```
@@ -787,7 +787,7 @@ GROUP BY `status`
 Since you can manipulate with selected columns including COUNT and other aggregation functions into your query might look like:
 
 ```php
-$select = $db->table('test')->select(['COUNT(*)']);
+$select = $db->table('test')->select('COUNT(*)');
 ```
 
 Though, in many cases you want to get query count or summarize results without column manipulations, 
@@ -795,7 +795,7 @@ use `count`, `avg`, `sum`, `max` and `min` methods to do that:
 
 ```php
 $select = $db->table('test')
-    ->select(['id', 'name', 'status']);
+    ->select('id', 'name', 'status');
 
 dump($select->count());
 dump($select->sum('balance'));
@@ -816,7 +816,7 @@ You can paginate your query using methods `limit` and `offset`:
 
 ```php
 $select = $db->table('test')
-    ->select(['id', 'name', 'status'])
+    ->select('id', 'name', 'status')
     ->limit(10)
     ->offset(1);
 
