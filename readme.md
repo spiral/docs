@@ -81,7 +81,7 @@
     * [Installation and Configuration](database/configuration.md)
     * [Access Database](database/access.md)
     * [Query Builders](database/query-builders.md)
-    * [Full Documentation](database/full-db.md)
+    * [Full Documentation](database/documentation.md)
 * Cycle ORM
     * [Installation and Configuration](cycle/configuration.md)
     * [Transactions](cycle/transactions.md)
