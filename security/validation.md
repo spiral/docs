@@ -41,6 +41,7 @@ return [
         'image'    => Validation\Checker\ImageChecker::class,
         'datetime' => Validation\Checker\DatetimeChecker::class,
         'entity'   => Validation\Checker\EntityChecker::class,
+        'array'    => Validation\Checker\ArrayChecker::class,
     ],
 
     // Enable/disable validation conditions
