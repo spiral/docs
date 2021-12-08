@@ -41,10 +41,15 @@ return [
         'image'    => Validation\Checker\ImageChecker::class,
         'datetime' => Validation\Checker\DatetimeChecker::class,
         'entity'   => Validation\Checker\EntityChecker::class,
+        'array'    => Validation\Checker\ArrayChecker::class,
     ],
 
     // Enable/disable validation conditions
     'conditions' => [
+        'absent'     => Validation\Condition\AbsentCondition::class,
+        'present'    => Validation\Condition\PresentCondition::class,
+        'anyOf'      => Validation\Condition\AnyOfCondition::class,
+        'noneOf'     => Validation\Condition\NoneOfCondition::class,
         'withAny'    => Validation\Condition\WithAnyCondition::class,
         'withoutAny' => Validation\Condition\WithoutAnyCondition::class,
         'withAll'    => Validation\Condition\WithAllCondition::class,
@@ -54,11 +59,13 @@ return [
     // Aliases are only used to simplify developer life.
     'aliases'    => [
         'notEmpty'   => 'type::notEmpty',
+        'notNull'    => 'type::notNull',
         'required'   => 'type::notEmpty',
-        'datetime'   => 'datetime::valid',
-        'timezone'   => 'datetime::timezone',
+        'datetime'   => 'type::datetime',
+        'timezone'   => 'type::timezone',
         'bool'       => 'type::boolean',
         'boolean'    => 'type::boolean',
+        'arrayOf'    => 'array::of',
         'cardNumber' => 'mixed::cardNumber',
         'regexp'     => 'string::regexp',
         'email'      => 'address::email',
