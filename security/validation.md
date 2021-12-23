@@ -619,7 +619,7 @@ It is possible to create application-specific validation rules via custom checke
 ```php
 namespace App\Security;
 
-use Spiral\Database\Database;
+use Cycle\Database\Database;
 use Spiral\Validation\AbstractChecker;
 
 class DBChecker extends AbstractChecker

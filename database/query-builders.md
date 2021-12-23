@@ -10,7 +10,7 @@ To demonstrate query building abilities let's declare sample table in our defaul
 ```php
 namespace App\Controller;
 
-use Spiral\Database\Database;
+use Cycle\Database\Database;
 
 class HomeController
 {
@@ -121,7 +121,7 @@ $db->users->select()
     ->fetchAll();
 ```
 
-You can use your select query as proper iterator or use `run` method which will return instance of `Spiral\Database\Statement`: 
+You can use your select query as proper iterator or use `run` method which will return instance of `Cycle\Database\Statement`: 
 
 ```php
 foreach($select->getIterator() as $row) {
@@ -386,7 +386,7 @@ Spiral mocks all given values using `Parameter` class internally, in some cases 
 directly. You can alter the parameter value at any moment, but before the query `run` method:
 
 ```php
-use Spiral\Database\Injection\Parameter;
+use Cycle\Database\Injection\Parameter;
 // ...
 
 $select = $db->select()
@@ -409,13 +409,13 @@ foreach ($select as $row) {
 You can implement ParameterInterface if you want to declare your parameter wrappers with custom logic.
 
 #### SQL Fragments and Expressions
-QueryBuilders allow you to replace some of where statements with custom SQL code or expression. Use `Spiral\Database\Injections\Fragment`
- and `Spiral\Database\Injections\Expression` for such purposes. 
+QueryBuilders allow you to replace some of where statements with custom SQL code or expression. Use `Cycle\Database\Injections\Fragment`
+ and `Cycle\Database\Injections\Expression` for such purposes. 
 
 Use fragment to include SQL code into your query bypassing escaping:
 
 ```php
-use Spiral\Database\Injection\Fragment;
+use Cycle\Database\Injection\Fragment;
 
 //255
 $select->where('id', '=', new Fragment("DAYOFYEAR('2015-09-12')"));
@@ -431,7 +431,7 @@ WHERE `id` = DAYOFYEAR('2015-09-12')
 If you wish to compare complex value to user parameter, replace where the column with the expression:
 
 ```php
-use Spiral\Database\Injection\Expression;
+use Cycle\Database\Injection\Expression;
 
 $select->where(
     new Expression("DAYOFYEAR(concat('2015-09-', id))"), 
