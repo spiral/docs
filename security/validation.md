@@ -607,6 +607,9 @@ class MyRequest extends \Spiral\Filters\Filter
     public const VALIDATES = [
         'emails' => [
             ['arrayOf', 'address::email'] 
+        ],
+        'user' => [
+            ['arrayOf', ['entity:exists', User::class]]
         ]
     ];
 }
