@@ -10,7 +10,7 @@ To demonstrate query building abilities let's declare sample table in our defaul
 ```php
 namespace App\Controller;
 
-use Spiral\Database\Database;
+use Cycle\Database\Database;
 
 class HomeController
 {
@@ -121,7 +121,7 @@ $db->users->select()
     ->fetchAll();
 ```
 
-You can use your select query as proper iterator or use `run` method which will return instance of `Spiral\Database\Statement`: 
+You can use your select query as proper iterator or use `run` method which will return instance of `Cycle\Database\Statement`: 
 
 ```php
 foreach($select->getIterator() as $row) {
@@ -386,7 +386,7 @@ Spiral mocks all given values using `Parameter` class internally, in some cases 
 directly. You can alter the parameter value at any moment, but before the query `run` method:
 
 ```php
-use Spiral\Database\Injection\Parameter;
+use Cycle\Database\Injection\Parameter;
 // ...
 
 $select = $db->select()
@@ -409,13 +409,13 @@ foreach ($select as $row) {
 You can implement ParameterInterface if you want to declare your parameter wrappers with custom logic.
 
 #### SQL Fragments and Expressions
-QueryBuilders allow you to replace some of where statements with custom SQL code or expression. Use `Spiral\Database\Injections\Fragment`
- and `Spiral\Database\Injections\Expression` for such purposes. 
+QueryBuilders allow you to replace some of where statements with custom SQL code or expression. Use `Cycle\Database\Injections\Fragment`
+ and `Cycle\Database\Injections\Expression` for such purposes. 
 
 Use fragment to include SQL code into your query bypassing escaping:
 
 ```php
-use Spiral\Database\Injection\Fragment;
+use Cycle\Database\Injection\Fragment;
 
 //255
 $select->where('id', '=', new Fragment("DAYOFYEAR('2015-09-12')"));
@@ -431,7 +431,7 @@ WHERE `id` = DAYOFYEAR('2015-09-12')
 If you wish to compare complex value to user parameter, replace where the column with the expression:
 
 ```php
-use Spiral\Database\Injection\Expression;
+use Cycle\Database\Injection\Expression;
 
 $select->where(
     new Expression("DAYOFYEAR(concat('2015-09-', id))"), 
@@ -627,7 +627,7 @@ You can join any desired table to your query using `leftJoin`, `join`, `rightJoi
 
 ```php
 $select = $db->table('test')
-    ->select(['test.*', 'u.name as u']);
+    ->select('test.*', 'u.name as u');
 
 $select->leftJoin('users', 'u')
     ->on('users.id', 'test.id');
@@ -693,7 +693,7 @@ Second parameter in join methods are dedicated to table alias, feel free to use 
 
 ```php
 $select = $db->table('test')
-    ->select(['test.*', 'uu.name as user_name'])
+    ->select('test.*', 'uu.name as user_name')
     ->innerJoin('users', 'uu')
     ->onWhere('uu.name', 'Anton');
 ```
@@ -702,7 +702,7 @@ Alternatively:
 
 ```php
 $select = $db->table('test')
-    ->select(['test.*', 'uu.name as user_name'])
+    ->select('test.*', 'uu.name as user_name')
     ->innerJoin('users as uu')
     ->onWhere('uu.name', 'Anton');
 ```
@@ -770,7 +770,7 @@ Result grouping is available using `groupBy` method:
 
 ```php
 $select = $db->table('test')
-    ->select(['status', 'count(*) as count'])
+    ->select('status', new \Spiral\Database\Injection\Fragment('COUNT(*) as count'))
     ->groupBy('status');
 ```
 
@@ -778,7 +778,7 @@ As you might expect produced SQL looks like:
 
 ```sql
 SELECT
-`status`, count(*) as `count`
+`status`, COUNT(*) as `count`
 FROM `primary_test`
 GROUP BY `status`
 ```
@@ -787,7 +787,7 @@ GROUP BY `status`
 Since you can manipulate with selected columns including COUNT and other aggregation functions into your query might look like:
 
 ```php
-$select = $db->table('test')->select(['COUNT(*)']);
+$select = $db->table('test')->select('COUNT(*)');
 ```
 
 Though, in many cases you want to get query count or summarize results without column manipulations, 
@@ -795,7 +795,7 @@ use `count`, `avg`, `sum`, `max` and `min` methods to do that:
 
 ```php
 $select = $db->table('test')
-    ->select(['id', 'name', 'status']);
+    ->select('id', 'name', 'status');
 
 dump($select->count());
 dump($select->sum('balance'));
@@ -816,7 +816,7 @@ You can paginate your query using methods `limit` and `offset`:
 
 ```php
 $select = $db->table('test')
-    ->select(['id', 'name', 'status'])
+    ->select('id', 'name', 'status')
     ->limit(10)
     ->offset(1);
 

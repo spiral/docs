@@ -1,5 +1,5 @@
 # Database - Installation and Configuration
-The `spiral/database` component is included by default in Web and GRPC builds. The DBAL focuses mainly on unifying database access rather than trying to get 100% of the specific DBMS feature set.
+The `cycle/database` component is included by default in Web and GRPC builds. The DBAL focuses mainly on unifying database access rather than trying to get 100% of the specific DBMS feature set.
  
 However, you can always use direct queries to bypass the spiral abstractions.
 
@@ -9,7 +9,7 @@ However, you can always use direct queries to bypass the spiral abstractions.
 To install the component in alternative bundles or as a standalone library: 
 
 ```bash
-$ composer require spiral/database
+$ composer require cycle/database
 ```
 
 Activate the bootloader `Spiral\Bootloader\Database\DatabaseBootloader` in your application:
@@ -25,7 +25,7 @@ protected const LOAD = [
 To enable migrations component:
 
 ```bash
-$ composer require spiral/migrations
+$ composer require cycle/migrations
 ```
 
 And the corresponding bootloader:
@@ -46,7 +46,7 @@ By default, the database configuration located in `app/config/database.php` file
 
 declare(strict_types=1);
 
-use Spiral\Database\Driver;
+use Cycle\Database\Driver;
 
 return [
     'default'   => 'default',
@@ -73,7 +73,7 @@ you can use `env` function to keep your passwords and usernames separately.
 
 declare(strict_types=1);
 
-use Spiral\Database\Driver;
+use Cycle\Database\Driver;
 
 return [
     'default'   => 'default',
@@ -127,7 +127,7 @@ In order to access connected database we have to add it into `databases` section
 
 declare(strict_types=1);
 
-use Spiral\Database\Driver;
+use Cycle\Database\Driver;
 
 return [
     'default'   => 'primary',
@@ -166,7 +166,7 @@ To point `db` and `other` to specific database instance:
 
 declare(strict_types=1);
 
-use Spiral\Database\Driver;
+use Cycle\Database\Driver;
 
 return [
     'default'   => 'primary',
@@ -249,7 +249,7 @@ Foreign Keys of default.posts:
 You can initiate the DBAL component as a standalone library. Provide the configuration in array form:
 
 ```php
-use Spiral\Database;
+use Cycle\Database;
 
 $dbConfig = new Database\Config\DatabaseConfig([
     'default'     => 'default',
@@ -276,7 +276,7 @@ $dbal = new Database\DatabaseManager($dbConfig);
 To create Database instance manually (without the DatabaseManager):
 
 ```php
-use Spiral\Database;
+use Cycle\Database;
 
 $driver = new Database\Driver\SQLite\SQLiteDriver(
    [

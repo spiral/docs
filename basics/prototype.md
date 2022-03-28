@@ -189,8 +189,8 @@ app | App\App (or class which implements `Spiral\Boot\Kernel`)
 classLocator | Spiral\Tokenizer\ClassesInterface
 console | Spiral\Console\Console
 container | Psr\Container\ContainerInterface
-db | Spiral\Database\DatabaseInterface
-dbal | Spiral\Database\DatabaseProviderInterface
+db | Cycle\Database\DatabaseInterface
+dbal | Cycle\Database\DatabaseProviderInterface
 encrypter | Spiral\Encrypter\EncrypterInterface
 env | Spiral\Boot\EnvironmentInterface
 files | Spiral\Files\FilesInterface

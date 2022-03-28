@@ -296,12 +296,6 @@ return [
             'expires' => env('S3_EXPIRES', null),
 
             //
-            // Optional key of S3 API endpoint URI. This value is required when
-            // using a server other than Amazon.
-            //
-            'endpoint' => env('S3_ENDPOINT', null),
-
-            //
             // Optional key of S3 files visibility. Visibility is "public"
             // by default.
             //
@@ -314,11 +308,22 @@ return [
             'prefix' => '',
 
             //
-            // (Available since v2.9).
-            // Any additional options you want to pass to S3 client that are not
-            // listed above (e.g. 'use_path_style_endpoint').
+            // Optional key of S3 API endpoint URI. This value is required when
+            // using a server other than Amazon.
             //
-            'options' => [],
+            'endpoint' => env('S3_ENDPOINT', null),
+
+            //
+            // Optional additional S3 options.
+            // For example, option "use_path_style_endpoint" is required to work
+            // with a Minio S3 Server.
+            //
+            // Note: This "options" section is available since framework >= 2.8.5
+            // See also https://github.com/spiral/framework/issues/416
+            //
+            'options' => [
+                'use_path_style_endpoint' => true,
+            ]
         ],
     ],
 
@@ -667,7 +672,7 @@ use Spiral\Distribution\UriResolverInterface;
 
 class UriController
 {
-    // Using default URI resovler
+    // Using default URI resolver
     public function getUri(BucketInterface $bucket): string
     {
         return (string)$bucket
@@ -675,12 +680,26 @@ class UriController
             ->toUri();
     }
 
-    // Usign another URI resolver
-    public function getAnotherUri(BucketInterface $bucket, UriResolverInterface $dist): string
+    // Using another URI resolver
+    public function getAnotherUri(BucketInterface $bucket, UriResolverInterface $resolver): string
     {
         return (string)$bucket
             ->file('picture.jpg')
-            ->toUriFrom($dist);
+            ->toUriFrom($resolver);
     }
 }
+```
+
+Some generators may accept additional options. Such arguments can be passed to
+the `toUri([...$arguments])` or `toUriFrom($resolver, [...$arguments])` methods.
+For example, if you create a link to the CloudFront, you can additionally specify
+the expiration time of this link.
+
+You can read more about possible additional arguments on the corresponding page
+of the [distribution documentation](/component/distribution.md).
+
+```php
+$uri = $file->toUri(new \DateInterval('PT30S'));
+// And
+$uri = $file->toUriFrom($resolver, new \DateInterval('PT30S'));
 ```

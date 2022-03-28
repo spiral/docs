@@ -293,6 +293,13 @@ return [
             //  - https://console.aws.amazon.com/cloudfront/home
             //
             'domain' => env('AWS_CF_DOMAIN'),
+            
+            //
+            // Optional key of CloudFront file prefixes.
+            // This must contain string like "path/to/directory". In this case,
+            // this prefix will be added for each file when generating url.
+            //
+            'prefix' => env('AWS_CF_PREFIX'),
         ],
     ]
 ];
@@ -309,7 +316,8 @@ the CloudFront service.
 $cloudfront = new \Spiral\Distribution\Resolver\CloudFrontResolver(
     keyPairId: 'AAAABBBBCCCCDDDDEEEE',
     privateKey: \file_get_contents(__DIR__ . '/path/to/key.pem'),
-    domain: 'example.cloudfront.net'
+    domain: 'example.cloudfront.net',
+    prefix: 'path/to/files'
 );
 
 $url = $cloudfront->resolve(...);
@@ -456,6 +464,26 @@ return [
             // Optional key of S3 API endpoint URI.
             //
             'endpoint' => env('S3_ENDPOINT', null),
+            
+            //
+            // Optional key of S3 API file prefixes.
+            // This must contain string like "path/to/directory".
+            //
+            // In this case, this prefix will be added for each file when
+            // generating url.
+            //
+            'prefix' => env('S3_PREFIX'),
+
+            //
+            // Optional additional S3 options.
+            // For example, option "use_path_style_endpoint" is required to work
+            // with a Minio S3 Server.
+            //
+            // Note: This "options" section is available since framework >= 2.8.6
+            //
+            'options' => [
+                'use_path_style_endpoint' => true,
+            ]
         ],
     ]
 ];
@@ -478,7 +506,8 @@ $s3 = new \Spiral\Distribution\Resolver\S3SignedResolver(
             secret: file_get_contents(__DIR__ . '/path/to/secret.pem')
         )
     ]),
-    bucket: 'bucket-name'
+    bucket: 'bucket-name',
+    prefix: 'path/to/files'
 );
 
 $url = $s3->resolve(...);

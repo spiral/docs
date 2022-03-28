@@ -98,7 +98,7 @@ The demo application comes with pre-configured SQLite database located in `runti
 ```php
 // database.php 
 
-use Spiral\Database\Driver;
+use Cycle\Database\Driver;
 
 return [
     'default'   => 'default',
