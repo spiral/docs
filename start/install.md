@@ -9,7 +9,7 @@ Installation includes a customized version of the RoadRunner application server 
 Server Requirements
 --------
 Make sure that your server configured with the following PHP version and extensions:
-* PHP 7.2+, 64bit
+* PHP 8.0+, 64bit
 * *mb-string* extension (spiral is UTF-8 centric framework)
 * PDO Extension with desired database drivers
 
@@ -45,13 +45,13 @@ $ php ./app.php configure
 To start application server execute:
 
 ```bash
-$ ./spiral serve -v -d
+$ ./rr serve -d
 ```
 
 On Windows:
 
 ```bash
-$ spiral.exe serve -v -d
+$ ./rr.exe serve -d
 ```
 
 The application will be available on `http://localhost:8080`.
