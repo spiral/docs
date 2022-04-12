@@ -213,5 +213,20 @@
       "extension/monolog": "Monolog",
       "extension/sentry": "Sentry"
     }
+  },
+  {
+    "title": "Packages",
+    "links": {
+      "packages/cycle-bridge": "Cycle ORM integration",
+      "packages/roadrunner-bridge": "RoadRunner integration",
+      "packages/temporal-bridge": "Temporal integration",
+      "packages/discoverer": "Discoverer",
+      "packages/notifications": "Notifications",
+      "packages/scheduler": "Scheduler",
+      "packages/cqrs": "CQRS",
+      "packages/event-bus": "Event bus",
+      "packages/testing": "Testing SDK",
+      "packages/simple-php-server": "Simple PHP server"
+    }
   }
 ]
