@@ -1490,7 +1490,7 @@ Source code of demo project - https://github.com/spiral/demo
 Make sure to run to install the project:
 
 ```bash
-$ vendor/bin/spiral get
+$ vendor/bin/rr get
 $ php app.php migrate:init
 $ php app.php migrate
 $ php app.php configure -vv
