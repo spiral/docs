@@ -18,7 +18,7 @@ $ cd spiral-demo
 If everything installed correctly, you could open your application immediately by starting the server:
 
 ```bash
-$ ./spiral serve -v -d
+$ ./rr serve
 ```
 
 You just started an [application server](/framework/application-server.md). The same server can be used on production, making your
@@ -45,10 +45,10 @@ To simplify the tweaking of the application, restart the application server in d
 only one worker and reloads it after every request.
 
 ```bash
-$ ./spiral serve -v -d -o "http.workers.pool.maxJobs=1" -o "http.workers.pool.numWorkers=1"
+$ ./rr serve -o "http.pool.max_jobs=1" -o "http.pool.num_workers=1" -o "http.address=127.0.0.1:8181"
 ```
 
-You can also create and use an alternative configuration file via `-c` flag of the `spiral` application.
+You can also create and use an alternative configuration file via `-c` flag of the `rr` application.
 
 > Read more about Workers and Lifecycle [here](/start/workers.md).
 

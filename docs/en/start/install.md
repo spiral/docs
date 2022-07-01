@@ -45,13 +45,13 @@ $ php ./app.php configure
 To start application server execute:
 
 ```bash
-$ ./rr serve -d
+$ ./rr serve
 ```
 
 On Windows:
 
 ```bash
-$ ./rr.exe serve -d
+$ ./rr.exe serve
 ```
 
 The application will be available on `http://localhost:8080`.
