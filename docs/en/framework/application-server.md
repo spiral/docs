@@ -10,20 +10,20 @@ You can download the application server directly from [release page](https://git
 If your PHP includes `php-cli` and `php-zip` extensions you can also let spiral to download server automatically:
 
 ```bash
-$ ./vendor/bin/spiral get
+$ ./vendor/bin/rr get
 ```
 
 ## Running the Server
-The spiral server is easy to run on the default `:8080` port:
+The RoadRunner server is easy to run on the default `:8080` port:
 
 ```bash
-$ ./spiral serve -v -d
+$ ./rr serve
 ```
 
 You can observe the memory consumption of your workers in realtime and other information via
 
 ```bash
-$ ./spiral http:workers -i
+$ ./rr workers http -i
 ```
 
 > Use similar commands `jobs:workers` and `grpc:workers` to check other dispatchers.

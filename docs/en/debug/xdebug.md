@@ -19,7 +19,7 @@ env:
 To enable xDebug run application server with `-o` (overwrite flag) for needed service:
 
 ```bash
-$ ./spiral serve -v -d -o "http.workers.command=php -d zend_extension=xdebug app.php"
+$ ./rr serve -o "server.command=php -d zend_extension=xdebug app.php"
 ```
 
 ## In Docker
@@ -31,12 +31,10 @@ event-service:
       dockerfile: Dockerfile
       context: .
     command:
-    - /usr/local/bin/spiral
+    - /usr/local/bin/rr
     - serve
-    - -v
-    - -d
     - -o
-    - http.workers.command=php -d zend_extension=xdebug.so app.php
+    - server.command=php -d zend_extension=xdebug.so app.php
     environment:
       PHP_IDE_CONFIG: serverName=application.loc
       XDEBUG_CONFIG: remote_host=host.docker.internal max_nesting_level=250 remote_enable=1 remote_connect_back=0 var_display_max_depth=5 idekey='PHPSTORM'

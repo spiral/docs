@@ -1,4 +1,8 @@
 # GRPC - Service Code
+
+> **Note**
+> The documentation page contains outdated information relevant to RoadRunner 1.x only.
+
 Unlike classic HTTP and REST endpoints GRPC enforce most strict request/response format driven by `.proto` files declaration
 and compiled into binary messages using `protoc` compiler.
 
@@ -124,7 +128,7 @@ separately.
 You can test your service now:
 
 ```bash
-$ ./spiral serve -v -d
+$ ./spiral serve
 ```
 
 Run the grpcUI to observe the endpoint:

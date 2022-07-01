@@ -1,4 +1,8 @@
 # Cookbook - Website Scraper
+
+> **Note**
+> The documentation page contains outdated information relevant to RoadRunner 1.x only.
+
 We can use Spiral Queue and RoadRunner server to implement applications different from classic web setup. In this
 tutorial, we will try to implement a simple web-scraper application for CLI usage.
 
@@ -206,7 +210,7 @@ class ScrapeCommand extends Command
 Launch application server first:
 
 ```bash
-$ ./spiral serve -v -d
+$ ./spiral serve
 ```
 
 Scape any URL via console command (keep the server running):
