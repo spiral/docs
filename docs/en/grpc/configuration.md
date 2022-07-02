@@ -1,5 +1,8 @@
 # GRPC - Installation and Configuration
 
+> **Note**
+> The documentation page contains outdated information relevant to RoadRunner 1.x only.
+
 The [GRPC](https://grpc.io/) protocol provides an extremely efficient way of cross-service communication for distributed applications. The public toolkit includes instruments to generate client and server code-bases for many languages
 allowing the developer to use the most optimal language for the task.
 
@@ -159,7 +162,7 @@ $ openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -out app.c
 Start the application:
 
 ```bash
-$ ./spiral serve -v -d
+$ ./spiral serve
 ```
 
 To connect to GRPC endpoints from browser use the `` described above:

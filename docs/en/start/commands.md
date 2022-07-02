@@ -45,8 +45,13 @@ $ php app.php configure -vv
 > Always run `configure` before running a newly installed application.
 
 ## Application Server
-The application server includes it's own set of commands, to list all available server commands run:
+The application server (RoadRunner) includes it's own set of commands, to list all available server commands run:
 
+```bash
+$ ./rr
+```
+
+RoadRunner 1.x (deprecated):
 ```bash
 $ ./spiral
 ```

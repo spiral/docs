@@ -1,11 +1,16 @@
 # Queue and Jobs - Console Commands
+
+> **Note**
+> The documentation page contains outdated information relevant to RoadRunner 1.x only.
+> Read about RoadRunner 2.x Queue plugin in [the roadrunner-bridge documentation](/docs/packages-roadrunner-bridge/2.8/en#usage-queue).
+
 The application server provides multiple commands used to control the `spiral/jobs` extension.
 
 ## Start and Stop
 You can start the extension and init connection to brokers using the default `serve` command, `-v` and `-d` are supported:
 
 ```bash
-$ ./spiral serve -v -d
+$ ./spiral serve
 ```
 
 The application server can be stopped via CTR+C sequence or by calling `./spiral stop`.
