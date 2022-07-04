@@ -47,6 +47,7 @@ methods | array/string | HTTP methods. Defaults to all methods.
 defaults | array | Default values for route pattern.
 group | string | Route group, defaults to `default`.
 middleware | array | Route specific middleware class names.
+priority | int | (Available since v2.9). Position in a routes list. Higher priority routes are sorted before lower ones. Helps to solve situations when one request matches two routes. Defaults to 0.
 
 ## Route Groups
 It is possible to apply shared rules, middleware, [domain core](/cookbook/domain-core.md), or prefix to the group of routes. Create and register bootloader to achieve that:
