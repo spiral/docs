@@ -1,23 +1,28 @@
 # Security - User Authentication
+
 The framework includes the set of components to authorize users via temporary or permanent tokens from different
 sources and safely manage user context.
 
-> The component does not enforce any specific User entity interface and does not limit the application to HTTP scope only 
-> (GRPC auth is possible as well).
+> The component does not enforce any specific User entity interface and does not limit the application to HTTP scope
+> only (GRPC auth is possible as well).
 
 ## Principle of Work
-The authentication extension will create an IoC scope for `Spiral\Auth\AuthContextInterface` which points to the currently authorized actor 
-(User, API Client). The actor is fetched from `Spiral\Auth\ActorProviderInterface` using `Spiral\Auth\TokenInterface`.
 
-The token is managed by `Spiral\Auth\TokenStorageInterface` and always includes the payload (for example `["userID" => $id]`, LDAP creds, etc.). 
-The token payload used to find current application user via `Spiral\Auth\ActorProviderInterface`.
+The authentication extension will create an IoC scope for `Spiral\Auth\AuthContextInterface` which points to the
+currently authorized actor (User, API Client). The actor is fetched from `Spiral\Auth\ActorProviderInterface`
+using `Spiral\Auth\TokenInterface`.
 
-The token storage can either store token in the external source (such as database, Redis, or file) or decode it on a fly. The framework
-includes multiple token implementations out of the box for more comfortable use. 
+The token is managed by `Spiral\Auth\TokenStorageInterface` and always includes the payload (for
+example `["userID" => $id]`, LDAP creds, etc.). The token payload used to find current application user 
+via `Spiral\Auth\ActorProviderInterface`.
+
+The token storage can either store token in the external source (such as database, Redis, or file) or decode it on a
+fly. The framework includes multiple token implementations out of the box for more comfortable use.
 
 > You can use multiple token and actor providers inside one application.
 
 ## Installation and Configuration
+
 To install authorization extension for Web bundle:
 
 ```bash
@@ -42,7 +47,8 @@ To activate the component add the bootloader `Spiral\Bootloader\Auth\HttpAuthBoo
 Once installed, you must decide how to store the user authentication token.
 
 ### Session Token Storage
-To store tokens in PHP session make sure that `spiral/session` extension is installed, to enable session storage use 
+
+To store tokens in PHP session make sure that `spiral/session` extension is installed, to enable session storage use
 bootloader `Spiral\Bootloader\Auth\TokenStorage\SessionTokensBootloader`:
 
 ```php
@@ -55,7 +61,9 @@ bootloader `Spiral\Bootloader\Auth\TokenStorage\SessionTokensBootloader`:
 ```
 
 ### Database Token Storage
-The framework can store the token in the database via Cycle ORM. Activate `Spiral\Bootloader\Auth\TokenStorage\CycleTokensBootloader` for this purpose:
+
+The framework can store the token in the database via Cycle ORM.
+Activate `Spiral\Bootloader\Auth\TokenStorage\CycleTokensBootloader` for this purpose:
 
 ```php
 [
@@ -74,8 +82,9 @@ $ php app.php cycle:migrate -v -r
 ```
 
 ## Actor Provider and Token Payload
+
 The next step to configure a way to fetch actors/users based on token payloads, we must implement and register interface
-`Spiral\Auth\ActorProviderInterface` for this purposes.
+`Spiral\Auth\ActorProviderInterface` for these purposes.
 
 ```php
 interface ActorProviderInterface
@@ -170,8 +179,10 @@ class UserBootloader extends Bootloader
 ```
 
 ## Authenticate User
-The user authentication process happens via `Spiral\Auth\AuthContextInterface`. You can receive the instance of the auth context
-object via method injection. 
+
+The user authentication process happens via `Spiral\Auth\AuthContextInterface`. You can receive the instance of the auth
+context
+object via method injection.
 
 ```php
 public function index(AuthContextInterface $auth)
@@ -202,7 +213,8 @@ class HomeController
 ```
 
 ### Login
-The user login will require us to create a login form and proper request filter. 
+
+The user login will require us to create a login form and proper request filter.
 
 ```php
 namespace App\Request;
@@ -252,7 +264,7 @@ public function login(LoginRequest $login)
 ```
 
 To authenticate the user for the following requests, you must create token with the payload compatible with your
-`ActorProviderInterface` (userID => id). 
+`ActorProviderInterface` (userID => id).
 
 We will need an instance of `AuthContextInterface` and `TokenStorageInterface`
 to do that. We can access both instances via prototype properties `auth` and `authTokens`:
@@ -274,9 +286,10 @@ public function login(LoginRequest $login)
 }
 ```
 
-The user authenticated. 
+The user authenticated.
 
 ### Check Authenticated
+
 To see if the user authenticated simply check if auth context has non-empty actor:
 
 ```php
@@ -290,9 +303,10 @@ public function index()
 }
 ```
 
-> You can use RBAC Security to authenticate and authorize users at the same time. 
+> You can use RBAC Security to authenticate and authorize users at the same time.
 
 ### Logout
+
 To log user out call method `close` of auth context or AuthScope:
 
 ```php
@@ -303,7 +317,9 @@ public function logout()
 ```
 
 ## RBAC security
-You can use authenticated user as an actor for the RBAC security component, make sure to implement `Spiral\Security\ActorInterface` in your `App\Database\User`:
+
+You can use authenticated user as an actor for the RBAC security component, make sure to
+implement `Spiral\Security\ActorInterface` in your `App\Database\User`:
 
 ```php
 namespace App\Database;
@@ -351,9 +367,10 @@ And activate the bootloader `Spiral\Bootloader\Auth\SecurityActorBootloader` to 
 ```
 
 ## Firewall Middleware
+
 You can protect some of your route targets by attaching firewall middleware to prevent unauthorized access.
 
-By default, spiral provides only one firewall which will overwrite the target url: 
+By default, spiral provides only one firewall which will overwrite the target url:
 
 ```php
 use Spiral\Auth\Middleware\Firewall\OverwriteFirewall;
@@ -365,6 +382,7 @@ use Spiral\Auth\Middleware\Firewall\OverwriteFirewall;
 ```
 
 ### Custom Firewall
+
 To implement your firewall, extend `Spiral\Auth\Middleware\Firewall\AbstractFirewall`:
 
 ```php

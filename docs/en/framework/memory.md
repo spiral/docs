@@ -1,10 +1,13 @@
 # Framework - Static Memory
-Framework (component `spiral/boot`) provides a convenient interface to store some computation data shared between processes.  
 
-> Current implementation of shared memory stores data in physical files with the help of OpCache. Future implementations will
-move data storage to RoadRunner or shared PHP extension with SHM, do not couple your codebase to physical files.  
+Framework (component `spiral/boot`) provides a convenient interface to store some computation data shared between
+processes.
+
+> Current implementation of shared memory stores data in physical files with the help of OpCache. Future implementations
+> will move data storage to RoadRunner or shared PHP extension with SHM, do not couple your codebase to physical files.
 
 ## MemoryInterface
+
 Use interface `Spiral\Boot\MemoryInterface` to store computation results:
 
 ```php
@@ -35,12 +38,15 @@ interface MemoryInterface
 ```
 
 ## Use Cases
-The general idea of memory is to speed up an application by caching the execution result of some functionality. The memory component used to store the configuration cache, ORM and ODM schemas, console commands list and tokenizer cache;
+
+The general idea of memory is to speed up an application by caching the execution result of some functionality. The
+memory component used to store the configuration cache, ORM and ODM schemas, console commands list and tokenizer cache;
 it can also be used to cache compiled routes, etc.
 
- > Application memory must never be used to store user data.
+> Application memory must never be used to store user data.
 
 ## Practical Example
+
 Let's view an example of a service used to analyze available classes to compute some behavior (operations):
 
 ```php
@@ -97,9 +103,11 @@ class OperationService
 
 > You can currently only store arrays or scalar values in memory.
 
-You can implement your version of `Spiral\Boot\MemoryInterface` using APC, XCache, DHT on RoadRunner, Redis, or even Memcache.
+You can implement your version of `Spiral\Boot\MemoryInterface` using APC, XCache, DHT on RoadRunner, Redis, or even
+Memcache.
 
 Before you embed `Spiral\Boot\MemoryInterface` into your component or service:
+
 * Do not store any data related to a user request, action or information. Memory is only for logic caching
 * Assume memory can disappear at any moment
 * `saveData` is thread-safe but slows down with higher concurrency

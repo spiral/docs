@@ -1,8 +1,10 @@
 # HTTP - Installation and Configuration
+
 The web application bundle (`spiral/app`) ships with a pre-configured HTTP component. You will need several extensions
 to enable it in alternative builds.
 
 ## Installation
+
 To install the extension:
 
 #### spiral/framework < 2.6.0
@@ -48,6 +50,7 @@ class App extends Kernel
 Make sure to configure [routing](/http/routing.md).
 
 ## Configuration
+
 The HTTP extension can be configured via `app/config/http.php` file:
 
 ```php
@@ -93,11 +96,12 @@ class AppBootloader extends Bootloader
 ```
 
 ## Middleware
+
 HTTP extension includes multiple middlewares you might want to activate in your project:
 
-Bootloader | Middleware
---- | ---
-Spiral\Bootloader\Http\ErrorHandlerBootloader | Hide exceptions in non debug mode and render HTTP error pages.
-Spiral\Bootloader\Http\JsonPayloadsBootloader | Parse body of `application/json` requests.
-Spiral\Bootloader\Http\PaginationBootloader | Use request query parameters to automatically configure paginator(s).
-Spiral\Bootloader\Http\DiactorosBootloader | Use Zend/Diactoros as PSR-7 implementation (legacy).
+| Bootloader                                    | Middleware                                                            |
+|-----------------------------------------------|-----------------------------------------------------------------------|
+| Spiral\Bootloader\Http\ErrorHandlerBootloader | Hide exceptions in non debug mode and render HTTP error pages.        |
+| Spiral\Bootloader\Http\JsonPayloadsBootloader | Parse body of `application/json` requests.                            |
+| Spiral\Bootloader\Http\PaginationBootloader   | Use request query parameters to automatically configure paginator(s). |
+| Spiral\Bootloader\Http\DiactorosBootloader    | Use Zend/Diactoros as PSR-7 implementation (legacy).                  |

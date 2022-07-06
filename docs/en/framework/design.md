@@ -1,14 +1,18 @@
 # Framework - Design Approach
-The framework components attempt to follow the principle of pragmatic (KISS) design. Practically, it means that each 
+
+The framework components attempt to follow the principle of pragmatic (KISS) design. Practically, it means that each
 the component must follow given rules:
+
 - avoid cross dependencies when possible
 - prioritize composition over inheritance
 - prefer smaller but richer interfaces
 - avoid magic
 
 ## Hybrid Runtime
-The framework relies on the application server to run some of its services. PHP codebase mostly centered around quick delivery
-of efficient business logic. The application server, Golang based, is focused on efficiently solving the infrastructure tasks.
+
+The framework relies on the application server to run some of its services. PHP codebase mostly centered around quick
+delivery of efficient business logic. The application server, Golang based, is focused on efficiently solving the
+infrastructure tasks.
 
 > Spiral application server is a customized version of [RoadRunner](https://roadrunner.dev).
 

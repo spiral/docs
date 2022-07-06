@@ -1,8 +1,12 @@
 # Application Metrics
-You can expose some of the application metrics using the [prometheus](https://prometheus.io/) service embedded to the Spiral application server.
+
+You can expose some of the application metrics using the [prometheus](https://prometheus.io/) service embedded to the
+Spiral application server.
 
 ## Configuration
-Metrics service does not require configuration in the application. However, you must activate this service in `.rr.yaml`:
+
+Metrics service does not require configuration in the application. However, you must activate this service
+in `.rr.yaml`:
 
 ```yaml
 metrics:
@@ -13,6 +17,7 @@ metrics:
 > You can view defaults metrics on http://localhost:2112/metrics
 
 ## Custom Application metrics
+
 You can also publish application-specific metrics. First, you have to register a metric in your configuration file:
 
 ```yaml
@@ -42,6 +47,7 @@ public function index(MetricsInterface $metrics)
 > You can call MetricsInterface in middleware.
 
 ## Tagged metrics
+
 You can use tagged (labels) metrics to group values:
 
 ```yaml
@@ -51,7 +57,7 @@ metrics:
     app_type_duration:
       type: histogram
       help: "Application counter."
-      labels: ["type"]
+      labels: [ "type" ]
 ```
 
 You should specify values for your labels while pushing the metric:

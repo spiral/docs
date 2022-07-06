@@ -1,6 +1,6 @@
 # Storage
 
-Component `spiral/storage` provides a powerful storage abstraction thanks
+Component `spiral/storage` provides a powerful storage abstraction thanks 
 to the wonderful [Flysystem](https://github.com/thephpleague/flysystem) PHP
 package by Frank de Jonge. The Storage component integration provides simple
 drivers for working with local filesystems and Amazon S3. Even better, it's
@@ -234,7 +234,7 @@ $ composer require league/flysystem-async-aws-s3 ^2.0
 
 During configuration, you should specify which of the packages you will use in
 the server's "adapter" section. The `"s3"` value corresponds to the
-`league/flysystem-aws-s3-v3` package, while the `"s3-async"` value corresponds 
+`league/flysystem-aws-s3-v3` package, while the `"s3-async"` value corresponds
 to the `league/flysystem-async-aws-s3` package.
 
 ```php
@@ -456,10 +456,9 @@ The differences between the methods are as follows:
   format. Please also note that the leading slash does not affect the file
   location in any way and the names `file.txt` and `/file.txt` will be
   completely identical.
-  
+
 - In all methods of working with a specific file, no additional arguments are
   required.
-
 
 Each of the methods has both its advantages and disadvantages. Just use what
 you like best.
@@ -493,10 +492,12 @@ class UploadingController
 From each of the levels, you can refer to the child.
 
 **From The Storage:**
+
 - `$storage->bucket('[bucket-name]'): BucketInterface`
 - `$storage->file('[bucket-name]://[file-name]'): FileInterface`
 
 **From The Bucket:**
+
 - `$bucket->file('[file-name]'): FileInterface`
 
 After we have familiarized ourselves with the options for using the same methods
@@ -530,7 +531,7 @@ the name of the new file and one optional - the bucket where this file should
 be copied. If the second argument is not specified, then the compilation bucket
 will be identical to the original one.
 
-The `move()` method is completely similar to using the `copy()` method, but 
+The `move()` method is completely similar to using the `copy()` method, but
 instead of copying it moves the file.
 
 ```php
@@ -596,7 +597,7 @@ $timestamp = $bucket->getLastModified('file.txt');
 
 ### Mime Type
 
-To get the file mime type, use the `getMimeType()` method, which returns a 
+To get the file mime type, use the `getMimeType()` method, which returns a
 string mime type representation of the file.
 
 ```php
@@ -663,7 +664,7 @@ To use this URI resolver, simply call the `toUri()` method. In case you need any
 other distribution, you can specify it explicitly in the
 `toUriFrom(...)`method.
 
-> Please note that, unlike other methods, this one can only be called on a 
+> Please note that, unlike other methods, this one can only be called on a
 > specific file.
 
 ```php

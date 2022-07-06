@@ -1,6 +1,7 @@
 # HTTP - Routing
-The framework [Web Bundle](https://github.com/spiral/app) includes pre-configured router components. To install the router in
-alternative builds:
+
+The framework [Web Bundle](https://github.com/spiral/app) includes pre-configured router component. To install the
+router in alternative builds:
 
 ```bash
 $ composer require spiral/router
@@ -20,14 +21,16 @@ And activate its Bootloader:
 > Read how to define routing using annotations [here](/http/annotated-routes.md).
 
 ## Default Configuration
+
 The default web application bundle allows you to call any controller action located in `App\Controller`namespace using
 `/<controller>/<action>` pattern. See below how to alter this behavior.
 
 > Your controllers must have a `Controller` suffix.
 
 ## Configuration
-The component does not require any external configuration. You can create new routing via `Spiral\Router\RouterInterface` 
-in your Bootloader. We can start with a simple `/` handler:
+
+The component does not require any external configuration. You can create new routing
+via `Spiral\Router\RouterInterface` in your Bootloader. We can start with a simple `/` handler:
 
 ```php
 namespace App\Bootloader;
@@ -51,11 +54,12 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
-> The Route class can accept a handler of type `Psr\Http\Server\RequestHandlerInterface`, closure, invokable class, 
+> The Route class can accept a handler of type `Psr\Http\Server\RequestHandlerInterface`, closure, invokable class,
 > or `Spiral\Router\TargetInterface`. Simply pass a class or a binding name instead of a real object if you want it
 > to be constructed on demand.
 
 ## Closure Handler
+
 It is possible to pass the `closure` as route handler, in this case our function will receive two
 arguments: `Psr\Http\Message\ServerRequestInterface` and `Psr\Http\Message\ResponseInterface`.
 
@@ -71,11 +75,14 @@ $router->setRoute('home', new Route(
 ```
 
 ## Route Pattern and Parameters
-You can use a route pattern to specify any number of required and optional parameters. These parameters will later pass to the route handler via the `ServerRequestInterface` attribute `matches`.
+
+You can use a route pattern to specify any number of required and optional parameters. These parameters will later pass
+to the route handler via the `ServerRequestInterface` attribute `matches`.
 
 > Use `attribute:matches.id` in Request Filters to access these values.
 
-Use the `<parameter_name:pattern>` form to define a route parameter, where pattern is a regexp friendly expression. You can omit pattern and just use `<parameter_name>`, in this case, the parameter will match `[^\/]+`.
+Use the `<parameter_name:pattern>` form to define a route parameter, where pattern is a regexp friendly expression. You
+can omit pattern and just use `<parameter_name>`, in this case, the parameter will match `[^\/]+`.
 
 We can add a simple parameter `name`:
 
@@ -115,9 +122,9 @@ $router->setRoute('home', new Route(
 
 > This route will match `/`, the name parameter will be `null`.
 
-You can specify any number of parameters and make some of them optional, for example we can match URLs like `/group/user`, 
-where `user` is optional:
- 
+You can specify any number of parameters and make some of them optional, for example we can match URLs
+like `/group/user`, where `user` is optional:
+
 ```php
 $router->setRoute('home', new Route(
     '/<group>[/<user>]',
@@ -168,6 +175,7 @@ $router->setRoute('home', new Route(
 > This route will only match `/do/login` and `/do/logout`.
 
 ### Match Host
+
 To match the domain or sub-domain name, prefix your pattern with `//`:
 
 ```php
@@ -202,7 +210,8 @@ $router->setRoute('home', new Route(
 ```
 
 ### Immutability
-All route objects are immutable by design, you can not change their state after creation, but only make a copy 
+
+All route objects are immutable by design, you can not change their state after creation, but only make a copy
 with new values. To set default route parameters outside constructor:
 
 ```php
@@ -230,6 +239,7 @@ class RoutesBootloader extends Bootloader
 ```
 
 ### Verbs
+
 Use `withVerbs` method to match routes with only certain HTTP verbs:
 
 ```php
@@ -262,6 +272,7 @@ class RoutesBootloader extends Bootloader
 ```
 
 ### Middleware
+
 To associate route-specific middleware use `withMiddleware`, you can access route parameters via `route` attribute
 of the request object:
 
@@ -290,7 +301,7 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
-where `ParamWatcher` is: 
+where `ParamWatcher` is:
 
 ```php
 namespace App\Middleware;
@@ -323,8 +334,9 @@ This route will trigger an Unauthorized exception on `/forbidden`.
 > You can add as many middlewares as you want.
 
 ## Multiple Routes
-The router will match all routes in the order they were registered. Make sure to avoid situations where the previous route
-matches the conditions of the following routes.
+
+The router will match all routes in the order they were registered. Make sure to avoid situations where the previous
+route matches the conditions of the following routes.
 
 ```php
 $router->setRoute(
@@ -348,6 +360,7 @@ $router->setRoute(
 ```
 
 ## Default Route
+
 Spiral Router provides the ability to specify the default/fallback route. This route will always be invoked after every
 other route and check for matching to its pattern.
 
@@ -368,11 +381,12 @@ $router->setDefault(new Route('/', function () {
 }));
 ``` 
 
-See below how to use the default route to scaffold application paths quickly. 
+See below how to use the default route to scaffold application paths quickly.
 
 ## Route Targets (Controllers and Actions)
-The most effective way to use the router is to target routes to the controllers and their actions. To demonstrate all the 
-capabilities, we will need multiple controllers in `App\Controller` namespace:
+
+The most effective way to use the router is to target routes to the controllers and their actions. To demonstrate all
+the capabilities, we will need multiple controllers in `App\Controller` namespace:
 
 ```php
 namespace App\Controller;
@@ -411,6 +425,7 @@ class DemoController
 ```
 
 ### Route to Action
+
 To point your route to the controller action specify route handler as `Spiral\Router\Target\Action`:
 
 ```php
@@ -434,8 +449,8 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
-You can combine this target with the required or optional parameter. The parameter will be available as method injection to 
-the desired target:
+You can combine this target with the required or optional parameter. The parameter will be available as method injection
+to the desired target:
 
 ```php
 $router->setRoute(
@@ -445,6 +460,7 @@ $router->setRoute(
 ```
 
 ### Wildcard Actions
+
 We can point a route to more than one controller action at the same time, to do that we have to define the
 parameter `<action>` in our route pattern. Since one of the methods require `<id>` parameter, we can make it optional:
 
@@ -457,8 +473,9 @@ $router->setRoute(
 
 > This route will match both `/index` and `/user/1` paths.
 
-Behind the hood, the route will compile into expression which is aware of action constrains `/^(?P<action>index|user)(?:\/(?P<id>[^\/]+))?$/iu`.
-Such approach would not only allow you to increase the performance but also reuse the same pattern with different action sets.
+Behind the hood, the route will compile into expression which is aware of action
+constrains `/^(?P<action>index|user)(?:\/(?P<id>[^\/]+))?$/iu`. Such approach would not only allow you to increase the 
+performance but also reuse the same pattern with different action sets.
 
 ```php
 // match "/index"
@@ -481,8 +498,9 @@ $router->setRoute(
 ```
 
 ### Route to Controller
+
 You point your route to all of the controller actions at once using `Spiral\Router\Target\Controller`. This target
-requires `<action>` parameter to be defined (unless the default value forced). 
+requires `<action>` parameter to be defined (unless the default value forced).
 
 ```php
 namespace App\Bootloader;
@@ -517,12 +535,14 @@ $router->setRoute(
 );
 ```
 
-> This route will match `/home` with `action=index`. Note, you must extend optional path segments `[]` till the end of the
-> route pattern.
+> This route will match `/home` with `action=index`. Note, you must extend optional path segments `[]` till the end of
+> the route pattern.
 
 ### Route to Namespace
-In some cases, you might want to route to the set of controllers located in the same namespace. Use target `Spiral\Router\Target\Namespaced`
-for these purposes. This target will require route parameters `<controller>` and `<action>` (unless default is forced). 
+
+In some cases, you might want to route to the set of controllers located in the same namespace. Use
+target `Spiral\Router\Target\Namespaced` for these purposes. This target will require route parameters `<controller>` 
+and `<action>` (unless default is forced).
 
 You can specify target namespace and controller class postfix:
 
@@ -562,19 +582,22 @@ $router->setRoute('app',
 );
 ```
 
-> This route will match `/` (home->index), `/home` (home->index), `/home/index`, `/home/other` and `/demo/test`. The 
+> This route will match `/` (home->index), `/home` (home->index), `/home/index`, `/home/other` and `/demo/test`. The
 > `/demo` will trigger not-found error as `DemoController` does not defines method `index`.
 
-The default web-application bundle sets this route [as default](https://github.com/spiral/app/blob/master/app/src/Bootloader/RoutesBootloader.php#L42).
-You don't need to create a route for any of the controllers added to `App\Controller`, simply use `/controller/action` URLs
-to access the required method. If no action is specified, the `index` will be used by the default. The routing will point
+The default web-application bundle sets this
+route [as default](https://github.com/spiral/app/blob/master/app/src/Bootloader/RoutesBootloader.php#L42). You don't 
+need to create a route for any of the controllers added to `App\Controller`, simply use `/controller/action` URLs to 
+access the required method. If no action is specified, the `index` will be used by the default. The routing will point 
 to the public methods only.
 
 > You can turn the default route off once the development is over.
 
 ### Route to Controller Group
+
 The alternative is to specify controller names manually without common namespace. Use target
-`Spiral\Router\Target\Group`. Target requires `<controller>` and `<action>` parameters to be defined (unless default is forced).
+`Spiral\Router\Target\Group`. Target requires `<controller>` and `<action>` parameters to be defined (unless default is
+forced).
 
 ```php
 namespace App\Bootloader;
@@ -601,8 +624,9 @@ class RoutesBootloader extends Bootloader
 > Such an approach is useful when you want to assemble multiple modules under one path (i.e., admin panels).
 
 ## RESTful
-All of the route targets listed above support the third argument, which specifies the method selection behavior. Set this
-parameter as `AbstractTarget::RESTFUL` to automatically prefix all the methods with HTTP verb.
+
+All of the route targets listed above support the third argument, which specifies the method selection behavior. Set
+this parameter as `AbstractTarget::RESTFUL` to automatically prefix all the methods with HTTP verb.
 
 For example, we can use the following controller:
 
@@ -642,8 +666,9 @@ $router->setRoute('user', new Route(
 > to specify the action name.
 
 ### Sharing target across routes
-Another way to define RESTful or similar routing to multiple controllers is to share a common target with different routes.
-Such an approach will allow you to define your controller style. 
+
+Another way to define RESTful or similar routing to multiple controllers is to share a common target with different
+routes. Such an approach will allow you to define your controller style.
 
 For example, we can route different HTTP verbs to the following controller(s):
 
@@ -719,7 +744,8 @@ class RoutesBootloader extends Bootloader
 
 Such an approach allows you to use the same route-set for multiple resource controllers.
 
-## Url Generation 
+## Url Generation
+
 The router can generate Uri based on any given route and its parameters.
 
 ```php
@@ -753,7 +779,7 @@ use Spiral\Router\RouterInterface;
 
 public function index(RouterInterface $router)
 {
-        $uri = $router->uri('home', [
+    $uri = $router->uri('home', [
         'action' => 'index',
         'page'   => 123
     ]);
@@ -763,7 +789,6 @@ public function index(RouterInterface $router)
 ```
 
 The `uri` method will return an instance of `Psr\Http\Message\UriInterface`:
-
 
 ```php
 use Spiral\Router\RouterInterface;

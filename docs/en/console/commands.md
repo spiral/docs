@@ -1,12 +1,14 @@
 # Console - User Commands
-You can add new console commands to your application or register plugin commands using bootloaders. By default, the Console
-component configured to automatically find commands in the `app/src` directory.
 
-To add a new `symfony/console` based Command, simply drop it into your application. 
+You can add new console commands to your application or register plugin commands using bootloaders. By default, the
+Console component configured to automatically find commands in the `app/src` directory.
+
+To add a new `symfony/console` based Command, simply drop it into your application.
 
 ## Command class
-To create a new command, you can either extend `Symfony\Component\Console\Command\Command` or `Spiral\Console\Command` which 
-provides some syntax sugar.
+
+To create a new command, you can either extend `Symfony\Component\Console\Command\Command` or `Spiral\Console\Command`
+which provides some syntax sugar.
 
 ```php
 use Spiral\Console\Command;
@@ -35,6 +37,7 @@ $ php app.php my:command
 ```
 
 ## Arguments and Options
+
 Spiral's `Command` class makes it easy to define needed arguments and options:
 
 ```php
@@ -47,12 +50,13 @@ const OPTIONS = [
 ];
 ```
 
-To get user's data via arguments and/or options, you can make use of `$this->argument("argName")` or 
-`$this->option("optName")`. 
+To get user's data via arguments and/or options, you can make use of `$this->argument("argName")` or
+`$this->option("optName")`.
 
 ## Perform method
-You can put your user code into the `perform` method. The `perform` support method injection and provide `$this->input` and
- `$this->output` properties to work with user input.
+
+You can put your user code into the `perform` method. The `perform` support method injection and provide `$this->input`
+and `$this->output` properties to work with user input.
 
 ```php
 protected function perform(MyService $service)
@@ -62,8 +66,9 @@ protected function perform(MyService $service)
 ```
 
 ## Helper Methods
-You can use a set of helper methods available inside the `Spiral\Console\Command`. Given examples are intended to be called in
-the `perform` method.
+
+You can use a set of helper methods available inside the `Spiral\Console\Command`. Given examples are intended to be
+called in the `perform` method.
 
 To write into output:
 

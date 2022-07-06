@@ -1,4 +1,5 @@
 # HTTP - CSRF protection
+
 The default Web bundle includes CSRF protection middleware. To install it in alternative bundles:
 
 ```bash
@@ -19,8 +20,9 @@ To activate the extension:
 The extension will activate `Spiral\Csrf\Middleware\CsrfMiddleware` to issue a unique token for every user.
 
 ## Enable Firewall
-The extension provides two middleware, which activates the protection on your routes or globally. To protect all the requests
-except for `GET`, `HEAD`, `OPTIONS `use `Spiral\Csrf\Middleware\CsrfFirewall`:
+
+The extension provides two middleware, which activates the protection on your routes or globally. To protect all the
+requests except for `GET`, `HEAD`, `OPTIONS `use `Spiral\Csrf\Middleware\CsrfFirewall`:
 
 ```php
 use Spiral\Csrf\Middleware\CsrfFirewall;
@@ -38,9 +40,10 @@ public function boot(RouterInterface $router)
 }
 ```
 
-> To protect against all the HTTP verbs use `Spiral\Csrf\Middleware\StrictCsrfFirewall`. 
+> To protect against all the HTTP verbs use `Spiral\Csrf\Middleware\StrictCsrfFirewall`.
 
 ## Usage
+
 Once the protection is activated, you must sign every request with the token available via PSR-7 attribute `csrfToken`.
 
 To receive this token in the controller or view:
@@ -52,8 +55,8 @@ public function index(ServerRequestInterface $request)
 }
 ``` 
 
-Every `POST`/`PUT`/`DELETE` request from the user must include this token as POST parameter `csrf-token` or header `X-CSRF-Token`.
-Users will receive `412 Bad CSRF Token` if a token is missing or not set.
+Every `POST`/`PUT`/`DELETE` request from the user must include this token as POST parameter `csrf-token` or
+header `X-CSRF-Token`. Users will receive `412 Bad CSRF Token` if a token is missing or not set.
 
 ```php
 public function index(ServerRequestInterface $request)
@@ -77,8 +80,9 @@ public function index(ServerRequestInterface $request)
 ```
 
 ## Activate Globally
-To activate CSRF protection globally register `Spiral\Csrf\Middleware\CsrfFirewall` or `Spiral\Csrf\Middleware\StrictCsrfFirewall`
-via `HttpBootloader`:
+
+To activate CSRF protection globally register `Spiral\Csrf\Middleware\CsrfFirewall`
+or `Spiral\Csrf\Middleware\StrictCsrfFirewall` via `HttpBootloader`:
 
 ```php
 use Spiral\Csrf\Middleware\CsrfFirewall;

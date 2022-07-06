@@ -1,12 +1,16 @@
 # Advanced - Custom Dispatcher
-It is possible to invoke application kernel using a custom data source, for example, Kafka, state-machine events, or attach to user-defined interrupt. In this section, we will try to demonstrate how to write RoadRunner service and kernel dispatcher to consume
-data from this service. In this example, we will be sending "ticks" to the kernel every second.
+
+It is possible to invoke application kernel using a custom data source, for example, Kafka, state-machine events, or
+attach to user-defined interrupt. In this section, we will try to demonstrate how to write RoadRunner service and kernel
+dispatcher to consume data from this service. In this example, we will be sending "ticks" to the kernel every second.
 
 > Attention, make sure to read about [application server](/framework/application-server.md) first. This article expects
 > that you are proficient in writing Golang code.
 
 ## RoadRunner Service
+
 First, let's create a RoadRunner service with an encapsulated worker server. Check these articles for the references:
+
 - https://roadrunner.dev/docs/beep-beep-service
 - https://roadrunner.dev/docs/library-standalone-usage
 
@@ -139,11 +143,12 @@ In configuration:
 
 ```yaml
 ticker:
-    internal: 1
-    workers.command: "php app.php"
+  internal: 1
+  workers.command: "php app.php"
 ```
 
 ## Application Dispatcher
+
 Now we can create our dispatcher:
 
 ```php
