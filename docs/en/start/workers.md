@@ -5,57 +5,60 @@ Every PHP process will only work within a single request/task. It allows you to 
 
 By keeping the application in resident memory, you can drastically increase performance and also offload part of functionality to the application server.
 
+> **Note**
 > Read more about Framework and application server symbiosis [here](/framework/design.md). Read about PSR-7 request flow [here](/http/lifecycle.md).
 
 ## Application Server
+The RoadRunner Application Server is installed using the [RoadRunner Bridge](https://github.com/spiral/roadrunner-bridge) integration package.
+In the [spiral/app](https://github.com/spiral/app) skeleton, this package is already installed and configured.
+
+> **Note**
+> Learn more about the [RoadRunner Bridge](https://spiral.dev/docs/packages-roadrunner-bridge):
+
 You can configure the number of workers, memory limits, and other extensions using `.rr.yaml` file:
 
 ```yaml
-http:
-  address: 0.0.0.0:8080
-  workers:
-    command: "php app.php"
+version: '2.7'
 
-jobs:
-  dispatch:
-    app-job-*.pipeline: "local"
-  pipelines:
-    local.broker: "ephemeral"
-  consume: ["local"]
-  workers:
-    command: "php app.php"
-    pool.numWorkers: 2
+rpc:
+    listen: tcp://127.0.0.1:6001
 
+server:
+    command: "php app.php"
+    relay: pipes
+
+# serve static files
 static:
-  dir:    "public"
-  forbid: [".php", ".htaccess"]
+    dir: "public"
 
-limit:
-  services:
-    http.maxMemory: 100
-    jobs.maxMemory: 100
+# HTTP plugin settings
+http:
+    address: 0.0.0.0:8080
+    middleware: [ "gzip", "static" ]
+    static:
+        dir: "public"
+        forbid: [ ".php", ".htaccess" ]
+    pool:
+        num_workers: 2
+        supervisor:
+            max_worker_memory: 100
 ```
 
 To set the number of workers for HTTP:
 
 ```yaml
 http:
-  address: 0.0.0.0:8080
-  workers:
-    command:         "php app.php"
-    pool.numWorkers: 4
+    pool:
+        num_workers: 4
 ```
 
 ### Developer Mode
-To force worker reload after every request (full debug mode) and limit processing to single worker:
+To force worker reload after every request (full debug mode) and limit processing to single worker, add a `debug` option:
 
 ```yaml
 http:
-  address: 0.0.0.0:8080
-  workers:
-    command:         "php app.php"
-    pool.numWorkers: 1
-    pool.maxJobs:    1
+  pool:
+      debug: true
 ```
 
 You can read more about RoadRunner [here](https://roadrunner.dev/docs).
@@ -64,10 +67,10 @@ You can read more about RoadRunner [here](https://roadrunner.dev/docs).
 Every worker will contain a single application instance. Default application skeleton(s) are based 
 on [spiral/boot](https://github.com/spiral/boot).
 
-The package allows quick application instantiation via static factory method `init`:
+The package allows quick application instantiation via static factory method `create` and run the created application via the `run` method:
 
 ```php
-$app = \App\App::init(['root' => __DIR__]);
+$app = \App\App::create(['root' => __DIR__])->run();
 ```
 
 Application Kernel initiates your application state and IoC configuration using a set of bootloaders:
@@ -111,5 +114,6 @@ Though Framework and all of its components are written with memory management in
 Any service declared as singleton will remain in the application memory till the process end. Try to avoid storing any user data
 or open resources in such services. 
 
+> **Note**
 > Framework includes a set of instruments to simplify the development process and avoid memory/state leaks such as 
 IoC Scopes, Cycle ORM, Immutable Configs, Domain Cores, Routes, and Middleware.
