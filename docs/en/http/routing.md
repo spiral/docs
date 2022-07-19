@@ -3,9 +3,10 @@ The framework [Web Bundle](https://github.com/spiral/app) includes pre-configure
 alternative builds:
 
 ```bash
-$ composer require spiral/router
+composer require spiral/router
 ```
 
+> **Note**
 > Please note that the spiral/framework >= 2.6 already includes this component.
 
 And activate its Bootloader:
@@ -17,12 +18,14 @@ And activate its Bootloader:
 ]
 ```
 
-> Read how to define routing using annotations [here](/http/annotated-routes.md).
+> **Note**
+> Read how to define routing using attributes or annotations [here](/http/annotated-routes.md).
 
 ## Default Configuration
 The default web application bundle allows you to call any controller action located in `App\Controller`namespace using
 `/<controller>/<action>` pattern. See below how to alter this behavior.
 
+> **Note**
 > Your controllers must have a `Controller` suffix.
 
 ## Configuration
@@ -38,7 +41,7 @@ use Spiral\Router\RouterInterface;
 
 class RoutesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router)
+    public function boot(RouterInterface $router): void
     {
         $router->setRoute(
             'home',                                   // route name 
@@ -51,6 +54,7 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
+> **Note**
 > The Route class can accept a handler of type `Psr\Http\Server\RequestHandlerInterface`, closure, invokable class, 
 > or `Spiral\Router\TargetInterface`. Simply pass a class or a binding name instead of a real object if you want it
 > to be constructed on demand.
@@ -62,8 +66,8 @@ arguments: `Psr\Http\Message\ServerRequestInterface` and `Psr\Http\Message\Respo
 ```php
 $router->setRoute('home', new Route(
     '/<name>',
-    function (ServerRequestInterface $request, ResponseInterface $response) {
-        $response->getBody()->write("hello world");
+    function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
+        $response->getBody()->write('hello world');
 
         return $response;
     }
@@ -73,6 +77,7 @@ $router->setRoute('home', new Route(
 ## Route Pattern and Parameters
 You can use a route pattern to specify any number of required and optional parameters. These parameters will later pass to the route handler via the `ServerRequestInterface` attribute `matches`.
 
+> **Note**
 > Use `attribute:matches.id` in Request Filters to access these values.
 
 Use the `<parameter_name:pattern>` form to define a route parameter, where pattern is a regexp friendly expression. You can omit pattern and just use `<parameter_name>`, in this case, the parameter will match `[^\/]+`.
@@ -90,11 +95,11 @@ use Spiral\Router\RouterInterface;
 
 class RoutesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router)
+    public function boot(RouterInterface $router): void
     {
         $router->setRoute('home', new Route(
             '/<name>',
-            function (ServerRequestInterface $request, ResponseInterface $response) {
+            function (ServerRequestInterface $request, ResponseInterface $response): array {
                 return $request->getAttribute('route')->getMatches(); // returns JSON ['name' => '']
             }
         ));
@@ -107,12 +112,13 @@ Use `[]` to make a part of route (including the parameters) optional, for exampl
 ```php
 $router->setRoute('home', new Route(
     '/[<name>]',
-    function (ServerRequestInterface $request, ResponseInterface $response) {
+    function (ServerRequestInterface $request, ResponseInterface $response): array {
         return $request->getAttribute('route')->getMatches();
     }
 ));
 ```
 
+> **Note**
 > This route will match `/`, the name parameter will be `null`.
 
 You can specify any number of parameters and make some of them optional, for example we can match URLs like `/group/user`, 
@@ -121,7 +127,7 @@ where `user` is optional:
 ```php
 $router->setRoute('home', new Route(
     '/<group>[/<user>]',
-    function (ServerRequestInterface $request, ResponseInterface $response) {
+    function (ServerRequestInterface $request, ResponseInterface $response): array {
         return $request->getAttribute('route')->getMatches();
     }
 ));
@@ -132,7 +138,7 @@ You can specify default parameter value using third route argument:
 ```php
 $router->setRoute('home', new Route(
     '/<group>[/<user>]',
-    function (ServerRequestInterface $request, ResponseInterface $response) {
+    function (ServerRequestInterface $request, ResponseInterface $response): array {
         return $request->getAttribute('route')->getMatches();
     },
     [
@@ -146,12 +152,13 @@ Use `<parameter:pattern>` to specify parameter pattern:
 ```php
 $router->setRoute('home', new Route(
     '/user/<id:\d+>',
-    function (ServerRequestInterface $request, ResponseInterface $response) {
+    function (ServerRequestInterface $request, ResponseInterface $response): array {
         return $request->getAttribute('route')->getMatches();
     }
 ));
 ```
 
+> **Note**
 > This route will only match URLs with numeric `id`.
 
 You can also specify multiple pre-defined options:
@@ -159,12 +166,13 @@ You can also specify multiple pre-defined options:
 ```php
 $router->setRoute('home', new Route(
     '/do/<action:login|logout>',
-    function (ServerRequestInterface $request, ResponseInterface $response) {
+    function (ServerRequestInterface $request, ResponseInterface $response): array {
         return $request->getAttribute('route')->getMatches();
     }
 ));
 ``` 
 
+> **Note**
 > This route will only match `/do/login` and `/do/logout`.
 
 ### Match Host
@@ -173,7 +181,7 @@ To match the domain or sub-domain name, prefix your pattern with `//`:
 ```php
 $router->setRoute('home', new Route(
     '//<host>/',
-    function (ServerRequestInterface $request, ResponseInterface $response) {
+    function (ServerRequestInterface $request, ResponseInterface $response): array {
         return $request->getAttribute('route')->getMatches();
     }
 ));
@@ -184,7 +192,7 @@ To match sub-domain:
 ```php
 $router->setRoute('home', new Route(
     '//<sub>.domain.com/',
-    function (ServerRequestInterface $request, ResponseInterface $response) {
+    function (ServerRequestInterface $request, ResponseInterface $response): array {
         return $request->getAttribute('route')->getMatches();
     }
 ));
@@ -195,7 +203,7 @@ You can combine host and path matching:
 ```php
 $router->setRoute('home', new Route(
     '//<sub>.domain.com/[<action>]',
-    function (ServerRequestInterface $request, ResponseInterface $response) {
+    function (ServerRequestInterface $request, ResponseInterface $response): array {
         return $request->getAttribute('route')->getMatches();
     }
 ));
@@ -216,9 +224,9 @@ use Spiral\Router\RouterInterface;
 
 class RoutesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router)
+    public function boot(RouterInterface $router): void
     {
-        $route = new Route('/[<action>]', function (ServerRequestInterface $request, ResponseInterface $response) {
+        $route = new Route('/[<action>]', function (ServerRequestInterface $request, ResponseInterface $response): array {
             return $request->getAttribute('route')->getMatches();
         });
 
@@ -243,9 +251,9 @@ use Spiral\Router\RouterInterface;
 
 class RoutesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router)
+    public function boot(RouterInterface $router): void
     {
-        $route = new Route('/[<action>]', function (ServerRequestInterface $request, ResponseInterface $response) {
+        $route = new Route('/[<action>]', function (ServerRequestInterface $request, ResponseInterface $response): array {
             return $request->getAttribute('route')->getMatches();
         });
 
@@ -277,9 +285,9 @@ use Spiral\Router\RouterInterface;
 
 class RoutesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router)
+    public function boot(RouterInterface $router): void
     {
-        $route = new Route('/<param>', function (ServerRequestInterface $request, ResponseInterface $response) {
+        $route = new Route('/<param>', function (ServerRequestInterface $request, ResponseInterface $response): array {
             return $request->getAttribute('route')->getMatches();
         });
 
@@ -320,6 +328,7 @@ class ParamWatcher implements MiddlewareInterface
 
 This route will trigger an Unauthorized exception on `/forbidden`.
 
+> **Note**
 > You can add as many middlewares as you want.
 
 ## Multiple Routes
@@ -330,7 +339,7 @@ matches the conditions of the following routes.
 $router->setRoute(
     'home',
     new Route('/<param>',
-        function (ServerRequestInterface $request, ResponseInterface $response) {
+        function (ServerRequestInterface $request, ResponseInterface $response): array {
             return $request->getAttribute('route')->getMatches();
         }
     )
@@ -340,7 +349,7 @@ $router->setRoute(
 $router->setRoute(
     'hello',
     new Route('/hello',
-        function (ServerRequestInterface $request, ResponseInterface $response) {
+        function (ServerRequestInterface $request, ResponseInterface $response): array {
             return $request->getAttribute('route')->getMatches();
         }
     )
@@ -357,13 +366,13 @@ E.g., there's no need to define the route for every controller and action if you
 $router->setRoute(
     'home',
     new Route('/<param>',
-        function (ServerRequestInterface $request, ResponseInterface $response) {
+        function (ServerRequestInterface $request, ResponseInterface $response): array {
             return $request->getAttribute('route')->getMatches();
         }
     )
 );
 
-$router->setDefault(new Route('/', function () {
+$router->setDefault(new Route('/', function (): string {
     return 'default';
 }));
 ``` 
@@ -424,7 +433,7 @@ use Spiral\Router\Target\Action;
 
 class RoutesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router)
+    public function boot(RouterInterface $router): void
     {
         $router->setRoute(
             'index',
@@ -455,6 +464,7 @@ $router->setRoute(
 );
 ```
 
+> **Note**
 > This route will match both `/index` and `/user/1` paths.
 
 Behind the hood, the route will compile into expression which is aware of action constrains `/^(?P<action>index|user)(?:\/(?P<id>[^\/]+))?$/iu`.
@@ -495,7 +505,7 @@ use Spiral\Router\Target\Controller;
 
 class RoutesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router)
+    public function boot(RouterInterface $router): void
     {
         $router->setRoute(
             'home',
@@ -505,6 +515,7 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
+> **Note**
 > Route matches `/home/index`, `/home/other` and `/home/user/1`.
 
 Combine this target with defaults to make your URLs shorter.
@@ -517,6 +528,7 @@ $router->setRoute(
 );
 ```
 
+> **Note**
 > This route will match `/home` with `action=index`. Note, you must extend optional path segments `[]` till the end of the
 > route pattern.
 
@@ -536,7 +548,7 @@ use Spiral\Router\Target\Namespaced;
 
 class RoutesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router)
+    public function boot(RouterInterface $router): void
     {
         $router->setRoute('app', new Route(
             '/<controller>/<action>',
@@ -546,6 +558,7 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
+> **Note**
 > This route will match `/home/index`, `/home/other` and `/demo/test`.
 
 You can make all the parameters optional and set the default values:
@@ -562,14 +575,16 @@ $router->setRoute('app',
 );
 ```
 
+> **Note**
 > This route will match `/` (home->index), `/home` (home->index), `/home/index`, `/home/other` and `/demo/test`. The 
 > `/demo` will trigger not-found error as `DemoController` does not defines method `index`.
 
-The default web-application bundle sets this route [as default](https://github.com/spiral/app/blob/master/app/src/Bootloader/RoutesBootloader.php#L42).
+The default web-application bundle sets this route [as default](https://github.com/spiral/app/blob/2.x/app/src/Bootloader/RoutesBootloader.php#L42).
 You don't need to create a route for any of the controllers added to `App\Controller`, simply use `/controller/action` URLs
 to access the required method. If no action is specified, the `index` will be used by the default. The routing will point
 to the public methods only.
 
+> **Note**
 > You can turn the default route off once the development is over.
 
 ### Route to Controller Group
@@ -588,7 +603,7 @@ use Spiral\Router\Target\Group;
 
 class RoutesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router)
+    public function boot(RouterInterface $router): void
     {
         $router->setRoute('app', new Route('/<controller>/<action>', new Group([
             'home' => HomeController::class,
@@ -598,6 +613,7 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
+> **Note**
 > Such an approach is useful when you want to assemble multiple modules under one path (i.e., admin panels).
 
 ## RESTful
@@ -638,6 +654,7 @@ $router->setRoute('user', new Route(
 ));
 ```
 
+> **Note**
 > Invoking `/user/1` with different HTTP methods will call different controller methods. Note, you still need
 > to specify the action name.
 
@@ -693,7 +710,7 @@ use Spiral\Router\Target\Group;
 
 class RoutesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router)
+    public function boot(RouterInterface $router): void
     {
         $resource = new Route('/v1/<controller>/<id>', new Group([
             'user' => UserController::class,
@@ -798,4 +815,5 @@ public function index(RouterInterface $router)
 }
 ```
 
+> **Note**
 > You can use `@route(name, params)` directive in Stempler views.
