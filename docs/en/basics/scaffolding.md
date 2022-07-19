@@ -6,9 +6,10 @@ Most of the application code can be generated using the set of console commands.
 To install the extension:
 
 ```bash
-$ composer require spiral/scaffolder
+composer require spiral/scaffolder
 ```
 
+> **Note**
 > Please note that the spiral/framework >= 2.7 already includes this component.
 
 Make sure to add `Spiral\Scaffolder\Bootloader\ScaffolderBootloader` to your App class:
@@ -27,6 +28,7 @@ class App extends Kernel
 }
 ```
 
+> **Note**
 > Attention, the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
 
 ## Configuration
@@ -49,14 +51,14 @@ create:entity      | Create Entity declaration
 
 ### Bootloader
 ```bash
-$ php app.php create:bootloader <name>
+php app.php create:bootloader <name>
 ```
 
 `<Name>Bootloader` class will be created.
 
 #### Example
 ```bash
-$ php app.php create:bootloader my
+php app.php create:bootloader my
 ```
 
 Output is:
@@ -79,14 +81,14 @@ class MyBootloader extends Bootloader
 
 ### Command
 ```bash
-$ php app.php create:command <name> [alias]
+php app.php create:command <name> [alias]
 ```
 
 `<Name>Command` class will be created. Command name will be equal to `name` or `alias` (if this value set).
 
 #### Example without `alias`
 ```bash
-$ php app.php create:command my
+php app.php create:command my
 ```
 
 Output is:
@@ -114,7 +116,7 @@ class MyCommand extends Command
 
 #### Example with alias
 ```bash
-$ php app.php create:bootloader my alias
+php app.php create:command my alias
 ```
 
 Output is:
@@ -143,7 +145,7 @@ class MyCommand extends Command
 
 ### Config
 ```bash
-$ php app.php create:config <name>
+php app.php create:config <name>
 ```
 
 `<Name>Config` class will be created. Also, `<app directory>/config/<name>.php` file will be created if doesn't exists.
@@ -158,7 +160,7 @@ scaffolder will try to create a by-key-getter method. If a generated key is conf
 
 #### Example with empty config file
 ```bash
-$ php app.php create:config my
+php app.php create:config my
 ```
 
 Output config file:
@@ -229,7 +231,7 @@ return [
 ```
 
 ```bash
-$ php app.php create:config my -r
+php app.php create:config my -r
 ```
 
 Output is:
@@ -281,9 +283,6 @@ class MyConfig extends InjectableConfig
         return $this->config['values'];
     }
 
-    /**
-     * @return string
-     */
     public function getValue(): string
     {
         return $this->config['value'];
@@ -297,9 +296,6 @@ class MyConfig extends InjectableConfig
         return $this->config['few'];
     }
 
-    /**
-     * @return array
-     */
     public function getMixedValues(): array
     {
         return $this->config['mixedValues'];
@@ -321,44 +317,26 @@ class MyConfig extends InjectableConfig
         return $this->config['conflicts'];
     }
 
-    /**
-     * @return string
-     */
     public function getConflict(): string
     {
         return $this->config['conflict'];
     }
 
-    /**
-     * @return string
-     */
     public function getConflictBy(): string
     {
         return $this->config['conflictBy'];
     }
 
-    /**
-     * @param string param
-     * @return string
-     */
     public function getParam(string $param): string
     {
         return $this->config['params'][$param];
     }
 
-    /**
-     * @param string parameter
-     * @return string
-     */
     public function getParameterBy(string $parameter): string
     {
         return $this->config['parameter'][$parameter];
     }
 
-    /**
-     * @param int value
-     * @return string
-     */
     public function getValueBy(int $value): string
     {
         return $this->config['values'][$value];
@@ -368,7 +346,7 @@ class MyConfig extends InjectableConfig
 
 ### Controller
 ```bash
-$ php app.php create:controller <name>
+php app.php create:controller <name>
 ```
 
 `<Name>Controller` class will be created. Available options:
@@ -377,7 +355,7 @@ $ php app.php create:controller <name>
 
 #### Example with empty actions list
 ```bash
-$ php app.php create:controller my
+php app.php create:controller my
 ```
 
 Output is:
@@ -390,7 +368,7 @@ class MyController
 
 #### Example with `prototype` option
 ```bash
-$ php app.php create:controller my -p
+php app.php create:controller my -p
 ```
 
 Output is:
@@ -406,7 +384,7 @@ class MyController
 
 #### Example with actions list
 ```bash
-$ php app.php create:controller my -a index -a create -a update -a delete
+php app.php create:controller my -a index -a create -a update -a delete
 ```
 
 Output is:
@@ -434,7 +412,7 @@ class MyController
 
 ### HTTP Request Filter
 ```bash
-$ php app.php create:filter <name>
+php app.php create:filter <name>
 ```
 
 `<Name>Filter` class will be created. Available options:
@@ -446,12 +424,13 @@ default value or a PhpDoc. Otherwise you can optionally specify filter schema us
 Full field format is `name:type(source:origin)`. Where `type`, `origin` and `source:origin` are optional and can be omitted, defaults are:
   * type=string
   * source={data}
-    
+
+> **Note**    
 > See more about filters in [filters](https://github.com/spiral/filters) package
 
 #### Example with empty fields definition
 ```bash
-$ php app.php create:filter my
+php app.php create:filter my
 ```
 
 Output is:
@@ -470,7 +449,7 @@ class MyFilter extends Filter
 
 #### Example with fields definition:
 ```bash
-$ php app.php create:filter my -f unknown_val -f str_val:string -f int_val:int -f bool_val:bool(query:from_bool) -f float_val:float(query)
+php app.php create:filter my -f unknown_val -f str_val:string -f int_val:int -f bool_val:bool(query:from_bool) -f float_val:float(query)
 ```
 
 Output is:
@@ -534,7 +513,7 @@ class MyEntity
 ```
 
 ```bash
-$ php app.php create:filter my -e MyEntity
+php app.php create:filter my -e MyEntity
 ```
 
 Output is:
@@ -580,14 +559,14 @@ class MyFilter extends Filter
 
 ### Job Handler
 ```bash
-$ php app.php create:jobHandler <name>
+php app.php create:jobHandler <name>
 ```
 
 `<Name>Job` class will be created.
 
 #### Example
 ```bash
-$ php app.php create:jobHandler my
+php app.php create:jobHandler my
 ```
 
 Output is:
@@ -604,14 +583,14 @@ class MyJob extends JobHandler
 
 ### Middleware
 ```bash
-$ php app.php create:middleware <name>
+php app.php create:middleware <name>
 ```
 
 `<Name>` class will be created.
 
 #### Example
 ```bash
-$ php app.php create:middleware my
+php app.php create:middleware my
 ```
 
 Output is:
@@ -635,18 +614,19 @@ class My implements MiddlewareInterface
 
 ### Migration
 ```bash
-$ php app.php create:migration <name>
+php app.php create:migration <name>
 ```
 
 `<Name>Migration` class will be created. Available options:
 * `table (t)` for table name
 * `field (f)` (multiple values allowed) for a field(s) definition. Will work only with `table` option. Field format is `name:type`.
 
+> **Note**
 > See more about migrations in [migrations](https://github.com/spiral/migrations) package
 
 #### Example
 ```bash
-$ php app.php create:migration my
+php app.php create:migration my
 ```
 
 Output is:
@@ -673,7 +653,7 @@ class MyMigration extends Migration
 
 #### Example with options
 ```bash
-$ php app.php create:migration my -t my_table -c int_col:int
+php app.php create:migration my -t my_table -c int_col:int
 ```
 
 Output is:
@@ -704,14 +684,14 @@ class MyMigration extends Migration
 
 ### Repository
 ```bash
-$ php app.php create:repository <name>
+php app.php create:repository <name>
 ```
 
 `<Name>Repository` class will be created.
 
 #### Example
 ```bash
-$ php app.php create:repository my
+php app.php create:repository my
 ```
 
 Output is:
@@ -725,7 +705,7 @@ class MyRepository extends Repository
 
 ### ORM Entity
 ```bash
-$ php app.php create:entity <name> [<format>]
+php app.php create:entity <name> [<format>]
 ```
 
 `<Name>Entity` class will be created.
@@ -743,7 +723,7 @@ Available options:
 
 #### Example
 ```bash
-$ php app.php create:entity my
+php app.php create:entity my
 ```
 
 Output is:
@@ -758,9 +738,12 @@ class My
 }
 ```
 
+> **Note**
+> It's recommended to replace the generated `Entity` annotation with an attribute
+
 #### Example with public accessibility
 ```bash
-$ php app.php create:entity my -f field:string
+php app.php create:entity my -f field:string
 ```
 
 Output is:
@@ -781,7 +764,7 @@ class My
 
 #### Example with protected/private accessibility
 ```bash
-$ php app.php create:entity my -f field:string -a protected
+php app.php create:entity my -f field:string -a protected
 ```
 
 Output is:
@@ -814,7 +797,7 @@ class My
 
 #### Example with tableize inflection
 ```bash
-$ php app.php create:entity my -f int_field:int -f stringField:string -i t
+php app.php create:entity my -f int_field:int -f stringField:string -i t
 ```
 
 Output is:
@@ -841,7 +824,7 @@ class My
 
 #### Example with camelize inflection
 ```bash
-$ php app.php create:entity my -f int_field:int -f stringField:string -i c
+php app.php create:entity my -f int_field:int -f stringField:string -i c
 ```
 
 Output is:
@@ -868,7 +851,7 @@ class My
 
 #### Example with other options
 ```bash
-$ php app.php create:entity my -r myRole -m MyMapper -t my_table -d my_db -e
+php app.php create:entity my -r myRole -m MyMapper -t my_table -d my_db -e
 ```
 
 Output is:
