@@ -49,7 +49,7 @@ To simplify the tweaking of the application, restart the application server in d
 only one worker and reloads it after every request.
 
 ```bash
-$ ./rr serve -o "http.pool.max_jobs=1" -o "http.pool.num_workers=1" -o "http.pool.debug=true" -o "http.address=127.0.0.1:8181"
+./rr serve -o "http.pool.max_jobs=1" -o "http.pool.num_workers=1" -o "http.pool.debug=true" -o "http.address=127.0.0.1:8181"
 ```
 
 You can also create and use an alternative configuration file via `-c` flag of the `rr` application.
