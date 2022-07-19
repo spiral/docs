@@ -93,10 +93,6 @@ The `spiral/app` application comes with pre-configured In-Memory SQLite database
 
 ```php
 // database.php 
-<?php
-
-declare(strict_types=1);
-
 use Cycle\Database\Config;
 
 return [
@@ -131,10 +127,6 @@ To change the default database to MySQL, change the `drivers` section of the con
 the ENV variables.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 use Cycle\Database\Config;
 
 return [
@@ -177,10 +169,6 @@ To generate the stub data, we will need an instance of `Faker\Generator`, create
 instance as a singleton. Use a factory method for that purpose.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Bootloader;
 
 use Faker\Factory;
@@ -219,10 +207,6 @@ Add the bootloader to `LOAD` or `APP` in `app/src/App.php` to activate the compo
 Use the `Faker\Generator` in your controller to view the stub data at `http://localhost:8080/`:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Controller;
 
 use Faker\Generator;
@@ -247,10 +231,6 @@ verbs, middleware, etc.
 Create a simple route to point all of the URLs to the `App\Controller\HomeController`:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Bootloader;
 
 use App\Controller\HomeController;
@@ -293,10 +273,6 @@ In order to simplify the route definition we can use `spiral/annotated-routes` e
 We can use this annotation in our controller as follows:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Controller;
 
 use Spiral\Router\Annotation\Route;
@@ -340,10 +316,6 @@ We can change the default behavior of the application and enable Cycle Entity re
 Filter validation and `Guard` attribute.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Bootloader;
 
 use Spiral\Bootloader\DomainBootloader;
@@ -408,10 +380,6 @@ php app.php create:entity comment -f id:primary -f message:string
 Post: 
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Database;
 
 use Cycle\Annotated\Annotation as Cycle;
@@ -442,10 +410,6 @@ Scaffolder before `Spiral Framework v3.0` doesn't support attributes and propert
 After the file is created, it's recommended to replace annotations with attributes and add types:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Database;
 
 use App\Repository\PostRepository;
@@ -469,10 +433,6 @@ class Post
 User, with added attributes and types:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Database;
 
 use App\Repository\UserRepository;
@@ -492,10 +452,6 @@ class User
 Comment, with added attributes and types:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Database;
 
 use Cycle\Annotated\Annotation as Cycle;
@@ -538,10 +494,6 @@ Post and Comment to belong to User and Post has many Comments.
 Post:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Database;
 
 use App\Repository\PostRepository;
@@ -580,10 +532,6 @@ class Post
 Comment:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Database;
 
 use Cycle\Annotated\Annotation as Cycle;
@@ -629,10 +577,6 @@ Isolate the business logic into a separate service layer. Let's create `PostServ
 We will need an instance of `Cycle\ORM\EntityManagerInterface` to persist the post.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Service;
 
 use App\Database\Post;
@@ -668,10 +612,6 @@ class PostService
 One of the most powerful capabilities of the framework is [Prototyping](/basics/prototype.md). Declare the shortcut `postService`, which points to `PostService` using annotation.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Service;
 
 use App\Database\Post;
@@ -713,10 +653,6 @@ Use the method injection on `perform` in `UserCommand` to seed the users using F
 
 ```php
 // app/src/Command/Seed/UserCommand.php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Command\Seed;
 
 use App\Database\User;
@@ -761,10 +697,6 @@ as class properties.
 
 ```php
 // app/src/Command/Seed/PostCommand.php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Command\Seed;
 
 use Faker\Generator;
@@ -813,10 +745,6 @@ php app.php prototype:inject -r
 You command will be converted into the following form:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Command\Seed;
 
 use App\Repository\UserRepository;
@@ -864,10 +792,6 @@ class PostCommand extends Command
 Seed comments using random user and post relation. We will receive all the needed instances using the method injection.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Command\Seed;
 
 use App\Database\Comment;
@@ -921,7 +845,7 @@ Create a set of REST endpoints to retrieve the post data via API. We can start w
 Create it using scaffolder:
 
 ```bash
-php .\app.php create:controller post -a test -a get -p 
+php app.php create:controller post -a test -a get -p 
 ```
 
 > **Note**
@@ -930,10 +854,6 @@ php .\app.php create:controller post -a test -a get -p
 The generated code:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Controller;
 
 use Spiral\Prototype\Traits\PrototypeTrait;
@@ -1012,10 +932,6 @@ To get post details use `PostRepository`, request such dependency in the constru
 `posts`. You can access `id` via route parameter:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Controller;
 
 use App\Database\Post;
@@ -1054,10 +970,6 @@ class PostController
 You can replace direct repository access and use `Post` as method injection via connected `CycleInterceptor` (make sure that `AppBootloader` connected):
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Controller;
 
 use App\Database\Post;
@@ -1094,10 +1006,6 @@ You can use any existing serialization solution (like `jms/serializer`) or write
 to map post data into JSON format with comments:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\View;
 
 use App\Database\Post;
@@ -1139,10 +1047,6 @@ class PostView implements SingletonInterface
 Modify the controller as follows:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Controller;
 
 use App\Database\Post;
@@ -1171,10 +1075,6 @@ Use direct repository access to load multiple posts. To start, let's load all th
 Create `findAllWithAuthors` method in `PostRepository`:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Repository;
 
 use Cycle\ORM\Select;
@@ -1215,10 +1115,6 @@ Activate the `Spiral\DataGrid\Bootloader\GridBootloader` in your application.
 To use data grids, we have to specify our data schema first, create `App\View\PostGrid` class:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\View;
 
 use Spiral\DataGrid\GridSchema;
@@ -1293,10 +1189,6 @@ php app.php create:filter comment
 Configure filter as following:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Filter;
 
 use Spiral\Filters\Filter;
@@ -1326,10 +1218,6 @@ class CommentFilter extends Filter
 Create `App\Service\CommentService`:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Service;
 
 use App\Database\Comment;
@@ -1386,7 +1274,7 @@ public function comment(Post $post, CommentFilter $commentFilter): array
 Check the error format:
 
 ```bash
-$ curl -X POST -H 'content-type: application/json' --data '{}' http://localhost:8080/api/post/1/comment
+curl -X POST -H 'content-type: application/json' --data '{}' http://localhost:8080/api/post/1/comment
 ``` 
 
 Response:
@@ -1398,7 +1286,7 @@ Response:
 Or not found exception when post can not be found:
 
 ```bash
-$ curl -X POST -H 'content-type: application/json' --data '{"message":"test"}' http://localhost:8080/api/post/9999/comment
+curl -X POST -H 'content-type: application/json' --data '{"message":"test"}' http://localhost:8080/api/post/9999/comment
 ``` 
 
 > **Note**
@@ -1407,7 +1295,7 @@ $ curl -X POST -H 'content-type: application/json' --data '{"message":"test"}' h
 To post a valid comment: 
 
 ```bash
-$ curl -X POST -H 'content-type: application/json' --data '{"message": "first comment"}' http://localhost:8080/api/post/1/comment
+curl -X POST -H 'content-type: application/json' --data '{"message": "first comment"}' http://localhost:8080/api/post/1/comment
 ```
 
 > **Note**
