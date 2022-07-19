@@ -8,11 +8,13 @@ Implementation includes multiple additions such as:
 - the ability to assign a role to multiple privileges using wildcard pattern
 - the ability to overwrite role-to-permission assignment using higher priority rule
 
+> **Note**
 > Such additions make it possible to use the component as the framework for ACL, DAC, and ABAC security models.
 
 Make sure to enable the `Spiral\Bootloader\Security\GuardBootloader` to activate the component, no configuration is 
 required.
 
+> **Note**
 > The component is enabled in Web and GRPC bundles by default.
 
 ## Actor
@@ -25,6 +27,7 @@ interface ActorInterface
 }
 ```
 
+> **Note**
 > Use IoC scopes to set Actor during the user request.
 
 Read how to use authenticated user as an actor [here](/security/authentication.md).
@@ -41,9 +44,9 @@ use Spiral\Security\ActorInterface;
 
 class HomeController
 {
-    public function index(ScopeInterface $scope)
+    public function index(ScopeInterface $scope): string
     {
-        return $scope->runScope([ActorInterface::class => new Actor(['admin'])], function () {
+        return $scope->runScope([ActorInterface::class => new Actor(['admin'])], function (): string {
 
             // the actor has role `admin` in this scope
             return 'ok';
@@ -52,6 +55,7 @@ class HomeController
 }
 ```
 
+> **Note**
 > You can set the active Actor using domain core interceptors, GRPC interceptors, HTTP middleware, custom IoC scopes, etc.
 
 For the simplicity of this guide, we will see the default actor globally, via custom Bootloader:
@@ -66,7 +70,7 @@ use Spiral\Security\ActorInterface;
 
 class SecurityBootloader extends Bootloader
 {
-    public function boot(Container $container)
+    public function boot(Container $container): void
     {
         $container->bindSingleton(ActorInterface::class, new Actor(['user']));
     }
@@ -88,7 +92,7 @@ use Spiral\Security\PermissionsInterface;
 
 class ActorBootloader extends Bootloader
 {
-    public function boot(Container $container, PermissionsInterface $rbac)
+    public function boot(Container $container, PermissionsInterface $rbac): void
     {
         $container->bindSingleton(ActorInterface::class, new Actor(['user']));
 
@@ -98,6 +102,7 @@ class ActorBootloader extends Bootloader
 }
 ```
 
+> **Note**
 > The role-rule-permission association will be explained in detail down below.
 
 Once the Bootloader is activated, you can use the `Spiral\Core\GuardInterface` to check the access to the specific permissions,
@@ -111,7 +116,7 @@ use Spiral\Security\GuardInterface;
 
 class HomeController
 {
-    public function index(GuardInterface $guard)
+    public function index(GuardInterface $guard): string
     {
         if (!$guard->allows('home.read')) {
             return 'can not read';
@@ -122,6 +127,7 @@ class HomeController
 }
 ```
 
+> **Note**
 > Change the default actor roles to see how it affects the result.
 
 Use the `guard` prototype property to develop faster.
@@ -135,7 +141,7 @@ class HomeController
 {
     use PrototypeTrait;
 
-    public function index()
+    public function index(): string
     {
         if (!$this->guard->allows('home.read')) {
             return 'can not read';
@@ -146,6 +152,7 @@ class HomeController
 }
 ```
 
+> **Note**
 > You can use `GuardInterface` in controllers, services, and views.
 
 ### Permission Context
@@ -159,7 +166,7 @@ use Spiral\Security\GuardInterface;
 
 class HomeController
 {
-    public function index(GuardInterface $guard)
+    public function index(GuardInterface $guard): string
     {
         if (!$guard->allows('home.read', ['key' => 'value'])) {
             return 'can not read';
@@ -187,7 +194,7 @@ use Spiral\Security\PermissionsInterface;
 
 class SecurityBootloader extends Bootloader
 {
-    public function boot(PermissionsInterface $rbac)
+    public function boot(PermissionsInterface $rbac): void
     {
         $rbac->addRole('guest');
     }
@@ -205,7 +212,7 @@ use Spiral\Security\PermissionsInterface;
 
 class SecurityBootloader extends Bootloader
 {
-    public function boot(PermissionsInterface $rbac)
+    public function boot(PermissionsInterface $rbac): void
     {
         $rbac->addRole('guest');
         
@@ -248,7 +255,7 @@ use Spiral\Security\Rule\ForbidRule;
 
 class SecurityBootloader extends Bootloader
 {
-    public function boot(PermissionsInterface $rbac)
+    public function boot(PermissionsInterface $rbac): void
     {
         $rbac->addRole('guest');
 
@@ -269,7 +276,7 @@ use Spiral\Security\Rule;
 
 class SecurityBootloader extends Bootloader
 {
-    public function boot(PermissionsInterface $rbac)
+    public function boot(PermissionsInterface $rbac): void
     {
         $rbac->addRole('guest');
 
@@ -279,6 +286,7 @@ class SecurityBootloader extends Bootloader
 }
 ```
 
+> **Note**
 > The Guard will check all of the actor roles, at least one of them must grant the permission.
 
 ## Rules
@@ -302,6 +310,7 @@ if (!$guard->allows('home.read', ['key' => 'value'])) {
 
 Such an approach allows you to create a complex rule association between the role and the set of permissions.
 
+> **Note**
 > The default rules `AllowRule` and `ForbidRule` are always returning `true` and `fast` accordingly.
 
 ### Custom Rules
@@ -334,7 +343,7 @@ use Spiral\Security\PermissionsInterface;
 
 class SecurityBootloader extends Bootloader
 {
-    public function boot(PermissionsInterface $rbac)
+    public function boot(PermissionsInterface $rbac): void
     {
         $rbac->addRole('guest');
 
@@ -354,7 +363,7 @@ class HomeController
 {
     use PrototypeTrait;
 
-    public function index()
+    public function index(): string
     {
         if ($this->guard->allows('home.read', ['key' => 'value'])) {
             echo 'yay';
@@ -367,6 +376,7 @@ class HomeController
 }
 ``` 
 
+> **Note**
 > Use the actor interface to create more complex rules.
 
 Pass domain entities as context to check the authority:
@@ -406,6 +416,7 @@ class SampleRule extends Rule
 }
 ```
 
+> **Note**
 > You can access to any application services via method injection.
 
 We recommend declaring rules as singletons to improve the performance of the application.
@@ -426,8 +437,8 @@ class SampleRule extends Rule implements SingletonInterface
 }
 ```
 
-## @Guarded Annotation
-You can use `Guarded` annotation to automatically check the access to the controller methods using the [domain cores](/cookbook/domain-core.md).
+## @Guarded Attribute
+You can use `Guarded` attribute to automatically check the access to the controller methods using the [domain cores](/cookbook/domain-core.md).
 
 ```php
 namespace App\Controller;
@@ -436,10 +447,8 @@ use Spiral\Domain\Annotation\Guarded;
 
 class HomeController
 {
-    /**
-     * @Guarded("home.index", else="notFound")
-     */
-    public function index()
+    #[Guarded(permission: 'home.index', else: 'notFound')]
+    public function index(): string
     {
         return 'OK';
     }
