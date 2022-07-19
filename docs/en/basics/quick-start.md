@@ -288,7 +288,7 @@ You can invoke this method using URL `http://localhost:8080/open/123`. The `id` 
 > **Note**
 > Read more about Routing [here](/http/routing.md).
 
-### Annotated Routing
+### Creating Routes as Attributes
 In order to simplify the route definition we can use `spiral/annotated-routes` extension. Read more about the extension [here](/http/annotated-routes.md).
 We can use this annotation in our controller as follows:
 
@@ -391,7 +391,7 @@ You can write the migration manually, or let Cycle ORM generate it for you.
 > Read more about migrations [here](https://cycle-orm.dev/docs/database-migrations). Use [Scaffolder](/basics/scaffolding.md) component to create migrations manually. 
 
 ### Define ORM Entities
-The demo application comes with [Cycle ORM](https://cycle-orm.dev). By default, you can use annotations to configure
+The demo application comes with [Cycle ORM](https://cycle-orm.dev). By default, you can use attributes to configure
 your entities.
 
 Let's create `Post`, `User` and `Comment` entities and their repositories using the Scaffolder extension:
@@ -406,6 +406,40 @@ php app.php create:entity comment -f id:primary -f message:string
 > Observe the classes generated in `app/src/Database` and `app/src/Repository`.
 
 Post: 
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Database;
+
+use Cycle\Annotated\Annotation as Cycle;
+
+/**
+ * @Cycle\Entity(repository="\App\Repository\PostRepository")
+ */
+class Post
+{
+    /**
+     * @Cycle\Column(type = "primary")
+     */
+    public $id;
+
+    /**
+     * @Cycle\Column(type = "string")
+     */
+    public $title;
+
+    /**
+     * @Cycle\Column(type = "text")
+     */
+    public $content;
+}
+ ```
+
+Scaffolder before `Spiral Framework v3.0` doesn't support attributes and property types. 
+After the file is created, it's recommended to replace annotations with attributes and add types:
 
 ```php
 <?php
@@ -432,7 +466,7 @@ class Post
 
 ```
 
-User:
+User, with added attributes and types:
 
 ```php
 <?php
@@ -455,7 +489,7 @@ class User
 }
 ```
 
-Comment:
+Comment, with added attributes and types:
 
 ```php
 <?php
