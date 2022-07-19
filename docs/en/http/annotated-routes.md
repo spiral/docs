@@ -22,17 +22,13 @@ You can use the extension.
 To define the route, make sure to use `Spiral\Router\Annotation\Route`: 
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Controller;
 
 use Spiral\Router\Annotation\Route;
 
 class HomeController
 {
-    #[Route(route: '/', name: 'index', methods: 'GET', group: 'default')] 
+    #[Route(route: '/', name: 'index', methods: 'GET')] 
     public function index(): string
     {
         return 'hello world';
@@ -51,6 +47,42 @@ defaults | array | Default values for route pattern.
 group | string | Route group, defaults to `default`.
 middleware | array | Route specific middleware class names.
 priority | int | (Available since v2.9). Position in a routes list. Higher priority routes are sorted before lower ones. Helps to solve situations when one request matches two routes. Defaults to 0.
+
+## Route Groups
+It is possible to apply shared rules, middleware, [domain core](/cookbook/domain-core.md), or prefix to the group of routes. Create and register bootloader to achieve that:
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Router\GroupRegistry;
+
+class APIRoutes extends Bootloader
+{
+    public function boot(GroupRegistry $groups): void
+    {
+        $groups->getGroup('api')
+               ->setPrefix('/api/v1')
+               ->addMiddleware(SomeMiddleware::class);
+    }
+}
+```
+
+> **Note**
+> Make sure to register bootloader after `AnnotatedRoutesBootloader`. Use the `default` group to configure all the routes.
+
+You can now assign the route to the group using the `group` attribute.
+
+```php
+#[Route(route: '/', name: 'index', methods: 'GET', group: 'api')]  
+public function index(): ResponseInterface
+{
+    // ...    
+}
+```
+
+> **Note**
+> Route middleware, prefix, and domain core will be added automatically.
 
 ## Route Cache
 By default, all the annotated routes cached when `DEBUG` is off. To turn on/off route-cache separately from `DEBUG` env variable
