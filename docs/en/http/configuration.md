@@ -7,16 +7,8 @@ to enable it in alternative builds.
 
 To install the extension:
 
-#### spiral/framework < 2.6.0
-
 ```bash
-$ composer require spiral/http spiral/router spiral/nyholm-bridge
-```
-
-#### spiral/framework >= 2.6.0
-
-```bash
-$ composer require spiral/nyholm-bridge
+composer require spiral/nyholm-bridge
 ```
 
 Activate the extension by adding two bootloaders:
@@ -45,6 +37,7 @@ class App extends Kernel
 }
 ```
 
+> **Note**
 > See how to use custom PSR-15 handler [here](/http/psr-15.md).
 
 Make sure to configure [routing](/http/routing.md).
@@ -54,10 +47,6 @@ Make sure to configure [routing](/http/routing.md).
 The HTTP extension can be configured via `app/config/http.php` file:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 return [
     // default base path
     'basePath'   => '/',
@@ -74,6 +63,7 @@ return [
 ];
 ```
 
+> **Note**
 > The default configuration will be used if such file does not exist.
 
 You can register Middleware during the bootload phase via `HttpBootloader`:

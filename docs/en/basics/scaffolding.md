@@ -7,9 +7,10 @@ Most of the application code can be generated using the set of console commands.
 To install the extension:
 
 ```bash
-$ composer require spiral/scaffolder
+composer require spiral/scaffolder
 ```
 
+> **Note**
 > Please note that the spiral/framework >= 2.7 already includes this component.
 
 Make sure to add `Spiral\Scaffolder\Bootloader\ScaffolderBootloader` to your App class:
@@ -28,6 +29,7 @@ class App extends Kernel
 }
 ```
 
+> **Note**
 > Attention, the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
 
 ## Configuration
@@ -55,7 +57,7 @@ the [ScaffolderBootloader](https://github.com/spiral/scaffolder/blob/master/src/
 ### Bootloader
 
 ```bash
-$ php app.php create:bootloader <name>
+php app.php create:bootloader <name>
 ```
 
 `<Name>Bootloader` class will be created.
@@ -63,7 +65,7 @@ $ php app.php create:bootloader <name>
 #### Example
 
 ```bash
-$ php app.php create:bootloader my
+php app.php create:bootloader my
 ```
 
 Output is:
@@ -88,7 +90,7 @@ class MyBootloader extends Bootloader
 ### Command
 
 ```bash
-$ php app.php create:command <name> [alias]
+php app.php create:command <name> [alias]
 ```
 
 `<Name>Command` class will be created. Command name will be equal to `name` or `alias` (if this value set).
@@ -96,7 +98,7 @@ $ php app.php create:command <name> [alias]
 #### Example without `alias`
 
 ```bash
-$ php app.php create:command my
+php app.php create:command my
 ```
 
 Output is:
@@ -126,7 +128,7 @@ class MyCommand extends Command
 #### Example with alias
 
 ```bash
-$ php app.php create:bootloader my alias
+php app.php create:command my alias
 ```
 
 Output is:
@@ -156,7 +158,7 @@ class MyCommand extends Command
 ### Config
 
 ```bash
-$ php app.php create:config <name>
+php app.php create:config <name>
 ```
 
 `<Name>Config` class will be created. Also, `<app directory>/config/<name>.php` file will be created if it doesn't
@@ -176,7 +178,7 @@ omitted.
 #### Example with empty config file
 
 ```bash
-$ php app.php create:config my
+php app.php create:config my
 ```
 
 Output config file:
@@ -248,7 +250,7 @@ return [
 ```
 
 ```bash
-$ php app.php create:config my -r
+php app.php create:config my -r
 ```
 
 Output is:
@@ -352,7 +354,7 @@ class MyConfig extends InjectableConfig
 ### Controller
 
 ```bash
-$ php app.php create:controller <name>
+php app.php create:controller <name>
 ```
 
 `<Name>Controller` class will be created. Available options:
@@ -363,7 +365,7 @@ $ php app.php create:controller <name>
 #### Example with empty actions list
 
 ```bash
-$ php app.php create:controller my
+php app.php create:controller my
 ```
 
 Output is:
@@ -377,7 +379,7 @@ class MyController
 #### Example with `prototype` option
 
 ```bash
-$ php app.php create:controller my -p
+php app.php create:controller my -p
 ```
 
 Output is:
@@ -427,28 +429,28 @@ class MyController
 ### HTTP Request Filter
 
 ```bash
-$ php app.php create:filter <name>
+php app.php create:filter <name>
 ```
 
 `<Name>Filter` class will be created. Available options:
 
 * `entity (e)` - you can pass an `EntityClass` and the filter command will fetch the all the given
-  class properties into the filter and try to define each property's type based on its type declaration (if php74),
-  default value or a PhpDoc. Otherwise you can optionally specify filter schema using `field` option.
-* `field (f)` (multiple values allowed).
 
-Full field format is `name:type(source:origin)`. Where `type`, `origin` and `source:origin` are optional and can be
-omitted, defaults are:
+class properties into the filter and try to define each property's type based on its type declaration (if php74),
+default value or a PhpDoc. Otherwise you can optionally specify filter schema using `field` option.
+* `field (f)` (multiple values allowed). 
 
-* type=string
-* source={data}
+Full field format is `name:type(source:origin)`. Where `type`, `origin` and `source:origin` are optional and can be omitted, defaults are:
+  * type=string
+  * source={data}
 
+> **Note**    
 > See more about filters in [filters](https://github.com/spiral/filters) package
 
 #### Example with empty fields definition
 
 ```bash
-$ php app.php create:filter my
+php app.php create:filter my
 ```
 
 Output is:
@@ -540,7 +542,7 @@ class MyEntity
 ```
 
 ```bash
-$ php app.php create:filter my -e MyEntity
+php app.php create:filter my -e MyEntity
 ```
 
 Output is:
@@ -588,7 +590,7 @@ class MyFilter extends Filter
 ### Job Handler
 
 ```bash
-$ php app.php create:jobHandler <name>
+php app.php create:jobHandler <name>
 ```
 
 `<Name>Job` class will be created.
@@ -596,7 +598,7 @@ $ php app.php create:jobHandler <name>
 #### Example
 
 ```bash
-$ php app.php create:jobHandler my
+php app.php create:jobHandler my
 ```
 
 Output is:
@@ -615,7 +617,7 @@ class MyJob extends JobHandler
 ### Middleware
 
 ```bash
-$ php app.php create:middleware <name>
+php app.php create:middleware <name>
 ```
 
 `<Name>` class will be created.
@@ -623,7 +625,7 @@ $ php app.php create:middleware <name>
 #### Example
 
 ```bash
-$ php app.php create:middleware my
+php app.php create:middleware my
 ```
 
 Output is:
@@ -649,7 +651,7 @@ class My implements MiddlewareInterface
 ### Migration
 
 ```bash
-$ php app.php create:migration <name>
+php app.php create:migration <name>
 ```
 
 `<Name>Migration` class will be created. Available options:
@@ -658,12 +660,13 @@ $ php app.php create:migration <name>
 * `field (f)` (multiple values allowed) for a field(s) definition. Will work only with `table` option. Field format
   is `name:type`.
 
+> **Note**
 > See more about migrations in [migrations](https://github.com/spiral/migrations) package
 
 #### Example
 
 ```bash
-$ php app.php create:migration my
+php app.php create:migration my
 ```
 
 Output is:
@@ -692,7 +695,7 @@ class MyMigration extends Migration
 #### Example with options
 
 ```bash
-$ php app.php create:migration my -t my_table -c int_col:int
+php app.php create:migration my -t my_table -c int_col:int
 ```
 
 Output is:
@@ -725,7 +728,7 @@ class MyMigration extends Migration
 ### Repository
 
 ```bash
-$ php app.php create:repository <name>
+php app.php create:repository <name>
 ```
 
 `<Name>Repository` class will be created.
@@ -733,7 +736,7 @@ $ php app.php create:repository <name>
 #### Example
 
 ```bash
-$ php app.php create:repository my
+php app.php create:repository my
 ```
 
 Output is:
@@ -749,7 +752,7 @@ class MyRepository extends Repository
 ### ORM Entity
 
 ```bash
-$ php app.php create:entity <name> [<format>]
+php app.php create:entity <name> [<format>]
 ```
 
 `<Name>Entity` class will be created.
@@ -772,7 +775,7 @@ Available options:
 #### Example
 
 ```bash
-$ php app.php create:entity my
+php app.php create:entity my
 ```
 
 Output is:
@@ -788,10 +791,13 @@ class My
 }
 ```
 
+> **Note**
+> It's recommended to replace the generated `Entity` annotation with an attribute
+
 #### Example with public accessibility
 
 ```bash
-$ php app.php create:entity my -f field:string
+php app.php create:entity my -f field:string
 ```
 
 Output is:

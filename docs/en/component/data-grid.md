@@ -8,9 +8,10 @@ based on specifications provided by the end-user.
 To install the component:
 
 ```bash
-$ composer require spiral/data-grid-bridge
+composer require spiral/data-grid-bridge
 ```
 
+> **Note**
 > Please note that the spiral/framework >= 2.7 already includes this component.
 
 Activate the bootloader `Spiral\DataGrid\Bootloader\GridBootloader` in your application after the Database and Cycle
@@ -51,6 +52,7 @@ $schema->addSorter('id', new Sorter('id'));
 $schema->addFilter('name', new Like('name', new StringValue()));
 ```
 
+> **Note**
 > You can extend the GridSchema and initiate all the specifications in the constructor.
 
 ### Grid Factory
@@ -98,6 +100,7 @@ How to apply the specifications:
 - to sort by id in ASC or DESC: `?sort[id]=desc`
 - to get count of total values: `?fetchCount=1`
 
+> **Note**
 > These params are defined in the `GridFactory`, you can overwrite them.
 
 If you need to count items using a complex function, you can pass a callable function via `withCounter` method:
@@ -109,6 +112,7 @@ $factory = $factory->withCounter(static function ($select): int {
 });
 ```
 
+> **Note**
 > This is a simple example, but this function might be very helpful in case of complex SQL requests with joins.
 
 ## Pagination specifications
@@ -191,6 +195,7 @@ $ascSorter = $sorter->withDirection('asc');
 $descSorter = $sorter->withDirection('desc');
 ```
 
+> **Note**
 > Note that you can sort using different set of fields in both sorters.
 > If you have the same set of fields, use [sorter](#sorter-specifications-sorter-specification) instead.
 
@@ -275,8 +280,8 @@ Next specifications are available for grids for now:
 * [select](#filter-specifications-select)
 * [between](#filter-specifications-between)
 
-> There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections
-> below
+> **Note**
+> There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
 
 ### All
 
@@ -513,9 +518,10 @@ $map = $map->withValue(['to' => 5]);
 
 ### Select
 
-This specification represents a set of available expressions. Passing a value from the input will pick a single or 
-several specifications from this set.
+This specification represents a set of available expressions.
+Passing a value from the input will pick a single or several specifications from this set.
 
+> **Note**
 > You just need to pass a key or an array of keys. Note that no `ValueInterface` should be declared.
 
 Example with a single value:
@@ -576,10 +582,12 @@ $filter = $select->withValue('four');
 ### Between
 
 This filter represents the SQL `between` operation, but can be presented as two `gt/gte` and `lt/lte` filters.
+
 You have an ability to define whether the boundary values should be included or not. If the boundary values aren't 
 included, this filter will be converted into `gt`+`lt` filters, otherwise when getting filters via `getFilters()` method 
 you can specify either use the original `between` operator or `gte`+`lte` filters.
 
+> **Note**
 > Not all databases support `between` operation, that's why conversion to `gt/gte`+`lt/lte` is by default.
 
 Between filter has two modifications: field-based and value-based:
@@ -651,6 +659,7 @@ $notIncludingBetween->getFilters();
 $notIncludingBetween->getFilters(true);
 ```
 
+> **Note**
 > The same is for `ValueBetween` filter
 
 ## Mixed Specifications
@@ -681,6 +690,7 @@ $schema->addFilter(
 );
 ```
 
+> **Note**
 > Using `upcoming` filter we apply both sorting and filtering.
 
 ## Filter values

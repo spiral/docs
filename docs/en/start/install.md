@@ -49,19 +49,19 @@ composer create-project spiral/app
 Once the application installed, you can ensure that it was configured properly by executing:
 
 ```bash
-$ php ./app.php configure
+php ./app.php configure
 ```
 
 To start application server execute:
 
 ```bash
-$ ./rr serve
+./rr serve
 ```
 
 On Windows:
 
 ```bash
-$ ./rr.exe serve
+./rr.exe serve
 ```
 
 The application will be available on `http://localhost:8080`.

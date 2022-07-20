@@ -31,18 +31,18 @@ Some components will declare their own directories such as:
 You can specify `root` or any other directory value in your `app.php` file as argument to `App`:
 
 ```php
-$app = \App\App::init([
+$app = \App\App::create([
     'root' => __DIR__
-]);
+])->run();
 ```
 
 For example, we can change runtime directory location:
 
 ```php
-$app = \App\App::init([
+$app = \App\App::create([
     'root' => __DIR__, 
-    'runtime' => \sys_get_temp_dir()
-]);
+    'runtime' => sys_get_temp_dir()
+])->run();
 ```
 
 To resolve directory alias within your application use `Spiral\Boot\DirectoriesInterface`:

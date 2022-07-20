@@ -1,11 +1,15 @@
 # HTTP - Annotated Routing
 
-Use `spiral/annotated-routes` extension to declare application routes using annotations. To install the extension:
+Use `spiral/annotated-routes` extension to declare application routes using attributes or annotations. 
+
+To install the extension:
+
 
 ```bash
-$ composer require spiral/annotated-routes
+composer require spiral/annotated-routes
 ```
 
+> **Note**
 > Please note that the spiral/framework >= 2.6 already includes this component.
 
 Activate the bootloader `Spiral\Router\Bootloader\AnnotatedRoutesBootloader` in your application (you can disable the
@@ -30,10 +34,8 @@ use Spiral\Router\Annotation\Route;
 
 class HomeController
 {
-    /**
-     * @Route(route="/", name="index", methods="GET")
-     */
-    public function index()
+    #[Route(route: '/', name: 'index', methods: 'GET')] 
+    public function index(): string
     {
         return 'hello world';
     }
@@ -65,7 +67,7 @@ use Spiral\Router\GroupRegistry;
 
 class APIRoutes extends Bootloader
 {
-    public function boot(GroupRegistry $groups)
+    public function boot(GroupRegistry $groups): void
     {
         $groups->getGroup('api')
                ->setPrefix('/api/v1')
@@ -74,20 +76,21 @@ class APIRoutes extends Bootloader
 }
 ```
 
-> Make sure to register bootloader after `AnnotatedRoutesBootloader`. Use the `default` group to configure all the
-> routes.
+> **Note**
+> Make sure to register bootloader after `AnnotatedRoutesBootloader`. Use the `default` group to configure all the routes.
+
 
 You can now assign the route to the group using the `group` attribute.
 
 ```php
-/**
- * @Route(route="/", name="index", methods="GET", group="api")
- */
-public function index(){
+#[Route(route: '/', name: 'index', methods: 'GET', group: 'api')]  
+public function index(): ResponseInterface
+{
     // ...    
 }
 ```
 
+> **Note**
 > Route middleware, prefix, and domain core will be added automatically.
 
 ## Route Cache
@@ -103,5 +106,5 @@ ROUTE_CACHE=true
 Run the `route:reset` to reset the route cache:
 
 ```bash
-$ php app.php route:reset
+php app.php route:reset
 ```
