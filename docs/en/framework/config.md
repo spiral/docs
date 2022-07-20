@@ -149,7 +149,6 @@ class AppBootloader extends Bootloader implements SingletonInterface
     public function __construct(
         private ConfiguratorInterface $configurator
     ) {
-        $this->configurator = $configurator;
     }
 
     public function init(): void
