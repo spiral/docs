@@ -114,7 +114,7 @@ class AppBootloader extends Bootloader
     {
         $configurator->setDefaults(AppConfig::CONFIG, [
             'values' => [432],
-            'other' => $env->get('VALUE_FROM_ENV_FILE', 'default')
+            'other' => $env->get('VALUE_FROM_ENV', 'default')
         ]);
     }
 }
