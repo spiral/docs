@@ -25,22 +25,25 @@ return [
 ];
 ```
 
+> **Note**
 > You can use `json` format as well, or extend `ConfiguratorInterface` to add custom config readers.
 
 To access the configuration values in your service or controller:
 
 ```php
+use App\Config\AppConfig;
 use Spiral\Config\ConfiguratorInterface;
 
 // ...
 
 public function index(ConfiguratorInterface $configurator)
 {
-    \dump($configurator->getConfig('app'));
+    dump($configurator->getConfig(AppConfig::CONFIG));
 }
 ```
 
-> You can check if configuration exists using method `exists`.
+> **Note**
+> You can check if configuration exists using method `exists`. 
 
 ## Config Object
 
@@ -48,9 +51,10 @@ It is not very convenient to read the configuration in the form of arrays. The f
 read your values. We can create this class manually or automatically generate it via `spiral/scaffolder`:
 
 ```bash
-$ php app.php create:config app -r
+php app.php create:config app -r
 ``` 
 
+> **Note**
 > Use option `-r` to reverse engineer the configuration structure.
 
 The resulted config class located in `app/src/config/AppConfig.php`:
@@ -92,6 +96,7 @@ public function index(AppConfig $appConfig)
 }
 ```
 
+> **Note**
 > The config object provides read-only API, changing values at runtime is not possible to prevent unwanted side-effect
 > in long-running applications.
 
@@ -100,20 +105,24 @@ Every Spiral component provides the config object you can use in your applicatio
 ## Default Configuration in Bootloader
 
 In many cases, the default configuration might be enough for most of the applications. Use custom bootloader to define
-default configuration values to avoid the need to create unnecessary files.
+default configuration values to avoid the need to create unnecessary files. Environment variables can be used as default 
+values.
 
 ```php
 namespace App\Bootloader;
 
+use App\Config\AppConfig;
 use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Boot\EnvironmentInterface;
 use Spiral\Config\ConfiguratorInterface;
 
 class AppBootloader extends Bootloader
 {
-    public function boot(ConfiguratorInterface $configurator): void
+    public function boot(ConfiguratorInterface $configurator, EnvironmentInterface $env): void
     {
-        $configurator->setDefaults('app', [
-            'values' => [432]
+        $configurator->setDefaults(AppConfig::CONFIG, [
+            'values' => [432],
+            'other' => $env->get('VALUE_FROM_ENV', 'default')
         ]);
     }
 }
@@ -122,6 +131,7 @@ class AppBootloader extends Bootloader
 The file `app/config/app.php` will overwrite default configuration values. Remove this file to use the default
 configuration.
 
+> **Note**
 > The overwrite is done on the first level keys of configuration array.
 
 ## Auto-Configuration
@@ -129,6 +139,7 @@ configuration.
 Some components will expose auto-configuration API to change its settings during the application bootload time. Usually,
 such API is available through the component bootloader.
 
+> **Note**
 > For example `HttpBootloader`->`addMiddleware`.
 
 We can provide our auto-configuration API in our Bootloader. Use `ConfiguratorInterface`->`modify` for this purpose.
@@ -137,6 +148,7 @@ Our Bootloader will be declared as Singleton to speed up processing a bit.
 ```php
 namespace App\Bootloader;
 
+use App\Config\AppConfig;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Config\ConfiguratorInterface;
 use Spiral\Config\Patch\Append;
@@ -144,7 +156,7 @@ use Spiral\Core\Container\SingletonInterface;
 
 class AppBootloader extends Bootloader implements SingletonInterface
 {
-    private $configurator;
+    private ConfiguratorInterface $configurator;
 
     public function __construct(ConfiguratorInterface $configurator)
     {
@@ -153,15 +165,15 @@ class AppBootloader extends Bootloader implements SingletonInterface
 
     public function boot(): void
     {
-        $this->configurator->setDefaults('app', [
+        $this->configurator->setDefaults(AppConfig::CONFIG, [
             'values' => [432]
         ]);
     }
 
-    public function addValue(int $value)
+    public function addValue(int $value): void
     {
         // append new value to the values section of app config
-        $this->configurator->modify('app', new Append('values', null, $value));
+        $this->configurator->modify(AppConfig::CONFIG, new Append('values', null, $value));
     }
 }
 ```
@@ -182,6 +194,7 @@ class ValueBootloader extends Bootloader
 }
 ```
 
+> **Note**
 > Make sure to locate the Bootloader after the `AppBootloader` or use `DEPENDENCIES` constant.
 
 ## Config Lifecycle
