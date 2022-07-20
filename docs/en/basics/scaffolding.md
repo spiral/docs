@@ -32,8 +32,36 @@ class App extends Kernel
 > Attention, the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
 
 ## Configuration
-You can customize the scaffolder component by replacing declaration generators and their options using the `scaffolder` configuration file.
+You can customize the Scaffolder component by replacing declaration generators and their options using the `scaffolder` configuration file.
 The default configuration located in the [ScaffolderBootloader](https://github.com/spiral/scaffolder/blob/master/src/Bootloader/ScaffolderBootloader.php#L59).
+
+### Adding custom declarations via ScaffolderBootloader
+Some components can provide their own declarations to create elements using the Scaffolder. 
+Such components can register their custom declarations with the `ScaffolderBootloader`:
+```php
+namespace App\Bootloader;
+
+use Spiral\Scaffolder\Bootloader\ScaffolderBootloader as BaseScaffolderBootloader;
+
+class ScaffolderBootloader extends Bootloader
+{
+    public const DEPENDENCIES = [
+        BaseScaffolderBootloader::class
+    ];
+
+    public function boot(BaseScaffolderBootloader $scaffolder): void
+    {
+        $scaffolder->addDeclaration('declarationName', [
+            'namespace' => 'Namespace',
+            'postfix'   => '', // like a Repository, Controller, etc
+            'class'     => MyDeclaration::class, // declaration class
+            'options'   => [
+                // some custom options
+            ],
+        ]);
+    }
+}
+```
 
 ## Available Commands
 Command            | Description
