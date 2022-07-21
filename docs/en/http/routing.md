@@ -225,10 +225,10 @@ class RoutesBootloader extends Bootloader
     public function boot(RouterInterface $router): void
     {
         $router->setRoute(
-            'home',                                   // route name 
+            'home',                    // route name 
             new Route(
-                '/',                                  // pattern
-                function () { return 'hello world'; } // handler
+                '/',                   // pattern
+                fn () => 'hello world' // handler
             )
         );
     }
@@ -561,9 +561,7 @@ $router->setRoute(
     )
 );
 
-$router->setDefault(new Route('/', function (): string {
-    return 'default';
-}));
+$router->setDefault(new Route('/', fn (): string => 'default'));
 ``` 
 
 See below how to use the default route to scaffold application paths quickly. 
