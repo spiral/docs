@@ -1,4 +1,5 @@
 # HTTP - Routing
+
 The framework [Web Bundle](https://github.com/spiral/app) includes pre-configured router components. To install the router in
 alternative builds:
 
@@ -21,14 +22,194 @@ And activate its Bootloader:
 > **Note**
 > Read how to define routing using attributes or annotations [here](/http/annotated-routes.md).
 
-## Default Configuration
+## Creating new routes via RoutesBootloader
+
+The default web application bundle allows you to configure application routes via `App\Bootloader\RoutesBootloader`.
+This bootloader contains the `defineRoutes` method, which contains in the parameters the `Spiral\Router\Loader\Configurator\RoutingConfigurator`.
+The `RoutingConfigurator` allows you to add routes or import routes from specific files.
+
+### Import from files
+
+By default, the import of routes from the `app/routes/web.php` file is already configured.
+
+Open the `web.php` file, to add new route use the `add` method.
+
+```php
+use App\Controller\HomeController;
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+return function (RoutingConfigurator $routes): void {
+    // route to the controller action
+    $routes->add('index', '/')->action(HomeController::class, 'index');
+    
+    // route to all of the controller actions at once
+    $routes->add('html', '/<action>.html')->controller(HomeController::class);
+    
+    // route to all actions in multiple controllers
+    $routes->add('group', '/<controller>/<action>/<id>')->groupControllers([
+        'home' => HomeController::class,
+        'demo' => DemoController::class
+    ]);
+    
+    // route to the set of controllers located in the same namespace
+    $routes->add('namespaced', '/<controller>/<action>/<id>')->namespaced('\App\Controllers');
+    
+    // route with callable handler
+    $routes->add('hello', '/hello')->callable(static fn () => 'hello');
+
+    // route with custom handler
+    $routes->add('custom-handler', '/custom-handler')->handler(\App\Handlers\Handler::class);
+};
+```
+
+To add HTTP verbs, default parameters, custom core, prefix, group:
+
+```php
+use App\Controller\HomeController;
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+return function (RoutingConfigurator $routes): void {
+    // HTTP verbs
+    $routes
+        ->add('html', '/<action>.html')
+        ->controller(HomeController::class)
+        ->methods('GET'); // or ->methods(['GET', 'POST'])
+    
+    // default parameters
+    $routes
+        ->add('html', '/<action>.html')
+        ->controller(HomeController::class)
+        ->defaults(['action' => 'default']);
+    
+    // custom core
+    $routes
+        ->add('html', '/<action>.html')
+        ->controller(HomeController::class)
+        ->core($core);
+    
+    // prefix
+    $routes
+        ->add('html', '/<action>.html')
+        ->controller(HomeController::class)
+        ->prefix('profile');
+
+    // group
+    $routes
+        ->add('html', '/<action>.html')
+        ->controller(HomeController::class)
+        ->group('admin');    
+};
+```
+
+Routes with the same `prefix` and `group` can be grouped in a separate file. Need to create a new file, for example, 
+`app/routes/api.php` and add api routes:
+
+```php
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+return function (RoutingConfigurator $routes): void {
+    // routes
+};
+```
+
+Import this file in the `defineRoutes` method:
+
+```php
+// file app/src/Bootloader/RoutesBootloader.php
+protected function defineRoutes(RoutingConfigurator $routes): void
+{
+    // all routes from this file will have a prefix and a group
+    $routes
+        ->import($this->dirs->get('app') . '/routes/api.php')
+        ->group('api')
+        ->prefix('api');
+}
+```
+
+### Adding routes in defineRoutes method
+
+Routes can be added in the defineRoutes method using the RoutingConfigurator. 
+The process of adding routes is exactly the same as in separate files:
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    // ...
+    
+    protected function defineRoutes(RoutingConfigurator $routes): void
+    {
+        $routes->add('index', '/')->action(HomeController::class, 'index');
+    }
+}
+```
+
+### Middlewares and groups
+
+Middlewares are configured globally, which will be applied for all routes and for each group of routes separately.
+Each group will have the global middlewares and the middlewares configured for that group applied.
+
+You can configure middlewares in the `RoutesBootloader`:
+
+```php
+namespace App\Bootloader;
+
+use App\Middleware\LocaleSelector;
+use Spiral\Auth\Middleware\AuthTransportMiddleware;
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Cookies\Middleware\CookiesMiddleware;
+use Spiral\Core\Container\Autowire;
+use Spiral\Csrf\Middleware\CsrfMiddleware;
+use Spiral\Debug\StateCollector\HttpCollector;
+use Spiral\Http\Middleware\ErrorHandlerMiddleware;
+use Spiral\Http\Middleware\JsonPayloadMiddleware;
+use Spiral\Session\Middleware\SessionMiddleware;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    protected function globalMiddleware(): array
+    {
+        return [
+            LocaleSelector::class,
+            ErrorHandlerMiddleware::class,
+            JsonPayloadMiddleware::class,
+            HttpCollector::class,
+        ];
+    }
+
+    protected function middlewareGroups(): array
+    {
+        return [
+            'web' => [
+                CookiesMiddleware::class,
+                SessionMiddleware::class,
+                CsrfMiddleware::class,
+                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'cookie'])
+            ],
+            'api' => [
+                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'header'])
+            ],
+        ];
+    }
+}
+```
+
+## Creating new routes via RouterInterface
+
+### Default Configuration
+
 The default web application bundle allows you to call any controller action located in `App\Controller`namespace using
 `/<controller>/<action>` pattern. See below how to alter this behavior.
 
 > **Note**
 > Your controllers must have a `Controller` suffix.
 
-## Configuration
+### Configuration
+
 The component does not require any external configuration. You can create new routing via `Spiral\Router\RouterInterface` 
 in your Bootloader. We can start with a simple `/` handler:
 
@@ -59,7 +240,8 @@ class RoutesBootloader extends Bootloader
 > or `Spiral\Router\TargetInterface`. Simply pass a class or a binding name instead of a real object if you want it
 > to be constructed on demand.
 
-## Closure Handler
+### Closure Handler
+
 It is possible to pass the `closure` as route handler, in this case our function will receive two
 arguments: `Psr\Http\Message\ServerRequestInterface` and `Psr\Http\Message\ResponseInterface`.
 
@@ -74,7 +256,8 @@ $router->setRoute('home', new Route(
 ));
 ```
 
-## Route Pattern and Parameters
+### Route Pattern and Parameters
+
 You can use a route pattern to specify any number of required and optional parameters. These parameters will later pass to the route handler via the `ServerRequestInterface` attribute `matches`.
 
 > **Note**
@@ -175,7 +358,8 @@ $router->setRoute('home', new Route(
 > **Note**
 > This route will only match `/do/login` and `/do/logout`.
 
-### Match Host
+#### Match Host
+
 To match the domain or sub-domain name, prefix your pattern with `//`:
 
 ```php
@@ -209,7 +393,8 @@ $router->setRoute('home', new Route(
 ));
 ```
 
-### Immutability
+#### Immutability
+
 All route objects are immutable by design, you can not change their state after creation, but only make a copy 
 with new values. To set default route parameters outside constructor:
 
@@ -237,7 +422,8 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
-### Verbs
+#### Verbs
+
 Use `withVerbs` method to match routes with only certain HTTP verbs:
 
 ```php
@@ -269,7 +455,8 @@ class RoutesBootloader extends Bootloader
 }
 ```
 
-### Middleware
+#### Middleware
+
 To associate route-specific middleware use `withMiddleware`, you can access route parameters via `route` attribute
 of the request object:
 
@@ -331,7 +518,8 @@ This route will trigger an Unauthorized exception on `/forbidden`.
 > **Note**
 > You can add as many middlewares as you want.
 
-## Multiple Routes
+### Multiple Routes
+
 The router will match all routes in the order they were registered. Make sure to avoid situations where the previous route
 matches the conditions of the following routes.
 
@@ -356,7 +544,8 @@ $router->setRoute(
 );
 ```
 
-## Default Route
+### Default Route
+
 Spiral Router provides the ability to specify the default/fallback route. This route will always be invoked after every
 other route and check for matching to its pattern.
 
@@ -379,7 +568,8 @@ $router->setDefault(new Route('/', function (): string {
 
 See below how to use the default route to scaffold application paths quickly. 
 
-## Route Targets (Controllers and Actions)
+### Route Targets (Controllers and Actions)
+
 The most effective way to use the router is to target routes to the controllers and their actions. To demonstrate all the 
 capabilities, we will need multiple controllers in `App\Controller` namespace:
 
@@ -419,7 +609,8 @@ class DemoController
 }
 ```
 
-### Route to Action
+#### Route to Action
+
 To point your route to the controller action specify route handler as `Spiral\Router\Target\Action`:
 
 ```php
@@ -453,7 +644,8 @@ $router->setRoute(
 );
 ```
 
-### Wildcard Actions
+#### Wildcard Actions
+
 We can point a route to more than one controller action at the same time, to do that we have to define the
 parameter `<action>` in our route pattern. Since one of the methods require `<id>` parameter, we can make it optional:
 
@@ -490,7 +682,8 @@ $router->setRoute(
 );
 ```
 
-### Route to Controller
+#### Route to Controller
+
 You point your route to all of the controller actions at once using `Spiral\Router\Target\Controller`. This target
 requires `<action>` parameter to be defined (unless the default value forced). 
 
@@ -532,7 +725,8 @@ $router->setRoute(
 > This route will match `/home` with `action=index`. Note, you must extend optional path segments `[]` till the end of the
 > route pattern.
 
-### Route to Namespace
+#### Route to Namespace
+
 In some cases, you might want to route to the set of controllers located in the same namespace. Use target `Spiral\Router\Target\Namespaced`
 for these purposes. This target will require route parameters `<controller>` and `<action>` (unless default is forced). 
 
@@ -587,7 +781,8 @@ to the public methods only.
 > **Note**
 > You can turn the default route off once the development is over.
 
-### Route to Controller Group
+#### Route to Controller Group
+
 The alternative is to specify controller names manually without common namespace. Use target
 `Spiral\Router\Target\Group`. Target requires `<controller>` and `<action>` parameters to be defined (unless default is forced).
 
@@ -616,7 +811,8 @@ class RoutesBootloader extends Bootloader
 > **Note**
 > Such an approach is useful when you want to assemble multiple modules under one path (i.e., admin panels).
 
-## RESTful
+### RESTful
+
 All of the route targets listed above support the third argument, which specifies the method selection behavior. Set this
 parameter as `AbstractTarget::RESTFUL` to automatically prefix all the methods with HTTP verb.
 
@@ -658,7 +854,8 @@ $router->setRoute('user', new Route(
 > Invoking `/user/1` with different HTTP methods will call different controller methods. Note, you still need
 > to specify the action name.
 
-### Sharing target across routes
+#### Sharing target across routes
+
 Another way to define RESTful or similar routing to multiple controllers is to share a common target with different routes.
 Such an approach will allow you to define your controller style. 
 
@@ -736,7 +933,8 @@ class RoutesBootloader extends Bootloader
 
 Such an approach allows you to use the same route-set for multiple resource controllers.
 
-## Url Generation 
+### Url Generation
+
 The router can generate Uri based on any given route and its parameters.
 
 ```php
