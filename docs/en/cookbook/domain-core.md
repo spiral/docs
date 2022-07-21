@@ -41,7 +41,7 @@ use Spiral\Core\CoreInterface;
 
 class CustomInterceptor implements CoreInterceptorInterface
 {
-    public function process(string $controller, string $action, array $parameters, CoreInterface $core)
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core): string
     {
         return 'intercepted: ' . $core->callAction($controller, $action, $parameters);
     }
@@ -225,60 +225,6 @@ class HomeController
     public function index(User $user, User $author)
     {
         dump($user);
-    }
-}
-```
-
-### Filter Validation
-You can automatically pre-validate `Spiral\Filter\FilterInterface` using `Spiral\Domain\FilterInterceptor`, the error
-will be returned in JSON form (extend `FilterInterceptor` to customize it).
-
-```php
-namespace App\Request;
-
-use Spiral\Filters\Filter;
-
-class LoginRequest extends Filter
-{
-    public const SCHEMA = [
-        'username' => 'query:username',
-        'password' => 'query:password'
-    ];
-
-    public const VALIDATES = [
-        'username' => ['notEmpty'],
-        'password' => ['notEmpty']
-    ];
-}
-```
-
-Now, the `LoginRequest` object passed to controller method will always be valid:
-
-```php
-namespace App\Controller;
-
-use App\Request\LoginRequest;
-
-class HomeController
-{
-    public function index(LoginRequest $request)
-    {
-        dump($request);
-    }
-}
-```
-
-> **Note**
-> Use `/home/index?username=n&password=p` to pass the validation.
-
-In case of the error, the following `application/json` payload will be sent to the client:
-
-```json
-{
-    "status": 400,
-    "errors": {
-        "username": "This value is required.",
-        "password": "This value is required."
     }
 }
 ```
