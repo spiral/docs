@@ -3,6 +3,7 @@
 Most of the framework components does not require any resetting after the request completion. However, there are
 multiple use-cases when you might want to reset your library after the user request is complete.
 
+> **Note**
 > Prioritize usage of IoC scopes over finalizers.
 
 ## FinalizerInterface
@@ -11,7 +12,7 @@ Use `Spiral\Boot\FinalizerInterface`
 
 ```php
 /**
- * Used to close resources and connections for long running processes.
+ * Used to close resources and connections for long-running processes.
  */
 interface FinalizerInterface
 {
@@ -42,12 +43,14 @@ All of the application dispatchers will invoke the finalizer. During:
 * GRPC call failed with error
 * console command is complete
 
+> **Warning**
 > Attention, the finalizer will only be invoked if the specific dispatcher has been started. You can freely invoke app
 > commands and HTTP methods without using dispatcher directly and without resetting your services after each request.
 
 Your handler will receive the first bool argument, which specifies if the app is going to terminate after the request.
 
-> Note, avoid resetting IoC setting in finalizer as it might lead to some singleton service cache previous service
+> **Note**
+> Avoid resetting IoC setting in finalizer as it might lead to some singleton service cache previous service
 > version.
 
 ## Example Finalizer
@@ -57,11 +60,11 @@ useful if you run a lot of workers (or lambda functions) and do not want to cons
 
 ```php
 // in bootloader
-/**
- * @param FinalizerInterface $finalizer
- * @param ContainerInterface $container
- */
-public function boot(FinalizerInterface $finalizer, ContainerInterface $container)
+use Spiral\Boot\FinalizerInterface;
+use Psr\Container\ContainerInterface;
+use Cycle\Database\DatabaseManager;
+
+public function boot(FinalizerInterface $finalizer, ContainerInterface $container): void
 {
     $finalizer->addFinalizer(function () use ($container) {
         /** @var DatabaseManager $dbal */
@@ -74,5 +77,6 @@ public function boot(FinalizerInterface $finalizer, ContainerInterface $containe
 }
 ```
 
-> You can find such bootloader already included with the framework and available
-> as `Spiral\Bootloader\Database\DisconnectsBootloader`.
+> **Note**
+> You can find such bootloader already included in the [`spiral\cycle-bridge` package](https://github.com/spiral/cycle-bridge/blob/master/src/Bootloader/DisconnectsBootloader.php) 
+> and available as `Spiral\Cycle\Bootloader\DisconnectsBootloader`.
