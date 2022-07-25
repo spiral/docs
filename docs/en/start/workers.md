@@ -27,33 +27,36 @@ You can configure the number of workers, memory limits, and other extensions usi
 version: '2.7'
 
 rpc:
-    listen: tcp://127.0.0.1:6001
+  listen: tcp://127.0.0.1:6001
 
 server:
-    command: "php app.php"
-    relay: pipes
+  command: "php app.php"
+  relay: pipes
 
 # serve static files
 static:
-    dir: "public"
+  dir: "public"
 
 # HTTP plugin settings
 http:
-    address: 0.0.0.0:8080
-    middleware: [ "gzip", "static" ]
-    static:
-        dir: "public"
-        forbid: [ ".php", ".htaccess" ]
-    pool:
-        num_workers: 2
-        supervisor:
-            max_worker_memory: 100
+  address: 0.0.0.0:8080
+  middleware: [ "gzip", "static" ]
+  static:
+    dir: "public"
+    forbid: [ ".php", ".htaccess" ]
+  pool:
+    num_workers: 2
+    supervisor:
+      max_worker_memory: 100
 ```
 
 To set the number of workers for HTTP:
 
 ```yaml
 http:
+  pool:
+    num_workers: 4
+```
 
 ### Developer Mode
 To force worker reload after every request (full debug mode) and limit processing to single worker, add a `debug` option:
