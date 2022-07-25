@@ -12,7 +12,7 @@ However, you can always use direct queries to bypass the spiral abstractions.
 To install the component in alternative bundles or as a standalone library:
 
 ```bash
-$ composer require cycle/database
+composer require cycle/database
 ```
 
 Activate the bootloader `Spiral\Bootloader\Database\DatabaseBootloader` in your application:
@@ -28,7 +28,7 @@ protected const LOAD = [
 To enable migrations component:
 
 ```bash
-$ composer require cycle/migrations
+composer require cycle/migrations
 ```
 
 And the corresponding bootloader:
@@ -209,7 +209,7 @@ The default Web and GRPC bundles include a set of console commands to view the d
 To view available databases, drivers, and tables:
 
 ```bash
-$ php app.php db:list
+php app.php db:list
 ```
 
 The output:
@@ -228,7 +228,7 @@ The output:
 To view the details about a particular table:
 
 ```bash
-$ php app.php db:table posts
+php app.php db:table posts
 ```
 
 The output:

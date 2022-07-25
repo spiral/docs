@@ -4,7 +4,7 @@ Web and GRPC bundles of Spiral Framework support background PHP processing and a
 To install the extensions in alternative bundles:
 
 ```bash
-$ composer require spiral/jobs
+composer require spiral/jobs
 ```
 
 Make sure to add `Spiral\Bootloader\Jobs\JobsBootloader` to your application kernel.

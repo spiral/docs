@@ -17,7 +17,7 @@ library and access it from your PHP application.
 Make sure to require the go module dependency first:
 
 ```bash
-$ go get github.com/russross/blackfriday
+go get github.com/russross/blackfriday
 ```
 
 Since our service doesn't need any configuration, we can put all the code inside a single file: `markdown/service.go`:

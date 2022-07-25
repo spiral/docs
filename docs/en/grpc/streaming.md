@@ -32,8 +32,8 @@ service Streamer {
 Create direction `stream` and generate client and server SDK for Golang using:
 
 ```bash
-$ mkdir stream
-$ protoc -I proto/ proto/stream.proto --go_out=plugins=grpc:strea
+mkdir stream
+protoc -I proto/ proto/stream.proto --go_out=plugins=grpc:strea
 ```
 
 ## Consumer
@@ -41,7 +41,7 @@ The client/consumer application will be displaying all streamed content directly
 separate directory. Copy the `stream` directory and `app.crt` to your client application.
 
 ```bash
-$ go mod init client
+mod init client
 ```
 
 The application will look as follows:

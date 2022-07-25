@@ -16,19 +16,19 @@ components.
 To invoke application command run:
 
 ```bash
-$ php app.php command:name
+php app.php command:name
 ```
 
 To get a list of available commands:
 
 ```bash
-$ php app.php
+php app.php
 ```
 
 To get help about the particular command:
 
 ```bash
-$ php app.php help command:name
+php app.php help command:name
 ```
 
 ## Invoke in Application

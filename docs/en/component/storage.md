@@ -17,7 +17,7 @@ files are not available.
 To install the component:
 
 ```bash
-$ composer require spiral/storage
+composer require spiral/storage
 ```
 
 ## Framework Integration
@@ -227,9 +227,9 @@ one of the two available packages installed (either). You must install the
 the Composer.
 
 ```bash
-$ composer require league/flysystem-aws-s3-v3 ^2.0
+composer require league/flysystem-aws-s3-v3 ^2.0
 // OR
-$ composer require league/flysystem-async-aws-s3 ^2.0
+composer require league/flysystem-async-aws-s3 ^2.0
 ```
 
 During configuration, you should specify which of the packages you will use in

@@ -13,7 +13,7 @@ this component by default.
 To install the component:
 
 ```bash
-$ composer require spiral/validation
+composer require spiral/validation
 ```
 
 > Please note that the spiral/framework >= 2.6 already includes this component.

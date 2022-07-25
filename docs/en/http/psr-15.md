@@ -13,7 +13,7 @@ on [FastRoute](https://github.com/nikic/FastRoute). The implementation provided
 by [https://github.com/middlewares/fast-route](https://github.com/middlewares/fast-route).
 
 ```bash
-$ composer require middlewares/fast-route middlewares/request-handler
+composer require middlewares/fast-route middlewares/request-handler
 ```
 
 Create bootloader to bind this implementation to our http server. We can either bind handler via `HttpBootloader` or
