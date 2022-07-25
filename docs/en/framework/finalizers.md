@@ -1,10 +1,12 @@
 # Framework - Finalizers
-Most of the framework components does not require any resetting after the request completion. However, there are multiple
-use-cases when you might want to reset your library after the user request is complete.
+
+Most of the framework components does not require any resetting after the request completion. However, there are
+multiple use-cases when you might want to reset your library after the user request is complete.
 
 > Prioritize usage of IoC scopes over finalizers.
 
 ## FinalizerInterface
+
 Use `Spiral\Boot\FinalizerInterface`
 
 ```php
@@ -31,6 +33,7 @@ interface FinalizerInterface
 ```
 
 All of the application dispatchers will invoke the finalizer. During:
+
 * HTTP request complete
 * HTTP request failed with error
 * job is complete
@@ -39,16 +42,18 @@ All of the application dispatchers will invoke the finalizer. During:
 * GRPC call failed with error
 * console command is complete
 
-> Attention, the finalizer will only be invoked if the specific dispatcher has been started. You can freely invoke app commands
-and HTTP methods without using dispatcher directly and without resetting your services after each request.
+> Attention, the finalizer will only be invoked if the specific dispatcher has been started. You can freely invoke app
+> commands and HTTP methods without using dispatcher directly and without resetting your services after each request.
 
 Your handler will receive the first bool argument, which specifies if the app is going to terminate after the request.
 
-> Note, avoid resetting IoC setting in finalizer as it might lead to some singleton service cache previous service version.
+> Note, avoid resetting IoC setting in finalizer as it might lead to some singleton service cache previous service
+> version.
 
 ## Example Finalizer
-We can use a finalizer to demonstrate how to close the database connection after every request automatically. It can be useful if you run a lot of workers (or lambda functions) and do not want to consume all of the database sockets.
 
+We can use a finalizer to demonstrate how to close the database connection after every request automatically. It can be
+useful if you run a lot of workers (or lambda functions) and do not want to consume all of the database sockets.
 
 ```php
 // in bootloader
@@ -69,4 +74,5 @@ public function boot(FinalizerInterface $finalizer, ContainerInterface $containe
 }
 ```
 
-> You can find such bootloader already included with the framework and available as `Spiral\Bootloader\Database\DisconnectsBootloader`.
+> You can find such bootloader already included with the framework and available
+> as `Spiral\Bootloader\Database\DisconnectsBootloader`.

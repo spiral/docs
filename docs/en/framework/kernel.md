@@ -1,17 +1,20 @@
 # Framework - Kernel and Environment
-Each spiral build will contain a kernel object with a set of application-specific services. Unlike Symfony, 
-The Spiral needs only one Kernel for all the dispatching methods (HTTP, Queue, GRPC, Console). The kernel will select the dispatching
-method automatically, based on connected `Spiral\Boot\DispatcherInterface` instances.
+
+Each spiral build will contain a kernel object with a set of application-specific services. Unlike Symfony,
+The Spiral needs only one Kernel for all the dispatching methods (HTTP, Queue, GRPC, Console, etc). The kernel will
+select the dispatching method automatically, based on connected `Spiral\Boot\DispatcherInterface` instances.
 
 > The base kernel implementation located in `spiral/boot` repository.
 
 ## Kernel Responsibilities
+
 The `Spiral\Boot\AbstractKernel` class only responsible for the following aspects of your application:
+
 - container initialization via a set of application-specific bootloaders
 - environment and directory structure initialization
 - selection of appropriate dispatching method
 
-To create your kernel extends `Spiral\Boot\AbstractKernel`. 
+To create your kernel extends `Spiral\Boot\AbstractKernel`.
 
 ```php
 namespace App;
@@ -81,12 +84,14 @@ $myapp = MyApp::init(
     false // do not mount error handler
 );      
 
-dump($myapp->get(\Spiral\Boot\DirectoriesInterface::class)->getAll());
+\dump($myapp->get(\Spiral\Boot\DirectoriesInterface::class)->getAll());
 ```
 
 ## Environment
-Use `Spiral\Boot\EnvironmentInterface` to access the list of ENV variables. By default, the framework relies on system-level 
-environment values. To redefine env values while initializing the kernel pass custom `EnvironmentInterface` to the `init` method.
+
+Use `Spiral\Boot\EnvironmentInterface` to access the list of ENV variables. By default, the framework relies on
+system-level environment values. To redefine env values while initializing the kernel pass custom `EnvironmentInterface`
+to the `init` method.
 
 ```php
 $myapp = MyApp::init(
@@ -97,7 +102,7 @@ $myapp = MyApp::init(
     false // do not mount error handler
 );
 
-dump($myapp->get(\Spiral\Boot\EnvironmentInterface::class)->getAll());
+\dump($myapp->get(\Spiral\Boot\EnvironmentInterface::class)->getAll());
 ```
 
 > Such an approach can be used to bootstrap the application for testing purposes.

@@ -1,10 +1,12 @@
 # HTTP - Middleware
-The framework allows you to set [PSR-15 compatible](https://www.php-fig.org/psr/psr-15/) HTTP middleware globally or to a 
-specific route. 
+
+The framework allows you to set [PSR-15 compatible](https://www.php-fig.org/psr/psr-15/) HTTP middleware globally or to
+a specific route.
 
 > Check https://github.com/middlewares/psr15-middlewares to find many publicly maintained middleware.
 
 ## Create Middleware
+
 Implement `Psr\Http\Server\MiddlewareInterface` to create your middleware:
 
 ```php
@@ -21,7 +23,9 @@ class MyMiddleware implements MiddlewareInterface
 ```
 
 ## Global Middleware
-To activate middleware for every user request, use `Spiral\Bootloader\Http\HttpBootloader`. You can only set this value in application bootloaders.
+
+To activate middleware for every user request, use `Spiral\Bootloader\Http\HttpBootloader`. You can only set this value
+in application bootloaders.
 
 ```php
 use Spiral\Bootloader\Http\HttpBootloader;
@@ -36,13 +40,14 @@ class MyMiddlewareBootloader extends Bootloader
 }
 ```
 
-Middleware object will be instantiated on demand. 
+Middleware object will be instantiated on demand.
 
 > Make sure to add this Bootloader before `RoutesBootloader` in your app.
 
 ## Route Specific Middleware
-To add middleware to the route object use `withMiddleware` method, make sure to use newly created route instance (example 
-is given for Bootloader):
+
+To add middleware to the route object use `withMiddleware` method, make sure to use newly created route instance (
+example is given for Bootloader):
 
 ```php
 use App\Controller\HomeController;
@@ -63,6 +68,7 @@ public function boot(RouterInterface $router)
 ```
 
 ## Combine with IoC scopes
+
 You can combine middleware with the IoC scope to create a request-specific application context.
 
 ```php
@@ -120,7 +126,9 @@ public function index(UserContext $ctx)
 ```
 
 ## Non-Direct Scope Configuration
-You can use already exists requests scope to carry user values. Create bootloader providing access method for the context specific value:
+
+You can use already exists requests scope to carry user values. Create bootloader providing access method for the
+context specific value:
 
 ```php
 use Psr\Http\Message\ResponseInterface;

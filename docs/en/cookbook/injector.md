@@ -1,6 +1,8 @@
 # Cookbook - Injectors
-You can control the creation process of any interface or abstract class children using an injection interface. This article demonstrates how to create a class
-instance and assign a unique value to it, no matter what children implement it.
+
+You can control the creation process of any interface or abstract class children using an injection interface. This
+article demonstrates how to create a class instance and assign a unique value to it, no matter what children implement
+it.
 
 ```php
 abstract class Model
@@ -52,7 +54,7 @@ class A extends Model
 }
 ```
 
-and 
+and
 
 ```php
 namespace App;

@@ -1,13 +1,11 @@
 # Distribution
 
-The `spiral/distribution` component is responsible for providing public HTTP
-links on arbitrary resources. In most cases this will be the same address as
-the address of the site itself, however, in some cases, resources may be located
-on external servers such as [Amazon CloudFront](https://aws.amazon.com/cloudfront/)
-or some other CDN. In these cases, to generate a public link to the resource
-needs to use the specific API of the provider, or write own code for the used
-CDN. The component makes this interaction easier and provides a number of 
-built-in drivers for generating URIs to external suppliers.
+The `spiral/distribution` component is responsible for providing public HTTP links on arbitrary resources. In most
+cases this will be the same address as the address of the site itself, however, in some cases, resources may be located
+on external servers such as [Amazon CloudFront](https://aws.amazon.com/cloudfront/) or some other CDN. In these cases,
+to generate a public link to the resource needs to use the specific API of the provider, or write own code for the used
+CDN. The component makes this interaction easier and provides a number of built-in drivers for generating URIs to
+external suppliers.
 
 ## Installation
 
@@ -21,9 +19,8 @@ $ composer require spiral/distribution
 
 > Please note that the spiral/framework >= 2.8 already includes this component.
 
-To enable the component, you just need to add the
-`Spiral\Bootloader\Distribution\DistributionBootloader` class to the bootloader
-list, which is located in the class of your application.
+To enable the component, you just need to add the `Spiral\Bootloader\Distribution\DistributionBootloader` class to the 
+bootloader list, which is located in the class of your application.
 
 ```php
 protected const LOAD = [
@@ -34,9 +31,8 @@ protected const LOAD = [
 
 ## Configuration
 
-The configuration file for this component looks like below. Just create
-a `distribution.php` file and add it to the directory with the rest of your
-configuration files (e.g. `~/app/config/distribution.php`).
+The configuration file for this component looks like below. Just create a `distribution.php` file and add it to the 
+directory with the rest of your configuration files (e.g. `~/app/config/distribution.php`).
 
 ```php
 <?php
@@ -92,17 +88,14 @@ return [
 ];
 ```
 
-> Please note that this configuration is only available when used with a 
-> Spiral Framework.
+> Please note that this configuration is only available when used with a Spiral Framework.
 
 ### Manual Configuration (Outside The Framework)
 
-This way of using the component is required only if it is installed separately,
-outside the framework.
+This way of using the component is required only if it is installed separately, outside the framework.
 
-First you need to create a manager instance where all your uri resolvers will
-be stored. After that, you can add and get arbitrary resolvers from it by the
-desired name.
+First you need to create a manager instance where all your uri resolvers will be stored. After that, you can add and 
+get arbitrary resolvers from it by the desired name.
 
 ```php
 <?php
@@ -114,8 +107,7 @@ $manager->add('resolver-name', new CustomResolver());
 $manager->resolver('resolver-name'); // object(CustomResolver)
 ```
 
-After that, you can add there either your own managers, or provided by the
-component, such as for example "static".
+After that, you can add there either your own managers, or provided by the component, such as for example "static".
 
 ```php
 <?php
@@ -132,9 +124,8 @@ $manager->add('local', new StaticResolver(new Uri('https://static.example.com'))
 
 Once you've configured your component, you can start using it.
 
-In the case that you are using a Spiral Framework, then manager is already
-configured. You can get it from [the container](/framework/container.md) or via
-[dependency injection](/framework/container.md#dependency-injection).
+In the case that you are using a Spiral Framework, then manager is already configured. You can get it from 
+[the container](/framework/container.md) or via [dependency injection](/framework/container.md#dependency-injection).
 
 ```php
 <?php
@@ -152,9 +143,8 @@ class FilesController
 }
 ```
 
-In the case that you need a default resolver defined in the "default"
-configuration section, then you do not need to get the entire manager instance.
-You can get the resolver you want from the container right away.
+In the case that you need a default resolver defined in the "default" configuration section, then you do not need to 
+get the entire manager instance. You can get the resolver you want from the container right away.
 
 ```php
 <?php
@@ -170,9 +160,8 @@ class FilesController
 }
 ```
 
-You may have noticed that after getting the resolver in the examples above, the
-`resolve()` method is used with a relative path to the file. It takes a string
-value as an argument and returns the implementation of
+You may have noticed that after getting the resolver in the examples above, the `resolve()` method is used with a 
+relative path to the file. It takes a string value as an argument and returns the implementation of
 [the PSR-7 `Psr\Http\Message\UriInterface`](https://www.php-fig.org/psr/psr-7/).
 
 ```php
@@ -183,13 +172,13 @@ $uri = $resolver->resolve('path/to/file.txt');
 //
 ```
 
-> Note that some resolvers support additional options when getting a link,
+> Note that some resolvers support additional options when getting a link, 
 > for example: `$cloudfront->resolve('path/to/file.txt', expiration: new \DateInterval('PT60S'));`
 
 ### Static URI Resolver
 
-This type of resolver generates an address to a resource simply by adding the
-passed file link to the end of the URI specified in the resolver configuration.
+This type of resolver generates an address to a resource simply by adding the passed file link to the end of the URI 
+specified in the resolver configuration.
 
 To configure this type of resolver, you only need to specify two required fields.
 
@@ -214,13 +203,11 @@ return [
 ];
 ```
 
-Unlike a similar method used to generate an address for a page in the
-[url generator](/http/routing.md#url-generation) router component, links can be
-arbitrary and configured on a separate server designed to serve static content.
+Unlike a similar method used to generate an address for a page in the [url generator](/http/routing.md#url-generation) 
+router component, links can be arbitrary and configured on a separate server designed to serve static content.
 
-Thus, if you pass an arbitrary file string to the `resolve()` method, you will
-receive a physical http link to this file. In the case that the base uri is 
-defined as "`http://localhost`", then the result will be as follows:
+Thus, if you pass an arbitrary file string to the `resolve()` method, you will receive a physical http link to this 
+file. In the case that the base uri is defined as "`http://localhost`", then the result will be as follows:
 
 ```php
 /** @var \Spiral\Distribution\Resolver\StaticResolver $resolver */
@@ -235,22 +222,18 @@ echo $resolver->resolve('path/to/file.txt');
 
 ### CloudFront URI Resolver
 
-CloudFront is a popular static distribution service used in conjunction with
-Amazon services. To use it, you must install the `aws/aws-sdk-php` package using
-the Composer.
+CloudFront is a popular static distribution service used in conjunction with Amazon services. To use it, you must 
+install the `aws/aws-sdk-php` package using the Composer.
 
 ```bash
 $ composer require aws/aws-sdk-php ^3.0
 ```
 
-After registering and creating your statics server in the AWS services,
-[you will receive](https://console.aws.amazon.com/cloudfront/home) the
-parameters for setting. In addition, you will need a "private key file" and 
-"access key id", which you can find on the "CloudFront key pairs" tab on
+After registering and creating your statics server in the AWS services, [you will receive](https://console.aws.amazon.com/cloudfront/home) the
+parameters for setting. In addition, you will need a "private key file" and "access key id", which you can find on the "CloudFront key pairs" tab on
 "[Security Credentials](https://console.aws.amazon.com/iam/home#/security_credentials)" page.
 
-To configure this resolver, simply specify the connection parameters in the
-configuration sections:
+To configure this resolver, simply specify the connection parameters in the configuration sections:
 
 ```php
 return [
@@ -305,9 +288,8 @@ return [
 ];
 ```
 
-In the case that you decide to create a resolver yourself, you can use the
-same settings passed to the constructor of the resolver used to work with
-the CloudFront service.
+In the case that you decide to create a resolver yourself, you can use the same settings passed to the constructor of 
+the resolver used to work with the CloudFront service.
 
 ```php
 //
@@ -323,13 +305,13 @@ $cloudfront = new \Spiral\Distribution\Resolver\CloudFrontResolver(
 $url = $cloudfront->resolve(...);
 ```
 
-The CloudFront resolver receives as the first argument of the `resolve()` method
-a link to a file for which a public address should be generated and, as the
-second, optional, the lifetime (expiration) of this link.
+The CloudFront resolver receives as the first argument of the `resolve()` method a link to a file for which a public 
+address should be generated and, as the second, optional, the lifetime (expiration) of this link.
 
 The expiration time can be specified in several formats. It can be:
+
 - PHP builtin [`\DateInterval` object](https://www.php.net/manual/en/class.dateinterval.php).
-- Instance of [`\DateTimeInterface` interface](https://www.php.net/manual/en/class.datetimeinterface.php). 
+- Instance of [`\DateTimeInterface` interface](https://www.php.net/manual/en/class.datetimeinterface.php).
   In this case, the expiration interval is counted from the moment the link is generated.
 - String value in [PHP time duration format](https://www.php.net/manual/en/dateinterval.construct.php).
 - Integer value in seconds.
@@ -352,9 +334,8 @@ $url = $cloudfront->resolve($file, 'PT30S');
 $url = $cloudfront->resolve($file, 30);
 ```
 
-In case of any special circumstances, you can replace the current time
-generator and expiration parser. In addition, you can also set a default value
-for all generated links within a given resolver.
+In case of any special circumstances, you can replace the current time generator and expiration parser. In addition, 
+you can also set a default value for all generated links within a given resolver.
 
 ```php
 $cloudfront = (new \Spiral\Distribution\Resolver\CloudFrontResolver(...))
@@ -380,25 +361,22 @@ $cloudfront = (new \Spiral\Distribution\Resolver\CloudFrontResolver(...))
     // The value must be correct for the time specified in the
     // parser of given URI resolver.
     //
-    ->withExpirationDate('PT30S')
-;
+    ->withExpirationDate('PT30S');
 ```
 
 ### S3 URI Resolver
 
-If for some reason you cannot use the CloudFront resolver (for example, in the
-case of using a [Minio Server](https://docs.min.io/)), you can use the resolver
-that generates links to the S3 server. To use it, you must also install the
-`aws/aws-sdk-php` package using the Composer.
+If for some reason you cannot use the CloudFront resolver (for example, in the case of using 
+a [Minio Server](https://docs.min.io/)), you can use the resolver that generates links to the S3 server. To use it, you
+must also install the `aws/aws-sdk-php` package using the Composer.
 
 ```bash
 $ composer require aws/aws-sdk-php ^3.0
 ```
 
-To use it with AWS S3, you need account credentials, and a working bucket which
-you can create [on "Amazon S3" page](https://s3.console.aws.amazon.com/s3/home).
-After creating the bucket, you will need to fill in the following configuration
-parameters.
+To use it with AWS S3, you need account credentials, and a working bucket which you can 
+create [on "Amazon S3" page](https://s3.console.aws.amazon.com/s3/home). After creating the bucket, you will need to 
+fill in the following configuration parameters.
 
 ```php
 return [
@@ -489,9 +467,8 @@ return [
 ];
 ```
 
-In the case that you decide to create a resolver yourself, you can use the
-same settings passed to the constructor of the resolver used to work with
-the S3 service.
+In the case that you decide to create a resolver yourself, you can use the same settings passed to the constructor of 
+the resolver used to work with the S3 service.
 
 ```php
 //
@@ -513,25 +490,22 @@ $s3 = new \Spiral\Distribution\Resolver\S3SignedResolver(
 $url = $s3->resolve(...);
 ```
 
-After registering a resolver, you will be able to create a URI to a file using
-the `resolve()` method. By analogy with the CloudFront implementation, you can
-also pass a second `expiration` argument to this method, which means the
-lifetime of the generated URI.
+After registering a resolver, you will be able to create a URI to a file using the `resolve()` method. By analogy with 
+the CloudFront implementation, you can also pass a second `expiration` argument to this method, which means the lifetime 
+of the generated URI.
 
 ```php
 $url = $s3->resolve($file, new DateTime('+30 sec'));
 ```
 
-All similar methods for specifying the global URI expiration, the
-"current time" generator, and the "expiration time" parsers are also available.
+All similar methods for specifying the global URI expiration, the "current time" generator, and the "expiration time" 
+parsers are also available.
 
 ### Custom URI Resolver
 
-In some cases, you may find tasks for generating URI's that do not fit the
-existing implementations of resolvers. In this case, you can register your
-own resolver class in the config. To pass additional arguments to the
-constructor of this resolver, simply specify the `options` section in the
-configuration file.
+In some cases, you may find tasks for generating URI's that do not fit the existing implementations of resolvers. In 
+this case, you can register your own resolver class in the config. To pass additional arguments to the constructor of 
+this resolver, simply specify the `options` section in the configuration file.
 
 ```php
 return [
@@ -556,6 +530,5 @@ return [
 ];
 ```
 
-In some cases, this registration method may not work for you. In the event that
-any dependencies from the container are required in the parameters of the
-constructor, you should use [the bootloader](/framework/bootloaders.md).
+In some cases, this registration method may not work for you. In the event that any dependencies from the container are 
+required in the parameters of the constructor, you should use [the bootloader](/framework/bootloaders.md).

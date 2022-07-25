@@ -1,11 +1,14 @@
 # Configuration
-All of the provided application skeletons are already pre-configured using optimal settings. You can edit any of the settings
-by editing the file(s) in `app/config/`.
+
+All of the provided application skeletons are already pre-configured using optimal settings. You can edit any of the
+settings by editing the file(s) in `app/config/`.
 
 > If config file does not exist - create it using `<?php return [];` as a base.
 
 ## Environment
-Web and GRPC templates use DotEnv extension to read environment values from `.env` file located in the root of your project.
+
+Web and GRPC templates use DotEnv extension to read environment values from `.env` file located in the root of your
+project.
 
 ```env
 # Debug mode set to TRUE disables view caching and enables higher verbosity.
@@ -23,13 +26,15 @@ You can access these values using `Spiral\Boot\EnvironmentInterface` or via a sh
 ```php
 public function index(EnvironmentInterface $env)
 {
-    dump($env->get('ENCRYPTER_KEY'));
-    dump(env('ENCRYPTER_KEY'));
+    \dump($env->get('ENCRYPTER_KEY'));
+    \dump(env('ENCRYPTER_KEY'));
 }
 ```
 
 ## Configuration
-The default component configuration located inside the related Bootloader. You can alter such configuration using other bootloaders (see Auto-Configuration) or by creating a *default configuration* file in `app/config`.
+
+The default component configuration located inside the related Bootloader. You can alter such configuration using other
+bootloaders (see Auto-Configuration) or by creating a *default configuration* file in `app/config`.
 
 > Each of the documentation sections will include the content of the default component configuration.
 
@@ -55,7 +60,7 @@ return [
 ];
 ```
 
-Identically, you can edit any configuration for any of component. For example, we can change default HTTP headers 
+Identically, you can edit any configuration for any of component. For example, we can change default HTTP headers
 via `app/config/http.php`:
 
 ```php
@@ -67,7 +72,8 @@ return [
 ];
 ```
 
-To find which config file corresponds to the proper config object, check the value of [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php#L17):
+To find which config file corresponds to the proper config object, check the value
+of [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php#L17):
 
 ```php
 final class HttpConfig extends InjectableConfig
