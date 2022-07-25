@@ -50,7 +50,7 @@ class MyApp extends AbstractKernel
             $directories['app'] = $directories['root'] . '/app/';
         }
 
-        return array_merge(
+        return \array_merge(
             [
                 // public root
                 'public'    => $directories['root'] . '/public/',
@@ -99,6 +99,8 @@ system-level environment values. To redefine env values while initializing the k
 to the `create` method.
 
 ```php
+use \Spiral\Boot\Environment;
+
 $myapp = MyApp::create(
     [
         'root' => __DIR__
