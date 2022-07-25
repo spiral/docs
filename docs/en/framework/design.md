@@ -16,6 +16,6 @@ infrastructure tasks.
 
 > Spiral application server is a customized version of [RoadRunner](https://roadrunner.dev).
 
-![High Level Architecture Diagram](https://user-images.githubusercontent.com/796136/64451724-762d0800-d0ed-11e9-8c34-9c054a7bb0bd.png)
+![High Level Architecture Diagram](https://user-images.githubusercontent.com/773481/180764832-d91daec4-36fb-4651-ace3-64eac6f289c8.png)
 
 > Read about application lifecycle [here](/start/workers.md).
