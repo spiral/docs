@@ -6,7 +6,7 @@ scopes, i18n integration, and caching.
 To install Twig:
 
 ```bash
-$ composer require spiral/twig-bridge
+composer require spiral/twig-bridge
 ```
 
 The extension can be enabled using `Spiral\Twig\Bootloader\TwigBootloader`.
@@ -56,7 +56,7 @@ public function index()
 
 To access the value from the IoC scope:
 
-```php
+```twig
 Hello, {{ name }}!
 
 {{ get("Spiral\\Http\\Request\\InputManager").attribute('csrfToken') }}

@@ -26,7 +26,7 @@ fly. The framework includes multiple token implementations out of the box for mo
 To install authorization extension for Web bundle:
 
 ```bash
-$ composer require spiral/auth spiral/auth-http
+composer require spiral/auth spiral/auth-http
 ```
 
 > Please note that the spiral/framework >= 2.6 already includes this component.

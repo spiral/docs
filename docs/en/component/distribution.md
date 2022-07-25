@@ -12,7 +12,7 @@ external suppliers.
 Use the Composer to install the component:
 
 ```bash
-$ composer require spiral/distribution
+composer require spiral/distribution
 ```
 
 ### Framework Integration
@@ -226,7 +226,7 @@ CloudFront is a popular static distribution service used in conjunction with Ama
 install the `aws/aws-sdk-php` package using the Composer.
 
 ```bash
-$ composer require aws/aws-sdk-php ^3.0
+composer require aws/aws-sdk-php ^3.0
 ```
 
 After registering and creating your statics server in the AWS services, [you will receive](https://console.aws.amazon.com/cloudfront/home) the
@@ -371,7 +371,7 @@ a [Minio Server](https://docs.min.io/)), you can use the resolver that generates
 must also install the `aws/aws-sdk-php` package using the Composer.
 
 ```bash
-$ composer require aws/aws-sdk-php ^3.0
+composer require aws/aws-sdk-php ^3.0
 ```
 
 To use it with AWS S3, you need account credentials, and a working bucket which you can 

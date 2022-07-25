@@ -21,7 +21,7 @@ This documentation uses the term "metadata" to refer to both "attributes" and "a
 To install the component:
 
 ```bash
-$ composer require spiral/attributes
+composer require spiral/attributes
 ```
 
 ### Framework Integration

@@ -3,7 +3,7 @@
 The default Web bundle includes CSRF protection middleware. To install it in alternative bundles:
 
 ```bash
-$ composer require spiral/csrf
+composer require spiral/csrf
 ```
 
 > Please note that the spiral/framework >= 2.6 already includes this component.

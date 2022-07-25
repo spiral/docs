@@ -12,7 +12,7 @@ You can download the application server directly from [release page](https://git
 If your PHP includes `php-cli` and `php-zip` extensions you can also let spiral to download server automatically:
 
 ```bash
-$ ./vendor/bin/rr get
+./vendor/bin/rr get
 ```
 
 ## Running the Server
@@ -20,13 +20,13 @@ $ ./vendor/bin/rr get
 The RoadRunner server is easy to run on the default `:8080` port:
 
 ```bash
-$ ./rr serve
+./rr serve
 ```
 
 You can observe the memory consumption of your workers in realtime and other information via
 
 ```bash
-$ ./rr workers http -i
+./rr workers http -i
 ```
 
 > Use similar commands `jobs:workers` and `grpc:workers` to check other dispatchers.
@@ -56,7 +56,7 @@ initiate a blank
 B
 
 ```bash
-$ go mod init {repository-name}
+go mod init {repository-name}
 ``` 
 
 If you are planning to install custom extensions, make sure that `{repository-name}` points to the repository Golang can
@@ -68,5 +68,5 @@ download, for example
 You can build your application server by only running:
 
 ```bash
-$ go build
+go build
 ```

@@ -5,19 +5,19 @@ The framework exposes the number of commands to control the build and help in de
 To list all available console commands use the following command:
 
 ```bash
-$ php app.php
+php app.php
 ```
 
 To get help about any specific command:
 
 ```bash
-$ php app.php help db:table
+php app.php help db:table
 ```
 
 Alternative:
 
 ```bash
-$ php app.php db:table -h
+php app.php db:table -h
 ```
 
 > You can read how to create your own commands in following sections.
@@ -29,10 +29,10 @@ information to find the target command:
 
 ```bash
 # can be resolved into `update`
-$ php app.php up 
+php app.php up 
 
 # Collides with `configure`, `cache:clean`, `cycle:*` commands.
-$ php app.php c
+php app.php c
 ```
 
 ## Configure
@@ -43,7 +43,7 @@ that application is properly installed, create needed directions and verify perm
 To run this command in verbose mode:
 
 ```bash
-$ php app.php configure -vv
+php app.php configure -vv
 ```
 
 > Always run `configure` before running a newly installed application.
@@ -53,13 +53,13 @@ $ php app.php configure -vv
 The application server (RoadRunner) includes it's own set of commands, to list all available server commands run:
 
 ```bash
-$ ./rr
+./rr
 ```
 
 RoadRunner 1.x (deprecated):
 
 ```bash
-$ ./spiral
+./spiral
 ```
 
 You can read more about server commands [here](https://roadrunner.dev/docs/beep-beep-cli).

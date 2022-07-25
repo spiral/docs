@@ -33,7 +33,7 @@ class MyCommand extends Command
 Use constants `NAME` and `DESCRIPTION` to give a name to your Command. You can invoke it now using:
 
 ```bash
-$ php app.php my:command 
+php app.php my:command 
 ```
 
 ## Arguments and Options

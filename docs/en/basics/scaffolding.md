@@ -396,7 +396,7 @@ class MyController
 #### Example with actions list
 
 ```bash
-$ php app.php create:controller my \
+php app.php create:controller my \
       -a index \
       -a create \
       -a update \
@@ -471,7 +471,7 @@ class MyFilter extends Filter
 #### Example with fields definition:
 
 ```bash
-$ php app.php create:filter my \ 
+php app.php create:filter my \ 
     -f unknown_val \
     -f str_val:string \
     -f int_val:int \
@@ -820,7 +820,7 @@ class My
 #### Example with protected/private accessibility
 
 ```bash
-$ php app.php create:entity my \
+php app.php create:entity my \
     -f field:string \
     -a protected
 ```
@@ -856,7 +856,7 @@ class My
 #### Example with tableize inflection
 
 ```bash
-$ php app.php create:entity my \
+php app.php create:entity my \
     -f int_field:int \
     -f stringField:string \
     -i t
@@ -887,7 +887,7 @@ class My
 #### Example with camelize inflection
 
 ```bash
-$ php app.php create:entity my \
+php app.php create:entity my \
     -f int_field:int \
     -f stringField:string \
     -i c
@@ -918,7 +918,7 @@ class My
 #### Example with other options
 
 ```bash
-$ php app.php create:entity my \
+php app.php create:entity my \
     -r myRole \
     -m MyMapper \
     -t my_table \
