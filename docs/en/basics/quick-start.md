@@ -58,13 +58,16 @@ You can also create and use an alternative configuration file via `-c` flag of t
 > Read more about Workers and Lifecycle [here](/start/workers.md).
 
 ### Lighter Up
-We won't need translation, session, cookies, CSRF, and encryption in our demo application. Remove these components and their bootloaders.
+We won't need translation, session, GRPC, cookies, CSRF, routing configuration via RoutesBootloader in our demo application. 
+Remove these components and their bootloaders.
 
 Delete following bootloaders from `app/src/App.php`:
 
 ```php
 Spiral\Bootloader\I18nBootloader::class,
-Spiral\Bootloader\Security\EncrypterBootloader::class,
+
+// from RoadRunner
+Spiral\RoadRunnerBridge\Bootloader\GRPCBootloader::class,
 
 // from http
 Spiral\Bootloader\Http\CookiesBootloader::class,
@@ -74,15 +77,108 @@ Spiral\Bootloader\Http\PaginationBootloader::class,
 
 // from views 
 Spiral\Bootloader\Views\TranslatedCacheBootloader::class,
+```
 
-// from APP
-App\Bootloader\LocaleSelectorBootloader::class,
+Remove `App\Middleware\LocaleSelector` from method `globalMiddleware` in the `App\Bootloader\RoutesBootloader`:
+
+```diff
+class RoutesBootloader extends BaseRoutesBootloader
+    // ...
+    
+    protected function globalMiddleware(): array
+    {
+        return [
+-           LocaleSelector::class,
+            ErrorHandlerMiddleware::class,
+            JsonPayloadMiddleware::class,
+            HttpCollector::class,
+        ];
+    }
+    
+    // ...
+ }
+```
+
+By default, the routing rules located in `app/src/Bootloader/RoutesBootloader.php`. You have many options on how
+to configure routing. Point route to actions, controllers, controller groups, set the default pattern parameters,
+verbs, middleware, etc.
+
+Remove method `defineRoutes`. We will be adding routes using attributes:
+
+```diff
+class RoutesBootloader extends BaseRoutesBootloader
+    // ...
+    
+-    protected function defineRoutes(RoutingConfigurator $routes): void
+-    {
+-        $routes->import($this->dirs->get('app') . '/routes/web.php')->group('web');
+-
+-        $routes->default('/[<controller>[/<action>]]')
+-            ->namespaced('App\\Controller')
+-            ->defaults([
+-                'controller' => 'home',
+-                'action' => 'index',
+-            ])
+-            ->middleware([
+-                // SomeMiddleware::class,
+-            ]);
+-    }
+    
+    // ...
+ }
+```
+
+> **Note**
+> Read more about Routing [here](/http/routing.md).
+
+Remove all middlewares in method `middlewareGroups`:
+
+```diff
+class RoutesBootloader extends BaseRoutesBootloader
+    // ...
+    
+    protected function middlewareGroups(): array
+    {
+        return [
+-            'web' => [
+-                CookiesMiddleware::class,
+-                SessionMiddleware::class,
+-                CsrfMiddleware::class,
+-                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'cookie'])
+-            ],
+-            'api' => [
+-                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'header'])
+-            ],
+        ];
+    }
+    
+    // ...
+ }
+```
+
+Remove unused imports and `__constructor`:
+
+```diff
+- use Spiral\Boot\DirectoriesInterface;
+- use Spiral\Cookies\Middleware\CookiesMiddleware;
+- use Spiral\Csrf\Middleware\CsrfMiddleware;
+- use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+- use Spiral\Session\Middleware\SessionMiddleware;
+
+class RoutesBootloader extends BaseRoutesBootloader
+-    public function __construct(
+-        private readonly DirectoriesInterface $dirs
+-    ) {
+-    }
+    
+    // ...
+ }
 ```
 
 Delete following files and directories as no longer required:
 - `app/locale`
-- `app/src/Bootloader/LocaleSelectorBootloader.php`
-- `app/src/Middleware`.
+- `app/routes`
+- `app/src/Middleware`
 
 > **Note**
 > Note, the application won't work at the moment as we removed the dependency required to render `app/views/home.dark.php`.
@@ -195,7 +291,7 @@ Add the bootloader to `LOAD` or `APP` in `app/src/App.php` to activate the compo
 +++ b/app/src/App.php
 @@ -85,5 +85,6 @@ class App extends Kernel
 
-         Bootloader\AppBootloader::class,
+         Bootloader\RoutesBootloader::class,
 +        Bootloader\FakerBootloader::class,
      ];
  }
@@ -223,54 +319,23 @@ class HomeController
 > **Note**
 > Read more about Bootloaders [here](/framework/bootloaders.md).
 
-### Routing
-By default, the routing rules located in `app/src/Bootloader/RoutesBootloader.php`. You have many options on how
-to configure routing. Point route to actions, controllers, controller groups, set the default pattern parameters, 
-verbs, middleware, etc.
+### Creating Routes
 
-Create a simple route to point all of the URLs to the `App\Controller\HomeController`:
-
-```php
-namespace App\Bootloader;
-
-use App\Controller\HomeController;
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Router\Route;
-use Spiral\Router\RouterInterface;
-use Spiral\Router\Target\Controller;
-
-class RoutesBootloader extends Bootloader
-{
-    public function boot(RouterInterface $router): void
-    {
-        $route = new Route('/[<action>[/<id>]]', new Controller(HomeController::class));
-        $route = $route->withDefaults(['action' => 'index']);
-
-        $router->setRoute('home', $route);
-    }
-}
-```
-
-In the given setup, the action and id are the optional parts of the URL (see the `[]`), the action defaults to `index`.
-Open `HomeController`->`index` using `http://localhost:8080/` or `http://localhost:8080/index`.
-
-The route parameters can be addressed in method injection of the controller by their name, create the following method in `HomeController`:
-
-```php
-public function open(string $id)
-{
-    dump($id);
-}
-```
-
-You can invoke this method using URL `http://localhost:8080/open/123`. The `id` parameter will be hydrated automatically.
-
-> **Note**
-> Read more about Routing [here](/http/routing.md).
-
-### Creating Routes as Attributes
 In order to simplify the route definition we can use `spiral/annotated-routes` extension. Read more about the extension [here](/http/annotated-routes.md).
-We can use this annotation in our controller as follows:
+Add the bootloader to `LOAD` in `app/src/App.php` to activate the component:
+
+```diff
+--- a/app/src/App.php
++++ b/app/src/App.php
+@@ -85,5 +85,6 @@ class App extends Kernel
+
+         SapiBootloader::class,
++        AnnotatedRoutesBootloader::class,
+     ];
+ }
+```
+
+We can use this attribute in our controller as follows:
 
 ```php
 namespace App\Controller;
@@ -302,7 +367,7 @@ php app.php route:list
 > **Note**
 > Use additional route parameters to configure middleware, route group, etc.
 
-In the following examples, we will stick to the annotated routes for simplicity.
+In the following examples, we will stick to the routes with attributes for simplicity.
 
 To flush route cache (when DEBUG disabled):
 
@@ -312,16 +377,46 @@ php app.php route:reset
 
 ### Domain Core
 Connect custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
+
+Let's create an interceptor that will catch validation errors and return them in JSON:
+```php
+// file app/src/Interceptor/ValidationInterceptor.php
+namespace App\Interceptor;
+
+use Spiral\Core\CoreInterceptorInterface;
+use Spiral\Core\CoreInterface;
+use Spiral\Filters\Exception\ValidationException;
+use Spiral\Http\ResponseWrapper;
+
+final class ValidationInterceptor implements CoreInterceptorInterface
+{
+    public function __construct(
+        private readonly ResponseWrapper $responseWrapper
+    ) {
+    }
+
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core): mixed
+    {
+        try {
+            return $core->callAction($controller, $action, $parameters);
+        } catch (ValidationException $e) {
+            return $this->responseWrapper->json(['errors' => $e->errors], 400);
+        }
+    }
+}
+```
+
 We can change the default behavior of the application and enable Cycle Entity resolution using route parameter, 
 Filter validation and `Guard` attribute.
 
 ```php
 namespace App\Bootloader;
 
+use App\Interceptor\ValidationInterceptor;
 use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
 use Spiral\Cycle\Interceptor\CycleInterceptor;
-use Spiral\Domain;
+use Spiral\Domain\GuardInterceptor;
 
 class AppBootloader extends DomainBootloader
 {
@@ -331,13 +426,23 @@ class AppBootloader extends DomainBootloader
 
     protected const INTERCEPTORS = [
         CycleInterceptor::class,
-        Domain\GuardInterceptor::class,
-        Domain\FilterInterceptor::class,
+        GuardInterceptor::class,
+        ValidationInterceptor::class,
     ];
 }
 ```
 
 Enable the domain core in your application. We will demonstrate the use of the interceptor below.
+Add the bootloader to `APP` in `app/src/App.php`:
+
+```diff
+--- a/app/src/App.php
++++ b/app/src/App.php
+@@ -85,5 +85,6 @@ class App extends Kernel
++        Bootloader\AppBootloader::class,
+     ];
+ }
+```
 
 > **Note**  
 > Read more about Domain Cores [here](/cookbook/domain-core.md).
@@ -382,88 +487,81 @@ Post:
 ```php
 namespace App\Database;
 
-use Cycle\Annotated\Annotation as Cycle;
+use App\Repository\PostRepository;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
 
-/**
- * @Cycle\Entity(repository="\App\Repository\PostRepository")
- */
+#[Entity(repository: PostRepository::class)]
 class Post
 {
-    /**
-     * @Cycle\Column(type = "primary")
-     */
-    public $id;
+    #[Column(type: 'primary')]
+    public int $id;
 
-    /**
-     * @Cycle\Column(type = "string")
-     */
-    public $title;
+    #[Column(type: 'string')]
+    public string $title;
 
-    /**
-     * @Cycle\Column(type = "text")
-     */
-    public $content;
+    #[Column(type: 'text')]
+    public string $content;
 }
  ```
 
-Scaffolder before `Spiral Framework v3.0` doesn't support attributes and property types. 
-After the file is created, it's recommended to replace annotations with attributes and add types:
-
-```php
-namespace App\Database;
-
-use App\Repository\PostRepository;
-use Cycle\Annotated\Annotation as Cycle;
-
-#[Cycle\Entity(repository: PostRepository::class)]
-class Post
-{
-    #[Cycle\Column(type: 'primary')]
-    public int $id;
-
-    #[Cycle\Column(type: 'string')]
-    public string $title;
-
-    #[Cycle\Column(type: 'text')]
-    public string $content;
-}
-
-```
-
-User, with added attributes and types:
+User:
 
 ```php
 namespace App\Database;
 
 use App\Repository\UserRepository;
-use Cycle\Annotated\Annotation as Cycle;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
 
-#[Cycle\Entity(repository: UserRepository::class)] 
+#[Entity(repository: UserRepository::class)]
 class User
 {
-    #[Cycle\Column(type: 'primary')]
+    #[Column(type: 'primary')]
     public int $id;
 
-    #[Cycle\Column(type: 'string')]
+    #[Column(type: 'string')]
     public string $name;
 }
 ```
 
-Comment, with added attributes and types:
+Comment:
 
 ```php
 namespace App\Database;
 
-use Cycle\Annotated\Annotation as Cycle;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
 
-#[Cycle\Entity]
+#[Entity]
 class Comment
 {
-    #[Cycle\Column(type: 'primary')]
+    #[Column(type: 'primary')]
     public int $id;
 
-    #[Cycle\Column(type: 'string')]
+    #[Column(type: 'string')]
     public string $message;
+}
+```
+
+Let's add the Spiral\Prototype\Annotation\Prototyped attribute to the repositories so that we can use them 
+as users and posts properties during development
+```php
+
+// app/src/Repository/PostRepository.php
+use Spiral\Prototype\Annotation\Prototyped;
+
+#[Prototyped(property: 'posts')]
+class PostRepository extends Repository
+{
+}
+
+// app/src/Repository/UserRepository.php
+use Spiral\Prototype\Annotation\Prototyped;
+
+#[Prototyped(property: 'users')]
+class UserRepository extends Repository
+{
 }
 ```
 
@@ -497,29 +595,32 @@ Post:
 namespace App\Database;
 
 use App\Repository\PostRepository;
-use Cycle\Annotated\Annotation as Cycle;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Relation;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
-#[Cycle\Entity(repository: PostRepository::class)] 
+#[Entity(repository: PostRepository::class)]
 class Post
 {
-    #[Cycle\Column(type: 'primary')]
+    #[Column(type: 'primary')]
     public int $id;
 
-    #[Cycle\Column(type: 'string')]
+    #[Column(type: 'string')]
     public string $title;
 
-    #[Cycle\Column(type: 'text')]
+    #[Column(type: 'text')]
     public string $content;
 
-    #[Cycle\Relation\BelongsTo(target: User::class, nullable: false)]
+    #[Relation\BelongsTo(target: User::class, nullable: false)]
     public User $author;
 
     /**
      * @var Collection|Comment[]
      * @psalm-var Collection<int, Comment>
      */
-    #[Cycle\Relation\HasMany(target: Comment::class)]
+    #[Relation\HasMany(target: Comment::class)]
     public Collection $comments;
 
     public function __construct()
@@ -534,21 +635,23 @@ Comment:
 ```php
 namespace App\Database;
 
-use Cycle\Annotated\Annotation as Cycle;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Relation;
 
-#[Cycle\Entity]
+#[Entity]
 class Comment
 {
-    #[Cycle\Column(type: 'primary')]
+    #[Column(type: 'primary')]
     public int $id;
 
-    #[Cycle\Column(type: 'string')]
+    #[Column(type: 'string')]
     public string $message;
-    
-    #[Cycle\Relation\BelongsTo(target: User::class, nullable: false)]
+
+    #[Relation\BelongsTo(target: User::class, nullable: false)]
     public User $author;
 
-    #[Cycle\Relation\BelongsTo(target: Post::class, nullable: false)]
+    #[Relation\BelongsTo(target: Post::class, nullable: false)]
     public Post $post;
 }
 ``` 
@@ -606,7 +709,7 @@ class PostService
 ```
 
 > **Note**
-> You can reuse the transaction after the `run` method.
+> You can reuse the EntityManager after the `run` method.
 
 ### Prototyping
 One of the most powerful capabilities of the framework is [Prototyping](/basics/prototype.md). Declare the shortcut `postService`, which points to `PostService` using annotation.
@@ -1092,15 +1195,15 @@ class PostRepository extends Repository
 Create method `list` in `PostController`:
 
 ```php
-    #[Route(route: '/api/post', name: 'post.list', methods: 'GET')]
-    public function list(): array
-    {
-        $posts = $this->posts->findAllWithAuthor();
+#[Route(route: '/api/post', name: 'post.list', methods: 'GET')]
+public function list(): array
+{
+    $posts = $this->posts->findAllWithAuthor();
 
-        return [
-            'posts' => array_map([$this->postView, 'map'], $posts->fetchAll())
-        ];
-    }
+    return [
+        'posts' => array_map([$this->postView, 'map'], $posts->fetchAll())
+    ];
+}
 ```
 
 > **Note**
@@ -1110,7 +1213,11 @@ Create method `list` in `PostController`:
 An approach provided above has its limitations since you have to paginate, filter, and order the result manually. 
 Use the [Data Grid component](/component/data-grid.md) to handle data formatting for you:
 
-Activate the `Spiral\DataGrid\Bootloader\GridBootloader` in your application.
+```bash
+composer require spiral/data-grid-bridge
+``` 
+
+Activate the `Spiral\DataGrid\Bootloader\GridBootloader` and `Spiral\Cycle\Bootloader\DataGridBootloader` in your application.
 
 To use data grids, we have to specify our data schema first, create `App\View\PostGrid` class:
 
@@ -1177,41 +1284,52 @@ URL | Comment
 You can use sorters, filters, and pagination in one request. Multiple filters can activate at once.
 
 ## Validate Request
-Make sure to [validate](/security/validation.md) data from the client. Use low level validation interfaces or 
-[Request Filters](/filters/configuration.md) to validate, filter and map your data.
 
-Create `CommentFilter` using the [scaffolder extension](/basics/scaffolding.md):
+To validate the request, we will use the spiral/validator package.
+
+To install the package:
 
 ```bash
-php app.php create:filter comment
+composer require spiral/validator
 ```
 
-Configure filter as following:
+Add the bootloader to `LOAD` in `app/src/App.php` to activate the component:
+
+```diff
+--- a/app/src/App.php
++++ b/app/src/App.php
+@@ -85,5 +85,6 @@ class App extends Kernel
+
+         ValidationBootloader::class,
++        \Spiral\Validator\Bootloader\ValidatorBootloader,
+     ];
+ }
+```
+
+Create `CommentFilter`:
 
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Dto\Filter;
+use Spiral\Filters\Dto\FilterDefinitionInterface;
+use Spiral\Filters\Dto\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class CommentFilter extends Filter
+class CommentFilter extends Filter implements HasFilterDefinition
 {
-    protected const SCHEMA = [
-        'message' => 'data:message'
-    ];
+    #[Post(key: 'message')]
+    public readonly string $message;
 
-    protected const VALIDATES = [
-        'message' => ['notEmpty']
-    ];
-
-    protected const SETTERS = [
-        'message' => 'strval'
-    ];
-
-    public function getMessage(): string
+    public function filterDefinition(): FilterDefinitionInterface
     {
-        return $this->message;
+        return new FilterDefinition([
+            'message' => ['string', 'required']
+        ]);
     }
 }
+
 ```
 
 ### Service
@@ -1250,7 +1368,7 @@ class CommentService
 ```
 
 ### Controller Action
-Declare controller method and request filter instance. Since you use `FilterInterceptor` in your domain-core, the framework
+Declare controller method and request filter instance. Since you filter implemented `HasFilterDefinition`, the Filters component
 will guarantee that filter is valid. Create `comment` endpoint to post message to a given post:
 
 ```php
@@ -1299,8 +1417,7 @@ curl -X POST -H 'content-type: application/json' --data '{"message": "first comm
 ```
 
 > **Note**
-> Read more about filters [here](/filters/filter.md). Change the [scaffolder](/basics/scaffolding.md) configuration to 
-> alter the generated request postfix or default namespace.
+> Read more about filters [here](/filters/filter.md). 
 
 ## Render Template
 To render post information into HTML form use [views](/views/configuration.md) and [Stempler](/stempler/configuration.md) component. 
