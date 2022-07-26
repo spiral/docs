@@ -45,12 +45,16 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 // ...
 
-public function test(Console $console)
+public function test(Console $console): string
 {
-    $input = new ArrayInput(['args' => 'value']);
+    $input = new ArrayInput([
+        '--mount' => '.env',
+        '-p' => '{encrypt-key}'
+    ]);
+    
     $output = new BufferedOutput();
     
-    return $console->run($command, $input, $output);
+    return $console->run('encrypt:key', $input, $output)->fetch();
 }
 ```
 
@@ -59,6 +63,7 @@ public function test(Console $console)
 Spiral Console dispatcher built at the top of
 powerful [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html) component.
 
+> **Note**
 > You can register native Symfony Commands in your CLI application.
 
 ## Configuration
@@ -95,18 +100,57 @@ public function boot(ConsoleBootloader $console)
 }
 ```
 
-> Note, by default Console component use auto-discovery mode to find all user commands in `app/` automatically.
+> **Note**
+> By default Console component use auto-discovery mode to find all user commands in `app/` automatically.
 
-To register command in configure/update sequence:
+## Sequences
+
+There two type of sequences in the Spiral Framework:
+
+### Configure
+
+The set of commands that will be run after invoke command `php app.php configure`
+
+To register command in configure sequence:
 
 ```php
+use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Container\ContainerInterface;
+
 public function boot(ConsoleBootloader $console)
 {
-  $console->addUpdateSequence('my:command', '<info>Running my:command...</info>');
+    // Add console command in a sequence
+    $console->addConfigureSequence('my:command', '<info>Running my:command...</info>');
+    
+    // Add closure in a sequence
+    // It supports auto-wiring of arguments
+    $console->addConfigureSequence(function(OutputInterface $output, ContainerInterface $container) {
+        // do something
+        $output->writeln('...');
+    }, '<info>Running my:command...</info>');
+}
+```
+
+### Update
+
+The set of commands that will be run after invoke command `php app.php update`
+
+To register command in update sequence:
+
+```php
+public function boot(Console
+    $console->addUpdateSequence('my:command', '<info>Running my:command...</info>');
+    
+    // Add closure in a sequence
+    // It supports auto-wiring of arguments
+    $console->addUpdateSequence(function(OutputInterface $output, ContainerInterface $container) {
+        // do something
+        $output->writeln('...');
+    }, '<info>Running my:command...</info>');
 }
 ```
 
 ## Connection with RoadRunner
 
-Please note, console commands invoked outside of the RoadRunner server. Make sure to run an instance of application
+Please note, console commands invoke outside of the RoadRunner server. Make sure to run an instance of application
 server if any of your commands must communicate with it.
