@@ -4,23 +4,22 @@ You can extend the functionality of your PHP applications by including Go librar
 you only need to run `composer require`, the Golang will require you to build your version
 of [application server](/framework/application-server.md).
 
+> **Note**
 > Fun fact: the full-text search on this website works via [blevesearch](https://github.com/blevesearch/bleve)
 > integrated to the spiral app.
 
 In this tutorial, we will demonstrate how to integrate the https://github.com/russross/blackfriday Markdown processing
 library and access it from your PHP application.
 
+> **Note**
 > Attention, this article expects that you are familiar with the Go programming language.
 
 ## RoadRunner service
 
-Make sure to require the go module dependency first:
+There is an instruction of how to create your own plugin for RoadRunner 
+on [official site](https://roadrunner.dev/docs/plugins-intro/2.x/en).
 
-```bash
-go get github.com/russross/blackfriday
-```
-
-Since our service doesn't need any configuration, we can put all the code inside a single file: `markdown/service.go`:
+On this section we provide a simple example of a plugin:
 
 ```go
 package markdown
@@ -52,31 +51,53 @@ func (s *rpcService) Convert(input []byte, output *[]byte) error {
 }
 ```
 
-Make sure to register this service in your `main.go` file:
-
-```go
-rr.Container.Register(markdown.ID, &markdown.Service{})
-```
-
-> Read more about RoadRunner services [here](https://roadrunner.dev/docs/beep-beep-service).
-
-Build and start your application to activate the service.
+Build and start your RoadRunner server to activate the service.
 
 ## PHP SDK
 
-You can invoke the newly created service right away, using `Spiral\Goridge\RPC`:
+You can invoke the newly created service right away, using `Spiral\Goridge\RPC` from the 
+package [`spiral/goridge`](https://github.com/spiral/goridge-php):
+
+At first configure RPC Bootloader
+
+> **Note**
+> There is `Spiral\RoadRunnerBridge\Bootloader\RoadRunnerBootloader` with configured RPC
+> in [`spiral/roadrunner-bridge`](https://github.com/spiral/roadrunner-bridge) package.
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Goridge\RPC\RPCInterface;
+use Spiral\Goridge\RPC\RPC;
+use Spiral\Goridge\Relay;
+
+class RpcBootloader extends Bootloader 
+{
+    const SINGLETONS = [
+        RPCInterface::class => [self::class, 'initRpc']
+    ];
+    
+    private function initRpc(): RPCInterface
+    {
+        return new RPC(Relay::create("tcp://localhost:6001"));
+    }
+}
+```
+
+And then you may invoke RoadRunner service methods with given payload.
 
 ```php
 use Spiral\Goridge\RelayInterface;
-use Spiral\Goridge\RPC;
+use Spiral\Goridge\RPC\RPCInterface;
 
 // ...
 
-public function index(RPC $rpc)
+public function index(RPCInterface $rpc): string
 {
     return $rpc->call(
         'markdown.Convert',
-        file_get_contents('README.md'),
+        \file_get_contents('README.md'),
         RelayInterface::PAYLOAD_RAW // for []byte payloads
     );
 }
@@ -88,13 +109,13 @@ It is recommended to wrap direct RPC calls with some proper service code:
 use Spiral\Core\Container\SingletonInterface;
 use Spiral\Goridge\Exceptions\ServiceException;
 use Spiral\Goridge\RelayInterface;
-use Spiral\Goridge\RPC;
+use Spiral\Goridge\RPC\RPCInterface;
 
-class Blackfriday implements SingletonInterface
+class MarkdownConverter implements SingletonInterface
 {
-    private $rpc;
+    private RPCInterface $rpc;
 
-    public function __construct(RPC $rpc)
+    public function __construct(RPCInterface $rpc)
     {
         $this->rpc = $rpc;
     }
@@ -102,7 +123,11 @@ class Blackfriday implements SingletonInterface
     public function convert(string $markdown): string
     {
         try {
-            return $this->rpc->call('markdown.Convert', $markdown, RelayInterface::PAYLOAD_RAW);
+            return $this->rpc->call(
+                'markdown.Convert', 
+                $markdown, 
+                RelayInterface::PAYLOAD_RAW
+            );
         } catch (ServiceException $e) {
             throw new \RuntimeException("Unable to convert markdown", $e->getCode(), $e);
         }
@@ -113,9 +138,9 @@ class Blackfriday implements SingletonInterface
 And use this service in your PHP code:
 
 ```php
-public function index(Blackfriday $bf)
+public function index(MarkdownConverter $converter)
 {
-    return $bf->convert(file_get_contents('README.md'));
+    return $converter->convert(\file_get_contents('README.md'));
 }
 ```
 
