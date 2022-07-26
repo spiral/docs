@@ -4,6 +4,7 @@ It is possible to invoke application kernel using a custom data source, for exam
 attach to user-defined interrupt. In this section, we will try to demonstrate how to write RoadRunner service and kernel
 dispatcher to consume data from this service. In this example, we will be sending "ticks" to the kernel every second.
 
+> **Note**
 > Attention, make sure to read about [application server](/framework/application-server.md) first. This article expects
 > that you are proficient in writing Golang code.
 
@@ -11,8 +12,7 @@ dispatcher to consume data from this service. In this example, we will be sendin
 
 First, let's create a RoadRunner service with an encapsulated worker server. Check these articles for the references:
 
-- https://roadrunner.dev/docs/beep-beep-service
-- https://roadrunner.dev/docs/library-standalone-usage
+- https://roadrunner.dev/docs/plugins-intro/2.x/en
 
 We will need a configuration for our service:
 
@@ -143,8 +143,36 @@ In configuration:
 
 ```yaml
 ticker:
-  internal: 1
-  workers.command: "php app.php"
+  interval: 1
+```
+
+## Configure Worker
+
+At first configure Worker Bootloader
+
+> **Note**
+> There is `Spiral\RoadRunnerBridge\Bootloader\RoadRunnerBootloader` with configured Worker
+> in [`spiral/roadrunner-bridge`](https://github.com/spiral/roadrunner-bridge) package.
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\RoadRunner\Worker;
+use Spiral\RoadRunner\WorkerInterface;
+use Spiral\RoadRunner\Environment;
+
+class WorkerBootloader extends Bootloader 
+{
+    const SINGLETONS = [
+        WorkerInterface::class => [self::class, 'initWorker'],
+    ];
+    
+    private function initWorker(): WorkerInterface
+    {
+        return Worker::createFromEnvironment(Environment::fromGlobals());
+    }
+}
 ```
 
 ## Application Dispatcher
@@ -159,17 +187,14 @@ use Spiral\Boot\DispatcherInterface;
 use Spiral\Boot\EnvironmentInterface;
 use Spiral\Boot\FinalizerInterface;
 use Spiral\RoadRunner\Worker;
+use Spiral\RoadRunner\WorkerInterface;
+use Spiral\RoadRunner\Payload;
 
 class TickerDispatcher implements DispatcherInterface
 {
-    /** @var EnvironmentInterface */
-    private $env;
-
-    /** @var FinalizerInterface */
-    private $finalizer;
-
-    /** @var ContainerInterface */
-    private $container;
+    private EnvironmentInterface $env;
+    private FinalizerInterface $finalizer;
+    private ContainerInterface $container;
 
     public function __construct(
         EnvironmentInterface $env,
@@ -183,22 +208,22 @@ class TickerDispatcher implements DispatcherInterface
 
     public function canServe(): bool
     {
-        return (php_sapi_name() == 'cli' && $this->env->get('RR_TICKER') !== null);
+        return (\php_sapi_name() == 'cli' && $this->env->get('RR_TICKER') !== null);
     }
 
     public function serve()
     {
         /** @var Worker $worker */
-        $worker = $this->container->get(Worker::class);
+        $worker = $this->container->get(WorkerInterface::class);
 
-        while (($body = $worker->receive($ctx)) !== null) {
-            $lastTick = json_decode($ctx)->lastTick;
-            $numTick = json_decode($body)->tick;
+        while (($payload = $worker->waitPayload()) !== null) {
+            $lastTick = \json_decode($ctx)->lastTick;
+            $numTick = \json_decode($payload->body)->tick;
 
             // do something
-            file_put_contents('ticks.txt', $numTick . "\n", FILE_APPEND);
+            \file_put_contents('ticks.txt', $numTick . "\n", FILE_APPEND);
 
-            $worker->send("OK");
+            $worker->respond(new Payload('OK'));
 
             // reset some stateful services
             $this->finalizer->finalize();
