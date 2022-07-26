@@ -5,7 +5,7 @@ this extension by default.
 To enable the extension in alternative builds:
 
 ```bash
-$ composer require spiral/translator
+composer require spiral/translator
 ```
 
 > Please note that the spiral/framework >= 2.6 already includes this component.

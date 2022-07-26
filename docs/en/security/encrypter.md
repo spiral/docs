@@ -1,4 +1,5 @@
 # Security - Data Encryption
+
 Both Web and GRPC application skeletons include Encrypter component by default. To install Encrypter in other builds:
 
 ```bash
@@ -8,14 +9,17 @@ composer require spiral/encrypter
 > **Note**
 > Please note that the spiral/framework >= 2.6 already includes this component.
 
-You must register bootloader `Spiral\Bootloader\Security\EncrypterBootloader` to activate the component. 
+You must register bootloader `Spiral\Bootloader\Security\EncrypterBootloader` to activate the component.
 
 ## Application Key
-The encryption component based on [defuse/php-encryption](https://github.com/defuse/php-encryption); it requires an encryption key provided by your application. 
+
+The encryption component based on [defuse/php-encryption](https://github.com/defuse/php-encryption); it requires an
+encryption key provided by your application.
 
 By default, `EncrypterBootloader` will load Base64 encoded key from the environment variable `ENCRYPTER_KEY`.
 
-If you use [Dotenv](/extension/dotenv.md) extension you can specify this key value in `.env` file located in the root of your application. To issue new key into `.env` run:
+If you use [Dotenv](/extension/dotenv.md) extension you can specify this key value in `.env` file located in the root of
+your application. To issue new key into `.env` run:
 
 ```bash
 php app.php encrypt:key -m .env
@@ -26,6 +30,7 @@ php app.php encrypt:key -m .env
 issued cookies. 
 
 ## Usage
+
 You can use the Encrypter in your application via `Spiral\Encrypter\EncrypterInterface`:
 
 ```php
