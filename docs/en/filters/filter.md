@@ -10,13 +10,13 @@ use Spiral\Filters\Filter;
 
 class MyFilter extends Filter
 {
-    protected const SCHEMA    = [  
+    protected const SCHEMA = [  
     ];
     
     protected const VALIDATES = [
     ];
     
-    protected const SETTERS   = [       
+    protected const SETTERS = [       
     ];
 }
 ```
@@ -42,6 +42,7 @@ Every key pair is defined as `field` => `source:origin` or `field` => `source`. 
 from user input. In the HTTP scope, the sources can be `cookie`, `data`, `query`, `input` (`data`+`query`), `header`,
 `file`, `server`. The **origin** is the name of the external field (dot notation is supported).
 
+> **Note**
 > You can use any input bag from [InputManager](/http/request-response.md) as source.
 
 For example, we can tell our Filter to point field `login` to the QUERY param `username`:
@@ -78,6 +79,7 @@ class MyFilter extends Filter
 }
 ```
 
+> **Note**
 > The most common source is `data` (points to PSR-7 - parsed body), you can use this data to fetch values from incoming
 > JSON payloads.
 
@@ -118,12 +120,13 @@ We can accept and validate the following data structure:
 }
 ```
 
+> **Note**
 > The error messages will be correctly mounted into the original location. You can also use composite filters for more
 > complex use-cases.
 
 ### Other Sources
 
-By design you can use any method of `[InputManager](/http/request-response.md)` as source where origin is passed
+By design, you can use any method of `[InputManager](/http/request-response.md)` as source where origin is passed
 parameter. Following sources are available:
 
 | Source         | Description                                                   |
@@ -159,6 +162,7 @@ class MyFilter extends Filter
 }
 ```
 
+> **Note**
 > Read more about the validation below.
 
 ### Route Parameters
@@ -217,6 +221,7 @@ class MyFilter extends Filter
 }
 ```
 
+> **Note**
 > You can use any of the default PHP functions like `intval`, `strval` etc.
 
 ```php
@@ -307,6 +312,7 @@ class MyFilter extends Filter
 Once the Filter configured you can access its fields (filtered data), check if the data valid and return the set
 of errors in case of failure.
 
+> **Note**
 > Use [Domain Core Interceptors](/cookbook/domain-core.md) to validate your filters before they will arrive to the
 > controller.
 
