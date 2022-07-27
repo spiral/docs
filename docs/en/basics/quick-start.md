@@ -265,67 +265,27 @@ php app.php db:list
 > **Note**
 > Read more about Databases [here](/database/configuration.md).
 
-### Connect Faker
+### Connect Database Seeder
 
-We will need some sample data for the application. Let's connect the library and bootload the library `fakerphp/faker`.
+We will need some sample data for the application. 
+Let's install [Database Seeder](https://github.com/spiral-packages/database-seeder).
 
 ```bash
-composer require fakerphp/faker
+composer require spiral-packages/database-seeder --dev
 ``` 
 
-To generate the stub data, we will need an instance of `Faker\Generator`, create bootloader in `app/src/Bootloader` to
-resolve such instance as a singleton. Use a factory method for that purpose.
-
-```php
-namespace App\Bootloader;
-
-use Faker\Factory;
-use Faker\Generator;
-use Spiral\Boot\Bootloader\Bootloader;
-
-class FakerBootloader extends Bootloader
-{
-    protected const SINGLETONS = [
-        Generator::class => [self::class, 'fakerGenerator']
-    ];
-
-    private function fakerGenerator(): Generator
-    {
-        return Factory::create(Factory::DEFAULT_LOCALE);
-    }
-}
-```
-
-Add the bootloader to `LOAD` or `APP` in `app/src/App.php` to activate the component:
+Add the bootloader `Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader` to `LOAD` section in `app/src/App.php` 
+to activate the package:
 
 ```diff
 --- a/app/src/App.php
 +++ b/app/src/App.php
 @@ -85,5 +85,6 @@ class App extends Kernel
 
-         Bootloader\RoutesBootloader::class,
-+        Bootloader\FakerBootloader::class,
+         RoadRunnerBridge\CommandBootloader::class,
++        \Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader::class,
      ];
  }
-```
-
-> **Note**
-> You can request dependencies as method arguments in the factory method `fakerGenerator`.
-
-Use the `Faker\Generator` in your controller to view the stub data at `http://localhost:8080/`:
-
-```php
-namespace App\Controller;
-
-use Faker\Generator;
-
-class HomeController
-{
-    public function index(Generator $generator): string
-    {
-        return $generator->sentence(128);
-    }
-}
 ```
 
 > **Note**
@@ -487,6 +447,20 @@ You can write the migration manually, or let Cycle ORM generate it for you.
 The demo application comes with [Cycle ORM](https://cycle-orm.dev). By default, you can use attributes to configure
 your entities.
 
+Enable the Cycle Bridge `Spiral\Cycle\Bootloader\ScaffolderBootloader` bootloader for using commands that create 
+entities and repositories.
+Add the bootloader to `APP` in `app/src/App.php`:
+
+```diff
+--- a/app/src/App.php
++++ b/app/src/App.php
+@@ -85,5 +85,6 @@ class App extends Kernel
+        Scaffolder\ScaffolderBootloader::class,
++       CycleBridge\ScaffolderBootloader::class,
+     ];
+ }
+```
+
 Let's create `Post`, `User` and `Comment` entities and their repositories using the Scaffolder extension:
 
 ```bash
@@ -521,6 +495,31 @@ class Post
 }
  ```
 
+We can move the definition of the `$title` and `$content` properties to the `__construct` method:
+```php
+namespace App\Database;
+
+use App\Repository\PostRepository;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+
+#[Entity(repository: PostRepository::class)]
+class Post
+{
+    #[Column(type: 'primary')]
+    public int $id;
+
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $title,
+
+        #[Column(type: 'text')]
+        public string $content
+    ) {
+    }
+}
+```
+
 User:
 
 ```php
@@ -541,6 +540,29 @@ class User
 }
 ```
 
+We can move the definition of the `$name` property to the `__construct` method:
+
+```php
+namespace App\Database;
+
+use App\Repository\UserRepository;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+
+#[Entity(repository: UserRepository::class)]
+class User
+{
+    #[Column(type: 'primary')]
+    public int $id;
+
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $name
+    ) {
+    }
+}
+```
+
 Comment:
 
 ```php
@@ -557,6 +579,28 @@ class Comment
 
     #[Column(type: 'string')]
     public string $message;
+}
+```
+
+We can move the definition of the `$message` property to the `__construct` method:
+
+```php
+namespace App\Database;
+
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+
+#[Entity]
+class Comment
+{
+    #[Column(type: 'primary')]
+    public int $id;
+
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $message
+    ) {
+    }
 }
 ```
 
@@ -586,6 +630,12 @@ You can change the default directory mapping, headers, and others using [Scaffol
 > **Note**
 > Read more about Cycle [here](/cycle/configuration.md). Configure auto-timestamps
 > using [custom mapper](https://cycle-orm.dev/docs/advanced-timestamp).
+
+Run the configure command to collect all available prototype classes:
+
+```bash
+php app.php configure
+```
 
 ### Generate Migration
 
@@ -626,15 +676,6 @@ class Post
     #[Column(type: 'primary')]
     public int $id;
 
-    #[Column(type: 'string')]
-    public string $title;
-
-    #[Column(type: 'text')]
-    public string $content;
-
-    #[Relation\BelongsTo(target: User::class, nullable: false)]
-    public User $author;
-
     /**
      * @var Collection|Comment[]
      * @psalm-var Collection<int, Comment>
@@ -642,8 +683,16 @@ class Post
     #[Relation\HasMany(target: Comment::class)]
     public Collection $comments;
 
-    public function __construct()
-    {
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $title,
+
+        #[Column(type: 'text')]
+        public string $content,
+
+        #[Relation\BelongsTo(target: User::class, nullable: false)]
+        public User $author
+    ) {
         $this->comments = new ArrayCollection();
     }
 }
@@ -664,16 +713,19 @@ class Comment
     #[Column(type: 'primary')]
     public int $id;
 
-    #[Column(type: 'string')]
-    public string $message;
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $message,
 
-    #[Relation\BelongsTo(target: User::class, nullable: false)]
-    public User $author;
+        #[Relation\BelongsTo(target: User::class, nullable: false)]
+        public User $author,
 
-    #[Relation\BelongsTo(target: Post::class, nullable: false)]
-    public Post $post;
+        #[Relation\BelongsTo(target: Post::class, nullable: false)]
+        public Post $post
+    ) {
+    }
 }
-``` 
+```
 
 Once again generate and run the migration:
 
@@ -694,280 +746,234 @@ php app.php db:table comments
 > **Note**
 > Do not forget to run `php app.php cycle:migrate` when you change any of your entities.
 
-## Service
+## Factories and seeders
 
-Isolate the business logic into a separate service layer. Let's create `PostService` in `app/src/Service`.
-We will need an instance of `Cycle\ORM\EntityManagerInterface` to persist the post.
+To generate test data, we need factories that will describe the rules for generating an entity. 
+And seeders that will fill the database.
 
-```php
-namespace App\Service;
+We will store them separately from the application code, in the `app/database` folder. 
+Let's add a separate `Database` namespace to Composer autoload:
 
-use App\Database\Post;
-use App\Database\User;
-use Cycle\ORM\EntityManagerInterface;
-
-class PostService
-{
-    public function __construct(
-        private EntityManagerInterface $entityManager
-    ) {
-    }
-
-    public function createPost(User $user, string $title, string $content): Post
-    {
-        $post = new Post();
-        $post->author = $user;
-        $post->title = $title;
-        $post->content = $content;
-
-        $this->entityManager->persist($post);
-        $this->entityManager->run();
-
-        return $post;
-    }
-}
+```diff
+--- a/composer.json
++++ b/composer.json
+"autoload": {
+    "psr-4": {
+        "App\\": "app/src",
++       "Database\\": "app/database"
+    },
+    //
+},
 ```
-
-> **Note**
-> You can reuse the EntityManager after the `run` method.
-
-### Prototyping
-
-One of the most powerful capabilities of the framework is [Prototyping](/basics/prototype.md). Declare the
-shortcut `postService`, which points to `PostService` using annotation.
-
-```php
-namespace App\Service;
-
-use App\Database\Post;
-use App\Database\User;
-use Cycle\ORM\TransactionInterface;
-use Spiral\Prototype\Annotation\Prototyped;
-
-#[Prototyped(property: 'postService')]
-class PostService
-{
-    // ...
-}
-``` 
-
-Run the configure command to collect all available prototype classes:
 
 ```bash
-php app.php configure
+composer dump-autoload
 ```
 
-> **Note**
-> Make sure to use proper IDE to gain access to the IDE tooltips.
+### CommentFactory
 
-Now you can get access to the `PostService` using `PrototypeTrait`, see the example down below.
-
-## Console Command
-
-Let's create three commands to generate the data for our application. Use scaffolder extension to create command to seed
-our database:
-
-```bash
-php app.php create:command seed/user seed:user
-php app.php create:command seed/post seed:post
-php app.php create:command seed/comment seed:comment
-``` 
-
-Generated commands will be available in `app/src/Command/Seed`.
-
-### UserCommand
-
-Use the method injection on `perform` in `UserCommand` to seed the users using Faker:
+Let's create `CommentFactory` class, extend it from `Spiral\DatabaseSeeder\Factory\AbstractFactory` and implement
+required methods:
 
 ```php
-// app/src/Command/Seed/UserCommand.php
-namespace App\Command\Seed;
-
-use App\Database\User;
-use Cycle\ORM\EntityManagerInterface;
-use Faker\Generator;
-use Spiral\Console\Command;
-
-class UserCommand extends Command
-{
-    protected const NAME = 'seed:user';
-
-    protected function perform(EntityManagerInterface $em, Generator $faker): int
-    {
-        for ($i = 0; $i < 100; $i++) {
-            $user = new User();
-            $user->name = $faker->name;
-
-            $em->persist($user);
-        }
-
-        $em->run();
-
-        $this->output->write('<info>Database seeding completed successfully.</info>');
-
-        return self::SUCCESS;
-    }
-}
-```
-
-Run the command:
-
-```bash
-php app.php seed:user
-```
-
-### PostCommand
-
-Use the prototype extension to speed up the creation of the `seed:post` command. Call the `postService` and `users`
-(repository) as class properties.
-
-> **Note**
-> Run `php app.php configure` if your IDE does not highlight repositories or other services.
-
-```php
-// app/src/Command/Seed/PostCommand.php
-namespace App\Command\Seed;
-
-use Faker\Generator;
-use Spiral\Console\Command;
-use Spiral\Prototype\Traits\PrototypeTrait;
-
-class PostCommand extends Command
-{
-    use PrototypeTrait;
-
-    protected const NAME = 'seed:post';
-
-    protected function perform(Generator $faker): int
-    {
-        $users = $this->users->findAll();
-
-        for ($i = 0; $i < 1000; $i++) {
-            $user = $users[array_rand($users)];
-
-            $post = $this->postService->createPost(
-                $user,
-                $faker->sentence(12),
-                $faker->text(900)
-            );
-
-            $this->sprintf("New post: <info>%s</info>\n", $post->title);
-        }
-        
-        return self::SUCCESS;
-    }
-}
-```
-
-Run the command with `-vv` flag to observe the SQL queries:
-
-```bash
-php app.php seed:post -vv
-```
-
-To remove prototype properties run:
-
-```bash
-php app.php prototype:inject -r
-```
-
-Your command will be converted into the following form:
-
-```php
-namespace App\Command\Seed;
-
-use App\Repository\UserRepository;
-use App\Service\PostService;
-use Faker\Generator;
-use Spiral\Console\Command;
-
-class PostCommand extends Command
-{
-    protected const NAME = 'seed:post';
-
-    public function __construct(
-        private UserRepository $users,
-        private PostService $postService,
-        ?string $name = null
-    ) {
-        parent::__construct($name);
-    }
-
-    protected function perform(Generator $faker): int
-    {
-        $users = $this->users->findAll();
-
-        for ($i = 0; $i < 1000; $i++) {
-            $user = $users[array_rand($users)];
-
-            $post = $this->postService->createPost(
-                $user,
-                $faker->sentence(12),
-                $faker->text(900)
-            );
-
-            $this->sprintf("New post: <info>%s</info>\n", $post->title);
-        }
-
-        return self::SUCCESS;
-    }
-}
-```
-
-> **Note**
-> You can use the prototype in any part of your codebase. Do not forget to remove the extension before going live. 
-
-### CommentCommand
-
-Seed comments using random user and post relation. We will receive all the needed instances using the method injection.
-
-```php
-namespace App\Command\Seed;
+// app/database/Factory/CommentFactory.php
+namespace Database\Factory;
 
 use App\Database\Comment;
-use App\Repository\PostRepository;
-use App\Repository\UserRepository;
-use Cycle\ORM\EntityManagerInterface;
+use App\Database\Post;
+use App\Database\User;
 use Faker\Generator;
-use Spiral\Console\Command;
+use Spiral\DatabaseSeeder\Factory\AbstractFactory;
 
-class CommentCommand extends Command
+class CommentFactory extends AbstractFactory
 {
-    protected const NAME = 'seed:comment';
+    /**
+     * Returns a fully qualified database entity class name
+     */
+    public function entity(): string
+    {
+        return Comment::class;
+    }
 
-    protected function perform(
-        Generator $faker,
-        EntityManagerInterface $entityManager,
-        UserRepository $userRepository,
-        PostRepository $postRepository
-    ): int {
-        $users = $userRepository->findAll();
-        $posts = $postRepository->findAll();
+    /**
+     * Returns an entity
+     */
+    public function makeEntity(array $definition): Comment
+    {
+        return new Comment($definition['message'], $definition['author'], $definition['post']);
+    }
 
-        for ($i = 0; $i < 1000; $i++) {
-            $user = $users[array_rand($users)];
-            $post = $posts[array_rand($posts)];
+    /**
+     * Generate Comment with given author
+     */
+    public function withAuthor(User $author): self
+    {
+        return $this->state(fn(Generator $faker, array $definition) => [
+            'author' => $author,
+        ]);
+    }
 
-            $comment = new Comment();
-            $comment->author = $user;
-            $comment->post = $post;
-            $comment->message = $faker->sentence(12);
+    /**
+     * Generate Comment with given post
+     */
+    public function withPost(Post $post): self
+    {
+        return $this->state(fn(Generator $faker, array $definition) => [
+            'post' => $post,
+        ]);
+    }
 
-            $this->sprintf("New comment: <info>%s</info>\n", $comment->message);
-
-            $entityManager->persist($comment);
-            $entityManager->run();
-        }
-
-        return self::SUCCESS;
+    /**
+     * Returns array with generation rules
+     */
+    public function definition(): array
+    {
+        return [
+            'message' => $this->faker->sentence(12),
+            'author' => UserFactory::new()->makeOne(),
+            'post' => PostFactory::new()->makeOne()
+        ];
     }
 }
 ```
 
-Run the command:
+### PostFactory
+
+Let's create `PostFactory` class:
+
+```php
+// app/database/Factory/PostFactory.php
+namespace Database\Factory;
+
+use App\Database\Post;
+use App\Database\User;
+use Faker\Generator;
+use Spiral\DatabaseSeeder\Factory\AbstractFactory;
+
+class PostFactory extends AbstractFactory
+{
+    /**
+     * Returns a fully qualified database entity class name
+     */
+    public function entity(): string
+    {
+        return Post::class;
+    }
+
+    /**
+     * Returns an entity
+     */
+    public function makeEntity(array $definition): Post
+    {
+        return new Post($definition['title'], $definition['content'], $definition['author']);
+    }
+
+    /**
+     * Generate Post with given author
+     */
+    public function withAuthor(User $author): self
+    {
+        return $this->state(fn(Generator $faker, array $definition) => [
+            'author' => $author,
+        ]);
+    }
+
+    /**
+     * Returns array with generation rules
+     */
+    public function definition(): array
+    {
+        return [
+            'title' => $this->faker->sentence(12),
+            'content' => $this->faker->text(900),
+            'author' => UserFactory::new()->makeOne()
+        ];
+    }
+}
+```
+
+### UserFactory
+
+Let's create `UserFactory` class:
+
+```php
+// app/database/Factory/UserFactory.php
+namespace Database\Factory;
+
+use App\Database\User;
+use Spiral\DatabaseSeeder\Factory\AbstractFactory;
+
+class UserFactory extends AbstractFactory
+{
+    /**
+     * Returns a fully qualified database entity class name
+     */
+    public function entity(): string
+    {
+        return User::class;
+    }
+
+    /**
+     * Returns an entity
+     */
+    public function makeEntity(array $definition): User
+    {
+        return new User($definition['name']);
+    }
+
+    /**
+     * Returns array with generation rules
+     */
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->name,
+        ];
+    }
+}
+```
+### BlogSeeder
+
+Let's create `UserFactory` class:
+
+```php
+// app/database/Seeder/BlogSeeder.php
+namespace Database\Seeder;
+
+use Database\Factory\CommentFactory;
+use Database\Factory\PostFactory;
+use Database\Factory\UserFactory;
+use Spiral\DatabaseSeeder\Seeder\AbstractSeeder;
+
+class BlogSeeder extends AbstractSeeder
+{
+    public function run(): \Generator
+    {
+        $users = UserFactory::new()->times(100)->make();
+        yield from $users;
+
+        $posts = [];
+        for ($i = 0; $i < 1000; $i++) {
+            $posts[] = PostFactory::new()
+                ->withAuthor($users[array_rand($users)])
+                ->makeOne();
+        }
+        yield from $posts;
+
+        for ($i = 0; $i < 1000; $i++) {
+            yield CommentFactory::new()
+                ->withAuthor($users[array_rand($users)])
+                ->withPost($posts[array_rand($posts)])
+                ->makeOne();
+        }
+    }
+}
+```
+
+Now let's execute a console command that will populate the database with test records:
 
 ```bash
-php app.php seed:comment -vv
+php app.php db:seed
 ```
 
 ## Controller
@@ -987,6 +993,7 @@ The generated code:
 ```php
 namespace App\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\Router\Annotation\Route;
 
@@ -994,11 +1001,19 @@ class PostController
 {
     use PrototypeTrait;
 
-    public function test()
+    /**
+     * Please, don't forget to configure the Route attribute or remove it and register the route manually.
+     */
+    #[Route(route: 'path', name: 'name')]
+    public function test(): ResponseInterface
     {
     }
 
-    public function get()
+    /**
+     * Please, don't forget to configure the Route attribute or remove it and register the route manually.
+     */
+    #[Route(route: 'path', name: 'name')]
+    public function get(): ResponseInterface
     {
     }
 }
@@ -1077,7 +1092,7 @@ class PostController
 {
     use PrototypeTrait;
 
-    #[Route(route: '/api/post/<post:\d+>', name: 'post.get', methods: 'GET')]
+    #[Route(route: '/api/post/<id:\d+>', name: 'post.get', methods: 'GET')]
     public function get(string $id): array
     {
         /** @var Post $post */
@@ -1229,7 +1244,6 @@ class PostRepository extends Repository
 Create method `list` in `PostController`:
 
 ```php
-
 #[Route(route: '/api/post', name: 'post.list', methods: 'GET')]
 public function list(): array
 {
@@ -1337,7 +1351,7 @@ Add the bootloader to `LOAD` in `app/src/App.php` to activate the component:
 @@ -85,5 +85,6 @@ class App extends Kernel
 
          ValidationBootloader::class,
-+        \Spiral\Validator\Bootloader\ValidatorBootloader,
++        \Spiral\Validator\Bootloader\ValidatorBootloader::class,
      ];
  }
 ```
@@ -1348,9 +1362,9 @@ Create `CommentFilter`:
 namespace App\Filter;
 
 use Spiral\Filters\Attribute\Input\Post;
-use Spiral\Filters\Dto\Filter;
-use Spiral\Filters\Dto\FilterDefinitionInterface;
-use Spiral\Filters\Dto\HasFilterDefinition;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
 use Spiral\Validator\FilterDefinition;
 
 class CommentFilter extends Filter implements HasFilterDefinition
@@ -1390,10 +1404,7 @@ class CommentService
 
     public function comment(Post $post, User $user, string $message): Comment
     {
-        $comment = new Comment();
-        $comment->post = $post;
-        $comment->author = $user;
-        $comment->message = $message;
+        $comment = new Comment($message, $user, $post);
 
         $this->entityManager->persist($comment);
         $this->entityManager->run();
@@ -1409,13 +1420,13 @@ Declare controller method and request filter instance. Since you filter implemen
 will guarantee that filter is valid. Create `comment` endpoint to post message to a given post:
 
 ```php
-#[Route(route: '/api/post/<post:\d+>/comment', name: 'post.comment', methods: 'POST')] 
+#[Route(route: '/api/post/<post:\d+>/comment', name: 'post.comment', methods: 'POST')]
 public function comment(Post $post, CommentFilter $commentFilter): array
 {
     $this->commentService->comment(
         $post,
-        $this->users->findOne(), // todo: use current user
-        $commentFilter->getMessage()
+        $this->users->findOne(),
+        $commentFilter->message
     );
 
     return ['status' => 201];
