@@ -128,7 +128,7 @@ protected function defineRoutes(RoutingConfigurator $routes): void
 
 ### Adding routes in defineRoutes method
 
-Routes can be added in the defineRoutes method using the RoutingConfigurator. 
+Routes can be added in the `defineRoutes` method using the `RoutingConfigurator`. 
 The process of adding routes is exactly the same as in separate files:
 
 ```php
