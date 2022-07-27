@@ -4,6 +4,7 @@ You can use the component `spiral/reactor` to generate PHP classes code using fl
 is based on `nette/php-generator`.
 
 ## Installation
+
 To install the component:
 
 ```bash
@@ -14,6 +15,7 @@ composer require spiral/reactor
 > Please note that the spiral/framework >= 2.7 already includes this component.
 
 ## Class Declaration
+
 To declare class use `Spiral\Reactor\ClassDeclaration`.
 
 ```php
@@ -35,6 +37,7 @@ class MyClass
 You can get access to most of the declaration directly from the class.
 
 ### Property
+
 To render class property:
 
 ```php
@@ -65,6 +68,7 @@ class MyClass
 ```
 
 ### Constant
+
 To render constant:
 
 ```php
@@ -91,6 +95,7 @@ class MyClass
 ```
 
 ### Traits
+
 To add trait declaration:
 
 ```php
@@ -111,6 +116,7 @@ class MyClass
 ```
 
 ### Interface and Extends
+
 To implement given interface or extend base class:
 
 ```php
@@ -135,6 +141,7 @@ class MyClass extends Cycle\ORM\Select\Repository implements Countable
 ```
 
 ### Methods
+
 To generate class method:
 
 ```php
@@ -172,6 +179,7 @@ class MyClass
 ```
 
 ## Namespace
+
 To create a class inside a specific namespace:
 
 ```php
@@ -194,6 +202,7 @@ class MyClass
 ```
 
 ## Interface Declaration
+
 To declare interface use `Spiral\Reactor\InterfaceDeclaration`.
 
 ```php
@@ -221,6 +230,7 @@ interface MyInterface extends Countable
 ```
 
 ## Enum Declaration
+
 To declare enum use `Spiral\Reactor\EnumDeclaration`.
 
 ```php
@@ -264,6 +274,7 @@ enum MyEnum: string
 ```
 
 ## Function Declaration
+
 To declare global function use `Spiral\Reactor\FunctionDeclaration`.
 
 ```php
@@ -292,6 +303,7 @@ function myFunction(): string
 ```
 
 ## Trait Declaration
+
 To declare trait use `Spiral\Reactor\TraitDeclaration`.
 
 ```php
@@ -320,6 +332,7 @@ trait MyTrait
 ```
 
 ## File
+
 You can collect classes, interfaces, traits, global functions, and enums in a file:
 
 ```php

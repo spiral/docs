@@ -1,10 +1,14 @@
 # Framework - Static Memory
-Framework (component `spiral/boot`) provides a convenient interface to store some computation data shared between processes.  
 
-> Current implementation of shared memory stores data in physical files with the help of OpCache. Future implementations will
-move data storage to RoadRunner or shared PHP extension with SHM, do not couple your codebase to physical files.  
+Framework (component `spiral/boot`) provides a convenient interface to store some computation data shared between
+processes.
+
+> **Note**
+> Current implementation of shared memory stores data in physical files with the help of OpCache. Future implementations
+> will move data storage to RoadRunner or shared PHP extension with SHM, do not couple your codebase to physical files.
 
 ## MemoryInterface
+
 Use interface `Spiral\Boot\MemoryInterface` to store computation results:
 
 ```php
@@ -35,12 +39,16 @@ interface MemoryInterface
 ```
 
 ## Use Cases
-The general idea of memory is to speed up an application by caching the execution result of some functionality. The memory component used to store the configuration cache, ORM and ODM schemas, console commands list and tokenizer cache;
-it can also be used to cache compiled routes, etc.
 
- > Application memory must never be used to store user data.
+The general idea of memory is to speed up an application by caching the execution result of some functionality. The
+memory component used to store the configuration cache, ORM and ODM schemas, console commands list and tokenizer cache.
+It can also be used to cache compiled routes, etc.
+
+> **Note**
+> Application memory must never be used to store user data.
 
 ## Practical Example
+
 Let's view an example of a service used to analyze available classes to compute some behavior (operations):
 
 ```php
@@ -49,59 +57,54 @@ abstract class Operation
     /**
      * Execute some operation.
      */
-    abstract public function perform($request);
+    abstract public function perform(mixed $request): void;
 }
 
 class OperationService
 {
     /**
      * List of operation associated with their class.
+     * @var class-string[] 
      */
-    protected $operations = [];
+    protected array $operations = [];
 
-    /**
-     * OperationService constructor.
-     *
-     * @param MemoryInterface  $memory
-     * @param ClassesInterface $classes
-     */
-    public function __construct(MemoryInterface $memory, ClassesInterface $classes)
-    {
+    public function __construct(
+        MemoryInterface $memory, 
+        ClassesInterface $classes
+    ) {
         $this->operations = $memory->loadData('operations');
 
-        if (is_null($this->operations)) {
+        if (\is_null($this->operations)) {
             $this->operations = $this->locateOperations($classes); // slow operation
             $memory->saveData('operations', $this->operations);
         }      
     }
 
-    /**
-     * @param string $operation
-     * @param mixed  $request
-     */
-    public function run($operation, $request)
+    public function run(string $operation, mixed $request): void
     {
-        //Perform operation based on $operations property
+        // Perform operation based on $operations property
     }
 
     /**
-     * @param ClassesInterface $locator
-     * @return array
+     * @return class-string[]
      */
-    protected function locateOperations(ClassesInterface $classes)
+    protected function locateOperations(ClassesInterface $classes): array
     {
-        //Generate list of available operations via scanning every available class
+        // Generate list of available operations via scanning every available class
     }
 }
 ```
 
+> **Note**
 > You can currently only store arrays or scalar values in memory.
 
-You can implement your version of `Spiral\Boot\MemoryInterface` using APC, XCache, DHT on RoadRunner, Redis, or even Memcache.
+You can implement your version of `Spiral\Boot\MemoryInterface` using APC, XCache, DHT on RoadRunner, Redis, or even
+Memcache.
 
 Before you embed `Spiral\Boot\MemoryInterface` into your component or service:
+
 * Do not store any data related to a user request, action or information. Memory is only for logic caching
 * Assume memory can disappear at any moment
 * `saveData` is thread-safe but slows down with higher concurrency
 * `saveData` is more expensive than `loadData`, make sure not to store anything in memory during application runtime
-* bootloaders and commands are the best places to use memory
+* [bootloaders](/framework/bootloaders.md) and [commands](/console/commands.md) are the best places to use memory

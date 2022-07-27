@@ -1,9 +1,12 @@
 # Static Analysis
-A lot of Spiral components based on automatic code discovery and analysis. The most used functionality of locating class declarations is provided by `Spiral\Tokenizer\ClassesInterface`. 
+
+A lot of Spiral components based on automatic code discovery and analysis. The most used functionality of locating class
+declarations is provided by `Spiral\Tokenizer\ClassesInterface`.
 
 > Tokenizer component is pre-installed with all framework bundles.
 
 ## Class Locator
+
 Use `Spiral\Tokenizer\ClassesInterface` to find available classes by their name, interface or trait:
 
 ```php
@@ -15,8 +18,8 @@ public function findClasses(ClassesInterface $classes)
 }
 ```
 
-By default, the component will be looking for classes available in the `app` directory only. You can add any other directory
-using `Spiral\Bootloader\TokenizerBootloader`:
+By default, the component will be looking for classes available in the `app` directory only. You can add any other
+directory using `Spiral\Bootloader\TokenizerBootloader`:
 
 ```php
 public function boot(TokenizerBootloader $tokenizer)
@@ -28,10 +31,12 @@ public function boot(TokenizerBootloader $tokenizer)
 > Attention, class lookup is not a fast process, only add necessary directories.
 
 ## PHP-Parser
-The [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser) is available in Web and GRPC bundle by default. Use this dependency for a deeper
-analysis of AST-tree.
+
+The [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser) is available in Web and GRPC bundle by default. Use this
+dependency for a deeper analysis of AST-tree.
 
 ## ORM Introspection
+
 To get a list of all available entity roles:
 
 ```php
