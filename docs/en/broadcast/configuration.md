@@ -3,7 +3,7 @@ The default Web and GRPC bundles include Broadcast extension pre-enabled on the 
 in your application run:
 
 ```bash
-$ composer require spiral/broadcast
+composer require spiral/broadcast
 ```
 
 Enable `Spiral\Bootloader\Broadcast\BroadcastBootloader` in your application kernel:

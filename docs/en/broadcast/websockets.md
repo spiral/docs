@@ -27,11 +27,11 @@ Recommended way to consume broadcast events is to use Spiral Framework WebSocket
 SFSocket available for installing with npm or yarn
 
 ```bash
-    npm install @spiralscout/websockets -D  
+npm install @spiralscout/websockets -D  
 ```
 
 ```bash
-    yarn add @spiralscout/websockets 
+yarn add @spiralscout/websockets 
 ```
 
 Next use it like so

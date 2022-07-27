@@ -1,6 +1,7 @@
 # Console - Installation and Configuration
-All of the provided application skeletons include the Console component by default. To enable component in alternative builds make
-sure to require composer package `spiral/console` and modify the application bootloader:
+
+All of the provided application skeletons include the Console component by default. To enable component in alternative
+builds make sure to require composer package `spiral/console` and modify the application bootloader:
 
 ```php
 [
@@ -9,31 +10,34 @@ sure to require composer package `spiral/console` and modify the application boo
 ]
 ```
 
-Make sure to include this bootloader at last, as it will also activate the set of default commands for previously added 
+Make sure to include this bootloader at last, as it will also activate the set of default commands for previously added
 components.
 
 To invoke application command run:
 
 ```bash
-$ php app.php command:name
+php app.php command:name
 ```
 
 To get a list of available commands:
 
 ```bash
-$ php app.php
+php app.php
 ```
 
 To get help about the particular command:
 
 ```bash
-$ php app.php help command:name
+php app.php help command:name
 ```
 
 ## Invoke in Application
-You can invoke console commands inside your application or application tests. This approach can be useful to create mock data for tests or automatically pre-configure the database.
+
+You can invoke console commands inside your application or application tests. This approach can be useful to create mock
+data for tests or automatically pre-configure the database.
 
 Use `Spiral\Console\Console` to do that:
+
 ```php
 use Spiral\Console\Console;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -51,13 +55,16 @@ public function test(Console $console)
 ```
 
 ## Symfony/Console
-Spiral Console dispatcher built at the top of powerful [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html) 
-component.
+
+Spiral Console dispatcher built at the top of
+powerful [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html) component.
 
 > You can register native Symfony Commands in your CLI application.
 
 ## Configuration
-To apply the custom configuration to the Console component use `Spiral\Config\ConfiguratorInterface` or create a config file in `app/config/console.php`:
+
+To apply the custom configuration to the Console component use `Spiral\Config\ConfiguratorInterface` or create a config
+file in `app/config/console.php`:
 
 ```php
 return [
@@ -78,8 +85,8 @@ return [
 ];
 ```
 
-You can modify some of these values during application bootload via `Spiral\Bootloader\ConsoleBootloader`. To register new 
-user command:
+You can modify some of these values during application bootload via `Spiral\Bootloader\ConsoleBootloader`. To register
+new user command:
 
 ```php
 public function boot(ConsoleBootloader $console)
@@ -100,5 +107,6 @@ public function boot(ConsoleBootloader $console)
 ```
 
 ## Connection with RoadRunner
-Please note, console commands invoked outside of the RoadRunner server. Make sure to run an instance of application server
-if any of your commands must communicate with it.
+
+Please note, console commands invoked outside of the RoadRunner server. Make sure to run an instance of application
+server if any of your commands must communicate with it.

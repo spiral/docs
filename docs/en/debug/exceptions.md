@@ -5,7 +5,7 @@ Spiral Framework provides multiple ways to handle critical and application-level
 You can create HTTP middleware to intercept any specific exception type thrown inside your controllers. We can use Whoops to demonstrate how to write it.
 
 ```bash
-$ composer require filp/whoops
+composer require filp/whoops
 ```
 
 And our middleware:
