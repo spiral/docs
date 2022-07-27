@@ -72,9 +72,7 @@ class AppConfig extends InjectableConfig
         'values' => []
     ];
 
-    /**
-     * @return array|int[]
-     */
+    /** @return int[] */
     public function getValues(): array
     {
         return $this->config['values'];
