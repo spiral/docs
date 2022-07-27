@@ -1,18 +1,23 @@
 # HTTP - Custom PSR-15 handlers
-Spiral Framework is compliant with `PSR-7`, `PSR-15`, and `PSR-17` community standards; it allows you to swap HTTP layer implementation to any alternative.
 
-> By default, `Psr\Http\Server\RequestHandlerInterface` is implemented and binded to `Spiral\Router\Router`. You would have to disable
-the bootloader `Spiral\Bootloader\Http\RouterBootloader` in your application.
+Spiral Framework is compliant with `PSR-7`, `PSR-15`, and `PSR-17` community standards; it allows you to swap HTTP layer
+implementation to any alternative.
+
+> By default, `Psr\Http\Server\RequestHandlerInterface` is implemented and binded to `Spiral\Router\Router`. You would
+> have to disable the bootloader `Spiral\Bootloader\Http\RouterBootloader` in your application.
 
 ## Fast Route
-As an example, we can replace the default spiral router with one based on [FastRoute](https://github.com/nikic/FastRoute). The implementation provided by [https://github.com/middlewares/fast-route](https://github.com/middlewares/fast-route).
+
+As an example, we can replace the default spiral router with one based
+on [FastRoute](https://github.com/nikic/FastRoute). The implementation provided
+by [https://github.com/middlewares/fast-route](https://github.com/middlewares/fast-route).
 
 ```bash
-$ composer require middlewares/fast-route middlewares/request-handler
+composer require middlewares/fast-route middlewares/request-handler
 ```
 
-Create bootloader to bind this implementation to our http server. We can either bind handler via `HttpBootloader` or simply
-declare `Psr\Http\Server\RequestHandlerInterface` in `SINGLETONS`:
+Create bootloader to bind this implementation to our http server. We can either bind handler via `HttpBootloader` or
+simply declare `Psr\Http\Server\RequestHandlerInterface` in `SINGLETONS`:
 
 ```php
 use FastRoute;
@@ -55,6 +60,7 @@ class FastRouteBootloader extends Bootloader
 Add this Bootloader to your application, the route `/name/{name}` will be available immediately.
 
 ## Custom Handler
+
 You can also implement your own handler, to shorten time we will implement handler directly in the bootloader:
 
 ```php

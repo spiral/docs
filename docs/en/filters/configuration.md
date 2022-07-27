@@ -1,11 +1,14 @@
 # Filter Objects
+
 The framework component `spiral/filters` provides support for request validation, composite validation, an error message
 mapping and locations, etc.
 
 > The component relies on [Validation](/security/validation.md) library, make sure to read it first.
 
 ## Installation
-The component does not require any configuration and can be activated using the bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
+
+The component does not require any configuration and can be activated using the
+bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
 
 ```php
 [
@@ -16,6 +19,7 @@ The component does not require any configuration and can be activated using the 
 ```
 
 ## Input Binding
+
 The filter components operate using the `Spiral\Filter\InputInterface` as a primary data source:
 
 ```php
@@ -27,7 +31,7 @@ interface InputInterface
 }
 ```
 
-By default, this interface is binded to [InputManager](/http/request-response.md) and which makes it possible to access
+By default, this interface is bound to [InputManager](/http/request-response.md) and which makes it possible to access
 any request's attribute using **source** and **origin** pair with dot-notation support. For example:
 
 ```php
@@ -53,8 +57,9 @@ class HomeController
 Input binding is a primary way of delivering data into the filter object.
 
 ## Create Filter
+
 The filter object implement might vary from package to package. The default implementation provided via abstract class
-`Spiral\Filter\Filter`. To create custom filter to validate query: 
+`Spiral\Filter\Filter`. To create custom filter to validate query:
 
 ```php
 namespace App\Filter;
@@ -76,7 +81,7 @@ class MyFilter extends Filter
 }
 ```
 
-> Or use the scaffolding `php app.php create:filter my -f "abc:string(query)"`. 
+> Or use the scaffolding `php app.php create:filter my -f "abc:string(query)"`.
 
 You can request the Filter as method injection (it will be automatically binded to current http input):
 
@@ -99,5 +104,6 @@ class HomeController
 > Try URL with `?abc=1`.
 
 ## Extensions
+
 Activate `Spiral\Domain\FilterInterceptor` in your [domain core](/cookbook/domain-core.md) to automatically pre-validate
 your request before delivering to controller.

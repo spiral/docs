@@ -37,13 +37,13 @@ To achieve higher performance on larger messages, make sure to install a `protob
 You can compile the extension manually or install it via [PECL](https://pecl.php.net/package/protobuf).
 
 ```bash
-$ sudo pecl install protobuf
+sudo pecl install protobuf
 ```
 
 > Note, in case of `Segmentation Fault` error, try to install different `protobuf` library. We recommend using `3.10.0`  at the start. 
 
 ```bash
-$ sudo pecl install protobuf-3.10.0
+sudo pecl install protobuf-3.10.0
 ```
 
 ## Component Installation
@@ -134,7 +134,7 @@ issue it manually via [OpenSSL](https://www.openssl.org/).
 To issue server key and certificate:
 
 ```bash
-$ openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -out app.crt
+openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -out app.crt
 ```
 
 > Make sure to use a proper domain name or `localhost`, it will be required to make your clients connect properly.
@@ -145,8 +145,8 @@ Use https://github.com/fullstorydev/grpcui to connect to GRPC from the web brows
 to compile the application:
 
 ```bash
-$ go get github.com/fullstorydev/grpcui
-$ go install github.com/fullstorydev/grpcui/cmd/grpcui
+go get github.com/fullstorydev/grpcui
+go install github.com/fullstorydev/grpcui/cmd/grpcui
 ```
 
 ## Example Application
@@ -154,19 +154,19 @@ $ go install github.com/fullstorydev/grpcui/cmd/grpcui
 You can install `app-grpc` skeleton application to play with GRPC services:
 
 ```bash
-$ composer create-project spiral/app-grpc
-$ cd app-grpc
-$ openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -out app.crt
+composer create-project spiral/app-grpc
+cd app-grpc
+openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -out app.crt
 ```
 
 Start the application:
 
 ```bash
-$ ./spiral serve
+./spiral serve
 ```
 
 To connect to GRPC endpoints from browser use the `` described above:
 
 ```bash
-$ grpcui -insecure -import-path ./proto/ -proto service.proto localhost:50051
+grpcui -insecure -import-path ./proto/ -proto service.proto localhost:50051
 ```

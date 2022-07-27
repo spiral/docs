@@ -1,10 +1,12 @@
 # HTTP - Session
+
 The default application skeleton enables session integration by default.
- 
-If you need to enable session it in an alternative bundle, require composer package `spiral/session` and add 
+
+If you need to enable session in an alternative bundle, require composer package `spiral/session` and add
 bootloader `Spiral\Bootloader\Http\SessionBootloader` into your app.
 
 ## SessionInterface
+
 User session can be accessed using context specific object `Spiral\Session\SessionInterface`:
 
 ```php
@@ -22,8 +24,10 @@ public function index(SessionInterface $session)
 > You are not allowed to store session reference in singleton objects. See the workaround below.
 
 ## Session Section
+
 By default, you are not allowed to work with session directly, but rather allocate the isolated and named section
-which provides classing `set`, `get`, `delete` and etc functionality. Use `getSection` of session object for these purposes:
+which provides classing `set`, `get`, `delete` and etc functionality. Use `getSection` of session object for these
+purposes:
 
 ```php
 public function index(SessionInterface $session)
@@ -37,9 +41,10 @@ public function index(SessionInterface $session)
 ```
 
 ## Session Scope
-To simplify the usage of the session in singleton services and controllers, use `Spiral\Session\SessionScope`. This component
-is also available via prototype property `session`. The component can be used within singleton services and always
-point to active session context:
+
+To simplify the usage of the session in singleton services and controllers, use `Spiral\Session\SessionScope`. This
+component is also available via prototype property `session`. The component can be used within singleton services and
+always point to active session context:
 
 ```php
 namespace App\Controller;
@@ -50,7 +55,7 @@ class HomeController
 {
     use PrototypeTrait;
 
-    public function index()
+    public function index(): void
     {
         dump($this->session->getSection('cart')->getAll());
     }
@@ -58,12 +63,14 @@ class HomeController
 ```
 
 ## Session Lifecycle
-The session will be automatically started on first data access and committed when the request will leave `SessionMiddleware`.
-To control session manually use methods of `Spiral\Session\SessionInterface` object.
+
+The session will be automatically started on first data access and committed when the request will
+leave `SessionMiddleware`. To control session manually use methods of `Spiral\Session\SessionInterface` object.
 
 > SessionScope fully implements SessionInterface.
 
 ### Resume session
+
 To manually resume/create session:
 
 ```php
@@ -71,6 +78,7 @@ $this->session->resume();
 ```
 
 ### Commit
+
 To manually commit and close the session:
 
 ```php
@@ -78,6 +86,7 @@ $this->session->commit();
 ```
 
 ### Abort
+
 To discard all the changes and close the session:
 
 ```php
@@ -85,6 +94,7 @@ $this->session->abort();
 ```
 
 ### Get Session ID
+
 To get session ID (only when session resumed):
 
 ```php
@@ -98,6 +108,7 @@ dump($this->session->isStarted());
 ```
 
 ### Destroy
+
 To destroy the session and all the content:
 
 ```php
@@ -105,6 +116,7 @@ $this->session->destroy();
 ``` 
 
 ### Regenerate ID
+
 To issue new session ID without affecting the session content:
 
 ```php
@@ -112,6 +124,7 @@ $this->session->regenerateID();
 ```
 
 ## Custom Configuration
+
 To alter session configuration create file `app/config/session.php` to change needed values:
 
 ```php
@@ -137,15 +150,24 @@ return [
 ```
 
 ### Custom Session Handler
+
 The session component based on native PHP session implementation. By default, session content stored in the file system
 in the `runtime/session` directory.
 
-To change the session storage driver, use any `SessionHandlerInterface` [compatible handler]https://www.php.net/manual/en/class.sessionhandlerinterface.php).
+To change the session storage driver, use
+any `SessionHandlerInterface` [compatible handler](https://www.php.net/manual/en/class.sessionhandlerinterface.php).
 
 ```php
 <?php
 return [
-    'handler' => MyHandlerClass::class
+    'handler' => new Autowire(
+        MemoryHandler::class,
+        [
+            'driver' => 'redis',
+            'database' => 1,
+            'lifetime'  => 86400
+        ]
+    )
 ];
 ```
 

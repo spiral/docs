@@ -19,7 +19,7 @@ env:
 To enable xDebug run application server with `-o` (overwrite flag) for needed service:
 
 ```bash
-$ ./rr serve -o "server.command=php -d zend_extension=xdebug app.php"
+./rr serve -o "server.command=php -d zend_extension=xdebug app.php"
 ```
 
 ## In Docker

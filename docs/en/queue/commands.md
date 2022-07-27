@@ -10,7 +10,7 @@ The application server provides multiple commands used to control the `spiral/jo
 You can start the extension and init connection to brokers using the default `serve` command, `-v` and `-d` are supported:
 
 ```bash
-$ ./spiral serve
+./spiral serve
 ```
 
 The application server can be stopped via CTR+C sequence or by calling `./spiral stop`.
@@ -18,14 +18,14 @@ The application server can be stopped via CTR+C sequence or by calling `./spiral
 To reset jobs worker pool without restarting the server:
 
 ```bash
-$ ./spiral jobs:reset
+./spiral jobs:reset
 ```
 
 ## Statistics
 To view the list of active job workers:
 
 ```bash
-$ ./spiral jobs:workers
+./spiral jobs:workers
 ```
 
 To view the stats in interactive mode use flag `-i`:
@@ -42,7 +42,7 @@ To view the stats in interactive mode use flag `-i`:
 To view active pipelines and jobs:
 
 ```bash
-$ ./spiral jobs:stat
+./spiral jobs:stat
 ```
 
 Use flag `-i` to run the stats in an interactive mode:
@@ -59,8 +59,8 @@ Use flag `-i` to run the stats in an interactive mode:
 You to start or pause consuming any of the pipeline using commands:
 
 ```bash
-$ ./spiral jobs:resume {pipeline-1} {pipeline-2}
-$ ./spiral jobs:pause {pipeline-1} {pipeline-2}
+./spiral jobs:resume {pipeline-1} {pipeline-2}
+./spiral jobs:pause {pipeline-1} {pipeline-2}
 ```
 
 > You can omit name(s) to resume/pause all pipelines. 
