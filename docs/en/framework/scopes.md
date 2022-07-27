@@ -25,13 +25,14 @@ $container->runScope(
 );
 ```
 
+> **Note**
 > Framework will guarantee that scope is clean after the execution, even in case of any exception.
 
 You can receive values set in scope directly from the container or as method injections in your services/controllers
 while calling then **inside the IoC scope**:
 
 ```php
-public function doSomething(UserContext $user)
+public function doSomething(UserContext $user): void
 {
     \dump($user);
 }
@@ -48,7 +49,7 @@ will cause controller to lock on first scope value:
 ```php
 class HomeController implements SingletonInterface
 {
-    private $userContext; // not allowed!
+    private UserContext $userContext; // not allowed!
 
     public function __construct(UserContext $userContext)
     {
@@ -63,7 +64,7 @@ Managers. The simple context manager can be written as follows:
 ```php
 class UserScope
 {
-    private $container;
+    private ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -88,7 +89,7 @@ You can use this manager in any of your services, including singletons.
 ```php
 class HomeController implements SingletonInterface
 {
-    private $userScope; // allowed
+    private UserScope $userScope; // allowed
 
     public function __construct(UserScope $userManager)
     {
@@ -97,5 +98,6 @@ class HomeController implements SingletonInterface
 }
 ```
 
-> A good example is `Spiral\Http\Request\InputManager`. This manager operates as accessor
+> **Note**
+> A good example is `Spiral\Http\Request\InputManager`. The manager operates as accessor
 > to `Psr\Http\Message\ServerRequestInterface` available only since http dispatcher scope.
