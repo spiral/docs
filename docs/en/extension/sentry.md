@@ -5,7 +5,7 @@ You can automatically send the exceptions to the Sentry.
 To install the extension:
 
 ```bash
-$ composer require spiral/sentry-bridge
+composer require spiral/sentry-bridge
 ```
 
 Activate the bootloader `Spiral\Sentry\Bootloader\SentryBootloader`:

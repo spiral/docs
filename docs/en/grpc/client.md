@@ -6,7 +6,7 @@ You must generate the client SDK to access your endpoints. This article based on
 The PHP client library requires an installation of PHP `grpc` extension. 
 
 ```bash
-$ sudo pecl install grpc
+sudo pecl install grpc
 ```
 
 > Read more about the extension [here](https://grpc.io/docs/quickstart/php/).
@@ -15,16 +15,16 @@ $ sudo pecl install grpc
 You must compile `grpc-php-plugin` in order to generate the PHP client code. Follow [this guide](https://www.grpc.io/docs/quickstart/php/#install-protobuf-plugin).
 
 ```bash
-$ git clone --recursive -b v1.27.x https://github.com/grpc/grpc
-$ cd grpc
-$ cd third_party/protobuf 
-$ ./autogen.sh
-$ ./configure CC=clang CXX=clang++
-$ make
-$ make install
-$ cd ../..
-$ make 
-$ make grpc_php_plugin
+git clone --recursive -b v1.27.x https://github.com/grpc/grpc
+cd grpc
+cd third_party/protobuf 
+./autogen.sh
+./configure CC=clang CXX=clang++
+make
+make install
+cd ../..
+make 
+make grpc_php_plugin
 ```
 
 > Make sure to install clang.
@@ -35,7 +35,7 @@ The location of generated plugin is `grpc/bin/opt/grpc_php_plugin`.
 We can generate the PHP client SDK in a new project. Copy the `proto/` directory into the designated folder.
 
 ```bash
-$ protoc -I proto/ --plugin=protoc-gen-grpc=grpc/bins/opt/grpc_php_plugin --php_out=. --grpc_out=. proto/calculator.proto 
+protoc -I proto/ --plugin=protoc-gen-grpc=grpc/bins/opt/grpc_php_plugin --php_out=. --grpc_out=. proto/calculator.proto 
 ```
 
 You can observe the generated client code in `App/Calculator/CalculatorClient.php`.
@@ -153,7 +153,7 @@ You can now observe the metadata passing from the client and server.
 GRPC allows you to create client SDK on any supported language. To generate client on Golang, install the GRPC toolkit first:
 
 ```bash
-$ go get -u github.com/golang/protobuf/protoc-gen-go
+go get -u github.com/golang/protobuf/protoc-gen-go
 ```
 
 > Read more about how to create Golang GRPC clients and server [here](https://grpc.io/docs/tutorials/basic/go/). 
@@ -161,10 +161,10 @@ $ go get -u github.com/golang/protobuf/protoc-gen-go
 Init the the project in the same folder as PHP client to reuse `.proto` and `.crt` files. To generate client stub code:
 
 ```bash
-$ go mod init client
-$ go get google.golang.org/grpc
-$ mkdir calculator
-$ protoc -I proto/ proto/calculator.proto --go_out=plugins=grpc:calculator
+go mod init client
+go get google.golang.org/grpc
+mkdir calculator
+protoc -I proto/ proto/calculator.proto --go_out=plugins=grpc:calculator
 ```
 
 > Note the `package` name in `calculator.proto`.
@@ -207,7 +207,7 @@ func main() {
 To test your client:
 
 ```bash
-$ go run main.go
+go run main.go
 ```
 
 ### Passing Metadata

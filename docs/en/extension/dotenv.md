@@ -5,7 +5,7 @@ Default application skeleton includes the ability to read ENV values from `.env`
 To install Dotenv extension in non-default application skeleton:
 
 ```bash
-$ composer require spiral/dotenv-bridge
+composer require spiral/dotenv-bridge
 ```
 
 Add the following bootloader to your application:

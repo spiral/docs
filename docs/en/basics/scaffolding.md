@@ -1,4 +1,5 @@
 # Scaffolding
+
 Most of the application code can be generated using the set of console commands.
 
 ## Installation
@@ -32,24 +33,29 @@ class App extends Kernel
 > Attention, the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
 
 ## Configuration
-You can customize the scaffolder component by replacing declaration generators and their options using the `scaffolder` configuration file.
-The default configuration located in the [ScaffolderBootloader](https://github.com/spiral/scaffolder/blob/master/src/Bootloader/ScaffolderBootloader.php#L59).
+
+You can customize the scaffolder component by replacing declaration generators and their options using the `scaffolder`
+configuration file. The default configuration located in
+the [ScaffolderBootloader](https://github.com/spiral/scaffolder/blob/master/src/Bootloader/ScaffolderBootloader.php#L59)
+.
 
 ## Available Commands
-Command            | Description
----                | ---
-create:bootloader  | Create Bootloader declaration
-create:command     | Create Command declaration
-create:config      | Create Config declaration
-create:controller  | Create Controller declaration
-create:filter      | Create HTTP Request Filter declaration
-create:jobHandler  | Create Job Handler declaration
-create:middleware  | Create Middleware declaration
-create:migration   | Create Migration declaration
-create:repository  | Create Entity Repository declaration
-create:entity      | Create Entity declaration
+
+| Command           | Description                            |
+|-------------------|----------------------------------------|
+| create:bootloader | Create Bootloader declaration          |
+| create:command    | Create Command declaration             |
+| create:config     | Create Config declaration              |
+| create:controller | Create Controller declaration          |
+| create:filter     | Create HTTP Request Filter declaration |
+| create:jobHandler | Create Job Handler declaration         |
+| create:middleware | Create Middleware declaration          |
+| create:migration  | Create Migration declaration           |
+| create:repository | Create Entity Repository declaration   |
+| create:entity     | Create Entity declaration              |
 
 ### Bootloader
+
 ```bash
 php app.php create:bootloader <name>
 ```
@@ -57,11 +63,13 @@ php app.php create:bootloader <name>
 `<Name>Bootloader` class will be created.
 
 #### Example
+
 ```bash
 php app.php create:bootloader my
 ```
 
 Output is:
+
 ```php
 use Spiral\Boot\Bootloader\Bootloader;
 
@@ -80,6 +88,7 @@ class MyBootloader extends Bootloader
 ```
 
 ### Command
+
 ```bash
 php app.php create:command <name> [alias]
 ```
@@ -87,11 +96,13 @@ php app.php create:command <name> [alias]
 `<Name>Command` class will be created. Command name will be equal to `name` or `alias` (if this value set).
 
 #### Example without `alias`
+
 ```bash
 php app.php create:command my
 ```
 
 Output is:
+
 ```php
 use Spiral\Console\Command;
 
@@ -115,6 +126,7 @@ class MyCommand extends Command
 ```
 
 #### Example with alias
+
 ```bash
 php app.php create:command my alias
 ```
@@ -144,21 +156,27 @@ class MyCommand extends Command
 ```
 
 ### Config
+
 ```bash
 php app.php create:config <name>
 ```
 
-`<Name>Config` class will be created. Also, `<app directory>/config/<name>.php` file will be created if doesn't exists.
+`<Name>Config` class will be created. Also, `<app directory>/config/<name>.php` file will be created if it doesn't
+exist.
+
 Available options:
 
-`reverse (r)` - Using this flag, scaffolder will look for `<app directory>/config/<name>.php` file and create a rich `<Name>Config` class based on the given config file.
-The class will include default values and getters; in some cases, it will also include by-key-getters for array values.
+`reverse (r)` - Using this flag, scaffolder will look for `<app directory>/config/<name>.php` file and create a
+rich `<Name>Config` class based on the given config file. The class will include default values and getters; in some
+cases, it will also include by-key-getters for array values.
 
-Details below: 
-If an array-value consists of more than one sub-values with the same types for keys and sub-values,
-scaffolder will try to create a by-key-getter method. If a generated key is conflicting with an existing method, by-key-getter will be omitted.
+Details below:
+If an array-value consists of more than one sub-values with the same types for keys and sub-values, scaffolder will try
+to create a by-key-getter method. If a generated key is conflicting with an existing method, by-key-getter will be
+omitted.
 
 #### Example with empty config file
+
 ```bash
 php app.php create:config my
 ```
@@ -186,6 +204,7 @@ class MyConfig extends InjectableConfig
 ```
 
 #### Example with reversing
+
 ```php
 //...existing "my.php" config file:
 return [
@@ -259,25 +278,19 @@ class MyConfig extends InjectableConfig
         'conflictBy'  => ''
     ];
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getParams(): array
     {
         return $this->config['params'];
     }
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getParameter(): array
     {
         return $this->config['parameter'];
     }
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getValues(): array
     {
         return $this->config['values'];
@@ -288,9 +301,7 @@ class MyConfig extends InjectableConfig
         return $this->config['value'];
     }
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getFew(): array
     {
         return $this->config['few'];
@@ -301,17 +312,13 @@ class MyConfig extends InjectableConfig
         return $this->config['mixedValues'];
     }
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getMixedKeys(): array
     {
         return $this->config['mixedKeys'];
     }
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getConflicts(): array
     {
         return $this->config['conflicts'];
@@ -345,15 +352,18 @@ class MyConfig extends InjectableConfig
 ```
 
 ### Controller
+
 ```bash
 php app.php create:controller <name>
 ```
 
 `<Name>Controller` class will be created. Available options:
+
 * `action (a)` (multiple values allowed) - you can add actions using this option
 * `prototype (p)` - if set, `PrototypeTrait` will be added
 
 #### Example with empty actions list
+
 ```bash
 php app.php create:controller my
 ```
@@ -367,6 +377,7 @@ class MyController
 ```
 
 #### Example with `prototype` option
+
 ```bash
 php app.php create:controller my -p
 ```
@@ -383,8 +394,13 @@ class MyController
 ```
 
 #### Example with actions list
+
 ```bash
-php app.php create:controller my -a index -a create -a update -a delete
+php app.php create:controller my \
+      -a index \
+      -a create \
+      -a update \
+      -a delete
 ```
 
 Output is:
@@ -411,12 +427,15 @@ class MyController
 ```
 
 ### HTTP Request Filter
+
 ```bash
 php app.php create:filter <name>
 ```
 
 `<Name>Filter` class will be created. Available options:
+
 * `entity (e)` - you can pass an `EntityClass` and the filter command will fetch the all the given
+
 class properties into the filter and try to define each property's type based on its type declaration (if php74),
 default value or a PhpDoc. Otherwise you can optionally specify filter schema using `field` option.
 * `field (f)` (multiple values allowed). 
@@ -429,11 +448,13 @@ Full field format is `name:type(source:origin)`. Where `type`, `origin` and `sou
 > See more about filters in [filters](https://github.com/spiral/filters) package
 
 #### Example with empty fields definition
+
 ```bash
 php app.php create:filter my
 ```
 
 Output is:
+
 ```php
 use Spiral\Filters\Filter;
 
@@ -448,11 +469,18 @@ class MyFilter extends Filter
 ```
 
 #### Example with fields definition:
+
 ```bash
-php app.php create:filter my -f unknown_val -f str_val:string -f int_val:int -f bool_val:bool(query:from_bool) -f float_val:float(query)
+php app.php create:filter my \ 
+    -f unknown_val \
+    -f str_val:string \
+    -f int_val:int \
+    -f bool_val:bool(query:from_bool) \
+    -f float_val:float(query)
 ```
 
 Output is:
+
 ```php
 use Spiral\Filters\Filter;
 
@@ -494,6 +522,7 @@ class MyFilter extends Filter
 ```
 
 #### Example with entity sourcing
+
 ```php
 //...existing "MyEntity" class:
 class MyEntity
@@ -517,6 +546,7 @@ php app.php create:filter my -e MyEntity
 ```
 
 Output is:
+
 ```php
 use Spiral\Filters\Filter;
 
@@ -558,6 +588,7 @@ class MyFilter extends Filter
 ```
 
 ### Job Handler
+
 ```bash
 php app.php create:jobHandler <name>
 ```
@@ -565,11 +596,13 @@ php app.php create:jobHandler <name>
 `<Name>Job` class will be created.
 
 #### Example
+
 ```bash
 php app.php create:jobHandler my
 ```
 
 Output is:
+
 ```php
 use Spiral\Jobs\JobHandler;
 
@@ -582,6 +615,7 @@ class MyJob extends JobHandler
 ```
 
 ### Middleware
+
 ```bash
 php app.php create:middleware <name>
 ```
@@ -589,11 +623,13 @@ php app.php create:middleware <name>
 `<Name>` class will be created.
 
 #### Example
+
 ```bash
 php app.php create:middleware my
 ```
 
 Output is:
+
 ```php
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -613,23 +649,28 @@ class My implements MiddlewareInterface
 ```
 
 ### Migration
+
 ```bash
 php app.php create:migration <name>
 ```
 
 `<Name>Migration` class will be created. Available options:
+
 * `table (t)` for table name
-* `field (f)` (multiple values allowed) for a field(s) definition. Will work only with `table` option. Field format is `name:type`.
+* `field (f)` (multiple values allowed) for a field(s) definition. Will work only with `table` option. Field format
+  is `name:type`.
 
 > **Note**
 > See more about migrations in [migrations](https://github.com/spiral/migrations) package
 
 #### Example
+
 ```bash
 php app.php create:migration my
 ```
 
 Output is:
+
 ```php
 use Spiral\Migrations\Migration;
 
@@ -652,11 +693,13 @@ class MyMigration extends Migration
 ```
 
 #### Example with options
+
 ```bash
 php app.php create:migration my -t my_table -c int_col:int
 ```
 
 Output is:
+
 ```php
 use Spiral\Migrations\Migration;
 
@@ -683,6 +726,7 @@ class MyMigration extends Migration
 ```
 
 ### Repository
+
 ```bash
 php app.php create:repository <name>
 ```
@@ -690,11 +734,13 @@ php app.php create:repository <name>
 `<Name>Repository` class will be created.
 
 #### Example
+
 ```bash
 php app.php create:repository my
 ```
 
 Output is:
+
 ```php
 use Cycle\ORM\Select\Repository;
 
@@ -704,29 +750,36 @@ class MyRepository extends Repository
 ```
 
 ### ORM Entity
+
 ```bash
 php app.php create:entity <name> [<format>]
 ```
 
 `<Name>Entity` class will be created.
-`format` is responsible for the declaration format. Currently, only [annotations](https://github.com/cycle/annotated) format supported. 
+`format` is responsible for the declaration format. Currently, only [annotations](https://github.com/cycle/annotated)
+format supported.
 
 Available options:
+
 * `role (r)` - Entity role, defaults to lowercase class name without a namespace
 * `mapper (m)` - Mapper class name, defaults to Cycle\ORM\Mapper\Mapper
 * `table (t)` - Entity source table, defaults to plural form of entity role
 * `accessibility (a)` - accessibility accessor (public, protected, private), defaults to public
-* `inflection (i)` - Optional column name inflection, allowed values: tableize (or t), camelize (or c). See [Doctrine inflector](https://github.com/doctrine/inflector)
+* `inflection (i)` - Optional column name inflection, allowed values: tableize (or t), camelize (or c).
+  See [Doctrine inflector](https://github.com/doctrine/inflector)
 * `field (f)` - Add field in a format "name:type" (multiple values allowed)
-* `repository (e)` - Repository class to represent read operations for an entity, defaults to `Cycle\ORM\Select\Repository`
+* `repository (e)` - Repository class to represent read operations for an entity, defaults
+  to `Cycle\ORM\Select\Repository`
 * `database (d)` - Database name, defaults to null (default database)
 
 #### Example
+
 ```bash
 php app.php create:entity my
 ```
 
 Output is:
+
 ```php
 use Cycle\Annotated\Annotation as Cycle;
 
@@ -742,11 +795,13 @@ class My
 > It's recommended to replace the generated `Entity` annotation with an attribute
 
 #### Example with public accessibility
+
 ```bash
 php app.php create:entity my -f field:string
 ```
 
 Output is:
+
 ```php
 use Cycle\Annotated\Annotation as Cycle;
 
@@ -763,8 +818,11 @@ class My
 ```
 
 #### Example with protected/private accessibility
+
 ```bash
-php app.php create:entity my -f field:string -a protected
+php app.php create:entity my \
+    -f field:string \
+    -a protected
 ```
 
 Output is:
@@ -796,8 +854,12 @@ class My
 ```
 
 #### Example with tableize inflection
+
 ```bash
-php app.php create:entity my -f int_field:int -f stringField:string -i t
+php app.php create:entity my \
+    -f int_field:int \
+    -f stringField:string \
+    -i t
 ```
 
 Output is:
@@ -823,8 +885,12 @@ class My
 ```
 
 #### Example with camelize inflection
+
 ```bash
-php app.php create:entity my -f int_field:int -f stringField:string -i c
+php app.php create:entity my \
+    -f int_field:int \
+    -f stringField:string \
+    -i c
 ```
 
 Output is:
@@ -850,8 +916,14 @@ class My
 ```
 
 #### Example with other options
+
 ```bash
-php app.php create:entity my -r myRole -m MyMapper -t my_table -d my_db -e
+php app.php create:entity my \
+    -r myRole \
+    -m MyMapper \
+    -t my_table \
+    -d my_db \
+    -e
 ```
 
 Output is:

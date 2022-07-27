@@ -14,8 +14,8 @@ The scraped data will be stored in a `runtime` folder.
 We will base our application on [spiral/app-cli](https://github.com/spiral/app-cli) - the minimalistic spiral build without ORM, HTTP, and other extensions.
 
 ```bash
-$ composer create-project spiral/app-cli scraper
-$ cd scraper
+composer create-project spiral/app-cli scraper
+cd scraper
 ```
 
 To implement all needed features we will need a set of extensions:
@@ -32,19 +32,19 @@ To install all needed packages and download app server:
 #### spiral/framework < 2.7.0
 
 ```bash
-$ composer require spiral/jobs spiral/scaffolder spiral/prototype paquettg/php-html-parser
+composer require spiral/jobs spiral/scaffolder spiral/prototype paquettg/php-html-parser
 ```
 
 #### spiral/framework >= 2.7.0
 
 ```bash
-$ composer require spiral/jobs paquettg/php-html-parser
+composer require spiral/jobs paquettg/php-html-parser
 ```
 
 Then execute
 
 ```bash
-$ ./vendor/bin/spiral get
+./vendor/bin/spiral get
 ```
 
 Activate the installed extensions in your `App\App`:
@@ -210,19 +210,19 @@ class ScrapeCommand extends Command
 Launch application server first:
 
 ```bash
-$ ./spiral serve
+./spiral serve
 ```
 
 Scape any URL via console command (keep the server running):
 
 ```bash
-$ php app.php scrape https://some-website.com/ 5
+php app.php scrape https://some-website.com/ 5
 ```
 
 To observe how many pages scraped via interactive console:
 
 ```bash
-$ ./spiral jobs:stat -i
+./spiral jobs:stat -i
 ```
 
 > The demo solution will scan some pages multiple times, use a proper database or lock mechanism to avoid that.
