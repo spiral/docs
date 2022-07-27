@@ -1,4 +1,5 @@
 # Scaffolding
+
 Most of the application code can be generated using the set of console commands.
 
 ## Installation
@@ -32,10 +33,14 @@ class App extends Kernel
 > Attention, the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
 
 ## Configuration
-You can customize the Scaffolder component by replacing declaration generators and their options using the `scaffolder` configuration file.
-The default configuration located in the [ScaffolderBootloader](https://github.com/spiral/scaffolder/blob/master/src/Bootloader/ScaffolderBootloader.php#L59).
+
+You can customize the scaffolder component by replacing declaration generators and their options using the `scaffolder`
+configuration file. The default configuration located in
+the [ScaffolderBootloader](https://github.com/spiral/scaffolder/blob/master/src/Bootloader/ScaffolderBootloader.php#L59)
+.
 
 ### Adding custom declarations via ScaffolderBootloader
+
 Some components can provide their own declarations to create elements using the Scaffolder. 
 Such components can register their custom declarations with the `ScaffolderBootloader`:
 ```php
@@ -64,27 +69,29 @@ class ScaffolderBootloader extends Bootloader
 ```
 
 ## Available Commands
-Command            | Description
----                | ---
-create:bootloader  | Create Bootloader declaration
-create:command     | Create Command declaration
-create:config      | Create Config declaration
-create:controller  | Create Controller declaration
-create:jobHandler  | Create Job Handler declaration
-create:middleware  | Create Middleware declaration
+
+| Command           | Description                    |
+|-------------------|--------------------------------|
+| create:bootloader | Create Bootloader declaration  |
+| create:command    | Create Command declaration     |
+| create:config     | Create Config declaration      |
+| create:controller | Create Controller declaration  |
+| create:jobHandler | Create Job Handler declaration |
+| create:middleware | Create Middleware declaration  |
 
 Some packages may provide their own Commands. For example, the `Cycle Bridge` package (if installed) provides Commands:
 
-Command            | Description
----                | ---
-create:migration   | Create Migration declaration
-create:repository  | Create Entity Repository declaration
-create:entity      | Create Entity declaration
+| Command            | Description                          
+|--------------------|--------------------------------------|
+| create:migration   | Create Migration declaration         |
+| create:repository  | Create Entity Repository declaration | 
+| create:entity      | Create Entity declaration            | 
 
 > **Note**
 > Read more about `Cycle Bridge` package and available Commands [here](https://spiral.dev/docs/packages-cycle-bridge).
 
 ### Bootloader
+
 ```bash
 php app.php create:bootloader <name>
 ```
@@ -92,11 +99,13 @@ php app.php create:bootloader <name>
 `<Name>Bootloader` class will be created.
 
 #### Example
+
 ```bash
 php app.php create:bootloader my
 ```
 
 Output is:
+
 ```php
 use Spiral\Boot\Bootloader\Bootloader;
 
@@ -117,6 +126,7 @@ class MyBootloader extends Bootloader
 ```
 
 ### Command
+
 ```bash
 php app.php create:command <name> [alias]
 ```
@@ -124,11 +134,13 @@ php app.php create:command <name> [alias]
 `<Name>Command` class will be created. Command name will be equal to `name` or `alias` (if this value set).
 
 #### Example without `alias`
+
 ```bash
 php app.php create:command my
 ```
 
 Output is:
+
 ```php
 use Spiral\Console\Command;
 
@@ -149,6 +161,7 @@ class MyCommand extends Command
 ```
 
 #### Example with alias
+
 ```bash
 php app.php create:command my alias
 ```
@@ -175,21 +188,27 @@ class MyCommand extends Command
 ```
 
 ### Config
+
 ```bash
 php app.php create:config <name>
 ```
 
-`<Name>Config` class will be created. Also, `<app directory>/config/<name>.php` file will be created if doesn't exists.
+`<Name>Config` class will be created. Also, `<app directory>/config/<name>.php` file will be created if it doesn't
+exist.
+
 Available options:
 
-`reverse (r)` - Using this flag, scaffolder will look for `<app directory>/config/<name>.php` file and create a rich `<Name>Config` class based on the given config file.
-The class will include default values and getters; in some cases, it will also include by-key-getters for array values.
+`reverse (r)` - Using this flag, scaffolder will look for `<app directory>/config/<name>.php` file and create a
+rich `<Name>Config` class based on the given config file. The class will include default values and getters; in some
+cases, it will also include by-key-getters for array values.
 
-Details below: 
-If an array-value consists of more than one sub-values with the same types for keys and sub-values,
-scaffolder will try to create a by-key-getter method. If a generated key is conflicting with an existing method, by-key-getter will be omitted.
+Details below:
+If an array-value consists of more than one sub-values with the same types for keys and sub-values, scaffolder will try
+to create a by-key-getter method. If a generated key is conflicting with an existing method, by-key-getter will be
+omitted.
 
 #### Example with empty config file
+
 ```bash
 php app.php create:config my
 ```
@@ -215,6 +234,7 @@ class MyConfig extends InjectableConfig
 ```
 
 #### Example with reversing
+
 ```php
 //...existing "my.php" config file:
 return [
@@ -286,25 +306,19 @@ class MyConfig extends InjectableConfig
         'conflictBy' => '',
     ];
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getParams(): array
     {
         return $this->config['params'];
     }
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getParameter(): array
     {
         return $this->config['parameter'];
     }
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getValues(): array
     {
         return $this->config['values'];
@@ -315,9 +329,7 @@ class MyConfig extends InjectableConfig
         return $this->config['value'];
     }
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getFew(): array
     {
         return $this->config['few'];
@@ -328,17 +340,13 @@ class MyConfig extends InjectableConfig
         return $this->config['mixedValues'];
     }
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getMixedKeys(): array
     {
         return $this->config['mixedKeys'];
     }
 
-    /**
-     * @return array|string[]
-     */
+    /** @return string[] */
     public function getConflicts(): array
     {
         return $this->config['conflicts'];
@@ -372,15 +380,18 @@ class MyConfig extends InjectableConfig
 ```
 
 ### Controller
+
 ```bash
 php app.php create:controller <name>
 ```
 
 `<Name>Controller` class will be created. Available options:
+
 * `action (a)` (multiple values allowed) - you can add actions using this option
 * `prototype (p)` - if set, `PrototypeTrait` will be added
 
 #### Example with empty actions list
+
 ```bash
 php app.php create:controller my
 ```
@@ -394,6 +405,7 @@ class MyController
 ```
 
 #### Example with `prototype` option
+
 ```bash
 php app.php create:controller my -p
 ```
@@ -410,8 +422,13 @@ class MyController
 ```
 
 #### Example with actions list
+
 ```bash
-php app.php create:controller my -a index -a create -a update -a delete
+php app.php create:controller my \
+      -a index \
+      -a create \
+      -a update \
+      -a delete
 ```
 
 Output is:
@@ -457,6 +474,7 @@ class MyController
 ```
 
 ### Job Handler
+
 ```bash
 php app.php create:jobHandler <name>
 ```
@@ -464,11 +482,13 @@ php app.php create:jobHandler <name>
 `<Name>Job` class will be created.
 
 #### Example
+
 ```bash
 php app.php create:jobHandler my
 ```
 
 Output is:
+
 ```php
 use Spiral\Queue\JobHandler;
 
@@ -481,6 +501,7 @@ class MyJob extends JobHandler
 ```
 
 ### Middleware
+
 ```bash
 php app.php create:middleware <name>
 ```
@@ -488,11 +509,13 @@ php app.php create:middleware <name>
 `<Name>` class will be created.
 
 #### Example
+
 ```bash
 php app.php create:middleware my
 ```
 
 Output is:
+
 ```php
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

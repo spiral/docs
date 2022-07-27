@@ -12,7 +12,7 @@ The actual formatting and style-checking is based on:
 To install the extension:
 
 ```bash
-$ composer require --dev spiral/code-style
+composer require --dev spiral/code-style
 ```
 
 ## Check the code
@@ -20,7 +20,7 @@ To check code-style compliance:
 
 ```
 # vendor/bin/spiral-cs check <dir1> <dir2> <file1>....
-$ vendor/bin/spiral-cs check src tests
+vendor/bin/spiral-cs check src tests
 ```
 
 ## Automatically fix the code style

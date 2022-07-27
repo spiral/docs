@@ -7,7 +7,7 @@ for Blade-like directives and echoing, HTML components, stacks, and others.
 To install the extensions in alternative bundles:
 
 ```bash
-$ composer require spiral/stempler-bridge
+composer require spiral/stempler-bridge
 ```
 
 > Please note that the spiral/framework >= 2.7 already includes this component.

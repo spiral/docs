@@ -28,8 +28,8 @@ service Multiplier {
 Generate the server code in `multiplier` folder:
 
 ```bash
-$ mkdir multiplier
-$ protoc -I proto/ proto/multiplier.proto --go_out=plugins=grpc:multiplier
+mkdir multiplier
+protoc -I proto/ proto/multiplier.proto --go_out=plugins=grpc:multiplier
 ```
 
 > Make sure to install `protoc-gen-go`. Read about installation [here](/grpc/client.md).
@@ -65,8 +65,8 @@ func (s *Service) Mult(ctx context.Context, in *Mult) (*MultResult, error) {
 To activate the service, make sure to create and build a custom application server: 
 
 ```bash
-$ go mod init demo
-$ go get google.golang.org/grpc
+go mod init demo
+go get google.golang.org/grpc
 ```
 
 Make sure to request proper dependencies in `go.mod`:
@@ -170,7 +170,7 @@ func main() {
 You can run the server now:
 
 ```bash
-$ go run main.go serve -v -d
+go run main.go serve -v -d
 ```
 
 > Read [here](/grpc/streaming.md) how to implement streaming and batch processing using a hybrid PHP/Go approach.
