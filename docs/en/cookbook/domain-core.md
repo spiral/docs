@@ -159,7 +159,8 @@ Use this Bootloader to configure the application behavior globally via the set o
 
 ### Cycle Entity Resolution
 
-Use `Spiral\Domain\CycleInterceptor` to automatically resolve entity injections based on parameter values:
+The [Cycle Bridge](https://github.com/spiral/cycle-bridge/) package provides the `Spiral\Cycle\Interceptor\CycleInterceptor`.
+Use `CycleInterceptor` to automatically resolve entity injections based on parameter values:
 
 ```php
 $router->setRoute(
@@ -178,7 +179,7 @@ namespace App\Bootloader;
 
 use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
-use Spiral\Domain\CycleInterceptor;
+use Spiral\Cycle\Interceptor\CycleInterceptor;
 
 class AppBootloader extends DomainBootloader
 {
@@ -362,7 +363,7 @@ namespace App\Bootloader;
 use App\Security\SampleRule;
 use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
-use Spiral\Domain\CycleInterceptor;
+use Spiral\Cycle\Interceptor\CycleInterceptor;
 use Spiral\Domain\GuardInterceptor;
 use Spiral\Security\Actor\Guest;
 use Spiral\Security\PermissionsInterface;
@@ -549,6 +550,7 @@ use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
 use Spiral\DataGrid\Interceptor\GridInterceptor;
 use Spiral\Domain;
+use Spiral\Cycle\Interceptor\CycleInterceptor;
 
 class AppBootloader extends DomainBootloader
 {
@@ -557,7 +559,7 @@ class AppBootloader extends DomainBootloader
     ];
 
     protected const INTERCEPTORS = [
-        Domain\CycleInterceptor::class,
+        CycleInterceptor::class,
         Domain\PipelineInterceptor::class, //all annotated interceptors go here
         Domain\GuardInterceptor::class,
         Domain\FilterInterceptor::class,
@@ -578,7 +580,7 @@ class AppBootloader extends DomainBootloader
 
 Using the prev bootloader we will get the next interceptors list:
 
-- Domain\CycleInterceptor
+- Spiral\Cycle\Interceptor\CycleInterceptor
 - OtherInterceptor
 
 > **Note**
@@ -590,16 +592,16 @@ For example, it can be helpful when an endpoint should not apply any interceptor
 currently:
 
 ```php
-    #[Route(route: '/show/<user:int>/email/<email:int>', name: 'emails')]
-    #[Pipeline(pipeline: [CycleInterceptor::class, GuardInterceptor::class], skipNext: true)]
-    public function email(User $user, Email $email, EmailFilter $filter): string
-    {
-        $filter->setContext(compact('user', 'email'));
-        if (!$filter->isValid()) {
-            throw new ForbiddenException('Email doesn\'t belong to a user.');
-        }
-        //...
+#[Route(route: '/show/<user:int>/email/<email:int>', name: 'emails')]
+#[Pipeline(pipeline: [CycleInterceptor::class, GuardInterceptor::class], skipNext: true)]
+public function email(User $user, Email $email, EmailFilter $filter): string
+{
+    $filter->setContext(compact('user', 'email'));
+    if (!$filter->isValid()) {
+        throw new ForbiddenException('Email doesn\'t belong to a user.');
     }
+    //...
+}
  ```
 
 > **Note**
@@ -617,6 +619,7 @@ use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
 use Spiral\DataGrid\Interceptor\GridInterceptor;
 use Spiral\Domain;
+use Spiral\Cycle\Interceptor\CycleInterceptor;
 
 class AppBootloader extends DomainBootloader
 {
@@ -625,7 +628,7 @@ class AppBootloader extends DomainBootloader
     ];
 
     protected const INTERCEPTORS = [
-        Domain\CycleInterceptor::class,
+        CycleInterceptor::class,
         Domain\GuardInterceptor::class,
         Domain\FilterInterceptor::class,
         GridInterceptor::class,
