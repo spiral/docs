@@ -58,12 +58,12 @@ The output:
 ```php
 class MyClass
 {
-	/**
-	 * My property.
-	 * @var string
-	 */
-	#[SomeAttribute]
-	protected readonly string $property = 'default';
+    /**
+     * My property.
+     * @var string
+     */
+    #[SomeAttribute]
+    protected readonly string $property = 'default';
 }
 ```
 
@@ -88,9 +88,9 @@ The output:
 ```php
 class MyClass
 {
-	/** My constant */
-	#[SomeAttribute]
-	final public const MY_CONSTANT = 'default';
+    /** My constant */
+    #[SomeAttribute]
+    final public const MY_CONSTANT = 'default';
 }
 ```
 
@@ -167,14 +167,14 @@ The output:
 ```php
 class MyClass
 {
-	/**
-	 * My method
-	 */
-	#[SomeAttribute]
-	final public function ping(?string $a = null): ?string
-	{
-		return $a;
-	}
+    /**
+     * My method
+     */
+    #[SomeAttribute]
+    final public function ping(?string $a = null): ?string
+    {
+        return $a;
+    }
 }
 ```
 
@@ -225,7 +225,7 @@ The output:
  */
 interface MyInterface extends Countable
 {
-	public function someMethod(): int;
+    public function someMethod(): int;
 }
 ```
 
@@ -261,15 +261,15 @@ The output:
 #[SomeAttribute]
 enum MyEnum: string
 {
-	public const FOO = 'bar';
+    public const FOO = 'bar';
 
-	case First = 'first';
-	case Second = 'second';
+    case First = 'first';
+    case Second = 'second';
 
-	public function getCase(): string
-	{
-		return self::First->value;
-	}
+    public function getCase(): string
+    {
+        return self::First->value;
+    }
 }
 ```
 
@@ -297,7 +297,7 @@ The output:
 #[SomeAttribute]
 function myFunction(): string
 {
-	return 'Hello world';
+    return 'Hello world';
 }
 
 ```
@@ -325,9 +325,9 @@ The output:
  */
 trait MyTrait
 {
-	public function myMethod(): void
-	{
-	}
+    public function myMethod(): void
+    {
+    }
 }
 ```
 
