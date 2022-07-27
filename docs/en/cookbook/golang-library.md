@@ -1,18 +1,23 @@
 # Cookbook - Integrate Go services with your PHP apps, using RPC
+
 You can extend the functionality of your PHP applications by including Go libraries. While for the PHP library,
-you only need to run `composer require`, the Golang will require you to build your version of [application server](/framework/application-server.md).
+you only need to run `composer require`, the Golang will require you to build your version
+of [application server](/framework/application-server.md).
 
-> Fun fact: the full-text search on this website works via [blevesearch](https://github.com/blevesearch/bleve) integrated to the spiral app.
+> Fun fact: the full-text search on this website works via [blevesearch](https://github.com/blevesearch/bleve)
+> integrated to the spiral app.
 
-In this tutorial, we will demonstrate how to integrate the https://github.com/russross/blackfriday Markdown processing library and access it from your PHP application. 
+In this tutorial, we will demonstrate how to integrate the https://github.com/russross/blackfriday Markdown processing
+library and access it from your PHP application.
 
 > Attention, this article expects that you are familiar with the Go programming language.
 
 ## RoadRunner service
+
 Make sure to require the go module dependency first:
 
 ```bash
-$ go get github.com/russross/blackfriday
+go get github.com/russross/blackfriday
 ```
 
 Since our service doesn't need any configuration, we can put all the code inside a single file: `markdown/service.go`:
@@ -58,7 +63,8 @@ rr.Container.Register(markdown.ID, &markdown.Service{})
 Build and start your application to activate the service.
 
 ## PHP SDK
-You can invoke the newly created service right away, using `Spiral\Goridge\RPC`: 
+
+You can invoke the newly created service right away, using `Spiral\Goridge\RPC`:
 
 ```php
 use Spiral\Goridge\RelayInterface;
@@ -114,8 +120,10 @@ public function index(Blackfriday $bf)
 ```
 
 ## Performance
-The selected library in this example shows twice as much performance as the classic https://github.com/erusev/parsedown. Read how to optimize
-performance even more by switching to unix sockets for RCP communications in **Performance Tuning** section.
+
+The selected library in this example shows twice as much performance as the classic https://github.com/erusev/parsedown.
+Read how to optimize performance even more by switching to unix sockets for RCP communications in **Performance Tuning**
+section.
 
 > Obviously, RPC does not come entirely for free. Make sure to properly balance between the socket connection speed
-and the complexity of computation.  
+> and the complexity of computation.  

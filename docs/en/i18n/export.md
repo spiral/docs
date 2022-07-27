@@ -9,7 +9,7 @@ It is possible to export application locale bundles into the following formats:
 To export application locate bundles run:
 
 ```bash
-$ php app.php i18n:export en ./
+php app.php i18n:export en ./
 ```
 
 > Export `en` locale into the current directory.
@@ -17,7 +17,7 @@ $ php app.php i18n:export en ./
 You should observe file `messages.en.php` created in this directory. To export in alternative formats:
 
 ```bash
-$ php app.php i18n:export en ./ -d po
+php app.php i18n:export en ./ -d po
 ```
 
 This command will export the locale into the GetText format.
@@ -27,7 +27,7 @@ The framework is capable of generating locale files using static code indexation
 to find all declared stings.
 
 ```bash
-$ php app.php i18n:index -vv
+php app.php i18n:index -vv
 ```
 
 ## Import Locale

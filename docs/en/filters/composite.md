@@ -1,5 +1,7 @@
 # Composite Filters
-The component provides the ability to create nested filters and a nested array of filters. To demonstrate the composition, we will use a sample filter:
+
+The component provides the ability to create nested filters and a nested array of filters. To demonstrate the
+composition, we will use a sample filter:
 
 ```php
 class AddressFilter extends Filter
@@ -15,14 +17,15 @@ This Filter can accept the following data format:
 
 ```json
 {
-  "city": "San Francisco", 
+  "city": "San Francisco",
   "address": "Address"
 }
 ```
 
 ## Child Filter
-You can create compound filters by nesting other filters inside them. Simply declare field origin as external field class
-to do that:
+
+You can create compound filters by nesting other filters inside them. Simply declare field origin as external field
+class to do that:
 
 ```php
 class ProfileFilter extends Filter
@@ -40,7 +43,7 @@ This Filter will accept the data in a format:
 {
   "name": "Antony",
   "address": {
-    "city": "San Francisco", 
+    "city": "San Francisco",
     "address": "Address"
   }
 }
@@ -67,6 +70,7 @@ Both filters will be validated together. In case of an error in `address` filter
 ```
 
 ### Custom Prefix
+
 In some cases, you might need to use data prefix different from the actual key assigned to the nested Filter, use array
 notation in which the first element filter class name and second is data prefix:
 
@@ -94,6 +98,7 @@ This Filter can accept the following data format:
 > You can skip using the `address` key internally, errors will be mounted accordingly.
 
 ## Array of Filters
+
 You can populate an array of filters at the same time. Use array with single element pointing to filter class
 to declare the array filter:
 
@@ -114,11 +119,11 @@ Such Filter can accept the following data format:
   "key": "value",
   "addresses": [
     {
-      "city": "San Francisco", 
+      "city": "San Francisco",
       "address": "Address"
     },
     {
-      "city": "Minsk", 
+      "city": "Minsk",
       "address": "Address #2"
     }
   ]
@@ -138,6 +143,7 @@ public function index(MultipleAddressesFilter $ma)
 > The errors will be mounted accordingly.
 
 ### Custom Prefix
+
 You can create an array of filters based on data prefix different from the key name in the Filter, use the second value
 or the array in the schema. Unlike a single child, you must specify the `.*` to indicate that value is an array:
 
@@ -158,11 +164,11 @@ This Filter supports the following data format:
   "key": "value",
   "addr": [
     {
-      "city": "San Francisco", 
+      "city": "San Francisco",
       "address": "Address"
     },
     {
-      "city": "Minsk", 
+      "city": "Minsk",
       "address": "Address #2"
     }
   ]
@@ -180,6 +186,7 @@ public function index(MultipleAddressesFilter $ma)
 ```
 
 ## Composite Filters
+
 You can use nested child filters as part of a larger composite Filter. Use prefix `.` (root) to do that:
 
 ```php
@@ -197,7 +204,7 @@ The `AddressFilter` will receive data from the top-level, meaning you can send a
 ```json
 {
   "name": "Antony",
-  "city": "San Francisco", 
+  "city": "San Francisco",
   "address": "Address"
 }
 ```
