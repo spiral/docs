@@ -1,10 +1,14 @@
 # Cookbook - Domain Cores
-You can invoke controller actions not only via routes but also from your services and other controllers (HMVC). Every controller action invocation made via `Spiral\Core\CoreInterface`. The `CoreInterface` or *Domain Core* provides the developer with
-the ability to alter the invocation flow and implement domain-specific functionality for controllers.
 
+You can invoke controller actions not only via routes but also from your services and other controllers (HMVC). Every
+controller action invocation made via `Spiral\Core\CoreInterface`. The `CoreInterface` or *Domain Core* provides the
+developer with the ability to alter the invocation flow and implement domain-specific functionality for controllers.
+
+> **Note**
 > The package `spiral/hmvc` required for the domain cores. The web bundle includes this package by default.
 
 ## Invoke Controller Action
+
 Spiral controllers are clean classes built to be invoked from any dispatcher. The framework does not provide the direct
 coupling between controller and route. Such an approach makes it possible to invoke methods manually:
 
@@ -15,14 +19,14 @@ use Spiral\Core\CoreInterface;
 
 class HomeController
 {
-    public function index(CoreInterface $core)
+    public function index(CoreInterface $core): string
     {
-        return "Index: " . $core->callAction(HomeController::class, "other", ["name" => "Antony"]);
+        return 'Index: ' . $core->callAction(HomeController::class, 'other', ['name' => 'Antony']);
     }
 
-    public function other(string $name)
+    public function other(string $name): string
     {
-        return sprintf("Hello, %s", $name);
+        return sprintf('Hello, %s', $name);
     }
 }
 ```
@@ -30,6 +34,7 @@ class HomeController
 By default, `CoreInterface` implemented by `Spiral\Core\Core` class and only provides support for the method injection.
 
 ## Core Interceptors
+
 Use `Spiral\Core\InterceptableCore` and `Spiral\Core\CoreInterceptorInterface` to implement custom invoke logic:
 
 ```php
@@ -58,18 +63,18 @@ use Spiral\Core\InterceptableCore;
 
 class HomeController
 {
-    public function index(CoreInterface $core)
+    public function index(CoreInterface $core): string
     {
         $customCore = new InterceptableCore($core);
         $customCore->addInterceptor(new CustomInterceptor());
 
         // intercepted: Hello, Antony
-        return $customCore->callAction(HomeController::class, "other", ["name" => "Antony"]);
+        return $customCore->callAction(HomeController::class, 'other', ['name' => 'Antony']);
     }
 
-    public function other(string $name)
+    public function other(string $name): string
     {
-        return sprintf("Hello, %s", $name);
+        return sprintf('Hello, %s', $name);
     }
 }
 ```
@@ -78,6 +83,7 @@ You can use interceptors to alter the target controller, action, or parameters. 
 as well.
 
 ## Global Domain Core
+
 By default, the `CoreInterface` only used to drive targets for framework routing. You can change the default
 target via `Spiral\Core\CoreInterface` binding:
 
@@ -109,6 +115,7 @@ class CoreBootloader extends Bootloader
 Activate the Bootloader to make all route targets to be intercepted.
 
 ### Route Specific Core
+
 To activate the core for the specific route:
 
 ```php
@@ -125,7 +132,9 @@ $router->setRoute(
 ```
 
 ## Domain Core Builder
-The framework provides convenient Bootloader to configure core interceptors `Spiral\Bootloader\DomainBootloader` automatically:
+
+The framework provides convenient Bootloader to configure core interceptors `Spiral\Bootloader\DomainBootloader`
+automatically:
 
 ```php
 namespace App\Bootloader;
@@ -149,6 +158,7 @@ class AppBootloader extends DomainBootloader
 Use this Bootloader to configure the application behavior globally via the set of default interceptors.
 
 ### Cycle Entity Resolution
+
 Use `Spiral\Domain\CycleInterceptor` to automatically resolve entity injections based on parameter values:
 
 ```php
@@ -182,8 +192,8 @@ class AppBootloader extends DomainBootloader
 }
 ```
 
-You can use any cycle entity injection in your HomeController methods, the `<id>` parameter will be used as the primary key.
-If an entity can't be found the 404 exception will be thrown.
+You can use any cycle entity injection in your HomeController methods, the `<id>` parameter will be used as the primary
+key. If an entity can't be found the 404 exception will be thrown.
 
 ```php
 namespace App\Controller;
@@ -229,6 +239,7 @@ class HomeController
 ```
 
 ### Filter Validation
+
 You can automatically pre-validate `Spiral\Filter\FilterInterface` using `Spiral\Domain\FilterInterceptor`, the error
 will be returned in JSON form (extend `FilterInterceptor` to customize it).
 
@@ -267,22 +278,25 @@ class HomeController
 }
 ```
 
+> **Note**
 > Use `/home/index?username=n&password=p` to pass the validation.
 
 In case of the error, the following `application/json` payload will be sent to the client:
 
 ```json
 {
-    "status": 400,
-    "errors": {
-        "username": "This value is required.",
-        "password": "This value is required."
-    }
+  "status": 400,
+  "errors": {
+    "username": "This value is required.",
+    "password": "This value is required."
+  }
 }
 ```
 
 ### Guard Interceptor
-Use `Spiral\Domain\GuardInterceptor` to implement RBAC pre-authorization logic (make sure to install and activate `spiral/security`).
+
+Use `Spiral\Domain\GuardInterceptor` to implement RBAC pre-authorization logic (make sure to install and
+activate `spiral/security`).
 
 ```php
 namespace App\Bootloader;
@@ -304,7 +318,7 @@ class AppBootloader extends DomainBootloader
         GuardInterceptor::class
     ];
 
-    public function boot(PermissionsInterface $rbac)
+    public function boot(PermissionsInterface $rbac): void
     {
         $rbac->addRole(Guest::ROLE);
         $rbac->associate(Guest::ROLE, 'home.*', Rule\AllowRule::class);
@@ -313,7 +327,7 @@ class AppBootloader extends DomainBootloader
 }
 ```
 
-You can use annotations to configure which permissions to apply for the controller action:
+You can use attributes to configure which permissions to apply for the controller action:
 
 ```php
 namespace App\Controller;
@@ -322,18 +336,14 @@ use Spiral\Domain\Annotation\Guarded;
 
 class HomeController
 {
-    /**
-     * @Guarded("home.index")
-     */
-    public function index()
+    #[Guarded(permission: 'home.index')]
+    public function index(): string
     {
         return 'OK';
     }
 
-    /**
-     * @Guarded("home.other")
-     */
-    public function other()
+    #[Guarded(permission: 'home.other')]
+    public function other(): string
     {
         return 'OK';
     }
@@ -343,43 +353,38 @@ class HomeController
 To specify the fallback action when permission is not checked use `else` attribute of `Guarded`:
 
 ```php
-/**
- * @Guarded("home.other", else="notFound")
- */
-public function other()
+#[Guarded(permission: 'home.other', else: 'notFound')]
+public function other(): string
 {
     return 'OK';
 }
 ```
 
+> **Note**
 > Allowed values: `notFound` (404), `forbidden` (401), `error` (500), `badAction` (400).
 
-Use the annotation `Spiral\Domain\Annotation\GuardNamespace` to specify controller RBAC namespace and remove the prefix
-from every action. You can also skip the permission definition in `Guarded` when a namespace is specified (security component will use `namespace.methodName` as permission name).
- 
+
+Use the attribute `Spiral\Domain\Annotation\GuardNamespace` to specify controller RBAC namespace and remove the prefix
+from every action. You can also skip the permission definition in `Guarded` when a namespace is specified (security component 
+will use `namespace.methodName` as permission name).
+
 ```php
 namespace App\Controller;
 
 use Spiral\Domain\Annotation\Guarded;
 use Spiral\Domain\Annotation\GuardNamespace;
 
-/**
- * @GuardNamespace("home")
- */
+#[GuardNamespace(namespace: 'home')]
 class HomeController
 {
-    /**
-     * @Guarded()
-     */
-    public function index()
+    #[Guarded]
+    public function index(): string
     {
         return 'OK';
     }
 
-    /**
-     * @Guarded(else="notFound")
-     */
-    public function other()
+    #[Guarded(else: 'notFound')]
+    public function other(): string
     {
         return 'OK';
     }
@@ -387,6 +392,7 @@ class HomeController
 ```
 
 #### Rule Context
+
 You can use all method parameters as rule context, for example, we can create a rule:
 
 ```php
@@ -429,7 +435,7 @@ class AppBootloader extends DomainBootloader
         GuardInterceptor::class
     ];
 
-    public function boot(PermissionsInterface $rbac)
+    public function boot(PermissionsInterface $rbac): void
     {
         $rbac->addRole(Guest::ROLE);
         $rbac->associate(Guest::ROLE, 'home.*', SampleRule::class);
@@ -439,15 +445,14 @@ class AppBootloader extends DomainBootloader
 
 ```
 
+> **Note**
 > Make sure that route includes `<id>` or `<user>` parameter.
 
 And modify the method:
 
 ```php
-/**
- * @Guarded()
- */
-public function index(User $user)
+#[Guarded] 
+public function index(User $user): string
 {
     return 'OK';
 }
@@ -455,17 +460,15 @@ public function index(User $user)
 
 The method would not allow invoking the method with user id `1`.
 
+> **Note**
 > Make sure to enable `CycleInterceptor` before `GuardInterceptor` in domain core.
 
 ### DataGrid Interceptor
-You can automatically apply datagrid specifications to an iterable output using `@DataGrid` annotation and `GridInterceptor`.
+
+You can automatically apply datagrid specifications to an iterable output using `DataGrid` attribute and `GridInterceptor`.
 This interceptor is called after the endpoint invocation because it uses the output.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Controller;
 
 use App\Repository\UserRepository;
@@ -475,25 +478,19 @@ use Spiral\Router\Annotation\Route;
 
 class UsersController
 {
-    /**
-     * @Route(route="/users", name="users")
-     * @DataGrid(grid=UserGrid::class)
-     * @param UserRepository $userRepository
-     * @return iterable
-     */
+    #[Route(route: '/users', name: 'users')]
+    #[DataGrid(grid: UserGrid::class)]
     public function list(UserRepository $userRepository): iterable
     {
         return $userRepository->select();
     }
 }   
 ```
+
+> **Note**
 > `grid` property should refer to a `GridSchema` class with specifications declared in the constructor.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\View;
 
 use Spiral\DataGrid\GridSchema;
@@ -516,11 +513,8 @@ class UserGrid extends GridSchema
 
 Optionally, you can specify `view` property to point to a callable presenter for every record.
 Without specifying it `GridInterceptor` will call `__invoke` in the declared grid.
+
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\View;
 
 use Spiral\DataGrid\GridSchema;
@@ -528,7 +522,7 @@ use App\Database\User;
 
 class UserGrid extends GridSchema
 {
-//...
+    //...
     public function __invoke(User $user): array
     {
         return [
@@ -541,58 +535,70 @@ class UserGrid extends GridSchema
 }
 ```
 
-You can specify grid defaults (such as default sorting, filtering, pagination) via `defaults` property or using `getDefaults()` method in your grid:
+You can specify grid defaults (such as default sorting, filtering, pagination) via `defaults` property or
+using `getDefaults()` method in your grid:
+
 ```php
-/**
- * @DataGrid(
- *     grid=UserGrid::class,
- *     defaults={
-*         "sort": {"name": "desc"},
-*         "filter": {"status": "active"},
-*         "paginate": {"limit": 50, "page": 10}
-*     }
-* )
- */
+#[DataGrid(
+    grid: UserGrid::class,
+    defaults: [
+        'sort' => ['name' => 'desc'],
+        'filter' => ['status' => 'active'],
+        'paginate' => ['limit' => 50, 'page' => 10]
+    ]
+)]
 ```
 
 By default, grid output will look like this:
+
 ```json
 {
   "status": 200,
-  "data": [{...}, {...}, {...}]
+  "data": [
+    {
+      ...
+    },
+    {
+      ...
+    },
+    {
+      ...
+    }
+  ]
 }
 ```
 
 You can rename `data` property or pass the exact `status` code `options` or `getOptions()` method in the grid:
+
 ```php
-/**
- * @DataGrid(grid=UserGrid::class, options={"status": 201, "property": "users"})
- */
+#[DataGrid(grid: UserGrid::class, options: ['status' => 201, 'property' => 'users'])]
 ```
+
 ```json
 {
   "status": 201,
-  "users": [...]
+  "users": [
+    ...
+  ]
 }
 ```
 
-`GridInterceptor` will create a `GridFactoryInterface` instance to wrap given iterable source with the declared grid schema.
-`GridFactory` is used by default, but if you need more complicated logic, such as using a custom counter or specifications utilization, you can declare your own factory in the annotation:
+`GridInterceptor` will create a `GridFactoryInterface` instance to wrap given iterable source with the declared grid
+schema.
+`GridFactory` is used by default, but if you need more complicated logic, such as using a custom counter or
+specifications utilization, you can declare your own factory in the annotation:
+
 ```php
-/**
- * @DataGrid(grid=UserGrid::class, factory=InheritedFactory::class)
- */
+#[DataGrid(grid: UserGrid::class, factory: InheritedFactory::class)]
 ```
 
 ### Pipeline Interceptor
+
 This interceptor allows customising endpoint interceptors using `@Pipeline` annotation.
-When declared in the domain core interceptors list, this interceptor injects the specified annotated interceptors on the position where the `PipelineInterceptor` is declared.
- 
+When declared in the domain core interceptors list, this interceptor injects the specified annotated interceptors on the
+position where the `PipelineInterceptor` is declared.
+
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Bootloader;
 
 use Spiral\Bootloader\DomainBootloader;
@@ -615,28 +621,35 @@ class AppBootloader extends DomainBootloader
     ];
 }
 ```
-`@Pipeline` annotation allows skipping the subsequent interceptors:
+
+`Pipeline` attribute allows skipping the subsequent interceptors:
+
 ```php
-    /**
-     * @Pipeline(pipeline={OtherInterceptor::class}, skipNext=true)
-     * @return mixed
-     */
-    public function action(){}
+    #[Pipeline(pipeline: [OtherInterceptor::class], skipNext: true)]
+    public function action(): string
+    {
+        //
+    }
  ```
+
 Using the prev bootloader we will get the next interceptors list:
+
 - Domain\CycleInterceptor
 - OtherInterceptor
+
+> **Note**
 > All interceptors after `PipelineInterceptor` will be omitted.
 
 ### Use cases
-For example, it can be helpful when an endpoint should not apply any interceptor or not all of them are required currently:
+
+For example, it can be helpful when an endpoint should not apply any interceptor or not all of them are required
+currently:
+
 ```php
-    /**
-     * @Route(name="emails", route="/show/<user:int>/email/<email:int>")
-     * @Pipeline(pipeline={CycleInterceptor::class, GuardInterceptor::class}, skipNext=true)
-     * @return mixed
-     */
-    public function email(User $user, Email $email, EmailFilter $filter){
+    #[Route(route: '/show/<user:int>/email/<email:int>', name: 'emails')]
+    #[Pipeline(pipeline: [CycleInterceptor::class, GuardInterceptor::class], skipNext: true)]
+    public function email(User $user, Email $email, EmailFilter $filter): string
+    {
         $filter->setContext(compact('user', 'email'));
         if (!$filter->isValid()) {
             throw new ForbiddenException('Email doesn\'t belong to a user.');
@@ -644,11 +657,15 @@ For example, it can be helpful when an endpoint should not apply any interceptor
         //...
     }
  ```
-> `FilterInterceptor` should not be applied here because of a complicated context, so we set it manually and call a custom `isValid()` check. Also, `GridInterceptor` is redundant here.
+
+> **Note**
+> `FilterInterceptor` should not be applied here because of a complicated context, so we set it manually and call a
+> custom `isValid()` check. Also, `GridInterceptor` is redundant here.
 
 To have the full control over the interceptors list you need to specify `PipelineInterceptor` as the first one.
 
 ## All Together
+
 Use all interceptors together to implement rich domain logic and secure controller actions:
 
 ```php

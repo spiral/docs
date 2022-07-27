@@ -1,7 +1,10 @@
 # HTTP - Error Pages
-Your application will expose some errors and exceptions, some of which must be delivered to the client, and some of them don't.
 
-The HTTP component includes the default error handling middleware, which used to intercept and log critical errors and user-level exceptions.
+Your application will expose some errors and exceptions, some of which must be delivered to the client, and some of them
+don't.
+
+The HTTP component includes the default error handling middleware, which used to intercept and log critical errors and
+user-level exceptions.
 
 To enable such middleware add the `Spiral\Bootloader\Http\ErrorHandlerBootloader` to your application:
 
@@ -33,13 +36,17 @@ class App extends Kernel
 ```
 
 ## Application Exceptions
-The middleware will handle application exceptions and will render them in a developer-friendly mode. To suppress the delivery of the exception details to the browser, set the env variable `DEBUG` to `false`. In this case, the default 500 error page will be displayed.
+
+The middleware will handle application exceptions and will render them in a developer-friendly mode. To suppress the
+delivery of the exception details to the browser, set the env variable `DEBUG` to `false`. In this case, the default 500
+error page will be displayed.
 
 > Do not deploy your application to production with enabled debug mode.
 
 ## Client Exceptions
-There are several exceptions you can throw from your controllers and middleware to cause HTTP level error page, for example
-we can trigger `404 Not Found` using `NotFoundException`:
+
+There are several exceptions you can throw from your controllers and middleware to cause HTTP level error page, for
+example we can trigger `404 Not Found` using `NotFoundException`:
 
 ```php
 namespace App\Controller;
@@ -58,20 +65,21 @@ class HomeController implements SingletonInterface
 
 Other exceptions include:
 
-Code | Exception 
---- | ---
-400 | Spiral\Http\Exception\ClientException\BadRequestException
-401 | Spiral\Http\Exception\ClientException\UnauthorizedException
-403 | Spiral\Http\Exception\ClientException\ForbiddenException
-404 | Spiral\Http\Exception\ClientException\NotFoundException
-500 | Spiral\Http\Exception\ClientException\ServerErrorException
+| Code | Exception                                                   |
+|------|-------------------------------------------------------------|
+| 400  | Spiral\Http\Exception\ClientException\BadRequestException   |
+| 401  | Spiral\Http\Exception\ClientException\UnauthorizedException |
+| 403  | Spiral\Http\Exception\ClientException\ForbiddenException    |
+| 404  | Spiral\Http\Exception\ClientException\NotFoundException     |
+| 500  | Spiral\Http\Exception\ClientException\ServerErrorException  |
 
-> Do not use http exceptions inside your services and repositories as it will couple your implementation to http dispatcher.
-> Use domain-specific exceptions and their mapping to http exception instead.
+> Do not use http exceptions inside your services and repositories as it will couple your implementation to http
+> dispatcher. Use domain-specific exceptions and their mapping to http exception instead.
 
 ## Page Renderer
-By default, the middleware will use a simple error page without any styles attached. To implement your error page renderer
-implement and bind in container the `Spiral\Http\ErrorHandler\RendererInterface` interface:
+
+By default, the middleware will use a simple error page without any styles attached. To implement your error page
+renderer implement and bind in container the `Spiral\Http\ErrorHandler\RendererInterface` interface:
 
 ```php
 namespace App\Errors;
@@ -132,8 +140,10 @@ class NiceErrorsBootloader extends Bootloader
 ```
 
 ## Logging
-The default application includes Monolog handler, which, by default, subscribed to the messages sent by the `ErrorHandlerMiddleware`.
-The http error log is located in `app/runtime/logs/http.log` and configured in `App\Bootloaders\LoggingBootloader`:
+
+The default application includes Monolog handler, which, by default, subscribed to the messages sent by
+the `ErrorHandlerMiddleware`. The http error log is located in `app/runtime/logs/http.log` and configured
+in `App\Bootloaders\LoggingBootloader`:
 
 ```php
 namespace App\Bootloader;

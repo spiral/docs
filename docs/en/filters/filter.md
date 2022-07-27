@@ -1,5 +1,6 @@
 # Filter Object
-The filter object used to perform complex data validation and filtration using PSR-7 or any other input. You 
+
+The filter object used to perform complex data validation and filtration using PSR-7 or any other input. You
 can create Filter manually or using scaffolder `php app.php create:filter my`:
 
 ```php
@@ -35,14 +36,15 @@ class HomeController
 ```
 
 ## Filter Schema
+
 The core of any filter object is `SCHEMA`; this constant defines mapping between fields and values provided by input.
-Every key pair is defined as `field` => `source:origin` or `field` => `source`. The **source** is the subset of data from
-user input. In the HTTP scope, the sources can be `cookie`, `data`, `query`, `input` (`data`+`query`), `header`, `file`,
-`server`. The **origin** is the name of the external field (dot notation is supported).
+Every key pair is defined as `field` => `source:origin` or `field` => `source`. The **source** is the subset of data
+from user input. In the HTTP scope, the sources can be `cookie`, `data`, `query`, `input` (`data`+`query`), `header`,
+`file`, `server`. The **origin** is the name of the external field (dot notation is supported).
 
 > You can use any input bag from [InputManager](/http/request-response.md) as source.
 
-For example we can tell our Filter to point field `login` to the QUERY param `username`:
+For example, we can tell our Filter to point field `login` to the QUERY param `username`:
 
 ```php
 namespace App\Filter;
@@ -77,9 +79,10 @@ class MyFilter extends Filter
 ```
 
 > The most common source is `data` (points to PSR-7 - parsed body), you can use this data to fetch values from incoming
-> JSON payloads. 
+> JSON payloads.
 
 ### Dot Notation
+
 The data **origin** can be specified using dot notation pointing to some nested structure. For example:
 
 ```php
@@ -110,26 +113,28 @@ We can accept and validate the following data structure:
 ```json
 {
   "names": {
-    "first": "Antony" 
+    "first": "Antony"
   }
 }
 ```
 
-> The error messages will be correctly mounted into the original location. You can also use composite filters for more complex use-cases.
+> The error messages will be correctly mounted into the original location. You can also use composite filters for more
+> complex use-cases.
 
 ### Other Sources
+
 By design you can use any method of `[InputManager](/http/request-response.md)` as source where origin is passed
 parameter. Following sources are available:
 
-Source | Description
---- | ---
-uri | Current page Uri in a form of `Psr\Http\Message\UriInterface`
-path | Current page path
-method | Http method (GET, POST, ...)
-isSecure | If https used.
-isAjax | If `X-Requested-With` set as `xmlhttprequest`
-isJsonExpected | When client expects `application/json`
-remoteAddress | User ip address
+| Source         | Description                                                   |
+|----------------|---------------------------------------------------------------|
+| uri            | Current page Uri in a form of `Psr\Http\Message\UriInterface` |
+| path           | Current page path                                             |
+| method         | Http method (GET, POST, ...)                                  |
+| isSecure       | If https used.                                                |
+| isAjax         | If `X-Requested-With` set as `xmlhttprequest`                 |
+| isJsonExpected | When client expects `application/json`                        |
+| remoteAddress  | User ip address                                               |
 
 > Read more about InputManager [here](/http/request-response.md).
 
@@ -154,11 +159,12 @@ class MyFilter extends Filter
 }
 ```
 
-> Read more about the validation below. 
+> Read more about the validation below.
 
 ### Route Parameters
-Every route writes matched parameters into ServerRequestInterface attribute `matches`, is it possible to access route values
-inside your filter using `attribute:matches.{name}` notation:
+
+Every route writes matched parameters into ServerRequestInterface attribute `matches`, is it possible to access route
+values inside your filter using `attribute:matches.{name}` notation:
 
 ```php
 $router->setRoute(
@@ -183,6 +189,7 @@ class MyFilter extends Filter
 ```
 
 ### Setters
+
 Use setters to typecast the incoming value before passing it to the validator. The Filter will assign null to the value
 in case of typecast error:
 
@@ -227,6 +234,7 @@ class HomeController
 ```
 
 ## Validation
+
 The validation rules can be defined using same approach as in [validation](/security/validation.md) component.
 
 ```php
@@ -251,6 +259,7 @@ class MyFilter extends Filter
 You can use all the checkers, conditions, and rules.
 
 ### Custom Errors
+
 You can specify the custom error message to any of the rules similar way as in the validation component.
 
 ```php
@@ -272,8 +281,7 @@ class MyFilter extends Filter
 }
 ```
 
-If you plan to localize error message later, wrap the text in `[[]]` to automatically index and
-replace the translation:
+If you plan to localize error message later, wrap the text in `[[]]` to automatically index and replace the translation:
 
 ```php
 namespace App\Filter;
@@ -295,13 +303,15 @@ class MyFilter extends Filter
 ```
 
 ## Usage
+
 Once the Filter configured you can access its fields (filtered data), check if the data valid and return the set
 of errors in case of failure.
 
-> Use [Domain Core Interceptors](/cookbook/domain-core.md) to validate your filters before they will arrive to the 
+> Use [Domain Core Interceptors](/cookbook/domain-core.md) to validate your filters before they will arrive to the
 > controller.
 
 ### Get Fields
+
 To get a filtered list of fields, use methods `getField` and `getFields`. For the Filter like that:
 
 ```php
@@ -343,6 +353,7 @@ public function index(MyFilter $filter)
 ```
 
 ### Get Errors
+
 To check if filter is valid use `isValid`, list of field errors is available via `getErrors`:
 
 ```php
@@ -387,14 +398,15 @@ Will produce the following error if the field `name` is invalid:
   "errors": {
     "names": {
       "name": "This value is required."
-    } 
-  } 
+    }
+  }
 }
 ```
 
 > The error format is identical to one described in [validation](/security/validation.md).
 
-## Inheritance 
+## Inheritance
+
 You can extend one filter from another, the schema, validation, and setters will be inherited:
 
 ```php

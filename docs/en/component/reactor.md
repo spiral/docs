@@ -1,15 +1,17 @@
 # Code Generation
 
-You can use the component `spiral/reactor` to generate PHP classes code using fluent declarative wrappers. This component
-is the foundation of `spiral/scaffolder` exception but can be used separately from the framework:
+You can use the component `spiral/reactor` to generate PHP classes code using fluent declarative wrappers. This
+component is the foundation of `spiral/scaffolder` exception but can be used separately from the framework:
 
 ```bash
-$ composer require spiral/reactor
+composer require spiral/reactor
 ```
 
+> **Note**
 > Please note that the spiral/framework >= 2.7 already includes this component.
 
 ## Class Declaration
+
 To declare class use `Spiral\Reactor\ClassDeclaration`.
 
 ```php
@@ -31,6 +33,7 @@ class MyClass
 You can get access to most of the declaration directly from the class.
 
 ### Property
+
 To render class property:
 
 ```php
@@ -58,6 +61,7 @@ class MyClass
 ```
 
 ### Constant
+
 To render constant:
 
 ```php
@@ -84,6 +88,7 @@ class MyClass
 ```
 
 ### Traits
+
 To add trait declaration:
 
 ```php
@@ -104,6 +109,7 @@ class MyClass
 ```
 
 ### Interface and Extends
+
 To implement given interface or extend base class:
 
 ```php
@@ -126,6 +132,7 @@ class MyClass extends Cycle\ORM\Select\Repository implements Countable
 ```
 
 ### Methods
+
 To generate class method:
 
 ```php
@@ -158,6 +165,7 @@ class MyClass
 ```
 
 ## Namespace
+
 To place generated class into a namespace:
 
 ```php
@@ -183,6 +191,7 @@ namespace MyNamespace {
 ```
 
 ## File
+
 Alternatively you can render whole PHP file (with forced namespace):
 
 ```php
@@ -208,10 +217,12 @@ The output:
 
 ```php
 <?php
+
 /**
  * This is my file
  */
 declare(strict_types=1);
+
 namespace MyNamespace;
 
 use Cycle\ORM\Select\Repository as Repo;

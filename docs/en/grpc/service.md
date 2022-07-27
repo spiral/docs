@@ -46,7 +46,7 @@ You can generate the service code manually using the `protoc` compiler and `php-
 the 
 
 ```bash
-$ protoc -I ./proto/ --php_out=app/src --php-grpc_out=app/src proto/calculator.proto
+protoc -I ./proto/ --php_out=app/src --php-grpc_out=app/src proto/calculator.proto
 ```
 
 The default `protoc` compiler does not respect the location of the application namespaces. The code will be generated in
@@ -59,7 +59,7 @@ the `app/src/App/Calculator` and `app/src/App/GPBMetadata` directories. Move the
 You can use the command embedded to the framework to simplify the service code generation, simply run:
 
 ```bash
-$ php app.php grpc:generate proto/calculator.proto
+php app.php grpc:generate proto/calculator.proto
 ```
 
 You should see the following output:
@@ -128,13 +128,13 @@ separately.
 You can test your service now:
 
 ```bash
-$ ./spiral serve
+./spiral serve
 ```
 
 Run the grpcUI to observe the endpoint:
 
 ```bash
-$ grpcui -insecure -import-path ./proto/ -proto calculator.proto localhost:50051
+grpcui -insecure -import-path ./proto/ -proto calculator.proto localhost:50051
 ```
 
 > Read how to write PHP client in [next article](/grpc/client.md).
