@@ -1,22 +1,22 @@
 # Queue and Jobs - Running Jobs
-You can run queue jobs in your application right after the installation of the application server. Web and GRPC bundles
-come with pre-configured `jobs` service capable of running your tasks using an `ephemeral` broker.
 
-> Read how to run `spiral/jobs` outside of the framework [here](/queue/standalone.md).
+You can run queue jobs in your application right after the installation of the application server. Web and GRPC bundles
+come with pre-configured `queue` service capable of running your tasks using an `ephemeral` broker.
 
 ## Create Handler
-To run a job, you must create a proper job handler. The handler must implement `Spiral\Jobs\HandlerInterface`. Handlers are
-responsible for job payload serialization and execution. Use `Spiral\Jobs\JobHandler` to simplify your abstraction
+
+To run a job, you must create a proper job handler. The handler must implement `Spiral\Queue\HandlerInterface`. Handlers
+are responsible for job payload serialization and execution. Use `Spiral\Queue\JobHandler` to simplify your abstraction
 and perform dependency injection in your handler method `invoke`:
 
 ```php
 namespace App\Jobs;
 
-use Spiral\Jobs\JobHandler;
+use Spiral\Queue\JobHandler;
 
 class SampleJob extends JobHandler
 {
-    public function invoke()
+    public function invoke(): void
     {
         // do something
     }
@@ -26,52 +26,51 @@ class SampleJob extends JobHandler
 You can freely use method injection in your handler:
 
 ```php
+namespace App\Jobs;
+
+use Spiral\Queue\JobHandler;
+
 class SampleJob extends JobHandler
 {
-    public function invoke(MyService $service)
+    public function invoke(MyService $service): void
     {
-        // do something with service
+        // Do something with service
     }
 }
 ```
 
+> **Note**
 > You can define handlers as singletons for higher performance.
 
 ## Dispatch Job
-You can dispatch your job via `Spiral\Jobs\QueueInterface` or via prototype property `queue`. The method `push` of 
+
+You can dispatch your job via `Spiral\Queue\QueueInterface` or via prototype property `queue`. The method `push` of
 `QueueInterface` accepts job name, the payload in array form, and additional options.
 
 ```php
-public function createJob(QueueInterface $queue)
+use App\Jobs\SampleJob;
+use Spiral\Queue\QueueInterface;
+
+public function createJob(QueueInterface $queue): void
 {
     $queue->push(SampleJob::class);
 }
 ``` 
 
-You can use your handler name as a job name. It will be automatically converted into `-` identifier, for example, 
+You can use your handler name as a job name. It will be automatically converted into `-` identifier, for example,
 `App\Jobs\SampleJob` will be presented as `app-jobs-sampleJob`.
 
-Use this identification to configure dispatching configuration:
-
-```yaml
-jobs:
-    dispatch:
-      app-jobs-sampleJob.pipeline: custom-pipeline
-```
-
-You can use `*` to define wildcard dispatching for the handler namespace:
-
-```yaml
-jobs:
-    dispatch:
-      app-jobs-*.pipeline: custom-pipeline
-```
-
 ## Passing Parameters
-Job handlers can accept any number of job parameters via the second argument of `QueueInterface->push()`. Parameters provided in array form. No objects are supported (see below how to bypass it) to ensure compatibility with consumers written on other languages.
+
+Job handlers can accept any number of job parameters via the second argument of `QueueInterface->push()`. Parameters
+provided in array form. No objects are supported (see below how to bypass it) to ensure compatibility with consumers
+written on other languages.
 
 ```php
-public function createJob(QueueInterface $queue)
+use App\Jobs\SampleJob;
+use Spiral\Queue\QueueInterface;
+
+public function createJob(QueueInterface $queue): void
 {
     $queue->push(SampleJob::class, ['value' => 123]);
 }
@@ -80,95 +79,145 @@ public function createJob(QueueInterface $queue)
 You can receive passed payload in handler using the parameter `payload` of `invoke` method:
 
 ```php
+use Spiral\Queue\JobHandler;
+
 class SampleJob extends JobHandler
 {
-    public function invoke(array $payload)
+    public function invoke(array $payload): void
     {
-        dumprr($payload);
+        dump($payload);
     }
 }
 ```
 
-In addition to that, the default `Spiral\Jobs\JobHandler` implementation will pass all values of the payload as method arguments:
-
+In addition to that, the default `Spiral\Queue\JobHandler` implementation will pass all values of the payload as method
+arguments:
 
 ```php
+use Spiral\Queue\JobHandler;
+
 class SampleJob extends JobHandler
 {
-    public function invoke(string $value)
+    public function invoke(string $value): void
     {
-        dumprr($value);
+        dump($value);
     }
 }
 ```
 
-## Managing Payloads
-The ability to alter the payload content using `serialize` and `unserialize` methods allows you to implement more complex
-task logic.
+## Job handler registry
 
-For example, we can modify the job to accept Cycle ORM entity:
+If you don't want to use job handler class name as a queue job name like in an example below:
 
 ```php
-class SampleJob extends JobHandler
+use Spiral\Queue\QueueInterface;
+
+public function createJob(QueueInterface $queue): void
 {
-    use PrototypeTrait;
-
-    public function invoke(User $user)
-    {
-        dumprr($user);
-    }
-
-    public function serialize(string $jobType, array $payload): string
-    {
-        $payload['user'] = $payload['user']->getID();
-
-        return parent::serialize($jobType, $payload);
-    }
-
-    public function unserialize(string $jobType, string $payload): array
-    {
-        $payload = parent::unserialize($jobType, $payload);
-        $payload['user'] = $this->orm->getRepository(User::class)->findByPK($payload['user']);
-
-        return $payload;
-    }
+    $queue->push('sample::job');
 }
 ```
 
-Now we can pass user entity to our job:
+you need to tell a queue how to handle a job with name `sample::job`.
+
+You can do it via `app/config/queue.php` config:
 
 ```php
-public function createJob(QueueInterface $queue, User $user)
-{
-    $queue->push(SampleJob::class, ['user' => $user]);
-}
+<?php
+
+declare(strict_types=1);
+
+return [
+    'registry' => [
+        'handlers' => [
+            'sample::job' => App\Jobs\SampleJob::class
+        ],
+    ],
+];
 ```
 
-## Delayed Jobs
-Use third parameter of `QueueInterface->push()` to specify additional job options. Options must be specified as 
-`Spiral\Jobs\Options` object. To run job with 60 seconds delay:
+or via `Spiral\Queue\QueueRegistry`:
 
 ```php
-use Spiral\Jobs\Options;
+use Spiral\Boot\Bootloader\Bootloader;
 
-// ...
-
-public function createJob(QueueInterface $queue)
+class MyBootloader extends Bootloader
 {
-    $queue->push(SampleJob::class, ['value' => 123], Options::delayed(60));
+    public function boot(\Spiral\Queue\QueueRegistry $registry): void
+    {
+        $registry->setHandler('sample::job', \App\Jobs\SampleJob::class);
+    }
 }
 ```
 
-## Retrying
-To enable job retrying, configure your pipeline with additional option `maxAttempts`:
+## Job Payload serialization
 
-```yaml
-pipelines:
-    local:
-        broker: amqp
-        queue: my-queue
-        maxAttempts: 2
+When a job pushed into a queue, a job payload would be serialized via `Spiral\Queue\SerializerInterface`.
+
+> **Note**
+> By default, the payload will be serialized with default
+> serializer `Spiral\Queue\DefaultSerializer`  -> [`opis/closure`](https://opis.io/closure/).
+
+## Handle failed jobs
+
+By default, all failed jobs will be sent into spiral log. But you can change default behavior. At first, you need to
+create your own implementation for `Spiral\Queue\Failed\FailedJobHandlerInterface`.
+
+### Custom handler example
+
+```php
+use Spiral\Queue\Failed\FailedJobHandlerInterface;
+use Cycle\Database\DatabaseInterface;
+use Spiral\Queue\SerializerInterface;
+
+class DatabaseFailedJobsHandler implements FailedJobHandlerInterface
+{
+    private DatabaseInterface $database;
+    private SerializerInterface $serializer;
+    
+    public function __construct(DatabaseInterface $database, SerializerInterface $serializer)
+    {
+        $this->database = $database;
+        $this->serializer = $serializer;
+    }
+
+    public function handle(string $driver, string $queue, string $job, array $payload, \Throwable $e): void
+    {
+        $this->database
+            ->insert('failed_jobs')
+            ->values([
+                'driver' => $driver,
+                'queue' => $queue,
+                'job_name' => $job,
+                'payload' => $this->serializer->serialize($payload),
+                'error' => $e->getMessage(),
+            ])
+            ->run();
+    }
+}
 ```
 
-## Debugging
-Make sure to use the `dumprr` function. Output to STDOUT will break the communication with the application server. If you MUST write to the STDOUT, use an alternative communication method, such as Unix or TCP sockets.
+Then you need to bind your implementation with `Spiral\Queue\Failed\FailedJobHandlerInterface` interface.
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\RoadRunnerBridge\Queue\Failed\FailedJobHandlerInterface;
+
+final class QueueFailedJobsBootloader extends Bootloader
+{
+    protected const SINGLETONS = [
+        FailedJobHandlerInterface::class => \App\Jobs\DatabaseFailedJobsHandler::class,
+    ];
+}
+```
+
+And register this bootloader after `QueueFailedJobsBootloader` in your application
+
+```php
+protected const APP = [
+    // ...
+    App\Bootloader\QueueFailedJobsBootloader::class,
+];
+```

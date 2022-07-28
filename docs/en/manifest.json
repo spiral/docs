@@ -143,10 +143,8 @@
     "title": "Queue and Jobs",
     "links": {
       "queue/configuration": "Installation and Configuration",
-      "queue/commands": "Console Commands",
       "queue/jobs": "Running Jobs",
-      "queue/standalone": "Standalone Usage",
-      "queue/scraper": "Website Scraper"
+      "queue/roadrunner": "RoadRunner integration"
     }
   },
   {
