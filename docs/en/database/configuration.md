@@ -5,6 +5,7 @@ database access rather than trying to get 100% of the specific DBMS feature set.
 
 However, you can always use direct queries to bypass the spiral abstractions.
 
+> **Note**
 > Spiral DBAL supports MySQL, MariaDB, SQLite, PostgresSQL, and SQLServer (Windows) databases.
 
 ## Installation
@@ -12,31 +13,25 @@ However, you can always use direct queries to bypass the spiral abstractions.
 To install the component in alternative bundles or as a standalone library:
 
 ```bash
-composer require cycle/database
+composer require cycle/cycle-bridge
 ```
 
-Activate the bootloader `Spiral\Bootloader\Database\DatabaseBootloader` in your application:
+Activate the bootloader `Spiral\Cycle\Bootloader\DatabaseBootloader` in your application:
 
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Bootloader\Database\DatabaseBootloader::class,
+    Spiral\Cycle\Bootloader\DatabaseBootloader::class,
     // ...
 ];
 ```
 
 To enable migrations component:
 
-```bash
-composer require cycle/migrations
-```
-
-And the corresponding bootloader:
-
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Bootloader\Database\MigrationsBootloader::class,
+    Spiral\Cycle\Bootloader\MigrationsBootloader::class,
     // ...
 ];
 ```
@@ -51,21 +46,58 @@ options for each database driver, database-driver association, and database alia
 
 declare(strict_types=1);
 
-use Cycle\Database\Driver;
+use Cycle\Database\Config;
 
 return [
-    'default'   => 'default',
-    'databases' => [
-        'default' => ['driver' => 'runtime'],
-    ],
-    'drivers'   => [
-        'runtime' => [
-            'driver'     => Driver\SQLite\SQLiteDriver::class,
-            'options'    => [
-                'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
-            ]
+    /**
+     * Database logger configuration
+     */
+    'logger' => [
+        'default' => null, // Default log channel for all drivers (The lowest priority)
+        'drivers' => [
+            // By driver name (The highest priority)
+            // See https://spiral.dev/docs/extension-monolog
+            'runtime' => 'sql_logs',
+
+            // By driver class (Medium priority)
+            \Cycle\Database\Driver\MySQL\MySQLDriver::class => 'console',
         ],
-    ]
+    ],
+
+    /**
+     * Default database connection
+     */
+    'default' => env('DB_DEFAULT', 'default'),
+
+    /**
+     * The Cycle/Database module provides support to manage multiple databases
+     * in one application, use read/write connections and logically separate
+     * multiple databases within one connection using prefixes.
+     *
+     * To register a new database simply add a new one into
+     * "databases" section below.
+     */
+    'databases' => [
+        'default' => [
+            'driver' => 'runtime',
+        ],
+    ],
+
+    /**
+     * Each database instance must have an associated connection object.
+     * Connections used to provide low-level functionality and wrap different
+     * database drivers. To register a new connection you have to specify
+     * the driver class and its connection options.
+     */
+    'drivers' => [
+        'runtime' => new Config\SQLiteDriverConfig(
+            connection: new Config\SQLite\FileConnectionConfig(
+                database: env('DB_DATABASE', directory('root') . 'runtime/app.db')
+            ),
+            queryCache: true,
+        ),
+        // ...
+    ],
 ];
 ```
 
@@ -79,50 +111,58 @@ you can use `env` function to keep your passwords and usernames separately.
 
 declare(strict_types=1);
 
-use Cycle\Database\Driver;
+use Cycle\Database\Config;
 
 return [
     'default'   => 'default',
     'databases' => [
-        'default' => ['driver' => 'mysql'],
+        'default' => [
+            'driver' => env('DATABASE_DRIVER', 'mysql')
+        ],
     ],
     'drivers'   => [
-        'mysql'     => [
-            'driver'     => Driver\MySQL\MySQLDriver::class,
-            'options'    => [
-                'connection' => 'mysql:host=127.0.0.1;dbname=' . env('DB_NAME'),
-                'username'   => env('DB_USERNAME'),
-                'password'   => env('DB_PASSWORD'),
-            ]
-        ],
-        'postgres'  => [
-            'driver'     => Driver\Postgres\PostgresDriver::class,
-            'options'    => [
-                'connection' => 'pgsql:host=127.0.0.1;dbname=' . env('DB_NAME'),
-                'username'   => env('DB_USERNAME'),
-                'password'   => env('DB_PASSWORD'),
-            ]
-        ],
-        'runtime'   => [
-            'driver'     => Driver\SQLite\SQLiteDriver::class,
-            'options'    => [
-                'connection' => 'sqlite:' . directory('runtime') . 'runtime.db',
-                'username'   => 'sqlite',
-                'password'   => '',
-            ]
-        ],
-        'sqlServer' => [
-            'driver'     => Driver\SQLServer\SQLServerDriver::class,
-            'options'    => [
-                'connection' => 'sqlsrv:Server=MY-PC;Database=' . env('DB_NAME'),
-                'username'   => env('DB_USERNAME'),
-                'password'   => env('DB_PASSWORD'),
-            ]
-        ]
+        'mysql' => new Config\MySQLDriverConfig(
+            connection: new Config\MySQL\TcpConnectionConfig(
+                database: env('DB_NAME'),
+                host: env('DB_HOST', '127.0.0.1'),
+                port: env('DB_PORT', 3306),
+                user: env('DB_USERNAME'),
+                password: env('DB_PASSWORD'),
+            ),
+            queryCache: true
+        ),
+        'postgres' => new Config\PostgresDriverConfig(
+            connection: new Config\Postgres\TcpConnectionConfig(
+                database: env('DB_NAME'),
+                host: env('DB_HOST', '127.0.0.1'),
+                port: env('DB_PORT', 5432),
+                user: env('DB_USERNAME'),
+                password: env('DB_PASSWORD'),
+            ),
+            schema: 'public',
+            queryCache: true,
+        ),
+        'runtime' => new Config\SQLiteDriverConfig(
+            connection: new Config\SQLite\FileConnectionConfig(
+                database: directory('runtime') . 'runtime.db'
+            ),
+            queryCache: true,
+        ),
+        'sqlServer' => new Config\SQLServerDriverConfig(
+            connection: new Config\SQLServer\TcpConnectionConfig(
+                database: env('DB_NAME'),
+                host: env('DB_HOST', '127.0.0.1'),
+                port: env('DB_PORT', 1433),
+                user: env('DB_USERNAME'),
+                password: env('DB_PASSWORD'),
+            ),
+            queryCache: true,
+        ),
     ]
 ];
 ```
 
+> **Note**
 > Use connection option `options` to set PDO specific attributes.
 
 ### Declare Database
@@ -134,7 +174,7 @@ In order to access connected database we have to add it into `databases` section
 
 declare(strict_types=1);
 
-use Cycle\Database\Driver;
+// ...
 
 return [
     'default'   => 'primary',
@@ -159,6 +199,7 @@ return [
 Your application and modules can access the database in multiple different ways. Database aliasing allows you to use
 separate databases with relation to one physical database.
 
+> **Note**
 > Use aliases to configure IoC auto wiring.
 
 Example controller constructor:
@@ -176,7 +217,7 @@ To point `db` and `other` to specific database instance:
 
 declare(strict_types=1);
 
-use Cycle\Database\Driver;
+// ...
 
 return [
     'default'   => 'primary',
@@ -203,6 +244,16 @@ return [
 ## Console Commands
 
 The default Web and GRPC bundles include a set of console commands to view the database schema.
+
+Activate the bootloader `Spiral\Cycle\Bootloader\CommandBootloader` in your application:
+
+```php
+protected const LOAD = [
+    // ...
+    Spiral\Cycle\Bootloader\CommandBootloader::class,
+    // ...
+];
+```
 
 ### View available drivers and tables
 
@@ -258,52 +309,5 @@ Foreign Keys of default.posts:
 +------------------+---------+----------------+-----------------+------------+------------+
 ```
 
-## Standalone Usage
-
-You can initiate the DBAL component as a standalone library. Provide the configuration in array form:
-
-```php
-use Cycle\Database;
-
-$dbConfig = new Database\Config\DatabaseConfig([
-    'default'     => 'default',
-    'databases'   => [
-        'default' => [
-            'connection' => 'sqlite'
-        ]
-    ],
-    'connections' => [
-        'sqlite' => [
-            'driver'  => Database\Driver\SQLite\SQLiteDriver::class,
-            'options' => [
-                'connection' => 'sqlite:database.db',
-                'username'   => '',
-                'password'   => '',
-            ]
-        ]
-    ]
-]);
-
-$dbal = new Database\DatabaseManager($dbConfig);
-```
-
-To create Database instance manually (without the DatabaseManager):
-
-```php
-use Cycle\Database;
-
-$driver = new Database\Driver\SQLite\SQLiteDriver(
-   [
-       'connection' => 'sqlite:db.db'
-   ]
-);
-       
-$db = new Database\Database(
-   'name',
-   '',
-   $driver,
-   $driver // read only driver (optional)
-);
-
-dump($db->getTables());
-```
+> **Note**
+> Read how to configure database [here](https://cycle-orm.dev/docs/database-configuration/2.x/en).
