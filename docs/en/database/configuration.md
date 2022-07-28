@@ -204,7 +204,7 @@ separate databases with relation to one physical database.
 
 Example controller constructor:
 
-```
+```php
 public function __construct(Database $db, Database $other)
 {
 }

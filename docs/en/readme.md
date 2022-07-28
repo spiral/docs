@@ -89,10 +89,8 @@
     * [Full Documentation](cycle/documentation.md)
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)
-    * [Console Commands](queue/commands.md)
     * [Running Jobs](queue/jobs.md)
-    * [Standalone Usage](queue/standalone.md)
-    * [Website Scraper](queue/scraper.md)
+    * [RoadRunner integration](queue/roadrunner.md)
 * Views
     * [Installation and Configuration](views/configuration.md)
     * [Rendering Views](views/render.md)
