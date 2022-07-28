@@ -85,9 +85,8 @@
 * Cycle ORM
     * [Installation and Configuration](cycle/configuration.md)
     * [Transactions](cycle/transactions.md)
-    * [Without Annotations](cycle/manual.md)
-    * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
+    * [Full Documentation](cycle/documentation.md)
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)
     * [Console Commands](queue/commands.md)

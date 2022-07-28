@@ -1,25 +1,35 @@
 # Cycle ORM - Transactions
-To persist entity changes, your application services and controllers will require `Cycle\ORM\TransactionInterface`.
+
+To persist entity changes, your application services and controllers will require `Cycle\ORM\EntityManagerInterface`.
 
 ## Default Configuration
-By default, the framework will automatically create a transaction on-demand from the container. Considering that transactions always clean
-after the `run` operation, you can request it as a constructor parameter.
+
+By default, the framework will automatically create a transaction on-demand from the container. Considering that
+transactions always clean after the `run` operation, you can request it as a constructor parameter.
 
 ```php
-use Cycle\ORM;
+use Cycle\ORM\EntityManagerInterface;
 
 class MyService
 {
-    private $tr;
+    private EntityManagerInterface $entityManager;
     
-    public function __construct(ORM\TransactionInterface $tr)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->tr = $tr;
+        $this->entityManager = $entityManager;
     }
 }
 ```
 
-> Make sure that `persist`/`delete` and `run` methods are always called within one method scope while using service-specific transactions.
+> **Note**
+> Make sure that `persist`/`delete` and `run` methods are always called within one method scope while using
+> service-specific transactions.
 
 ## Testing
-You can always test the service by mocking `TransactionInterface`, consider binding mocked transaction object to your application instance to see what is being persisted.
+
+You can always test the service by mocking `Cycle\ORM\EntityManagerInterface`, consider binding mocked transaction
+object to your application instance to see what is being persisted.
+
+
+> **Note**
+> Read more how to use Create, Update and Delete entities [here](https://cycle-orm.dev/docs/basic-crud/2.x/en).
