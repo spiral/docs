@@ -1,5 +1,6 @@
 # GRPC - Golang Services
-You can combine the PHP and Golang GRPC services within one application. 
+
+You can combine the PHP and Golang GRPC services within one application.
 
 > Make sure to read how to [build application server](/framework/application-server.md).
 
@@ -35,7 +36,9 @@ protoc -I proto/ proto/multiplier.proto --go_out=plugins=grpc:multiplier
 > Make sure to install `protoc-gen-go`. Read about installation [here](/grpc/client.md).
 
 ## Create Service
-Create RoadRunner compatible service in the `multiplier` directory. Register GRPC service using the `*grpc.Service`->`AddService`:
+
+Create RoadRunner compatible service in the `multiplier` directory. Register GRPC service using the `*grpc.Service`
+->`AddService`:
 
 ```golang
 package multiplier
@@ -62,7 +65,7 @@ func (s *Service) Mult(ctx context.Context, in *Mult) (*MultResult, error) {
 }
 ```
 
-To activate the service, make sure to create and build a custom application server: 
+To activate the service, make sure to create and build a custom application server:
 
 ```bash
 go mod init demo
@@ -75,19 +78,18 @@ Make sure to request proper dependencies in `go.mod`:
 module demo
 
 require (
-	github.com/golang/protobuf v1.3.2
-	github.com/spiral/broadcast v0.0.0-20191206140608-766959683e74
-	github.com/spiral/broadcast-ws v1.1.0
-	github.com/spiral/jobs v2.1.3
-	github.com/spiral/php-grpc v1.2.0
-	github.com/spiral/roadrunner v1.6.2
-	google.golang.org/genproto v0.0.0-20181016170114-94acd270e44e
-	google.golang.org/grpc v1.21.0
+github.com/golang/protobuf v1.3.2
+github.com/spiral/broadcast v0.0.0-20191206140608-766959683e74
+github.com/spiral/broadcast-ws v1.1.0
+github.com/spiral/jobs v2.1.3
+github.com/spiral/php-grpc v1.2.0
+github.com/spiral/roadrunner v1.6.2
+google.golang.org/genproto v0.0.0-20181016170114-94acd270e44e
+google.golang.org/grpc v1.21.0
 )
 ```
 
 Modify the `main.go` to activate the service:
-
 
 ```golang
 package main
@@ -165,7 +167,8 @@ func main() {
 }
 ```
 
-> Read more how to define services [here](/cookbook/golang-library.md) and [here](https://roadrunner.dev/docs/beep-beep-service).
+> Read more how to define services [here](/cookbook/golang-library.md)
+> and [here](https://roadrunner.dev/docs/beep-beep-service).
 
 You can run the server now:
 

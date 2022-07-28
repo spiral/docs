@@ -1,16 +1,15 @@
 # GRPC - Service Code
 
+Unlike classic HTTP and REST endpoints GRPC enforce most strict request/response format driven by `.proto` files
+declaration and compiled into binary messages using `protoc` compiler.
+
 > **Note**
-> The documentation page contains outdated information relevant to RoadRunner 1.x only.
-
-Unlike classic HTTP and REST endpoints GRPC enforce most strict request/response format driven by `.proto` files declaration
-and compiled into binary messages using `protoc` compiler.
-
 > Use https://github.com/spiral/app-grpc as the base to speed up onboarding.
 
 ## Define the Service
-To declare our first service create a proto file in the desired direction. By default, the GRPC build proposes to create the
-proto files in `/proto` directory. Create file `proto/calculator.proto`:
+
+To declare our first service create a proto file in the desired direction. By default, the GRPC build proposes to create
+the proto files in `/proto` directory. Create file `proto/calculator.proto`:
 
 ```json
 syntax = "proto3";
@@ -35,15 +34,18 @@ service Calculator {
 }
 ```
 
-> Make sure to use options `php_namespace` and `php_metadata_namespace` to properly configure PHP namespace. You can read more about GRPC service declaration
-> [here](https://grpc.io/docs/guides/concepts/). 
+> **Note**
+> Make sure to use options `php_namespace` and `php_metadata_namespace` to properly configure PHP namespace. You can
+> read more about GRPC service declaration [here](https://grpc.io/docs/guides/concepts/).
 
 At the moment you can only create Unidirectional APIs, use [Golang services](/grpc/golang.md) to handle
 [streaming and batch processing](/grpc/streaming.md).
 
 ## Generate the service
-You can generate the service code manually using the `protoc` compiler and `php-grpc` plugin. Execute the command from
-the 
+
+You can generate the service code manually using the `protoc` compiler and `php-grpc` plugin. 
+
+Execute the command below:
 
 ```bash
 protoc -I ./proto/ --php_out=app/src --php-grpc_out=app/src proto/calculator.proto
@@ -56,10 +58,19 @@ the `app/src/App/Calculator` and `app/src/App/GPBMetadata` directories. Move the
 - app/src/GPBMetadata
 
 ### Generate Command
+
+Put proto file into `app/config/grpc.php`
+
+```php
+'services' => [
+    __DIR__.'/../../proto/calculator.proto',
+],
+```
+
 You can use the command embedded to the framework to simplify the service code generation, simply run:
 
 ```bash
-php app.php grpc:generate proto/calculator.proto
+php app.php grpc:generate
 ```
 
 You should see the following output:
@@ -75,6 +86,7 @@ Compiling `proto/calculator.proto`:
 The code will be moved into the proper place automatically.
 
 ## Implement Service
+
 Implement the `CalculatorInterface` located in `app/src/Calculator` in order to make your service work:
 
 ```php
@@ -84,7 +96,7 @@ declare(strict_types=1);
 
 namespace App\Calculator;
 
-use Spiral\GRPC;
+use Spiral\RoadRunner\GRPC;
 
 class Calculator implements CalculatorInterface
 {
@@ -97,17 +109,9 @@ class Calculator implements CalculatorInterface
 }
 ```
 
-> You can not use the method injection with GRPC services at the moment. Stick to [Prototype component](/basics/prototype.md).
-
-Make sure that the service is available and activated via `php app.php grpc:services`:
-
-```bash
-+----------------+---------------------------+-------------------------------------------------+
-| Service:       | Implementation:           | File:                                           |
-+----------------+---------------------------+-------------------------------------------------+
-| app.Calculator | App\Calculator\Calculator | .../grpc-test/app/src/Calculator/Calculator.php |
-+----------------+---------------------------+--------------------------------------------------
-``` 
+> **Note**
+> You can not use the method injection with GRPC services at the moment. Stick
+> to [Prototype component](/basics/prototype.md).
 
 Make sure to update the proto path in `.rr.yaml`:
 
@@ -115,34 +119,29 @@ Make sure to update the proto path in `.rr.yaml`:
 grpc:
   listen: tcp://0.0.0.0:50051
   proto: "proto/calculator.proto"
-  workers.command: "php app.php"
-  tls.key:  "app.key"
-  tls.cert: "app.crt"
 ```
 
 ### Multiple Services
-Use the `import` directive of proto declarations to combine multiple services in one application or store message declarations
-separately.
+
+Use the `import` directive of proto declarations to combine multiple services in one application or store message
+declarations separately.
 
 ### Test the Service
+
 You can test your service now:
 
 ```bash
-./spiral serve
+./rr serve
 ```
-
-Run the grpcUI to observe the endpoint:
-
-```bash
-grpcui -insecure -import-path ./proto/ -proto calculator.proto localhost:50051
-```
-
-> Read how to write PHP client in [next article](/grpc/client.md).
 
 ## Metadata
-Use `Spiral\GRPC\ContextInterface` to access the request metadata. There are number of system metadata properties you can read:
+
+Use `Spiral\GRPC\ContextInterface` to access the request metadata. There are number of system metadata properties you
+can read:
 
 ```php
+use Spiral\RoadRunner\GRPC;
+
 public function Sum(GRPC\ContextInterface $ctx, Sum $in): Result
 {
     dumprr($ctx->getValue(':authority'));
@@ -158,9 +157,11 @@ public function Sum(GRPC\ContextInterface $ctx, Sum $in): Result
 }
 ```
 
+> **Note**
 > Read more about auth practices [here](https://grpc.io/docs/guides/auth/).
 
 ### Response Headers
+
 You can add any custom metadata to response using Context-specific response headers:
 
 ```php
@@ -170,7 +171,7 @@ declare(strict_types=1);
 
 namespace App\Calculator;
 
-use Spiral\GRPC;
+use Spiral\RoadRunner\GRPC;
 
 class Calculator implements CalculatorInterface
 {
@@ -188,20 +189,23 @@ class Calculator implements CalculatorInterface
 ```
 
 ## Errors
-Spiral/GRPC component provides a number of exceptions to indicate the server or request error:
 
-Exception | Error Code
----       | ---        
-Spiral\GRPC\Exception\\**GRPCException** | UNKNOWN(2)
-Spiral\GRPC\Exception\\**InvokeException** | UNAVAILABLE(14)
-Spiral\GRPC\Exception\\**NotFoundException** | NOT_FOUND(5) 
-Spiral\GRPC\Exception\\**ServiceException** | INTERNAL(13) 
-Spiral\GRPC\Exception\\**UnauthenticatedException** | UNAUTHENTICATED(16) 
-Spiral\GRPC\Exception\\**UnimplementedException** | UNIMPLEMENTED(12) 
+`spiral/roadrunner-grpc` component provides a number of exceptions to indicate the server or request error:
 
-> See all status codes in `Spiral\GRPC\StatusCode`. Read more about GRPC error codes [here](https://github.com/grpc/grpc/blob/master/doc/statuscodes.md).
+| Exception                                                      | Error Code          |
+|----------------------------------------------------------------|---------------------|
+| Spiral\RoadRunner\GRPC\Exception\\**GRPCException**            | UNKNOWN(2)          |
+| Spiral\RoadRunner\GRPC\Exception\\**InvokeException**          | UNAVAILABLE(14)     |
+| Spiral\RoadRunner\GRPC\Exception\\**NotFoundException**        | NOT_FOUND(5)        |
+| Spiral\RoadRunner\GRPC\Exception\\**ServiceException**         | INTERNAL(13)        |
+| Spiral\RoadRunner\GRPC\Exception\\**UnauthenticatedException** | UNAUTHENTICATED(16) |
+| Spiral\RoadRunner\GRPC\Exception\\**UnimplementedException**   | UNIMPLEMENTED(12)   |
 
-Example:
+> **Note**
+> See all status codes in `Spiral\RoadRunner\GRPC\StatusCode`. Read more about GRPC error
+> codes [here](https://github.com/grpc/grpc/blob/master/doc/statuscodes.md).
+
+### Example:
 
 ```php
 <?php
@@ -210,7 +214,7 @@ declare(strict_types=1);
 
 namespace App\Calculator;
 
-use Spiral\GRPC;
+use Spiral\RoadRunner\GRPC;
 
 class Calculator implements CalculatorInterface
 {
@@ -231,11 +235,15 @@ class Calculator implements CalculatorInterface
 ```
 
 ## Best Practices
-The recommended approach of designing the GRPC API for spiral application is to generate service code interfaces, messages, and client code in a separate repository. 
+
+The recommended approach of designing the GRPC API for spiral application is to generate service code interfaces,
+messages, and client code in a separate repository.
 
 Common:
+
 - *Image-SDK* - v1.2.0
 
 Services:
+
 - **Image-Service** - implements *Image-SDK* v1.2.0
 - **Account-Service** - requires *Image-SDK* v1.1.0

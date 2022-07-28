@@ -116,8 +116,6 @@
     * [Installation and Configuration](grpc/configuration.md)
     * [Service Code](grpc/service.md)
     * [Client SDK](grpc/client.md)
-    * [Golang Services](grpc/golang.md)
-    * [Data Streaming](grpc/streaming.md)
 * Event Broadcasting
     * [Installation and Configuration](broadcast/configuration.md)
     * [Publish and Consume](broadcast/publish.md)
