@@ -1,7 +1,9 @@
-# Cycle - Use without Annotations
+# Cycle - Use without Attributes
+
 You can define ORM Schema manually, without need to use annotations.
 
 ## Bootloader
+
 Create Bootloader to describe and bind your Schema to `Cycle\ORM\SchemaInterface`:
 
 ```php

@@ -1,39 +1,38 @@
 # Cycle ORM - Console Commands
+
 Cycle ORM integration provides multiple commands for easier control. You can get help for any of the commands using
 
 ```bash
 php app.php help cycle...
 ```
 
-> Make sure to enable `Spiral\Bootloader\CommandBootloader` after the cycle bootloaders to active helper commands.
+> **Note**
+> Make sure to enable `Spiral\Cycle\Bootloader\CommandBootloader` after the cycle bootloaders to active helper commands.
 
-## Cycle Commands
-To update the ORM schema without modifying the database run:
+### Migrations
 
-```bash
-php app.php cycle
-```
+| Command            | Description                                                                                  |
+|--------------------|----------------------------------------------------------------------------------------------|
+| `migrate`          | Perform one or all outstanding migrations.<br/>`--one` Execute only one (first) migration.   |
+| `migrate:replay`   | Replay (down, up) one or multiple migrations.<br/>`--all` Replay all migrations.             |
+| `migrate:rollback` | Rollback one (default) or multiple migrations.<br/>`--all` Rollback all executed migrations. |
+| `migrate:init`     | Init migrations component (create migrations table).                                         |
+| `migrate:status`   | Get list of all available migrations and their statuses.                                     |
 
-To update the schema and automatically modify database schema:
+### Database
 
-```bash
-php app.php cycle:sync
-```
+| Command            | Description                                                                                                      |
+|--------------------|------------------------------------------------------------------------------------------------------------------|
+| `db:list [db]`     | Get list of available databases, their tables and records count.<br/>`db` database name.                         |
+| `db:table <table>` | Describe table schema of specific database.<br/>`table` Table name (required).<br/>`--database` Source database. |
 
-> Attention, do not use this command in combination with migrations.
+### ORM and Schema
 
-To generate a migration file to reflect the current ORM schema:
+| Command         | Description                                                                          |
+|-----------------|--------------------------------------------------------------------------------------|
+| `cycle`         | Update (init) cycle schema from database and annotated classes.                      |
+| `cycle:migrate` | Generate ORM schema migrations.<br/>`--run` Automatically run generated migration.   |
+| `cycle:render`  | Render available CycleORM schemas.<br/>`--no-color` Display output without colors.   |
 
-```bash
-php app.php cycle:migrate
-```
-
-> Make sure to run `migrate:init` first.
-
-You can also run generated migration automatically:
-
-```bash
-php app.php cycle:migrate -r
-```
-
+> **Note**
 > You can run any cycle command with `-vv` flag to see a list of modified tables.
