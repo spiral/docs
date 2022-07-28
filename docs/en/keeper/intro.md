@@ -1,18 +1,23 @@
 # Keeper
-Keeper is portal engine and UI framework (based on Stempler). Framework includes various elements such as 
-dynamic forms, data grids, tabs and other layout partials.
-You can use Keeper to create complex Admin panels, User panels and other applications.
+
+Keeper is portal engine and UI framework (based on Stempler). Framework includes various elements such as dynamic forms, 
+data grids, tabs and other layout partials. You can use Keeper to create complex Admin panels, User panels and other 
+applications.
 
 ## Installation:
-- Install the dependency:
+
+1. Install the dependency:
+
 ```
-$ composer require spiral/keeper
+composer require spiral/keeper
 ```
-- register keeper bootloader (see [bootloaders](/keeper/bootloaders.md) section)
+
+2. register keeper bootloader (see [bootloaders](/keeper/bootloaders.md) section)
 
 ## Namespace
-The basic idea of keeper is that all sub-modules are isolated code inside of a given `namespace`.
-For example, there could be `admin` and `profile` namespaces.
+
+The basic idea of keeper is that all submodules are isolated code inside a given `namespace`. For example, there 
+could be `admin` and `profile` namespaces.
 
 All the Keeper functionality integrated with `spiral/security` and follows RBAC rules. 
 
@@ -22,18 +27,16 @@ Configuration can be performed via code or annotations.
 
 ## Components
 
-Keeper comes with a set of frontend components for [Stempler](/stempler/basics.md) engine, backed by [JavaScript Toolkit](https://github.com/spiral/toolkit)
+Keeper comes with a set of frontend components for [Stempler](/stempler/basics.md) engine, backed 
+by [JavaScript Toolkit](https://github.com/spiral/toolkit)
 
 Demo project featuring usage of all components is available [here](https://github.com/spiral/app-keeper).
 
 Most notable components are:
 
 - [Forms](/keeper/components/forms.md)
-
 - [Autocomplete](/keeper/components/autocomplete.md)
-
 - [DatePicker](/keeper/components/datepicker.md)
-
 - [DataGrids](/keeper/components/datagrid.md)
 
 
