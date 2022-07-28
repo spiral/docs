@@ -4,8 +4,9 @@ Unlike most of the PHP frameworks, the HTTP requests begin outside of the applic
 
 - [RoadRunner](https://roadrunner.dev).
 
-![Screenshot_31](https://user-images.githubusercontent.com/796136/67088146-1bd39c80-f1ad-11e9-9d5e-6b2499654395.png)
+![Request Lifecycle](https://user-images.githubusercontent.com/773481/181182150-8cc2b6c4-2b50-4e85-afd7-e5c2d1c98b2c.png)
 
+> **Note**
 > The Response comes the way in a backward direction.
 
 ## PSR
@@ -27,7 +28,7 @@ Once all of the middleware processing is complete, the `net/http` request will b
 passed to the first available PHP worker.
 
 The worker will handle this request using the `spiral/http` extension and `Spiral\Http\Http` core. The core will pass
-the PSR-7 request object (`ServerRequestInterface`) through a set of PSR-15 compatible middleware.
+the PSR-7 request object (`Psr\Http\Message\ServerRequestInterface`) through a set of PSR-15 compatible middleware.
 
 Once all of the middleware processing is complete, the framework will create an [IoC scope](/framework/scopes.md) for
 the request object. Such an approach allows you to use PSR-7 request as a classic global object, while technically, it
@@ -36,6 +37,7 @@ only exists during the user request.
 The request is passed into the PSR-15 handler of your choice (by default `spiral/router`). The handler must generate the
 response which will be sent back to the user through all middleware layers.
 
+> **Note**
 > Spiral Router provides the ability to associate custom middleware set with each route.
 
 ## Invoke HTTP Manually
@@ -52,7 +54,7 @@ use Spiral\Http\Http;
 
 class HomeController implements SingletonInterface
 {
-    private $http;
+    private Http $http;
 
     public function __construct(Http $http)
     {
@@ -65,7 +67,7 @@ class HomeController implements SingletonInterface
             $request->withUri(new Uri('/home/other')) // modify Uri of current request
         );
 
-        return (string)$response->getBody(); // "other"
+        return (string) $response->getBody(); // "other"
     }
 
     public function other(): string
@@ -75,5 +77,6 @@ class HomeController implements SingletonInterface
 }
 ```
 
+> **Note**
 > The IoC scopes can be nested, so all the functionality will work properly. However, be aware that not all extensions
 > will allow nesting (you are not allowed to create nested sessions yet).
