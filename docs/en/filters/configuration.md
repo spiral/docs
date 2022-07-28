@@ -3,6 +3,7 @@
 The framework component `spiral/filters` provides support for request validation, composite validation, an error message
 mapping and locations, etc.
 
+> **Note**
 > The component relies on [Validation](/security/validation.md) library, make sure to read it first.
 
 ## Installation
@@ -41,7 +42,7 @@ use Spiral\Filters\InputInterface;
 
 class HomeController
 {
-    public function index(InputInterface $input)
+    public function index(InputInterface $input): void
     {
         dump($input->getValue('query', 'abc')); // ?abc=1
 
@@ -83,7 +84,7 @@ class MyFilter extends Filter
 
 > Or use the scaffolding `php app.php create:filter my -f "abc:string(query)"`.
 
-You can request the Filter as method injection (it will be automatically binded to current http input):
+You can request the Filter as method injection (it will be automatically bound to the current http input):
 
 ```php
 namespace App\Controller;
@@ -92,7 +93,7 @@ use App\Filter;
 
 class HomeController
 {
-    public function index(Filter\MyFilter $f)
+    public function index(Filter\MyFilter $f): void
     {     
         dump($f->isValid());
         dump($f->getErrors());
@@ -101,6 +102,7 @@ class HomeController
 }
 ```
 
+> **Note**
 > Try URL with `?abc=1`.
 
 ## Extensions
