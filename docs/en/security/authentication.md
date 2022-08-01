@@ -3,6 +3,7 @@
 The framework includes the set of components to authorize users via temporary or permanent tokens from different
 sources and safely manage user context.
 
+> **Note**
 > The component does not enforce any specific User entity interface and does not limit the application to HTTP scope
 > only (GRPC auth is possible as well).
 
@@ -19,6 +20,7 @@ via `Spiral\Auth\ActorProviderInterface`.
 The token storage can either store token in the external source (such as database, Redis, or file) or decode it on a
 fly. The framework includes multiple token implementations out of the box for more comfortable use.
 
+> **Note**
 > You can use multiple token and actor providers inside one application.
 
 ## Installation and Configuration
@@ -29,7 +31,8 @@ To install authorization extension for Web bundle:
 composer require spiral/auth spiral/auth-http
 ```
 
-> Please note that the spiral/framework >= 2.6 already includes this component.
+> **Note**
+> The spiral/framework >= 2.6 already includes this component.
 
 The package `spiral/auth` provides standard interfaces without the relation to any specific dispatching method, while
 `spiral/auth-http` includes HTTP Middleware, Token transport (Cookie, Header), and Firewall components.
@@ -62,17 +65,27 @@ bootloader `Spiral\Bootloader\Auth\TokenStorage\SessionTokensBootloader`:
 
 ### Database Token Storage
 
-The framework can store the token in the database via Cycle ORM.
-Activate `Spiral\Bootloader\Auth\TokenStorage\CycleTokensBootloader` for this purpose:
+The framework can store the token in the database via Cycle ORM. If you want to use this type of token you need to 
+install `spiral/cycle-bridge` package.
+
+```bash
+composer require spiral/cycle-bridge
+```
+
+Activate `Spiral\Cycle\Bootloader\BridgeBootloader` for this purpose:
 
 ```php
 [
     // ...
     Framework\Auth\HttpAuthBootloader::class,
-    Framework\Auth\TokenStorage\CycleTokensBootloader::class,
+    \Spiral\Cycle\Bootloader\BridgeBootloader::class,
     // ...
 ]
 ```
+
+> **Note**
+> Read more about installation and configuration `spiral/cycle-bridge` 
+> package [here](https://github.com/spiral/cycle-bridge).
 
 You must generate and run database migration or run `cycle:sync` in order to create needed table:
 
@@ -100,27 +113,21 @@ namespace App\Database;
 
 use Cycle\Annotated\Annotation as Cycle;
 
-/**
- * @Cycle\Entity(repository="Repository/UserRepository")
- * @Cycle\Table(indexes={
- *     @Cycle\Table\Index(columns={"username"}, unique=true)
- * })
- */
+#[Cycle\Entity(repository: UserRepository::class)]
+#[Index(columns: ['username'], unique: true)]
 class User
 {
-    /**
-     * @Cycle\Column(type = "primary")
-     */
-    public $id;
+    #[Cycle\Column(type: 'primary')]
+    public int $id;
 
-    /** @Cycle\Column(type="string") */
-    public $name;
+    #[Cycle\Column(type: "string")]
+    public string $name;
 
-    /** @Cycle\Column(type="string") */
-    public $username;
+    #[Cycle\Column(type: "string")]
+    public string $username;
 
-    /** @Cycle\Column(type="string") */
-    public $password;
+    #[Cycle\Column(type: "string")]
+    public string $password;
 }
 ```
 
@@ -149,14 +156,17 @@ class UserRepository extends Repository implements ActorProviderInterface
 Once the migration is complete, we can create our first user:
 
 ```php
-public function index(Transaction $t)
-{
-    $u = new User();
-    $u->name = 'Antony';
-    $u->username = 'username';
-    $u->password = password_hash('password', PASSWORD_DEFAULT);
+use Cycle\ORM\EntityManagerInterface;
 
-    $t->persist($u)->run();
+public function index(EntityManagerInterface $entityManager)
+{
+    $user = new User();
+    
+    $user->name = 'Antony';
+    $user->username = 'username';
+    $user->password = \password_hash('password', PASSWORD_DEFAULT);
+
+    $entityManager->persist($u)->run();
 }
 ```
 
@@ -171,7 +181,7 @@ use Spiral\Bootloader\Auth\AuthBootloader;
 
 class UserBootloader extends Bootloader
 {
-    public function boot(AuthBootloader $auth)
+    public function boot(AuthBootloader $auth): void
     {
         $auth->addActorProvider(UserRepository::class);
     }
@@ -181,16 +191,16 @@ class UserBootloader extends Bootloader
 ## Authenticate User
 
 The user authentication process happens via `Spiral\Auth\AuthContextInterface`. You can receive the instance of the auth
-context
-object via method injection.
+context object via method injection.
 
 ```php
-public function index(AuthContextInterface $auth)
+public function index(AuthContextInterface $auth): void
 {
     // work with auth context
 }
 ```
 
+> **Note**
 > You are not allowed to store `AuthContextInterface` inside singleton services, see above how to bypass it.
 
 Alternatively, you can use `Spiral\Auth\AuthScope` which can be stored in singleton services and prototyped via property
@@ -205,7 +215,7 @@ class HomeController
 {
     use PrototypeTrait;
 
-    public function index()
+    public function index(): void
     {
         dump($this->auth);
     }
@@ -238,7 +248,7 @@ class LoginRequest extends Filter
 Create login method in the controller dedicated to authentication:
 
 ```php
-public function login(LoginRequest $login)
+public function login(LoginRequest $login): array
 {
     if (!$login->isValid()) {
         return [
@@ -264,13 +274,13 @@ public function login(LoginRequest $login)
 ```
 
 To authenticate the user for the following requests, you must create token with the payload compatible with your
-`ActorProviderInterface` (userID => id).
+`ActorProviderInterface` (**userID** => **id**).
 
-We will need an instance of `AuthContextInterface` and `TokenStorageInterface`
-to do that. We can access both instances via prototype properties `auth` and `authTokens`:
+We will need an instance of `AuthContextInterface` and `TokenStorageInterface` to do that. We can access both instances 
+via prototype properties `auth` and `authTokens`:
 
 ```php
-public function login(LoginRequest $login)
+public function login(LoginRequest $login): array
 {
     // ... see above
 
@@ -288,7 +298,7 @@ public function login(LoginRequest $login)
 
 The user authenticated.
 
-### Check Authenticated
+### Check if a used authenticated
 
 To see if the user authenticated simply check if auth context has non-empty actor:
 
@@ -303,6 +313,7 @@ public function index()
 }
 ```
 
+> **Note**
 > You can use RBAC Security to authenticate and authorize users at the same time.
 
 ### Logout
@@ -310,7 +321,7 @@ public function index()
 To log user out call method `close` of auth context or AuthScope:
 
 ```php
-public function logout()
+public function logout(): void
 {
     $this->auth->close();
 }
@@ -324,30 +335,24 @@ implement `Spiral\Security\ActorInterface` in your `App\Database\User`:
 ```php
 namespace App\Database;
 
-use Cycle\Annotated\Annotation as Cycle;
 use Spiral\Security\ActorInterface;
+use Cycle\Annotated\Annotation as Cycle;
 
-/**
- * @Cycle\Entity(repository="Repository/UserRepository")
- * @Cycle\Table(indexes={
- *     @Cycle\Table\Index(columns={"username"}, unique=true)
- * })
- */
+#[Cycle\Entity(repository: UserRepository::class)]
+#[Index(columns: ['username'], unique: true)]
 class User implements ActorInterface
 {
-    /**
-     * @Cycle\Column(type = "primary")
-     */
-    public $id;
+    #[Cycle\Column(type: 'primary')]
+    public int $id;
 
-    /** @Cycle\Column(type="string") */
-    public $name;
+    #[Cycle\Column(type: "string")]
+    public string $name;
 
-    /** @Cycle\Column(type="string") */
-    public $username;
+    #[Cycle\Column(type: "string")]
+    public string $username;
 
-    /** @Cycle\Column(type="string") */
-    public $password;
+    #[Cycle\Column(type: "string")]
+    public string $password;
 
     public function getRoles(): array
     {
@@ -386,12 +391,22 @@ use Spiral\Auth\Middleware\Firewall\OverwriteFirewall;
 To implement your firewall, extend `Spiral\Auth\Middleware\Firewall\AbstractFirewall`:
 
 ```php
-final class OverwriteFirewall extends AbstractFirewall
+use Spiral\Prototype\Traits\PrototypeTrait;
+use Psr\Http\Message\ResponseInterface;
+
+final class RedirectFirewall extends AbstractFirewall
 {
-    protected function denyAccess(Request $request, RequestHandlerInterface $handler): Response
+    use PrototypeTrait;
+    
+    public function __construct(
+        private UriInterface $uri,
+        private int $status = 301
+    ) {
+    }
+
+    protected function denyAccess(Request $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // user is not authenticated
-        return $handler->handle($request);
+        return $this->response->redirect((string) $this->uri, $this->status);
     }
 }
 ```

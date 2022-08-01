@@ -1,8 +1,10 @@
 # Views - Twig
+
 The framework provides deep integration with [Twig Template](https://twig.symfony.com/) engine including access to IoC
 scopes, i18n integration, and caching.
 
 ## Installation and Configuration
+
 To install Twig:
 
 ```bash
@@ -26,7 +28,7 @@ You can add any custom extension to Twig via `addExtension` method of `TwigBootl
 ```php
 class TwigExtensionBootloader extends Bootloader
 {
-    public function boot(TwigBootloader $twig)
+    public function boot(TwigBootloader $twig): void
     {
         $twig->addExtension(MyExtension::class);
     
@@ -37,6 +39,7 @@ class TwigExtensionBootloader extends Bootloader
 ```
 
 ## Usage
+
 You can use twig views immediately. Create a view with `.twig` extension in `app/views` directory.
 
 ```twig
@@ -46,12 +49,13 @@ Hello, {{ name }}!
 You can use this view without an extension in your controllers:
 
 ```php
-public function index()
+public function index(): string
 {
     return $this->views->render('filename', ['name' => 'User']);
 }
 ```
 
+> **Note**
 > You can freely use twig `include` and `extends` directives.
 
 To access the value from the IoC scope:

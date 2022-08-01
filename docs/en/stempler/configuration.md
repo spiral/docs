@@ -1,8 +1,8 @@
-
 # Stempler - Installation and Configuration
-The Stempler engine provides a powerful and flexible template engine with an ability to customize it on lexer, parser, and AST
-compilation levels. By default, the driver is enabled with web build of spiral skeleton application and provides support
-for Blade-like directives and echoing, HTML components, stacks, and others.
+
+The Stempler engine provides a powerful and flexible template engine with an ability to customize it on lexer, parser,
+and AST compilation levels. By default, the driver is enabled with web build of spiral skeleton application and provides 
+support for Blade-like directives and echoing, HTML components, stacks, and others.
 
 To install the extensions in alternative bundles:
 
@@ -10,13 +10,15 @@ To install the extensions in alternative bundles:
 composer require spiral/stempler-bridge
 ```
 
+> **Note**
 > Please note that the spiral/framework >= 2.7 already includes this component.
 
 Make sure to add `Spiral\Stempler\Bootloader\StemplerBootloader` to your application kernel.
 
 ## Configuration
-The Stempler bridge comes pre-configured. To replace and alter the default configuration create file `app/config/views/stempler.php`
-with the following content:
+
+The Stempler bridge comes pre-configured. To replace and alter the default configuration create
+file `app/config/views/stempler.php` with the following content:
 
 ```php
 <?php
@@ -65,11 +67,14 @@ return [
 ];
 ``` 
 
-However, it recommended using `StemplerBootloader` to properly configure the component. Several configuration options are available.
+However, it recommended using `StemplerBootloader` to properly configure the component. Several configuration options
+are available.
 
+> **Note**
 > Grammar and Parser configurations not exposed in the current Stempler Bridge version.
 
 ### Register custom Directive
+
 To register custom directive.
 
 ```php
@@ -80,9 +85,11 @@ use Spiral\Stempler\Bootloader\StemplerBootloader;
 
 class CustomBootloader extends Bootloader
 {
-    protected const DEPENDENCIES = [StemplerBootloader::class];
+    protected const DEPENDENCIES = [
+        StemplerBootloader::class
+    ];
 
-    public function boot(StemplerBootloader $stempler)
+    public function boot(StemplerBootloader $stempler): void
     {
         $stempler->addDirective(Directive::class);
     }
@@ -90,6 +97,7 @@ class CustomBootloader extends Bootloader
 ```
 
 ### Register custom AST Visitor
+
 To register a custom AST visitor.
 
 ```php
@@ -100,9 +108,11 @@ use Spiral\Stempler\Bootloader\StemplerBootloader;
 
 class CustomBootloader extends Bootloader
 {
-    protected const DEPENDENCIES = [StemplerBootloader::class];
+    protected const DEPENDENCIES = [
+        StemplerBootloader::class
+    ];
 
-    public function boot(StemplerBootloader $stempler)
+    public function boot(StemplerBootloader $stempler): void
     {
         $stempler->addVisitor(Visitor::class);
     }
@@ -110,6 +120,7 @@ class CustomBootloader extends Bootloader
 ```
 
 ### Register source-code pre-processor
+
 To register custom source code pre-processor (cache specific):
 
 ```php
@@ -120,17 +131,21 @@ use Spiral\Stempler\Bootloader\StemplerBootloader;
 
 class CustomBootloader extends Bootloader
 {
-    protected const DEPENDENCIES = [StemplerBootloader::class];
+    protected const DEPENDENCIES = [
+        StemplerBootloader::class
+    ];
 
-    public function boot(StemplerBootloader $stempler)
+    public function boot(StemplerBootloader $stempler): void
     {
         $stempler->addProcessor(Processor::class);
     }
 }
 ```
 
+> **Note**
 > The source-code pre-processing is considered internal functionality, avoid using it in favor of custom AST processors.
 
 ## Additional Modules
-The bridge comes with additional bootloader `Spiral\Stempler\Bootloader\PrettyPrintBootloader` responsible for pretty 
+
+The bridge comes with additional bootloader `Spiral\Stempler\Bootloader\PrettyPrintBootloader` responsible for pretty
 printing of HTML content of your templates.

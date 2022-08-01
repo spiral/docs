@@ -46,7 +46,6 @@
     "links": {
       "cookbook/domain-core": "Domain Core and Controllers",
       "cookbook/injector": "Container Injectors",
-      "cookbook/golang-library": "Integrate Golang service to PHP",
       "cookbook/custom-dispatcher": "Custom Dispatcher"
     }
   },
@@ -80,7 +79,6 @@
       "http/annotated-routes": "Annotated Routes",
       "http/errors": "Error Pages",
       "http/middleware": "Middleware",
-      "http/golang": "Golang Middleware",
       "http/cookies": "Cookies",
       "http/session": "Session",
       "http/csrf": "CSRF protection",
@@ -134,19 +132,16 @@
     "links": {
       "cycle/configuration": "Installation and Configuration",
       "cycle/transactions": "Transactions",
-      "cycle/manual": "Without Annotations",
-      "cycle/documentation": "Full Documentation",
-      "cycle/commands": "Console Commands"
+      "cycle/commands": "Console Commands",
+      "cycle/documentation": "Full Documentation"
     }
   },
   {
     "title": "Queue and Jobs",
     "links": {
       "queue/configuration": "Installation and Configuration",
-      "queue/commands": "Console Commands",
       "queue/jobs": "Running Jobs",
-      "queue/standalone": "Standalone Usage",
-      "queue/scraper": "Website Scraper"
+      "queue/roadrunner": "RoadRunner integration"
     }
   },
   {
@@ -185,14 +180,6 @@
       "grpc/configuration": "Installation and Configuration",
       "grpc/service": "Service Code",
       "grpc/client": "Client SDK"
-    }
-  },
-  {
-    "title": "Event Broadcasting",
-    "links": {
-      "broadcast/configuration": "Installation and Configuration",
-      "broadcast/publish": "Publish and Consume",
-      "broadcast/websockets": "WebSockets"
     }
   },
   {

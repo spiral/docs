@@ -140,6 +140,7 @@ public function index(MultipleAddressesFilter $ma)
 }
 ```
 
+> **Note**
 > The errors will be mounted accordingly.
 
 ### Custom Prefix

@@ -3,6 +3,7 @@
 You controllers or endpoints will require a way to access active PSR-7 request and ability to generate the response. In
 this section, we will cover the use of requests/responses in the MVC setup.
 
+> **Note**
 > The middleware and native PSR-15 handlers can receive PSR-7 objects directly.
 
 ## The Request Scope
@@ -18,14 +19,16 @@ use Spiral\Core\Container\SingletonInterface;
 
 class HomeController implements SingletonInterface
 {
-    public function index(ServerRequestInterface $request)
+    public function index(ServerRequestInterface $request): void
     {
-        \dump($request->getHeaders());
+        dump($request->getHeaders());
     }
 }
 ```
 
-> Attention, you are **not allowed** to use `ServerRequestInterface` as constructor injection in singletons.
+> **Note**
+> Attention, you are **not allowed** to use `Psr\Http\Message\ServerRequestInterface` as constructor injection in 
+> singletons.
 
 Once the request obtained, you can use it to all read methods available
 per [PSR-7 Standard](https://www.php-fig.org/psr/psr-7/).
@@ -44,21 +47,21 @@ use Spiral\Http\Request\InputManager;
 
 class HomeController implements SingletonInterface
 {
-    private $input;
+    private InputManager $input;
 
     public function __construct(InputManager $input)
     {
         $this->input = $input;
     }
 
-    public function index()
+    public function index(): void
     {
-        \dump($this->input->query->all());
+        dump($this->input->query->all());
     }
 }
 ```
 
-You can also access `InputManager` via `PrototypeTrait`.
+You can also access `Spiral\Http\Request\InputManager` via `Spiral\Prototype\Traits\PrototypeTrait`.
 
 ```php
 namespace App\Controller;
@@ -69,7 +72,7 @@ class HomeController
 {
     use PrototypeTrait;
 
-    public function index()
+    public function index(): void
     {
         // $this->request is alias to $this->input
         dump($this->request->data->all());
@@ -77,18 +80,17 @@ class HomeController
 }
 ```
 
-> Note, is it recommended to avoid direct access to `ServerRequestInterface` and `InputManager` unless necessary,
-> use **Request Filters** instead.
+> **Note**
+> It is recommended to avoid direct access to `Psr\Http\Message\ServerRequestInterface` 
+> and `Spiral\Http\Request\InputManager` unless necessary, use **Request Filters** instead.
 
-You can use `InputManager` to access the full array of input data or any specific field by its name (dot notation is
-allowed for nested structures). Every input structure are represented using `InputBag` class with set of common methods,
-let's review query accessing as example:
+You can use `Spiral\Http\Request\InputManager` to access the full array of input data or any specific field by its name 
+(dot notation is allowed for nested structures). Every input structure are represented 
+using `Spiral\Http\Request\InputBag` class with set of common methods, let's review query accessing as example:
 
 ```php
-/**
- * @var InputManager $input
- */
- 
+/** @var \Spiral\Http\Request\InputManager $input */
+
 // Get instance of QueryBag associated with query data
 dump($input->query);
  
@@ -120,13 +122,16 @@ dump($input->query('name'));
 
 ### Input headers
 
-We can use the 'headers' input bag and `header` method in `InputManager` to access input headers. HeadersBag has a few
-additions we have to mention:
+We can use the '**headers**' input bag and `header` method in `Spiral\Http\Request\InputManager` to access input 
+headers. `Spiral\Http\Request\HeadersBag` has a few additions we have to mention:
 
-* HeadersBag will automatically normalize requested header name
-* "get" method will implode header values using ',' by default
+* `Spiral\Http\Request\HeadersBag` will automatically normalize requested header name
+* "**get**" method will implode header values using ',' by default
 
 ```php
+/** @var \Spiral\Http\Request\InputManager $sinput */
+
+// Get all headers as array
 dump($input->headers->all());
 
 // Will be normalized into "Accept"
@@ -141,29 +146,42 @@ dump($input->header('accept'));
 ### Cookies
 
 ```php
+/** @var \Spiral\Http\Request\InputManager $input */
+
 dump($input->cookies->all());
+
 dump($input->cookie('name'));
 ```
 
 ### Server variables
 
 ```php
+/** @var \Spiral\Http\Request\InputManager $input */
+
 dump($input->server->all());
+
 dump($input->server('name'));
 ```
 
-> ServerBag will automatically normalize all requested server values. This makes it possible to get value without using
-> all uppercase letters for the names:
+> **Note**
+> `Spiral\Http\Request\ServerBag` will automatically normalize all requested server values. This makes it possible to 
+> get value without using all uppercase letters for the names:
 
 ```php
+/** @var \Spiral\Http\Request\InputManager $input */
+
 dump($input->server('SERVER_PORT'));
+
 dump($input->server('server-port'));
 ```
 
 ### Post/Data parameters
 
 ```php
+/** @var \Spiral\Http\Request\InputManager $input */
+
 dump($input->data->all());
+
 dump($input->data('name'));
 
 // An alias
@@ -182,28 +200,35 @@ dump($input->input('name'));
 
 ```php
 dump($input->attributes->all());
+
 dump($input->attribute('name'));
 ```
 
 #### Uploaded Files
 
 To get a list of the uploaded files or individual files, use the `files` bag and `file` method. Every uploaded file
-instance represented using `UploadedFileInterface`, which is part of PSR7.
+instance represented using `Psr\Http\Message\UploadedFileInterface`, which is part of PSR7.
 
 ```php
+/** @var \Spiral\Http\Request\InputManager $input */
+
 dump($this->input->files->all());
+
 dump($this->input->file('upload'));
 ```
 
+> **Note**
 > Per PSR, all files organized to logical hierarchy, which differs from default way php handle uploaded files. You can
 > use dot notation to access nested file instances.
 
 ### Simplified methods
 
-In addition to data methods and InputBags, `InputManager` provides a set of methods to read various properties of active
-requests.
+In addition to data methods and InputBags, `Spiral\Http\Request\InputManager` provides a set of methods to read various 
+properties of active requests.
 
 ```php
+/** @var \Spiral\Http\Request\InputManager $input */
+
 //Request Uri path, will always include leading /
 dump($input->path());
 
@@ -226,16 +251,18 @@ dump($input->isJsonExpected());
 dump($input->remoteAddress());
 ```
 
-To access `InputBag` without the use of `__get`:
+To access `Spiral\Http\Request\InputBag` without the use of `__get`:
 
 ```php
+/** @var \Spiral\Http\Request\InputManager $input */
+
 dump($input->bag('data')->all());
 ```
 
 ## InputInterface
 
-The `InputManager` does not have `get` prefix for its methods. The reason for that located in an external package
-`spiral/filters` which require data source provider via `Spiral\Filters\InputInterface`:
+The `Spiral\Http\Request\InputManager` does not have `get` prefix for its methods. The reason for that located in an 
+external package `spiral/filters` which require data source provider via `Spiral\Filters\InputInterface`:
 
 ```php
 namespace Spiral\Filters;
@@ -250,14 +277,14 @@ interface InputInterface
 }
 ```
 
-You can invoke `InputManager` methods via short notation of `InputInterface`. Both approaches will produce the same set
-of data.
+You can invoke `Spiral\Http\Request\InputManager` methods via short notation of `Spiral\Filters\InputInterface`. Both 
+approaches will produce the same set of data.
 
 ```php
 use Spiral\Filters\InputInterface;
 use Spiral\Http\Request\InputManager;
 
-public function index(InputInterface $inputSource, InputManager $inputManager)
+public function index(InputInterface $inputSource, InputManager $inputManager): void
 {
     dump($inputManager->query('name'));
     dump($inputSource->getValue('query', 'name'));
@@ -269,6 +296,7 @@ public function index(InputInterface $inputSource, InputManager $inputManager)
 
 This approach used to map incoming data into Request Filter.
 
+> **Note**
 > You must activate `Spiral\Bootloader\Security\FiltersBootloader` in order to access `Spiral\Filters\InputInterface`.
 
 ## Generate Response
@@ -286,10 +314,10 @@ class HomeController
 {
     public function index(): ResponseInterface
     {
-        $r = new Response(200);
-        $r->getBody()->write("hello world");
+        $response = new Response(200);
+        $response->getBody()->write("hello world");
 
-        return $r;
+        return $response;
     }
 }
 ```
@@ -316,13 +344,14 @@ namespace App\Controller;
 
 class HomeController
 {
-    public function index()
+    public function index(): void
     {
         echo "hello world";
     }
 }
 ```
 
+> **Note**
 > We recommend using output buffer only during the development to display debug information. Stick to strict return
 > types.
 
@@ -339,7 +368,7 @@ class HomeController
     {
         return [
             'status' => 200,
-            'data'   => ['some' => 'json']
+            'data' => ['some' => 'json']
         ];
     }
 }
@@ -380,9 +409,9 @@ use Spiral\Http\ResponseWrapper;
 
 class HomeController
 {
-    public function index(ResponseWrapper $r): ResponseInterface
+    public function index(ResponseWrapper $response): ResponseInterface
     {
-        return $r->attachment(
+        return $response->attachment(
             __FILE__,
             'controller.php'
         )->withAddedHeader('Key', 'value');
@@ -413,7 +442,7 @@ class HomeController
 To create HTML response:
 
 ```php
-public function index()
+public function index(): ResponseInterface
 {
     return $this->response->html('hello world');
 }
@@ -422,7 +451,7 @@ public function index()
 To create `application/json` response:
 
 ```php
-public function index()
+public function index(): ResponseInterface
 {
     return $this->response->json(
         ['something' => 123],
@@ -434,10 +463,12 @@ public function index()
 To send attachment:
 
 ```php
-public function index()
+public function index(): ResponseInterface
 {
     return $this->response->attachment(__FILE__, 'name.php');
 }
 ```
 
-> You can also use `StreamInterface` as the first argument and specify your mime-type as the third option.
+> **Note**
+> You can also use `Psr\Http\Message\StreamInterface` as the first argument and specify your mime-type as the third 
+> option.

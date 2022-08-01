@@ -2,13 +2,7 @@
 
 The default Web bundle includes CSRF protection middleware. To install it in alternative bundles:
 
-```bash
-composer require spiral/csrf
-```
-
-> Please note that the spiral/framework >= 2.6 already includes this component.
-
-To activate the extension:
+To activate the extension add `Spiral\Bootloader\Http\CsrfBootloader` to list of App bootloaders:
 
 ```php
 [
@@ -40,6 +34,7 @@ public function boot(RouterInterface $router)
 }
 ```
 
+> **Note**
 > To protect against all the HTTP verbs use `Spiral\Csrf\Middleware\StrictCsrfFirewall`.
 
 ## Usage
@@ -59,7 +54,11 @@ Every `POST`/`PUT`/`DELETE` request from the user must include this token as POS
 header `X-CSRF-Token`. Users will receive `412 Bad CSRF Token` if a token is missing or not set.
 
 ```php
-public function index(ServerRequestInterface $request)
+use Psr\Http\Message\ServerRequestInterface;
+
+// ...
+
+public function index(ServerRequestInterface $request): string
 {
     $form = '
         <form method="post">
@@ -69,7 +68,7 @@ public function index(ServerRequestInterface $request)
         </form>
     ';
 
-    $form = str_replace(
+    $form = \str_replace(
         '{csrfToken}',
         $request->getAttribute('csrfToken'),
         $form
@@ -82,14 +81,15 @@ public function index(ServerRequestInterface $request)
 ## Activate Globally
 
 To activate CSRF protection globally register `Spiral\Csrf\Middleware\CsrfFirewall`
-or `Spiral\Csrf\Middleware\StrictCsrfFirewall` via `HttpBootloader`:
+or `Spiral\Csrf\Middleware\StrictCsrfFirewall` via `Spiral\Bootloader\Http\HttpBootloader`:
 
 ```php
 use Spiral\Csrf\Middleware\CsrfFirewall;
+use Spiral\Bootloader\Http\HttpBootloader;
 
 // ...
 
-public function boot(HttpBootloader $http)
+public function boot(HttpBootloader $http): void
 {
     $http->addMiddleware(CsrfFirewall::class);
 }
