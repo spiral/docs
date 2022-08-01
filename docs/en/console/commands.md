@@ -24,8 +24,10 @@ class MyCommand extends Command
     /**
      * Perform command
      */
-    protected function perform()
+    protected function perform(): int
     {
+        // do something special...
+        return self::SUCCESS;
     }
 }
 ```
@@ -59,9 +61,11 @@ You can put your user code into the `perform` method. The `perform` support meth
 and `$this->output` properties to work with user input.
 
 ```php
-protected function perform(MyService $service)
+protected function perform(MyService $service): int
 {
     $this->output->writeln($service->doSomething());
+    
+    return self::SUCCESS;
 }
 ```
 
@@ -88,6 +92,7 @@ To write formatted output without advancing to the new line:
 $this->sprintf("Hello, <comment>%s</comment>", $name);
 ```
 
+> **Note**
 > This method is compatible with the `sprintf` definition.
 
 To check if current verbosity mode is higher than `OutputInterface::VERBOSITY_VERBOSE`:
@@ -96,6 +101,7 @@ To check if current verbosity mode is higher than `OutputInterface::VERBOSITY_VE
 dump($this->isVerbose());
 ```
 
+> **Note**
 > You can freely use the `dump` method in console commands.
 
 To render table:

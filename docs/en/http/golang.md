@@ -4,6 +4,7 @@ You can implement some middleware on Golang end, inside the application server. 
 handle high-throughput and filter requests before their arrival to your PHP application. It is the best spot to
 implement rate-limiters, geolocation filters, and other types of middleware.
 
+> **Note**
 > Make sure to read how to build [application server](/framework/application-server.md) first.
 
 ## Passing values from Golang to PHP
