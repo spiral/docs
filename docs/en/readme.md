@@ -30,7 +30,6 @@
 * Cookbook
     * [Domain Core and Controllers](cookbook/domain-core.md)
     * [Container Injectors](cookbook/injector.md)
-    * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
 * Components
     * [Attributes](component/attributes.md)
@@ -52,7 +51,6 @@
     * [Annotated Routes](http/annotated-routes.md)
     * [Error Pages](http/errors.md)
     * [Middleware](http/middleware.md)
-    * [Golang Middleware](http/golang.md)
     * [Cookies](http/cookies.md)
     * [Session](http/session.md)
     * [CSRF protection](http/csrf.md)
@@ -115,10 +113,6 @@
     * [Client SDK](grpc/client.md)
     * [Golang Services](grpc/golang.md)
     * [Data Streaming](grpc/streaming.md)
-* Event Broadcasting
-    * [Installation and Configuration](broadcast/configuration.md)
-    * [Publish and Consume](broadcast/publish.md)
-    * [WebSockets](broadcast/websockets.md)
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * [XDebug](debug/xdebug.md)
