@@ -20,6 +20,7 @@ Alternative:
 php app.php db:table -h
 ```
 
+> **Note**
 > You can read how to create your own commands in following sections.
 
 ## Aliases
@@ -46,6 +47,7 @@ To run this command in verbose mode:
 php app.php configure -vv
 ```
 
+> **Note**
 > Always run `configure` before running a newly installed application.
 
 ## Application Server
@@ -56,10 +58,5 @@ The application server (RoadRunner) includes it's own set of commands, to list a
 ./rr
 ```
 
-RoadRunner 1.x (deprecated):
-
-```bash
-./spiral
-```
-
-You can read more about server commands [here](https://roadrunner.dev/docs/beep-beep-cli).
+> **Note**
+> You can read more about server commands [here](https://roadrunner.dev/docs/beep-beep-cli).

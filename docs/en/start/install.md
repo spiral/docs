@@ -6,8 +6,10 @@ start a new application.
 
 Default Web (full-stack) skeleton is available on https://github.com/spiral/app
 
-Installation includes the [roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package out of the box and
-framework-specific functions enabled.
+Installation includes the following packages out of the box and framework-specific functions enabled:
+- [roadrunner-bridge](https://github.com/spiral/roadrunner-bridge)
+- [cycle-bridge](https://github.com/spiral/cylce-bridge)
+- [spiral/nyholm-bridge](https://github.com/spiral/nyholm-bridge)
 
 <br/>
 
@@ -15,7 +17,7 @@ Server Requirements
 --------
 Make sure that your server configured with the following PHP version and extensions:
 
-* PHP 8.0+, 64bit
+* PHP 7.4+, 64bit
 * *mb-string* extension (spiral is UTF-8 centric framework)
 * PDO Extension with desired database drivers
 
@@ -44,12 +46,13 @@ Installation
 composer create-project spiral/app
 ```
 
+> **Note**
 > Application server will be downloaded automatically (`php-curl` and `php-zip` required).
 
 Once the application installed, you can ensure that it was configured properly by executing:
 
 ```bash
-php ./app.php configure
+php app.php configure
 ```
 
 To start application server execute:
@@ -66,6 +69,7 @@ On Windows:
 
 The application will be available on `http://localhost:8080`.
 
+> **Note**
 > Read more about application server configuration [here](https://roadrunner.dev/docs).
 
 ## Other Skeletons

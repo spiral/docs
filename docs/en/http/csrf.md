@@ -23,7 +23,7 @@ use Spiral\Csrf\Middleware\CsrfFirewall;
 
 // ...
 
-public function boot(RouterInterface $router)
+public function boot(RouterInterface $router): void
 {
     $route = new Route('/', new Target\Action(HomeController::class, 'index'));
 
@@ -44,7 +44,7 @@ Once the protection is activated, you must sign every request with the token ava
 To receive this token in the controller or view:
 
 ```php
-public function index(ServerRequestInterface $request)
+public function index(ServerRequestInterface $request): void
 {
     $csrfToken = $request->getAttribute('csrfToken');
 }

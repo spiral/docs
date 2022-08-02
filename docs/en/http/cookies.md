@@ -11,7 +11,7 @@ The easiest way to manage cookies in Spiral is to obtain an instance of `Spiral\
 can be stored inside singleton services and controllers and provide access to active request scope.
 
 ```php
-public function index(CookieManager $cookies)
+public function index(CookieManager $cookies): void
 {
     dump($cookies->getAll());
     $cookies->set('name', 'value'); // read about more options down below
@@ -23,7 +23,7 @@ If you use `spiral/prototype` extension, you can also access `CookieManager` usi
 ```php
 use PrototypeTrait;
 
-public function index()
+public function index(): void
 {
     dump($this->cookies->getAll());
     $this->cookies->set('name', 'value'); // read about more options down below
@@ -37,6 +37,7 @@ Read more about low-level cookie management down below.
 By default, the framework will encrypt and decrypt all cookies values using ENV key `ENCRYPTER_KEY`. Changing this value
 will automatically invalidate all cookie values set for all users.
 
+> **Note**
 > You can also disable encryption for performance reasons or use alternative HMAC signature method (see below).
 
 Cookie component will decrypt all values and update the request object, so you can get all cookies values using default
@@ -47,7 +48,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 // ...
 
-public function index(ServerRequestInterface $request)
+public function index(ServerRequestInterface $request): void
 {
     dump($request->getCookieParams());
 }
@@ -66,13 +67,14 @@ class HomeController
         $this->input = $input;
     }
 
-    public function index()
+    public function index(): void
     {
         dump($this->input->cookies->all());
     }
 }
 ```
 
+> **Note**
 > You can also request cookie value in request filters.
 
 Note, if the cookie value is invalid and or can't be decrypted, its value will be set to NULL and not available to the
@@ -84,7 +86,7 @@ Since all of the cookie values must be encrypted or signed, you must use the pro
 Use context-specific object `Spiral\Cookies\CookieQuery`.
 
 ```php
-public function index(CookieQuery $cookies)
+public function index(CookieQuery $cookies): void
 {
     $cookies->set('name', 'value');
 }
@@ -102,6 +104,7 @@ The method accepts the following arguments in the same order:
 | Secure    | bool   | Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client. When set to true, the cookie will only set if a secure connection exists. On the server-side, it's on the programmer to send this kind of cookie only on a secure connection (e.g., for $_SERVER["HTTPS"]).                                         |
 | HttpOnly  | bool   | When true, the cookie will be made accessible only through the HTTP protocol. This flag means that the cookie won't be available by scripting languages, such as JavaScript. This setting can effectively help to reduce identity theft through XSS attacks (although, not all browsers support it).                                                     |
 
+> **Note**
 > Same arguments for `Spiral\Cookies\CookieManager`->`set`.
 
 ## Usage with Singletons
@@ -113,6 +116,7 @@ and must be requested from container directly (use method injection as showed ab
 $container->get(CookieQuery::class)->set($name, $value);
 ```
 
+> **Note**
 > The best place to use `CookieQuery` is controller methods.
 
 If you already have access to `ServerRequestInterface` use can also use attribute `cookieQueue`:
@@ -122,7 +126,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 // ...
 
-public function index(ServerRequestInterface $request)
+public function index(ServerRequestInterface $request): void
 {
     $request->getAttribute('cookieQueue')->set('name', 'value');
 }
@@ -145,7 +149,7 @@ You can configure `CookieQueue` behavior using `Spiral\Bootloader\Http\CookiesBo
 To whitelist cookie (disable protection) in your bootloader:
 
 ```php
-public function boot(CookiesBootloader $cookies)
+public function boot(CookiesBootloader $cookies): void
 {
     $cookies->whitelistCookie('CustomCookie');
 }

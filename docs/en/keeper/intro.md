@@ -8,7 +8,7 @@ applications.
 
 1. Install the dependency:
 
-```
+```bash
 composer require spiral/keeper
 ```
 

@@ -12,6 +12,7 @@ To install the extension:
 composer require spiral/prototype
 ```
 
+> **Note**
 > Please note that the spiral/framework >= 2.7 already includes this component.
 
 Make sure to add `Spiral\Prototype\Bootloader\PrototypeBootloader` to your App class:
@@ -30,6 +31,7 @@ class App extends Kernel
 }
 ```
 
+> **Note**
 > Attention, the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
 
 Now you can run `php app.php configure` to generate IDE tooltips.
@@ -61,6 +63,7 @@ class HomeController
 }
 ```
 
+> **Note**
 > The code will work via magic `__get` on the object.
 
 Once a prototyping phase is complete, you can remove the trait and inject dependencies via:
@@ -69,6 +72,7 @@ Once a prototyping phase is complete, you can remove the trait and inject depend
 php app.php prototype:inject -r
 ```
 
+> **Note**
 > Use `-r` flag to remove `PrototypeTrait`.
 
 The extension will modify your class into a given form:
@@ -81,23 +85,16 @@ use Spiral\Views\ViewsInterface;
 
 class HomeController
 {
-    /** @var ViewsInterface */
-    private $views;
-    
-    /** @var UserRepository */
-    private $users;
+    private ViewsInterface $views;
+    private UserRepository $users;
 
-    /**
-     * @param ViewsInterface $views
-     * @param UserRepository $users
-     */
     public function __construct(ViewsInterface $views, UserRepository $users)
     {
         $this->users = $users;
         $this->views = $views;
     }
 
-    public function index()
+    public function index(): string
     {
         return $this->views->render('profile', [
             'user' => $this->users->findByName('Antony')
@@ -106,6 +103,7 @@ class HomeController
 }
 ```
 
+> **Note**
 > The formatting around the injected lines will be affected.
 
 For PHP 7.4 now available two additional flags:
@@ -113,6 +111,7 @@ For PHP 7.4 now available two additional flags:
 - `typedProperties (t)` will inject properties with a type
 - `no-phpdoc` will omit PHP doc block for typed properties
 
+> **Note**
 > Note that these flags work only if the latest `nikic/php-parser` version with PHP 7.4 support is installed.
 
 ```bash
@@ -136,7 +135,7 @@ class HomeController
         $this->views = $views;
     }
 
-    public function index()
+    public function index(): string
     {
         return $this->views->render('profile', [
             'user' => $this->users->findByName('Antony')
@@ -151,6 +150,7 @@ To view all the classes which use prototyped properties without modifying them:
 php app.php prototype:list
 ```
 
+> **Note**
 > You can remove the `spiral/prototype` extension after all injects are complete.
 
 ## Custom Properties
@@ -159,26 +159,27 @@ You can register any number of prototyped properties using `Spiral\Prototype\Boo
 bootloader:
 
 ```php
-public function boot(PrototypeBootloader $prototype)
+public function boot(PrototypeBootloader $prototype): void
 {
     $prototype->bindProperty('myService', MyService::class);
 }
 ```
 
+> **Note**
 > You can combine such an approach with automatic class discovery to achieve better integration of domain layer
 > architecture into your development process.
 
-## Annotation Based
+## Attribute Based
 
-Alternatively, you can use annotations to register prototype classes and services. Use
-annotation `Spiral\Prototype\Annotation\Prototyped` in the class you want to inject:
+Alternatively, you can use attributes to register prototype classes and services. Use
+attribute `Spiral\Prototype\Annotation\Prototyped` in the class you want to inject:
 
 ```php
 namespace App\Service;
 
 use Spiral\Prototype\Annotation\Prototyped;
 
-/** @Prototyped(property="myService") */
+#[Prototyped(property: 'myService')]
 class MyService
 {
 
@@ -191,36 +192,36 @@ Make sure to run `php app.php update` or `php app.php prototype:dump` to auto-lo
 
 There are number of component shortcuts available for your usage:
 
-| Property     | Component                                                |
-|--------------|----------------------------------------------------------|
-| app          | App\App (or class which implements `Spiral\Boot\Kernel`) |
-| classLocator | Spiral\Tokenizer\ClassesInterface                        |
-| console      | Spiral\Console\Console                                   |
-| container    | Psr\Container\ContainerInterface                         |
-| db           | Cycle\Database\DatabaseInterface                         |
-| dbal         | Cycle\Database\DatabaseProviderInterface                 |
-| encrypter    | Spiral\Encrypter\EncrypterInterface                      |
-| env          | Spiral\Boot\EnvironmentInterface                         |
-| files        | Spiral\Files\FilesInterface                              |
-| guard        | Spiral\Security\GuardInterface                           |
-| http         | Spiral\Http\Http                                         |
-| i18n         | Spiral\Translator\TranslatorInterface                    |
-| input        | Spiral\Http\Request\InputManager                         |
-| session      | Spiral\Session\SessionScope                              |
-| cookies      | Spiral\Cookies\CookieManager                             |
-| logger       | Psr\Log\LoggerInterface                                  |
-| logs         | Spiral\Logger\LogsInterface                              |
-| memory       | Spiral\Boot\MemoryInterface                              |
-| orm          | Cycle\ORM\ORMInterface                                   |
-| paginators   | Spiral\Pagination\PaginationProviderInterface            |
-| queue        | Spiral\Jobs\QueueInterface                               |
-| request      | Spiral\Http\Request\InputManager                         |
-| response     | Spiral\Http\ResponseWrapper                              |
-| router       | Spiral\Router\RouterInterface                            |
-| server       | Spiral\Goridge\RPC                                       |
-| snapshots    | Spiral\Snapshots\SnapshotterInterface                    |
-| storage      | Spiral\Storage\StorageInterface                          |
-| validator    | Spiral\Validation\ValidationInterface                    |
-| views        | Spiral\Views\ViewsInterface                              |
-| auth         | Spiral\Auth\AuthScope                                    |
-| authTokens   | Spiral\Auth\TokenStorageInterface                        |
+| Property     | Component                                                                                    |
+|--------------|----------------------------------------------------------------------------------------------|
+| app          | App\App (or class which implements `Spiral\Boot\Kernel`)                                     |
+| classLocator | Spiral\Tokenizer\ClassesInterface                                                            |
+| console      | Spiral\Console\Console                                                                       |
+| container    | Psr\Container\ContainerInterface                                                             |
+| db           | Cycle\Database\DatabaseInterface (`spiral/cycle-bridge` package should be installed)         |
+| dbal         | Cycle\Database\DatabaseProviderInterface (`spiral/cycle-bridge` package should be installed) |
+| encrypter    | Spiral\Encrypter\EncrypterInterface                                                          |
+| env          | Spiral\Boot\EnvironmentInterface                                                             |
+| files        | Spiral\Files\FilesInterface                                                                  |
+| guard        | Spiral\Security\GuardInterface                                                               |
+| http         | Spiral\Http\Http                                                                             |
+| i18n         | Spiral\Translator\TranslatorInterface                                                        |
+| input        | Spiral\Http\Request\InputManager                                                             |
+| session      | Spiral\Session\SessionScope                                                                  |
+| cookies      | Spiral\Cookies\CookieManager                                                                 |
+| logger       | Psr\Log\LoggerInterface                                                                      |
+| logs         | Spiral\Logger\LogsInterface                                                                  |
+| memory       | Spiral\Boot\MemoryInterface                                                                  |
+| orm          | Cycle\ORM\ORMInterface (If `spiral/cycle-bridge` package should be installed)                |
+| paginators   | Spiral\Pagination\PaginationProviderInterface                                                |
+| queue        | Spiral\Queue\QueueInterface                                                                  |
+| request      | Spiral\Http\Request\InputManager                                                             |
+| response     | Spiral\Http\ResponseWrapper                                                                  |
+| router       | Spiral\Router\RouterInterface                                                                |
+| server       | Spiral\Goridge\RPC (If `spiral/roadrunner-bridge` package should be installed)               |
+| snapshots    | Spiral\Snapshots\SnapshotterInterface                                                        |
+| storage      | Spiral\Storage\StorageInterface                                                              |
+| validator    | Spiral\Validation\ValidationInterface                                                        |
+| views        | Spiral\Views\ViewsInterface                                                                  |
+| auth         | Spiral\Auth\AuthScope                                                                        |
+| authTokens   | Spiral\Auth\TokenStorageInterface                                                            |

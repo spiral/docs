@@ -38,7 +38,7 @@ class HomeController
 DBAL component fully support [IoC injections](/framework/container.md) based on database name and their aliases:
 
 ```php
-public function index(Database $database, Database $primary, Database $slave)
+public function index(Database $database, Database $primary, Database $slave): void
 {
     //Database is an alias for "primary"
     dump($database === $primary);
@@ -61,7 +61,7 @@ class HomeController
 {
     use PrototypeTrait;
 
-    public function index()
+    public function index(): void
     {
         dump($this->dbal);
         dump($this->db); // default db
