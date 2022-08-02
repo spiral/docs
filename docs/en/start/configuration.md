@@ -12,7 +12,7 @@ settings by editing the file(s) in `app/config/`.
 use [DotEnv](../extension/dotenv.md) extension to read environment values from `.env` file located in the root of your
 project.
 
-```env
+```dotenv
 # Debug mode set to TRUE disables view caching and enables higher verbosity.
 DEBUG=true
 

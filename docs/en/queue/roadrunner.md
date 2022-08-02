@@ -3,7 +3,7 @@
 Roadrunner queues provide a unified queueing API across a variety of different queue backends. Full information about
 supported pipelines you can read on [official site](https://roadrunner.dev/docs/beep-beep-jobs).
 
-The `spiral/roadrunner-bridge` component is included by default in Web and GRPC builds.
+The `spiral/roadrunner-bridge` package is included by default in Web and GRPC builds.
 
 ## Installation
 
