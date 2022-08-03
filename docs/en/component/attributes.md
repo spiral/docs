@@ -354,7 +354,7 @@ class CustomMetadataClass
 ## Drivers
 
 The `Spiral\Attributes\Factory` encapsulates several implementations behind it and returns
-a [selective reader](#attributes-usage-drivers-selective-reader) implementation by default, which is suitable for most
+a [selective reader](#selective-reader) implementation by default, which is suitable for most
 cases. However, you can require a specific implementation if available on your platform and/or in your application.
 
 ```php
