@@ -4,8 +4,83 @@ Web and GRPC bundles include default integration with https://github.com/Seldaek
 
 ## Configuration
 
-The extension does not require any default configuration. Use `Spiral\Monolog\Bootloader\MonologBootloader` to
-declare handler and log-formatter for specific channel:
+The extension can configure using a configuration file or a bootloader. 
+
+The configuration file for this extension should be located at `app/config/monolog.php`. Within this file, you may
+configure the `globalLevel` and `handlers` parameters.
+
+For example, the configuration file might look like this:
+
+```php
+return [    
+    /**
+     * -------------------------------------------------------------------------
+     *  Global logging level
+     * ------------------------------------------------------------------------- 
+     * 
+     * Monolog supports the logging levels described by RFC 5424.
+     *
+     * @see https://github.com/Seldaek/monolog/blob/main/doc/01-usage.md#log-levels
+     */
+    'globalLevel' => Logger::toMonologLevel(env('MONOLOG_DEFAULT_LEVEL', Logger::DEBUG)),
+
+    /**
+     * -------------------------------------------------------------------------
+     *  Handlers
+     * ------------------------------------------------------------------------- 
+     * 
+     * @see https://github.com/Seldaek/monolog/blob/main/doc/02-handlers-formatters-processors.md#handlers
+     */
+    'handlers' => [
+        'default' => [
+            [
+                'class' => 'log.rotate',
+                'options' => [
+                    'filename' => directory('runtime') . 'logs/app.log',
+                    'level' => Logger::DEBUG,
+                ],
+            ],
+        ],
+        'stderr' => [
+            ErrorLogHandler::class,
+        ],
+        'stdout' => [
+            [
+                'class' => SyslogHandler::class,
+                'options' => [
+                    'ident' => 'app',
+                    'facility' => LOG_USER,
+                ],
+            ],
+        ],
+    ],
+
+    /**
+     * -------------------------------------------------------------------------
+     *  Processors
+     * ------------------------------------------------------------------------- 
+     * 
+     * Processors allows adding extra data for all records.
+     *
+     * @see https://github.com/Seldaek/monolog/blob/main/doc/02-handlers-formatters-processors.md#processors
+     */
+    'processors' => [
+        'default' => [
+            // ...
+        ],
+        'stdout' => [
+            [
+                'class' => PsrLogMessageProcessor::class,
+                'options' => [
+                    'dateFormat' => 'Y-m-d\TH:i:s.uP',
+                ],
+            ],
+        ],
+    ],
+];
+```
+
+Use `Spiral\Monolog\Bootloader\MonologBootloader` to declare handler and log-formatter for specific channel:
 
 ```php
 namespace App\Bootloader;
