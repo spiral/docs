@@ -47,7 +47,6 @@ return [
      * 
      * The MAILER_DSN isn't a real address: it's a convenient format that offloads most of the configuration work to mailer.
      * Supported formats are compatible with the symfony/mailer component. 
-     * 
      */
     'dsn' => env('MAILER_DSN'),
     
@@ -57,7 +56,6 @@ return [
      * -------------------------------------------------------------------------
      * 
      * Instead of calling ->from() on each Email you create, you can configure this value globally. 
-     * 
      */
     'from' => env('MAILER_FROM'),
     
@@ -68,7 +66,6 @@ return [
      * 
      * This section allows you to configure the `queue` and the `driver` for sending emails.
      * The `queueConnection` with the value `sync` allows you to send emails without using a queue.
-     * 
      */
     'queue' => env('MAILER_QUEUE'), // won't be used for sync queue
     'queueConnection' => env('MAILER_QUEUE_CONNECTION', 'sync'),
