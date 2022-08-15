@@ -13,10 +13,7 @@ Implement `Psr\Http\Server\MiddlewareInterface` to create your middleware:
 ```php
 class MyMiddleware implements MiddlewareInterface
 {
-    public function process(
-        ServerRequestInterface $request, 
-        RequestHandlerInterface $handler
-    ): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface 
     {
         return $handler->handle($request)->withAddedHeader('My-Header', 'my-value');
     }
@@ -33,15 +30,36 @@ use Spiral\Bootloader\Http\HttpBootloader;
 
 class MyMiddlewareBootloader extends Bootloader
 {
-    public function boot(HttpBootloader $http)
+    public function boot(HttpBootloader $http): void
     {
         // automatically resolved by Container
         $http->addMiddleware(MyMiddleware::class);
+        
+        // Autowire allows creating an object with dependency resolving from the container and passing some parameters manually
+        $http->addMiddleware(new Autowire(MyMiddleware::class, ['someParameter' => 'value']));
     }
 }
 ```
 
 Middleware object will be instantiated on demand.
+
+Or you can configure middlewares in the config file `app/config/http.php`:
+
+```php
+return [
+    // ...
+    'middleware' => [
+        // via fully qualified class name
+        MyMiddleware::class,
+        
+        // via Autowire 
+        new Autowire(MyMiddleware::class, ['someParameter' => 'value']),
+        
+        // or manual instantiating object
+        new MyMiddleware(),
+    ],
+];
+```
 
 > **Note**
 > Make sure to add this Bootloader before `RoutesBootloader` in your app.
