@@ -7,7 +7,7 @@ Web and GRPC bundles include default integration with https://github.com/Seldaek
 The extension can configure using a configuration file or a bootloader. 
 
 The configuration file for this extension should be located at `app/config/monolog.php`. Within this file, you may
-configure the `globalLevel` and `handlers` parameters.
+configure the `globalLevel`, `handlers` and `processors` parameters.
 
 For example, the configuration file might look like this:
 
