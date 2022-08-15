@@ -106,3 +106,18 @@ public function send(MailerInterface $mailer): void
     ));
 }
 ```
+
+### Sending messages with a delay
+
+The component allows sending messages with a delay. The delay time is set using the `setDelay` method:
+
+```php
+use Spiral\Mailer\Message;
+
+$message = new Message('test', 'email@domain.com');
+$message->setDelay(new \DateTimeImmutable('+ 60 minute'));
+// or
+$message->setDelay(new \DateInterval('PT60S'));
+// or
+$message->setDelay(100);
+```
