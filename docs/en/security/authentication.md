@@ -89,10 +89,71 @@ Activate `Spiral\Cycle\Bootloader\BridgeBootloader` for this purpose:
 
 You must generate and run database migration or run `cycle:sync` in order to create needed table:
 
-```php
-$ php app.php migrate:init
-$ php app.php cycle:migrate -v -r
+```bash
+php app.php migrate:init
+php app.php cycle:migrate -v -r
 ```
+
+### Middleware
+
+Register `Spiral\Auth\Middleware\AuthMiddleware` or `Spiral\Auth\Middleware\AuthTransportMiddleware`.
+The difference between these middlewares is that `AuthMiddleware` uses all available transports, such as `cookies` and 
+`header`, while `AuthTransportMiddleware` uses only one specified transport.
+
+The [application bundle](https://github.com/spiral/app) provides `App\Bootloader\RoutesBootloader`, with which you can 
+easily configure the middlewares. Add `AuthMiddleware` or `AuthTransportMiddleware` in method `globalMiddleware`.
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Auth\Middleware\AuthMiddleware;
+use Spiral\Auth\Middleware\AuthTransportMiddleware;
+use Spiral\Core\Container\Autowire;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    // ...
+    protected function globalMiddleware(): array
+    {
+        return [
+            AuthMiddleware::class,
+            
+            // Or AuthTransportMiddleware with specified transport
+            new Autowire(AuthTransportMiddleware::class, ['transportName' => 'cookie'])
+        ];
+    }
+    // ...
+}
+```
+
+Or, you can configure middlewares for route groups:
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Auth\Middleware\AuthTransportMiddleware;
+use Spiral\Core\Container\Autowire;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    // ...
+    protected function middlewareGroups(): array
+    {
+        return [
+            'web' => [
+                new Autowire(AuthTransportMiddleware::class, ['transportName' => 'cookie'])
+            ],
+            'api' => [
+                new Autowire(AuthTransportMiddleware::class, ['transportName' => 'header'])
+            ],
+        ];
+    }
+    // ...
+}
+```
+
+> **Note**
+> Read more about [middlewares](../http/middleware.md).
 
 ## Actor Provider and Token Payload
 
