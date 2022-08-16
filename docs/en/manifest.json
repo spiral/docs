@@ -59,7 +59,8 @@
       "component/reactor": "Code Generation",
       "component/tokenizer": "Static Analysis Tools",
       "component/metrics": "Prometheus Metrics",
-      "component/data-grid": "Data Grids"
+      "component/data-grid": "Data Grids",
+      "component/sendit": "SendIt"
     }
   },
   {
