@@ -95,7 +95,7 @@ $attribute = $reader->firstClassMetadata($reflection, Entity::class);
 // returns Entity|null
 ```
 
-Since v2.9.0, supports read attributes from traits that are used in the class.
+Since v2.10.0, supports read attributes from traits that are used in the class.
 
 ```php
 #[Cycle\Entity]
