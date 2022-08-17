@@ -45,7 +45,7 @@ use Spiral\Core\CoreInterface;
 
 class CustomInterceptor implements CoreInterceptorInterface
 {
-    public function process(string $controller, string $action, array $parameters, CoreInterface $core)
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core): string
     {
         return 'intercepted: ' . $core->callAction($controller, $action, $parameters);
     }
@@ -159,7 +159,8 @@ Use this Bootloader to configure the application behavior globally via the set o
 
 ### Cycle Entity Resolution
 
-Use `Spiral\Domain\CycleInterceptor` to automatically resolve entity injections based on parameter values:
+The [Cycle Bridge](https://github.com/spiral/cycle-bridge/) package provides the `Spiral\Cycle\Interceptor\CycleInterceptor`.
+Use `CycleInterceptor` to automatically resolve entity injections based on parameter values:
 
 ```php
 $router->setRoute(
@@ -178,7 +179,7 @@ namespace App\Bootloader;
 
 use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
-use Spiral\Domain\CycleInterceptor;
+use Spiral\Cycle\Interceptor\CycleInterceptor;
 
 class AppBootloader extends DomainBootloader
 {
@@ -235,61 +236,6 @@ class HomeController
     {
         dump($user);
     }
-}
-```
-
-### Filter Validation
-
-You can automatically pre-validate `Spiral\Filter\FilterInterface` using `Spiral\Domain\FilterInterceptor`, the error
-will be returned in JSON form (extend `FilterInterceptor` to customize it).
-
-```php
-namespace App\Request;
-
-use Spiral\Filters\Filter;
-
-class LoginRequest extends Filter
-{
-    public const SCHEMA = [
-        'username' => 'query:username',
-        'password' => 'query:password'
-    ];
-
-    public const VALIDATES = [
-        'username' => ['notEmpty'],
-        'password' => ['notEmpty']
-    ];
-}
-```
-
-Now, the `LoginRequest` object passed to controller method will always be valid:
-
-```php
-namespace App\Controller;
-
-use App\Request\LoginRequest;
-
-class HomeController
-{
-    public function index(LoginRequest $request)
-    {
-        dump($request);
-    }
-}
-```
-
-> **Note**
-> Use `/home/index?username=n&password=p` to pass the validation.
-
-In case of the error, the following `application/json` payload will be sent to the client:
-
-```json
-{
-  "status": 400,
-  "errors": {
-    "username": "This value is required.",
-    "password": "This value is required."
-  }
 }
 ```
 
@@ -363,7 +309,6 @@ public function other(): string
 > **Note**
 > Allowed values: `notFound` (404), `forbidden` (401), `error` (500), `badAction` (400).
 
-
 Use the attribute `Spiral\Domain\Annotation\GuardNamespace` to specify controller RBAC namespace and remove the prefix
 from every action. You can also skip the permission definition in `Guarded` when a namespace is specified (security component 
 will use `namespace.methodName` as permission name).
@@ -418,7 +363,7 @@ namespace App\Bootloader;
 use App\Security\SampleRule;
 use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
-use Spiral\Domain\CycleInterceptor;
+use Spiral\Cycle\Interceptor\CycleInterceptor;
 use Spiral\Domain\GuardInterceptor;
 use Spiral\Security\Actor\Guest;
 use Spiral\Security\PermissionsInterface;
@@ -605,6 +550,7 @@ use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
 use Spiral\DataGrid\Interceptor\GridInterceptor;
 use Spiral\Domain;
+use Spiral\Cycle\Interceptor\CycleInterceptor;
 
 class AppBootloader extends DomainBootloader
 {
@@ -613,7 +559,7 @@ class AppBootloader extends DomainBootloader
     ];
 
     protected const INTERCEPTORS = [
-        Domain\CycleInterceptor::class,
+        CycleInterceptor::class,
         Domain\PipelineInterceptor::class, //all annotated interceptors go here
         Domain\GuardInterceptor::class,
         Domain\FilterInterceptor::class,
@@ -634,7 +580,7 @@ class AppBootloader extends DomainBootloader
 
 Using the prev bootloader we will get the next interceptors list:
 
-- Domain\CycleInterceptor
+- Spiral\Cycle\Interceptor\CycleInterceptor
 - OtherInterceptor
 
 > **Note**
@@ -646,16 +592,16 @@ For example, it can be helpful when an endpoint should not apply any interceptor
 currently:
 
 ```php
-    #[Route(route: '/show/<user:int>/email/<email:int>', name: 'emails')]
-    #[Pipeline(pipeline: [CycleInterceptor::class, GuardInterceptor::class], skipNext: true)]
-    public function email(User $user, Email $email, EmailFilter $filter): string
-    {
-        $filter->setContext(compact('user', 'email'));
-        if (!$filter->isValid()) {
-            throw new ForbiddenException('Email doesn\'t belong to a user.');
-        }
-        //...
+#[Route(route: '/show/<user:int>/email/<email:int>', name: 'emails')]
+#[Pipeline(pipeline: [CycleInterceptor::class, GuardInterceptor::class], skipNext: true)]
+public function email(User $user, Email $email, EmailFilter $filter): string
+{
+    $filter->setContext(compact('user', 'email'));
+    if (!$filter->isValid()) {
+        throw new ForbiddenException('Email doesn\'t belong to a user.');
     }
+    //...
+}
  ```
 
 > **Note**
@@ -673,6 +619,7 @@ use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
 use Spiral\DataGrid\Interceptor\GridInterceptor;
 use Spiral\Domain;
+use Spiral\Cycle\Interceptor\CycleInterceptor;
 
 class AppBootloader extends DomainBootloader
 {
@@ -681,7 +628,7 @@ class AppBootloader extends DomainBootloader
     ];
 
     protected const INTERCEPTORS = [
-        Domain\CycleInterceptor::class,
+        CycleInterceptor::class,
         Domain\GuardInterceptor::class,
         Domain\FilterInterceptor::class,
         GridInterceptor::class,
