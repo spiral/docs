@@ -3,6 +3,7 @@
 The framework includes a set of interfaces and components intended to simplify dependency injection and object
 construction in your application.
 
+> **Note**
 > Container implementation is fully compatible with [PSR-11 Container](https://github.com/php-fig/container).
 
 ## PSR-11 Container
@@ -14,9 +15,9 @@ use Psr\Container\ContainerInterface;
 
 class HomeController
 {
-    public function index(ContainerInterface $container)
+    public function index(ContainerInterface $container): void
     {
-        \dump($container->get(App\App::class));
+        dump($container->get(App\App::class));
     }
 }
 ```
@@ -28,14 +29,14 @@ Spiral support both method and constructor injections for your classes:
 ```php
 class UserMailer
 {
-    protected $mailer = null;
+    protected Mailer $mailer;
 
     public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
     }
     
-    public function do()
+    public function do(): void
     {
         $this->mailer->sendMail(...);
     }
@@ -44,6 +45,7 @@ class UserMailer
 
 The `Mailer` dependency will be automatically delivered by the container (auto-wiring).
 
+> **Note**
 > Note, your controllers, commands, and jobs support method injection.
 
 ## Configuring Container
@@ -56,7 +58,10 @@ We can either use `Spiral\Core\BinderInterface` or `Spiral\Core\Container` to co
 To bind interface to concrete implementation:
 
 ```php
-public function boot(Container $container)
+use Spiral\Core\Container;
+
+//...
+public function boot(Container $container): void
 {
     $container->bind(MyInterface::class, MyImplementation::class);
 }
@@ -65,7 +70,10 @@ public function boot(Container $container)
 To bind singleton:
 
 ```php
-public function boot(Container $container)
+use Spiral\Core\Container;
+
+//...
+public function boot(Container $container): void
 {
     $container->bindSingleton(MyImplementation::class, MyImplementation::class);
 }
@@ -74,7 +82,10 @@ public function boot(Container $container)
 To bind with specific parameters:
 
 ```php
-public function boot(Container $container)
+use Spiral\Core\Container;
+
+//...
+public function boot(Container $container): void
 {
     $container->bindSingleton(MyImplementation::class, bind(MyImplementation::class, [
         'param' => 'value'
@@ -82,12 +93,16 @@ public function boot(Container $container)
 }
 ```
 
+> **Note**
 > Read about [Config Objects](/framework/config.md) to see how to manage config dependencies.
 
 You can also use `closure` to configure your class automatically:
 
 ```php
-public function boot(Container $container)
+use Spiral\Core\Container;
+
+//...
+public function boot(Container $container): void
 {
     $container->bindSingleton(MyImplementation::class, function() {
         return new MyImplementation('some-value');
@@ -98,7 +113,10 @@ public function boot(Container $container)
 Closures also support dependencies:
 
 ```php
-public function boot(Container $container)
+use Spiral\Core\Container;
+
+//...
+public function boot(Container $container): void
 {
     $container->bindSingleton(MyImplementation::class, function(SomeClass $class) {
         return new MyImplementation($class);
@@ -127,7 +145,7 @@ use Spiral\Core\Container\SingletonInterface;
 
 class MyService implements SingletonInterface
 {
-    public function method()
+    public function method(): void
     {
         //...
     }
@@ -139,7 +157,7 @@ Now, the container will automatically treat this class as a singleton in your ap
 ```php
 protected function index(MyService $service)
 {
-    \dump($this->container->get(MyService::class) === $service);
+    dump($this->container->get(MyService::class) === $service);
 }
 ```
 
@@ -149,7 +167,7 @@ In some cases, you might want to construct a desired class without resolving all
 You can use `Spiral\Core\FactoryInterface` for that purpose:
 
 ```php
-public function makeClass(FactoryInterface $factory)
+public function makeClass(FactoryInterface $factory): MyClass
 {
     return $factory->make(MyClass::class, [
         'parameter' => 'value'
@@ -165,15 +183,14 @@ If you want to resolve method arguments to dynamic target (i.e., controller meth
 ```php
 abstract class Handler
 {
-    /** @var ResolverInterface */
-    protected $resolver;
+    protected ResolverInterface $resolver;
 
     public function __construct(ResolverInterface $resolver)
     {
         $this->resolver = $resolver;
     }
 
-    public function run(array $params)
+    public function run(array $params): bool
     {
         $method = new \ReflectionMethod($this, 'do'); // the method to invoke with method injection
         $method->setAccessible(true);
@@ -191,10 +208,61 @@ Method `do` now can request method injection:
 ```php
 class MyHandler extends Handler
 {
-    public function do(SomeClass $some)
+    public function do(SomeClass $some): bool
     {
-        // ...    
+        // ...
     }
+}
+```
+
+## InvokerInterface
+
+In some cases, you might want to invoke a desired method with auto wiring all of it's dependencies.
+You can use `Spiral\Core\InvokerInterface` for that purpose:
+
+### Invoke object's instance method
+
+```php
+public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
+{
+    return $invoker->invoke([$instance, 'handle'], [
+        'parameter' => 'value'
+        // other dependencies will be resolved automatically
+    ]); 
+}
+```
+
+if you pass as first callable array value a string `['foo', 'bar']`, so it will be requested from the container.
+
+```php
+$container->bind('some-job', SomeJob::class);
+
+// ...
+public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
+{
+    return $invoker->invoke(['some-job', 'handle'], [ // some-job will be requested from the container
+        'parameter' => 'value'
+        // other dependencies will be resolved automatically
+    ]); 
+}
+```
+
+> **Note**
+> Invokable method can have as `public` as `protected` and `privite` visibility.
+
+### Invoke callable
+
+In some cases, you might want to invoke a desired closure with auto wiring all of it's dependencies.
+
+```php
+public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
+{
+    return $invoker->invoke(function (MyClass $class, string $parameter) {
+        return new MyClassService($class);
+    }, [
+        'parameter' => 'value'
+        // other dependencies will be resolved automatically
+    ]); 
 }
 ```
 
@@ -212,8 +280,10 @@ of concrete classes.
 ```php
 class MyController
 {
-    public function __construct(OtherClass $class, SomeInterface $some)
-    {
+    public function __construct(
+        OtherClass $class, 
+        SomeInterface $some
+    ) {
     }
 }
 ```
@@ -248,21 +318,21 @@ In addition to regular method injections, the container can resolve the injectio
 technique provides us the ability to request multiple databases using the following statement:
 
 ```php
-protected function index(Database $primary, Database $secondary)
+protected function index(Database $primary, Database $secondary): void
 {
-    \dump($primary);
-    \dump($secondary);
+    dump($primary);
+    dump($secondary);
 }
 ```
 
+> **Note**
 > Where `primary` and `secondary` are database names.
 
-Implement `Spiral\Core\Container\InjectorInterface` to create injection factory:
-
-Now we have to define class responsible for such injections:
+Implement `Spiral\Core\Container\InjectorInterface` to create injection factory and define class responsible for such
+injections:
 
 ```php
-class Injector implements InjectorInterface
+class MyClassInjector implements InjectorInterface
 {
     public function createInjection(\ReflectionClass $class, string $context = null)
     {
@@ -271,14 +341,15 @@ class Injector implements InjectorInterface
 }
 ```
 
-Where MyClass is:
+Where `MyClass` is:
 
 ```php
 class MyClass 
 {
+    public string $name;
     public function __construct(string $name)
     {
-        //...
+        $this->name = $name;
     }
 }
 ```
@@ -286,23 +357,23 @@ class MyClass
 Make sure to register inject in the container:
 
 ```php
-$container->bindInjector(MyClass::class, Injector::class);
+$container->bindInjector(MyClass::class, MyClassInjector::class);
 ```
 
 As a result we can request instance of `MyClass` using method arguments:
 
 ```php
-public function method(MyClass $john, MyClass $bob)
+public function method(MyClass $john, MyClass $bob): void
 {
-    \dump($john);
-    \dump($bob);
+    dump($john); // $john->name === 'john'
+    dump($bob);  // $bob->name === 'bob'
 }
 ```
 
 You can always bypass contextual injection in `Spiral\Core\FactoryInterface`:
 
 ```php
-\dump($factory->make(MyClass::class, ['name' => 'abc']));
+dump($factory->make(MyClass::class, ['name' => 'abc']));
 ```
 
 ## Singletons
@@ -342,6 +413,7 @@ class Service implements SingletonInterface
 }
 ``` 
 
+> **Note**
 > You can implement a singleton interface in services, controllers, middleware, etc. Do not implement it in Repositories
 > and mappers as these classes state are managed by ORM.
 
@@ -354,9 +426,9 @@ contain any user data.
 You can not:
 
 - store user information in your singleton
-- store reference to PSR-7 request (use `InputManager` instead)
-- store reference to session (use `SessionScope` instead)
-- store RBAC actor (use `GuardScope` instead)
+- store reference to PSR-7 request (use `Spiral\Http\Request\InputManager` instead)
+- store reference to session (use `Spiral\Session\SessionScope` instead)
+- store RBAC actor (use `Spiral\Security\GuardScope` instead)
 
 ### Pre-Heating
 
@@ -366,7 +438,7 @@ relies on heavy XML as configuration source:
 ```php
 class Service implements SingletonService 
 {
-    private $configCache;
+    private ?array $configCache = null;
 
     public function getConfig(): array
     {

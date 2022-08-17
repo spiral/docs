@@ -7,8 +7,8 @@ it.
 ```php
 abstract class Model
 {
-    public $id;
-    public $context;
+    public int $id;
+    public string $context;
 }
 ```
 
@@ -23,14 +23,14 @@ use Spiral\Core\Container;
 
 class ModelBootloader extends Bootloader implements Container\InjectorInterface, Container\SingletonInterface
 {
-    private $id = 0;
+    private int $id = 0;
 
-    public function boot(Container $container)
+    public function boot(Container $container): void
     {
         $container->bindInjector(Model::class, self::class);
     }
 
-    public function createInjection(\ReflectionClass $class, string $context = null)
+    public function createInjection(\ReflectionClass $class, string $context = null): Model
     {
         $model = $class->newInstance();
         $model->context = $context;
@@ -41,6 +41,7 @@ class ModelBootloader extends Bootloader implements Container\InjectorInterface,
 }
 ```
 
+> **Note**
 > Do not forget to activate the bootloader.
 
 Multiple children are allowed:
@@ -85,4 +86,5 @@ class HomeController
 }
 ```
 
+> **Note**
 > You can call `make` and `get` methods inside the injectors... but instead use the force. 

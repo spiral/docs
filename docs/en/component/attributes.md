@@ -26,6 +26,7 @@ composer require spiral/attributes
 
 ### Framework Integration
 
+> **Note**
 > Please note that the spiral/framework >= 2.8 already includes this component.
 
 To enable the component, you just need to add the `Spiral\Bootloader\AttributesBootloader` class to the bootloader
@@ -92,6 +93,26 @@ $reflection = new ReflectionClass(User::class);
 
 $attribute = $reader->firstClassMetadata($reflection, Entity::class); 
 // returns Entity|null
+```
+
+Since v2.10.0, supports read attributes from traits that are used in the class.
+
+```php
+#[Cycle\Entity]
+class Entity {
+    use TsTrait;
+}
+
+#[Behavior\CreatedAt]
+#[Behavior\UpdatedAt]
+trait TsTrait
+{
+    #[Cycle\Column(type: 'datetime')]
+    private DateTimeImmutable $createdAt;
+
+    #[Cycle\Column(type: 'datetime', nullable: true)]
+    private ?DateTimeImmutable $updatedAt = null;
+}
 ```
 
 ### Property Metadata
@@ -221,10 +242,9 @@ $getter = $reader->firstConstantMetadata($reflection, PreCondition::class);
 
 ## Create Annotations
 
+> **Note**
 > For details on using doctrine annotations, please see
->
-the [doctrine documentation](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html#create-an-annotation-class)
-.
+> the [doctrine documentation](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html#create-an-annotation-class).
 
 You should use "hybrid" syntax to create metadata classes that will work on any version of PHP.
 
@@ -277,9 +297,7 @@ In this case, the annotation class itself might look like this:
 
 In this case, when declaring a metadata class, the attribute/annotation properties will be filled.
 
-> See
->
-also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
+> See also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
 
 ```php
 /** @Annotation */
@@ -295,9 +313,7 @@ class CustomMetadataClass
 In the case of a constructor declaration, all data when using the metadata class will be passed to this constructor as
 an array.
 
-> See
->
-also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
+> See also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
 
 ```php
 /** @Annotation */
@@ -314,9 +330,8 @@ class CustomMetadataClass
 #### Named Arguments (Interface Marker)
 
 If you want to use named constructor parameters (see
-also [https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments))
-,
-then you have to add an interface `Spiral\Attributes\NamedArgumentConstructorAttribute` to the metadata class that will
+also [https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments)), 
+then you have to add an interface `Spiral\Attributes\NamedArgumentConstructorAttribute` to the metadata class that will 
 mark the required metadata class as one that takes named arguments.
 
 ```php
@@ -359,9 +374,8 @@ class CustomMetadataClass
 ## Drivers
 
 The `Spiral\Attributes\Factory` encapsulates several implementations behind it and returns
-a [selective reader](#attributes-usage-drivers-selective-reader)
-implementation by default, which is suitable for most cases. However, you can require a specific implementation if
-available on your platform and/or in your application.
+a [selective reader](#selective-reader) implementation by default, which is suitable for most
+cases. However, you can require a specific implementation if available on your platform and/or in your application.
 
 ```php
 use Spiral\Attributes\Factory;
@@ -371,6 +385,7 @@ $reader = (new Factory())->create();
 
 ### Annotation Reader
 
+> **Note**
 > Please note that in order for this reader to be available in the application, you need to require
 > "doctrine/annotations" component.
 
@@ -424,6 +439,7 @@ $attributes = $reader->getClassMetadata(new ReflectionClass(ClassWithAttributes:
 // returns iterable<ExampleAttribute>
 ```
 
+> **Note**
 > When using both annotations and attributes in the same place, the behavior of this reader is non-deterministic.
 
 ### Merge Reader
@@ -447,11 +463,11 @@ $metadata = $reader->getClassMetadata(new ReflectionClass(ExampleClass::class));
 
 ## Cache
 
-Some implementations can slow things down to some extent because they read the metadata from scratch. This is especially 
+Some implementations can slow things down to some extent because they read the metadata from scratch. This is especially
 true when there is a lot of such data.
 
 To optimize and speed up the work of readers, it is recommended to use the cache. The attribute package supports the
-[PSR-6](https://www.php-fig.org/psr/psr-6/) and [PSR-16](https://www.php-fig.org/psr/psr-16/) specifications. To create 
+[PSR-6](https://www.php-fig.org/psr/psr-6/) and [PSR-16](https://www.php-fig.org/psr/psr-16/) specifications. To create
 them, you need to use the corresponding classes.
 
 ```php

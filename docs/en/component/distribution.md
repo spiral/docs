@@ -17,6 +17,7 @@ composer require spiral/distribution
 
 ### Framework Integration
 
+> **Note**
 > Please note that the spiral/framework >= 2.8 already includes this component.
 
 To enable the component, you just need to add the `Spiral\Bootloader\Distribution\DistributionBootloader` class to the 
@@ -50,7 +51,7 @@ return [
      *
      */
 
-    'default' => 'local',
+    'default' => env('DISTRIBUTION_RESOLVER', 'local'),
 
     /**
      * -------------------------------------------------------------------------
@@ -88,7 +89,8 @@ return [
 ];
 ```
 
-> Please note that this configuration is only available when used with a Spiral Framework.
+> **Note**
+> Configuration above is only available when used with a Spiral Framework.
 
 ### Manual Configuration (Outside The Framework)
 
@@ -124,7 +126,7 @@ $manager->add('local', new StaticResolver(new Uri('https://static.example.com'))
 
 Once you've configured your component, you can start using it.
 
-In the case that you are using a Spiral Framework, then manager is already configured. You can get it from 
+In the case that you are using the Spiral Framework, then manager is already configured. You can get it from 
 [the container](/framework/container.md) or via [dependency injection](/framework/container.md#dependency-injection).
 
 ```php
@@ -172,7 +174,8 @@ $uri = $resolver->resolve('path/to/file.txt');
 //
 ```
 
-> Note that some resolvers support additional options when getting a link, 
+> **Note**
+> Some resolvers support additional options when getting a link, 
 > for example: `$cloudfront->resolve('path/to/file.txt', expiration: new \DateInterval('PT60S'));`
 
 ### Static URI Resolver
@@ -229,9 +232,10 @@ install the `aws/aws-sdk-php` package using the Composer.
 composer require aws/aws-sdk-php ^3.0
 ```
 
-After registering and creating your statics server in the AWS services, [you will receive](https://console.aws.amazon.com/cloudfront/home) the
-parameters for setting. In addition, you will need a "private key file" and "access key id", which you can find on the "CloudFront key pairs" tab on
-"[Security Credentials](https://console.aws.amazon.com/iam/home#/security_credentials)" page.
+After registering and creating your statics server in the AWS 
+services, [you will receive](https://console.aws.amazon.com/cloudfront/home) the parameters for setting. In addition, 
+you will need a "private key file" and "access key id", which you can find on the "CloudFront key pairs" tab 
+on "[Security Credentials](https://console.aws.amazon.com/iam/home#/security_credentials)" page.
 
 To configure this resolver, simply specify the connection parameters in the configuration sections:
 

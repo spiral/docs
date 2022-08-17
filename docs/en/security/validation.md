@@ -6,6 +6,7 @@ construct complex validation chains.
 The component contains Checkers, Conditions, and Validation object. The Web and GRPC bundle of spiral includes
 this component by default.
 
+> **Note**
 > Check [Filter/Request Object](/filters/configuration.md) for deep structural validations.
 
 ## Installation and Configuration
@@ -16,7 +17,8 @@ To install the component:
 composer require spiral/validation
 ```
 
-> Please note that the spiral/framework >= 2.6 already includes this component.
+> **Note**
+> The spiral/framework >= 2.6 already includes this component.
 
 To install in spiral use bootloader `Spiral\Bootloader\Security\ValidationBootloader`.
 
@@ -100,14 +102,15 @@ Use the component via provider factory:
 ```php
 namespace App\Controller;
 
-use Spiral\Validation;
+use Spiral\Validation\ValidationInterface;
+use Spiral\Validation\ValidatorInterface;
 
 class HomeController
 {
-    public function index(Validation\ValidationInterface $validation)
+    public function index(ValidationInterface $validation): void
     {
         $validator = $validation->validate(
-        // data
+            // data
             [
                 'key' => null
             ],
@@ -119,7 +122,7 @@ class HomeController
             ]
         );
 
-        dump($validator instanceof Validation\Validator);
+        dump($validator instanceof ValidatorInterface);
 
         dump($validator->isValid());
         dump($validator->withData(['key' => 'value'])->isValid());
@@ -127,6 +130,7 @@ class HomeController
 }
 ```
 
+> **Note**
 > You can use the `validator` prototype property.
 
 ## The ValidatorInterface
@@ -149,7 +153,7 @@ interface ValidatorInterface
 The proper flow is valid:
 
 ```php
-public function index(Validation\ValidationInterface $validation)
+public function index(Validation\ValidationInterface $validation): void
 {
     $validator = $validation->validate(
         ['key' => null],
@@ -164,7 +168,7 @@ public function index(Validation\ValidationInterface $validation)
 
 ### Validated Data
 
-A validator can accept any array data source, but internally it will be converted into array form (unless ArrayAccess).
+A validator can accept any array data source, but internally it will be converted into array form (unless `ArrayAccess`).
 
 ### Error Format
 
@@ -177,7 +181,8 @@ The validation component will always return one error and first fired error per 
 ]
 ```
 
-> Error messages can be localized using a `spiral/translator`.
+> **Note**
+> Error messages can be localized using a `spiral/translator` component.
 
 ## Validation DSL
 
@@ -234,18 +239,68 @@ $validator = $validation->validate(
 );
 ```
 
+> **Note**
 > You can omit the `[]` if the rule does not need any parameters.
 
 ### Checker Rules
 
-You can split your rule name using `::` prefix, where first part is checker name and second is method name, for example:
+You can split your rule name using `::` prefix, where first part is checker name and second is method name:
+
+Let's get `Spiral\Validation\Checker\FileChecker` checker, for example:
+
+```php
+final class FileChecker extends AbstractChecker
+{
+    // ...
+    public function exists(mixed $file): bool // -> file::exists rule
+    {
+        return // check if the given file exists;
+    }
+    
+    public function uploaded(mixed $file): bool // -> file::uploaded rule
+    {
+        return // check if the given file uploaded;
+    }
+    
+    public function size(mixed $file, int $size): bool // -> file::size rule
+    {
+        return // check the given file size;
+    }
+}
+```
+
+Register it in `app/config/validation.php` config file:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Spiral\Validation;
+
+return [
+    'checkers' => [
+        'file' => Validation\Checker\FileChecker::class,
+    ],
+
+    // Register aliases if you need to simplify developer life.
+    'aliases' => [
+        'file' => 'file::exists',
+        'uploaded' => 'file::uploaded',
+        'filesize' => 'file::size',
+    ]
+];
+```
+
+And use validation rules to validate a file:
 
 ```php
 $validator = $validation->validate(
     ['file' => null],
     [
         'file' => [
-            'file::uploaded'
+            'file::uploaded', // you can use alias 'uploaded'
+            ['file::size', 1024] // FileChecker::size($file, 1024)
         ]
     ]
 );
@@ -297,6 +352,7 @@ $validator = $validation->validate(
 );
 ```
 
+> **Note**
 > You can assign custom error messages to any rule.
 
 ### Conditions
@@ -307,11 +363,11 @@ purpose:
 ```php
 $validator = $validation->validate(
     [
-        'password'        => '',
+        'password' => '',
         'confirmPassword' => ''
     ],
     [
-        'password'        => [
+        'password' => [
             ['notEmpty']
         ],
         'confirmPassword' => [
@@ -321,6 +377,7 @@ $validator = $validation->validate(
 );
 ```
 
+> **Note**
 > In the example, the required error on `confirmPassword` will show if `password` is not empty.
 
 You can use multiple conditions or combine them with complex rules:
@@ -383,12 +440,14 @@ Following conditions available for the usage:
 | noneOf     | *array* | When none of nested conditions is met.        |
 | anyOf      | *array* | When any of nested conditions is met.         |
 
+> **Note**
 > You can create your conditions using `Spiral\Validation\ConditionInterface`.
 
 ## Validation Rules
 
 The following validation rules are available.
 
+> **Note**
 > You can create your own validation rules using `Spiral\Validation\AbstractChecker`
 > or `Spiral\Validation\CheckerInterface`.
 
@@ -439,6 +498,7 @@ The most used rule-set is available thought the set of shortcuts:
 | notNull  | ---                    | Value should not be null.                     |
 | boolean  | ---                    | Value has to be boolean or integer[0,1].      |
 
+> **Note**
 > All of the rules of this checker are available without prefix.
 
 ### Required
@@ -470,6 +530,7 @@ class MyRequest extends \Spiral\Filters\Filter
 | cardNumber | ---                                   | Check credit card passed by Luhn algorithm.      |
 | match      | field:*string*, strict:*bool* - false | Check if value matches value from another field. |
 
+> **Note**
 > All of the rules of this checker are available without prefix.
 
 ### Address
@@ -482,6 +543,7 @@ class MyRequest extends \Spiral\Filters\Filter
 | url   | schemas:*?array* - null, defaultSchema:*?string* - null | Check if URL is valid.   |
 | uri   | ---                                                     | Check if URI is valid.   |
 
+> **Note**
 > `email` and `url` rules are available without `address` prefix via aliases, for `uri` use `address::uri`.
 
 ### Number
@@ -526,13 +588,12 @@ class MyRequest extends \Spiral\Filters\Filter
 
 File checker fully supports the filename provided in a string form or using `UploadedFileInterface` (PSR-7).
 
-| Rule      | Parameters                                                                       | Description                                         |
-|-----------|----------------------------------------------------------------------------------|-----------------------------------------------------|
-| exists    | ---                                                                              | Check if file exist.                                |
-| uploaded  | ---                                                                              | Check if file was uploaded.                         |
-| size      | size:*int*                                                                       | Check if file size less that specified value in KB. |
-| extension | extensions:*                                                                     |                                                     |
-| array*    | Check if file extension in whitelist. Client name of uploaded file will be used! |                                                     |
+| Rule      | Parameters            | Description                                                                      |
+|-----------|-----------------------|----------------------------------------------------------------------------------|
+| exists    | ---                   | Check if file exist.                                                             |
+| uploaded  | ---                   | Check if file was uploaded.                                                      |
+| size      | size:*int*            | Check if file size less that specified value in KB.                              |
+| extension | extensions:*array*    | Check if file extension in whitelist. Client name of uploaded file will be used! |                                                     |
 
 ### Image Checker
 
@@ -540,14 +601,12 @@ File checker fully supports the filename provided in a string form or using `Upl
 
 The image checker extends the file checker and fully supports its features.
 
-| Rule    | Parameters                                                                   | Description                                                                          |
-|---------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| type    | types:*array*                                                                | Check if the image is within a list of allowed image types.                          |
-| valid   | ---                                                                          | Shortcut to check if the image has an allowed type (JPEG, PNG, and GIF are allowed). |
-| smaller | width:*int*, height:*                                                        |                                                                                      |
-| int*    | Check if image is smaller than a specified shape (height check if optional). |                                                                                      |
-| bigger  | width:*int*, height:*                                                        |                                                                                      |
-| int*    | Check if image is bigger than a specified shape (height check is optional).  |                                                                                      |
+| Rule    | Parameters                    | Description                                                                          |
+|---------|-------------------------------|--------------------------------------------------------------------------------------|
+| type    | types:*array*                 | Check if the image is within a list of allowed image types.                          |
+| valid   | ---                           | Shortcut to check if the image has an allowed type (JPEG, PNG, and GIF are allowed). |
+| smaller | width:*int*, height:*int*     | Check if image is smaller than a specified shape (height check if optional).         |
+| bigger  | width:*int*, height:*int*     | Check if image is bigger than a specified shape (height check is optional).          |       
 
 ### Datetime
 
@@ -555,18 +614,17 @@ The image checker extends the file checker and fully supports its features.
 
 This checker can apply `now` value in the constructor
 
-| Rule          | Parameters                                                         | Description                                                            |
-|---------------|--------------------------------------------------------------------|------------------------------------------------------------------------|
-| future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false           | Value has to be a date in the future.                                  |
-| past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false           | Value has to be a date in the past.                                    |
-| format        | format:*string*                                                    | Value should match the specified date format                           |
-| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:* |                                                                        |
-| bool* - false | Value should come before a given threshold.                        |                                                                        |
-| after         | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:* |                                                                        |
-| bool* - false | Value should come after a given threshold.                         |                                                                        |
-| valid         | ---                                                                | Value has to be valid datetime definition including numeric timestamp. |
-| timezone      | ---                                                                | Value has to be valid timezone.                                        |
+| Rule          | Parameters                                                                      | Description                                                            |
+|---------------|---------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | Value has to be a date in the future.                                  |
+| past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | Value has to be a date in the past.                                    |
+| format        | format:*string*                                                                 | Value should match the specified date format                           |
+| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come before a given threshold.                            |
+| after         | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come after a given threshold.                             |
+| valid         | ---                                                                             | Value has to be valid datetime definition including numeric timestamp. |
+| timezone      | ---                                                                             | Value has to be valid timezone.                                        |
 
+> **Note**
 > Setting `useMicroSeconds` into true allows to check datetime with microseconds.<br/>
 > Be careful, two `new \DateTime('now')` objects will 99% have different microseconds values so they will never be
 > equal.
@@ -577,16 +635,14 @@ This checker can apply `now` value in the constructor
 
 Cycle ORM specific checker.
 
-| Rule          | Parameters                                                                                                                                                                                                   | Description |
-|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| exists        | class:*string*, field:*string* - null, ignoreCase:*                                                                                                                                                          |             |
-| bool* - false | If an entity is presented in the db by a given PK or a custom field. `class` is an entity class name. `ignoreCase` option is only available since v2.9.                                                      |             |
-| unique        | class:*string*, field:*string*, withFields:*string[]*, ignoreCase:*                                                                                                                                          |             |
-| bool* - false | Value has to be unique. `withFields` represents an array of fields to be fetched from the validator input so all of them will be used in the unique check. `ignoreCase` option is only available since v2.9. |             |
+| Rule          | Parameters                                                                       | Description                                                                                                                                                                                                  |
+|---------------|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| exists        | class:*string*, field:*string* - null, ignoreCase:*bool* - false                 | If an entity is presented in the db by a given PK or a custom field. `class` is an entity class name. `ignoreCase` option is only available since v2.9.                                                      |
+| unique        | class:*string*, field:*string*, withFields:*string[]*, ignoreCase:*bool* - false | Value has to be unique. `withFields` represents an array of fields to be fetched from the validator input so all of them will be used in the unique check. `ignoreCase` option is only available since v2.9. |                                                                                                                                                          |
 
 #### exists
 
-Exists by PK example:
+Checks if the user exists by a given PK:
 
 ```php
 class MyRequest extends \Spiral\Filters\Filter
@@ -599,9 +655,7 @@ class MyRequest extends \Spiral\Filters\Filter
 }
 ```
 
-> Checks if the user exists by a given PK
-
-Exists by custom field example:
+Checks if the user exists by a given email:
 
 ```php
 class MyRequest extends \Spiral\Filters\Filter
@@ -613,8 +667,6 @@ class MyRequest extends \Spiral\Filters\Filter
     ];
 }
 ```
-
-> Checks if the user exists by a given email
 
 #### unique
 
@@ -634,10 +686,11 @@ class MyRequest extends \Spiral\Filters\Filter
 }
 ```
 
+> **Note**
 > It says that the given value should be unique in the database as an `email` field in a combination with a `company`
 > value
 
-With the validator context you can pass the current values so they will not conflict with the current entity in the
+With the validator context you can pass the current values, so they will not conflict with the current entity in the
 database:
 
 ```php
@@ -663,6 +716,9 @@ class MyRequest extends \Spiral\Filters\Filter
 }
 ```
 
+> **Note**
+> Entity rules are available in `spiral/cycle-bridge` package.
+
 ## Custom Validation Rules
 
 It is possible to create application-specific validation rules via custom checker implementation.
@@ -676,31 +732,25 @@ use Spiral\Validation\AbstractChecker;
 class DBChecker extends AbstractChecker
 {
     public const MESSAGES = [
+        // Method => Error message
         'user' => 'No such user.'
     ];
 
-    /** @var Database */
-    private $db;
+    private Database $db;
 
-    /**
-     * @param Database $db
-     */
     public function __construct(Database $db)
     {
         $this->db = $db;
     }
 
-    /**
-     * @param $id
-     * @return bool
-     */
-    public function user($id): bool
+    public function user(int $id): bool
     {
         return $this->db->table('users')->select()->where('id', $id)->count() === 1;
     }
 }
 ```
 
+> **Note**
 > Use prebuild constant `MESSAGES` to define a custom error template.
 
 To activate checker, register it in `ValidationBootloader`:
@@ -714,11 +764,15 @@ use Spiral\Bootloader\Security\ValidationBootloader;
 
 class CheckerBootloader extends Bootloader
 {
-    public function boot(ValidationBootloader $validation)
+    public function boot(ValidationBootloader $validation): void
     {
+        // Register custom checker
         $validation->addChecker('db', DBChecker::class);
+        
+        // Register alias for checker
+        $validation->addAlias('db_user', 'db::user');
     }
 }
 ```
 
-You can use the validation now via `db::user` rule.
+You can use the validation now via `db::user` (or alias `db_user`) rule.

@@ -1,7 +1,50 @@
 # Application Metrics
 
 You can expose some of the application metrics using the [prometheus](https://prometheus.io/) service embedded to the
-Spiral application server.
+[RoadRunner application server](https://roadrunner.dev/docs/plugins-metrics/2.x/en).
+
+To install the component:
+
+```bash
+composer require spiral/roadrunner-metrics
+```
+
+## Framework Integration
+
+Create a bootloader
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\RoadRunner\Metrics\Metrics;
+use Spiral\RoadRunner\Metrics\MetricsInterface;
+use Spiral\RoadRunner\Environment;
+use Goridge\RPC\RPC;
+
+class MetricsBootloader extends Bootloader
+{
+    const SINGLETONS = [
+        MetricsInterface::class => [self::class, 'initMetrics'],
+    ];
+    
+    private function initMetrics(): MetricsInterface
+    {
+        return new Metrics(
+            RPC::create(Environment::fromGlobals()->getRPCAddress())
+        );
+    }
+}
+```
+
+Make sure to add `App\Bootloader\MetricsBootloader` to your App class:
+
+```php
+protected const LOAD = [
+    // ...
+    App\Bootloader\MetricsBootloader::class
+];
+```
 
 ## Configuration
 
@@ -14,6 +57,7 @@ metrics:
   address: localhost:2112
 ```
 
+> **Note**
 > You can view defaults metrics on http://localhost:2112/metrics
 
 ## Custom Application metrics
@@ -29,12 +73,33 @@ metrics:
       help: "Application counter."
 ```
 
-> Supported types: gauge, counter, summary, histogram.
-
-To populate metric from application use `Spiral\RoadRunner\MetricsInterface`:
+or declare metrics in PHP code
 
 ```php
-use Spiral\RoadRunner\MetricsInterface; 
+use Spiral\RoadRunner\Metrics\MetricsInterface;
+use Spiral\RoadRunner\Metrics\Collector;
+
+class MetricsBootloader extends Bootloader
+{
+    //...
+
+    public function boot(MetricsInterface $metrics): void
+    {
+        $metrics->declare(
+            'app_metric_counter',
+            Collector::counter()->withHelp('Application counter.')
+        );
+    }
+}
+```
+
+> **Note**
+> Supported types: gauge, counter, summary, histogram.
+
+To populate metric from application use `Spiral\RoadRunner\Metrics\MetricsInterface`:
+
+```php
+use Spiral\RoadRunner\Metrics\MetricsInterface; 
 
 // ...
 
@@ -58,6 +123,27 @@ metrics:
       type: histogram
       help: "Application counter."
       labels: [ "type" ]
+```
+
+
+or declare metrics in PHP code
+
+```php
+use Spiral\RoadRunner\Metrics\MetricsInterface;
+use Spiral\RoadRunner\Metrics\Collector;
+
+class MetricsBootloader extends Bootloader
+{
+    //...
+
+    public function boot(MetricsInterface $metrics): void
+    {
+        $metrics->declare(
+            'app_metric_counter',
+            Collector::counter()->withHelp('Application counter.')->withLabels('type')
+        );
+    }
+}
 ```
 
 You should specify values for your labels while pushing the metric:

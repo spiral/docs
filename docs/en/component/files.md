@@ -5,16 +5,16 @@ application bundles.
 
 ## Directory Registry
 
-Most of the spiral components rely on the directory registry instead of hard-coded paths.
-The registry represented using `Spiral\Boot\DirectoriesInterface`.
+Most of the spiral components rely on the directory registry instead of hard-coded paths. The registry represented 
+using `Spiral\Boot\DirectoriesInterface`.
 
 You can configure application specific directories in the app entry point (app.php):
 
 ```php
-$app = \App\App::init([
+$app = \App\App::create([
     'root'      => __DIR__,
     'customDir' => __DIR__ . '/custom'
-]);
+])->run();
 ```
 
 Or using the Bootloader:
@@ -48,14 +48,15 @@ class HomeController
 {
     public function index(DirectoriesInterface $dirs)
     {
-        \dump($dirs->get('root'));
-        \dump($dirs->get('customDir'));
+        dump($dirs->get('root'));
+        dump($dirs->get('customDir'));
 
-        \dump($dirs->getAll());
+        dump($dirs->getAll());
     }
 }
 ```
 
+> **Note**
 > You can also use the short function `directory` inside your config files. Note, this
 > function does not work outside of the framework as it relies on the global container scope.
 
@@ -259,6 +260,7 @@ To check and automatically create the file directory:
 $files->write('filename', 'data', 0777, true);
 ```
 
+> **Note**
 > Make sure to handle `Spiral\Files\Exception\WriteErrorException` if the file can is not writable.
 
 ### Append Content
@@ -303,4 +305,5 @@ To read file content:
 dump($files->read('filename'));
 ```
 
+> **Note**
 > Make sure to handle `Spiral\Files\Exception\FileNotFoundException` when files not found.

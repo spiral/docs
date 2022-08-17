@@ -1,7 +1,9 @@
 # Database - Access Database
+
 Follow the configuration instructions [here](/database/configuration.md).
 
 ## Access the Database
+
 Once DBAL component configured properly, you can access your databases in controllers and services multiple ways:
 
 ```php
@@ -11,7 +13,7 @@ use Cycle\Database\DatabaseManager;
 
 class HomeController 
 {
-    public function index(DatabaseManager $dbal)
+    public function index(DatabaseManager $dbal): void
     {
         //Default database
         dump($dbal->database());
@@ -32,10 +34,11 @@ class HomeController
 ```
 
 ### Method and Constructor Injections
+
 DBAL component fully support [IoC injections](/framework/container.md) based on database name and their aliases:
 
 ```php
-public function index(Database $database, Database $primary, Database $slave)
+public function index(Database $database, Database $primary, Database $slave): void
 {
     //Database is an alias for "primary"
     dump($database === $primary);
@@ -46,6 +49,7 @@ public function index(Database $database, Database $primary, Database $slave)
 ```
 
 ### Prototype
+
 Access `Cycle\Database\DatabaseProviderInterface` and default database instance using `PrototypeTrait`:
 
 ```php
@@ -57,7 +61,7 @@ class HomeController
 {
     use PrototypeTrait;
 
-    public function index()
+    public function index(): void
     {
         dump($this->dbal);
         dump($this->db); // default db
@@ -66,6 +70,7 @@ class HomeController
 ```
 
 ## Run Queries
+
 To run the database query use method `query`:
 
 ```php
@@ -92,4 +97,5 @@ dump(
 );
 ```
 
-> Read how to use query builders [here](/database/query-builders.md).
+> **Note**
+> Read how to use query builders [here](https://cycle-orm.dev/docs/database-query-builders/2.x/en).

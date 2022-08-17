@@ -30,7 +30,6 @@
 * Cookbook
     * [Domain Core and Controllers](cookbook/domain-core.md)
     * [Container Injectors](cookbook/injector.md)
-    * [Integrate Golang service to PHP](cookbook/golang-library.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
 * Components
     * [Attributes](component/attributes.md)
@@ -41,6 +40,9 @@
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
     * [Data Grids](component/data-grid.md)
+    * [Serializer](component/serializer.md)
+    * [SendIt](component/sendit.md)
+    * [Event Broadcasting](component/broadcasting.md)
 * Console
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
@@ -52,7 +54,6 @@
     * [Annotated Routes](http/annotated-routes.md)
     * [Error Pages](http/errors.md)
     * [Middleware](http/middleware.md)
-    * [Golang Middleware](http/golang.md)
     * [Cookies](http/cookies.md)
     * [Session](http/session.md)
     * [CSRF protection](http/csrf.md)
@@ -85,15 +86,12 @@
 * Cycle ORM
     * [Installation and Configuration](cycle/configuration.md)
     * [Transactions](cycle/transactions.md)
-    * [Without Annotations](cycle/manual.md)
-    * [Full Documentation](cycle/documentation.md)
     * [Console Commands](cycle/commands.md)
+    * [Full Documentation](cycle/documentation.md)
 * Queue and Jobs
     * [Installation and Configuration](queue/configuration.md)
-    * [Console Commands](queue/commands.md)
     * [Running Jobs](queue/jobs.md)
-    * [Standalone Usage](queue/standalone.md)
-    * [Website Scraper](queue/scraper.md)
+    * [RoadRunner integration](queue/roadrunner.md)
 * Views
     * [Installation and Configuration](views/configuration.md)
     * [Rendering Views](views/render.md)
@@ -118,10 +116,6 @@
     * [Client SDK](grpc/client.md)
     * [Golang Services](grpc/golang.md)
     * [Data Streaming](grpc/streaming.md)
-* Event Broadcasting
-    * [Installation and Configuration](broadcast/configuration.md)
-    * [Publish and Consume](broadcast/publish.md)
-    * [WebSockets](broadcast/websockets.md)
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * [XDebug](debug/xdebug.md)

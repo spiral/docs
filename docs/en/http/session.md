@@ -14,13 +14,14 @@ use Spiral\Session\SessionInterface;
 
 // ...
 
-public function index(SessionInterface $session)
+public function index(SessionInterface $session): void
 {
     $session->resume();
-    echo $session->getID();
+    dump($session->getID());
 }
 ```
 
+> **Note**
 > You are not allowed to store session reference in singleton objects. See the workaround below.
 
 ## Session Section
@@ -30,7 +31,7 @@ which provides classing `set`, `get`, `delete` and etc functionality. Use `getSe
 purposes:
 
 ```php
-public function index(SessionInterface $session)
+public function index(SessionInterface $session): void
 {
     $cart = $session->getSection('cart');
 
@@ -67,6 +68,7 @@ class HomeController
 The session will be automatically started on first data access and committed when the request will
 leave `SessionMiddleware`. To control session manually use methods of `Spiral\Session\SessionInterface` object.
 
+> **Note**
 > SessionScope fully implements SessionInterface.
 
 ### Resume session
@@ -171,4 +173,30 @@ return [
 ];
 ```
 
+> **Note**
 > You can use Autowire instead of the class name to configure additional parameters.
+
+### Customize Session initialization
+
+The session is initialized using a special factory `Spiral\Session\SessionFactoryInterface`.
+
+```php
+
+namespace Spiral\Session;
+
+interface SessionFactoryInterface
+{
+    /**
+     * @param string $clientSignature User specific token, does not provide full security but
+     *                                     hardens session transfer.
+     * @param string|null $id When null - expect php to create session automatically.
+     */
+    public function initSession(string $clientSignature, string $id = null): SessionInterface;
+}
+```
+
+You can replace the default implementation of `Spiral\Session\SessionFactoryInterface` in the container with your own.
+
+```php
+$container->bindSingleton(\Spiral\Session\SessionFactoryInterface::class, CustomSessionFactory::class);
+```

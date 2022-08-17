@@ -41,6 +41,7 @@ The middleware will handle application exceptions and will render them in a deve
 delivery of the exception details to the browser, set the env variable `DEBUG` to `false`. In this case, the default 500
 error page will be displayed.
 
+> **Note**
 > Do not deploy your application to production with enabled debug mode.
 
 ## Client Exceptions
@@ -73,6 +74,7 @@ Other exceptions include:
 | 404  | Spiral\Http\Exception\ClientException\NotFoundException     |
 | 500  | Spiral\Http\Exception\ClientException\ServerErrorException  |
 
+> **Note**
 > Do not use http exceptions inside your services and repositories as it will couple your implementation to http
 > dispatcher. Use domain-specific exceptions and their mapping to http exception instead.
 

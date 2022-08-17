@@ -39,6 +39,35 @@ configuration file. The default configuration located in
 the [ScaffolderBootloader](https://github.com/spiral/scaffolder/blob/master/src/Bootloader/ScaffolderBootloader.php#L59)
 .
 
+### Adding custom declarations via ScaffolderBootloader
+
+Some components can provide their own declarations to create elements using the Scaffolder. 
+Such components can register their custom declarations with the `ScaffolderBootloader`:
+```php
+namespace App\Bootloader;
+
+use Spiral\Scaffolder\Bootloader\ScaffolderBootloader as BaseScaffolderBootloader;
+
+class ScaffolderBootloader extends Bootloader
+{
+    public const DEPENDENCIES = [
+        BaseScaffolderBootloader::class
+    ];
+
+    public function boot(BaseScaffolderBootloader $scaffolder): void
+    {
+        $scaffolder->addDeclaration('declarationName', [
+            'namespace' => 'Namespace',
+            'postfix'   => '', // like a Repository, Controller, etc
+            'class'     => MyDeclaration::class, // declaration class
+            'options'   => [
+                // some custom options
+            ],
+        ]);
+    }
+}
+```
+
 ## Available Commands
 
 | Command           | Description                            |

@@ -1,9 +1,12 @@
 # Views - Rendering Views
+
 To render view, you must obtain an instance of `Spiral\Views\ViewsInterface`.
 
+> **Note**
 > The component is available via prototyped property `views`.
 
 ## Rendering
+
 To render view in the controller or other service simply invoke the `render` method of `ViewsInterface`. The view name
 does not need to include extension or namespace (default to be used).
 
@@ -12,7 +15,7 @@ use Spiral\Views\ViewsInterface;
 
 // ...
 
-public function index(ViewsInterface $views)
+public function index(ViewsInterface $views): string
 {
     return $views->render('home');
 }
@@ -25,15 +28,16 @@ use Spiral\Views\ViewsInterface;
 
 // ...
 
-public function index(ViewsInterface $views)
+public function index(ViewsInterface $views): string
 {
     return $views->render('home', [
-            'key' => 'value'
+        'key' => 'value'
     ]);
 }
 ```
 
 #### Namespaces
+
 To render view from specific namespace prepend it to view name using `:` separator:
 
 ```php
@@ -43,8 +47,9 @@ return $views->render('namespace:home', [
 ```
 
 ## View Object
-In some cases it might be more performant to cache the view in stateless component, obtain view object (`Spiral\Views\ViewInterface`)
-using method `get` of `ViewsInterface`:
+
+In some cases it might be more performant to cache the view in stateless component, obtain view
+object (`Spiral\Views\ViewInterface`) using method `get` of `ViewsInterface`:
 
 ```php
 $view = $views->get('home');
