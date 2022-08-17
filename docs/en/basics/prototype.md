@@ -215,6 +215,7 @@ There are number of component shortcuts available for your usage:
 | orm          | Cycle\ORM\ORMInterface (If `spiral/cycle-bridge` package should be installed)                |
 | paginators   | Spiral\Pagination\PaginationProviderInterface                                                |
 | queue        | Spiral\Queue\QueueInterface                                                                  |
+| queueManager | Spiral\Queue\QueueConnectionProviderInterface                                                |
 | request      | Spiral\Http\Request\InputManager                                                             |
 | response     | Spiral\Http\ResponseWrapper                                                                  |
 | router       | Spiral\Router\RouterInterface                                                                |
@@ -225,3 +226,5 @@ There are number of component shortcuts available for your usage:
 | views        | Spiral\Views\ViewsInterface                                                                  |
 | auth         | Spiral\Auth\AuthScope                                                                        |
 | authTokens   | Spiral\Auth\TokenStorageInterface                                                            |
+| cache        | Psr\SimpleCache\CacheInterface                                                               |
+| cacheManager | Spiral\Cache\CacheStorageProviderInterface                                                   |

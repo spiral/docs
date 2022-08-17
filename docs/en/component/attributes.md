@@ -95,6 +95,26 @@ $attribute = $reader->firstClassMetadata($reflection, Entity::class);
 // returns Entity|null
 ```
 
+Since v2.10.0, supports read attributes from traits that are used in the class.
+
+```php
+#[Cycle\Entity]
+class Entity {
+    use TsTrait;
+}
+
+#[Behavior\CreatedAt]
+#[Behavior\UpdatedAt]
+trait TsTrait
+{
+    #[Cycle\Column(type: 'datetime')]
+    private DateTimeImmutable $createdAt;
+
+    #[Cycle\Column(type: 'datetime', nullable: true)]
+    private ?DateTimeImmutable $updatedAt = null;
+}
+```
+
 ### Property Metadata
 
 To read the property metadata, use the `$reader->getPropertyMetadata()` method. It receives as input
