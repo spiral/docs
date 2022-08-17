@@ -1,6 +1,6 @@
 # Long Start
 
-The spiral framework contains a lot of components built to operate seamlessly with each other. In this article, we will
+The Spiral Framework contains a lot of components built to operate seamlessly with each other. In this article, we will
 show how to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations
 (optional) and domain interceptors.
 
@@ -66,15 +66,16 @@ You can also create and use an alternative configuration file via `-c` flag of t
 > Read more about Workers and Lifecycle [here](/start/workers.md).
 
 ### Lighter Up
-
-We won't need translation, session, cookies, CSRF, and encryption in our demo application. Remove these components and
-their bootloaders.
+We won't need translation, session, GRPC, cookies, CSRF, routing configuration via RoutesBootloader in our demo application. 
+Remove these components and their bootloaders.
 
 Delete following bootloaders from `app/src/App.php`:
 
 ```php
 Spiral\Bootloader\I18nBootloader::class,
-Spiral\Bootloader\Security\EncrypterBootloader::class,
+
+// from RoadRunner
+Spiral\RoadRunnerBridge\Bootloader\GRPCBootloader::class,
 
 // from http
 Spiral\Bootloader\Http\CookiesBootloader::class,
@@ -84,16 +85,109 @@ Spiral\Bootloader\Http\PaginationBootloader::class,
 
 // from views 
 Spiral\Bootloader\Views\TranslatedCacheBootloader::class,
+```
 
-// from APP
-App\Bootloader\LocaleSelectorBootloader::class,
+Remove `App\Middleware\LocaleSelector` from method `globalMiddleware` in the `App\Bootloader\RoutesBootloader`:
+
+```diff
+class RoutesBootloader extends BaseRoutesBootloader
+    // ...
+    
+    protected function globalMiddleware(): array
+    {
+        return [
+-           LocaleSelector::class,
+            ErrorHandlerMiddleware::class,
+            JsonPayloadMiddleware::class,
+            HttpCollector::class,
+        ];
+    }
+    
+    // ...
+ }
+```
+
+By default, the routing rules located in `app/src/Bootloader/RoutesBootloader.php`. You have many options on how
+to configure routing. Point route to actions, controllers, controller groups, set the default pattern parameters,
+verbs, middleware, etc.
+
+Remove method `defineRoutes`. We will be adding routes using attributes:
+
+```diff
+class RoutesBootloader extends BaseRoutesBootloader
+    // ...
+    
+-    protected function defineRoutes(RoutingConfigurator $routes): void
+-    {
+-        $routes->import($this->dirs->get('app') . '/routes/web.php')->group('web');
+-
+-        $routes->default('/[<controller>[/<action>]]')
+-            ->namespaced('App\\Controller')
+-            ->defaults([
+-                'controller' => 'home',
+-                'action' => 'index',
+-            ])
+-            ->middleware([
+-                // SomeMiddleware::class,
+-            ]);
+-    }
+    
+    // ...
+ }
+```
+
+> **Note**
+> Read more about Routing [here](/http/routing.md).
+
+Remove all middlewares in method `middlewareGroups`:
+
+```diff
+class RoutesBootloader extends BaseRoutesBootloader
+    // ...
+    
+    protected function middlewareGroups(): array
+    {
+        return [
+-            'web' => [
+-                CookiesMiddleware::class,
+-                SessionMiddleware::class,
+-                CsrfMiddleware::class,
+-                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'cookie'])
+-            ],
+-            'api' => [
+-                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'header'])
+-            ],
+        ];
+    }
+    
+    // ...
+ }
+```
+
+Remove unused imports and `__constructor`:
+
+```diff
+- use Spiral\Boot\DirectoriesInterface;
+- use Spiral\Cookies\Middleware\CookiesMiddleware;
+- use Spiral\Csrf\Middleware\CsrfMiddleware;
+- use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+- use Spiral\Session\Middleware\SessionMiddleware;
+
+class RoutesBootloader extends BaseRoutesBootloader
+-    public function __construct(
+-        private readonly DirectoriesInterface $dirs
+-    ) {
+-    }
+    
+    // ...
+ }
 ```
 
 Delete following files and directories as no longer required:
 
 - `app/locale`
-- `app/src/Bootloader/LocaleSelectorBootloader.php`
-- `app/src/Middleware`.
+- `app/routes`
+- `app/src/Middleware`
 
 > **Note**
 > Note, the application won't work at the moment as we removed the dependency required to
@@ -171,127 +265,49 @@ php app.php db:list
 > **Note**
 > Read more about Databases [here](/database/configuration.md).
 
-### Connect Faker
+### Connect Database Seeder
 
-We will need some sample data for the application. Let's connect the library and bootload the library `fakerphp/faker`.
+We will need some sample data for the application. 
+Let's install [Database Seeder](https://github.com/spiral-packages/database-seeder).
 
 ```bash
-composer require fakerphp/faker
+composer require spiral-packages/database-seeder --dev
 ``` 
 
-To generate the stub data, we will need an instance of `Faker\Generator`, create bootloader in `app/src/Bootloader` to
-resolve such instance as a singleton. Use a factory method for that purpose.
-
-```php
-namespace App\Bootloader;
-
-use Faker\Factory;
-use Faker\Generator;
-use Spiral\Boot\Bootloader\Bootloader;
-
-class FakerBootloader extends Bootloader
-{
-    protected const SINGLETONS = [
-        Generator::class => [self::class, 'fakerGenerator']
-    ];
-
-    private function fakerGenerator(): Generator
-    {
-        return Factory::create(Factory::DEFAULT_LOCALE);
-    }
-}
-```
-
-Add the bootloader to `LOAD` or `APP` in `app/src/App.php` to activate the component:
+Add the bootloader `Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader` to `LOAD` section in `app/src/App.php` 
+to activate the package:
 
 ```diff
 --- a/app/src/App.php
 +++ b/app/src/App.php
 @@ -85,5 +85,6 @@ class App extends Kernel
 
-         Bootloader\AppBootloader::class,
-+        Bootloader\FakerBootloader::class,
+         RoadRunnerBridge\CommandBootloader::class,
++        \Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader::class,
      ];
  }
 ```
 
 > **Note**
-> You can request dependencies as method arguments in the factory method `fakerGenerator`.
-
-Use the `Faker\Generator` in your controller to view the stub data at `http://localhost:8080/`:
-
-```php
-namespace App\Controller;
-
-use Faker\Generator;
-
-class HomeController
-{
-    public function index(Generator $generator): string
-    {
-        return $generator->sentence(128);
-    }
-}
-```
-
-> **Note**
 > Read more about Bootloaders [here](/framework/bootloaders.md).
 
-### Routing
+### Creating Routes
 
-By default, the routing rules located in `app/src/Bootloader/RoutesBootloader.php`. You have many options on how
-to configure routing. Point route to actions, controllers, controller groups, set the default pattern parameters,
-verbs, middleware, etc.
+In order to simplify the route definition we can use `spiral/annotated-routes` extension. Read more about the extension [here](/http/annotated-routes.md).
+Add the bootloader to `LOAD` in `app/src/App.php` to activate the component:
 
-Create a simple route to point all of the URLs to the `App\Controller\HomeController`:
+```diff
+--- a/app/src/App.php
++++ b/app/src/App.php
+@@ -85,5 +85,6 @@ class App extends Kernel
 
-```php
-namespace App\Bootloader;
-
-use App\Controller\HomeController;
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Router\Route;
-use Spiral\Router\RouterInterface;
-use Spiral\Router\Target\Controller;
-
-class RoutesBootloader extends Bootloader
-{
-    public function boot(RouterInterface $router): void
-    {
-        $route = new Route('/[<action>[/<id>]]', new Controller(HomeController::class));
-        $route = $route->withDefaults(['action' => 'index']);
-
-        $router->setRoute('home', $route);
-    }
-}
+         SapiBootloader::class,
++        AnnotatedRoutesBootloader::class,
+     ];
+ }
 ```
 
-In the given setup, the `<action>` and `<id>` are the optional parts of the URL (see the `[]`), the action defaults
-to `index`.
-Open `HomeController`->`index` using `http://localhost:8080/` or `http://localhost:8080/index`.
-
-The route parameters can be addressed in method injection of the controller by their name, create the following method
-in `HomeController`:
-
-```php
-public function open(string $id)
-{
-   \dump($id);
-}
-```
-
-You can invoke this method using URL `http://localhost:8080/open/123`. The `id` parameter will be hydrated
-automatically.
-
-> **Note**
-> Read more about Routing [here](/http/routing.md).
-
-### Creating Routes as Attributes
-
-In order to simplify the route definition we can use `spiral/annotated-routes` extension. Read more about the
-extension [here](/http/annotated-routes.md).
-
-We can use this annotation in our controller as follows:
+We can use this attribute in our controller as follows:
 
 ```php
 namespace App\Controller;
@@ -323,7 +339,7 @@ php app.php route:list
 > **Note**
 > Use additional route parameters to configure middleware, route group, etc.
 
-In the following examples, we will stick to the annotated routes for simplicity.
+In the following examples, we will stick to the routes with attributes for simplicity.
 
 To flush route cache (when `DEBUG` disabled):
 
@@ -335,17 +351,45 @@ php app.php route:reset
 
 Connect custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
 
+Let's create an interceptor that will catch validation errors and return them in JSON:
+```php
+// file app/src/Interceptor/ValidationInterceptor.php
+namespace App\Interceptor;
+
+use Spiral\Core\CoreInterceptorInterface;
+use Spiral\Core\CoreInterface;
+use Spiral\Filters\Exception\ValidationException;
+use Spiral\Http\ResponseWrapper;
+
+final class ValidationInterceptor implements CoreInterceptorInterface
+{
+    public function __construct(
+        private readonly ResponseWrapper $responseWrapper
+    ) {
+    }
+
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core): mixed
+    {
+        try {
+            return $core->callAction($controller, $action, $parameters);
+        } catch (ValidationException $e) {
+            return $this->responseWrapper->json(['errors' => $e->errors], 400);
+        }
+    }
+}
+```
+
 We can change the default behavior of the application and enable Cycle Entity resolution using route parameter, 
 Filter validation and `Guard` attribute.
-
 
 ```php
 namespace App\Bootloader;
 
+use App\Interceptor\ValidationInterceptor;
 use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
 use Spiral\Cycle\Interceptor\CycleInterceptor;
-use Spiral\Domain;
+use Spiral\Domain\GuardInterceptor;
 
 class AppBootloader extends DomainBootloader
 {
@@ -355,13 +399,23 @@ class AppBootloader extends DomainBootloader
 
     protected const INTERCEPTORS = [
         CycleInterceptor::class,
-        Domain\GuardInterceptor::class,
-        Domain\FilterInterceptor::class,
+        GuardInterceptor::class,
+        ValidationInterceptor::class,
     ];
 }
 ```
 
 Enable the domain core in your application. We will demonstrate the use of the interceptor below.
+Add the bootloader to `APP` in `app/src/App.php`:
+
+```diff
+--- a/app/src/App.php
++++ b/app/src/App.php
+@@ -85,5 +85,6 @@ class App extends Kernel
++        Bootloader\AppBootloader::class,
+     ];
+ }
+```
 
 > **Note**  
 > Read more about Domain Cores [here](/cookbook/domain-core.md).
@@ -384,7 +438,6 @@ php app.php db:table migrations
 
 You can write the migration manually, or let Cycle ORM generate it for you.
 
-
 > **Note**  
 > Read more about migrations [here](https://cycle-orm.dev/docs/database-migrations). Use [Scaffolder](/basics/scaffolding.md) 
 > component to create migrations manually. 
@@ -393,6 +446,20 @@ You can write the migration manually, or let Cycle ORM generate it for you.
 
 The demo application comes with [Cycle ORM](https://cycle-orm.dev). By default, you can use attributes to configure
 your entities.
+
+Enable the Cycle Bridge `Spiral\Cycle\Bootloader\ScaffolderBootloader` bootloader for using commands that create 
+entities and repositories.
+Add the bootloader to `APP` in `app/src/App.php`:
+
+```diff
+--- a/app/src/App.php
++++ b/app/src/App.php
+@@ -85,5 +85,6 @@ class App extends Kernel
+        Scaffolder\ScaffolderBootloader::class,
++       CycleBridge\ScaffolderBootloader::class,
+     ];
+ }
+```
 
 Let's create `Post`, `User` and `Comment` entities and their repositories using the Scaffolder extension:
 
@@ -410,88 +477,151 @@ Post:
 ```php
 namespace App\Database;
 
-use Cycle\Annotated\Annotation as Cycle;
+use App\Repository\PostRepository;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
 
-/**
- * @Cycle\Entity(repository="\App\Repository\PostRepository")
- */
+#[Entity(repository: PostRepository::class)]
 class Post
 {
-    /**
-     * @Cycle\Column(type = "primary")
-     */
-    public $id;
+    #[Column(type: 'primary')]
+    public int $id;
 
-    /**
-     * @Cycle\Column(type = "string")
-     */
-    public $title;
+    #[Column(type: 'string')]
+    public string $title;
 
-    /**
-     * @Cycle\Column(type = "text")
-     */
-    public $content;
+    #[Column(type: 'text')]
+    public string $content;
 }
  ```
 
-Scaffolder before `Spiral Framework v3.0` doesn't support attributes and property types. 
-After the file is created, it's recommended to replace annotations with attributes and add types:
-
+We can move the definition of the `$title` and `$content` properties to the `__construct` method:
 ```php
 namespace App\Database;
 
 use App\Repository\PostRepository;
-use Cycle\Annotated\Annotation as Cycle;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
 
-#[Cycle\Entity(repository: PostRepository::class)]
+#[Entity(repository: PostRepository::class)]
 class Post
 {
-    #[Cycle\Column(type: 'primary')]
+    #[Column(type: 'primary')]
     public int $id;
 
-    #[Cycle\Column(type: 'string')]
-    public string $title;
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $title,
 
-    #[Cycle\Column(type: 'text')]
-    public string $content;
+        #[Column(type: 'text')]
+        public string $content
+    ) {
+    }
 }
-
 ```
 
-User, with added attributes and types:
+User:
 
 ```php
 namespace App\Database;
 
 use App\Repository\UserRepository;
-use Cycle\Annotated\Annotation as Cycle;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
 
-#[Cycle\Entity(repository: UserRepository::class)] 
+#[Entity(repository: UserRepository::class)]
 class User
 {
-    #[Cycle\Column(type: 'primary')]
+    #[Column(type: 'primary')]
     public int $id;
 
-    #[Cycle\Column(type: 'string')]
+    #[Column(type: 'string')]
     public string $name;
 }
 ```
 
-Comment, with added attributes and types:
+We can move the definition of the `$name` property to the `__construct` method:
 
 ```php
 namespace App\Database;
 
-use Cycle\Annotated\Annotation as Cycle;
+use App\Repository\UserRepository;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
 
-#[Cycle\Entity]
-class Comment
+#[Entity(repository: UserRepository::class)]
+class User
 {
-    #[Cycle\Column(type: 'primary')]
+    #[Column(type: 'primary')]
     public int $id;
 
-    #[Cycle\Column(type: 'string')]
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $name
+    ) {
+    }
+}
+```
+
+Comment:
+
+```php
+namespace App\Database;
+
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+
+#[Entity]
+class Comment
+{
+    #[Column(type: 'primary')]
+    public int $id;
+
+    #[Column(type: 'string')]
     public string $message;
+}
+```
+
+We can move the definition of the `$message` property to the `__construct` method:
+
+```php
+namespace App\Database;
+
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+
+#[Entity]
+class Comment
+{
+    #[Column(type: 'primary')]
+    public int $id;
+
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $message
+    ) {
+    }
+}
+```
+
+Let's add the `Spiral\Prototype\Annotation\Prototyped` attribute to the repositories so that we can use them 
+as users and posts properties during development:
+
+```php
+// app/src/Repository/PostRepository.php
+use Spiral\Prototype\Annotation\Prototyped;
+
+#[Prototyped(property: 'posts')]
+class PostRepository extends Repository
+{
+}
+
+// app/src/Repository/UserRepository.php
+use Spiral\Prototype\Annotation\Prototyped;
+
+#[Prototyped(property: 'users')]
+class UserRepository extends Repository
+{
 }
 ```
 
@@ -500,6 +630,12 @@ You can change the default directory mapping, headers, and others using [Scaffol
 > **Note**
 > Read more about Cycle [here](/cycle/configuration.md). Configure auto-timestamps
 > using [custom mapper](https://cycle-orm.dev/docs/advanced-timestamp).
+
+Run the configure command to collect all available prototype classes:
+
+```bash
+php app.php configure
+```
 
 ### Generate Migration
 
@@ -528,33 +664,35 @@ Post:
 namespace App\Database;
 
 use App\Repository\PostRepository;
-use Cycle\Annotated\Annotation as Cycle;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Relation;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
-#[Cycle\Entity(repository: PostRepository::class)] 
+#[Entity(repository: PostRepository::class)]
 class Post
 {
-    #[Cycle\Column(type: 'primary')]
+    #[Column(type: 'primary')]
     public int $id;
-
-    #[Cycle\Column(type: 'string')]
-    public string $title;
-
-    #[Cycle\Column(type: 'text')]
-    public string $content;
-
-    #[Cycle\Relation\BelongsTo(target: User::class, nullable: false)]
-    public User $author;
 
     /**
      * @var Collection|Comment[]
      * @psalm-var Collection<int, Comment>
      */
-    #[Cycle\Relation\HasMany(target: Comment::class)]
+    #[Relation\HasMany(target: Comment::class)]
     public Collection $comments;
 
-    public function __construct()
-    {
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $title,
+
+        #[Column(type: 'text')]
+        public string $content,
+
+        #[Relation\BelongsTo(target: User::class, nullable: false)]
+        public User $author
+    ) {
         $this->comments = new ArrayCollection();
     }
 }
@@ -565,24 +703,29 @@ Comment:
 ```php
 namespace App\Database;
 
-use Cycle\Annotated\Annotation as Cycle;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Relation;
 
-#[Cycle\Entity]
+#[Entity]
 class Comment
 {
-    #[Cycle\Column(type: 'primary')]
+    #[Column(type: 'primary')]
     public int $id;
 
-    #[Cycle\Column(type: 'string')]
-    public string $message;
-    
-    #[Cycle\Relation\BelongsTo(target: User::class, nullable: false)]
-    public User $author;
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $message,
 
-    #[Cycle\Relation\BelongsTo(target: Post::class, nullable: false)]
-    public Post $post;
+        #[Relation\BelongsTo(target: User::class, nullable: false)]
+        public User $author,
+
+        #[Relation\BelongsTo(target: Post::class, nullable: false)]
+        public Post $post
+    ) {
+    }
 }
-``` 
+```
 
 Once again generate and run the migration:
 
@@ -603,280 +746,234 @@ php app.php db:table comments
 > **Note**
 > Do not forget to run `php app.php cycle:migrate` when you change any of your entities.
 
-## Service
+## Factories and seeders
 
-Isolate the business logic into a separate service layer. Let's create `PostService` in `app/src/Service`.
-We will need an instance of `Cycle\ORM\EntityManagerInterface` to persist the post.
+To generate test data, we need factories that will describe the rules for generating an entity. 
+And seeders that will fill the database.
 
-```php
-namespace App\Service;
+We will store them separately from the application code, in the `app/database` folder. 
+Let's add a separate `Database` namespace to Composer autoload:
 
-use App\Database\Post;
-use App\Database\User;
-use Cycle\ORM\EntityManagerInterface;
-
-class PostService
-{
-    public function __construct(
-        private EntityManagerInterface $entityManager
-    ) {
-    }
-
-    public function createPost(User $user, string $title, string $content): Post
-    {
-        $post = new Post();
-        $post->author = $user;
-        $post->title = $title;
-        $post->content = $content;
-
-        $this->entityManager->persist($post);
-        $this->entityManager->run();
-
-        return $post;
-    }
-}
+```diff
+--- a/composer.json
++++ b/composer.json
+"autoload": {
+    "psr-4": {
+        "App\\": "app/src",
++       "Database\\": "app/database"
+    },
+    //
+},
 ```
-
-> **Note**
-> You can reuse the transaction after the `run` method.
-
-### Prototyping
-
-One of the most powerful capabilities of the framework is [Prototyping](/basics/prototype.md). Declare the
-shortcut `postService`, which points to `PostService` using annotation.
-
-```php
-namespace App\Service;
-
-use App\Database\Post;
-use App\Database\User;
-use Cycle\ORM\TransactionInterface;
-use Spiral\Prototype\Annotation\Prototyped;
-
-#[Prototyped(property: 'postService')]
-class PostService
-{
-    // ...
-}
-``` 
-
-Run the configure command to collect all available prototype classes:
 
 ```bash
-php app.php configure
+composer dump-autoload
 ```
 
-> **Note**
-> Make sure to use proper IDE to gain access to the IDE tooltips.
+### CommentFactory
 
-Now you can get access to the `PostService` using `PrototypeTrait`, see the example down below.
-
-## Console Command
-
-Let's create three commands to generate the data for our application. Use scaffolder extension to create command to seed
-our database:
-
-```bash
-php app.php create:command seed/user seed:user
-php app.php create:command seed/post seed:post
-php app.php create:command seed/comment seed:comment
-``` 
-
-Generated commands will be available in `app/src/Command/Seed`.
-
-### UserCommand
-
-Use the method injection on `perform` in `UserCommand` to seed the users using Faker:
+Let's create `CommentFactory` class, extend it from `Spiral\DatabaseSeeder\Factory\AbstractFactory` and implement
+required methods:
 
 ```php
-// app/src/Command/Seed/UserCommand.php
-namespace App\Command\Seed;
-
-use App\Database\User;
-use Cycle\ORM\EntityManagerInterface;
-use Faker\Generator;
-use Spiral\Console\Command;
-
-class UserCommand extends Command
-{
-    protected const NAME = 'seed:user';
-
-    protected function perform(EntityManagerInterface $em, Generator $faker): int
-    {
-        for ($i = 0; $i < 100; $i++) {
-            $user = new User();
-            $user->name = $faker->name;
-
-            $em->persist($user);
-        }
-
-        $em->run();
-
-        $this->output->write('<info>Database seeding completed successfully.</info>');
-
-        return self::SUCCESS;
-    }
-}
-```
-
-Run the command:
-
-```bash
-php app.php seed:user
-```
-
-### PostCommand
-
-Use the prototype extension to speed up the creation of the `seed:post` command. Call the `postService` and `users`
-(repository) as class properties.
-
-> **Note**
-> Run `php app.php configure` if your IDE does not highlight repositories or other services.
-
-```php
-// app/src/Command/Seed/PostCommand.php
-namespace App\Command\Seed;
-
-use Faker\Generator;
-use Spiral\Console\Command;
-use Spiral\Prototype\Traits\PrototypeTrait;
-
-class PostCommand extends Command
-{
-    use PrototypeTrait;
-
-    protected const NAME = 'seed:post';
-
-    protected function perform(Generator $faker): int
-    {
-        $users = $this->users->findAll();
-
-        for ($i = 0; $i < 1000; $i++) {
-            $user = $users[array_rand($users)];
-
-            $post = $this->postService->createPost(
-                $user,
-                $faker->sentence(12),
-                $faker->text(900)
-            );
-
-            $this->sprintf("New post: <info>%s</info>\n", $post->title);
-        }
-        
-        return self::SUCCESS;
-    }
-}
-```
-
-Run the command with `-vv` flag to observe the SQL queries:
-
-```bash
-php app.php seed:post -vv
-```
-
-To remove prototype properties run:
-
-```bash
-php app.php prototype:inject -r
-```
-
-Your command will be converted into the following form:
-
-```php
-namespace App\Command\Seed;
-
-use App\Repository\UserRepository;
-use App\Service\PostService;
-use Faker\Generator;
-use Spiral\Console\Command;
-
-class PostCommand extends Command
-{
-    protected const NAME = 'seed:post';
-
-    public function __construct(
-        private UserRepository $users,
-        private PostService $postService,
-        ?string $name = null
-    ) {
-        parent::__construct($name);
-    }
-
-    protected function perform(Generator $faker): int
-    {
-        $users = $this->users->findAll();
-
-        for ($i = 0; $i < 1000; $i++) {
-            $user = $users[array_rand($users)];
-
-            $post = $this->postService->createPost(
-                $user,
-                $faker->sentence(12),
-                $faker->text(900)
-            );
-
-            $this->sprintf("New post: <info>%s</info>\n", $post->title);
-        }
-
-        return self::SUCCESS;
-    }
-}
-```
-
-> **Note**
-> You can use the prototype in any part of your codebase. Do not forget to remove the extension before going live. 
-
-### CommentCommand
-
-Seed comments using random user and post relation. We will receive all the needed instances using the method injection.
-
-```php
-namespace App\Command\Seed;
+// app/database/Factory/CommentFactory.php
+namespace Database\Factory;
 
 use App\Database\Comment;
-use App\Repository\PostRepository;
-use App\Repository\UserRepository;
-use Cycle\ORM\EntityManagerInterface;
+use App\Database\Post;
+use App\Database\User;
 use Faker\Generator;
-use Spiral\Console\Command;
+use Spiral\DatabaseSeeder\Factory\AbstractFactory;
 
-class CommentCommand extends Command
+class CommentFactory extends AbstractFactory
 {
-    protected const NAME = 'seed:comment';
+    /**
+     * Returns a fully qualified database entity class name
+     */
+    public function entity(): string
+    {
+        return Comment::class;
+    }
 
-    protected function perform(
-        Generator $faker,
-        EntityManagerInterface $entityManager,
-        UserRepository $userRepository,
-        PostRepository $postRepository
-    ): int {
-        $users = $userRepository->findAll();
-        $posts = $postRepository->findAll();
+    /**
+     * Returns an entity
+     */
+    public function makeEntity(array $definition): Comment
+    {
+        return new Comment($definition['message'], $definition['author'], $definition['post']);
+    }
 
-        for ($i = 0; $i < 1000; $i++) {
-            $user = $users[array_rand($users)];
-            $post = $posts[array_rand($posts)];
+    /**
+     * Generate Comment with given author
+     */
+    public function withAuthor(User $author): self
+    {
+        return $this->state(fn(Generator $faker, array $definition) => [
+            'author' => $author,
+        ]);
+    }
 
-            $comment = new Comment();
-            $comment->author = $user;
-            $comment->post = $post;
-            $comment->message = $faker->sentence(12);
+    /**
+     * Generate Comment with given post
+     */
+    public function withPost(Post $post): self
+    {
+        return $this->state(fn(Generator $faker, array $definition) => [
+            'post' => $post,
+        ]);
+    }
 
-            $this->sprintf("New comment: <info>%s</info>\n", $comment->message);
-
-            $entityManager->persist($comment);
-            $entityManager->run();
-        }
-
-        return self::SUCCESS;
+    /**
+     * Returns array with generation rules
+     */
+    public function definition(): array
+    {
+        return [
+            'message' => $this->faker->sentence(12),
+            'author' => UserFactory::new()->makeOne(),
+            'post' => PostFactory::new()->makeOne()
+        ];
     }
 }
 ```
 
-Run the command:
+### PostFactory
+
+Let's create `PostFactory` class:
+
+```php
+// app/database/Factory/PostFactory.php
+namespace Database\Factory;
+
+use App\Database\Post;
+use App\Database\User;
+use Faker\Generator;
+use Spiral\DatabaseSeeder\Factory\AbstractFactory;
+
+class PostFactory extends AbstractFactory
+{
+    /**
+     * Returns a fully qualified database entity class name
+     */
+    public function entity(): string
+    {
+        return Post::class;
+    }
+
+    /**
+     * Returns an entity
+     */
+    public function makeEntity(array $definition): Post
+    {
+        return new Post($definition['title'], $definition['content'], $definition['author']);
+    }
+
+    /**
+     * Generate Post with given author
+     */
+    public function withAuthor(User $author): self
+    {
+        return $this->state(fn(Generator $faker, array $definition) => [
+            'author' => $author,
+        ]);
+    }
+
+    /**
+     * Returns array with generation rules
+     */
+    public function definition(): array
+    {
+        return [
+            'title' => $this->faker->sentence(12),
+            'content' => $this->faker->text(900),
+            'author' => UserFactory::new()->makeOne()
+        ];
+    }
+}
+```
+
+### UserFactory
+
+Let's create `UserFactory` class:
+
+```php
+// app/database/Factory/UserFactory.php
+namespace Database\Factory;
+
+use App\Database\User;
+use Spiral\DatabaseSeeder\Factory\AbstractFactory;
+
+class UserFactory extends AbstractFactory
+{
+    /**
+     * Returns a fully qualified database entity class name
+     */
+    public function entity(): string
+    {
+        return User::class;
+    }
+
+    /**
+     * Returns an entity
+     */
+    public function makeEntity(array $definition): User
+    {
+        return new User($definition['name']);
+    }
+
+    /**
+     * Returns array with generation rules
+     */
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->name,
+        ];
+    }
+}
+```
+### BlogSeeder
+
+Let's create `UserFactory` class:
+
+```php
+// app/database/Seeder/BlogSeeder.php
+namespace Database\Seeder;
+
+use Database\Factory\CommentFactory;
+use Database\Factory\PostFactory;
+use Database\Factory\UserFactory;
+use Spiral\DatabaseSeeder\Seeder\AbstractSeeder;
+
+class BlogSeeder extends AbstractSeeder
+{
+    public function run(): \Generator
+    {
+        $users = UserFactory::new()->times(100)->make();
+        yield from $users;
+
+        $posts = [];
+        for ($i = 0; $i < 1000; $i++) {
+            $posts[] = PostFactory::new()
+                ->withAuthor($users[array_rand($users)])
+                ->makeOne();
+        }
+        yield from $posts;
+
+        for ($i = 0; $i < 1000; $i++) {
+            yield CommentFactory::new()
+                ->withAuthor($users[array_rand($users)])
+                ->withPost($posts[array_rand($posts)])
+                ->makeOne();
+        }
+    }
+}
+```
+
+Now let's execute a console command that will populate the database with test records:
 
 ```bash
-php app.php seed:comment -vv
+php app.php db:seed
 ```
 
 ## Controller
@@ -896,6 +993,7 @@ The generated code:
 ```php
 namespace App\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\Router\Annotation\Route;
 
@@ -903,11 +1001,19 @@ class PostController
 {
     use PrototypeTrait;
 
-    public function test()
+    /**
+     * Please, don't forget to configure the Route attribute or remove it and register the route manually.
+     */
+    #[Route(route: 'path', name: 'name')]
+    public function test(): ResponseInterface
     {
     }
 
-    public function get()
+    /**
+     * Please, don't forget to configure the Route attribute or remove it and register the route manually.
+     */
+    #[Route(route: 'path', name: 'name')]
+    public function get(): ResponseInterface
     {
     }
 }
@@ -986,7 +1092,7 @@ class PostController
 {
     use PrototypeTrait;
 
-    #[Route(route: '/api/post/<post:\d+>', name: 'post.get', methods: 'GET')]
+    #[Route(route: '/api/post/<id:\d+>', name: 'post.get', methods: 'GET')]
     public function get(string $id): array
     {
         /** @var Post $post */
@@ -1138,14 +1244,13 @@ class PostRepository extends Repository
 Create method `list` in `PostController`:
 
 ```php
-
 #[Route(route: '/api/post', name: 'post.list', methods: 'GET')]
 public function list(): array
 {
     $posts = $this->posts->findAllWithAuthor();
 
     return [
-        'posts' => \array_map([$this->postView, 'map'], $posts->fetchAll())
+        'posts' => array_map([$this->postView, 'map'], $posts->fetchAll())
     ];
 }
 ```
@@ -1158,7 +1263,11 @@ public function list(): array
 An approach provided above has its limitations since you have to paginate, filter, and order the result manually.
 Use the [Data Grid component](/component/data-grid.md) to handle data formatting for you:
 
-Activate the `Spiral\DataGrid\Bootloader\GridBootloader` in your application.
+```bash
+composer require spiral/data-grid-bridge
+``` 
+
+Activate the `Spiral\DataGrid\Bootloader\GridBootloader` and `Spiral\Cycle\Bootloader\DataGridBootloader` in your application.
 
 To use data grids, we have to specify our data schema first, create `App\View\PostGrid` class:
 
@@ -1226,39 +1335,48 @@ You can use sorters, filters, and pagination in one request. Multiple filters ca
 
 ## Validate Request
 
-Make sure to [validate](/security/validation.md) data from the client. Use low level validation interfaces or
-[Request Filters](/filters/configuration.md) to validate, filter and map your data.
+To validate the request, we will use the [spiral/validator](https://github.com/spiral/validator) package.
 
-Create `CommentFilter` using the [scaffolder extension](/basics/scaffolding.md):
+To install the package:
 
 ```bash
-php app.php create:filter comment
+composer require spiral/validator
 ```
 
-Configure filter as following:
+Add the bootloader to `LOAD` in `app/src/App.php` to activate the component:
+
+```diff
+--- a/app/src/App.php
++++ b/app/src/App.php
+@@ -85,5 +85,6 @@ class App extends Kernel
+
+         ValidationBootloader::class,
++        \Spiral\Validator\Bootloader\ValidatorBootloader::class,
+     ];
+ }
+```
+
+Create `CommentFilter`:
 
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class CommentFilter extends Filter
+class CommentFilter extends Filter implements HasFilterDefinition
 {
-    protected const SCHEMA = [
-        'message' => 'data:message'
-    ];
+    #[Post(key: 'message')]
+    public readonly string $message;
 
-    protected const VALIDATES = [
-        'message' => ['notEmpty']
-    ];
-
-    protected const SETTERS = [
-        'message' => 'strval'
-    ];
-
-    public function getMessage(): string
+    public function filterDefinition(): FilterDefinitionInterface
     {
-        return $this->message;
+        return new FilterDefinition([
+            'message' => ['string', 'required']
+        ]);
     }
 }
 ```
@@ -1286,10 +1404,7 @@ class CommentService
 
     public function comment(Post $post, User $user, string $message): Comment
     {
-        $comment = new Comment();
-        $comment->post = $post;
-        $comment->author = $user;
-        $comment->message = $message;
+        $comment = new Comment($message, $user, $post);
 
         $this->entityManager->persist($comment);
         $this->entityManager->run();
@@ -1301,17 +1416,17 @@ class CommentService
 
 ### Controller Action
 
-Declare controller method and request filter instance. Since you use `FilterInterceptor` in your domain-core, the
-framework will guarantee that filter is valid. Create `comment` endpoint to post message to a given post:
+Declare controller method and request filter instance. Since you filter implemented `HasFilterDefinition`, the Filters component
+will guarantee that filter is valid. Create `comment` endpoint to post message to a given post:
 
 ```php
-#[Route(route: '/api/post/<post:\d+>/comment', name: 'post.comment', methods: 'POST')] 
+#[Route(route: '/api/post/<post:\d+>/comment', name: 'post.comment', methods: 'POST')]
 public function comment(Post $post, CommentFilter $commentFilter): array
 {
     $this->commentService->comment(
         $post,
-        $this->users->findOne(), // todo: use current user
-        $commentFilter->getMessage()
+        $this->users->findOne(),
+        $commentFilter->message
     );
 
     return ['status' => 201];
@@ -1356,8 +1471,7 @@ curl -X POST -H 'content-type: application/json' --data '{"message": "first comm
 ```
 
 > **Note**
-> Read more about filters [here](/filters/filter.md). Change the [scaffolder](/basics/scaffolding.md) configuration to 
-> alter the generated request postfix or default namespace.
+> Read more about filters [here](/filters/filter.md). 
 
 ## Render Template
 
@@ -1401,10 +1515,10 @@ Create a view file `app/views/posts.dark.php` and extend parent layout.
 
 <define:body>
     @foreach($posts as $post)
-    <div class="post">
-        <div class="title">{{$post->title}}</div>
-        <div class="author">{{$post->author->name}}</div>
-    </div>
+        <div class="post">
+            <div class="title">{{$post->title}}</div>
+            <div class="author">{{$post->author->name}}</div>
+        </div>
     @endforeach
 </define:body>
 ```
@@ -1459,7 +1573,6 @@ public function findOneWithComments(string $id): ?Post
 And corresponding view `app/views/post.dark.php`:
 
 ```html
-
 <extends:layout.base title="Posts"/>
 
 <define:body>
@@ -1469,10 +1582,10 @@ And corresponding view `app/views/post.dark.php`:
     </div>
     <div class="comments">
         @foreach($post->comments as $comment)
-        <div class="comment">
-            <div class="message">{{$comment->message}}</div>
-            <div class="author">{{$comment->author->name}}</div>
-        </div>
+            <div class="comment">
+                <div class="message">{{$comment->message}}</div>
+                <div class="author">{{$comment->author->name}}</div>
+            </div>
         @endforeach
     </div>
 </define:body>
@@ -1488,18 +1601,17 @@ Open the post page using `http://localhost:8080/post/1`.
 Use `post.view` route name to generate link in `app/views/posts.dark.php`:
 
 ```html
-
 <extends:layout.base title="Posts"/>
-
+       
 <define:body>
-    @foreach($posts as $post)
-    <div class="post">
-        <div class="title">
-            <a href="@route('post.view', ['id' => $post->id])">{{$post->title}}</a>
-        </div>
-        <div class="author">{{$post->author->name}}</div>
-    </div>
-    @endforeach
+   @foreach($posts as $post)
+       <div class="post">
+           <div class="title">
+               <a href="@route('post.view', ['id' => $post->id])">{{$post->title}}</a>
+           </div>
+           <div class="author">{{$post->author->name}}</div>
+       </div>
+   @endforeach
 </define:body>
 ```
 
