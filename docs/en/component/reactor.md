@@ -1,7 +1,11 @@
 # Code Generation
 
-You can use the component `spiral/reactor` to generate PHP classes code using fluent declarative wrappers. This
-component is the foundation of `spiral/scaffolder` exception but can be used separately from the framework:
+You can use the component `spiral/reactor` to generate PHP classes code using fluent declarative wrappers. This component
+is based on `nette/php-generator`.
+
+## Installation
+
+To install the component:
 
 ```bash
 composer require spiral/reactor
@@ -19,7 +23,7 @@ use Spiral\Reactor\ClassDeclaration;
 
 $class = new ClassDeclaration('MyClass');
 
-dump($class->render());
+dump($class->render()); // or dump((string) $class);
 ```
 
 The output:
@@ -39,12 +43,14 @@ To render class property:
 ```php
 $class = new ClassDeclaration('MyClass');
 
-$class->property('my_property')
+$class->addProperty('property', 'default')
     ->setProtected()
-    ->setDefaultValue('default')
-    ->setComment(['My property.', '@var string']);
+    ->setReadOnly()
+    ->setType('string')
+    ->setComment(['My property.', '@var string'])
+    ->addAttribute('SomeAttribute');
 
-dump($class->render());
+dump((string) $class);
 ```
 
 The output:
@@ -56,7 +62,8 @@ class MyClass
      * My property.
      * @var string
      */
-    protected $my_property = 'default';
+    #[SomeAttribute]
+    protected readonly string $property = 'default';
 }
 ```
 
@@ -67,12 +74,13 @@ To render constant:
 ```php
 $class = new ClassDeclaration('MyClass');
 
-$class->constant('MY_CONSTANT')
+$class->addConstant('MY_CONSTANT', 'default')
     ->setPublic()
-    ->setValue('default')
+    ->setFinal()
+    ->addAttribute('SomeAttribute')
     ->setComment(['My constant']);
 
-dump($class->render());
+dump((string) $class);
 ```
 
 The output:
@@ -80,10 +88,9 @@ The output:
 ```php
 class MyClass
 {
-    /**
-     * My constant
-     */
-    public const MY_CONSTANT = 'default';
+    /** My constant */
+    #[SomeAttribute]
+    final public const MY_CONSTANT = 'default';
 }
 ```
 
@@ -96,7 +103,7 @@ $class = new ClassDeclaration('MyClass');
 
 $class->addTrait(PrototypeTrait::class);
 
-dump($class->render());
+dump((string) $class);
 ```
 
 The output:
@@ -114,13 +121,15 @@ To implement given interface or extend base class:
 
 ```php
 use Spiral\Reactor\ClassDeclaration;
-use Cycle\ORM\Select;
+use Cycle\ORM\Select\Repository;
 
 $class = new ClassDeclaration('MyClass');
 
-$class->addInterface(\Countable::class)->setExtends(Select\Repository::class);
+$class
+    ->addImplement(\Countable::class)
+    ->setExtends(Repository::class);
 
-dump($class->render());
+dump((string) $class);
 ```
 
 The output:
@@ -138,15 +147,19 @@ To generate class method:
 ```php
 $class = new ClassDeclaration('MyClass');
 
-$method = $class->method('ping')
+$class->addMethod('ping')
     ->setPublic()
     ->setComment('My method')
-    ->setReturn('void');
+    ->setReturnType('string')
+    ->setReturnNullable()
+    ->setFinal()
+    ->setBody('return $a;')
+    ->addAttribute('SomeAttribute')
+        ->addParameter('a', null)
+        ->setType('string')
+        ->setNullable(true);
 
-$method->parameter('a')->setType('string')->setDefaultValue('test');
-$method->setSource('echo $a');
-
-dump($class->render());
+dump((string) $class);
 ```
 
 The output:
@@ -157,34 +170,162 @@ class MyClass
     /**
      * My method
      */
-    public function ping(string $a = 'test'): void
+    #[SomeAttribute]
+    final public function ping(?string $a = null): ?string
     {
-        echo $a
+        return $a;
     }
 }
 ```
 
 ## Namespace
 
-To place generated class into a namespace:
+To create a class inside a specific namespace:
 
 ```php
-use Spiral\Reactor\ClassDeclaration;
-use Spiral\Reactor\NamespaceDeclaration;
+use Spiral\Reactor\Partial\PhpNamespace;
 
-$class = new ClassDeclaration('MyClass');
+$namespace = new PhpNamespace('App\\Some');
+$namespace->addClass('MyClass')
 
-$ns = new NamespaceDeclaration('MyNamespace');
-$ns->addElement($class);
+dump((string) $namespace);
+ ```
 
-dump($ns->render());
+The output:
+
+```php
+namespace App\Some;
+
+class MyClass
+{
+}
+```
+
+## Interface Declaration
+
+To declare interface use `Spiral\Reactor\InterfaceDeclaration`.
+
+```php
+$interface = new InterfaceDeclaration('MyInterface');
+$interface
+    ->addExtend(\Countable::class)
+    ->addComment('My interface')
+    ->addMethod('someMethod')
+        ->setPublic()
+        ->setReturnType('int');
+
+dump((string) $interface);
 ```
 
 The output:
 
 ```php
-namespace MyNamespace {
-    class MyClass
+/**
+ * My interface
+ */
+interface MyInterface extends Countable
+{
+    public function someMethod(): int;
+}
+```
+
+## Enum Declaration
+
+To declare enum use `Spiral\Reactor\EnumDeclaration`.
+
+```php
+$enum = new EnumDeclaration('MyEnum');
+
+$enum->addCase('First', 'first');
+$enum->addCase('Second', 'second');
+
+$enum
+    ->setType('string')
+    ->addConstant('FOO', 'bar')
+    ->addComment('Description of enum')
+    ->addAttribute('SomeAttribute');
+$enum
+    ->addMethod('getCase')
+    ->setReturnType('string')
+    ->addBody('return self::First->value;');
+
+dump((string) $enum);
+```
+
+The output:
+
+```php
+/**
+ * Description of enum
+ */
+#[SomeAttribute]
+enum MyEnum: string
+{
+    public const FOO = 'bar';
+
+    case First = 'first';
+    case Second = 'second';
+
+    public function getCase(): string
+    {
+        return self::First->value;
+    }
+}
+```
+
+## Function Declaration
+
+To declare global function use `Spiral\Reactor\FunctionDeclaration`.
+
+```php
+$function = new FunctionDeclaration('myFunction');
+$function
+    ->addBody('return \'Hello world\';')
+    ->setReturnType('string')
+    ->addAttribute('SomeAttribute')
+    ->addComment('Some function');
+
+dump((string) $function);
+```
+
+The output:
+
+```php
+/**
+ * Some function
+ */
+#[SomeAttribute]
+function myFunction(): string
+{
+    return 'Hello world';
+}
+
+```
+
+## Trait Declaration
+
+To declare trait use `Spiral\Reactor\TraitDeclaration`.
+
+```php
+$trait = new TraitDeclaration('MyTrait');
+$trait
+    ->setComment('Some trait')
+    ->addMethod('myMethod')
+        ->setPublic()
+        ->setReturnType('void');
+
+dump((string) $trait);
+```
+
+The output:
+
+```php
+/**
+ * Some trait
+ */
+trait MyTrait
+{
+    public function myMethod(): void
     {
     }
 }
@@ -192,25 +333,28 @@ namespace MyNamespace {
 
 ## File
 
-Alternatively you can render whole PHP file (with forced namespace):
+You can collect classes, interfaces, traits, global functions, and enums in a file:
 
 ```php
-use Spiral\Reactor\ClassDeclaration;
-use Spiral\Reactor\FileDeclaration;
-use Cycle\ORM\Select;
+$namespace = new PhpNamespace('MyNamespace');
+$namespace
+    ->addUse(\Countable::class)
+    ->addUse(Repository::class, 'Repo') // with alias
+    ->addUseFunction('count');
 
-$class = new ClassDeclaration('MyClass');
+$class = $namespace->addClass('MyClass');
+$class
+    ->addImplement(\Countable::class)
+    ->addMethod('count')
+        ->setReturnType('int')
+        ->addBody('return 1;');
 
-$file = new FileDeclaration('MyNamespace');
+$file = new FileDeclaration();
+$file
+    ->setStrictTypes()
+    ->addNamespace($namespace);
 
-$file->setComment('This is my file');
-$file->setDirectives('strict_types=1');
-
-$file->addUse(Select\Repository::class, 'Repo');
-
-$file->addElement($class);
-
-dump($file->render());
+dump((string) $file);
 ```
 
 The output:
@@ -218,16 +362,19 @@ The output:
 ```php
 <?php
 
-/**
- * This is my file
- */
 declare(strict_types=1);
 
 namespace MyNamespace;
 
+use Countable;
 use Cycle\ORM\Select\Repository as Repo;
+use function count;
 
-class MyClass
+class MyClass implements Countable
 {
+    public function count(): int
+    {
+        return 1;
+    }
 }
 ```
