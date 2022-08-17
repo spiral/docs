@@ -152,11 +152,63 @@ class MyBootloader extends Bootloader
 
 ## Job Payload serialization
 
-When a job pushed into a queue, a job payload would be serialized via `Spiral\Queue\SerializerInterface`.
+When a job pushed into a queue, a job payload would be serialized via [Serializer component](../component/serializer.md).
 
 > **Note**
-> By default, the payload will be serialized with default
-> serializer `Spiral\Queue\DefaultSerializer`  -> [`opis/closure`](https://opis.io/closure/).
+> By default, the payload will be serialized with default serializer `Spiral\Serializer\Serializer\JsonSerializer`.
+
+### Changing serializer
+
+There are several ways to change the serializer. You can globally change the default serializer for the application. 
+You can read more about configuring the Serializer [here](../component/serializer.md).
+
+Or you can set a specific serializer for the job type. A specific serializer is selected by the `Spiral\Serializer\SerializerRegistryInterface`.
+
+You can configure the serializer for a specific job type in the `app/config/queue.php` configuration file.
+
+```php
+use Spiral\Core\Container\Autowire;
+
+return [
+    'registry' => [
+        'serializers' => [
+            ObjectJob::class => 'json',
+            TestJob::class => 'serializer',
+            OtherJob::class => CustomSerializer::class,
+            FooJob::class => new CustomSerializer(),
+            BarJob::class => new Autowire(CustomSerializer::class),
+        ]
+    ],
+];
+```
+
+A serializer can be a `key string` under which the serializer is registered in the `Serializer` component, 
+a `fully-qualified class name`, a `serializer instance`, an `Autowire instance`.
+
+> **Note**
+> The serializer class must implement the `Spiral\Serializer\SerializerInterface` interface.
+
+Or register a serializer using the `setSerializer` method of the `Spiral\Queue\QueueRegistry` class.
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Core\Container\Autowire;
+use Spiral\Queue\QueueRegistry;
+
+class AppBootloader extends Bootloader
+{
+    public function boot(QueueRegistry $registry): void
+    {
+        $registry->setSerializer(ObjectJob::class, 'json');
+        $registry->setSerializer(TestJob::class, 'serializer');
+        $registry->setSerializer(OtherJob::class, CustomSerializer::class);
+        $registry->setSerializer(FooJob::class, new CustomSerializer());
+        $registry->setSerializer(BarJob::class, new Autowire(CustomSerializer::class));
+    }
+}
+```
 
 ## Handle failed jobs
 
