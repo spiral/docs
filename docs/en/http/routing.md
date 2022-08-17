@@ -22,7 +22,185 @@ And activate its Bootloader:
 > **Note**
 > Read how to define routing using attributes or annotations [here](/http/annotated-routes.md).
 
-## Default Configuration
+## Creating new routes via RoutesBootloader
+
+The default web application bundle allows you to configure application routes via `App\Bootloader\RoutesBootloader`.
+This bootloader contains the `defineRoutes` method, which contains in the parameters the `Spiral\Router\Loader\Configurator\RoutingConfigurator`.
+The `RoutingConfigurator` allows you to add routes or import routes from specific files.
+
+### Import from files
+
+By default, the import of routes from the `app/routes/web.php` file is already configured.
+
+Open the `web.php` file, to add new route use the `add` method.
+
+```php
+use App\Controller\HomeController;
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+return function (RoutingConfigurator $routes): void {
+    // route to the controller action
+    $routes->add('index', '/')->action(HomeController::class, 'index');
+    
+    // route to all of the controller actions at once
+    $routes->add('html', '/<action>.html')->controller(HomeController::class);
+    
+    // route to all actions in multiple controllers
+    $routes->add('group', '/<controller>/<action>/<id>')->groupControllers([
+        'home' => HomeController::class,
+        'demo' => DemoController::class
+    ]);
+    
+    // route to the set of controllers located in the same namespace
+    $routes->add('namespaced', '/<controller>/<action>/<id>')->namespaced('\App\Controllers');
+    
+    // route with callable handler
+    $routes->add('hello', '/hello')->callable(static fn () => 'hello');
+
+    // route with custom handler
+    $routes->add('custom-handler', '/custom-handler')->handler(\App\Handlers\Handler::class);
+};
+```
+
+To add HTTP verbs, default parameters, custom core, prefix, group:
+
+```php
+use App\Controller\HomeController;
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+return function (RoutingConfigurator $routes): void {
+    // HTTP verbs
+    $routes
+        ->add('html', '/<action>.html')
+        ->controller(HomeController::class)
+        ->methods('GET'); // or ->methods(['GET', 'POST'])
+    
+    // default parameters
+    $routes
+        ->add('html', '/<action>.html')
+        ->controller(HomeController::class)
+        ->defaults(['action' => 'default']);
+    
+    // custom core
+    $routes
+        ->add('html', '/<action>.html')
+        ->controller(HomeController::class)
+        ->core($core);
+    
+    // prefix
+    $routes
+        ->add('html', '/<action>.html')
+        ->controller(HomeController::class)
+        ->prefix('profile');
+
+    // group
+    $routes
+        ->add('html', '/<action>.html')
+        ->controller(HomeController::class)
+        ->group('admin');    
+};
+```
+
+Routes with the same `prefix` and `group` can be grouped in a separate file. Need to create a new file, for example, 
+`app/routes/api.php` and add api routes:
+
+```php
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+return function (RoutingConfigurator $routes): void {
+    // routes
+};
+```
+
+Import this file in the `defineRoutes` method:
+
+```php
+// file app/src/Bootloader/RoutesBootloader.php
+protected function defineRoutes(RoutingConfigurator $routes): void
+{
+    // all routes from this file will have a prefix and a group
+    $routes
+        ->import($this->dirs->get('app') . '/routes/api.php')
+        ->group('api')
+        ->prefix('api');
+}
+```
+
+### Adding routes in defineRoutes method
+
+Routes can be added in the `defineRoutes` method using the `RoutingConfigurator`. 
+The process of adding routes is exactly the same as in separate files:
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    // ...
+    
+    protected function defineRoutes(RoutingConfigurator $routes): void
+    {
+        $routes->add('index', '/')->action(HomeController::class, 'index');
+    }
+}
+```
+
+### Middlewares and groups
+
+Middlewares are configured globally, which will be applied for all routes and for each group of routes separately.
+Each group will have the global middlewares and the middlewares configured for that group applied.
+
+You can configure middlewares in the `RoutesBootloader`:
+
+```php
+namespace App\Bootloader;
+
+use App\Middleware\LocaleSelector;
+use Spiral\Auth\Middleware\AuthTransportMiddleware;
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Cookies\Middleware\CookiesMiddleware;
+use Spiral\Core\Container\Autowire;
+use Spiral\Csrf\Middleware\CsrfMiddleware;
+use Spiral\Debug\StateCollector\HttpCollector;
+use Spiral\Http\Middleware\ErrorHandlerMiddleware;
+use Spiral\Http\Middleware\JsonPayloadMiddleware;
+use Spiral\Session\Middleware\SessionMiddleware;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    protected function globalMiddleware(): array
+    {
+        return [
+            LocaleSelector::class,
+            ErrorHandlerMiddleware::class,
+            JsonPayloadMiddleware::class,
+            HttpCollector::class,
+        ];
+    }
+
+    protected function middlewareGroups(): array
+    {
+        return [
+            'web' => [
+                CookiesMiddleware::class,
+                SessionMiddleware::class,
+                CsrfMiddleware::class,
+                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'cookie'])
+            ],
+            'api' => [
+                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'header'])
+            ],
+        ];
+    }
+}
+```
+
+## Creating new routes via RouterInterface
+
+### Default Configuration
 
 The default web application bundle allows you to call any controller action located in `App\Controller`namespace using
 `/<controller>/<action>` pattern. See below how to alter this behavior.
@@ -47,10 +225,10 @@ class RoutesBootloader extends Bootloader
     public function boot(RouterInterface $router): void
     {
         $router->setRoute(
-            'home',                                   // route name 
+            'home',                    // route name 
             new Route(
-                '/',                                  // pattern
-                function () { return 'hello world'; } // handler
+                '/',                   // pattern
+                fn () => 'hello world' // handler
             )
         );
     }
@@ -385,9 +563,7 @@ $router->setRoute(
     )
 );
 
-$router->setDefault(new Route('/', function (): string {
-    return 'default';
-}));
+$router->setDefault(new Route('/', fn (): string => 'default'));
 ``` 
 
 See below how to use the default route to scaffold application paths quickly.
@@ -602,7 +778,6 @@ $router->setRoute('app',
 The default web-application bundle sets this route [as default](https://github.com/spiral/app/blob/2.x/app/src/Bootloader/RoutesBootloader.php#L42).
 You don't need to create a route for any of the controllers added to `App\Controller`, simply use `/controller/action` URLs
 to access the required method. If no action is specified, the `index` will be used by the default. The routing will point
-
 to the public methods only.
 
 > **Note**
