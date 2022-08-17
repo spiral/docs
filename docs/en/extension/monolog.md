@@ -4,15 +4,22 @@ Web and GRPC bundles include default integration with https://github.com/Seldaek
 
 ## Configuration
 
-The extension can configure using a configuration file or a bootloader.
+The extension can configure using a configuration file or a bootloader. 
 
 The configuration file for this extension should be located at `app/config/monolog.php`. Within this file, you may
-configure the `globalLevel`, `handlers` and `processors` parameters.
+configure the default Monolog handler, global logging level, handlers and processors.
 
 For example, the configuration file might look like this:
 
 ```php
 return [    
+    /**
+     * -------------------------------------------------------------------------
+     *  Default Monolog handler
+     * -------------------------------------------------------------------------
+     */
+    'default' => env('MONOLOG_DEFAULT_CHANNEL', 'default'),
+    
     /**
      * -------------------------------------------------------------------------
      *  Global logging level
@@ -23,7 +30,7 @@ return [
      * @see https://github.com/Seldaek/monolog/blob/main/doc/01-usage.md#log-levels
      */
     'globalLevel' => Logger::toMonologLevel(env('MONOLOG_DEFAULT_LEVEL', Logger::DEBUG)),
-    
+
     /**
      * -------------------------------------------------------------------------
      *  Handlers
@@ -54,7 +61,7 @@ return [
             ],
         ],
     ],
-    
+
     /**
      * -------------------------------------------------------------------------
      *  Processors
