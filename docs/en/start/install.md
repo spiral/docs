@@ -19,7 +19,6 @@ Make sure that your server configured with the following PHP version and extensi
 
 * PHP 8.1+, 64bit
 * *mb-string* extension (spiral is UTF-8 centric framework)
-* PDO Extension with desired database drivers
 
 Web Application Bundle
 --------
