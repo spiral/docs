@@ -32,6 +32,50 @@ public function boot(TokenizerBootloader $tokenizer)
 > **Note**
 > Attention, class lookup is not a fast process, only add necessary directories.
 
+## Scoped Class Locator
+
+To improve the performance of class searching, you can configure the search scope.
+
+First of all, let's add `scopes` in the configuration file:
+
+```php
+// file app/config/tokenizer.php
+return [
+    'scopes' => [
+        'scopeName' => [
+            'directories' => [
+                directory('app/Directory')
+            ],
+            'exclude' => [
+                directory('app/Directory/Other')
+            ]
+        ],
+    ]
+];
+```
+
+> **Note**
+> With the `exclude` parameter, we can exclude some directories from the search.
+
+Use `Spiral\Tokenizer\ScopedClassesInterface` to find available classes by the scope name in scope directories:
+
+```php
+final class SomeLocator
+{
+    public function __construct(
+        private readonly ScopedClassesInterface $locator
+    ) {
+    }
+
+    public function findDeclarations(): array
+    {
+        foreach ($this->locator->getScopedClasses('scopeName') as $class) {
+            // ...
+        }
+    }
+}
+```
+
 ## PHP-Parser
 
 The [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser) is available in Web and GRPC bundle by default. Use this

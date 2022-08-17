@@ -40,6 +40,9 @@
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
     * [Data Grids](component/data-grid.md)
+    * [Serializer](component/serializer.md)
+    * [SendIt](component/sendit.md)
+    * [Event Broadcasting](component/broadcasting.md)
 * Console
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)

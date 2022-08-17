@@ -46,3 +46,26 @@ Please remember that values in `.env` will be pre-processed, following changes w
 
 > **Note**
 > The quotes around strings will be stripped automatically.
+
+## Disabling overwriting ENV variables
+
+By default, the new values overwrite the previously set ones. This behavior can be changed by setting the `overwrite` 
+parameter to `false` in the `Spiral\Boot\Environment` class:
+
+```php
+use Spiral\Boot\Environment;
+
+// in the run method
+$app = App::create([...]);
+$app->starting(...);
+$app->started(...);
+$app->run(new Environment([
+     'APP_ENV' => 'production'
+], overwrite: false));
+
+// or in the init method
+$app = App::init(
+    ['root' => __DIR__], 
+    new Environment(overwrite: false)
+);
+```
