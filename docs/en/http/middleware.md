@@ -13,8 +13,10 @@ Implement `Psr\Http\Server\MiddlewareInterface` to create your middleware:
 ```php
 class MyMiddleware implements MiddlewareInterface
 {
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface 
-    {
+    public function process(
+        ServerRequestInterface $request, 
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
         return $handler->handle($request)->withAddedHeader('My-Header', 'my-value');
     }
 }
@@ -35,7 +37,8 @@ class MyMiddlewareBootloader extends Bootloader
         // automatically resolved by Container
         $http->addMiddleware(MyMiddleware::class);
         
-        // Autowire allows creating an object with dependency resolving from the container and passing some parameters manually
+        // Autowire allows creating an object with dependency resolving from the container
+        // and passing some parameters manually
         $http->addMiddleware(new Autowire(MyMiddleware::class, ['someParameter' => 'value']));
     }
 }
