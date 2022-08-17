@@ -10,7 +10,28 @@ To install the extension:
 composer require spiral/sentry-bridge
 ```
 
-Activate the bootloader `Spiral\Sentry\Bootloader\SentryBootloader`:
+Sentry provides two bootloaders `Spiral\Sentry\Bootloader\SentryReporterBootloader` and
+`Spiral\Sentry\Bootloader\SentryBootloader`.
+
+### Sentry as Reporter
+
+The `SentryReporterBootloader` registers the `Spiral\Sentry\SentryReporter` in the `Exceptions` component. 
+The Reporter sends the exception to Sentry.
+
+```php
+protected const LOAD = [
+    // ...
+    Spiral\Sentry\Bootloader\SentryReporterBootloader::class,
+    // ...
+];
+```
+
+### Sentry as Snapshotter
+
+The `SentryBootloader` registers the `Spiral\Sentry\SentrySnapshotter` as `SnapshotterInterface` in `Snapshots` component.
+The SentrySnapshotter sends the exception to Sentry and creates snapshot with error ID from Sentry. Use this bootloader 
+only if you need to save a snapshot of the exception with the ID under which the exception is registered in Sentry.
+Also, remove the default `Spiral\Bootloader\SnapshotsBootloader`.
 
 ```php
 protected const LOAD = [
@@ -21,7 +42,7 @@ protected const LOAD = [
 ```
 
 > **Note**
-> Remove default `Spiral\Bootloader\SnapshotsBootloader`.
+> Use one of the provided bootloaders. Don't use both bootloaders.
 
 The component will look at `SENTRY_DSN` env value.
 
