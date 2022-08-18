@@ -114,7 +114,7 @@ After that, you can add there either your own managers, or provided by the compo
 ```php
 <?php
 
-use Laminas\Diactoros\Uri;
+use Nyholm\Psr7\Uri;
 use Spiral\Distribution\Manager;
 use Spiral\Distribution\Resolver\StaticResolver;
 
