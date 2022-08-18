@@ -29,13 +29,13 @@ composer require spiral/attributes
 > **Note**
 > Please note that the spiral/framework >= 2.8 already includes this component.
 
-To enable the component, you just need to add the `Spiral\Bootloader\AttributesBootloader` class to the bootloader
-list, which is located in the class of your application.
+To enable the component, you just need to add the `Spiral\Bootloader\Attributes\AttributesBootloader` class to the 
+bootloader list, which is located in the class of your application.
 
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Bootloader\AttributesBootloader::class
+    Spiral\Bootloader\Attributes\AttributesBootloader::class
 ];
 ```
 

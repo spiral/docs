@@ -9,12 +9,12 @@ composer require spiral/views
 > **Note**
 > Please note that the spiral/framework >= 2.6 already includes this component.
 
-To activate the component use bootloader `Spiral\Bootloaders\Views\ViewsBootloader`:
+To activate the component use bootloader `Spiral\Views\Bootloader\ViewsBootloader`:
 
 ```php
 [
     // ...
-    Spiral\Bootloaders\Views\ViewsBootloader::class,
+    Spiral\Views\Bootloader\ViewsBootloader::class,
     // ...
 ]
 ```
@@ -61,7 +61,7 @@ To assign a new directory to view namespace:
 namespace App\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Bootloader\Views\ViewsBootloader;
+use Spiral\Views\Bootloader\ViewsBootloader;
 
 class AppBootloader extends Bootloader
 {
@@ -80,7 +80,7 @@ To register a new view engine make sure to implement `Spiral\Views\EngineInterfa
 namespace App\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Bootloader\Views\ViewsBootloader;
+use Spiral\Views\Bootloader\ViewsBootloader;
 
 class AppBootloader extends Bootloader
 {

@@ -16,7 +16,7 @@ The extension can be enabled using `Spiral\Twig\Bootloader\TwigBootloader`.
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Bootloader\Views\ViewsBootloader::class,
+    Spiral\Views\Bootloader\ViewsBootloader::class,
     Spiral\Bootloader\Views\TranslatedCacheBootloader::class, // keep localized views in separate cache files
     Spiral\Twig\Bootloader\TwigBootloader::class,
     // ...

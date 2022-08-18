@@ -20,13 +20,13 @@ composer require spiral/distribution
 > **Note**
 > Please note that the spiral/framework >= 2.8 already includes this component.
 
-To enable the component, you just need to add the `Spiral\Bootloader\Distribution\DistributionBootloader` class to the 
+To enable the component, you just need to add the `Spiral\Distribution\Bootloader\DistributionBootloader` class to the 
 bootloader list, which is located in the class of your application.
 
 ```php
 protected const LOAD = [
     // Added distribution bootloader
-    \Spiral\Bootloader\Distribution\DistributionBootloader::class,
+    \Spiral\Distribution\Bootloader\DistributionBootloader::class,
 ];
 ```
 

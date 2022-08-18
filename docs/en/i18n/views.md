@@ -12,7 +12,7 @@ this bootloader before view engine bootloaders:
 ```php
 protected const LOAD = [
     // ...
-    Framework\Views\ViewsBootloader::class,
+    Spiral\Views\Bootloader\ViewsBootloader::class,
     Framework\Views\TranslatedCacheBootloader::class,
     // ...
 ];
