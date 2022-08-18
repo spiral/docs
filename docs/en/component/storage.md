@@ -20,12 +20,12 @@ composer require spiral/storage
 
 > Please note that the spiral/framework >= 2.8 already includes this component.
 
-Make sure to add `Spiral\Bootloader\Storage\StorageBootloader` to your App class:
+Make sure to add `Spiral\Storage\Bootloader\StorageBootloader` to your App class:
 
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Bootloader\Storage\StorageBootloader::class
+    Spiral\Storage\Bootloader\StorageBootloader::class
 ];
 ```
 
