@@ -259,6 +259,59 @@ To access `Spiral\Http\Request\InputBag` without the use of `__get`:
 dump($input->bag('data')->all());
 ```
 
+### Adding new input bag
+
+With `Spiral\Bootloader\Http\HttpBootloader` you can add your own input bag.
+
+For example, we need to receive uploaded files as a Symfony\Bridge\PsrHttpMessage\Factory\UploadedFile object.
+Let's create an input bag class.
+
+```php
+namespace App\Http\Request;
+
+use Spiral\Http\Request\InputBag;
+use Symfony\Bridge\PsrHttpMessage\Factory\UploadedFile;
+
+final class FilesBag extends InputBag
+{
+    public function __construct(array $data, string $prefix = '')
+    {
+        foreach ($data as $name => $file) {
+            $data[$name] = new UploadedFile($file, fn(): string => $this->getTemporaryPath());
+        }
+
+        parent::__construct($data, $prefix);
+    }
+
+    protected function getTemporaryPath(): string
+    {
+        return \tempnam(\sys_get_temp_dir(), \uniqid('symfony', true));
+    }
+}
+```
+
+After that, add the created `FilesBag` by the method `addInputBag` in the `HttpBootloader`.
+
+```php
+namespace App\Bootloader;
+
+use App\Http\Request\FilesBag;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Bootloader\Http\HttpBootloader;
+
+class AppBootloader extends Bootloader
+{
+    public function init(HttpBootloader $http): void
+    {
+        $http->addInputBag('symfonyFiles', [
+            'class'  => FilesBag::class,
+            'source' => 'getUploadedFiles',
+            'alias' => 'symfony-file'
+        ]);
+    }
+}
+```
+
 ## InputInterface
 
 The `Spiral\Http\Request\InputManager` does not have `get` prefix for its methods. The reason for that located in an 
