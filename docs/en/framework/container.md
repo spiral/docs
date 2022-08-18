@@ -454,3 +454,17 @@ class Service implements SingletonService
 ```
 
 Using such an approach, you can perform complex computations only once and rely on RAM cache on later user requests.
+
+## Replacing a container instance
+
+In some cases, you might want to replace `container instance` in the application. You can do this when you create 
+an application instance.
+
+```php
+use Spiral\Core\Container;
+
+$app = App::create(
+    directories: ['root' => __DIR__],
+    container: new Container()
+)
+```
