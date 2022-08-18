@@ -45,6 +45,9 @@ return [
     'dependencies' => [],
     'engines' => [
         NativeEngine::class
+    ],
+    'globalVariables' => [
+        'some_var' => env('SOME_VALUE')
     ]
 ];
 ```
