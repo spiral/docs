@@ -94,7 +94,7 @@ You can modify some of these values during application bootload via `Spiral\Boot
 new user command:
 
 ```php
-public function boot(ConsoleBootloader $console)
+public function boot(ConsoleBootloader $console): void
 {
     $console->addCommand(MyCommand::class);
 }
@@ -117,7 +117,7 @@ To register command in configure sequence:
 use Symfony\Component\Console\Output\OutputInterface;
 use Psr\Container\ContainerInterface;
 
-public function boot(ConsoleBootloader $console)
+public function boot(ConsoleBootloader $console): void
 {
     // Add console command in a sequence
     $console->addConfigureSequence('my:command', '<info>Running my:command...</info>');
@@ -138,12 +138,33 @@ The set of commands that will be run after invoke command `php app.php update`
 To register command in update sequence:
 
 ```php
-public function boot(Console
+public function boot(ConsoleBootloader $console): void
+{
     $console->addUpdateSequence('my:command', '<info>Running my:command...</info>');
     
     // Add closure in a sequence
     // It supports auto-wiring of arguments
     $console->addUpdateSequence(function(OutputInterface $output, ContainerInterface $container) {
+        // do something
+        $output->writeln('...');
+    }, '<info>Running my:command...</info>');
+}
+```
+
+### Adding sequence
+
+You can create your own sequence. To create a new sequence (or to add a command to an already created custom sequence), 
+call the `addSequence` method in the `Spiral\Console\Bootloader\ConsoleBootloader` class. The name of the sequence must 
+be passed as the first parameter. The sequence name cannot be `configure` or `update`. They are already used in the framework.
+
+```php
+public function boot(ConsoleBootloader $console): void
+{
+    $console->addSequence('customSequence', 'my:command', '<info>Running my:command...</info>');
+    
+    // Add closure in a sequence
+    // It supports auto-wiring of arguments
+    $console->addSequence('customSequence', function(OutputInterface $output, ContainerInterface $container) {
         // do something
         $output->writeln('...');
     }, '<info>Running my:command...</info>');
