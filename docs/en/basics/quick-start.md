@@ -352,6 +352,7 @@ php app.php route:reset
 Connect custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
 
 Let's create an interceptor that will catch validation errors and return them in JSON:
+
 ```php
 // file app/src/Interceptor/ValidationInterceptor.php
 namespace App\Interceptor;

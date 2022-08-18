@@ -88,3 +88,88 @@ class HomeController
 
 > **Note**
 > You can call `make` and `get` methods inside the injectors... but instead use the force. 
+
+## Enum Injectors
+
+The `Spiral Boot` component provides an `Spiral\Boot\Injector\InjectableEnumInterface` that allows you to create `Enums` 
+that can then be automatically injected via `Container` with specific values.
+
+Let's create an `Enum`, with which we can easily determine the environment of our application.
+
+```php
+use Spiral\Boot\EnvironmentInterface;
+use Spiral\Boot\Injector\ProvideFrom;
+use Spiral\Boot\Injector\InjectableEnumInterface;
+
+#[ProvideFrom(method: 'detect')]
+enum AppEnvironment: string implements InjectableEnumInterface
+{
+    case Production = 'prod';
+    case Stage = 'stage';
+    case Testing = 'testing';
+    case Local = 'local';
+
+    public function isProduction(): bool
+    {
+        return $this === self::Production;
+    }
+
+    public function isTesting(): bool
+    {
+        return $this === self::Testing;
+    }
+
+    public function isLocal(): bool
+    {
+        return $this === self::Local;
+    }
+
+    public function isStage(): bool
+    {
+        return $this === self::Stage;
+    }
+
+    public static function detect(EnvironmentInterface $environment): self
+    {
+        $value = $environment->get('APP_ENV');
+
+        return \is_string($value)
+            ? (self::tryFrom($value) ?? self::Local)
+            : self::Local;
+    }
+}
+```
+
+Attribute `ProvideFrom` allows you to specify a `method` by which you can determine the current value of the `Enum`.
+The method will be called when the Container requests the Enum. The required dependencies from the Container will be 
+injected into it.
+
+### Usage
+
+The `Container` will automatically inject an Enum with the correct value.
+
+```php
+class MigrateCommand extends Command 
+{
+     const NAME = '...';
+
+     public function perform(AppEnvironment $appEnv): int
+     {
+           if ($appEnv->isProduction()) {
+                 // Deny
+           }
+           // ...
+     }
+}
+```
+
+Or get `Enum` from `Container`:
+
+```php
+$appEnv = $container->get(AppEnvironment::class);
+
+dump($appEnv->isProduction());
+```
+
+> **Note**
+> The `AppEnvironment` is already available and was provided as an example only.
