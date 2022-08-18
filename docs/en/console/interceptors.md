@@ -19,10 +19,17 @@ class Interceptor implements CoreInterceptorInterface
 {
 
     /**
-     * @param array{input: InputInterface, output: OutputInterface, command: Command}|array<empty, empty> $parameters
+     * @param array{
+     *     input: InputInterface, 
+     *     output: OutputInterface, 
+     *     command: Command
+     * }|array<empty, empty> $parameters
      */
-    public function process(string $commandClass, string $method, array $parameters, CoreInterface $core): int
-    {
+    public function process(
+        string $commandClass, 
+        string $method, 
+        array $parameters, CoreInterface $core
+    ): int {
         // ...
 
         $result = $core->callAction($commandClass, $method, $parameters);

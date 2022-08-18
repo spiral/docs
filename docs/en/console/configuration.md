@@ -160,11 +160,11 @@ be passed as the first parameter. The sequence name cannot be `configure` or `up
 ```php
 public function boot(ConsoleBootloader $console): void
 {
-    $console->addSequence('customSequence', 'my:command', '<info>Running my:command...</info>');
+    $console->addSequence('name', 'my:command', '<info>Running my:command...</info>');
     
     // Add closure in a sequence
     // It supports auto-wiring of arguments
-    $console->addSequence('customSequence', function(OutputInterface $output, ContainerInterface $container) {
+    $console->addSequence('name', function(OutputInterface $output, ContainerInterface $container) {
         // do something
         $output->writeln('...');
     }, '<info>Running my:command...</info>');
