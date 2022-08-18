@@ -69,7 +69,8 @@
     "title": "Console",
     "links": {
       "console/configuration": "Installation and Configuration",
-      "console/commands": "User Commands"
+      "console/commands": "User Commands",
+      "console/interceptors": "Interceptors"
     }
   },
   {
