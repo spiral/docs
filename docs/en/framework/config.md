@@ -68,13 +68,11 @@ class AppConfig extends InjectableConfig
 {
     public const CONFIG = 'app';
 
-    protected $config = [
+    protected array $config = [
         'values' => []
     ];
 
-    /**
-     * @return array|int[]
-     */
+    /** @return int[] */
     public function getValues(): array
     {
         return $this->config['values'];
@@ -118,7 +116,7 @@ use Spiral\Config\ConfiguratorInterface;
 
 class AppBootloader extends Bootloader
 {
-    public function boot(ConfiguratorInterface $configurator, EnvironmentInterface $env): void
+    public function init(ConfiguratorInterface $configurator, EnvironmentInterface $env): void
     {
         $configurator->setDefaults(AppConfig::CONFIG, [
             'values' => [432],
@@ -156,14 +154,12 @@ use Spiral\Core\Container\SingletonInterface;
 
 class AppBootloader extends Bootloader implements SingletonInterface
 {
-    private ConfiguratorInterface $configurator;
-
-    public function __construct(ConfiguratorInterface $configurator)
-    {
-        $this->configurator = $configurator;
+    public function __construct(
+        private ConfiguratorInterface $configurator
+    ) {
     }
 
-    public function boot(): void
+    public function init(): void
     {
         $this->configurator->setDefaults(AppConfig::CONFIG, [
             'values' => [432]
@@ -187,15 +183,12 @@ use Spiral\Boot\Bootloader\Bootloader;
 
 class ValueBootloader extends Bootloader
 {
-    public function boot(AppBootloader $app): void
+    public function init(AppBootloader $app): void
     {
         $app->addValue(800);
     }
 }
 ```
-
-> **Note**
-> Make sure to locate the Bootloader after the `AppBootloader` or use `DEPENDENCIES` constant.
 
 ## Config Lifecycle
 
@@ -222,3 +215,7 @@ class ValueBootloader extends Bootloader
 
 You will receive an exception `Spiral\Config\Exception\ConfigDeliveredException`: *Unable to patch config `app`,
 config object has already been delivered.*
+
+It's recommended to set default values and change configs in the `init` method. And request a configuration file only in 
+the `boot` method. The `init` method is called before `boot`. This will ensure that when the `boot` method is called, 
+the configs will be in the correct state.
