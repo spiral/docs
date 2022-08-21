@@ -1,34 +1,27 @@
 # Filter Object
 
-The filter object used to perform complex data validation and filtration using PSR-7 or any other input. You
-can create Filter manually or using scaffolder `php app.php create:filter my`:
+The Filter object used to perform complex data validation and filtration using PSR-7 or any other input.
+The Filter object is different, depending on the Validator package used. This article covers the filters that using
+with the [Spiral Validator](https://github.com/spiral/validator) package.
 
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Model\Filter;
 
 class MyFilter extends Filter
 {
-    protected const SCHEMA = [  
-    ];
-    
-    protected const VALIDATES = [
-    ];
-    
-    protected const SETTERS = [       
-    ];
 }
 ```
 
-Use `Spiral\Filter\FilterProviderInterface`->`createFilter` or simply request filter dependency to create an instance:
+Use `Spiral\Filters\Model\FilterProviderInterface`->`createFilter` or simply request filter dependency to create an instance:
 
 ```php
 use App\Filter\MyFilter;
 
 class HomeController
 {
-    public function index(MyFilter $filter)
+    public function index(MyFilter $filter): void
     {
         dump($filter);
     }
@@ -37,26 +30,24 @@ class HomeController
 
 ## Filter Schema
 
-The core of any filter object is `SCHEMA`; this constant defines mapping between fields and values provided by input.
-Every key pair is defined as `field` => `source:origin` or `field` => `source`. The **source** is the subset of data
-from user input. In the HTTP scope, the sources can be `cookie`, `data`, `query`, `input` (`data`+`query`), `header`,
-`file`, `server`. The **origin** is the name of the external field (dot notation is supported).
+There are two variants for defining the filter scheme. Using `attributes` with filter properties or using `array
+schema` mapping.
 
-> **Note**
-> You can use any input bag from [InputManager](/http/request-response.md) as source.
+#### Attributes
 
+Add properties with the needed type and add an attribute that points to the data source.
 For example, we can tell our Filter to point field `login` to the QUERY param `username`:
 
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Model\Filter;
 
 class MyFilter extends Filter
 {
-    protected const SCHEMA = [
-        'login' => 'query:username'
-    ];
+    #[Query(key: 'username')]
+    public string $login;
 }
 ```
 
@@ -65,17 +56,79 @@ You can combine multiple sources inside the Filter:
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Cookie;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Model\Filter;
 
 class MyFilter extends Filter
 {
-    protected const SCHEMA = [
-        'redirectTo'   => 'query:redirectURL',
-        'memberCookie' => 'cookie:memberCookie',
-        'username'     => 'data:username',
-        'password'     => 'data:password',
-        'rememberMe'   => 'data:rememberMe'
-    ];
+    #[Query(key: 'redirectURL')]
+    public string $redirectTo;
+
+    #[Cookie]
+    public string $memberCookie;
+
+    #[Post]
+    public string $username;
+
+    #[Post]
+    public string $password;
+
+    #[Post]
+    public string $rememberMe;
+}
+```
+
+#### Array based Filters
+
+For example, we can tell our Filter to point field `login` to the QUERY param `username`:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+
+class MyFilter extends Filter implements HasFilterDefinition
+{
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition(mappingSchema: 
+            [
+                'login' => 'query:username'
+            ]
+        );
+    }
+}
+```
+
+You can combine multiple sources inside the Filter:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+
+class MyFilter extends Filter implements HasFilterDefinition
+{
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition(mappingSchema: 
+            [
+                'redirectTo'   => 'query:redirectURL',
+                'memberCookie' => 'cookie:memberCookie',
+                'username'     => 'data:username',
+                'password'     => 'data:password',
+                'rememberMe'   => 'data:rememberMe'
+            ]
+        );
+    }
 }
 ```
 
@@ -85,28 +138,56 @@ class MyFilter extends Filter
 
 ### Dot Notation
 
-The data **origin** can be specified using dot notation pointing to some nested structure. For example:
+The data **origin** can be specified using dot notation pointing to some nested structure.
+
+Via attributes:
 
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class MyFilter extends Filter
+class MyFilter extends Filter implements HasFilterDefinition
 {
-    protected const SCHEMA = [
-        'firstName' => 'data:name.first'
-    ];
+    #[Post(key: 'names.first')]
+    public string $firstName;
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'firstName' => ['string', 'required']
+        ]);
+    }
+}
+```
 
-    protected const VALIDATES = [
-        'firstName' => [
-            ['notEmpty']
-        ]
-    ];
+Via array mapping:
 
-    protected const SETTERS = [
-        'firstName' => 'strval'
-    ];
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+
+class MyFilter extends Filter implements HasFilterDefinition
+{
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition(
+            [
+                'firstName' => ['string', 'required']
+            ], 
+            [
+                'firstName' => 'data:names.first'
+            ]
+        );
+    }
 }
 ```
 
@@ -139,36 +220,70 @@ parameter. Following sources are available:
 | isJsonExpected | When client expects `application/json`                        |
 | remoteAddress  | User ip address                                               |
 
+> **Note**
 > Read more about InputManager [here](/http/request-response.md).
 
-For example to check if a user request made over https:
+For example to check if a user request made over https.
+
+Via attributes:
 
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\IsSecure;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class MyFilter extends Filter
+class MyFilter extends Filter implements HasFilterDefinition
 {
-    protected const SCHEMA = [
-        'httpsRequest' => 'isSecure'
-    ];
+    #[IsSecure]
+    public bool $httpsRequest;
 
-    protected const VALIDATES = [
-        'httpsRequest' => [
-            ['notEmpty', 'error' => 'Connection is not secure.']
-        ]
-    ];
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'httpsRequest' => [
+                ['required', 'error' => 'Connection is not secure.']
+            ]
+        ]);
+    }
 }
 ```
 
-> **Note**
-> Read more about the validation below.
+Via array mapping:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+
+class MyFilter extends Filter implements HasFilterDefinition
+{
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition(
+            [
+                'httpsRequest' => [
+                    ['required', 'error' => 'Connection is not secure.']
+                ]
+            ],
+            [
+                'httpsRequest' => 'isSecure:httpsRequest'
+            ]
+        );
+    }
+}
+```
 
 ### Route Parameters
 
 Every route writes matched parameters into ServerRequestInterface attribute `matches`, is it possible to access route
-values inside your filter using `attribute:matches.{name}` notation:
+values inside your filter.
 
 ```php
 $router->setRoute(
@@ -177,18 +292,41 @@ $router->setRoute(
 );
 ```
 
-Filter definition:
+Via attributes:
 
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Route;
+use Spiral\Filters\Model\Filter;
 
 class MyFilter extends Filter
 {
-    protected const SCHEMA = [
-        'routeID' => 'attribute:matches.id'
-    ];
+    #[Route(key: 'id')]
+    public string $routeId;
+}
+```
+
+Via array mapping using `attribute:matches.{name}` notation:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+
+class MyFilter extends Filter implements HasFilterDefinition
+{
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition(mappingSchema: 
+            [
+                'routeId' => 'attribute:matches.id'
+            ]
+        );
+    }
 }
 ```
 
@@ -200,24 +338,25 @@ in case of typecast error:
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Attribute\Setter;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class MyFilter extends Filter
+class MyFilter extends Filter implements HasFilterDefinition
 {
-    protected const SCHEMA = [
-        'number' => 'query:number'
-    ];
+    #[Query(key: 'id')]
+    #[Setter(filter: 'intval')]
+    public int $number;
 
-    protected const VALIDATES = [
-        'number' => [
-            ['notEmpty'],
-            ['number::higher', 5]
-        ]
-    ];
-
-    protected const SETTERS = [
-        'number' => 'intval'
-    ];
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'number' => ['required', ['number::higher', 5]]
+        ]);
+    }
 }
 ```
 
@@ -231,7 +370,7 @@ use App\Filter\MyFilter;
 
 class HomeController
 {
-    public function index(MyFilter $filter)
+    public function index(MyFilter $filter): void
     {
         dump($filter->number); // always int
     }
@@ -245,19 +384,23 @@ The validation rules can be defined using same approach as in [validation](/secu
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class MyFilter extends Filter
+class MyFilter extends Filter implements HasFilterDefinition
 {
-    protected const SCHEMA = [
-        'name' => 'data:name'
-    ];
-
-    protected const VALIDATES = [
-        'name' => [
-            ['notEmpty']
-        ]
-    ];
+    #[Post]
+    public string $name;
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'name' => ['string', 'required']
+        ]);
+    }
 }
 ```
 
@@ -270,19 +413,25 @@ You can specify the custom error message to any of the rules similar way as in t
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class MyFilter extends Filter
+class MyFilter extends Filter implements HasFilterDefinition
 {
-    protected const SCHEMA = [
-        'name' => 'data:name'
-    ];
-
-    protected const VALIDATES = [
-        'name' => [
-            ['notEmpty', 'error' => 'Name must not be empty']
-        ]
-    ];
+    #[Post]
+    public string $name;
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'name' => [
+                ['required', 'error' => 'Name must not be empty']
+            ]
+        ]);
+    }
 }
 ```
 
@@ -291,176 +440,73 @@ If you plan to localize error message later, wrap the text in `[[]]` to automati
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class MyFilter extends Filter
+class MyFilter extends Filter implements HasFilterDefinition
 {
-    protected const SCHEMA = [
-        'name' => 'data:name'
-    ];
-
-    protected const VALIDATES = [
-        'name' => [
-            ['notEmpty', 'error' => '[[Name must not be empty]]']
-        ]
-    ];
+    #[Post]
+    public string $name;
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'name' => [
+                ['required', 'error' => '[[Name must not be empty]]']
+            ]
+        ]);
+    }
 }
 ```
 
 ## Usage
 
-Once the Filter configured you can access its fields (filtered data), check if the data valid and return the set
-of errors in case of failure.
-
-> **Note**
-> Use [Domain Core Interceptors](/cookbook/domain-core.md) to validate your filters before they will arrive to the
-> controller.
+Once the Filter configured you can access its fields (filtered data).
+The `Spiral\Filters\Model\Interceptor\ValidateFilterInterceptor` will automatically validate the data when the filter
+is requested and throw a `Spiral\Filters\Exception\ValidationException` if the data is not valid.
 
 ### Get Fields
 
-To get a filtered list of fields, use methods `getField` and `getFields`. For the Filter like that:
+To get a filtered data, use filter properties or method `getData` (if you are using a array schema mapping):
 
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class MyFilter extends Filter
+class MyFilter extends Filter implements HasFilterDefinition
 {
-    protected const SCHEMA = [
-        'name'  => 'data:name',
-        'email' => 'data:email'
-    ];
-
-    protected const VALIDATES = [
-        'name' => [
-            ['notEmpty']
-        ]
-    ];
-
-    protected const SETTERS = [
-
-    ];
+    #[Post]
+    public string $name;
+    
+    #[Post]
+    public string $email;
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'name' => ['required']
+        ]);
+    }
 }
 ```
 
 Following fields are available:
 
 ```php
-public function index(MyFilter $filter)
+public function index(MyFilter $filter): void
 {
-    dump($filter->getFields()); // {name: ..., email: ...}
+    dump($filter->getData()); // {name: ..., email: ...}
 
-    dump($filter->getField('name'));
-
-    // same as above
+    // or
     dump($filter->email);
-}
-```
-
-### Get Errors
-
-To check if filter is valid use `isValid`, list of field errors is available via `getErrors`:
-
-```php
-public function index(MyFilter $filter)
-{
-    if (!$filter->isValid()) {
-        dump($filter->getErrors());
-    }
-}
-```
-
-The errors automatically mapped to the origin property name, for example:
-
-```php
-namespace App\Filter;
-
-use Spiral\Filters\Filter;
-
-class MyFilter extends Filter
-{
-    protected const SCHEMA = [
-        'name' => 'data:names.name.0'
-    ];
-
-    protected const VALIDATES = [
-        'name' => [
-            ['notEmpty']
-        ]
-    ];
-
-    protected const SETTERS = [
-
-    ];
-}
-```
-
-Will produce the following error if the field `name` is invalid:
-
-```json
-{
-  "status": 400,
-  "errors": {
-    "names": {
-      "name": "This value is required."
-    }
-  }
-}
-```
-
-> The error format is identical to one described in [validation](/security/validation.md).
-
-## Inheritance
-
-You can extend one filter from another, the schema, validation, and setters will be inherited:
-
-```php
-namespace App\Filter;
-
-class MyFilter extends BaseFilter
-{
-    protected const SCHEMA = [
-        'name' => 'data:name'
-    ];
-
-    protected const VALIDATES = [
-        'name' => [
-            ['notEmpty']
-        ]
-    ];
-}
-```
-
-Where `BaseFilter` is:
-
-```php
-namespace App\Filter;
-
-use Spiral\Filters\Filter;
-
-class BaseFilter extends Filter
-{
-    protected const SCHEMA = [
-        'token' => 'data:token'
-    ];
-
-    protected const VALIDATES = [
-        'token' => [
-            ['notEmpty']
-        ]
-    ];
-}
-```
-
-Now filter `MyFilter` will require `token` value as well:
-
-```json
-{
-  "status": 400,
-  "errors": {
-    "token": "This value is required.",
-    "name": "This value is required."
-  }
+    dump($filter->name);
 }
 ```
