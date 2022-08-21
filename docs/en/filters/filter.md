@@ -207,7 +207,7 @@ We can accept and validate the following data structure:
 
 ### Other Sources
 
-By design, you can use any method of `[InputManager](/http/request-response.md)` as source where origin is passed
+By design, you can use any method of [InputManager](../http/request-response.md) as source where origin is passed
 parameter. Following sources are available:
 
 | Source         | Description                                                   |
@@ -221,7 +221,7 @@ parameter. Following sources are available:
 | remoteAddress  | User ip address                                               |
 
 > **Note**
-> Read more about InputManager [here](/http/request-response.md).
+> Read more about InputManager [here](../http/request-response.md).
 
 For example to check if a user request made over https.
 
@@ -379,7 +379,7 @@ class HomeController
 
 ## Validation
 
-The validation rules can be defined using same approach as in [validation](/security/validation.md) component.
+The validation rules can be defined using same approach as in [validation](../security/validation.md) component.
 
 ```php
 namespace App\Filter;
