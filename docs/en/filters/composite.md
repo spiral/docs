@@ -4,12 +4,18 @@ The component provides the ability to create nested filters and a nested array o
 composition, we will use a sample filter:
 
 ```php
+namespace App\Request;
+
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+
 class AddressFilter extends Filter
 {
-    protected const SCHEMA = [
-        'city'    => 'data:city', 
-        'address' => 'data:address'
-    ];
+    #[Post]
+    public string $city;
+
+    #[Post]
+    public string $address;
 }
 ```
 
@@ -24,16 +30,23 @@ This Filter can accept the following data format:
 
 ## Child Filter
 
-You can create compound filters by nesting other filters inside them. Simply declare field origin as external field
-class to do that:
+You can create compound filters by nesting other filters inside them. Simply declare the field with a child filter 
+and add attribute `Spiral\Filters\Attribute\NestedFilter`:
 
 ```php
+namespace App\Request;
+
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Attribute\NestedFilter;
+use Spiral\Filters\Model\Filter;
+
 class ProfileFilter extends Filter
 {
-    protected const SCHEMA = [
-        'name'    => 'data:name',
-        'address' => AddressFilter::class
-    ];
+    #[Post]
+    public string $name;
+
+    #[NestedFilter(class: AddressFilter::class)]
+    public AddressFilter $address;
 }
 ```
 
@@ -49,12 +62,12 @@ This Filter will accept the data in a format:
 }
 ```
 
-You can get access to the nested filter using `getField` or magic `__get`:
+You can get access to the nested Filter using class properties:
 
 ```php
-public function index(ProfileFilter $p)
+public function index(ProfileFilter $profile): void
 {
-    dump($p->address->city); // San Francisco
+    dump($profile->address->city); // San Francisco
 }
 ```
 
@@ -71,16 +84,23 @@ Both filters will be validated together. In case of an error in `address` filter
 
 ### Custom Prefix
 
-In some cases, you might need to use data prefix different from the actual key assigned to the nested Filter, use array
-notation in which the first element filter class name and second is data prefix:
+In some cases, you might need to use data prefix different from the actual key assigned to the nested Filter, use 
+parameter `prefix` in the `NestedFilter`:
 
 ```php
+namespace App\Request;
+
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Attribute\NestedFilter;
+use Spiral\Filters\Model\Filter;
+
 class ProfileFilter extends Filter
 {
-    protected const SCHEMA = [
-        'name'    => 'data:name',
-        'address' => [AddressFilter::class, 'addr']
-    ];
+    #[Post]
+    public string $name;
+
+    #[NestedFilter(class: AddressFilter::class, prefix: 'addr')]
+    public AddressFilter $address;
 }
 ```
 
@@ -95,20 +115,26 @@ This Filter can accept the following data format:
 }
 ```
 
+> **Note**
 > You can skip using the `address` key internally, errors will be mounted accordingly.
 
 ## Array of Filters
 
-You can populate an array of filters at the same time. Use array with single element pointing to filter class
-to declare the array filter:
+You can populate an array of filters at the same time. Use array property type and add attribute 
+`Spiral\Filters\Attribute\NestedArray` with Filter class for each element as parameter `class` and data input:
 
 ```php
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Attribute\NestedArray;
+use Spiral\Filters\Model\Filter;
+
 class MultipleAddressesFilter extends Filter
 {
-    protected const SCHEMA = [
-        'key'       => 'data:key',
-        'addresses' => [AddressFilter::class]
-    ];
+    #[Post]
+    public string $name;
+
+    #[NestedArray(class: AddressFilter::class, input: new Post('addresses'))]
+    public array $addresses;
 }
 ```
 
@@ -145,16 +171,24 @@ public function index(MultipleAddressesFilter $ma)
 
 ### Custom Prefix
 
-You can create an array of filters based on data prefix different from the key name in the Filter, use the second value
-or the array in the schema. Unlike a single child, you must specify the `.*` to indicate that value is an array:
+You can create an array of filters based on data prefix different from the key name in the Filter, use
+parameter `prefix` in the `NestedArray`:
 
 ```php
+namespace App\Request;
+
+use Spiral\Filters\Attribute\Input\Input;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Attribute\NestedArray;
+use Spiral\Filters\Model\Filter;
+
 class MultipleAddressesFilter extends Filter
 {
-    protected const SCHEMA = [
-        'key'       => 'data:key',
-        'addresses' => [AddressFilter::class, 'addr.*']
-    ];
+    #[Post]
+    public string $name;
+
+    #[NestedArray(class: AddressFilter::class, input: new Input('addresses'), prefix: 'addr')]
+    public array $addresses;
 }
 ```
 
@@ -176,13 +210,13 @@ This Filter supports the following data format:
 }
 ```
 
-You can still access the nested array filters using `address` key:
+You can still access the nested array filters using `addresses` property:
 
 ```php
-public function index(MultipleAddressesFilter $ma)
+public function index(MultipleAddressesFilter $ma): void
 {
-    dump($ma->getField('addresses')[0]->getField('city')); // San Francisco
-    dump($ma->getField('addresses')[1]->getField('city')); // Minsk
+    dump($ma->addresses[0]->city); // San Francisco
+    dump($ma->addresses[1]->city); // Minsk
 }
 ```
 
@@ -191,12 +225,19 @@ public function index(MultipleAddressesFilter $ma)
 You can use nested child filters as part of a larger composite Filter. Use prefix `.` (root) to do that:
 
 ```php
-class CompositeFilter extends Filter
+namespace App\Request;
+
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Attribute\NestedFilter;
+use Spiral\Filters\Model\Filter;
+
+class ProfileFilter extends Filter
 {
-    protected const SCHEMA = [
-        'name'    => 'data:name', 
-        'address' => [AddressFilter::class, '.'], 
-    ];
+    #[Post]
+    public string $name;
+
+    #[NestedFilter(class: AddressFilter::class, prefix: '.')]
+    public AddressFilter $address;
 }
 ```
 

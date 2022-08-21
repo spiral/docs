@@ -14,7 +14,7 @@ bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
 ```php
 [
     // ...
-    Spiral\\Bootloader\Security\FiltersBootloader::class
+    Spiral\Bootloader\Security\FiltersBootloader::class
     // ...
 ]
 ```
@@ -60,44 +60,43 @@ Input binding is a primary way of delivering data into the filter object.
 ## Create Filter
 
 The filter object implement might vary from package to package. The default implementation provided via abstract class
-`Spiral\Filter\Filter`. To create custom filter to validate query:
+`Spiral\Filters\Model\Filter`. To create custom filter to validate query:
 
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Filter;
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class MyFilter extends Filter
+class MyFilter extends Filter implements HasFilterDefinition
 {
-    public const SCHEMA = [
-        'abc' => 'query:abc'
-    ];
+    #[Query]
+    public string $abc;
 
-    public const VALIDATES = [
-        'abc' => [
-            'notEmpty',
-            'string'
-        ]
-    ];
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'abc' => ['string', 'required']
+        ]);
+    }
 }
 ```
-
-> Or use the scaffolding `php app.php create:filter my -f "abc:string(query)"`.
 
 You can request the Filter as method injection (it will be automatically bound to the current http input):
 
 ```php
 namespace App\Controller;
 
-use App\Filter;
+use App\Filter\MyFilter;
 
 class HomeController
 {
-    public function index(Filter\MyFilter $f): void
+    public function index(MyFilter $filter): void
     {     
-        dump($f->isValid());
-        dump($f->getErrors());
-        dump($f->getFields());
+        dump($filter->abc);
     }
 }
 ```
@@ -105,7 +104,4 @@ class HomeController
 > **Note**
 > Try URL with `?abc=1`.
 
-## Extensions
-
-Activate `Spiral\Domain\FilterInterceptor` in your [domain core](/cookbook/domain-core.md) to automatically pre-validate
-your request before delivering to controller.
+The Filter will automatically pre-validate your request before delivering to controller.
