@@ -94,6 +94,7 @@
     "links": {
       "security/encrypter": "Data Encryption",
       "security/validation": "Validation Interfaces",
+      "security/validator": "Spiral Validator",
       "security/rbac": "Role Based Access Control",
       "security/authentication": "User Authentication"
     }
