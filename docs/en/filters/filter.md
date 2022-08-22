@@ -379,7 +379,7 @@ class HomeController
 
 ## Validation
 
-The validation rules can be defined using same approach as in [validation](../security/validation.md) component.
+The validation rules can be defined using same approach as in [Validator](../security/validator.md) component.
 
 ```php
 namespace App\Filter;
@@ -408,7 +408,7 @@ You can use all the checkers, conditions, and rules.
 
 ### Custom Errors
 
-You can specify the custom error message to any of the rules similar way as in the validation component.
+You can specify the custom error message to any of the rules similar way as in the validator component.
 
 ```php
 namespace App\Filter;

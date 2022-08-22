@@ -61,6 +61,7 @@
 * Security
     * [Data Encryption](security/encrypter.md)
     * [Validation Interfaces](security/validation.md)
+    * [Spiral Validator](security/validator.md)
     * [Role Based Access Control](security/rbac.md)
     * [User Authentication](security/authentication.md)
 * Keeper
