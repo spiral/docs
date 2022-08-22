@@ -510,3 +510,65 @@ public function index(MyFilter $filter): void
     dump($filter->name);
 }
 ```
+
+## Inheritance
+
+You can extend one filter from another, the schema, validation, and setters will be inherited:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Validator\FilterDefinition;
+
+class MyFilter extends BaseFilter
+{
+    #[Post]
+    public string $name;
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'name' => ['required']
+        ]);
+    }
+}
+```
+
+Where `BaseFilter` is:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+
+class BaseFilter extends Filter implements HasFilterDefinition
+{
+    #[Post]
+    public string $token;
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'token' => ['required']
+        ]);
+    }
+}
+```
+
+Now filter `MyFilter` will require `token` value as well:
+
+```json
+{
+  "status": 400,
+  "errors": {
+    "token": "This value is required.",
+    "name": "This value is required."
+  }
+}
+```
