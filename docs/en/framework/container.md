@@ -47,11 +47,12 @@ The `Mailer` dependency will be automatically delivered by the container (auto-w
 
 > **Note**
 > Note, your controllers, commands, and jobs support method injection.
+> Auto-wiring supports union types, variadic arguments, referenced parameters, default object values.
 
 ## Configuring Container
 
 You can configure container by creating a set of bindings between aliases or interfaces to concrete implementations.   
-Use [Bootloaders](/framework/bootloaders.md) to define bindings.
+Use [Bootloaders](../framework/bootloaders.md) to define bindings.
 
 We can either use `Spiral\Core\BinderInterface` or `Spiral\Core\Container` to configure the application container.
 
@@ -94,7 +95,7 @@ public function boot(Container $container): void
 ```
 
 > **Note**
-> Read about [Config Objects](/framework/config.md) to see how to manage config dependencies.
+> Read about [Config Objects](../framework/config.md) to see how to manage config dependencies.
 
 You can also use `closure` to configure your class automatically:
 
@@ -136,6 +137,44 @@ To remove the container binding:
 $container->removeBinding(MyService::class);
 ```
 
+Container supports `WeakReference` binding:
+
+```php
+use Spiral\Core\Container;
+
+// alias isn't class name
+public function boot(Container $container): void
+{
+    $object = new stdClass();
+    $hash = \spl_object_hash($object);
+    $reference = WeakReference::create($object);
+
+    $container->bind('test-alias', $reference);
+    
+    dump($hash === \spl_object_hash($container->get('test-alias'))); // true
+    
+    unset($object);
+    // New object can't be created because classname has not been stored
+    dump($container->get('test-alias')); // null
+}
+
+// alias class name
+public function init(Container $container): void
+{
+    $object = new stdClass();
+    $hash = \spl_object_hash($object);
+    $reference = WeakReference::create($object);
+
+    $container->bind(stdClass::class, $reference);
+    
+    dump($hash === \spl_object_hash($container->get(stdClass::class))); // true
+    
+    unset($object);
+    // new instance created using alias class
+    dump($hash === \spl_object_hash($container->get(stdClass::class))); // false
+}
+```
+
 ## Lazy Singletons
 
 You can skip singleton binding by implementing `Spiral\Core\Container\SingletonInterface` in your class:
@@ -155,7 +194,7 @@ class MyService implements SingletonInterface
 Now, the container will automatically treat this class as a singleton in your application:
 
 ```php
-protected function index(MyService $service)
+protected function index(MyService $service): void
 {
     dump($this->container->get(MyService::class) === $service);
 }
@@ -183,17 +222,14 @@ If you want to resolve method arguments to dynamic target (i.e., controller meth
 ```php
 abstract class Handler
 {
-    protected ResolverInterface $resolver;
-
-    public function __construct(ResolverInterface $resolver)
-    {
-        $this->resolver = $resolver;
+    public function __construct(
+        protected ResolverInterface $resolver
+    ) {
     }
 
     public function run(array $params): bool
     {
         $method = new \ReflectionMethod($this, 'do'); // the method to invoke with method injection
-        $method->setAccessible(true);
 
         return $method->invokeArgs(
             $this, 
@@ -213,6 +249,103 @@ class MyHandler extends Handler
         // ...
     }
 }
+```
+
+The default implementation of `ResolverInterface` supports Union types. One of the available dependencies of 
+the needed type will be passed:
+
+```php
+use Doctrine\Common\Annotations\Reader;
+use Spiral\Attributes\ReaderInterface;
+
+final class Entities
+{
+    public function __construct(
+        private Reader|ReaderInterface $reader
+    ) {
+    }
+}
+```
+
+Supports variadic arguments:
+
+```php
+$resolver = $this->container->get(ResolverInterface::class);
+$function = static fn(int ...$bar) => $bar;
+
+// array passed by parameter name
+$args = $resolver->resolveArguments(
+    new \ReflectionFunction($function),
+    ['bar' => [1, 2]]
+);
+
+dump($args); // [1, 2]
+
+// array passed by parameter name with named arguments inside
+$args = $resolver->resolveArguments(
+    new \ReflectionFunction($function),
+    ['bar' => ['ab' => 1, 'bc' => 2]]
+);
+
+dump($args); // ['ab' => 1 'bc' => 2]
+
+// value passed by parameter name
+$args = $resolver->resolveArguments(
+    new \ReflectionFunction($function),
+    ['bar' => 1]
+);
+
+dump($args); // [1]
+
+```
+
+Supports reference arguments:
+
+```php
+$resolver = $this->container->get(ResolverInterface::class);
+$function = static fn(int $bar) => $bar;
+
+$bar = 1;
+
+$args = $resolver->resolveArguments(
+    new \ReflectionFunction($function),
+    ['bar' => &$bar]
+);
+
+$bar = 42;
+dump($args); // [42]
+```
+
+Supports default object value:
+
+```php
+$resolver = $this->container->get(ResolverInterface::class);
+$function = static fn(stdClass $std = new \stdClass()) => $std;
+
+$args = $resolver->resolveArguments(new \ReflectionFunction($function));
+
+dump($args); 
+
+// array(1) {
+//   [0] =>
+//   class stdClass#369 (0) {
+//   }
+// }
+```
+
+### Arguments validation
+
+In some cases, you may want to validate a function or a method arguments. To do this, you can use the public 
+`validateArguments` method, in which you need to pass a `ReflectionMethod` or `ReflectionFunction` and an 
+`array of arguments`. If you received the arguments using the `resolveArguments` method and didn't pass `false` in the 
+`$validate` parameter, then they don't need additional validation. They will be checked automatically.
+If the arguments are not valid, a `Spiral\Core\Exception\Resolver\InvalidArgumentException` will be thrown.
+
+```php
+$resolver = $this->container->get(ResolverInterface::class);
+$function = static fn(int $bar) => $bar;
+
+$resolver->validateArguments(new \ReflectionFunction($function), [42]);
 ```
 
 ## InvokerInterface
@@ -360,6 +493,12 @@ Make sure to register inject in the container:
 $container->bindInjector(MyClass::class, MyClassInjector::class);
 ```
 
+The container has a special method that allows you to check if an injector is registered for a class or interface:
+
+```php
+dump($container->hasInjector(MyClass::class)); // true
+```
+
 As a result we can request instance of `MyClass` using method arguments:
 
 ```php
@@ -466,5 +605,23 @@ use Spiral\Core\Container;
 $app = App::create(
     directories: ['root' => __DIR__],
     container: new Container()
+)
+```
+
+## Container configuration
+
+In some cases, you might want to replace internal container services. You can do this when you create
+a container instance.
+
+```php
+use Spiral\Core\Container;
+
+$app = App::create(
+    directories: ['root' => __DIR__],
+    container: new Container(
+        config: new Config(
+            resolver: CustomResolver::class
+        )
+    )
 )
 ```
