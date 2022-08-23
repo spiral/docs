@@ -62,7 +62,8 @@
       "component/data-grid": "Data Grids",
       "component/serializer": "Serializer",
       "component/sendit": "SendIt",
-      "component/broadcasting": "Event Broadcasting"
+      "component/broadcasting": "Event Broadcasting",
+      "component/exceptions": "Exceptions"
     }
   },
   {
