@@ -29,12 +29,12 @@ class MyApp extends AbstractKernel
         // bootloaders to initialize
     ];
 
-    public function get(string $service)
+    public function get(string $service): mixed
     {
         return $this->container->get($service);
     }
 
-    protected function bootstrap()
+    protected function bootstrap(): void
     {
         // custom initialization code
         // invoked after all bootloaders are loaded
@@ -90,6 +90,108 @@ $myapp = MyApp::create(
 $myapp->run(null); // use default env 
 
 \dump($myapp->get(\Spiral\Boot\DirectoriesInterface::class)->getAll());
+```
+
+### Initialization callbacks
+
+The `Spiral\Boot\AbstractKernel` class provides `running`, `booting`, `booted` callbacks that are executed at 
+various times during application initialization.
+
+#### Running
+
+`Running` is the first callbacks to be executed. They are executed when the `run` method is called, immediately after 
+binding the `EnvironmentInterface` in the application container.
+
+To register a callback, call the `running` method:
+
+```php
+$app = App::create(
+    directories: ['root' => __DIR__]
+);
+
+$app->running(function () {
+    // ...
+});
+
+$app->run();
+```
+
+#### Booting
+
+`Booting` is the callbacks that's will be executed *before* all framework bootloaders in the `LOAD` section will be booted.
+
+To register a callback, call the `booting` method:
+
+```php
+$app = App::create(
+    directories: ['root' => __DIR__]
+);
+
+$app->booting(function () {
+    // ...
+});
+
+$app->run();
+```
+
+#### Booted
+
+`Booted` is the callbacks that's will be executed *after* all framework bootloaders in the `LOAD` section will be booted.
+
+To register a callback, call the `booted` method:
+
+```php
+$app = App::create(
+    directories: ['root' => __DIR__]
+);
+
+$app->booted(function () {
+    // ...
+});
+
+$app->run();
+```
+
+The `Spiral\Framework\Kernel` class provides additional `appBooting` and `appBooted` callbacks.
+In an [application bundle](https://github.com/spiral/app), the default `App\App` class inherits from this `Kernel` 
+class and has access to this functionality.
+
+#### AppBooting
+
+`AppBooting` is the callbacks that's will be executed *before* all application bootloaders in the `APP` section 
+will be booted.
+
+To register a callback, call the `appBooting` method:
+
+```php
+$app = App::create(
+    directories: ['root' => __DIR__]
+);
+
+$app->appBooting(function () {
+    // ...
+});
+
+$app->run();
+```
+
+#### AppBooted
+
+`AppBooted` is the callbacks that's will be executed *after* all application bootloaders in the `APP` section
+will be booted.
+
+To register a callback, call the `appBooted` method:
+
+```php
+$app = App::create(
+    directories: ['root' => __DIR__]
+);
+
+$app->appBooted(function () {
+    // ...
+});
+
+$app->run();
 ```
 
 ## Environment
