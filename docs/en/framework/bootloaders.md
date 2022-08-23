@@ -1,7 +1,7 @@
 # Framework - Bootloaders
 
 Bootloaders are the central piece in Spiral Framework and your application. These objects are responsible
-for [Container](/framework/container.md) configuration, default configuration, etc.
+for [Container](../framework/container.md) configuration, default configuration, etc.
 
 Bootloaders only executed once while loading your application. Since the app will stay in memory for long - you can
 add as many code to your bootloaders as you want. It will not cause any performance effect on runtime.
@@ -19,7 +19,6 @@ use Spiral\Boot\Bootloader\Bootloader;
 
 class MyBootloader extends Bootloader 
 {
-
 }
 ```
 
@@ -48,7 +47,75 @@ class App extends Kernel
 }
 ```
 
-Currently, your Bootloader doesn't do anything. We can start by adding some container bindings.
+Currently, your Bootloader doesn't do anything. A little bit later, we will add functionality to it.
+
+## Available methods
+
+Bootloaders provide two methods `init` and `boot` that are executed when the application is initialized.
+
+### Init
+
+This method is executed *first*. It's recommended to set default values for configuration files. Modify configuration 
+files using special bootloader methods. Execute other logic that doesn't require reading configuration files 
+and doesn't depend on the execution of code in the `init` and `boot` methods of other bootloaders.
+In this method, you can add initialization callbacks, configure container bindings if this does not require 
+access to the application configuration.
+
+```php
+use Spiral\Boot\AbstractKernel;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Boot\EnvironmentInterface;
+use Spiral\Config\ConfiguratorInterface;
+use Spiral\Queue\Config\QueueConfig;
+
+final class QueueBootloader extends Bootloader
+{
+    public function __construct(
+        private readonly ConfiguratorInterface $config
+    ) {
+    }
+
+    public function init(
+        EnvironmentInterface $env, 
+        AbstractKernel $kernel
+    ): void {
+        $this->config->setDefaults(
+            QueueConfig::CONFIG,
+            [
+                'default' => $env->get('QUEUE_CONNECTION', 'sync'),
+                // ...
+            ]
+        );
+        
+        $kernel->booting(function () {
+            // ...
+        });
+    }
+}
+```
+
+### Boot
+
+This method is executed *after* executing method `init` in all bootloaders. It can be used if you need the result 
+of the `init` methods in all bootloaders. For example, compiled configuration files.
+
+```php
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Config\ConfiguratorInterface;
+use Spiral\Session\Config\SessionConfig;
+
+final class SessionBootloader extends Bootloader
+{
+    public function boot(
+        ConfiguratorInterface $config,
+        CookiesBootloader $cookies
+    ): void {
+        $session = $config->getConfig(SessionConfig::CONFIG);
+
+        $cookies->whitelistCookie($session['cookie']);
+    }
+}
+```
 
 > **Note**
 > `APP` bootloader namespace always loaded after `LOAD`, keep domain-specific bootloaders in it.
@@ -58,7 +125,7 @@ Currently, your Bootloader doesn't do anything. We can start by adding some cont
 The most common use-case of bootloaders is to configure DI container, for example, we might want to bind multiple
 implementations to their interfaces or construct some service.
 
-We can use the method `boot` for these purposes. Method support method injection, so we can request any services we
+We can use the method `init` or `boot` for these purposes. Method support method injection, so we can request any services we
 need:
 
 ```php
