@@ -108,19 +108,39 @@ by default in the application bundle.
 ### Adding a Reporter
 
 To add a new reporter, use the `addReporter` method in the `ExceptionHandler` class. By default, this class bound 
-to the `ExceptionHandlerInterface` interface and we can get it from the container using it.
+to the `ExceptionHandlerInterface` interface and we can get it from the container using it. You can use the 
+`Spiral\Boot\Environment\AppEnvironment` class to determine the current application environment and 
+register reporters based on that.
 
 ```php
 namespace App\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Boot\Environment\AppEnvironment;
 use Spiral\Exceptions\ExceptionHandlerInterface;
+use Spiral\Exceptions\Reporter\LoggerReporter;
+use Spiral\Exceptions\Reporter\SnapshotterReporter;
+use Spiral\Ignition\IgnitionRenderer;
+use Spiral\Sentry\SentryReporter;
 
 final class ExceptionHandlerBootloader extends Bootloader
 {
-    public function boot(ExceptionHandlerInterface $handler): void 
-    {
-        $handler->addReporter(new SomeReporter());
+    public function boot(
+        ExceptionHandlerInterface $handler,
+        LoggerReporter $logger,
+        SnapshotterReporter $snapshotter,
+        IgnitionRenderer $ignition,
+        SentryReporter $sentry,
+        AppEnvironment $env
+    ): void {
+        $handler->addReporter($logger);
+
+        if ($env->isLocal()) {
+            $handler->addRenderer($ignition);
+            $handler->addReporter($snapshotter);
+        } else {
+            $handler->addReporter($sentry);
+        }
     }
 }
 ```
