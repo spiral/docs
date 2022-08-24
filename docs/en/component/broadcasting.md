@@ -193,6 +193,53 @@ class SomeClass
 }
 ```
 
+### Object as a topic
+
+The `publish` method can accept a `\Stringable` type, this allows to create a topic via object.
+
+```php
+namespace App\Broadcast\Topic;
+
+class User implements \Stringable
+{
+    public function __construct(
+        public readonly int $userId
+    ) {
+    }
+
+    public function __toString(): string
+    {
+        return \sprintf('user.%s', $this->userId);
+    }
+}
+```
+
+After that, you can use this object as a topic.
+
+```php
+namespace App\Service;
+
+use App\Broadcast\Topic\User;
+use Spiral\Auth\AuthContext;
+use Spiral\Broadcasting\BroadcastInterface;
+
+class SomeService
+{
+    public function __construct(
+        private readonly AuthContext $auth,
+        private readonly BroadcastInterface $broadcast
+    ) {
+    }
+
+    public function method(): void
+    {
+        $userId = $this->auth->getActor()->getId();
+
+        $this->broadcast->publish(new User($userId), 'some-message');
+    }
+}
+```
+
 ## GuardInterface
 
 A driver that implements `Spiral\Broadcasting\BroadcastInterface` can implement the `Spiral\Broadcasting\GuardInterface` 
