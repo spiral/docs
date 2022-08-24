@@ -15,7 +15,7 @@ use Spiral\Core\CoreInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Interceptor implements CoreInterceptorInterface
+class CustomInterceptor implements CoreInterceptorInterface
 {
 
     /**
@@ -41,7 +41,7 @@ class Interceptor implements CoreInterceptorInterface
 }
 ```
 
-## Adding an Interceptor
+## Registering a new Interceptor
 
 For an interceptor works, it must be registered in the application. There are several ways to add a new interceptor.
 
@@ -50,7 +50,7 @@ For an interceptor works, it must be registered in the application. There are se
 Add it to the configuration file `app/config/console.php`.
 
 ```php
-use App\Interceptor;
+use App\CustomInterceptor;
 use Spiral\Core\Container\Autowire;
 
 return [    
@@ -61,10 +61,10 @@ return [
      */
     'interceptors' => [
         // via fully qualified class name
-        Interceptor::class,
+        CustomInterceptor::class,
         
         // via Autowire
-        new Autowire(Interceptor::class),
+        new Autowire(CustomInterceptor::class),
     ],
 ];
 ```
@@ -76,7 +76,7 @@ Call method `addInterceptor` in the `Spiral\Console\Bootloader\ConsoleBootloader
 ```php
 namespace App\Bootloader;
 
-use App\Interceptor;
+use App\CustomInterceptor;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Console\Bootloader\ConsoleBootloader;
 
@@ -84,7 +84,7 @@ class AppBootloader extends Bootloader
 {
     public function boot(ConsoleBootloader $console): void
     {
-        $console->addInterceptor(Interceptor::class);
+        $console->addInterceptor(CustomInterceptor::class);
     }
 }
 ```

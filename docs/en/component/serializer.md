@@ -5,8 +5,7 @@ This component provides only the simplest serializers out of the box and may not
 But it provides an easy way to integrate serialization tools into the Spiral Framework or develop your own solutions for 
 serializing data in your application.
 
-The component available by default in
-the [application bundle](https://github.com/spiral/app).
+The component available by default in the [application bundle](https://github.com/spiral/app).
 
 ## Installation
 
@@ -135,7 +134,7 @@ class MyService
 }
 ```
 
-## Creating serializer
+## Creating a serializer
 
 ### Serializer class
 
@@ -146,7 +145,7 @@ namespace App;
 
 use Spiral\Serializer\SerializerInterface;
 
-class Serializer implements SerializerInterface
+class CustomSerializer implements SerializerInterface
 {
     public function serialize(mixed $payload): string|\Stringable
     {
@@ -160,18 +159,18 @@ class Serializer implements SerializerInterface
 }
 ```
 
-You need to implement the `serialize` method with one `$payload` parameter, and this method should return the serialized data.
-And the `unserialize` method, which in the parameters accepts serialized data `$payload` and optionally the name of the class or 
-object `$type` into which this information will be deserialized.
+You need to implement the `serialize` method with one `$payload` parameter, and this method should return 
+the serialized data. And the `unserialize` method, which in the parameters accepts serialized data `$payload` 
+and optionally the name of the class or object `$type` into which this information will be deserialized.
 
-### Adding new Serializer
+### Registering a new Serializer
 
 There are several ways to add a new serializer. Using `Spiral\Serializer\SerializerRegistryInterface`:
 
 ```php
 namespace App\Bootloader;
 
-use App\Serializer;
+use App\CustomSerializer;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Serializer\SerializerRegistryInterface;
 
@@ -179,7 +178,7 @@ class SerializerBootloader extends Bootloader
 {
     public function boot(SerializerRegistryInterface $registry): void
     {
-        $registry->register('someName', new Serializer());
+        $registry->register('someName', new CustomSerializer());
     }
 }
 ```
@@ -192,7 +191,7 @@ use App\Serializer;
 return [
     // file app/config/serializer.php
     'serializers' => [
-        'someName' => Serializer::class,
+        'someName' => CustomSerializer::class,
         // other serializers
     ],
 ];
