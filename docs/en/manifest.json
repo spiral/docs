@@ -53,6 +53,7 @@
     "title": "Components",
     "links": {
       "component/attributes": "Attributes",
+      "component/cache": "Cache",
       "component/distribution": "Cloud Distribution",
       "component/storage": "Storage",
       "component/files": "Files and Directories",

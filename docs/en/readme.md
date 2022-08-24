@@ -33,6 +33,7 @@
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
 * Components
     * [Attributes](component/attributes.md)
+    * [Cache](component/cache.md)
     * [Cloud Distribution](component/distribution.md)
     * [Storage](component/storage.md)
     * [Files and Directories](component/files.md)
