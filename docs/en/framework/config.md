@@ -4,7 +4,7 @@ The Spiral framework exposes all the underlying configuration of its components 
 of config objects is to separate the bootload and runtime phase and provide an easily accessible source of the
 configuration.
 
-![Application Control Phases](https://user-images.githubusercontent.com/796136/64906478-e213ff80-d6ef-11e9-839e-95bac78ef147.png)
+![Application Control Phases](https://user-images.githubusercontent.com/67324318/186413037-e60f89fd-9313-44c5-b4f8-eb2585a77230.png)
 
 While configuration can change during the bootload process, at runtime all the values are frozen and forbidden for
 modification.
