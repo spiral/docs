@@ -48,6 +48,7 @@
 * Console
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
+    * [Interceptors](console/interceptors.md)
 * HTTP
     * [Installation and Configuration](http/configuration.md)
     * [Request Lifecycle](http/lifecycle.md)
@@ -95,6 +96,7 @@
     * [Installation and Configuration](queue/configuration.md)
     * [Running Jobs](queue/jobs.md)
     * [RoadRunner integration](queue/roadrunner.md)
+    * [Interceptors](queue/interceptors.md)
 * Views
     * [Installation and Configuration](views/configuration.md)
     * [Rendering Views](views/render.md)

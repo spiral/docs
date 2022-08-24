@@ -148,7 +148,8 @@
     "links": {
       "queue/configuration": "Installation and Configuration",
       "queue/jobs": "Running Jobs",
-      "queue/roadrunner": "RoadRunner integration"
+      "queue/roadrunner": "RoadRunner integration",
+      "queue/interceptors": "Interceptors"
     }
   },
   {
