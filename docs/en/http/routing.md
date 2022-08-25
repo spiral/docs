@@ -25,20 +25,45 @@ And activate its Bootloader:
 ## Creating new routes via RoutesBootloader
 
 The default web application bundle allows you to configure application routes via `App\Bootloader\RoutesBootloader`.
-This bootloader contains the `defineRoutes` method, which contains in the parameters the `Spiral\Router\Loader\Configurator\RoutingConfigurator`.
-The `RoutingConfigurator` allows you to add routes or import routes from specific files.
+This bootloader contains the `defineRoutes` method, which contains in the parameters
+the `Spiral\Router\Loader\Configurator\RoutingConfigurator`.
 
-### Import from files
+```php
+// file app/src/Bootloader/RoutesBootloader.php
 
-By default, the import of routes from the `app/routes/web.php` file is already configured.
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
 
-Open the `web.php` file, to add new route use the `add` method.
+protected function defineRoutes(RoutingConfigurator $routes): void
+{
+    // ...
+}
+```
+
+The `RoutingConfigurator` allows you to create and automatically register routes or import routes from specific files.
+
+## Import routes from files
+
+On the example below you can see on how to import routes from the specific file.
+
+```php
+// file app/src/Bootloader/RoutesBootloader.php
+protected function defineRoutes(RoutingConfigurator $routes): void
+{
+    $routes->import($this->dirs->get('app') . '/routes/web.php')->group('web');
+}
+```
+
+> **Note**
+> By default, the import of routes from the `app/routes/web.php` file is already configured in `spiral/app`.
+
+Open the `web.php` file, to add a new route use the `add` method.
 
 ```php
 use App\Controller\HomeController;
 use Spiral\Router\Loader\Configurator\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes): void {
+
     // route to the controller action
     $routes->add('index', '/')->action(HomeController::class, 'index');
     
@@ -59,6 +84,7 @@ return function (RoutingConfigurator $routes): void {
 
     // route with custom handler
     $routes->add('custom-handler', '/custom-handler')->handler(\App\Handlers\Handler::class);
+    
 };
 ```
 
@@ -101,7 +127,7 @@ return function (RoutingConfigurator $routes): void {
 };
 ```
 
-Routes with the same `prefix` and `group` can be grouped in a separate file. Need to create a new file, for example, 
+Routes with the same `prefix` and `group` can be grouped in a separate file. Need to create a new file, for example,
 `app/routes/api.php` and add api routes:
 
 ```php
@@ -128,7 +154,7 @@ protected function defineRoutes(RoutingConfigurator $routes): void
 
 ### Adding routes in defineRoutes method
 
-Routes can be added in the `defineRoutes` method using the `RoutingConfigurator`. 
+Routes can be added in the `defineRoutes` method using the `RoutingConfigurator`.
 The process of adding routes is exactly the same as in separate files:
 
 ```php
@@ -148,12 +174,9 @@ final class RoutesBootloader extends BaseRoutesBootloader
 }
 ```
 
-### Middlewares and groups
+## Middleware
 
-Middlewares are configured globally, which will be applied for all routes and for each group of routes separately.
-Each group will have the global middlewares and the middlewares configured for that group applied.
-
-You can configure middlewares in the `RoutesBootloader`:
+You can configure middleware in the `RoutesBootloader`:
 
 ```php
 namespace App\Bootloader;
@@ -198,6 +221,32 @@ final class RoutesBootloader extends BaseRoutesBootloader
 }
 ```
 
+Globally configured middleware will be applied for all routes, but grouped middleware will be applied to the route
+groups with the same name and registered in the application container as a Pipelines with the following name
+pattern `middleware:{group}`, so you can use middleware in any routes.
+
+Grouped middleware registration in the container looks like in the example below:
+
+```php
+$container->bind(
+    'middleware:web',
+    static function (\Spiral\Router\PipelineFactory $factory): Pipeline {
+        return $factory->createWithMiddleware([
+            CookiesMiddleware::class,
+            SessionMiddleware::class,
+            CsrfMiddleware::class,
+        ]);
+    }
+);
+```
+
+You can see an example below of how to register grouped middleware:
+
+```php
+$route = new Route('/', fn () => 'hello world');
+$route->withMiddleware(['middleware:web', MyMiddleware::class]);
+```
+
 ## Creating new routes via RouterInterface
 
 ### Default Configuration
@@ -236,7 +285,7 @@ class RoutesBootloader extends Bootloader
 ```
 
 > **Note**
-> The Route class can accept a handler of type `Psr\Http\Server\RequestHandlerInterface`, closure, invokable class, 
+> The Route class can accept a handler of type `Psr\Http\Server\RequestHandlerInterface`, closure, invokable class,
 > or `Spiral\Router\TargetInterface`. Simply pass a class or a binding name instead of a real object if you want it
 > to be constructed on demand.
 
@@ -660,7 +709,7 @@ $router->setRoute(
 > This route will match both `/index` and `/user/1` paths.
 
 Behind the hood, the route will compile into expression which is aware of action
-constrains `/^(?P<action>index|user)(?:\/(?P<id>[^\/]+))?$/iu`. Such approach would not only allow you to increase the 
+constrains `/^(?P<action>index|user)(?:\/(?P<id>[^\/]+))?$/iu`. Such approach would not only allow you to increase the
 performance but also reuse the same pattern with different action sets.
 
 ```php
@@ -723,13 +772,14 @@ $router->setRoute(
 ```
 
 > **Note**
-> This route will match `/home` with `action=index`. Note, you must extend optional path segments `[]` till the end of the
+> This route will match `/home` with `action=index`. Note, you must extend optional path segments `[]` till the end of
+> the
 > route pattern.
 
 ### Route to Namespace
 
 In some cases, you might want to route to the set of controllers located in the same namespace. Use
-target `Spiral\Router\Target\Namespaced` for these purposes. This target will require route parameters `<controller>` 
+target `Spiral\Router\Target\Namespaced` for these purposes. This target will require route parameters `<controller>`
 and `<action>` (unless default is forced).
 
 You can specify target namespace and controller class postfix:
@@ -772,12 +822,15 @@ $router->setRoute('app',
 ```
 
 > **Note**
-> This route will match `/` (home->index), `/home` (home->index), `/home/index`, `/home/other` and `/demo/test`. The 
+> This route will match `/` (home->index), `/home` (home->index), `/home/index`, `/home/other` and `/demo/test`. The
 > `/demo` will trigger not-found error as `DemoController` does not defines method `index`.
 
-The default web-application bundle sets this route [as default](https://github.com/spiral/app/blob/2.x/app/src/Bootloader/RoutesBootloader.php#L42).
-You don't need to create a route for any of the controllers added to `App\Controller`, simply use `/controller/action` URLs
-to access the required method. If no action is specified, the `index` will be used by the default. The routing will point
+The default web-application bundle sets this
+route [as default](https://github.com/spiral/app/blob/2.x/app/src/Bootloader/RoutesBootloader.php#L42).
+You don't need to create a route for any of the controllers added to `App\Controller`, simply use `/controller/action`
+URLs
+to access the required method. If no action is specified, the `index` will be used by the default. The routing will
+point
 to the public methods only.
 
 > **Note**

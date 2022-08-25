@@ -29,13 +29,19 @@ in application bootloaders.
 
 ```php
 use Spiral\Bootloader\Http\HttpBootloader;
+use Spiral\Core\Container\Autowire;
+use Psr\Container\ContainerInterface;
 
 class MyMiddlewareBootloader extends Bootloader
 {
-    public function boot(HttpBootloader $http): void
+    public function boot(HttpBootloader $http, ContainerInterface $container): void
     {
         // automatically resolved by Container
         $http->addMiddleware(MyMiddleware::class);
+        
+        // automatically resolved by Container
+        $container->bind('my:middleware', fn() => new MyMiddleware);
+        $http->addMiddleware('my:middleware');
         
         // Autowire allows creating an object with dependency resolving from the container
         // and passing some parameters manually
@@ -54,6 +60,8 @@ return [
     'middleware' => [
         // via fully qualified class name
         MyMiddleware::class,
+        
+        'my:middleware',
         
         // via Autowire 
         new Autowire(MyMiddleware::class, ['someParameter' => 'value']),
