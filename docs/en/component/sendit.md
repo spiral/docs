@@ -5,7 +5,8 @@ the [application bundle](https://github.com/spiral/app).
 
 ## Installation
 
-To enable the component, you just need to add `Spiral\SendIt\Bootloader\BuilderBootloader` and`Spiral\SendIt\Bootloader\MailerBootloader` 
+To enable the component, you just need to add `Spiral\SendIt\Bootloader\BuilderBootloader`
+and`Spiral\SendIt\Bootloader\MailerBootloader`
 classes to the bootloaders list, which is located in the class of your application.
 
 ```php
@@ -25,7 +26,7 @@ class App extends Kernel
 }
 ```
 
-The `BuilderBootloader` bootloader registers package views and provides the ability to generate email templates using 
+The `BuilderBootloader` bootloader registers package views and provides the ability to generate email templates using
 the `Stempler` template engine. The `MailerBootloader` configures a queue for sending emails.
 
 > **Note**
@@ -33,7 +34,7 @@ the `Stempler` template engine. The `MailerBootloader` configures a queue for se
 
 ## Configuration
 
-The configuration file for this component should be located at `app/config/mailer.php`. Within this file, you may 
+The configuration file for this component should be located at `app/config/mailer.php`. Within this file, you may
 configure the `dsn`, `from`, `queue`, `queueConnection` parameters.
 
 For example, the configuration file might look like this:
@@ -71,6 +72,21 @@ return [
     'queueConnection' => env('MAILER_QUEUE_CONNECTION', 'sync'),
 ];
 ```
+
+### DSN
+
+The `MAILER_DSN` isn't a real address: it's a convenient format that offloads most of the configuration work to mailer.
+
+| DSN protocol | Example                                | Description                                                                                                                                                                                                                |
+|--------------|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| smtp         | `smtp://user:pass@smtp.example.com:25` | Mailer uses an SMTP server to send emails                                                                                                                                                                                  |
+| sendmail     | `sendmail://default`                   | Mailer uses the local sendmail binary to send emails                                                                                                                                                                       |
+| native       | `native://default`                     | Mailer uses the sendmail binary and options configured in the `sendmail_path setting of `php.ini`. On Windows hosts, Mailer fallbacks to `smtp` and `smtp_port` `php.ini` settings when `sendmail_path` is not configured. |
+
+
+> **Note**
+> You can find out more about DSN transports on the
+> official `symfony/mailer` [documentation](https://symfony.com/doc/current/mailer.html#using-built-in-transports)
 
 ## Usage
 
