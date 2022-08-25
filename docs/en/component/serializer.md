@@ -1,16 +1,16 @@
 # Serializer
 
-The Spiral Framework provides a component for serialize and deserialize data. Serialization is a complex topic.
-This component provides only the simplest serializers out of the box and may not cover all your use cases.
-But it provides an easy way to integrate serialization tools into the Spiral Framework or develop your own solutions for 
-serializing data in your application.
+The Spiral Framework provides a component for serializing and deserializing data. Serialization is a complex topic. This
+component provides only the simplest serializers out of the box and may not cover all your use cases. But it provides an
+easy way to integrate serialization tools into the Spiral Framework or develop your solutions for serializing data in
+your application.
 
-The component available by default in the [application bundle](https://github.com/spiral/app).
+The component is available by default in the [application bundle](https://github.com/spiral/app).
 
 ## Installation
 
-To enable the component, you just need to add `Spiral\Serializer\Bootloader\SerializerBootloader` to the bootloaders list, 
-which is located in the class of your application.
+To enable the component, you just need to add `Spiral\Serializer\Bootloader\SerializerBootloader` to the bootloaders
+list, which is located in the class of your application.
 
 ```php
 namespace App;
@@ -29,8 +29,8 @@ class App extends Kernel
 
 ## Configuration
 
-The configuration file for this component should be located at `app/config/serializer.php`. Within this file, you may
-configure array of available serializers and default serializer.
+The configuration file for this component should be located at `app/config/serializer.php`. Within this file, you may 
+configure an array of available serializers and default serializer.
 
 For example, the configuration file might look like this:
 
@@ -74,14 +74,14 @@ return [
 
 Three serializers are available by default.
 
-- `Spiral\Serializer\Serializer\JsonSerializer` - uses PHP functions `json_encode` and `json_decode`. 
-   This serializer does not support data hydration to an object.
+- `Spiral\Serializer\Serializer\JsonSerializer` - uses PHP functions `json_encode` and `json_decode`.
+  It does not support data hydration to an object.
 - `Spiral\Serializer\Serializer\PhpSerializer` - uses PHP functions `serialize` and `unserialize`.
-- `Spiral\Serializer\Serializer\CallbackSerializer`- uses callbacks for serialize and unserialize data.
+- `Spiral\Serializer\Serializer\CallbackSerializer`- uses callbacks for serializing and deserializing data.
 
 ### SerializerInterface
 
-The serializer can be injected from a container using the `Spiral\Serializer\SerializerInterface`. It will refer to the 
+The serializer can be injected from a container using the `Spiral\Serializer\SerializerInterface`. It will refer to the
 default serializer.
 
 ```php
@@ -159,9 +159,9 @@ class CustomSerializer implements SerializerInterface
 }
 ```
 
-You need to implement the `serialize` method with one `$payload` parameter, and this method should return 
-the serialized data. And the `unserialize` method, which in the parameters accepts serialized data `$payload` 
-and optionally the name of the class or object `$type` into which this information will be deserialized.
+You need to implement the `serialize` method with the `$payload` parameter, and this method should return
+the serialized data. And the `unserialize` method, which in the parameters accepts serialized data `$payload`
+and optionally the name of the class or object `$type` into which the payload should be deserialized.
 
 ### Registering a new Serializer
 
