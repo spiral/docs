@@ -1,8 +1,14 @@
 # Validation
 
 Validation in the Spiral Framework consists of three parts: the `Spiral Validation` package with validation interfaces,
-a `validator` package with validation implementation and `Request Filters`.
+a [spiral/validator](https://github.com/spiral/validator) package with validation implementation and `Request Filters`.
 
+There are three validators for Spiral Framework you can use in your projects:
+
+- [Spiral Validator](https://github.com/spiral/validator)
+- [Symfony Validator](https://github.com/spiral-packages/symfony-validator)
+- [Laravel Validator](https://github.com/spiral-packages/symfony-validator)
+- 
 In this article, we will look at the `Spiral Validation` component.
 
 > **Note**
