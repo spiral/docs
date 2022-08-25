@@ -1,7 +1,7 @@
 # Spiral Validator
 
-You can validate your data using the `spiral/validator` component. The component provides an array-based DSL to
-construct complex validation chains.
+You can validate your data using the [spiral/validator](https://github.com/spiral/validator) component. The component 
+provides an array-based DSL to construct complex validation chains.
 
 The component contains `Checkers`, `Conditions`, and `Validation` object. 
 

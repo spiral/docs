@@ -1,20 +1,179 @@
 # Filter Object
 
-The Filter object used to perform complex data validation and filtration using PSR-7 or any other input.
-The Filter object is different, depending on the Validator package used. This article covers the filters that using
-with the [Spiral Validator](https://github.com/spiral/validator) package.
+A Filter object uses to perform complex data validation and filtration using PSR-7 or any other input.
+
+You can use filters in two ways:
+
+1. Map data from the request into object properties.
+2. Map and automatically validate data from the request.
+
+## Validators
+
+If you need only populate data from the request you don't need any validators for it. But if you need to validate data,
+at first, you need to choose a validator for it.
+
+There are three validators for Spiral Framework you can use:
+
+- [Spiral Validator](https://github.com/spiral/validator)
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filters;
+
+use Spiral\Filters\Model\FilterInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Attribute\Input\File;
+
+class CreatePostFilter implements FilterInterface, HasFilterDefinition
+{
+    #[Post(key: 'title')]
+    public string $title;
+    
+    #[Post(key: 'text')]
+    public string $text;
+    
+    #[File]
+    public UploadedFile $image;
+    
+    // ...
+
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition(
+            validationRules: [
+                'title' => [
+                    ['notEmpty'],
+                    ['string::length', 50]
+                ],
+                'text' => [['notEmpty']],
+                'image' => [['image::valid'], ['file::size', 1024]]
+                
+                // ...
+            ]
+        );
+    }
+}
+```
+
+- [Symfony Validator](https://github.com/spiral-packages/symfony-validator)
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filters;
+
+use Psr\Http\Message\UploadedFileInterface;
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Validation\Symfony\Attribute\Input\File;
+use Spiral\Validation\Symfony\AttributesFilter;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints;
+
+final class CreatePostFilter extends AttributesFilter
+{
+    #[Post]
+    #[Constraints\NotBlank]
+    #[Constraints\Length(min: 5)]
+    public string $title;
+
+    #[Post]
+    #[Constraints\NotBlank]
+    #[Constraints\Length(min: 5)]
+    public string $slug;
+
+    #[Post]
+    #[Constraints\NotBlank]
+    #[Constraints\Positive]
+    public int $sort;
+    
+    #[File]
+    #[Constraints\Image]
+    public UploadedFile $image;
+}
+```
+
+- [Laravel Validator](https://github.com/spiral-packages/symfony-validator)
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filters;
+
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validation\Laravel\FilterDefinition;
+use Spiral\Validation\Laravel\Attribute\Input\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+final class CreatePostFilter extends Filter implements HasFilterDefinition
+{
+    #[Post]
+    public string $title;
+
+    #[Post]
+    public string $slug;
+
+    #[Post]
+    public int $sort;
+
+    #[File]
+    public UploadedFile $image;
+
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'title' => 'string|required|min:5',
+            'slug' => 'string|required|min:5',
+            'sort' => 'integer|required',
+            'image' => 'required|image'
+        ]);
+    }
+}
+```
+
+We will use [Spiral Validator](https://github.com/spiral/validator) package in the article examples.
+
+## Usage
+
+All filter objects should implement `Spiral\Filters\Model\FilterInterface`. The interface will add the ability inject
+filters with populated data from `Spiral\Filters\InputInterface` from the container.
 
 ```php
 namespace App\Filter;
 
-use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterInterface;
+use Spiral\Filters\Attribute\Input\Post;
 
-class MyFilter extends Filter
+class MyFilter implements FilterInterface
 {
+    #[Post(key: 'text')]
+    public string $text;
 }
 ```
 
-Use `Spiral\Filters\Model\FilterProviderInterface`->`createFilter` or simply request filter dependency to create an instance:
+```php
+dump($container->get(MyFilter::class)); 
+```
+
+You can use `Spiral\Filters\Model\FilterProviderInterface`->`createFilter` also to create an instance:
+
+```php
+$provider = $container->get(\Spiral\Filters\Model\FilterProviderInterface::class);
+$provider->createFilter(MyFilter::class, $container->get(\Spiral\Filters\InputInterface::class));
+```
+
+or simply request filter as a dependency for example, in some controller
 
 ```php
 use App\Filter\MyFilter;
@@ -30,13 +189,62 @@ class HomeController
 
 ## Filter Schema
 
-There are two variants for defining the filter scheme. Using `attributes` with filter properties or using `array
-schema` mapping.
+There are two ways to define the filter schema.
 
-#### Attributes
+- Using attributes with filter properties.
+
+```php
+class MyFilter implements FilterInterface
+{
+    #[Post(key: 'text')]
+    public string $text;
+}
+```
+
+```php
+$filter = $container->get(MyFilter::class);
+
+dump($filter->text); // '...'
+dump($filter->getData()); // ['text' => '...'] 
+```
+
+- Using array schema mapping. In this case a filter should implement `Spiral\Filters\Model\HasFilterDefinition` and
+  extend `Spiral\Filters\Model\Filter` class to have access to the mapped data from the request.
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+
+class MyFilter extends Filter implements HasFilterDefinition
+{
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition(mappingSchema: 
+            [
+                'text' => 'data:text'
+            ]
+        );
+    }
+}
+```
+
+```php
+$filter = $container->get(MyFilter::class);
+dump($filter->getData()); // ['text' => '...'] 
+```
+
+> **Note**
+> You can use both ways in your filter object. In this case filter provider will build mapping schema for properties
+> with attributes and then will merge the schema with schema from filter definition.
+
+### Attributes
 
 Add properties with the needed type and add an attribute that points to the data source.
-For example, we can tell our Filter to point field `login` to the QUERY param `username`:
+For example, we can tell our Filter to map field `login` to the QUERY param `username`:
 
 ```php
 namespace App\Filter;
@@ -51,7 +259,7 @@ class MyFilter extends Filter
 }
 ```
 
-You can combine multiple sources inside the Filter:
+You can combine multiple sources inside the Filter object:
 
 ```php
 namespace App\Filter;
@@ -80,7 +288,7 @@ class MyFilter extends Filter
 }
 ```
 
-#### Array based Filters
+### Array based Filters
 
 For example, we can tell our Filter to point field `login` to the QUERY param `username`:
 
@@ -379,6 +587,10 @@ class HomeController
 
 ## Validation
 
+> **Note**
+> FilterDefinition class should implement `Spiral\Filters\Model\ShouldBeValidated` if a filter object should be
+> validated.
+
 The validation rules can be defined using same approach as in [Validator](../security/validator.md) component.
 
 ```php
@@ -470,7 +682,7 @@ is requested and throw a `Spiral\Filters\Exception\ValidationException` if the d
 
 ### Get Fields
 
-To get a filtered data, use filter properties or method `getData` (if you are using a array schema mapping):
+To get a filtered data, use filter properties or method `getData` (if it extends `Spiral\Filters\Model\Filter`):
 
 ```php
 namespace App\Filter;
@@ -508,67 +720,5 @@ public function index(MyFilter $filter): void
     // or
     dump($filter->email);
     dump($filter->name);
-}
-```
-
-## Inheritance
-
-You can extend one filter from another, the schema, validation, and setters will be inherited:
-
-```php
-namespace App\Filter;
-
-use Spiral\Filters\Attribute\Input\Post;
-use Spiral\Filters\Model\FilterDefinitionInterface;
-use Spiral\Validator\FilterDefinition;
-
-class MyFilter extends BaseFilter
-{
-    #[Post]
-    public string $name;
-    
-    public function filterDefinition(): FilterDefinitionInterface
-    {
-        return new FilterDefinition([
-            'name' => ['required']
-        ]);
-    }
-}
-```
-
-Where `BaseFilter` is:
-
-```php
-namespace App\Filter;
-
-use Spiral\Filters\Attribute\Input\Post;
-use Spiral\Filters\Model\Filter;
-use Spiral\Filters\Model\FilterDefinitionInterface;
-use Spiral\Filters\Model\HasFilterDefinition;
-use Spiral\Validator\FilterDefinition;
-
-class BaseFilter extends Filter implements HasFilterDefinition
-{
-    #[Post]
-    public string $token;
-    
-    public function filterDefinition(): FilterDefinitionInterface
-    {
-        return new FilterDefinition([
-            'token' => ['required']
-        ]);
-    }
-}
-```
-
-Now filter `MyFilter` will require `token` value as well:
-
-```json
-{
-  "status": 400,
-  "errors": {
-    "token": "This value is required.",
-    "name": "This value is required."
-  }
 }
 ```

@@ -19,6 +19,10 @@ bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
 ]
 ```
 
+> **Note**
+> If you want to use old filters with Spiral Framework 3.0, we added 
+> [spiral/filters-bridge](https://github.com/spiral/filters-bridge) package for easy migration from previous versions.
+
 ## Input Binding
 
 The filter components operate using the `Spiral\Filter\InputInterface` as a primary data source:
@@ -102,6 +106,4 @@ class HomeController
 ```
 
 > **Note**
-> Try URL with `?abc=1`.
-
-The Filter will automatically pre-validate your request before delivering to controller.
+> Try URL with `?abc=1`. The Filter will automatically pre-validate your request before delivering to the controller.
