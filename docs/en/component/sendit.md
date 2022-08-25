@@ -88,6 +88,14 @@ The `MAILER_DSN` isn't a real address: it's a convenient format that offloads mo
 > You can find out more about DSN transports on the
 > official `symfony/mailer` [documentation](https://symfony.com/doc/current/mailer.html#using-built-in-transports)
 
+### Queue
+
+The `queueConnection` key uses for specifying queue that will be used for handling mail messages. By default, messages 
+will be sent by using `sync` connection.
+
+> **Note**
+> Read more about queue connection configuration [here](/queue/configuration.md).
+
 ## Usage
 
 The component provides the ability to compose content-rich email templates using `Stempler` views:
