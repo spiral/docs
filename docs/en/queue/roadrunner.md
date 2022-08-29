@@ -1,7 +1,7 @@
 # Queue and Jobs - RoadRunner integration
 
 Roadrunner queues provide a unified queueing API across a variety of different queue backends. Full information about
-supported pipelines you can read on [official site](https://roadrunner.dev/docs/beep-beep-jobs).
+supported pipelines you can read on [official site](https://roadrunner.dev/docs/plugins-jobs/2.x/en).
 
 The `spiral/roadrunner-bridge` package is included by default in Web and GRPC builds.
 
