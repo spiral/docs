@@ -534,6 +534,31 @@ class MyFilter extends Filter implements HasFilterDefinition
 }
 ```
 
+### Array
+
+> prefix `array::`
+
+| Rule    | Parameters           | Description                                                           |
+|---------|----------------------|-----------------------------------------------------------------------|
+| count   | length:*int*         | Check that an array has a size equal to the given value.              |
+| shorter | length:*int*         | Check that an array has a size less than or equal to the given value. |
+| longer  | length:*int*         | Check that an array has a size more than or equal to the given value. |
+| range   | min:*int*, max:*int* | Check that an array has a size between the given min and max.         |
+
+Examples:
+
+```php
+class MyRequest extends \Spiral\Filters\Filter
+{
+    public const VALIDATES = [
+        'tags' => [
+            ['notEmpty'],
+            ['array::range', 1, 10]
+        ]
+    ];
+}
+```
+
 ### File Checker
 
 > **Note**
