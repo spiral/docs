@@ -47,12 +47,15 @@ Following route attributes are available:
 | Attribute  | Type         | Description                                                                                                                                                                           |
 |------------|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | route      | string       | Route patterns, follow the same rules as the default [Router](/http/routing.md). Required.                                                                                            |
-| name       | string       | Route name. Required.                                                                                                                                                                 |
+| name       | string       | Route name. Optional.                                                                                                                                                                 |
 | methods    | array/string | HTTP methods. Defaults to all methods.                                                                                                                                                |
 | defaults   | array        | Default values for route pattern.                                                                                                                                                     |
 | group      | string       | Route group, defaults to `default`.                                                                                                                                                   |
 | middleware | array        | Route specific middleware class names.                                                                                                                                                |
 | priority   | int          | (Available since v2.9). Position in a routes list. Higher priority routes are sorted before lower ones. Helps to solve situations when one request matches two routes. Defaults to 0. |
+
+> **Note**
+> If you won't define a route name it will be generated automatically. For example, `#Route(route: '/api/news',  methods: ["POST", "PATCH"])` will generate `post,patch:/api/news`
 
 ## Route Groups
 
@@ -78,7 +81,6 @@ class APIRoutes extends Bootloader
 
 > **Note**
 > Make sure to register bootloader after `AnnotatedRoutesBootloader`. Use the `default` group to configure all the routes.
-
 
 You can now assign the route to the group using the `group` attribute.
 
