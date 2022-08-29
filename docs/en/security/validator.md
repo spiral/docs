@@ -280,6 +280,30 @@ $validator = $validation->validate(
 > **Note**
 > You can assign custom error messages to any rule.
 
+#### Error Messages localization
+
+Custom error messages will be automatically translated.
+
+```php
+// app/locale/ru/messages.php
+return [
+    'This value is required.' => 'Значение не должно быть пустым.',
+];
+```
+
+```php
+$translator->setLocale('ru');
+
+$validator = $validation->validate(
+    ['key' => null],
+    [
+        'key' => [
+            ['notEmpty', 'error' => 'This value is required.'] // Will return ['key' => 'Значение не должно быть пустым.']
+        ]
+    ]
+);
+```
+
 ### Conditions
 
 In some cases the rule must only be activated based on some external condition, use rule attribute `if` for this
