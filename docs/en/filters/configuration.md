@@ -107,5 +107,80 @@ class HomeController
 
 ## Extensions
 
-Activate `Spiral\Domain\FilterInterceptor` in your [domain core](/cookbook/domain-core.md) to automatically pre-validate
-your request before delivering to controller.
+There are two interceptors in Spiral Framework that you can use for automatically pre-validation your request before
+delivering to a controller.
+
+### FilterInterceptor
+
+`Spiral\Domain\FilterInterceptor` will automatically validate your filters after resolving. If filter is not valid an
+error response will be return.
+
+```php
+[
+    'status' => 400,
+    'errors' => $filter->getErrors(),
+]
+```
+
+### FilterWithRendererInterceptor
+
+`Spiral\Domain\FilterWithRendererInterceptor` does the same as `Spiral\Domain\FilterInterceptor`, but with this
+interceptor you can override the error rendering for a specific filter.
+
+#### Renderer example
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+use Spiral\Filters\FilterInterface;
+use Spiral\Filters\RenderErrors;
+
+/**
+ * @template-implements RenderErrors<FilterInterface>
+ */
+final class SomeErrorsRenderer implements RenderErrors
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function render(FilterInterface $filter)
+    {
+        return [
+            'success' => false,
+            'errors' => $filter->getErrors(),
+        ];
+    }
+}
+```
+
+#### Filter example
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App;
+
+use Spiral\Filters\Filter;
+use Spiral\Filters\RenderWith;
+
+#[RenderWith(SomeErrorsRenderer::class)]
+final class FilterWithErrorsRenderer extends Filter
+{
+    public const SCHEMA = [
+        'id' => 'query:id'
+    ];
+
+    public const VALIDATES = [
+        'id' => [
+            ['notEmpty', 'err' => '[[ID is not valid.]]']
+        ]
+    
+```
+
+> **Note**
+> Read more about using interceptors in your Domain core [here](/cookbook/domain-core.md)
