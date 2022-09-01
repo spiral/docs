@@ -120,6 +120,11 @@ dump($input->query->fetch(['name', 'nameB'], true, null);
 dump($input->query('name'));
 ```
 
+> **Note**
+> In the situation when Input bag has a key with `null` value 
+> `new \Spiral\Http\Request\InputBag(['name' => null]);` the method `$input->query->has('name')` will return `true`,
+> but `isset($input->query['name])` will return `false`.
+ 
 ### Input headers
 
 We can use the '**headers**' input bag and `header` method in `Spiral\Http\Request\InputManager` to access input 
