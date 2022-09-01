@@ -14,7 +14,7 @@ bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
 ```php
 [
     // ...
-    Spiral\\Bootloader\Security\FiltersBootloader::class
+    Spiral\Bootloader\Security\FiltersBootloader::class
     // ...
 ]
 ```
@@ -110,10 +110,7 @@ class HomeController
 There are two interceptors in Spiral Framework that you can use for automatically pre-validation your request before
 delivering to a controller.
 
-### FilterInterceptor
-
-`Spiral\Domain\FilterInterceptor` will automatically validate your filters after resolving. If filter is not valid an
-error response will be return.
+By default, filter interceptor will render errors in format:
 
 ```php
 [
@@ -122,9 +119,47 @@ error response will be return.
 ]
 ```
 
-### FilterWithRendererInterceptor
+To change the default error output format you need to register in the container your implementation for the 
+`Spiral\Filters\RenderErrorsInterface`:
 
-`Spiral\Domain\FilterWithRendererInterceptor` does the same as `Spiral\Domain\FilterInterceptor`, but with this
+```php
+use Spiral\Filters\FilterInterface;
+use Spiral\Filters\RenderErrorsInterface;
+
+final class SomeErrorsRenderer implements RenderErrorsInterface
+{
+    public function render(FilterInterface $filter)
+    {
+        return [
+            'success' => false,
+            'errors' => $filter->getErrors(),
+        ];
+    }
+}
+```
+
+And then bind with implementation:
+
+```php
+use Spiral\Boot\Bootloader\Bootloader;
+
+class AppBootloader extends Bootloader
+{
+    protected const BINDINGS = [
+        \Spiral\Filters\RenderErrorsInterface::class => MyCustomRenderer::class
+    ];
+}
+```
+
+
+### FilterInterceptor
+
+`Spiral\Domain\FilterInterceptor` will automatically validate your filters after resolving. If filter is not valid an
+error response will be return.
+
+### FilterWithAttributeInterceptor
+
+`Spiral\Domain\FilterWithAttributeInterceptor` does the same as `Spiral\Domain\FilterInterceptor`, but with this
 interceptor you can override the error rendering for a specific filter.
 
 #### Renderer example
