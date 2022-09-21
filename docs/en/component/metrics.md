@@ -3,48 +3,13 @@
 You can expose some of the application metrics using the [prometheus](https://prometheus.io/) service embedded to the
 [RoadRunner application server](https://roadrunner.dev/docs/plugins-metrics/2.x/en).
 
-To install the component:
+The component available by default in the [application bundle](https://github.com/spiral/app) or 
+via [spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge).
 
-```bash
-composer require spiral/roadrunner-metrics
-```
+## Installation
 
-## Framework Integration
-
-Create a bootloader
-
-```php
-namespace App\Bootloader;
-
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\RoadRunner\Metrics\Metrics;
-use Spiral\RoadRunner\Metrics\MetricsInterface;
-use Spiral\RoadRunner\Environment;
-use Goridge\RPC\RPC;
-
-class MetricsBootloader extends Bootloader
-{
-    const SINGLETONS = [
-        MetricsInterface::class => [self::class, 'initMetrics'],
-    ];
-    
-    private function initMetrics(): MetricsInterface
-    {
-        return new Metrics(
-            RPC::create(Environment::fromGlobals()->getRPCAddress())
-        );
-    }
-}
-```
-
-Make sure to add `App\Bootloader\MetricsBootloader` to your App class:
-
-```php
-protected const LOAD = [
-    // ...
-    App\Bootloader\MetricsBootloader::class
-];
-```
+To enable the component, you just need to add `Spiral\RoadRunnerBridge\Bootloader\MetricsBootloader` to the 
+bootloaders list.
 
 ## Configuration
 
