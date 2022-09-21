@@ -1,79 +1,51 @@
 # Debug - Dumping Variables
 
-Use `Spiral\Debug\Dumper` class or function `dump` to view content of your variables and instances without xDebug:
+The Spiral Framework 3.0 doesn't have tools for dumping variables out of the box.
+
+But you can use third-party packages, like `symfony/var-dumper` to view content of your variables and instances.
+
+If you want to dump content of your variables to the RoadRunner error log, you need to create a function, like in 
+the example below: 
 
 ```php
-use Spiral\Debug\Dumper;
+<?php
 
-protected function indexAction(Dumper $dumper, MemcacheStore $memcacheStore)
-{
-    $dumper->dump($memcacheStore);
+declare(strict_types=1);
+
+use Symfony\Component\VarDumper\Caster\ReflectionCaster;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Symfony\Component\VarDumper\VarDumper;
+
+if (!\function_exists('dumprr')) {
+    /**
+     * Dump value int STDERR.
+     */
+    function dumprr(mixed $value): mixed
+    {
+        if (!\defined('STDERR')) {
+            \define('STDERR', \fopen('php://stderr', 'wb'));
+        }
+
+        static $dumper = new CliDumper(STDERR);
+
+        //
+        // Output modifiers
+        //
+        $cloner = new VarCloner();
+        // remove File and Line definitions from a custom closure dump
+        $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
+
+        // Set new handler and store previous one
+        $prevent = VarDumper::setHandler(static fn ($value) => $dumper->dump($cloner->cloneVar($value)));
+        $result = VarDumper::dump($value);
+
+        // Reset handler
+        VarDumper::setHandler($prevent);
+
+        return $result;
+    }
 }
 ```
 
-```php
-protected function indexAction(MemcacheStore $memcacheStore)
-{
-    dump($memcacheStore);
-}
-```
-
-The Spiral `Dumper` supports the `__debugInfo` [method](http://php.net/manual/en/language.oop5.magic.php) which allows
-you to dump only relevant information.
-
-## Usage
-
-In your code (works in `web` and `CLI` SAPIs):
-
-```php
-$d = new \Spiral\Debug\Dumper\Dumper();
-
-$d->dump($variable);
-```
-
-Dump to Log:
-
-```php
-$d = new \Spiral\Debug\Dumper\Dumper();
-
-$d->dump($variable, Debug\Dumper::LOGGER);
-```
-
-Dump to `STDERR`:
-
-```php
-$d = \Spiral\Debug\Dumper\Dumper($loggerInterface);
-
-$d->dump($variable, Debug\Dumper::STDERR);
-```
-
-Force dump to `STDERR` with color support:
-
-```php
-use Spiral\Debug;
-
-$d = new Debug\Dumper($loggerInterface);
-$d->setRenderer(Debug\Dumper::STDERR, new Debug\Renderer\ConsoleRenderer());
-
-$d->dump($variable, Debug\Dumper::STDERR);
-```
-
-> You can use function `dump` as a shortcut. Use `dumprr` to dump to the RoadRunner error log.
-
-## Internal Fields
-
-To hide specific fields of your objects without the `__debugInfo` method, add an "@internal" annotation to your
-property.
-
-```php
-class TestService
-{
-    /** @internal */
-    protected ContainerInterface $container = null;
-}
-```
-
-## In RoadRunner
-
-You can dump variable into roadrunner debug log using function `dumprr`. Make sure to use this function in your job
-handlers.
+> The package is included into `spiral/app` and a helper function `dumprr` also presented there.
