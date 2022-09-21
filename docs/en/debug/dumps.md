@@ -47,3 +47,5 @@ if (!\function_exists('dumprr')) {
     }
 }
 ```
+
+> The package is included into `spiral/app` and a helper function `dumprr` also presented there.
