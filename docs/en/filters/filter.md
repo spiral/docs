@@ -618,6 +618,75 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 You can use all the checkers, conditions, and rules.
 
+### Handle Validation errors
+
+By default, the Spiral Framework doesn't handle filter validation errors. When some of the filter rule has an error,
+`Spiral\Filters\Exception\ValidationException` exception will be thrown.
+
+There are two ways to handle a validation exception:
+ - Middleware
+ - Interceptions
+
+Both ways are similar. You can see an example of validation exception handler below:
+
+```php
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Spiral\Filters\Exception\ValidationException;
+
+class JsonValidationMiddleware implements MiddlewareInterface
+{
+    public function __construct(
+        private readonly ResponseFactoryInterface $responseFactory
+    ) 
+    {}
+
+    public function process(Request $request, RequestHandlerInterface $handler): Response
+    {
+        try {
+            return $handler->handle($request);
+        } catch (ValidationException $e) {
+            return $this->responseFactory->createResponse($e->getCode(), $e->getMessage())
+              ->getBody()
+              ->write(\json_encode([
+                  'errors' => $e->errors,
+              ]));
+        }
+    }
+}
+```
+
+And then you need to register middleware for specific route group.
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Cookies\Middleware\CookiesMiddleware;
+use Spiral\Csrf\Middleware\CsrfMiddleware;
+use Spiral\Session\Middleware\SessionMiddleware;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    // ...
+
+    protected function middlewareGroups(): array
+    {
+        return [
+            'web' => [
+                CookiesMiddleware::class,
+                SessionMiddleware::class,
+                CsrfMiddleware::class,
+            ],
+            'api' => [
+                JsonValidationMiddleware::class  // <===== Our new middleware
+            ],
+        ];
+    }
+}
+```
+
 ### Custom Errors
 
 You can specify the custom error message to any of the rules similar way as in the validator component.
