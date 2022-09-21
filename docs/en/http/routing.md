@@ -7,9 +7,6 @@ router in alternative builds:
 composer require spiral/router
 ```
 
-> **Note**
-> Please note that the spiral/framework >= 2.6 already includes this component.
-
 And activate its Bootloader:
 
 ```php
@@ -393,7 +390,37 @@ $router->setRoute('home', new Route(
 ```
 
 > **Note**
-> This route will only match URLs with numeric `id`.
+> This route will only match URLs with numeric `id` but it doesn't mean that route attribute `id` will contain integer
+> value. In this case attribute will always contain a string value.
+
+### Route parameters casting
+
+If you want to use typed route parameters injection in controllers, like `function user(int $id)` you need to cast
+values by yourself. You can use domain interceptors for it.
+
+You can see the example of simple interceptor below
+
+```php
+class StringToIntParametersInterceptor implements CoreInterceptorInterface
+{
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core): mixed
+    {
+        foreach ($parameters as $key => $parameter) {
+            if (ctype_digit($parameter)) {
+                $parameters[$key] = (int)$parameter;
+            }
+        }
+
+        return $core->callAction($controller, $action, $parameters);
+    }
+}
+```
+
+> **Note**
+> Read more about using interceptors [here](/cookbook/domain-core.md#core-interceptors).
+
+
+### Route pre-defined options
 
 You can also specify multiple pre-defined options:
 
@@ -408,6 +435,7 @@ $router->setRoute('home', new Route(
 
 > **Note**
 > This route will only match `/do/login` and `/do/logout`.
+
 
 ### Match Host
 
@@ -773,8 +801,7 @@ $router->setRoute(
 
 > **Note**
 > This route will match `/home` with `action=index`. Note, you must extend optional path segments `[]` till the end of
-> the
-> route pattern.
+> the route pattern.
 
 ### Route to Namespace
 
