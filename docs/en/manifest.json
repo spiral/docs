@@ -58,7 +58,7 @@
       "component/storage": "Storage",
       "component/files": "Files and Directories",
       "component/reactor": "Code Generation",
-      "component/tokenizer": "Static Analysis Tools",
+      "component/tokenizer": "Tokenizer",
       "component/metrics": "Prometheus Metrics",
       "component/data-grid": "Data Grids",
       "component/serializer": "Serializer",

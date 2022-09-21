@@ -1,4 +1,4 @@
-# Static Analysis
+# Tokenizer
 
 A lot of Spiral components based on automatic code discovery and analysis. The most used functionality of locating class
 declarations is provided by `Spiral\Tokenizer\ClassesInterface`.
@@ -76,7 +76,89 @@ final class SomeLocator
 }
 ```
 
-## PHP-Parser
+## Listeners
 
-The [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser) is available in Web and GRPC bundle by default. Use this
-dependency for a deeper analysis of AST-tree.
+For even more performance we recommend you to use tokenizer listeners instead of class locator. 
+
+There is a new feature Tokenizer Listener in the Spiral Framework 3.0. 
+
+### How it works
+
+The Spiral Framework used to scan registered directories in tokenizer every time when you request them via
+`Spiral\Tokenizer\ClassesInterface::getClasses` method. For example, if an application has 6 components that request
+classes from class locator via `getClasses` method, it will scan rectories 6 times.
+
+With the tokenizer listeners it will start iterating all found classes by `Spiral\Tokenizer\ClassesInterface` after 
+bootloading all application bootloaders only once and then send information about every found class to all registered 
+tokenizer listeners. In this case 6 components will register their listeners and will filter received class by their 
+rules and will handle them.
+
+To start using Tokenizer listeners you just need to include `Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader` 
+bootloader in your project at the top of bootloaders list:
+
+```php
+protected const LOAD = [
+    Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader::class,
+    // ...
+];
+```
+
+Create a listener:
+
+```php
+
+use Spiral\Attributes\ReaderInterface;
+
+class MyAttributeListener implements TokenizationListenerInterface
+{
+    private array $attributes = [];
+
+    public function __construct(
+        private readonly ReaderInterface $reader,
+        private readonly MyAttributeRegistry $registry
+    ) {
+    }
+    
+    /**
+     * The method will be fired for every found class by a class locator.
+     */
+    public function listen(\ReflectionClass $class): void
+    {
+        // Find MyAttribute attribute in the given class
+        $attr = $this->reader->firstClassMetadata($class, MyAttribute::class);
+
+        if ($attr === null) {
+            continue;
+        }
+    
+        $this->attributes[] = $attr;
+    }
+
+    /**
+     * The method will be fired after a class locator will finish iterating of found classes.
+     */
+    public function finalize(): void
+    {
+        // Register found attributes in your registry
+        $this->registry->registerAttributes(
+            $this->attributes
+        );
+    }
+}
+```
+
+And then register it in your bootloader
+
+```php
+use Spiral\Tokenizer\TokenizerListenerRegistryInterface;
+
+class AppBootloader extends Bootloader
+{
+    public function init(
+        TokenizerListenerRegistryInterface $listenerRegistry,
+        MyAttributeListener $listener
+    ): void {
+        $listenerRegistry->addListener($listener);
+    }
+}
+```
