@@ -88,6 +88,45 @@ The `MAILER_DSN` isn't a real address: it's a convenient format that offloads mo
 > You can find out more about DSN transports on the
 > official `symfony/mailer` [documentation](https://symfony.com/doc/current/mailer.html#using-built-in-transports)
 
+### Custom mailer transport
+
+Spiral Framework provides the ability to customize mailer transport. You just need to bind your implementation of 
+`Symfony\Component\Mailer\Transport\TransportInterface` via container.
+
+**Simple example**
+
+```php
+use Spiral\Boot\Bootloader\Bootloader;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Mailer\Transport\RoundRobinTransport;
+use Symfony\Component\Mailer\Transport;
+
+class AppBootloader extends Bootloader
+{
+    protected const DEPENDENCIES = [
+        \Spiral\SendIt\Bootloader\MailerBootloader::class,
+    ];
+    
+    protected const SINGLETONS = [
+        TransportInterface::class => [self::class, 'initTransport'],
+    ];
+    
+    public function initTransport(MailerConfig $config): TransportInterface
+    {
+        $transports = [];
+
+        foreach($config->getDsns() as $dsn) {
+            $transports[] = Transport::fromDsn($dsn);
+        }
+
+        return new RoundRobinTransport(
+            $transports
+        );
+}
+
+
+```
+
 ### Queue
 
 The `queueConnection` key uses for specifying queue that will be used for handling mail messages. By default, messages 
