@@ -122,7 +122,8 @@
     "links": {
       "filters/configuration": "Installation and Configuration",
       "filters/filter": "Filter Object",
-      "filters/composite": "Composite Filters"
+      "filters/composite": "Composite Filters",
+      "filters/bridge": "Migration from 2.x"
     }
   },
   {

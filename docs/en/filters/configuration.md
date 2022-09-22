@@ -4,9 +4,14 @@ The framework component `spiral/filters` provides support for request validation
 mapping and locations, etc.
 
 > **Note**
-> The component relies on [Validation](/security/validation.md) library, make sure to read it first.
+> If you are migrating from Spiral Framework 2.x and want to continue using old filters you can use
+> [spiral/filters-bridge](https://github.com/spiral/filters-bridge) package.
+> Read more about using the package [here](/filters/bridge.md).
 
 ## Installation
+
+> **Note**
+> The component relies on [Validation](/security/validation.md) library, make sure to read it first.
 
 The component does not require any configuration and can be activated using the
 bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
@@ -18,10 +23,6 @@ bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
     // ...
 ]
 ```
-
-> **Note**
-> If you want to use old filters with Spiral Framework 3.0, we added 
-> [spiral/filters-bridge](https://github.com/spiral/filters-bridge) package for easy migration from previous versions.
 
 ## Input Binding
 

@@ -82,6 +82,7 @@
     * [Installation and Configuration](filters/configuration.md)
     * [Filter Object](filters/filter.md)
     * [Composite Filters](filters/composite.md)
+    * [Migration from 2.x](filters/bridge.md)
 * Databases
     * [Installation and Configuration](database/configuration.md)
     * [Access Database](database/access.md)
