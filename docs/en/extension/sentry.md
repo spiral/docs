@@ -129,7 +129,7 @@ $state->setVariable('query', $currentRequest->getQueryParams());
 
 #### Add a log event
 
-Add the given log event as a breadcrumb to the current scope .
+The method will add a log event as a breadcrumb to the current scope.
 
 ```php
 $state->addLogEvent(new \Spiral\Logger\Event\LogEvent(
