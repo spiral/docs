@@ -129,3 +129,13 @@ your domain code is not leaking.
 > Framework includes a set of instruments to simplify the development process and avoid memory/state leaks such as 
 > IoC Scopes, Cycle ORM, Immutable Configs, Domain Cores, Routes, and Middleware.
 
+## Events
+
+| Event                                | Description                                                                                                        |
+|--------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| Spiral\Boot\Event\Bootstrapped       | The Event will be fired `after` all bootloaders from SYSTEM, LOAD and APP sections initialized.                    |
+| Spiral\Boot\Event\Serving            | The Event will be fired `before` looking for a dispatcher for handling incoming requests in a current environment. |
+| Spiral\Boot\Event\DispatcherFound    | The Event will be fired when a dispatcher for handling incoming requests in a current environment is found.        |
+| Spiral\Boot\Event\DispatcherNotFound | The Event will be fired when an application dispatcher is not found.                                               |
+| Spiral\Boot\Event\Finalizing         | The Event will be fired when finalizer are executed `before` running finalizers.                                   |
+ 

@@ -192,3 +192,12 @@ class MyService
 
 > **Note**
 > You can use the `cache` and `cacheManager` prototype properties.
+
+## Events
+
+| Event                          | Description                                                                 |
+|--------------------------------|-----------------------------------------------------------------------------|
+| Spiral\Cache\Event\CacheHit    | The Event will be fired when data is successfully retrieved from the cache. |
+| Spiral\Cache\Event\CacheMissed | The Event will be fired if the requested data is not found in the cache.    |
+| Spiral\Cache\Event\KeyDeleted  | The Event will be fired `after` the data is removed from the cache.         |
+| Spiral\Cache\Event\KeyWritten  | The Event will be fired `after` the data is stored in the cache.            |

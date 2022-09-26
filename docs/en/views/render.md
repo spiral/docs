@@ -113,3 +113,9 @@ After that, you can use the variable in the view.
 </body>
 </html>
 ```
+
+## Events
+
+| Event                           | Description                                         |
+|---------------------------------|-----------------------------------------------------|
+| Spiral\Views\Event\ViewNotFound | The Event will be fired when the view is not found. |

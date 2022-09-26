@@ -471,3 +471,10 @@ final class RedirectFirewall extends AbstractFirewall
     }
 }
 ```
+
+## Events
+
+| Event                           | Description                                                     |
+|---------------------------------|-----------------------------------------------------------------|
+| Spiral\Auth\Event\Authenticated | The Event will be fired `after` the user authenticated success. |
+| Spiral\Auth\Event\Logout        | The Event will be fired `after` the user logout success.        |

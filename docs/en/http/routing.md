@@ -1097,3 +1097,11 @@ public function index(RouterInterface $router)
 
 > **Note**
 > You can use `@route(name, params)` directive in Stempler views.
+
+## Events
+
+| Event                             | Description                                                     |
+|-----------------------------------|-----------------------------------------------------------------|
+| Spiral\Router\Event\Routing       | The Event will be fired `before` matching the route.            |
+| Spiral\Router\Event\RouteMatched  | The Event will be fired when the route is successfully matched. |
+| Spiral\Router\Event\RouteNotFound | The Event will be fired when the route is not found.            |

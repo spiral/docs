@@ -184,3 +184,10 @@ $message->setDelay(new \DateInterval('PT60S'));
 // or
 $message->setDelay(100);
 ```
+
+## Events
+
+| Event                              | Description                                          |
+|------------------------------------|------------------------------------------------------|
+| Spiral\SendIt\Event\MessageSent    | The Event will be fired `after` sending the message. |
+| Spiral\SendIt\Event\MessageNotSent | The Event is fired if the message could not be sent. |
