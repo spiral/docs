@@ -64,7 +64,8 @@
       "component/serializer": "Serializer",
       "component/sendit": "SendIt",
       "component/broadcasting": "Event Broadcasting",
-      "component/exceptions": "Exceptions"
+      "component/exceptions": "Exceptions",
+      "component/events": "Events"
     }
   },
   {

@@ -45,6 +45,7 @@
     * [SendIt](component/sendit.md)
     * [Event Broadcasting](component/broadcasting.md)
     * [Exceptions](component/exceptions.md)
+    * [Events](component/events.md)
 * Console
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
