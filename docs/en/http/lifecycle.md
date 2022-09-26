@@ -80,3 +80,10 @@ class HomeController implements SingletonInterface
 > **Note**
 > The IoC scopes can be nested, so all the functionality will work properly. However, be aware that not all extensions
 > will allow nesting (you are not allowed to create nested sessions yet).
+
+## Events
+
+| Event                             | Description                                                       |
+|-----------------------------------|-------------------------------------------------------------------|
+| Spiral\Http\Event\RequestReceived | The Event will be fired when the request is received.             |
+| Spiral\Http\Event\RequestHandled  | The Event will be fired when the request is successfully handled. |

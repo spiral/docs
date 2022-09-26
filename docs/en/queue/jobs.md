@@ -273,3 +273,10 @@ protected const APP = [
     App\Bootloader\QueueFailedJobsBootloader::class,
 ];
 ```
+
+## Events
+
+| Event                            | Description                                                 |
+|----------------------------------|-------------------------------------------------------------|
+| Spiral\Queue\Event\JobProcessing | The Event will be fired `before` executing the job handler. |
+| Spiral\Queue\Event\JobProcessed  | The Event will be fired `after` executing the job handler.  |

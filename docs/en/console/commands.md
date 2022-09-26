@@ -275,3 +275,10 @@ final class MigrateCommand extends Command
     }
 }
 ```
+
+## Events
+
+| Event                                | Description                                                     |
+|--------------------------------------|-----------------------------------------------------------------|
+| Spiral\Console\Event\CommandStarting | The Event will be fired `before` executing the console command. |
+| Spiral\Console\Event\CommandFinished | The Event will be fired `after` executing the console command.  |

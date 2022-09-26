@@ -635,3 +635,9 @@ class AppBootloader extends DomainBootloader
     ];
 }
 ```
+
+## Events
+
+| Event                                | Description                                               |
+|--------------------------------------|-----------------------------------------------------------|
+| Spiral\Core\Event\InterceptorCalling | The Event will be fired `before` calling the interceptor. |

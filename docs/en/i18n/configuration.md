@@ -73,3 +73,9 @@ return [
     ]
 ];
 ```
+
+## Events
+
+| Event                                 | Description                                          |
+|---------------------------------------|------------------------------------------------------|
+| Spiral\Translator\Event\LocaleUpdated | The Event will be fired `after` changing the locale. |

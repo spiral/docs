@@ -275,3 +275,9 @@ final class Broadcast extends AbstractBroadcast implements GuardInterface
 
 > **Note**
 > This functionality is already implemented in `RoadRunner Bridge`.
+
+## Events
+
+| Event                                | Description                                            |
+|--------------------------------------|--------------------------------------------------------|
+| Spiral\Broadcasting\Event\Authorized | The Event will be fired `after` success authorization. |
