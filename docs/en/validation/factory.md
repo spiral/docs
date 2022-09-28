@@ -8,7 +8,7 @@ There are three validators for Spiral Framework you can use in your projects:
 - [Spiral Validator](https://github.com/spiral/validator)
 - [Symfony Validator](https://github.com/spiral-packages/symfony-validator)
 - [Laravel Validator](https://github.com/spiral-packages/laravel-validator)
-- 
+
 In this article, we will look at the `Spiral Validation` component.
 
 > **Note**
