@@ -591,7 +591,7 @@ class HomeController
 > FilterDefinition class should implement `Spiral\Filters\Model\ShouldBeValidated` if a filter object should be
 > validated.
 
-The validation rules can be defined using same approach as in [Validator](../security/validator.md) component.
+The validation rules can be defined using same approach as in [Validator](../validation/spiral.md) component.
 
 ```php
 namespace App\Filter;

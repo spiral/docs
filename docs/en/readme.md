@@ -64,10 +64,13 @@
     * [Custom PSR-15 Handlers](http/psr-15.md)
 * Security
     * [Data Encryption](security/encrypter.md)
-    * [Validation Interfaces](security/validation.md)
-    * [Spiral Validator](security/validator.md)
     * [Role Based Access Control](security/rbac.md)
     * [User Authentication](security/authentication.md)
+* Validation
+    * [Validation Factory](validation/factory.md)
+    * [Spiral Validator](validation/spiral.md)
+    * [Symfony Validator](validation/symfony.md)
+    * [Laravel Validator](validation/laravel.md)
 * Keeper
     * [Intro](keeper/intro.md)
     * [Bootloaders](keeper/bootloaders.md)

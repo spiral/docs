@@ -6,12 +6,12 @@ mapping and locations, etc.
 > **Note**
 > If you are migrating from Spiral Framework 2.x and want to continue using old filters you can use
 > [spiral/filters-bridge](https://github.com/spiral/filters-bridge) package.
-> Read more about using the package [here](/filters/bridge.md).
+> Read more about using the package [here](../filters/bridge.md).
 
 ## Installation
 
 > **Note**
-> The component relies on [Validation](/security/validation.md) library, make sure to read it first.
+> The component relies on [Validation](../validation/factory.md) library, make sure to read it first.
 
 The component does not require any configuration and can be activated using the
 bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
@@ -37,7 +37,7 @@ interface InputInterface
 }
 ```
 
-By default, this interface is bound to [InputManager](/http/request-response.md) and which makes it possible to access
+By default, this interface is bound to [InputManager](../http/request-response.md) and which makes it possible to access
 any request's attribute using **source** and **origin** pair with dot-notation support. For example:
 
 ```php
