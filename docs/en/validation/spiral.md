@@ -6,7 +6,7 @@ provides an array-based DSL to construct complex validation chains.
 The component contains `Checkers`, `Conditions`, and `Validation` object. 
 
 > **Note**
-> Read more about [Validation](./validation.md) in the Spiral Framework.
+> Read more about [Validation](factory.md) in the Spiral Framework.
 
 ## Installation and Configuration
 

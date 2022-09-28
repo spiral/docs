@@ -7,13 +7,13 @@ There are three validators for Spiral Framework you can use in your projects:
 
 - [Spiral Validator](https://github.com/spiral/validator)
 - [Symfony Validator](https://github.com/spiral-packages/symfony-validator)
-- [Laravel Validator](https://github.com/spiral-packages/symfony-validator)
+- [Laravel Validator](https://github.com/spiral-packages/laravel-validator)
 - 
 In this article, we will look at the `Spiral Validation` component.
 
 > **Note**
 > Read more about other validation parts [Request Filters](../filters/configuration.md)
-> or [Spiral Validator](../security/validator.md).
+> or [Spiral Validator](spiral.md).
 
 The component available by default in the [application bundle](https://github.com/spiral/app).
 
@@ -39,7 +39,7 @@ class App extends Kernel
 ## Usage
 
 After activating the `Validation`, [Filters](../filters/configuration.md) packages and one of the `validator` packages, 
-for example, [Spiral Validator](../security/validator.md):
+for example, [Spiral Validator](spiral.md):
 
 ```php
 namespace App;
@@ -227,7 +227,7 @@ validators packages. This interface has one `getValidation` method, which must r
 
 ## Creating validator
 
-We provide some validators out-of-the-box, such as the [Spiral Validator](../security/validator.md).
+We provide some validators out-of-the-box, such as the [Spiral Validator](spiral.md).
 This section will be helpful if you want to create your own validator.
 
 ### Validation and Validator
