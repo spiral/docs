@@ -96,10 +96,17 @@
     "title": "Security",
     "links": {
       "security/encrypter": "Data Encryption",
-      "security/validation": "Validation Interfaces",
-      "security/validator": "Spiral Validator",
       "security/rbac": "Role Based Access Control",
       "security/authentication": "User Authentication"
+    }
+  },
+  {
+    "title": "Validation",
+    "links": {
+      "validation/factory": "Validation Factory",
+      "validation/spiral": "Spiral Validator",
+      "validation/symfony": "Symfony Validator",
+      "validation/laravel": "Laravel Validator"
     }
   },
   {
