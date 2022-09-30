@@ -169,7 +169,7 @@ $validator = $validation->validate(
 
 ### Checker Rules
 
-You can split your rule name using `::` prefix, where first part is checker name and second is method name:
+You can split your rule name using `::` prefix, where the first part is the checker name and the second is the method name:
 
 Let's get `Spiral\Validator\Checker\FileChecker` checker, for example:
 
@@ -233,7 +233,7 @@ $validator = $validation->validate(
 
 ### Parameters
 
-All values listed in rule array will be passed as rule arguments. For example to check value using `in_array`:
+All the values listed in rule array will be passed as rule arguments. For example to check value using `in_array`:
 
 ```php
 $validator = $validation->validate(
@@ -306,7 +306,7 @@ $validator = $validation->validate(
 
 ### Conditions
 
-In some cases the rule must only be activated based on some external condition, use rule attribute `if` for this
+In some cases the rule must be activated only based on some external condition, use rule attribute `if` for this
 purpose:
 
 ```php
