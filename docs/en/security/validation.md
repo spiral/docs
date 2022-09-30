@@ -8,14 +8,14 @@ There are three validators for Spiral Framework you can use in your projects:
 - [Spiral Validator](https://github.com/spiral/validator)
 - [Symfony Validator](https://github.com/spiral-packages/symfony-validator)
 - [Laravel Validator](https://github.com/spiral-packages/symfony-validator)
-- 
+
 In this article, we will look at the `Spiral Validation` component.
 
 > **Note**
 > Read more about other validation parts [Request Filters](../filters/configuration.md)
 > or [Spiral Validator](../security/validator.md).
 
-The component available by default in the [application bundle](https://github.com/spiral/app).
+The component is available by default in the [application bundle](https://github.com/spiral/app).
 
 ## Installation
 
@@ -297,7 +297,7 @@ class FilterDefinition implements FilterDefinitionInterface, ShouldBeValidated
 }
 ```
 
-This object must be returned from the filter and must contain validation rules and mapping schema.
+This object must be returned from the filter and must contain validation rules and a mapping schema.
 
 ### Validator registration
 
