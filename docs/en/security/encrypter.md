@@ -19,7 +19,7 @@ encryption key provided by your application.
 By default, `EncrypterBootloader` will load Base64 encoded key from the environment variable `ENCRYPTER_KEY`.
 
 If you use [Dotenv](/extension/dotenv.md) extension you can specify this key value in `.env` file located in the root of
-your application. To issue new key into `.env` run:
+your application. To issue a new key into `.env`, run:
 
 ```bash
 php app.php encrypt:key -m .env
