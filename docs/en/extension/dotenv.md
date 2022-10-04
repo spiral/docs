@@ -14,7 +14,7 @@ composer require spiral/dotenv-bridge
 Add the following bootloader to your application:
 
 ```php
-    protected const LOAD = [
+    protected const SYSTEM = [
         Spiral\DotEnv\Bootloader\DotenvBootloader::class,
         
         //...
