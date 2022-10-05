@@ -22,7 +22,7 @@ If you'd like to help but don't know where to start:
 
 Feel free to suggest any ideas related to architecture, docs (___docs are never complete___), adaptation, or community.
 
-> Original guide author is not a native English speaker, feel free to create PR for any text corrections.
+> The original guide author is not a native English speaker, feel free to create PR for any text corrections.
 
 ## Critical/Security Issues
 If you found something which shouldn't be there or a bug which opens a security hole, please let me know immediately by email 
