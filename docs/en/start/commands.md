@@ -21,7 +21,7 @@ php app.php db:table -h
 ```
 
 > **Note**
-> You can read how to create your own commands in following sections.
+> You can read how to create your own commands in the following sections.
 
 ## Aliases
 
@@ -52,7 +52,7 @@ php app.php configure -vv
 
 ## Application Server
 
-The application server (RoadRunner) includes it's own set of commands, to list all available server commands run:
+The application server (RoadRunner) includes its own set of commands. To list all available server commands, run:
 
 ```bash
 ./rr
