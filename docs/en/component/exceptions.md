@@ -36,8 +36,8 @@ use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Exceptions\ExceptionHandler;
 use Spiral\Exceptions\ExceptionHandlerInterface;
 use Spiral\Exceptions\Renderer\JsonRenderer;
+use Spiral\Exceptions\Reporter\FileReporter;
 use Spiral\Exceptions\Reporter\LoggerReporter;
-use Spiral\Exceptions\Reporter\SnapshotterReporter;
 use Spiral\Http\ErrorHandler\RendererInterface;
 use Spiral\Http\Middleware\ErrorHandlerMiddleware\EnvSuppressErrors;
 use Spiral\Http\Middleware\ErrorHandlerMiddleware\SuppressErrorsInterface;
@@ -61,11 +61,11 @@ final class ExceptionHandlerBootloader extends Bootloader
     public function boot(
         ExceptionHandlerInterface $handler,
         LoggerReporter $logger,
-        SnapshotterReporter $snapshotter,
+        FileReporter $files,
         IgnitionRenderer $ignition
     ): void {
         $handler->addReporter($logger);
-        $handler->addReporter($snapshotter);
+        $handler->addReporter($files);
 
         $handler->addRenderer($ignition);
     }
@@ -89,21 +89,21 @@ interface ExceptionReporterInterface
 
 ### Available Reporters
 
-The `Spiral\Exceptions\Reporter\SnapshotterReporter` and `Spiral\Exceptions\Reporter\LoggerReporter` reporters 
-are available out of the box.
-
-#### SnapshotterReporter
-
-This reporter adds the ability to create and save a `snapshot` from an exception. For this feature, the 
-`Spiral\Snapshots\SnapshotterInterface` implementation must be registered in the application container. 
-
-By default, in the [application bundle](https://github.com/spiral/app) already registered bootloader 
-`Spiral\Bootloader\SnapshotsBootloader` with a binding implementation of this interface.
+The `Spiral\Exceptions\Reporter\LoggerReporter` reporter are available out of the box.
+Additionally, the Spiral Framework provides a `Spiral\Exceptions\Reporter\FileReporter` reporter that isn't part 
+of the `Exceptions` component but is available by default in the application.
 
 #### LoggerReporter
 
 This reporter adds the ability to log an exception using a logger registered in the application. Logger reporter enabled
 by default in the application bundle.
+
+#### FileReporter
+
+This reporter adds the ability to create and save a `snapshot` from an exception. For this feature, the
+`Spiral\Snapshots\SnapshotterInterface` implementation must be registered in the application container.
+
+In the [application bundle](https://github.com/spiral/app) this reporter enabled by default.
 
 ### Adding a Reporter
 
@@ -119,7 +119,7 @@ use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Boot\Environment\AppEnvironment;
 use Spiral\Exceptions\ExceptionHandlerInterface;
 use Spiral\Exceptions\Reporter\LoggerReporter;
-use Spiral\Exceptions\Reporter\SnapshotterReporter;
+use Spiral\Exceptions\Reporter\FileReporter;
 use Spiral\Ignition\IgnitionRenderer;
 use Spiral\Sentry\SentryReporter;
 
@@ -128,7 +128,7 @@ final class ExceptionHandlerBootloader extends Bootloader
     public function boot(
         ExceptionHandlerInterface $handler,
         LoggerReporter $logger,
-        SnapshotterReporter $snapshotter,
+        FileReporter $files,
         IgnitionRenderer $ignition,
         SentryReporter $sentry,
         AppEnvironment $env
@@ -137,7 +137,7 @@ final class ExceptionHandlerBootloader extends Bootloader
 
         if ($env->isLocal()) {
             $handler->addRenderer($ignition);
-            $handler->addReporter($snapshotter);
+            $handler->addReporter($files);
         } else {
             $handler->addReporter($sentry);
         }
