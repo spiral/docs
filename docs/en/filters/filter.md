@@ -292,7 +292,7 @@ class MyFilter extends Filter
 
 You can create your own attribute, which will contain a custom data retrieval logic.
 For example, we need to receive uploaded files as a Symfony\Bridge\PsrHttpMessage\Factory\UploadedFile object.
-First of all, we need to create custom input bug for this:
+First of all, we need to create custom input bag for this:
 
 ```php
 namespace App\Http\Request;
