@@ -100,8 +100,7 @@ by default in the application bundle.
 
 #### FileReporter
 
-This reporter adds the ability to create and save a `snapshot` from an exception. For this feature, the
-`Spiral\Snapshots\SnapshotterInterface` implementation must be registered in the application container.
+This reporter adds the ability to create and save in a file `snapshot` with detailed information from an exception.
 
 In the [application bundle](https://github.com/spiral/app) this reporter enabled by default.
 
