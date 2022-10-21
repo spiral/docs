@@ -489,8 +489,8 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 | Rule       | Parameters                            | Description                                      |
 |------------|---------------------------------------|--------------------------------------------------|
-| cardNumber | ---                                   | Check the credit card passed by Luhn algorithm.      |
-| match      | field:*string*, strict:*bool* - false | Check if the value matches the value from another field. |
+| cardNumber | ---                                   | Checks the credit card passed by Luhn algorithm.      |
+| match      | field:*string*, strict:*bool* - false | Checks if the value matches the value from another field. |
 
 > **Note**
 > All of the rules of this checker are available without prefix.
@@ -502,9 +502,9 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 | Rule  | Parameters                                              | Description              |
 |-------|---------------------------------------------------------|--------------------------|
-| email | ---                                                     | Check if the email is valid. |
-| url   | schemas:*?array* - null, defaultSchema:*?string* - null | Check if the URL is valid.   |
-| uri   | ---                                                     | Check if the URI is valid.   |
+| email | ---                                                     | Checks if the email is valid. |
+| url   | schemas:*?array* - null, defaultSchema:*?string* - null | Checks if the URL is valid.   |
+| uri   | ---                                                     | Checks if the URI is valid.   |
 
 > **Note**
 > `email` and `url` rules are available without `address` prefix via aliases, for `uri` use `address::uri`.
@@ -516,9 +516,9 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 | Rule   | Parameters                 | Description                                                        |
 |--------|----------------------------|--------------------------------------------------------------------|
-| range  | begin:*float*, end:*float* | Check if the number is in the specified range.                       |
-| higher | limit:*float*              | Check if the value is bigger or equal to that which is specified.  |
-| lower  | limit:*float*              | Check if the value is smaller or equal to that which is specified. |
+| range  | begin:*float*, end:*float* | Checks if the number is in the specified range.                       |
+| higher | limit:*float*              | Checks if the value is bigger or equal to the specified one.  |
+| lower  | limit:*float*              | Checks if the value is smaller or equal to the specified one. |
 
 ### String
 
@@ -527,11 +527,11 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 | Rule    | Parameters              | Description                                                            |
 |---------|-------------------------|------------------------------------------------------------------------|
-| regexp  | expression:*string*     | Check the string using regexp.                                             |
-| shorter | length:*int*            | Check if the string length is shorter or equal to the specified value.       |
-| longer  | length:*int*            | Check if the string length is longer or equal to the specified value. |
-| length  | length:*int*            | Check if the string length is equal to the specified value.                |
-| range   | left:*int*, right:*int* | Check if the string length fits within the specified range.            |
+| regexp  | expression:*string*     | Checks the string using regexp.                                             |
+| shorter | length:*int*            | Checks if the string length is shorter or equal to the specified value.       |
+| longer  | length:*int*            | Checks if the string length is longer or equal to the specified value. |
+| length  | length:*int*            | Checks if the string length is equal to the specified value.                |
+| range   | left:*int*, right:*int* | Checks if the string length fits within the specified range.            |
 
 Examples:
 
@@ -564,10 +564,10 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 | Rule    | Parameters           | Description                                                           |
 |---------|----------------------|-----------------------------------------------------------------------|
-| count   | length:*int*         | Check that an array has a size equal to the given value.              |
-| shorter | length:*int*         | Check that an array has a size less than or equal to the given value. |
-| longer  | length:*int*         | Check that an array has a size more than or equal to the given value. |
-| range   | min:*int*, max:*int* | Check that an array has a size between the given min and max.         |
+| count   | length:*int*         | Checks if an array has a size equal to the given value.              |
+| shorter | length:*int*         | Checks if an array has a size smaller than or equal to the given value. |
+| longer  | length:*int*         | Checks if an array has a size bigger than or equal to the given value. |
+| range   | min:*int*, max:*int* | Checks if an array has a size between the given min and max.         |
 
 Examples:
 
@@ -592,10 +592,10 @@ File checker fully supports the filename provided in a string form or using `Upl
 
 | Rule      | Parameters            | Description                                                                      |
 |-----------|-----------------------|----------------------------------------------------------------------------------|
-| exists    | ---                   | Check if the file exist.                                                             |
-| uploaded  | ---                   | Check if the file was uploaded.                                                      |
-| size      | size:*int*            | Check if the file size is less than the specified value in KB.                              |
-| extension | extensions:*array*    | Check if the file extension in whitelist. The client name of the uploaded file will be used! |                                                     |
+| exists    | ---                   | Checks if the file exist.                                                             |
+| uploaded  | ---                   | Checks if the file was uploaded.                                                      |
+| size      | size:*int*            | Checks if the file size is smaller than the specified value in KB.                              |
+| extension | extensions:*array*    | Checks if the file extension in whitelist. The client name of the uploaded file will be used! |                                                     |
 
 ### Image Checker
 
@@ -606,10 +606,10 @@ The image checker extends the file checker and fully supports its features.
 
 | Rule    | Parameters                    | Description                                                                          |
 |---------|-------------------------------|--------------------------------------------------------------------------------------|
-| type    | types:*array*                 | Check if the image is within the list of the allowed image types.                          |
-| valid   | ---                           | Shortcut to check if the image has an allowed type (JPEG, PNG, and GIF are allowed). |
-| smaller | width:*int*, height:*int*     | Check if the image is smaller than the specified shape (height check if optional).         |
-| bigger  | width:*int*, height:*int*     | Check if the image is bigger than the specified shape (height check is optional).          |       
+| type    | types:*array*                 | Checks if the image is within the list of the allowed image types.                          |
+| valid   | ---                           | A shortcut to check if the image has an allowed type (JPEG, PNG, and GIF are allowed). |
+| smaller | width:*int*, height:*int*     | Checks if the image is smaller than the specified shape (height check if optional).         |
+| bigger  | width:*int*, height:*int*     | Checks if the image is bigger than the specified shape (height check is optional).          |       
 
 ### Datetime
 
