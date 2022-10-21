@@ -233,7 +233,7 @@ $validator = $validation->validate(
 
 ### Parameters
 
-All the values listed in rule array will be passed as rule arguments. For example to check value using `in_array`:
+All the values listed in rule array will be passed as rule arguments. For example, to check value using `in_array`:
 
 ```php
 $validator = $validation->validate(
@@ -444,9 +444,9 @@ The most used rule-set is available thought the set of shortcuts:
 
 | Rule     | Parameters             | Description                                   |
 |----------|------------------------|-----------------------------------------------|
-| notEmpty | asString:*bool* - true | Value should not be empty (same as `!empty`). |
-| notNull  | ---                    | Value should not be null.                     |
-| boolean  | ---                    | Value has to be boolean or integer[0,1].      |
+| notEmpty | asString:*bool* - true | The value should not be empty (same as `!empty`). |
+| notNull  | ---                    | The value should not be null.                     |
+| boolean  | ---                    | The value has to be boolean or integer[0,1].      |
 
 > **Note**
 > All of the rules of this checker are available without the prefix.
@@ -455,7 +455,7 @@ The most used rule-set is available thought the set of shortcuts:
 
 | Rule     | Parameters             | Description                |
 |----------|------------------------|----------------------------|
-| notEmpty | asString:*bool* - true | Value should not be empty. |
+| notEmpty | asString:*bool* - true |The value should not be empty. |
 
 Examples:
 
@@ -620,13 +620,13 @@ This checker can apply `now` value in the constructor
 
 | Rule          | Parameters                                                                      | Description                                                            |
 |---------------|---------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | Value has to be a date in the future.                                  |
-| past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | Value has to be a date in the past.                                    |
-| format        | format:*string*                                                                 | Value should match the specified date format.                           |
-| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come before the given threshold.                            |
-| after         | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come after the given threshold.                             |
-| valid         | ---                                                                             | Value has to be a valid datetime definition including numeric timestamp. |
-| timezone      | ---                                                                             | Value has to be a valid timezone.                                        |
+| future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | The value has to be a date in the future.                                  |
+| past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | The value has to be a date in the past.                                    |
+| format        | format:*string*                                                                 | The value should match the specified date format.                           |
+| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | The value should come before the given threshold.                            |
+| after         | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | The value should come after the given threshold.                             |
+| valid         | ---                                                                             | The value has to be a valid datetime definition including numeric timestamp. |
+| timezone      | ---                                                                             | The value has to be a valid timezone.                                        |
 
 > **Note**
 > Setting `useMicroSeconds` into true allows to check datetime with microseconds.<br/>
