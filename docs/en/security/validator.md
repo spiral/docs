@@ -382,12 +382,12 @@ Following conditions available for the usage:
 |------------|---------|-----------------------------------------------|
 | withAny    | *array* | When at least one field is not empty.         |
 | withoutAny | *array* | When at least one field is empty.             |
-| withAll    | *array* | When all fields are not empty.                |
-| withoutAll | *array* | When all fields are empty.                    |
-| present    | *array* | When all fields are presented in the request. |
-| absent     | *array* | When all fields are absent in the request.    |
-| noneOf     | *array* | When none of nested conditions is met.        |
-| anyOf      | *array* | When any of nested conditions is met.         |
+| withAll    | *array* | When all the fields are not empty.                |
+| withoutAll | *array* | When all the fields are empty.                    |
+| present    | *array* | When all the fields are presented in the request. |
+| absent     | *array* | When all the fields are absent in the request.    |
+| noneOf     | *array* | When none of the nested conditions is met.        |
+| anyOf      | *array* | When any of the nested conditions is met.         |
 
 > **Note**
 > You can create your conditions using `Spiral\Validator\ConditionInterface`.
@@ -449,7 +449,7 @@ The most used rule-set is available thought the set of shortcuts:
 | boolean  | ---                    | Value has to be boolean or integer[0,1].      |
 
 > **Note**
-> All of the rules of this checker are available without prefix.
+> All of the rules of this checker are available without the prefix.
 
 ### Required
 
@@ -608,8 +608,8 @@ The image checker extends the file checker and fully supports its features.
 |---------|-------------------------------|--------------------------------------------------------------------------------------|
 | type    | types:*array*                 | Check if the image is within a list of allowed image types.                          |
 | valid   | ---                           | Shortcut to check if the image has an allowed type (JPEG, PNG, and GIF are allowed). |
-| smaller | width:*int*, height:*int*     | Check if image is smaller than a specified shape (height check if optional).         |
-| bigger  | width:*int*, height:*int*     | Check if image is bigger than a specified shape (height check is optional).          |       
+| smaller | width:*int*, height:*int*     | Check if the image is smaller than the specified shape (height check if optional).         |
+| bigger  | width:*int*, height:*int*     | Check if the image is bigger than the specified shape (height check is optional).          |       
 
 ### Datetime
 
@@ -623,10 +623,10 @@ This checker can apply `now` value in the constructor
 | future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | Value has to be a date in the future.                                  |
 | past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | Value has to be a date in the past.                                    |
 | format        | format:*string*                                                                 | Value should match the specified date format                           |
-| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come before a given threshold.                            |
-| after         | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come after a given threshold.                             |
-| valid         | ---                                                                             | Value has to be valid datetime definition including numeric timestamp. |
-| timezone      | ---                                                                             | Value has to be valid timezone.                                        |
+| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come before the given threshold.                            |
+| after         | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come after the given threshold.                             |
+| valid         | ---                                                                             | Value has to be a valid datetime definition including numeric timestamp. |
+| timezone      | ---                                                                             | Value has to be a valid timezone.                                        |
 
 > **Note**
 > Setting `useMicroSeconds` into true allows to check datetime with microseconds.<br/>
