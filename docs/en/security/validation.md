@@ -59,7 +59,7 @@ class App extends Kernel
 }
 ```
 
-The `Request Filters` will be validated automatically, and no further actions with the validator are required.
+`Request Filters` will be validated automatically, and no further actions with the validator are required.
 
 ```php
 namespace App\Controller;
@@ -78,7 +78,7 @@ class HomeController
 
 ### ValidationInterface
 
-The `Spiral\Validation\ValidationInterface` has one `validate` method that accepts `validation data`, 
+`Spiral\Validation\ValidationInterface` has one `validate` method that accepts `validation data`, 
 `validation rules`, and `context`. And should return a `Spiral\Validation\ValidatorInterface` instance.
 
 ```php
