@@ -36,6 +36,42 @@ class App extends Kernel
     ];
 }
 ```
+
+## Configuration
+
+If you use multiple validator implementations in your application, you can configure a `default validator`.
+Most applications use a single validator implementation and this configuration is not necessary.
+The configuration file should be located at `app/config/validation.php`. This configuration file 
+can contain one `defaultValidator` parameter.
+
+```php
+use Spiral\Validator\FilterDefinition;
+
+return [
+    'defaultValidator' => FilterDefinition::class
+];
+```
+
+Also, the default validator can be installed using the `Spiral\Validation\Bootloader\ValidationBootloader`. 
+This method has a lower priority than the configuration file. And it will only work if the default validator 
+has not been set anywhere before.
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Validation\Bootloader\ValidationBootloader;
+use Spiral\Validator\FilterDefinition
+
+final class MyBootloader extends Bootloader
+{
+    public function boot(ValidationBootloader $validation): void
+    {
+        $validation->setDefaultValidator(FilterDefinition::class);
+    }
+}
+```
+
 ## Usage
 
 After activating the `Validation`, [Filters](../filters/configuration.md) packages and one of the `validator` packages, 
@@ -81,6 +117,7 @@ class HomeController
 
 The `Spiral\Validation\ValidationInterface` has one `validate` method that accepts `validation data`, 
 `validation rules`, and `context`. And should return a `Spiral\Validation\ValidatorInterface` instance.
+This interface is always bound in the container to the `default validator`.
 
 ```php
 namespace Spiral\Validation;
