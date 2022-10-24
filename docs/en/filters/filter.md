@@ -620,39 +620,32 @@ You can use all the checkers, conditions, and rules.
 
 ### Handle Validation errors
 
-By default, the Spiral Framework doesn't handle filter validation errors. When some of the filter rule has an error,
-`Spiral\Filters\Exception\ValidationException` exception will be thrown.
-
-There are two ways to handle a validation exception:
- - Middleware
- - Interceptions
-
-Both ways are similar. You can see an example of validation exception handler below:
+When some of the filter rule has an error, `Spiral\Filters\Exception\ValidationException` exception will be thrown.
+You can handle filter validation exceptions via the `Spiral\Filter\ValidationHandlerMiddleware` middleware.
+By default, the middleware uses `Spiral\Filter\JsonErrorsRenderer` for rendering filter errors, 
+but you can use your own implementation.
 
 ```php
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Spiral\Filters\Exception\ValidationException;
+namespace App\Filter;
 
-class JsonValidationMiddleware implements MiddlewareInterface
+use Psr\Http\Message\ResponseInterface;
+use Spiral\Filters\ErrorsRendererInterface;
+use Spiral\Http\ResponseWrapper;
+
+final class CustomJsonErrorsRenderer implements ErrorsRendererInterface
 {
     public function __construct(
-        private readonly ResponseFactoryInterface $responseFactory
-    ) 
-    {}
+        private readonly ResponseWrapper $wrapper
+    ) {
+    }
 
-    public function process(Request $request, RequestHandlerInterface $handler): Response
+    public function render(array $errors, mixed $context = null): ResponseInterface
     {
-        try {
-            return $handler->handle($request);
-        } catch (ValidationException $e) {
-            return $this->responseFactory->createResponse($e->getCode(), $e->getMessage())
-              ->getBody()
-              ->write(\json_encode([
-                  'errors' => $e->errors,
-              ]));
-        }
+        return $this->wrapper->json([
+            'errors' => $errors,
+            'context' => (string) $context
+        ])
+            ->withStatus(422, 'The given data was invalid.');
     }
 }
 ```
@@ -662,6 +655,10 @@ And then you need to register middleware for specific route group.
 ```php
 namespace App\Bootloader;
 
+use App\Filter\CustomJsonErrorsRenderer;
+use Psr\Container\ContainerInterface;
+use Spiral\Core\Container\Autowire;
+use Spiral\Filter\ValidationHandlerMiddleware;
 use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
 use Spiral\Cookies\Middleware\CookiesMiddleware;
 use Spiral\Csrf\Middleware\CsrfMiddleware;
@@ -669,7 +666,10 @@ use Spiral\Session\Middleware\SessionMiddleware;
 
 final class RoutesBootloader extends BaseRoutesBootloader
 {
-    // ...
+    public function __construct(
+        private readonly ContainerInterface $container
+    ) {
+    }
 
     protected function middlewareGroups(): array
     {
@@ -680,7 +680,9 @@ final class RoutesBootloader extends BaseRoutesBootloader
                 CsrfMiddleware::class,
             ],
             'api' => [
-                JsonValidationMiddleware::class  // <===== Our new middleware
+                new Autowire(ValidationHandlerMiddleware::class, [
+                    'renderErrors' => $this->container->get(CustomJsonErrorsRenderer::class)
+                ]) // <===== Our new middleware
             ],
         ];
     }
