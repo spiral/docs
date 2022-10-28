@@ -1,9 +1,9 @@
 # Sitemap
 
-Sitemap is a submodule for building menu navigation and breadcrumbs. Consists of 4 types of nodes:
+Sitemap is a submodule for building menu navigation and breadcrumbs. It consists of 4 types of nodes:
 
-- link and view represent a page
-- segment and group are containers for nested elements.
+- the link and view represent a page
+- the segment and group are containers for nested elements.
 
 Sitemaps can be declared via annotations or directly using `Sitemap` module.
 
@@ -51,7 +51,7 @@ class NavigationBootloader extends Bootloader
 > In that case you will have difficulties with sitemap annotations. This approach fits when you're not going to use
 > annotations.
 
-We recommend extending the `SitemapBootloader` and use the `declareSitemap()` method to declare the structure:
+We recommend extending `SitemapBootloader` and use `declareSitemap()` method to declare the structure:
 
 ```php
 <?php
@@ -159,7 +159,7 @@ class UsersController
 }
 ```
 
-Also, if you have complex nesting structure, you can declare it in the bootloader and in the controller then use only
+Also, if you have a complex nesting structure, you can declare it in the bootloader and in the controller, then use only
 the closest element:
 
 ```php
@@ -203,21 +203,21 @@ class UsersController
 ## Visibility
 
 By default, all nodes are available for the user, `withVisibleNodes()` allows hiding forbidden nodes. If any node is 
-forbidden, it will be removed from the tree with all its children. Also, passing a `$targeNode` will mark all active 
-nodes if match found, so it will allow you to use breadcrumbs.
+forbidden, it will be removed from the tree with all its children. Also, passing `$targeNode` will mark all active 
+nodes if a match is found, so it will allow you to use breadcrumbs.
 
 Permissions are taken from `#[GuardNamespace]`, `#[Guarded]` and `#[Link]` attributes: 
 `<guard Namespace (or controller name)>.<link permission (or guarded permission (or method name))>`.
 
-Use `#[Link]` permission in cases when method is protected by a context-based permission rule - for rendering links in 
+Use `#[Link]` permission in cases when the method is protected by a context-based permission rule - for rendering links in 
 the sidebar and breadcrumbs the context can't be passed, so you have to use additional permission for navigation (and 
-register it with allow rule). In other cases you can rely on standard `#[Guarded]` permission (or method name) flow.
+register it with the allow rule). In other cases you can rely on standard `#[Guarded]` permission (or method name) flow.
 
 > **Note**
 > Note that keeper namespace isn't used here automatically because these annotations come from external module.
 
 
-Example with `#[GuardNamespace]` attribite:
+Example with `#[GuardNamespace]` attribute:
 
 ```php
  #[Controller(name: "with", prefix: "/with", namespace: "first")]
@@ -278,7 +278,7 @@ class WithoutNamespaceController
 
 By default, sitemap sorts nodes in the way they are found in the classes or declared in the `Sitemap` directly. You can
 use `position` (float) attribute in the annotations or `position` option in the direct declaration options. The nodes 
-will be sorted in ascending order (or in the appearance order if the position matches).
+will be sorted in an ascending order (or in the appearance order if the position matches).
 
 ```php
 <?php
@@ -322,7 +322,7 @@ class UsersController
 
 ## Nesting
 
-Any node may be a child of another parent node. Use `parent` argument in attribute.
+Any node may be a child of another parent node. Use `parent` argument in the attribute.
 If you are referring to the method within the same controller you can use only the name, otherwise
 use `controller.method` notation:
 
@@ -440,7 +440,7 @@ class NavigationBootloader extends SitemapBootloader
 }
 ```
 
-On the `system.index` endpoint breadcrumbs will be (the `[root]` and the current node will be ignored:
+On `system.index` endpoint breadcrumbs will be (`[root]` and the current node will be ignored:
 
 ```
 [dashboard.index]->[users.index]->[groups.index]->[logs.index]
