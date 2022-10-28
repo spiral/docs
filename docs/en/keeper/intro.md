@@ -16,7 +16,7 @@ composer require spiral/keeper
 
 ## Namespace
 
-The basic idea of Keeper is that all submodules are isolated code inside a given `namespace`. For example, there 
+The basic idea of Keeper is that all submodules are isolated code inside the given `namespace`. For example, there 
 could be `admin` and `profile` namespaces.
 
 All the Keeper functionality is integrated with `spiral/security` and follows RBAC rules. 
