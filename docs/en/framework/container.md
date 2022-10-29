@@ -401,7 +401,7 @@ public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
 
 ## Auto Wiring
 
-Spiral Framework attempts to hide the container implementation and configuration from your domain layer by providing
+Spiral Framework attempts to hide container implementation and configuration from your domain layer by providing
 rich auto-wiring functionality. Though auto-wiring rules are straightforward, it's essential to learn them to avoid
 framework misbehavior.
 
