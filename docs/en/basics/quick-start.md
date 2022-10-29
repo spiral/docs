@@ -656,7 +656,7 @@ You can now observe the generated tables using `db:list` command.
 
 ### Create Relations
 
-Use [annotations](https://cycle-orm.dev/docs/annotated-relations) to define the relations between entities. Configure Post and Comment  relations with type BelongsTo and add relation HasMany between User and Post.
+Use [attributes](https://cycle-orm.dev/docs/annotated-relations) to define the relations between entities. Configure Post and Comment  relations with type BelongsTo and add relation HasMany between User and Post.
 
 Post:
 
@@ -1021,7 +1021,7 @@ class PostController
 
 ### Test Method
 
-You can return various types of data from your controller methods. Following return values are valid:
+You can return various types of data from your controller methods. These are valid return values:
 
 - string
 - PSR-7 response
