@@ -1,14 +1,14 @@
 # DataGrids
 
-UI component for DataGrids provide UI component for [DataGrids](/component/data-grid.md)
+UI component for DataGrids provides UI component for [DataGrids](/component/data-grid.md)
 
-They are located in keeper bundle, that can be included like so:
+They are located in the keeper bundle, that can be included like so:
 
 ```xhtml
 <use:bundle path="keeper:bundle"/>
 ```
 
-See [Usage Samples](https://github.com/spiral/app-keeper/blob/master/app/views/keeper/showcase/datagrids.dark.php) in
+See [Usage Samples](https://github.com/spiral/app-keeper/blob/master/app/views/keeper/showcase/datagrids.dark.php) in the
 demo repository
 
 ## Using Component
@@ -24,12 +24,12 @@ Simple data grid declaration would look like so
 </ui:grid>
 ```
 
-DataGrids are described in declarative way. Code is not iterated in php/stempler phase, but later in JavaScript phase,
-meaning you can't use php conditions for cell renders inside declarations. If you need conditional renderer for cell,
+DataGrids are described in a declarative way. Code is not iterated in php/stempler phase, but later in JavaScript phase,
+meaning you can't use php conditions for cell renders inside declarations. If you need a conditional renderer for cell,
 you are expected to write one in JavaScript.
 
 Columns should be defined prioritizing semantics over column names. Typically most columns would match a sort key. For
-example if you have data row with first and last name and user, you might want to have a column `name` with `firstName`
+example, if you have a data row with first and last name and user, you might want to have a column `name` with `firstName`
 and `lastName` joined.
 
 ```xhtml
@@ -68,19 +68,19 @@ and `lastName` joined.
 | url              | yes      | -                | Url that implements DataGrid API                                                                                                                                                                                                                                                                                                                        |
 | method           | no       | GET              | Http method to use, GET or POST                                                                                                                                                                                                                                                                                                                         |
 | id               | no       | [auto generated] | Id of datagrid to use                                                                                                                                                                                                                                                                                                                                   |
-| namespace        | no       | [empty]          | Prefix for field names that is used in datagrid filters serialization. Used when multiple datagrids present on page. I.e. if <code>namespace="foo"</code> filter value <code>bar=1</code> will end up as "foo-bar=1" in URL. It's developer responsibility to use namespaces if multiple datagrids present on page. Otherwise behavior is unpredictable. |
-| capture-forms    | no       | [empty]          | JSON array of strings. Attaches forms by their ids to datagrid as filter fields source. Can be used for filters that are visually separated from datagrids, i.e. in nav panel or sidebar. Is used internally to attach filter defined with `<ui:filter>`                                                                                                |
-| capture-filters  | no       | [empty]          | JSON array of strings. Attaches instances of [filter toggle buttons](https://github.com/spiral/toolkit/tree/master/packages/datagrid/src/filter-toggle).                                                                                                                                                                                      |
-| paginate-options | no       | [empty]          | JSON array of numbers. Options for default paginator.                                                                                                                                                                                                                                                                                                   |
-| action-*         | no       | [as in sample]   | Set of parameters used to generate Actions button and corresponding column.                                                                                                                                                                                                                                                                             |
+| namespace        | no       | [empty]          | A prefix for field names that is used in the datagrid filters serialization. It's used when multiple datagrids are present on page. I.e. if <code>namespace="foo"</code> filter value <code>bar=1</code> will end up as "foo-bar=1" in URL. It's developer's responsibility to use namespaces if multiple datagrids are present on page. Otherwise the behavior is unpredictable. |
+| capture-forms    | no       | [empty]          | JSON array of strings. Attaches forms by their ids to datagrid as a filter fields source. It can be used for filters that are visually separated from datagrids, i.e. in the nav panel or sidebar. It's used internally to attach the filter defined with `<ui:filter>`                                                                                                |
+| capture-filters  | no       | [empty]          | JSON array of strings. Attaches the instances of [filter toggle buttons](https://github.com/spiral/toolkit/tree/master/packages/datagrid/src/filter-toggle).                                                                                                                                                                                      |
+| paginate-options | no       | [empty]          | JSON array of numbers. It options for the default paginator.                                                                                                                                                                                                                                                                                                   |
+| action-*         | no       | [as in sample]   | A set of parameters that is used to generate the Actions button and the corresponding column.                                                                                                                                                                                                                                                                             |
 
-**Limitation**: All filter forms should produce a flat object map without files. Nesting and/or arrays are not supported
+**Limitation**: All the filter forms should produce a flat object map without files. Nesting and/or arrays are not supported
 at the moment.
 
 ## Filters (grid:filter)
 
-grid:filter component attaches filter and/or search forms directly to grid. Internally it works with 'capture-forms'
-parameter that technically allows to attach any number of forms to datagrid.
+grid:filter component attaches filter and/or search forms directly to the grid. Internally it works with the 'capture-forms'
+parameter that technically allows to attach any number of forms to the datagrid.
 
 ```xhtml
 <ui:grid url="@action('users.list', inject('params', []))" namespace="main">
@@ -94,15 +94,15 @@ parameter that technically allows to attach any number of forms to datagrid.
 
 | Parameter   | Required | Default  | Description                                                                                                                                                                                                                                                                                                               |
 |-------------|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| search      | no       | false    | Render a search input in top right corner                                                                                                                                                                                                                                                                                 |
-| search-name | no       | "search" | Name of search field                                                                                                                                                                                                                                                                                                      |
-| fields      | no       | -        | JSON array of strings. If you wish filter button to correctly indicate number of active filters, list all form fields names as a JSON array of strings. For example for example above that would be `fields="['firstName','lastName','email']"`. If not specified filter button not indicate if filter values are active. |
-| refresh     | no       | false    | Render a refresh button to trigger data refresh.                                                                                                                                                                                                                                                                          |
-| immediate   | no       | -        | If specified, search input will have no "Submit" button and search will be performed as user types with debounce value equivalent to this param value in milliseconds.                                                                                                                                                    |
-| [tag body]  | no       | -        | Insides of tag is used as an additional filter form shown in modal window if specified                                                                                                                                                                                                                                    |
-| buttons     | no       | false    | If specified as true will append default "Clear" and "Apply" buttons to tag body                                                                                                                                                                                                                                          |
+| search      | no       | false    | Renders a search input in the top right corner                                                                                                                                                                                                                                                                                 |
+| search-name | no       | "search" | The name of the search field                                                                                                                                                                                                                                                                                                      |
+| fields      | no       | -        | JSON array of strings. If you want the filter button to indicate the number of active filters correctly, list all  the form fields names as a JSON array of strings. For the example above that would be `fields="['firstName','lastName','email']"`. If it's not specified, the filter button does not indicate whether the filter values are active or not. |
+| refresh     | no       | false    | Renders a refresh button to trigger data refresh.                                                                                                                                                                                                                                                                          |
+| immediate   | no       | -        | If it's specified,  the search input will have no "Submit" button and the search will be performed as user types with the debounce value equivalent to this param value in milliseconds.                                                                                                                                                    |
+| [tag body]  | no       | -        | Insides of tag are used as an additional filter form shown in the modal window if it's specified                                                                                                                                                                                                                                    |
+| buttons     | no       | false    | If they're specified as true, the default "Clear" and "Apply" buttons will append to the tag body.                                                                                                                                                                                                                                          |
 
-Note filter form is a separate form to "search input" form and it's reset button has only effect on filter form.
+Note, the filter form is a separate form to the "search input" form and its reset button has effect only on the filter form.
 
 ### Only Search
 
@@ -130,7 +130,7 @@ Note filter form is a separate form to "search input" form and it's reset button
 
 ## Cell Types
 
-Lot of cells allow to use templates using row fields as variables.
+Lots of cells allow to use templates using row fields as variables.
 
 Template system used is [handlebars](https://handlebarsjs.com/) templates. Typically field accepting templates have
 pre-processors that convert `{` to `{{`, so if you want to output something like `{{firstName}} {{lastName}}` you pass
@@ -145,12 +145,12 @@ it in as `{firstName} {lastName}`
 />
 ```
 
-Directly outputs field in cell
+Directly outputs a field in a cell
 
 | Parameter    | Required | Default | Description                                                                                    |
 |--------------|----------|---------|------------------------------------------------------------------------------------------------|
-| name         | yes      | -       | Semantic column name matching field from server data.                                          |
-| label        | yes      | -       | Column label                                                                                   |
+| name         | yes      | -       | Semantic column name matching field from the server data.                                          |
+| label        | yes      | -       | Сolumn label                                                                                   |
 | sort         | no       | -       | Enables sorting for a column                                                                   |
 | sort-default | no       | -       | Supply "true" to make this column a defaultly sorted column. Only one column should have this. |
 | sort-dir     | no       | 'asc'   | Default sort direction, 'asc' or 'desc'                                                        |
@@ -205,10 +205,10 @@ Outputs a date
 
 ### Actions
 
-Separate kind of tags provided are action tags. Using any of them adds 'actions' column with button with actions
+A separate kind of tags that are provided are action tags. Using any of them adds 'actions' column with the button with actions
 dropdown. Each actions tag appends an action to that dropdown.
 
-To customize look of the button, use `action-*` parameters of `ui:grid`
+To customize the look of the button, use `action-*` parameters of `ui:grid`
 
 ![Actions](https://user-images.githubusercontent.com/16134699/103222723-b85b0800-4935-11eb-8683-87e3cbcfd28a.png)
 
@@ -231,10 +231,10 @@ Outputs a link
 |-----------|----------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | href      | yes      | -       | Template to use for link url                                                                                                                                              |
 | title     | no       | -       | Template to use for link title text                                                                                                                                       |
-| target    | no       | _self   | Specify link target                                                                                                                                                       |
-| template  | no       | -       | Template to use for link body. Instead of specifying 'template' attribute, can also use tag body instead.                                                                 |
-| label     | no       | -       | Text to use for link text if template param is not used. Supports templates if passed as unescaped value, i.e. `label = "{!! '{{variable}}' !!}"`                         |
-| icon      | no       | -       | Name to use for link icon if template param is not used. Uses Font Awesome icons. Supports templates if passed as unescaped value, i.e. `icon = "{!! '{{variable}}' !!}"` |
+| target    | no       | _self   | Specify the target of the link                                                                                                                                                       |
+| template  | no       | -       | Template to use for the link body. Instead of specifying the 'template' attribute, the tag body can be used.                                                                 |
+| label     | no       | -       | Text to use for the link text if  the template param is not used. It supports templates if it's passed as unescaped value, i.e. `label = "{!! '{{variable}}' !!}"`                         |
+| icon      | no       | -       | Name to use for the link icon if the template param is not used. It uses Font Awesome icons. It supports templates if it's passed as unescaped value, i.e. `icon = "{!! '{{variable}}' !!}"` |
 
 #### Actions: Action
 
