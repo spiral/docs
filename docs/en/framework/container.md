@@ -24,7 +24,7 @@ class HomeController
 
 ## Dependency Injection
 
-Spiral support both method and constructor injections for your classes:
+Spiral supports both method and constructor injections for your classes:
 
 ```php
 class UserMailer
@@ -46,12 +46,12 @@ class UserMailer
 The `Mailer` dependency will be automatically delivered by the container (auto-wiring).
 
 > **Note**
-> Note, your controllers, commands, and jobs support method injection.
-> Auto-wiring supports union types, variadic arguments, referenced parameters, default object values.
+> that your controllers, commands, and jobs support method injection.
+> Auto-wiring supports union types, variadic arguments, referenced parameters, and default object values.
 
 ## Configuring Container
 
-You can configure container by creating a set of bindings between aliases or interfaces to concrete implementations.   
+You can configure a container by creating a set of bindings between aliases or interfaces to concrete implementations.   
 Use [Bootloaders](../framework/bootloaders.md) to define bindings.
 
 We can either use `Spiral\Core\BinderInterface` or `Spiral\Core\Container` to configure the application container.
@@ -68,7 +68,7 @@ public function boot(Container $container): void
 }
 ```
 
-To bind singleton:
+To bind a singleton:
 
 ```php
 use Spiral\Core\Container;
@@ -125,7 +125,7 @@ public function boot(Container $container): void
 }
 ```
 
-To check if container has binding use:
+To check if a container has binding use:
 
 ```php
 dump($container->has(MyImplementation::class));
@@ -202,7 +202,7 @@ protected function index(MyService $service): void
 
 ## FactoryInterface
 
-In some cases, you might want to construct a desired class without resolving all of it's `__constructor` dependencies.
+In some cases, you might want to construct a desired class without resolving all of its `__constructor` dependencies.
 You can use `Spiral\Core\FactoryInterface` for that purpose:
 
 ```php
@@ -335,11 +335,11 @@ dump($args);
 
 ### Arguments validation
 
-In some cases, you may want to validate a function or a method arguments. To do this, you can use the public 
-`validateArguments` method, in which you need to pass a `ReflectionMethod` or `ReflectionFunction` and an 
+In some cases, you may want to validate a function or method arguments. To do this, you can use the public 
+`validateArguments` method, in which you need to pass `ReflectionMethod` or `ReflectionFunction` and 
 `array of arguments`. If you received the arguments using the `resolveArguments` method and didn't pass `false` in the 
-`$validate` parameter, then they don't need additional validation. They will be checked automatically.
-If the arguments are not valid, a `Spiral\Core\Exception\Resolver\InvalidArgumentException` will be thrown.
+`$validate` parameter, they don't need additional validation. They will be checked automatically.
+If the arguments are not valid, `Spiral\Core\Exception\Resolver\InvalidArgumentException` will be thrown.
 
 ```php
 $resolver = $this->container->get(ResolverInterface::class);
@@ -350,10 +350,10 @@ $resolver->validateArguments(new \ReflectionFunction($function), [42]);
 
 ## InvokerInterface
 
-In some cases, you might want to invoke a desired method with auto wiring all of it's dependencies.
+In some cases, you might want to invoke a desired method with auto wiring all of its dependencies.
 You can use `Spiral\Core\InvokerInterface` for that purpose:
 
-### Invoke object's instance method
+### Invoke an instance method of the object
 
 ```php
 public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
@@ -365,7 +365,7 @@ public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
 }
 ```
 
-if you pass as first callable array value a string `['foo', 'bar']`, so it will be requested from the container.
+if you pass as first callable array value a string `['foo', 'bar']`, it will be requested from the container.
 
 ```php
 $container->bind('some-job', SomeJob::class);
@@ -381,11 +381,11 @@ public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
 ```
 
 > **Note**
-> Invokable method can have as `public` as `protected` and `privite` visibility.
+> Invokable method can have both `public` and `protected` , `private` visibility.
 
 ### Invoke callable
 
-In some cases, you might want to invoke a desired closure with auto wiring all of it's dependencies.
+In some cases, you might want to invoke a desired closure with auto wiring all of its dependencies.
 
 ```php
 public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
@@ -407,7 +407,7 @@ framework misbehavior.
 
 ### Automatic Dependency Resolution
 
-Framework container can automatically resolve the constructor or method dependencies by providing instances
+A framework container can automatically resolve the constructor or method dependencies by providing instances
 of concrete classes.
 
 ```php
@@ -421,14 +421,14 @@ class MyController
 }
 ```
 
-In a provided example, the container will attempt to give the instance of `OtherClass` by automatically constructing it.
-However, `SomeInterface` would not be resolved unless you have the proper binding in your container.
+In the provided example, the container will attempt to give the instance of `OtherClass` by automatically constructing it.
+However, `SomeInterface` would not be resolved unless you have proper binding in your container.
 
 ```php
 $container->bind(SomeInterface::class, SomeClass::class); 
 ```
 
-Please note, the container will try to resolve *all* constructor dependencies (unless you manually provide some values).
+Please note that the container will try to resolve *all* constructor dependencies (unless you manually provide some values).
 It means that all class dependencies must be available, or parameter must be declared as optional:
 
 ```php
@@ -447,8 +447,8 @@ __construct(OtherClass $class, SomeInterface $some = null)
 
 ### Contextual Auto Wiring
 
-In addition to regular method injections, the container can resolve the injection context automatically. Such a
-technique provides us the ability to request multiple databases using the following statement:
+In addition to regular method injections, a container can resolve the injection context automatically. Such a
+technique provides us with an ability to request multiple databases using the following statement:
 
 ```php
 protected function index(Database $primary, Database $secondary): void
@@ -459,9 +459,9 @@ protected function index(Database $primary, Database $secondary): void
 ```
 
 > **Note**
-> Where `primary` and `secondary` are database names.
+> It's where `primary` and `secondary` are database names.
 
-Implement `Spiral\Core\Container\InjectorInterface` to create injection factory and define class responsible for such
+Implement `Spiral\Core\Container\InjectorInterface` to create an injection factory and define a class responsible for such
 injections:
 
 ```php
@@ -518,7 +518,7 @@ dump($factory->make(MyClass::class, ['name' => 'abc']));
 ## Singletons
 
 A lot of internal application services reside in a memory in the form of singleton objects. Such objects do not
-implement static `getInstance`, but rather configured to remain in container **between requests**.
+implement static `getInstance`, but are rather configured to remain in the container **between requests**.
 
 Declaring your service or controller as a singleton is the shortest path to get small performance improvement, however,
 some rules must be applied to avoid memory and state leaks.
@@ -526,7 +526,7 @@ some rules must be applied to avoid memory and state leaks.
 ### Define the Singleton
 
 The framework provides multiple ways to declare a class object as a singleton. At first, you can create Bootloader in
-which you can bind class under its name:
+which you can bind a class under its name:
 
 ```php
 class ServiceBootloader extends Bootloader
