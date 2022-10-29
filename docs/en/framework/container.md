@@ -217,7 +217,7 @@ public function makeClass(FactoryInterface $factory): MyClass
 
 ## ResolverInterface
 
-If you want to resolve method arguments to dynamic target (i.e., controller method) use `Spiral\Core\ResolverInterface`:
+If you want to resolve method arguments to dynamic target (i.e., controller method), use `Spiral\Core\ResolverInterface`:
 
 ```php
 abstract class Handler
