@@ -39,7 +39,7 @@ Now you can run `php app.php configure` to generate IDE tooltips.
 ## Usage of Prototype Properties
 
 To use the prototyping abilities of the framework, add `Spiral\Prototype\Traits\PrototypeTrait` to any of your classes.
-Once it's added, your IDE will immediately suggest you available classes and Cycle Repositories:
+Once it's added, your IDE will immediately suggest available classes and Cycle Repositories to you:
 
 ![IDE Tooltips](https://user-images.githubusercontent.com/796136/67619538-8f0c8c80-f805-11e9-9cd8-0597133bf33a.gif)
 
