@@ -25,7 +25,7 @@ php app.php db:table -h
 
 ## Aliases
 
-Spiral Console is based on Symfony/Console, it means you can use short command names as far as there is enough
+Spiral Console is based on Symfony/Console, it means you can use short command names as long as there is enough
 information to find the target command:
 
 ```bash
@@ -39,7 +39,7 @@ php app.php c
 ## Configure
 
 Your application includes one main command `configure`. This command will run the sequence of operations to ensure
-that application is properly installed, create needed directions and verify permissions to the resources.
+that the application is properly installed, create needed directions and verify permissions to the resources.
 
 To run this command in verbose mode:
 
@@ -52,7 +52,7 @@ php app.php configure -vv
 
 ## Application Server
 
-The application server (RoadRunner) includes its own set of commands. To list all available server commands, run:
+The application server (RoadRunner) includes its own set of commands. To list all the available server commands, run:
 
 ```bash
 ./rr
