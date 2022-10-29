@@ -1,13 +1,13 @@
 # Framework - Application Server
 
-The Spiral Framework uses [RoadRunner](https://roadrunner.dev) as high-powered application server.
+The Spiral Framework uses [RoadRunner](https://roadrunner.dev) as a high-powered application server.
 
 ## Downloading
 
 You can download the application server directly 
 from [release page](https://github.com/roadrunner-server/roadrunner/releases).
 
-The best way is to use composer package `spiral/roadrunner-cli`. It will help you to download server
+The best way is to use composer package `spiral/roadrunner-cli`. It will help you to download the server
 automatically:
 
 ```bash
@@ -20,7 +20,7 @@ automatically:
 ## Installation RoadRunner bridge
 
 RoadRunner integrates with the framework via [`spiral/roadrunner-bridge`](https://github.com/spiral/roadrunner-bridge)
-package and may be installed via the Composer package manager:
+package and can be installed via the Composer package manager:
 
 ```bash
 composer require spiral/roadrunner-bridge
@@ -54,8 +54,8 @@ RoadRunner [plugins](https://roadrunner.dev/docs/app-server-build/2.x/en),
 [middleware](https://roadrunner.dev/docs/middleware-writing-a-middleware/2.x/en), or data providers.
 
 > **Note**
-> You are not required to learn Golang or build the application server by yourself, the default build will cover all of
+> You are not required to learn Golang or build an application server by yourself, the default build will cover all of
 > the framework features.
 
-All information about building Application server you can read on official 
+All the info about building an application server you can read on the official 
 [site](https://roadrunner.dev/docs/app-server-build/2.x/en).
