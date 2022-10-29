@@ -75,7 +75,7 @@ php app.php prototype:inject -r
 > **Note**
 > Use `-r` flag to remove `PrototypeTrait`.
 
-The extension will modify your class into a given form:
+The extension will modify your class into the given form:
 
 ```php
 namespace App\Controller;
