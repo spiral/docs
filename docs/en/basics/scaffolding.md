@@ -203,7 +203,7 @@ cases, it will also include by-key-getters for array values.
 
 Details below:
 If an array-value consists of more than one sub-values with the same types for keys and sub-values, the scaffolder will try
-to create a by-key-getter method. If a generated key is conflicting with an existing method, by-key-getter will be
+to create a by-key-getter method. If a generated key is conflicting with the existing method, by-key-getter will be
 omitted.
 
 #### Example with an empty config file
