@@ -64,7 +64,7 @@ class HomeController
 ```
 
 > **Note**
-> The code will work via magic `__get` on the object.
+> that the code will work via magic `__get` on the object.
 
 Once the prototyping phase is complete, you can remove the trait and inject dependencies via:
 
@@ -104,7 +104,7 @@ class HomeController
 ```
 
 > **Note**
-> The formatting around the injected lines will be affected.
+> that the formatting around the injected lines will be affected.
 
 For PHP 7.4 there are two additional flags available now:
 
