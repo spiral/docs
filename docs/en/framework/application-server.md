@@ -57,5 +57,5 @@ RoadRunner [plugins](https://roadrunner.dev/docs/app-server-build/2.x/en),
 > You are not required to learn Golang or build an application server by yourself, the default build will cover all of
 > the framework features.
 
-All the info about building an application server you can read on the official 
+You can read all the info about building an application server on the official 
 [site](https://roadrunner.dev/docs/app-server-build/2.x/en).
