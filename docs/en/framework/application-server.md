@@ -38,7 +38,7 @@ The RoadRunner server is easy to run on the default `:8080` port:
 ./rr serve
 ```
 
-You can observe the memory consumption of your workers in realtime and other information via
+You can observe memory consumption of your workers in realtime and other information via
 
 ```bash
 ./rr workers -i
