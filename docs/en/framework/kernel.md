@@ -118,7 +118,7 @@ $app->run();
 
 #### Booting
 
-`Booting` is the callbacks that will be executed *before* all framework bootloaders in the `LOAD` section will be booted.
+`Booting` is the callbacks that will be executed *before* all the framework bootloaders in the `LOAD` section are booted.
 
 To register a callback, call the `booting` method:
 
@@ -136,7 +136,7 @@ $app->run();
 
 #### Booted
 
-`Booted` is the callbacks that's will be executed *after* all framework bootloaders in the `LOAD` section will be booted.
+`Booted` is the callbacks that will be executed *after* all the framework bootloaders in the `LOAD` section are booted.
 
 To register a callback, call the `booted` method:
 
@@ -158,7 +158,7 @@ class and has access to this functionality.
 
 #### AppBooting
 
-`AppBooting` is the callbacks that's will be executed *before* all the application bootloaders in the `APP` section are booted.
+`AppBooting` is the callbacks that will be executed *before* all the application bootloaders in the `APP` section are booted.
 
 To register a callback, call the `appBooting` method:
 
@@ -176,8 +176,7 @@ $app->run();
 
 #### AppBooted
 
-`AppBooted` is the callbacks that's will be executed *after* all application bootloaders in the `APP` section
-will be booted.
+`AppBooted` is the callbacks that will be executed *after* all the application bootloaders in the `APP` section are booted.
 
 To register a callback, call the `appBooted` method:
 
@@ -195,7 +194,7 @@ $app->run();
 
 ## Environment
 
-Use `Spiral\Boot\EnvironmentInterface` to access the list of ENV variables. By default, the framework relies on
+Use `Spiral\Boot\EnvironmentInterface` to access a list of ENV variables. By default, the framework relies on
 system-level environment values. To redefine env values while initializing the kernel pass custom `EnvironmentInterface`
 to the `create` method.
 
