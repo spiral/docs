@@ -1,11 +1,11 @@
 # Framework - IoC Scopes
 
 An essential aspect of developing long-living applications is proper context management. In demonized applications,
-you are no longer allowed to treat user requests as global singleton object and store references to its instance in your
+you are no longer allowed to treat user requests as a global singleton object and store references to its instance in your
 services.
 
 Practically it means that you must explicitly request context while processing user input. Spiral framework simplifies
-such requests by using global IoC container as context carrier which allows you to call request specific instances
+such requests by using a global IoC container as a context carrier which allows you to call request specific instances
 as global objects via context bounded scopes.
 
 ## Explanation
@@ -29,7 +29,7 @@ $container->runScope(
 > Framework will guarantee that scope is clean after the execution, even in case of any exception.
 
 You can receive values set in scope directly from the container or as method injections in your services/controllers
-while calling then **inside the IoC scope**:
+while calling them **inside the IoC scope**:
 
 ```php
 public function doSomething(UserContext $user): void
@@ -43,8 +43,8 @@ for any normal dependency, but you **must not store** it between scopes.
 
 ## Context Managers
 
-As mentioned above you are not allowed to store any reference to the scoped instance, the following code is invalid and
-will cause controller to lock on first scope value:
+As mentioned above, you are not allowed to store any reference to the scoped instance, the following code is invalid and
+will cause the controller to lock on first scope value:
 
 ```php
 class HomeController implements SingletonInterface
@@ -99,5 +99,5 @@ class HomeController implements SingletonInterface
 ```
 
 > **Note**
-> A good example is `Spiral\Http\Request\InputManager`. The manager operates as accessor
+> A good example is `Spiral\Http\Request\InputManager`. The manager operates as an accessor
 > to `Psr\Http\Message\ServerRequestInterface` available only since http dispatcher scope.
