@@ -2,7 +2,7 @@
 
 You can invoke controller actions not only via routes but also from your services and other controllers (HMVC). Every
 controller action invocation is made via `Spiral\Core\CoreInterface`. The `CoreInterface` or *Domain Core* provides the
-developer with the ability to alter the invocation flow and implement domain-specific functionality for controllers.
+developer with the ability to alter an invocation flow and implement a domain-specific functionality for controllers.
 
 > **Note**
 > The package `spiral/hmvc` is required for the domain cores. The web bundle includes this package by default.
