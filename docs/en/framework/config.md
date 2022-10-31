@@ -213,7 +213,7 @@ class ValueBootloader extends Bootloader
 }
 ```
 
-You will receive an exception `Spiral\Config\Exception\ConfigDeliveredException`: *Unable to patch config `app`,
+You will receive this exception `Spiral\Config\Exception\ConfigDeliveredException`: *Unable to patch config `app`,
 config object has already been delivered.*
 
 It's recommended to set default values and change configs in the `init` method. And request a configuration file only in 
