@@ -66,7 +66,7 @@ class B extends Model
 }
 ```
 
-Now, any model request will include unique id, for example in the controller method:
+Now, any model request will include a unique id, for example in the controller method:
 
 ```php
 namespace App\Controller;
