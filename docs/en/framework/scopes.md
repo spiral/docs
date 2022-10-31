@@ -59,7 +59,7 @@ class HomeController implements SingletonInterface
 ```
 
 Instead, it is recommended to use objects specifically crafted to provide access to IoC scopes from singletons - Context
-Managers. The simple context manager can be written as follows:
+Managers. A simple context manager can be written as follows:
 
 ```php
 class UserScope
