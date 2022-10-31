@@ -13,7 +13,7 @@ modification.
 
 All of the configuration values can be accessed via `Spiral\Config\ConfiguratorInterface` in the form of an array.
 
-To demonstrate that we can create config file `app/config/app.php`:
+To demonstrate that, we can create a config file `app/config/app.php`:
 
 ```php
 <?php
@@ -102,7 +102,7 @@ Every Spiral component provides the config object you can use in your applicatio
 
 ## Default Configuration in Bootloader
 
-In many cases, the default configuration might be enough for most of the applications. Use custom bootloader to define
+In many cases, the default configuration might be enough for most of the applications. Use a custom bootloader to define
 default configuration values to avoid the need to create unnecessary files. Environment variables can be used as default 
 values.
 
