@@ -100,4 +100,4 @@ class HomeController implements SingletonInterface
 
 > **Note**
 > A good example is `Spiral\Http\Request\InputManager`. The manager operates as an accessor
-> to `Psr\Http\Message\ServerRequestInterface` available only since http dispatcher scope.
+> to `Psr\Http\Message\ServerRequestInterface` available only inside http dispatcher scope.
