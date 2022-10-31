@@ -3,8 +3,8 @@
 Bootloaders are the central piece in Spiral Framework and your application. These objects are responsible
 for [Container](../framework/container.md) configuration, default configuration, etc.
 
-Bootloaders only executed once while loading your application. Since the app will stay in memory for long - you can
-add as many code to your bootloaders as you want. It will not cause any performance effect on runtime.
+Bootloaders are only executed once while loading your application. Since the app will stay in memory for long - you can
+add as much code to your bootloaders as you want. It will not cause any performance effect on runtime.
 
 ![Application Control Phases](https://user-images.githubusercontent.com/773481/180768689-c711e6f0-3523-4330-a496-f78088504b29.png)
 
@@ -47,7 +47,7 @@ class App extends Kernel
 }
 ```
 
-Currently, your Bootloader doesn't do anything. A little bit later, we will add functionality to it.
+Currently, your Bootloader doesn't do anything. A little bit later, we will add some functionality to it.
 
 ## Available methods
 
@@ -57,7 +57,7 @@ Bootloaders provide two methods `init` and `boot` that are executed when the app
 
 This method is executed *first*. It's recommended to set default values for configuration files. Modify configuration 
 files using special bootloader methods. Execute other logic that doesn't require reading configuration files 
-and doesn't depend on the execution of code in the `init` and `boot` methods of other bootloaders.
+and doesn't depend on code execution in the `init` and `boot` methods of other bootloaders.
 In this method, you can add initialization callbacks, configure container bindings if this does not require 
 access to the application configuration.
 
@@ -118,14 +118,14 @@ final class SessionBootloader extends Bootloader
 ```
 
 > **Note**
-> `APP` bootloader namespace always loaded after `LOAD`, keep domain-specific bootloaders in it.
+> `APP` bootloader namespace is always loaded after `LOAD`, keep domain-specific bootloaders in it.
 
 ## Configuring Container
 
-The most common use-case of bootloaders is to configure DI container, for example, we might want to bind multiple
+The most common use-case of bootloaders is to configure a DI container, for example, we might want to bind multiple
 implementations to their interfaces or construct some service.
 
-We can use the method `init` or `boot` for these purposes. Method support method injection, so we can request any services we
+We can use the method `init` or `boot` for these purposes. The method supports method injection, so we can request any services we
 need:
 
 ```php
@@ -203,7 +203,7 @@ class MyBootloader extends Bootloader
 ## Configuring Application
 
 Another common use case of bootloaders is to configure the framework before the application launch. For example, we can
-declare new route for our application or module:
+declare a new route for our application or module:
 
 ```php
 namespace App\Bootloader;
@@ -225,7 +225,7 @@ class MyBootloader extends Bootloader
 ```
 
 > **Note**
-> Identically, you can mount middleware, change tokenizer directories, and much more.
+> In the exact same way, you can mount middleware, change tokenizer directories, and much more.
 
 ## Depending on other Bootloaders
 
@@ -247,8 +247,7 @@ class MyBootloader extends Bootloader
 }
 ```
 
-If you want to ensure that `HttpBootloader` has always been initiated before `MyBootloader` use
-constant `DEPENDENCIES`:
+If you want to ensure that `HttpBootloader` has always been initiated before `MyBootloader`, use constant `DEPENDENCIES`:
 
 ```php
 namespace App\Bootloader;
@@ -270,7 +269,7 @@ class MyBootloader extends Bootloader
 ```
 
 > **Note**
-> Note, you are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another
+> that you are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another
 > bootloader). The framework would not allow you to change any configuration value after component initialization.
 
 ## Cascade bootloading
