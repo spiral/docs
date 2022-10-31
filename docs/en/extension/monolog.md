@@ -13,30 +13,30 @@ For example, the configuration file might look like this:
 
 ```php
 <?php
-return [    
+return [
     /**
      * -------------------------------------------------------------------------
      *  Default Monolog handler
      * -------------------------------------------------------------------------
      */
     'default' => env('MONOLOG_DEFAULT_CHANNEL', 'default'),
-    
+
     /**
      * -------------------------------------------------------------------------
      *  Global logging level
-     * ------------------------------------------------------------------------- 
-     * 
+     * -------------------------------------------------------------------------
+     *
      * Monolog supports the logging levels described by RFC 5424.
      *
      * @see https://github.com/Seldaek/monolog/blob/main/doc/01-usage.md#log-levels
      */
-    'globalLevel' => Logger::toMonologLevel(env('MONOLOG_DEFAULT_LEVEL', Logger::DEBUG)),
+    'globalLevel' => \Monolog\Logger::toMonologLevel(env('MONOLOG_DEFAULT_LEVEL', \Monolog\Logger::DEBUG)),
 
     /**
      * -------------------------------------------------------------------------
      *  Handlers
-     * ------------------------------------------------------------------------- 
-     * 
+     * -------------------------------------------------------------------------
+     *
      * @see https://github.com/Seldaek/monolog/blob/main/doc/02-handlers-formatters-processors.md#handlers
      */
     'handlers' => [
@@ -45,16 +45,16 @@ return [
                 'class' => 'log.rotate',
                 'options' => [
                     'filename' => directory('runtime') . 'logs/app.log',
-                    'level' => Logger::DEBUG,
+                    'level' => \Monolog\Logger::DEBUG,
                 ],
             ],
         ],
         'stderr' => [
-            ErrorLogHandler::class,
+            \Monolog\Handler\ErrorLogHandler::class,
         ],
         'stdout' => [
             [
-                'class' => SyslogHandler::class,
+                'class' => \Monolog\Handler\SyslogHandler::class,
                 'options' => [
                     'ident' => 'app',
                     'facility' => LOG_USER,
@@ -66,19 +66,19 @@ return [
     /**
      * -------------------------------------------------------------------------
      *  Processors
-     * ------------------------------------------------------------------------- 
-     * 
+     * -------------------------------------------------------------------------
+     *
      * Processors allows adding extra data for all records.
      *
      * @see https://github.com/Seldaek/monolog/blob/main/doc/02-handlers-formatters-processors.md#processors
      */
     'processors' => [
         'default' => [
-            // ...
+// ...
         ],
         'stdout' => [
             [
-                'class' => PsrLogMessageProcessor::class,
+                'class' => \Monolog\Processor\PsrLogMessageProcessor::class,
                 'options' => [
                     'dateFormat' => 'Y-m-d\TH:i:s.uP',
                 ],
