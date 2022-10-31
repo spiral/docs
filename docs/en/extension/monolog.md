@@ -12,6 +12,7 @@ configure the default Monolog handler, global logging level, handlers and proces
 For example, the configuration file might look like this:
 
 ```php
+<?php
 return [    
     /**
      * -------------------------------------------------------------------------
