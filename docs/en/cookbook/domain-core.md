@@ -1,16 +1,16 @@
 # Cookbook - Domain Cores
 
 You can invoke controller actions not only via routes but also from your services and other controllers (HMVC). Every
-controller action invocation made via `Spiral\Core\CoreInterface`. The `CoreInterface` or *Domain Core* provides the
+controller action invocation is made via `Spiral\Core\CoreInterface`. The `CoreInterface` or *Domain Core* provides the
 developer with the ability to alter the invocation flow and implement domain-specific functionality for controllers.
 
 > **Note**
-> The package `spiral/hmvc` required for the domain cores. The web bundle includes this package by default.
+> The package `spiral/hmvc` is required for the domain cores. The web bundle includes this package by default.
 
 ## Invoke Controller Action
 
 Spiral controllers are clean classes built to be invoked from any dispatcher. The framework does not provide the direct
-coupling between controller and route. Such an approach makes it possible to invoke methods manually:
+coupling between a controller and a route. Such an approach makes it possible to invoke methods manually:
 
 ```php
 namespace App\Controller;
@@ -31,7 +31,7 @@ class HomeController
 }
 ```
 
-By default, `CoreInterface` implemented by `Spiral\Core\Core` class and only provides support for the method injection.
+By default, `CoreInterface` is implemented by `Spiral\Core\Core` class and only provides support for the method injection.
 
 ## Core Interceptors
 
@@ -52,7 +52,7 @@ class CustomInterceptor implements CoreInterceptorInterface
 }
 ```
 
-To use the interceptor create an instance of `InterceptableCore`:
+To use the interceptor, create an instance of `InterceptableCore`:
 
 ```php
 namespace App\Controller;
@@ -84,7 +84,7 @@ as well.
 
 ## Global Domain Core
 
-By default, the `CoreInterface` only used to drive targets for framework routing. You can change the default
+By default, the `CoreInterface` is only used to drive targets for framework routing. You can change the default
 target via `Spiral\Core\CoreInterface` binding:
 
 ```php
@@ -116,7 +116,7 @@ Activate the Bootloader to make all route targets to be intercepted.
 
 ### Route Specific Core
 
-To activate the core for the specific route:
+To activate the core for a specific route:
 
 ```php
 $customCore = new InterceptableCore($core);
@@ -133,7 +133,7 @@ $router->setRoute(
 
 ## Domain Core Builder
 
-The framework provides convenient Bootloader to configure core interceptors `Spiral\Bootloader\DomainBootloader`
+The framework provides a convenient Bootloader to configure core interceptors `Spiral\Bootloader\DomainBootloader`
 automatically:
 
 ```php
@@ -159,7 +159,7 @@ Use this Bootloader to configure the application behavior globally via the set o
 
 ### Cycle Entity Resolution
 
-The [Cycle Bridge](https://github.com/spiral/cycle-bridge/) package provides the `Spiral\Cycle\Interceptor\CycleInterceptor`.
+The [Cycle Bridge](https://github.com/spiral/cycle-bridge/) package provides `Spiral\Cycle\Interceptor\CycleInterceptor`.
 Use `CycleInterceptor` to automatically resolve entity injections based on parameter values:
 
 ```php
@@ -172,7 +172,7 @@ $router->setRoute(
 );
 ```
 
-To activate interceptor:
+To activate an interceptor:
 
 ```php
 namespace App\Bootloader;
@@ -194,7 +194,7 @@ class AppBootloader extends DomainBootloader
 ```
 
 You can use any cycle entity injection in your HomeController methods, the `<id>` parameter will be used as the primary
-key. If an entity can't be found the 404 exception will be thrown.
+key. If an entity can't be found, the 404 exception will be thrown.
 
 ```php
 namespace App\Controller;
@@ -210,7 +210,7 @@ class HomeController
 }
 ```
 
-You must use named parameters if more than one entity expected:
+You must use named parameters if more than one entity is expected:
 
 ```php
 $router->setRoute(
@@ -222,7 +222,7 @@ $router->setRoute(
 );
 ```
 
-The method arguments must be named as route parameters.
+Method arguments must be named as route parameters.
 
 ```php
 namespace App\Controller;
@@ -273,7 +273,7 @@ class AppBootloader extends DomainBootloader
 }
 ```
 
-You can use attributes to configure which permissions to apply for the controller action:
+You can use attributes to configure what permissions to apply for the controller action:
 
 ```php
 namespace App\Controller;
@@ -296,7 +296,7 @@ class HomeController
 }
 ```
 
-To specify the fallback action when permission is not checked use `else` attribute of `Guarded`:
+To specify a fallback action when the permission is not checked, use `else` attribute of `Guarded`:
 
 ```php
 #[Guarded(permission: 'home.other', else: 'notFound')]
@@ -309,9 +309,9 @@ public function other(): string
 > **Note**
 > Allowed values: `notFound` (404), `forbidden` (401), `error` (500), `badAction` (400).
 
-Use the attribute `Spiral\Domain\Annotation\GuardNamespace` to specify controller RBAC namespace and remove the prefix
+Use the attribute `Spiral\Domain\Annotation\GuardNamespace` to specify controller RBAC namespace and remove a prefix
 from every action. You can also skip the permission definition in `Guarded` when a namespace is specified (security component 
-will use `namespace.methodName` as permission name).
+will use `namespace.methodName` as a permission name).
 
 ```php
 namespace App\Controller;
@@ -391,7 +391,7 @@ class AppBootloader extends DomainBootloader
 ```
 
 > **Note**
-> Make sure that route includes `<id>` or `<user>` parameter.
+> Make sure that the route includes `<id>` or `<user>` parameter.
 
 And modify the method:
 
@@ -528,7 +528,7 @@ You can rename `data` property or pass the exact `status` code `options` or `get
 }
 ```
 
-`GridInterceptor` will create a `GridFactoryInterface` instance to wrap given iterable source with the declared grid
+`GridInterceptor` will create a `GridFactoryInterface` instance to wrap the given iterable source with the declared grid
 schema.
 `GridFactory` is used by default, but if you need more complicated logic, such as using a custom counter or
 specifications utilization, you can declare your own factory in the annotation:
@@ -540,7 +540,7 @@ specifications utilization, you can declare your own factory in the annotation:
 ### Pipeline Interceptor
 
 This interceptor allows customising endpoint interceptors using `@Pipeline` annotation.
-When declared in the domain core interceptors list, this interceptor injects the specified annotated interceptors on the
+When declared in the domain core interceptors list, this interceptor injects specified annotated interceptors on the
 position where the `PipelineInterceptor` is declared.
 
 ```php
@@ -568,7 +568,7 @@ class AppBootloader extends DomainBootloader
 }
 ```
 
-`Pipeline` attribute allows skipping the subsequent interceptors:
+`Pipeline` attribute allows skipping subsequent interceptors:
 
 ```php
     #[Pipeline(pipeline: [OtherInterceptor::class], skipNext: true)]
@@ -578,7 +578,7 @@ class AppBootloader extends DomainBootloader
     }
  ```
 
-Using the prev bootloader we will get the next interceptors list:
+Using the prev bootloader, we will get the next interceptors list:
 
 - Spiral\Cycle\Interceptor\CycleInterceptor
 - OtherInterceptor
@@ -588,8 +588,7 @@ Using the prev bootloader we will get the next interceptors list:
 
 ### Use cases
 
-For example, it can be helpful when an endpoint should not apply any interceptor or not all of them are required
-currently:
+For example, it can be helpful when an endpoint should not apply any interceptor or not all of them are currently required:
 
 ```php
 #[Route(route: '/show/<user:int>/email/<email:int>', name: 'emails')]
@@ -608,7 +607,7 @@ public function email(User $user, Email $email, EmailFilter $filter): string
 > `FilterInterceptor` should not be applied here because of a complicated context, so we set it manually and call a
 > custom `isValid()` check. Also, `GridInterceptor` is redundant here.
 
-To have the full control over the interceptors list you need to specify `PipelineInterceptor` as the first one.
+To have full control over the interceptors list, you need to specify `PipelineInterceptor` as the first one.
 
 ## All Together
 
