@@ -1,6 +1,6 @@
 # SendIt
 
-The Spiral Framework provides a simple component for creating and sending emails. The component available by default in
+The Spiral Framework provides a simple component for creating and sending emails. The component is available by default in
 the [application bundle](https://github.com/spiral/app).
 
 ## Installation
@@ -26,7 +26,7 @@ class App extends Kernel
 }
 ```
 
-The `BuilderBootloader` bootloader registers package views and provides the ability to generate email templates using
+The `BuilderBootloader` bootloader registers package views and provides an ability to generate email templates using
 the `Stempler` template engine. The `MailerBootloader` configures a queue for sending emails.
 
 > **Note**
@@ -90,7 +90,7 @@ The `MAILER_DSN` isn't a real address: it's a convenient format that offloads mo
 
 ### Custom mailer transport
 
-Spiral Framework provides the ability to customize mailer transport. You just need to bind your implementation of 
+Spiral Framework provides an ability to customize mailer transport. You just need to bind your implementation of 
 `Symfony\Component\Mailer\Transport\TransportInterface` via container.
 
 **Simple example**
@@ -129,15 +129,15 @@ class AppBootloader extends Bootloader
 
 ### Queue
 
-The `queueConnection` key uses for specifying queue that will be used for handling mail messages. By default, messages 
-will be sent by using `sync` connection.
+The `queueConnection` key uses a specifying queue that will be used for handling mail messages. By default, the messages 
+will be sent using `sync` connection.
 
 > **Note**
 > Read more about queue connection configuration [here](/queue/configuration.md).
 
 ## Usage
 
-The component provides the ability to compose content-rich email templates using `Stempler` views:
+The component provides an ability to compose content-rich email templates using `Stempler` views:
 
 ```html
 <extends:sendit:builder subject="I'm afraid I can't do that"/>
