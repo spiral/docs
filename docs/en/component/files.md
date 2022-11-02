@@ -162,7 +162,7 @@ To get file MD5:
 dump($files->md5('filename'));
 ```
 
-To get filename extension:
+To get a filename extension:
 
 ```php
 dump($files->extension(__FILE__)); // without leading "."
