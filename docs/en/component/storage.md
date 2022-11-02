@@ -1,13 +1,13 @@
 # Storage
 
-Component `spiral/storage` provides a powerful storage abstraction thanks to the 
+The component `spiral/storage` provides powerful storage abstraction thanks to the 
 wonderful [Flysystem](https://github.com/thephpleague/flysystem) PHP package by Frank de Jonge. The Storage component 
-integration provides simple drivers for working with local filesystems and Amazon S3. Even better, it's amazingly simple 
+integration provides simple drivers for working with local filesystems and Amazon S3. Even better, it's super simple 
 to switch between these storage options between your local development machine and production server as the API remains 
 the same for each system.
 
 Please note that, unlike classical file systems, the store component provides an API which provides the operations of 
-writing a file, checking its existence, reading and getting the public address of this file. All operations (which 
+writing a file, checking its existence, reading and getting a public address of this file. All operations (which 
 classic file systems have) for working with directories, or a list of files are not available.
 
 To install the component:
@@ -31,7 +31,7 @@ protected const LOAD = [
 
 ## Configuration
 
-Storage config file should be located (by default) at `app/config/storage.php`. Within this file, you may configure the 
+A storage config file should be located (by default) at `app/config/storage.php`. Within this file, you may configure the 
 servers (the "`servers`" section) and the specific storages (the "`buckets`" section) that your servers will use and
 which you will use.
 
@@ -57,8 +57,8 @@ return [
      *  Storage Servers
      * -------------------------------------------------------------------------
      *
-     * Here are each of the servers is configured for your application. Of
-     * course, examples of customizing each available server supported by
+     * Here is each of the servers configured for your application. Of
+     * course, the examples of customizing each available server supported by
      * Spiral are shown below to simplify development.
      *
      */
@@ -83,8 +83,8 @@ return [
      *  Storage Buckets
      * -------------------------------------------------------------------------
      *
-     * Here are a list of specific buckets (or storages) that use the above
-     * server settings. Each "server" section in this list must refer to a
+     * Here is a list of specific buckets (or storages) that use the
+     * server settings above. Each "server" section in this list must refer to a
      * valid server name in the list above.
      *
      * The list of settings in this case is also an example of use. You can
@@ -118,7 +118,7 @@ return [
 This way of using the component is required only if it is installed separately, outside the framework.
 
 First you need to create a storage instance where all your buckets will be stored. After that, you can add and get 
-arbitrary bucket from it by the desired name.
+an arbitrary bucket from it by the desired name.
 
 ```php
 $storage = new \Spiral\Storage\Storage();
@@ -131,13 +131,13 @@ $file = $storage->bucket('example')
     ->write('file.txt', 'content');
 ```
 
-As you may have noticed, you can use existing [flysystem adapters](https://flysystem.thephpleague.com/v2/docs/adapter/local/)
+As you may have noticed, you can use the existing [flysystem adapters](https://flysystem.thephpleague.com/v2/docs/adapter/local/)
 to create a bucket. Just install the one you want and add it to the store using the `Bucket::fromAdapter()` method.
 
 ### Local Server
 
-The local server, as the name implies, is located in the local file system: In the same place where the executable code 
-of your application is located.
+The local server, as the name implies, is located in the local file system (in the same place where the executable code 
+of your application is located).
 
 You have already seen an example of local server settings earlier, however, to simplify them, some optional sections 
 have been specially removed. Let's now take a look at the complete configuration of this type of server, leaving all
@@ -206,7 +206,7 @@ S3 itself, there are free alternatives that you can install and use on your own 
 example [Minio Server](https://docs.min.io/).
 
 To set up this type of server, you will need an existing bucket and personal authentication data. In addition, for 
-completeness, the example below will include optional parameters that are optional and have default values.
+completeness, the example below will include parameters that are optional and have default values.
 
 Please note that in order to interact with this type of servers, you must have one of the two available packages 
 installed (either). You must install the `league/flysystem-aws-s3-v3` or `league/flysystem-async-aws-s3` package using
@@ -329,20 +329,20 @@ return [
             'visibility' => env('S3_VISIBILITY', 'public'),
 
             //
-            // In the case that you want to use another bucket using the main
-            // server settings, then you can redefine it by specifying the
+            // In case you want to use another bucket using the main
+            // server settings, you can redefine it by specifying the
             // appropriate configuration key.
             //
             'bucket' => env('S3_BUCKET', null),
 
             //
-            // If the new bucket is in a different region, then you can also
+            // If the new bucket is in a different region, you can also
             // override this value.
             //
             'region' => env('S3_REGION', null),
 
             //
-            // A similar way can be done with the directory prefix in cases
+            // A similar thing can be done with the directory prefix in cases
             // where a particular bucket must refer to some other root directory.
             //
             'prefix' => 'custom-directory',
@@ -395,8 +395,8 @@ using them.
 
 The storage architecture assumes 3 different levels of access to identical operations: Storage, Bucket and File. At 
 each of these levels, you can operate on files, but the differences are in how much data you have to transfer to a
-particular method. At the highest "Storage" level you have to pass information about the bucket and the file, at the 
-"Bucket" level only about the file, and finally at the "File" level you will not have to pass any additional 
+particular method. At the highest "Storage" level you have to pass information about the bucket and the file. At the 
+"Bucket" level you pass info only about the file. Finally, at the "File" level you will not have to pass any additional 
 information.
 
 In practice, it will look like this. Let's try to create a file `example.txt` in 3 different ways inside some controller 
@@ -430,8 +430,8 @@ class UploadController
 
 The differences between the methods are as follows:
 
-- When working with a storage, you should pass the file name in the URI-like format `[BUCKET_NAME]://[FILE_NAME]`. 
-  In all methods of working with storage, this is the first string argument.
+- When working with a storage, you should pass a file name in the URI-like format `[BUCKET_NAME]://[FILE_NAME]`. 
+  In all methods of working with a storage, this is the first string argument.
 
 - In all methods of working with a bucket, this is a file name in an arbitrary format. Please also note that the leading 
   slash does not affect the file location in any way and the names `file.txt` and `/file.txt` will be completely 
@@ -444,7 +444,7 @@ Each of the methods has both its advantages and disadvantages. Just use what you
 Since in the example above we are using a controller, then at the same time we will use an alternative dependency, 
 which is suitable in cases of simple file saving, when many implementations of buckets are not required.
 
-In such cases, as below, the bucket used in the system by default will be selected. You can define this bucket in 
+In such cases as below, the bucket used in the system by default will be selected. You can define the bucket in 
 the `'default'` section of your configuration.
 
 ```php
@@ -476,16 +476,16 @@ From each of the levels, you can refer to the child.
 
 - `$bucket->file('[file-name]'): FileInterface`
 
-After we have familiarized ourselves with the options for using the same methods at different levels of the store, we 
-should go on to describe the possibilities directly. Let's start!
+After we have got to know the options to use the same methods at different levels of the store, we 
+can go on to describe the available possibilities. Let's start!
 
 ### Create And Write
 
-In case to create a file, you can use one of the two available methods: `create()` or `write()`. The first creates an 
-empty file in cases where it is not created, and the second allows you to additionally write arbitrary `string`
+If you want to create a file, you can use one of the two available methods: `create()` or `write()`. The first creates an 
+empty file where it is not created, and the second one allows you to additionally write arbitrary `string`
 or `resource` stream content there.
 
-For example, the code that creates the file might look like this.
+For example, the code that creates a file might look like this.
 
 ```php
 // Creating file from bucket
@@ -500,8 +500,8 @@ $file = $bucket->write('file.txt', fopen(__DIR__ . '/local/file.txt', 'rb+'));
 
 ### Copy And Move
 
-To copy files, use the `copy()` method, which contains one required argument with the name of the new file and one 
-optional - the bucket where this file should be copied. If the second argument is not specified, then the compilation 
+To copy files, use the `copy()` method, which contains one required argument with the name of a new file and one 
+optional - the bucket where the file should be copied. If the second argument is not specified, the compilation 
 bucket will be identical to the original one.
 
 The `move()` method is completely similar to using the `copy()` method, but instead of copying it moves the file.
@@ -517,8 +517,8 @@ $moved  = $firstBucket->move('backup.txt', 'to.txt', $secondBucket);
 
 ### Delete
 
-To delete a file, just use the `delete()` method. This method accepts an optional boolean argument meaning deletion an 
-empty directory in which this file was located.
+To delete a file, just use the `delete()` method. This method accepts an optional boolean argument which means deleting an 
+empty directory where the file was located.
 
 ```php
 $bucket->delete('file.txt');
@@ -572,12 +572,12 @@ $mime = $bucket->getMimeType('file.txt');
 
 ### Visibility
 
-In addition to such characteristics as the existence of a file, there is also the visibility of the file. You can get 
+In addition to such characteristics as file existence, there is also file visibility. You can get 
 information about the visibility of a file using the `getVisibility()` method, and update the visibility using the
 `setVisibility()` method.
 
 These methods operate on constants that have been defined in the `Spiral\Storage\Visibility` enum-like interface. 
-Thus, the sample code with file visibility control will look like the following.
+So, the sample code with file visibility control will look like the following.
 
 ```php
 $visibility = $bucket->getVisibility('file.txt');
@@ -589,7 +589,7 @@ if ($visibility === Visibility::VISIBILITY_PRIVATE) {
 ```
 
 > **Note**
-> In the case of using a bucket located on Windows OS, this functionality may not work.
+> In case of using a bucket located on Windows OS, this functionality may not work.
 
 ### URI Publishing
 
@@ -600,10 +600,10 @@ through a browser.
 The storage component allows you to add an arbitrary URI resolver of public addresses for these files using 
 the [distribution component](/component/distribution.md).
 
-To configure the resolver, you should familiarize yourself with the configuration of this component. After that, for a 
+To configure a resolver, you should familiarize yourself with the configuration of this component. After that, for a 
 specific bucket, simply add a section containing a link to a specific distribution resolver.
 
-Each bucket has such an opportunity to specify the distribution.
+Each bucket is able to specify the distribution.
 
 ```php
 return [
