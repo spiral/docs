@@ -3,17 +3,17 @@
 You can expose some of the application metrics using the [prometheus](https://prometheus.io/) service embedded to the
 [RoadRunner application server](https://roadrunner.dev/docs/plugins-metrics/2.x/en).
 
-The component available by default in the [application bundle](https://github.com/spiral/app) or 
+The component is available by default in the [application bundle](https://github.com/spiral/app) or 
 via [spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge).
 
 ## Installation
 
 To enable the component, you just need to add `Spiral\RoadRunnerBridge\Bootloader\MetricsBootloader` to the 
-bootloaders list.
+bootloader's list.
 
 ## Configuration
 
-Metrics service does not require configuration in the application. However, you must activate this service
+The metrics service does not require configuration in the application. However, you must activate the service
 in `.rr.yaml`:
 
 ```yaml
@@ -61,7 +61,7 @@ class MetricsBootloader extends Bootloader
 > **Note**
 > Supported types: gauge, counter, summary, histogram.
 
-To populate metric from application use `Spiral\RoadRunner\Metrics\MetricsInterface`:
+To populate a metric from the application, use `Spiral\RoadRunner\Metrics\MetricsInterface`:
 
 ```php
 use Spiral\RoadRunner\Metrics\MetricsInterface; 
