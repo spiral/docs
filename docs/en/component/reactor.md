@@ -16,7 +16,7 @@ composer require spiral/reactor
 
 ## Class Declaration
 
-To declare class use `Spiral\Reactor\ClassDeclaration`.
+To declare a class, use `Spiral\Reactor\ClassDeclaration`.
 
 ```php
 use Spiral\Reactor\ClassDeclaration;
@@ -117,7 +117,7 @@ class MyClass
 
 ### Interface and Extends
 
-To implement given interface or extend base class:
+To implement a given interface or extend a base class:
 
 ```php
 use Spiral\Reactor\ClassDeclaration;
@@ -142,7 +142,7 @@ class MyClass extends Cycle\ORM\Select\Repository implements Countable
 
 ### Methods
 
-To generate class method:
+To generate a class method:
 
 ```php
 $class = new ClassDeclaration('MyClass');
@@ -203,7 +203,7 @@ class MyClass
 
 ## Interface Declaration
 
-To declare interface use `Spiral\Reactor\InterfaceDeclaration`.
+To declare an interface, use `Spiral\Reactor\InterfaceDeclaration`.
 
 ```php
 $interface = new InterfaceDeclaration('MyInterface');
@@ -231,7 +231,7 @@ interface MyInterface extends Countable
 
 ## Enum Declaration
 
-To declare enum use `Spiral\Reactor\EnumDeclaration`.
+To declare enum, use `Spiral\Reactor\EnumDeclaration`.
 
 ```php
 $enum = new EnumDeclaration('MyEnum');
@@ -275,7 +275,7 @@ enum MyEnum: string
 
 ## Function Declaration
 
-To declare global function use `Spiral\Reactor\FunctionDeclaration`.
+To declare a global function, use `Spiral\Reactor\FunctionDeclaration`.
 
 ```php
 $function = new FunctionDeclaration('myFunction');
@@ -304,7 +304,7 @@ function myFunction(): string
 
 ## Trait Declaration
 
-To declare trait use `Spiral\Reactor\TraitDeclaration`.
+To declare a trait, use `Spiral\Reactor\TraitDeclaration`.
 
 ```php
 $trait = new TraitDeclaration('MyTrait');
