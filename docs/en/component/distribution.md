@@ -1,15 +1,15 @@
 # Distribution
 
 The `spiral/distribution` component is responsible for providing public HTTP links on arbitrary resources. In most
-cases this will be the same address as the address of the site itself, however, in some cases, resources may be located
+cases, this will be the same address as the address of the site itself, however, in some cases, resources may be located
 on external servers such as [Amazon CloudFront](https://aws.amazon.com/cloudfront/) or some other CDN. In these cases,
-to generate a public link to the resource needs to use the specific API of the provider, or write own code for the used
+generating a public link to the resource needs to use a specific API of the provider, or write one's own code for the used
 CDN. The component makes this interaction easier and provides a number of built-in drivers for generating URIs to
 external suppliers.
 
 ## Installation
 
-Use the Composer to install the component:
+Use Composer to install the component:
 
 ```bash
 composer require spiral/distribution
@@ -32,7 +32,7 @@ protected const LOAD = [
 
 ## Configuration
 
-The configuration file for this component looks like below. Just create a `distribution.php` file and add it to the 
+The configuration file for this component looks like the one below. Just create a `distribution.php` file and add it to the 
 directory with the rest of your configuration files (e.g. `~/app/config/distribution.php`).
 
 ```php
@@ -58,8 +58,8 @@ return [
      *  Distribution Resolvers
      * -------------------------------------------------------------------------
      *
-     * Here are each of the resolvers is configured for your application.
-     * Of course, examples of customizing each available distribution supported
+     * Here is each of the resolvers configured for your application.
+     * Of course, the examples of customizing each available distribution supported
      * by Spiral are shown below to simplify development.
      *
      */
@@ -90,7 +90,7 @@ return [
 ```
 
 > **Note**
-> Configuration above is only available when used with a Spiral Framework.
+> The configuration above is only available when used with a Spiral Framework.
 
 ### Manual Configuration (Outside The Framework)
 
@@ -126,7 +126,7 @@ $manager->add('local', new StaticResolver(new Uri('https://static.example.com'))
 
 Once you've configured your component, you can start using it.
 
-In the case that you are using the Spiral Framework, then manager is already configured. You can get it from 
+If you are using the Spiral Framework, the manager is already configured. You can get it from 
 [the container](/framework/container.md) or via [dependency injection](/framework/container.md#dependency-injection).
 
 ```php
@@ -145,7 +145,7 @@ class FilesController
 }
 ```
 
-In the case that you need a default resolver defined in the "default" configuration section, then you do not need to 
+If you need a default resolver defined in the "default" configuration section, you do not need to 
 get the entire manager instance. You can get the resolver you want from the container right away.
 
 ```php
@@ -180,7 +180,7 @@ $uri = $resolver->resolve('path/to/file.txt');
 
 ### Static URI Resolver
 
-This type of resolver generates an address to a resource simply by adding the passed file link to the end of the URI 
+This type of a resolver generates an address to a resource simply by adding the passed file link to the end of the URI 
 specified in the resolver configuration.
 
 To configure this type of resolver, you only need to specify two required fields.
@@ -209,8 +209,8 @@ return [
 Unlike a similar method used to generate an address for a page in the [url generator](/http/routing.md#url-generation) 
 router component, links can be arbitrary and configured on a separate server designed to serve static content.
 
-Thus, if you pass an arbitrary file string to the `resolve()` method, you will receive a physical http link to this 
-file. In the case that the base uri is defined as "`http://localhost`", then the result will be as follows:
+In this way, if you pass an arbitrary file string to the `resolve()` method, you will receive a physical http link to this 
+file. If the base uri is defined as "`http://localhost`", the result will be as follows:
 
 ```php
 /** @var \Spiral\Distribution\Resolver\StaticResolver $resolver */
@@ -292,7 +292,7 @@ return [
 ];
 ```
 
-In the case that you decide to create a resolver yourself, you can use the same settings passed to the constructor of 
+If you decide to create a resolver yourself, you can use the same settings passed to the constructor of 
 the resolver used to work with the CloudFront service.
 
 ```php
@@ -370,7 +370,7 @@ $cloudfront = (new \Spiral\Distribution\Resolver\CloudFrontResolver(...))
 
 ### S3 URI Resolver
 
-If for some reason you cannot use the CloudFront resolver (for example, in the case of using 
+If, for some reason, you cannot use the CloudFront resolver (for example, in the case of using 
 a [Minio Server](https://docs.min.io/)), you can use the resolver that generates links to the S3 server. To use it, you
 must also install the `aws/aws-sdk-php` package using the Composer.
 
@@ -471,7 +471,7 @@ return [
 ];
 ```
 
-In the case that you decide to create a resolver yourself, you can use the same settings passed to the constructor of 
+If you decide to create a resolver yourself, you can use the same settings passed to the constructor of 
 the resolver used to work with the S3 service.
 
 ```php
@@ -534,5 +534,5 @@ return [
 ];
 ```
 
-In some cases, this registration method may not work for you. In the event that any dependencies from the container are 
+In some cases, this registration method may not work for you. If any dependencies from the container are 
 required in the parameters of the constructor, you should use [the bootloader](/framework/bootloaders.md).
