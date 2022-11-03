@@ -19,7 +19,7 @@ repository
 
 ## Usage
 
-Forms are mostly regular HTML forms that have ajax submission functionality on top
+Forms are mostly regular HTML forms that have the ajax submission functionality on top
 
 ```xhtml
 <form:wrapper action="/" method="PUT">
@@ -59,10 +59,10 @@ Forms are mostly regular HTML forms that have ajax submission functionality on t
 
 | Parameter          | Required | Default | Description                                                                                                                                               |
 |--------------------|----------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| action             | yes      | -       | action URL of form                                                                                                                                        |
-| method             | no       | POST    | Http method to use, GET or POST                                                                                                                           |
+| action             | yes      | -       | action URL of the form                                                                                                                                        |
+| method             | no       | POST    | a Http method to use, GET or POST                                                                                                                           |
 | id                 | no       | -       | id of form if you want to hardcode it                                                                                                                     |
-| class              | no       | -       | class to add to the wrapper                                                                                                                                   |
+| class              | no       | -       | a class to add to the wrapper                                                                                                                                   |
 | immediate          | no       | -       | debounces value in ms. if it's specified, any change event will trigger a form submission                                                                          |
 | submit-on-reset    | no       | false   | submits the form on "reset" event, i.e. the reset button. Useful for filters for datagrids                                                                         |
 | data-before-submit | no       | -       | the name of a callback function in the global JS scope that will be called before the form is submitted. If that callback returns false, the form will not be submitted.    |
@@ -77,10 +77,10 @@ Most form inputs share common properties listed here
 
 | Parameter     | Required | Default | Description                         |
 |---------------|----------|---------|-------------------------------------|
-| label         | no       | -       | Label to render before input        |
+| label         | no       | -       | A Label to render before input        |
 | required      | no       | false   | If true, renders red `*` near the label |
 | wrapper-id    | no       | -       | Id to use for the wrapper div           |
-| wrapper-class | no       | -       | Class to add to the wrapper             |
+| wrapper-class | no       | -       | A class to add to the wrapper             |
 | size          | no       | 12      | Column size for the grid system         |
 | error         | no       | -       | Pre-rendered error feedback text    |
 | success       | no       | -       | Pre-rendered success feedback text  |
@@ -94,11 +94,11 @@ Simple form input
 
 | Parameter   | Required | Default | Description                          |
 |-------------|----------|---------|--------------------------------------|
-| name        | yes      | -       | Field name                           |
-| value       | no       | -       | Field value                          |
-| placeholder | no       | -       | Field placeholder                    |
-| class       | no       | -       | Additional class to render for the field |
-| type        | no       | -       | Field type attribute                 |
+| name        | yes      | -       | A field name                           |
+| value       | no       | -       | A field value                          |
+| placeholder | no       | -       | A field placeholder                    |
+| class       | no       | -       | An additional class to render for the field |
+| type        | no       | -       | A field type attribute                 |
 | disabled    | no       | -       | If the field should be disabled          |
 
 ```xhtml
@@ -113,11 +113,11 @@ Simple form textarea
 
 | Parameter   | Required | Default | Description                          |
 |-------------|----------|---------|--------------------------------------|
-| name        | yes      | -       | Field name                           |
-| value       | no       | -       | Field value                          |
-| placeholder | no       | -       | Field placeholder                    |
-| class       | no       | -       | Additional class to render for the field |
-| type        | no       | -       | Field type attribute                 |
+| name        | yes      | -       | A field name                           |
+| value       | no       | -       | A field value                          |
+| placeholder | no       | -       | A field placeholder                    |
+| class       | no       | -       | An additional class to render for the field |
+| type        | no       | -       | A field type attribute                 |
 | disabled    | no       | -       | If the field should be disabled          |
 
 ### form:select
@@ -126,12 +126,12 @@ Simple form select dropdown
 
 | Parameter   | Required | Default | Description                                                                |
 |-------------|----------|---------|----------------------------------------------------------------------------|
-| name        | yes      | -       | Field name                                                                 |
-| value       | no       | -       | Field value, note, when used with 'multiple', it should contain an array       |
-| values      | no       | -       | Select options, mapping values to  labels                                   |
-| placeholder | no       | -       | Field placeholder. It will be rendered as a separate option with an empty value. |
-| class       | no       | -       | Additional class to render for the field                                       |
-| type        | no       | -       | Field type attribute                                                       |
+| name        | yes      | -       | A field name                                                                 |
+| value       | no       | -       | A field value, note that when it's used with 'multiple', it should contain an array       |
+| values      | no       | -       | Select options which are mapping values to labels                                   |
+| placeholder | no       | -       | A field placeholder. It will be rendered as a separate option with an empty value. |
+| class       | no       | -       | An additional class to render for the field                                       |
+| type        | no       | -       | A field type attribute                                                       |
 | disabled    | no       | -       | If the field should be disabled                                                |
 
 ```xhtml
