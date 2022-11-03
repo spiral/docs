@@ -280,7 +280,7 @@ The next specifications are available for grids now:
 * [between](#filter-specifications-between)
 
 > **Note** 
-> There are more interesting things in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
+> There are more interesting things in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below.
 
 ### All
 
@@ -445,7 +445,7 @@ $notInArray = $notInArray->withValue(['2', '5']);
 ```
 
 Third param allows auto-wrapping the `ValueInterface` with `ArrayValue` (enabled by default). In case you have a 
-non-trivial value (or wrapped with an accessor value) pass `false` as 3rd argument to control the filter wrapping:
+non-trivial value (or wrapped with an accessor value), pass `false` as 3rd argument to control the filter wrapping:
 
 ```php
 use Spiral\DataGrid\Specification\Filter;
@@ -583,8 +583,8 @@ $filter = $select->withValue('four');
 This filter represents the SQL `between` operation, but can be presented as two `gt/gte` and `lt/lte` filters.
 
 You have an ability to define whether the boundary values should be included or not. If the boundary values aren't 
-included, this filter will be converted into `gt`+`lt` filters, otherwise when getting filters via `getFilters()` method 
-you can specify either use the original `between` operator or `gte`+`lte` filters.
+included, this filter will be converted into `gt`+`lt` filters, otherwise when getting filters via `getFilters()` method, 
+you can specify either usage of the original `between` operator or `gte`+`lte` filters.
 
 > **Note**
 > Not all databases support `between` operation, that's why the conversion to `gt/gte`+`lt/lte` is used by default.
@@ -659,12 +659,12 @@ $notIncludingBetween->getFilters(true);
 ```
 
 > **Note**
-> The same is for `ValueBetween` filter
+> The same is for `ValueBetween` filter.
 
 ## Mixed Specifications
 
 `Spiral\DataGrid\Specification\Filter\SortedFilter` and `Spiral\DataGrid\Specification\Sorter\FilteredSorter` are
-special sequence specifications that allow using both filters and sorters under the single name. 
+special sequence specifications that allow using both filters and sorters under a single name. 
 
 Usage:
 
@@ -695,8 +695,8 @@ $schema->addFilter(
 ## Filter values
 
 We use filter values to convert the input type and its validation. Please don't use `convert()` method without 
-validating the input via `accepts()` method. They can tell you is the input acceptable and converts it to a desired 
-type if possible. Next values are available for grids for now:
+validating the input via `accepts()` method. They can tell you if the input is acceptable and converts it to a desired 
+type. Next values are available for grids for now:
 
 * [any](#filter-values-any)
 * [array](#filter-values-array)
@@ -910,7 +910,7 @@ $allowEmpty->accepts('');  // true
 
 ### Regex
 
-Applies string-like input and check if it matches the given regex pattern, converts to string:
+Applies string-like input and checks if it matches the given regex pattern, converts to string:
 
 ```php
 use Spiral\DataGrid\Specification\Value;
@@ -981,7 +981,7 @@ $notEmpty->accepts(0); // false
 ## Value accessors
 
 Accessors act like values from the section above but have another purpose - you can use them to perform not-type
-transformations, for example using strings, you may want to trim the value or convert it to uppercase. They can be 
+transformations, for example, using strings, you may want to trim the value or convert it to uppercase. They can be 
 applied only if the value is applicable by a given `ValueInterface`. Examples below:
 
 ```php
