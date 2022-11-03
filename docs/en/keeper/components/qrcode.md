@@ -37,7 +37,7 @@ for [TinyMCE options](https://www.tiny.cloud/docs/configure/)
 |------------|----------|---------|----------------------------------------------------------------------------------------------------------------------------|
 | value      | yes      | -       | Value to render                                                                                                            |
 | type       | no       | svg     | A type of render, 'canvas' or 'svg'                                                                                          |
-| size       | no       | 200     | A size of code                                                                                                               |
+| size       | no       | 200     | Сode size                                                                                                               |
 | bgColor    | no       | white   | A background color                                                                                                           |
 | fgColor    | no       | black   | A foreground color                                                                                                           |
 | ecLevel    | no       | M       | An error correction level                                                                                                     |
