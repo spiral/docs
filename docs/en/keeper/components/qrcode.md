@@ -14,7 +14,7 @@ This is also automatically included when using
 <use:bundle path="keeper:bundle"/>
 ```
 
-See [Usage Samples](https://github.com/spiral/app-keeper/blob/master/app/views/keeper/showcase/qrcode.dark.php) in demo
+See [Usage Samples](https://github.com/spiral/app-keeper/blob/master/app/views/keeper/showcase/qrcode.dark.php) in the demo
 repository
 
 ## Usage
