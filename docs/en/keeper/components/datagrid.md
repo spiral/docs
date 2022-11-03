@@ -13,7 +13,7 @@ demo repository
 
 ## Using Component
 
-Simple data grid declaration would look like so
+A simple data grid declaration would look like so:
 
 ```xhtml
 
@@ -24,12 +24,12 @@ Simple data grid declaration would look like so
 </ui:grid>
 ```
 
-DataGrids are described in a declarative way. Code is not iterated in php/stempler phase, but later in JavaScript phase,
+DataGrids are described in a declarative way. The code is not iterated in php/stempler phase, but later in the JavaScript phase,
 meaning you can't use php conditions for cell renders inside declarations. If you need a conditional renderer for cell,
 you are expected to write one in JavaScript.
 
 Columns should be defined prioritizing semantics over column names. Typically most columns would match a sort key. For
-example, if you have a data row with first and last name and user, you might want to have a column `name` with `firstName`
+example, if you have a data row with the first and the last name and a user, you might want to have a column `name` with `firstName`
 and `lastName` joined.
 
 ```xhtml
@@ -69,8 +69,8 @@ and `lastName` joined.
 | method           | no       | GET              | Http method to use, GET or POST                                                                                                                                                                                                                                                                                                                         |
 | id               | no       | [auto generated] | Id of datagrid to use                                                                                                                                                                                                                                                                                                                                   |
 | namespace        | no       | [empty]          | A prefix for field names that is used in the datagrid filters serialization. It's used when multiple datagrids are present on page. I.e. if <code>namespace="foo"</code> filter value <code>bar=1</code> will end up as "foo-bar=1" in URL. It's developer's responsibility to use namespaces if multiple datagrids are present on page. Otherwise the behavior is unpredictable. |
-| capture-forms    | no       | [empty]          | JSON array of strings. Attaches forms by their ids to datagrid as a filter fields source. It can be used for filters that are visually separated from datagrids, i.e. in the nav panel or sidebar. It's used internally to attach the filter defined with `<ui:filter>`                                                                                                |
-| capture-filters  | no       | [empty]          | JSON array of strings. Attaches the instances of [filter toggle buttons](https://github.com/spiral/toolkit/tree/master/packages/datagrid/src/filter-toggle).                                                                                                                                                                                      |
+| capture-forms    | no       | [empty]          | JSON array of strings. It attaches forms by their ids to datagrid as a filter fields source. It can be used for filters that are visually separated from datagrids, i.e. in the nav panel or sidebar. It's used internally to attach the filter defined with `<ui:filter>`                                                                                                |
+| capture-filters  | no       | [empty]          | JSON array of strings. It attaches the instances of [filter toggle buttons](https://github.com/spiral/toolkit/tree/master/packages/datagrid/src/filter-toggle).                                                                                                                                                                                      |
 | paginate-options | no       | [empty]          | JSON array of numbers. It options for the default paginator.                                                                                                                                                                                                                                                                                                   |
 | action-*         | no       | [as in sample]   | A set of parameters that is used to generate the Actions button and the corresponding column.                                                                                                                                                                                                                                                                             |
 
@@ -79,7 +79,7 @@ at the moment.
 
 ## Filters (grid:filter)
 
-grid:filter component attaches filter and/or search forms directly to the grid. Internally it works with the 'capture-forms'
+Grid:filter component attaches the filter and/or search forms directly to the grid. Internally it works with the 'capture-forms'
 parameter that technically allows to attach any number of forms to the datagrid.
 
 ```xhtml
@@ -96,7 +96,7 @@ parameter that technically allows to attach any number of forms to the datagrid.
 |-------------|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | search      | no       | false    | Renders a search input in the top right corner                                                                                                                                                                                                                                                                                 |
 | search-name | no       | "search" | The name of the search field                                                                                                                                                                                                                                                                                                      |
-| fields      | no       | -        | JSON array of strings. If you want the filter button to indicate the number of active filters correctly, list all  the form fields names as a JSON array of strings. For the example above that would be `fields="['firstName','lastName','email']"`. If it's not specified, the filter button does not indicate whether the filter values are active or not. |
+| fields      | no       | -        | JSON array of strings. If you want the filter button to indicate the number of active filters correctly, list all  the form fields names as a JSON array of strings. For the example above that would be `fields="['firstName','lastName','email']"`. If it's not specified, the filter button does not indicate if the filter values are active or not. |
 | refresh     | no       | false    | Renders a refresh button to trigger data refresh.                                                                                                                                                                                                                                                                          |
 | immediate   | no       | -        | If it's specified,  the search input will have no "Submit" button and the search will be performed as user types with the debounce value equivalent to this param value in milliseconds.                                                                                                                                                    |
 | [tag body]  | no       | -        | Insides of tag are used as an additional filter form shown in the modal window if it's specified                                                                                                                                                                                                                                    |
@@ -132,8 +132,8 @@ Note, the filter form is a separate form to the "search input" form and its rese
 
 Lots of cells allow to use templates using row fields as variables.
 
-Template system used is [handlebars](https://handlebarsjs.com/) templates. Typically field accepting templates have
-pre-processors that convert `{` to `{{`, so if you want to output something like `{{firstName}} {{lastName}}` you pass
+The used template system is [handlebars](https://handlebarsjs.com/) templates. Typically field accepting templates have
+pre-processors that convert `{` to `{{`, so if you want to output something like `{{firstName}} {{lastName}}`, you pass
 it in as `{firstName} {lastName}`
 
 ### Text (grid:text)
@@ -149,11 +149,11 @@ Directly outputs a field in a cell
 
 | Parameter    | Required | Default | Description                                                                                    |
 |--------------|----------|---------|------------------------------------------------------------------------------------------------|
-| name         | yes      | -       | Semantic column name matching field from the server data.                                          |
-| label        | yes      | -       | Сolumn label                                                                                   |
+| name         | yes      | -       | A semantic column name which is matching the field from the server data.                                          |
+| label        | yes      | -       | A column label                                                                                   |
 | sort         | no       | -       | Enables sorting for a column                                                                   |
 | sort-default | no       | -       | Supply "true" to make this column a defaultly sorted column. Only one column should have this. |
-| sort-dir     | no       | 'asc'   | Default sort direction, 'asc' or 'desc'                                                        |
+| sort-dir     | no       | 'asc'   | A default sort direction, 'asc' or 'desc'                                                        |
 
 ### Link (grid:link)
 
@@ -170,14 +170,14 @@ Outputs a link
 
 | Parameter    | Required | Default | Description                                                                                                                                                                                            |
 |--------------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| name         | yes      | -       | Semantic column name matching field from server data. Should match sorter name if sort is used. Content is field itself as default, but can be customized with 'body' parameter to output other field. |
-| label        | yes      | -       | Column label                                                                                                                                                                                           |
-| href         | yes      | -       | Template to use for link url                                                                                                                                                                           |
-| title        | no       | -       | Template to use for link title text                                                                                                                                                                    |
-| body         | no       | -       | Template to use for link body. Instead of specifying 'body' attribute, can also use tag body instead                                                                                                   |
+| name         | yes      | -       | A semantic column name which is matching the field from the server data. It should match the sorter name if the sort is used. Content is the field itself as default, but it can be customized with the 'body' parameter to output another field. |
+| label        | yes      | -       | A column label                                                                                                                                                                                           |
+| href         | yes      | -       | A template to use for the link url                                                                                                                                                                           |
+| title        | no       | -       | A template to use for the link title text                                                                                                                                                                    |
+| body         | no       | -       | A template to use for the link body. Instead of specifying the 'body' attribute, it possible to use the tag body                                                                                                   |
 | sort         | no       | -       | Enables sorting for a column                                                                                                                                                                           |
 | sort-default | no       | -       | Supply "true" to make this column a defaultly sorted column. Only one column should have this.                                                                                                         |
-| sort-dir     | no       | 'asc'   | Default sort direction, 'asc' or 'desc'                                                                                                                                                                |
+| sort-dir     | no       | 'asc'   | A default sort direction, 'asc' or 'desc'                                                                                                                                                                |
 
 ### Date (grid:date)
 
@@ -196,17 +196,16 @@ Outputs a date
 
 | Parameter    | Required | Default            | Description                                                                                                                 |
 |--------------|----------|--------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| name         | yes      | -                  | Semantic column name matching field from server data. Accepts ISO dates with timezone.                                      |
-| label        | yes      | -                  | Column label                                                                                                                |
-| format       | no       | LLL dd, yyyy HH:mm | Date format. See [Luxon docs for available tokens](https://moment.github.io/luxon/docs/manual/parsing.html#table-of-tokens) |
+| name         | yes      | -                  | A semantic column name which is matching the field from the server data. It accepts ISO dates with a timezone.                                      |
+| label        | yes      | -                  | A column label                                                                                                                |
+| format       | no       | LLL dd, yyyy HH:mm | A date format. See [Luxon docs for available tokens](https://moment.github.io/luxon/docs/manual/parsing.html#table-of-tokens) |
 | sort         | no       | -                  | Enables sorting for a column                                                                                                |
 | sort-default | no       | -                  | Supply "true" to make this column a defaultly sorted column. Only one column should have this.                              |
-| sort-dir     | no       | 'asc'              | Default sort direction, 'asc' or 'desc'                                                                                     |
+| sort-dir     | no       | 'asc'              | A default sort direction, 'asc' or 'desc'                                                                                     |
 
 ### Actions
 
-A separate kind of tags that are provided are action tags. Using any of them adds 'actions' column with the button with actions
-dropdown. Each actions tag appends an action to that dropdown.
+A separate kind of tags that are provided are action tags. Using any of them adds the 'actions' column with a button with a drwondown list of actions. Each action's tag appends an action to that dropdown.
 
 To customize the look of the button, use `action-*` parameters of `ui:grid`
 
@@ -229,12 +228,12 @@ Outputs a link
 
 | Parameter | Required | Default | Description                                                                                                                                                               |
 |-----------|----------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| href      | yes      | -       | Template to use for link url                                                                                                                                              |
-| title     | no       | -       | Template to use for link title text                                                                                                                                       |
-| target    | no       | _self   | Specify the target of the link                                                                                                                                                       |
-| template  | no       | -       | Template to use for the link body. Instead of specifying the 'template' attribute, the tag body can be used.                                                                 |
+| href      | yes      | -       | A template to use for link url                                                                                                                                              |
+| title     | no       | -       | A template to use for the link title text                                                                                                                                       |
+| target    | no       | _self   | Specifies the target of the link                                                                                                                                                       |
+| template  | no       | -       | A template to use for the link body. Instead of specifying the 'template' attribute, the tag body can be used.                                                                 |
 | label     | no       | -       | Text to use for the link text if  the template param is not used. It supports templates if it's passed as unescaped value, i.e. `label = "{!! '{{variable}}' !!}"`                         |
-| icon      | no       | -       | Name to use for the link icon if the template param is not used. It uses Font Awesome icons. It supports templates if it's passed as unescaped value, i.e. `icon = "{!! '{{variable}}' !!}"` |
+| icon      | no       | -       | A name to use for the link icon if the template param is not used. It uses Font Awesome icons. It supports templates if it's passed as unescaped value, i.e. `icon = "{!! '{{variable}}' !!}"` |
 
 #### Actions: Action
 
@@ -259,21 +258,21 @@ Makes a request to server
 
 | Parameter      | Required | Default | Description                                                                                                                                                                                                                                     |
 |----------------|----------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| href           | yes      | -       | Template to use for action url                                                                                                                                                                                                                  |
-| method         | no       | GET     | Method name to use                                                                                                                                                                                                                              |
-| title          | no       | -       | Template to use for action title text                                                                                                                                                                                                           |
-| template       | no       | -       | Template to use for link body. Instead of specifying 'template' attribute, can also use tag body instead.                                                                                                                                       |
-| label          | no       | -       | Text to use for link text if template param is not used. Supports templates if passed as unescaped value, i.e. `label = "{!! '{{variable}}' !!}"`                                                                                               |
-| icon           | no       | -       | Name to use for link icon if template param is not used. Uses Font Awesome icons. Supports templates if passed as unescaped value, i.e. `icon = "{!! '{{variable}}' !!}"`                                                                       |
-| body           | no       | -       | JSON String to attach as request body. Supports templates if passed as unescaped value, i.e. `data = "{!! '{ "id": {{variable}} }' !!}"`                                                                                                        |
-| refresh        | no       | -       | boolean value indicating if success response from server should trigger datagrid refresh                                                                                                                                                        |
-| condition      | no       | -       | Field name that contains boolean variable indicating if that action should be shown. Alternatively can be a handlebars template that should return '' for false value or anything else for positive value in case more complex logic is needed. |
-| toastError     | no       | -       | Template for toast message to show on action error                                                                                                                                                                                              |
-| toastSuccess   | no       | -       | Template for toast message to show on action success                                                                                                                                                                                            |
-| confirm        | no       | -       | If specified, specify confirm-title, confirm-ok and confirm-cancel. Will show a confirm dialog before executing an action. <code>confirm</code> specifies handlebars template for confirm dialog body                                           |
-| confirm-title  | no       | -       | specifies handlebars template for confirm dialog title                                                                                                                                                                                          |
-| confirm-ok     | no       | -       | specifies handlebars template for confirm dialog positive result button text                                                                                                                                                                    |
-| confirm-cancel | no       | -       | specifies handlebars template for confirm dialog negative result button text                                                                                                                                                                    |
+| href           | yes      | -       | A template to use for action url                                                                                                                                                                                                                  |
+| method         | no       | GET     | A method name to use                                                                                                                                                                                                                              |
+| title          | no       | -       | A template to use for the action title text                                                                                                                                                                                                           |
+| template       | no       | -       | A template to use for the link body. Instead of specifying the 'template' attribute, it's possible to use the tag body                                                                                                                                       |
+| label          | no       | -       | Text to use for the link text if the template param is not used. It supports templates if it's passed as unescaped value, i.e. `label = "{!! '{{variable}}' !!}"`                                                                                               |
+| icon           | no       | -       | A name to use for the link icon if the template param is not used. It uses Font Awesome icons. It supports templates if it's passed as unescaped value, i.e. `icon = "{!! '{{variable}}' !!}"`                                                                       |
+| body           | no       | -       | JSON String to attach as a request body. It supports templates if it's passed as unescaped value, i.e. `data = "{!! '{ "id": {{variable}} }' !!}"`                                                                                                        |
+| refresh        | no       | -       | A boolean value which is indicating if a success response from the server should trigger a datagrid refresh                                                                                                                                                        |
+| condition      | no       | -       | A field name that contains boolean variable indicating if that action should be shown. Alternatively there could be a handlebars template that should return '' for a false value or anything else for a positive value in case more complex logic is needed |
+| toastError     | no       | -       | A template for the toast message to show on an action error                                                                                                                                                                                              |
+| toastSuccess   | no       | -       | A template for the toast message to show on an action success                                                                                                                                                                                            |
+| confirm        | no       | -       | If it's specified, specify confirm-title, confirm-ok and confirm-cancel. It will show a confirm dialog before executing an action. <code>confirm</code> specifies handlebars template for confirm dialog body                                           |
+| confirm-title  | no       | -       | Specifies the handlebars template for the confirm dialog title                                                                                                                                                                                          |
+| confirm-ok     | no       | -       | Specifies the handlebars template for the confirmation dialog of the positive result button text             |
+| confirm-cancel | no       | -       | Specifies the handlebars template for the confirmation dialog of the negative result button text                                                                                                                                                                    |
 
 #### Actions: Delete
 
@@ -283,8 +282,8 @@ Makes a request to server
 />
 ```
 
-Same as 'grid:action' but with confirm texts pre-defined beforehand and having danger class. Typically only `href` is
-needed for that action type
+It's the same as 'grid:action' but with predefined confirmation texts and a danger class. Typically only `href` is
+needed for that action type.
 
 ### Template (grid:template)
 
@@ -300,12 +299,12 @@ Outputs custom template
 
 | Parameter    | Required | Default | Description                                                                                                                                                                                             |
 |--------------|----------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| name         | yes      | -       | Semantic column name matching field from server data.. Should match sorter name if sort is used. Content is field itself as default, but can be customized with 'body' parameter to output other field. |
-| label        | yes      | -       | Column label                                                                                                                                                                                            |
-| body         | no       | -       | Template to use for body. Instead of specifying 'body' attribute, can also use tag body instead                                                                                                         |
+| name         | yes      | -       | A semantic column name which is matching the field from the server data. It should match the sorter name if the sort is used. The content is the field itself as default, but it can be customized with the 'body' parameter to output another field. |
+| label        | yes      | -       | A column label                                                                                                                                                                                            |
+| body         | no       | -       | A template to use for the body. Instead of specifying the 'body' attribute, it's possible to use the tag body                                                                                                          |
 | sort         | no       | -       | Enables sorting for a column                                                                                                                                                                            |
 | sort-default | no       | -       | Supply "true" to make this column a defaultly sorted column. Only one column should have this.                                                                                                          |
-| sort-dir     | no       | 'asc'   | Default sort direction, 'asc' or 'desc'                                                                                                                                                                 |
+| sort-dir     | no       | 'asc'   | A default sort direction, 'asc' or 'desc'                                                                                                                                                                 |
 
 ### Fully Custom Render (grid:render)
 
@@ -317,19 +316,19 @@ Outputs custom template
 />
 ```
 
-Uses custom function to render cell
+It uses a custom function to render the cell
 
 | Parameter    | Required | Default | Description                                                                                                                                                                                                 |
 |--------------|----------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| name         | yes      | -       | Semantic column name matching field from server data.. Should match sorter name if sort is used. Content is field itself as default, but can be customized with 'renderer' parameter to output other field. |
-| label        | yes      | -       | Column label                                                                                                                                                                                                |
-| renderer     | no       | -       | Name of pre-registered function that is able to render a cell                                                                                                                                               |
+| name         | yes      | -       | A Semantic column name  matching the field from server the data. It should match the sorter name if the sort is used. The content is the field itself as default, but it can be customized with the 'renderer' parameter to output another field. |
+| label        | yes      | -       | A column label                                                                                                                                                                                                |
+| renderer     | no       | -       | A Name of a pre-registered function that is able to render a cell                                                                                                                                               |
 | sort         | no       | -       | Enables sorting for a column                                                                                                                                                                                |
 | sort-default | no       | -       | Supply "true" to make this column a defaultly sorted column. Only one column should have this.                                                                                                              |
-| sort-dir     | no       | 'asc'   | Default sort direction, 'asc' or 'desc'                                                                                                                                                                     |
+| sort-dir     | no       | 'asc'   | A default sort direction, 'asc' or 'desc'                                                                                                                                                                     |
 
-To define custom function for datagrid, add script tag before toolkit declarations. If you are seeing 'renderer not
-found' error, most likely you've outputted renderer too late in code.
+To define a custom function for the datagrid, add a script tag before the toolkit declarations. If you see 'renderer not
+found' error, most likely you've outputted the renderer too late in the code.
 
 ```xhtml
 <stack:push name="scripts" unique-id="datagrid-roles-renderer">
@@ -346,16 +345,16 @@ found' error, most likely you've outputted renderer too late in code.
 </stack:push>
 ```
 
-Function returned by render function should
+The function returned by the render function should
 be [CellRenderFunction](https://github.com/spiral/toolkit/blob/master/packages/datagrid/src/types.ts#L79) and it accepts
-lot of useful params allowing to customize render in really flexible way.
+a lot of useful params allowing to customize the render in a really flexible way.
 
 ## Advanced Usage
 
-DataGrid is based on JavaScript library and can be initialized with JavaScript
+DataGrid is based on the JavaScript library and can be initialized with JavaScript
 
-JavaScript declaration allows to use most of flexibility, i.e. you can have multiple actions columns, batch actions and
-selections, custom renderers directly in code without a need to pre-define them.
+The JavaScript declaration allows for more flexibility, i.e. you can have multiple actions columns, batch actions and
+selections, custom renderers directly in the code without the need to pre-define them.
 
 [See DataGrid Source Code](https://github.com/spiral/toolkit/tree/master/packages/datagrid/src) for more details.
 
