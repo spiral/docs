@@ -49,7 +49,7 @@ from Luxon
 |----------------------|----------|--------------------------|------------------------------------------------------------------------------------------------------------------------------|
 | name                 | yes      | -                        | A field name to use                                                                                                            |
 | placeholder          | no       | -                        | A placeholder for the input                                                                                                        |
-| disabled             | no       | -                        | Render input as disabled                                                                                                     |
+| disabled             | no       | -                        | Renders the input as disabled                                                                                                     |
 | value                | no       | -                        | It provides a pre-populated value. It should match the`format` used for server-client communication.                                      |
 | format               | no       | yyyy-MM-dd'T'HH:mm:ssZZZ | The format expected from the server and the format that is used to send data to the server. It does not affect how the date looks like in the input    |
 | display-format       | no       | yyyy LLL dd              | The format used to display in the datepicker input                                                                                  |
