@@ -1,18 +1,18 @@
 # Filter Object
 
-A Filter object uses to perform complex data validation and filtration using PSR-7 or any other input.
+The Filter object is used to perform complex data validation and filtration using PSR-7 or any other input.
 
 You can use filters in two ways:
 
-1. Map data from the request into object properties.
-2. Map and automatically validate data from the request.
+1. Map the data from the request into the object properties.
+2. Map and automatically validate the data from the request.
 
 ## Validators
 
-If you need only populate data from the request you don't need any validators for it. But if you need to validate data,
+If you only need to populate the data from the request you don't need any validators for it. But if you need to validate data,
 at first, you need to choose a validator for it.
 
-There are three validators for Spiral Framework you can use:
+There are three validators for Spiral Framework that you can use:
 
 - [Spiral Validator](https://github.com/spiral/validator)
 
@@ -146,7 +146,7 @@ We will use [Spiral Validator](https://github.com/spiral/validator) package in t
 
 ## Usage
 
-All filter objects should implement `Spiral\Filters\Model\FilterInterface`. The interface will add the ability inject
+All the filter objects should implement `Spiral\Filters\Model\FilterInterface`. The interface will add the ability to inject
 filters with populated data from `Spiral\Filters\InputInterface` from the container.
 
 ```php
@@ -166,14 +166,14 @@ class MyFilter implements FilterInterface
 dump($container->get(MyFilter::class)); 
 ```
 
-You can use `Spiral\Filters\Model\FilterProviderInterface`->`createFilter` also to create an instance:
+You can also use `Spiral\Filters\Model\FilterProviderInterface`->`createFilter` to create an instance:
 
 ```php
 $provider = $container->get(\Spiral\Filters\Model\FilterProviderInterface::class);
 $provider->createFilter(MyFilter::class, $container->get(\Spiral\Filters\InputInterface::class));
 ```
 
-or simply request filter as a dependency for example, in some controller
+or simply request the filter as a dependency for example, in some controller
 
 ```php
 use App\Filter\MyFilter;
@@ -208,8 +208,8 @@ dump($filter->text); // '...'
 dump($filter->getData()); // ['text' => '...'] 
 ```
 
-- Using array schema mapping. In this case a filter should implement `Spiral\Filters\Model\HasFilterDefinition` and
-  extend `Spiral\Filters\Model\Filter` class to have access to the mapped data from the request.
+- Using an array schema mapping. In this case the filter should implement `Spiral\Filters\Model\HasFilterDefinition` and
+  extend the `Spiral\Filters\Model\Filter` class to have access to the mapped data from the request.
 
 ```php
 namespace App\Filter;
@@ -238,13 +238,13 @@ dump($filter->getData()); // ['text' => '...']
 ```
 
 > **Note**
-> You can use both ways in your filter object. In this case filter provider will build mapping schema for properties
-> with attributes and then will merge the schema with schema from filter definition.
+> You can use both ways in your filter object. In this case the filter provider will build a mapping schema for properties
+> with attributes and then merge the schema with the schema from the filter definition.
 
 ### Attributes
 
-Add properties with the needed type and add an attribute that points to the data source.
-For example, we can tell our Filter to map field `login` to the QUERY param `username`:
+You can add properties with the needed type and add an attribute that points to the data source.
+For example, we can tell our Filter to map the field `login` to the QUERY param `username`:
 
 ```php
 namespace App\Filter;
@@ -290,7 +290,7 @@ class MyFilter extends Filter
 
 ### Array based Filters
 
-For example, we can tell our Filter to point field `login` to the QUERY param `username`:
+For example, we can tell our Filter to point the field `login` to the QUERY param `username`:
 
 ```php
 namespace App\Filter;
@@ -341,12 +341,12 @@ class MyFilter extends Filter implements HasFilterDefinition
 ```
 
 > **Note**
-> The most common source is `data` (points to PSR-7 - parsed body), you can use this data to fetch values from incoming
+> The most common source is `data` (points to PSR-7 - the parsed body), you can use this data to fetch values from the incoming
 > JSON payloads.
 
 ### Dot Notation
 
-The data **origin** can be specified using dot notation pointing to some nested structure.
+The data **origin** can be specified using the dot notation pointing to some nested structure.
 
 Via attributes:
 
@@ -410,28 +410,28 @@ We can accept and validate the following data structure:
 ```
 
 > **Note**
-> The error messages will be correctly mounted into the original location. You can also use composite filters for more
+>  Error messages will be correctly mounted into the original location. You can also use composite filters for more
 > complex use-cases.
 
 ### Other Sources
 
-By design, you can use any method of [InputManager](../http/request-response.md) as source where origin is passed
-parameter. Following sources are available:
+By design, you can use any method of [InputManager](../http/request-response.md) as a source where origin is passed
+parameter. The following sources are available:
 
 | Source         | Description                                                   |
 |----------------|---------------------------------------------------------------|
-| uri            | Current page Uri in a form of `Psr\Http\Message\UriInterface` |
-| path           | Current page path                                             |
+| uri            | The current page Uri in a form of `Psr\Http\Message\UriInterface` |
+| path           | The current page path                                             |
 | method         | Http method (GET, POST, ...)                                  |
-| isSecure       | If https used.                                                |
-| isAjax         | If `X-Requested-With` set as `xmlhttprequest`                 |
-| isJsonExpected | When client expects `application/json`                        |
+| isSecure       | If https is used                                                |
+| isAjax         | If `X-Requested-With` is set as `xmlhttprequest`                 |
+| isJsonExpected | When the client expects `application/json`                        |
 | remoteAddress  | User ip address                                               |
 
 > **Note**
-> Read more about InputManager [here](../http/request-response.md).
+> Read more about the InputManager [here](../http/request-response.md).
 
-For example to check if a user request made over https.
+For example, to check if a user request is made over https.
 
 Via attributes:
 
@@ -490,7 +490,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 ### Route Parameters
 
-Every route writes matched parameters into ServerRequestInterface attribute `matches`, is it possible to access route
+Every route writes the matching parameters into the ServerRequestInterface attribute `matches`, is it possible to access route
 values inside your filter.
 
 ```php
@@ -541,7 +541,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 ### Setters
 
 Use setters to typecast the incoming value before passing it to the validator. The Filter will assign null to the value
-in case of typecast error:
+in case of a typecast error:
 
 ```php
 namespace App\Filter;
@@ -569,7 +569,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 ```
 
 > **Note**
-> You can use any of the default PHP functions like `intval`, `strval` etc.
+> You can use any default PHP functions like `intval`, `strval` etc.
 
 ```php
 namespace App\Controller;
@@ -591,7 +591,7 @@ class HomeController
 > FilterDefinition class should implement `Spiral\Filters\Model\ShouldBeValidated` if a filter object should be
 > validated.
 
-The validation rules can be defined using same approach as in [Validator](../security/validator.md) component.
+The validation rules can be defined using the same approach as in [Validator](../security/validator.md) component.
 
 ```php
 namespace App\Filter;
@@ -620,14 +620,14 @@ You can use all the checkers, conditions, and rules.
 
 ### Handle Validation errors
 
-By default, the Spiral Framework doesn't handle filter validation errors. When some of the filter rule has an error,
+By default, the Spiral Framework doesn't handle filter validation errors. When some of the filter rules has an error,
 `Spiral\Filters\Exception\ValidationException` exception will be thrown.
 
 There are two ways to handle a validation exception:
  - Middleware
  - Interceptions
 
-Both ways are similar. You can see an example of validation exception handler below:
+Both the ways are similar. You can see an example of a validation exception handler below:
 
 ```php
 use Psr\Http\Server\MiddlewareInterface;
@@ -689,7 +689,7 @@ final class RoutesBootloader extends BaseRoutesBootloader
 
 ### Custom Errors
 
-You can specify the custom error message to any of the rules similar way as in the validator component.
+You can specify a custom error message to any of the rules in the same way as in the validator component.
 
 ```php
 namespace App\Filter;
@@ -716,7 +716,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 }
 ```
 
-If you plan to localize error message later, wrap the text in `[[]]` to automatically index and replace the translation:
+If you plan to localize the error message later, wrap the text in `[[]]` to automatically index and replace the translation:
 
 ```php
 namespace App\Filter;
@@ -745,13 +745,13 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 ## Usage
 
-Once the Filter configured you can access its fields (filtered data).
+Once the Filter is configured you can access its fields (filtered data).
 The `Spiral\Filters\Model\Interceptor\ValidateFilterInterceptor` will automatically validate the data when the filter
 is requested and throw a `Spiral\Filters\Exception\ValidationException` if the data is not valid.
 
 ### Get Fields
 
-To get a filtered data, use filter properties or method `getData` (if it extends `Spiral\Filters\Model\Filter`):
+To get a filtered data, use filter properties or the method `getData` (if it extends `Spiral\Filters\Model\Filter`):
 
 ```php
 namespace App\Filter;
@@ -779,7 +779,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 }
 ```
 
-Following fields are available:
+The following fields are available:
 
 ```php
 public function index(MyFilter $filter): void
