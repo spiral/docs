@@ -2,12 +2,12 @@
 
 You can read how to work with Database using manually written queries [here](/database/access.md).
 
-DBAL component includes a set of query builders used to unify the way of working with different databases
+The DBAL component includes a set of query builders used to unify the way of working with different databases
 and simplify migration to different DBMS over the lifetime of the application.
 
 ## Before we start
 
-To demonstrate query building abilities let's declare sample table in our default database first:
+To demonstrate query building abilities, let's first declare a sample table in our default database:
 
 ```php
 namespace App\Controller;
@@ -35,4 +35,4 @@ class HomeController
 > You can read more about declaring database schemas [here](https://cycle-orm.dev/docs/database-declaration/2.x/en).
 
 > **Note**
-> Full documentation about using Query builder you can find [here](https://cycle-orm.dev/docs/database-query-builders/2.x/en).
+> You can fibd Full documentation about using Query builder [here](https://cycle-orm.dev/docs/database-query-builders/2.x/en).
