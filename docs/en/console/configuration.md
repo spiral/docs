@@ -1,6 +1,6 @@
 # Console - Installation and Configuration
 
-All of the provided application skeletons include a Console component by default. To enable the component in alternative
+All of the provided application skeletons include the Console component by default. To enable the component in alternative
 builds, make sure to require composer package `spiral/console` and modify the application bootloader:
 
 ```php
