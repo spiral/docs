@@ -874,7 +874,7 @@ $value->convert('3');    // [3]
 
 ### String
 
-Applies string-like input, also empty strings (if a corresponding constructor param passed):
+Applies string-like input, also empty strings (if a corresponding constructor param is passed):
 
 ```php
 use Spiral\DataGrid\Specification\Value;
@@ -892,7 +892,7 @@ $allowEmpty->accepts(''); // true
 
 ### Scalar
 
-Applies scalar values, also empty strings (if a corresponding constructor param passed):
+Applies scalar values, also empty strings (if a corresponding constructor param is passed):
 
 ```php
 use Spiral\DataGrid\Specification\Value;
