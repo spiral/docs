@@ -24,7 +24,7 @@ protected const LOAD = [
 ];
 ```
 
-You can exclude `Spiral\Cycle\Bootloader\BridgeBootloader` bootloader and select only needed bootloaders by writing them
+You can exclude `Spiral\Cycle\Bootloader\BridgeBootloader` bootloader and select only the necessary bootloaders by writing them
 separately.
 
 ```php
@@ -62,7 +62,7 @@ protected const LOAD = [
 
 ### Migration from Spiral Framework v2.8
 
-If you are migrating from Spiral Framework 2.8 at first, you have to get rid of old packages in composer.json:
+If you are migrating from Spiral Framework 2.8, you have to get rid of old packages in composer.json:
 
 ```json
 "require": {
@@ -76,7 +76,7 @@ If you are migrating from Spiral Framework 2.8 at first, you have to get rid of 
 },
 ```
 
-Then you need to replace some of bootloaders with provided by the package.
+Then you need to replace some of bootloaders with the ones that are provided by the package.
 
 ```php
 use Spiral\Cycle\Bootloader as CycleBridge;
@@ -130,12 +130,12 @@ protected const LOAD = [
 ```
 
 > **Note**
-> `CycleBridge\CommandBootloader` should be added after the `\Spiral\Bootloader\CommandBootloader`
+> `CycleBridge\CommandBootloader` should be added after `\Spiral\Bootloader\CommandBootloader`
 > to replace Cycle ORM 1 commands with new ones
 
 ## Configuration
 
-You can create config file `app/config/cycle.php` if you want to configure Cycle ORM:
+You can create a config file `app/config/cycle.php` if you want to configure Cycle ORM:
 
 ```php
 use Cycle\ORM\SchemaInterface;
