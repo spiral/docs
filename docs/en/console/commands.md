@@ -1,7 +1,7 @@
 # Console - User Commands
 
 You can add new console commands to your application or register plugin commands using bootloaders. By default, the
-Console component configured to automatically find commands in the `app/src` directory.
+Console component is configured to automatically find commands in the `app/src` directory.
 
 To add a new `symfony/console` based Command, simply drop it into your application.
 
@@ -40,7 +40,7 @@ php app.php my:command
 
 ## Arguments and Options
 
-Spiral's `Command` class makes it easy to define needed arguments and options:
+Spiral's `Command` class makes it easy to define necessary arguments and options:
 
 ```php
 const ARGUMENTS = [
@@ -87,7 +87,7 @@ You may also make arguments optional or define default values for arguments:
 'check:http {url=foo}'
 ```
 
-`Options`, like arguments, are another form of user input. Options are prefixed by two hyphens `--`.
+`Options`, same as arguments, are another form of user input. Options are prefixed by two hyphens `--`.
 
 ```php
 '{--S|skip-ssl-errors : Skip SSL errors}'
@@ -107,7 +107,7 @@ If you would like to define `arguments` or `options` to expect multiple input va
 
 ## Perform method
 
-You can put your user code into the `perform` method. The `perform` support method injection and provide `$this->input`
+You can put your user code into the `perform` method. The `perform` supports method injection and provides `$this->input`
 and `$this->output` properties to work with user input.
 
 ```php
@@ -130,13 +130,13 @@ To write into output:
 $this->writeln('hello world');
 ```
 
-To write into output without advancing to the new line:
+To write into output without advancing to a new line:
 
 ```php
 $this->write('hello world');
 ```
 
-To write formatted output without advancing to the new line:
+To write formatted output without advancing to a new line:
 
 ```php
 $this->sprintf('Hello, <comment>%s</comment>', $name);
@@ -145,7 +145,7 @@ $this->sprintf('Hello, <comment>%s</comment>', $name);
 > **Note**
 > This method is compatible with the `sprintf` definition.
 
-To check if current verbosity mode is higher than `OutputInterface::VERBOSITY_VERBOSE`:
+To check if the current verbosity mode is higher than `OutputInterface::VERBOSITY_VERBOSE`:
 
 ```php
 dump($this->isVerbose());
@@ -154,7 +154,7 @@ dump($this->isVerbose());
 > **Note**
 > You can freely use the `dump` method in console commands.
 
-To render table:
+To render a table:
 
 ```php
 $table = $this->table([
@@ -173,7 +173,7 @@ foreach ($data as $row)
 $table->render();
 ```
 
-To add table separator:
+To add a table separator:
 
 ```php
 $table->addRow(new Symfony\Component\Console\Helper\TableSeparator());
@@ -209,7 +209,7 @@ To prompt the user for input but hide the answer from the console:
 $status = $this->secret('User password');
 ```
 
-To write a message as an information output:
+To write a message as information output:
 
 ```php
 $this->info('Some message');
@@ -255,7 +255,7 @@ $this->newLine(count: 5);
 ## ApplicationInProduction
 
 `ApplicationInProduction` is a class that makes it easy to ask the user for confirmation for actions in command if 
-an application is running in production mode.
+the application is running in production mode.
 
 ```php
 use Spiral\Console\Confirmation\ApplicationInProduction;
