@@ -5,7 +5,7 @@ consume execution.
 
 ## Creating an Interceptor for Push
 
-To create an interceptor, you need to create a class and implement an interface `Spiral\Core\CoreInterceptorInterface`.
+To create an interceptor, you need to create a class and implement the interface `Spiral\Core\CoreInterceptorInterface` .
 Calling the `callAction` method will push and return the `id` string.
 
 ```php
@@ -35,7 +35,7 @@ class CustomInterceptor implements CoreInterceptorInterface
 
 ## Creating an Interceptor for Consume
 
-To create an interceptor, you need to create a class and implement an interface `Spiral\Core\CoreInterceptorInterface`.
+To create an interceptor, you need to create a class and implement the interface `Spiral\Core\CoreInterceptorInterface`.
 The `callAction` method will execute a consuming job, it doesn't return anything.
 
 ```php
@@ -68,7 +68,7 @@ class CustomInterceptor implements CoreInterceptorInterface
 
 ## Registering a new Interceptor
 
-For an interceptor works, it must be registered in the application. There are several ways to add a new interceptor.
+For the interceptor to work, it must be registered in the application. There are several ways to add a new interceptor.
 
 ### Via configuration
 
@@ -114,8 +114,8 @@ return [
 
 #### Via QueueBootloader
 
-Call method `addPushInterceptor` for adding an interceptor for `push` action. Or call method `addConsumeInterceptor` 
-for adding an interceptor for `consume` action in the `Spiral\Queue\Bootloader\QueueBootloader` class.
+Call the method `addPushInterceptor` to add an interceptor for the `push` action. Or call the method `addConsumeInterceptor` 
+to add an interceptor for the `consume` action in the `Spiral\Queue\Bootloader\QueueBootloader` class.
 
 ```php
 namespace App\Bootloader;
