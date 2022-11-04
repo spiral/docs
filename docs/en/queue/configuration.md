@@ -1,6 +1,6 @@
 # Queue and Jobs - Installation and Configuration
 
-Web and GRPC bundles of Spiral Framework support background PHP processing and a queue out of the box. You can work with
+The Web and GRPC bundles of Spiral Framework support background PHP processing and a queue out of the box. You can work with
 one or multiple message brokers such as Beanstalk, AMQP (RabbitMQ), or Amazon SQS.
 
 To install the extensions in alternative bundles:
@@ -13,7 +13,7 @@ Make sure to add `Spiral\Queue\Bootloader\QueueBootloader` to your application k
 
 ## Configuration
 
-By default, the queue configuration located in `app/config/queue.php` file. The configuration includes a set of
+By default, the queue configuration is located in the `app/config/queue.php` file. The configuration includes a set of
 options for each queue driver and aliases.
 
 ```php
@@ -55,13 +55,13 @@ return [
 
 ### Declare Connection
 
-To create new queue connection add a new section or alter existed options of `connections` section of your
+To create new queue connection, add a new section or alter existed options in the `connections` section of your
 configuration.
 
 
 ### Aliases
 
-Your application and modules can access the queue in multiple different ways. Queue aliasing allows you to use
+Your application and modules can access the queue in several different ways. Queue aliasing allows you to use
 separate connections with relation to one physical queue.
 
 ```php
@@ -87,7 +87,7 @@ public function __construct(QueueInterface $mailQueue, QueueInterface $ratingQue
 }
 ```
 
-To point `mailQueue` and `ratingQueue` to specific queue instance:
+To point `mailQueue` and `ratingQueue` to a specific queue instance:
 
 Or by using `Spiral\Queue\QueueConnectionProviderInterface`
 
@@ -111,4 +111,4 @@ class MyService
 
 ### Job handlers
 
-You can register handlers for your job classes to associate which handler should be handled for specific job.
+You can register handlers for your job classes to associate which handler should be handled for a specific job.
