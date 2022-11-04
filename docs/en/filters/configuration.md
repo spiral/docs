@@ -4,7 +4,7 @@ The framework component `spiral/filters` provides support for request validation
 mapping and locations, etc.
 
 > **Note**
-> If you are migrating from Spiral Framework 2.x and want to continue using old filters you can use
+> If you are migrating from Spiral Framework 2.x and you want to continue using the old filters you can use
 > [spiral/filters-bridge](https://github.com/spiral/filters-bridge) package.
 > Read more about using the package [here](/filters/bridge.md).
 
@@ -37,8 +37,8 @@ interface InputInterface
 }
 ```
 
-By default, this interface is bound to [InputManager](/http/request-response.md) and which makes it possible to access
-any request's attribute using **source** and **origin** pair with dot-notation support. For example:
+By default, this interface is bound to [InputManager](/http/request-response.md) and allows to access
+any request's attribute using a **source** and **origin** pair with dot-notation support. For example:
 
 ```php
 namespace App\Controller;
@@ -60,12 +60,12 @@ class HomeController
 }
 ```
 
-Input binding is a primary way of delivering data into the filter object.
+Input binding is the primary way of delivering data into the filter object.
 
 ## Create Filter
 
-The filter object implement might vary from package to package. The default implementation provided via abstract class
-`Spiral\Filters\Model\Filter`. To create custom filter to validate query:
+The implementation of the filter object might vary from package to package. The default implementation is provided via  the abstract class
+`Spiral\Filters\Model\Filter`. To create a custom filter to validate a query:
 
 ```php
 namespace App\Filter;
@@ -90,7 +90,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 }
 ```
 
-You can request the Filter as method injection (it will be automatically bound to the current http input):
+You can request the Filter as a method injection (it will be automatically bound to the current http input):
 
 ```php
 namespace App\Controller;
@@ -107,4 +107,4 @@ class HomeController
 ```
 
 > **Note**
-> Try URL with `?abc=1`. The Filter will automatically pre-validate your request before delivering to the controller.
+> Try URL with `?abc=1`. The Filter will automatically pre-validate your request before delivering it to the controller.
