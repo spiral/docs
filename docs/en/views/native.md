@@ -5,7 +5,7 @@ available in the Web application skeleton.
 
 ## Creating view
 
-To create a plain PHP view, simply put the file with `.php` extension into the `views` directory. The template can be rendered by it's filename:
+To create a plain PHP view, simply put a file with `.php` extension into the `views` directory. The template can be rendered by it's filename:
 
 ```php
 <?php // test.php
