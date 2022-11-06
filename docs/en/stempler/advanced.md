@@ -3,7 +3,7 @@
 Combine Stempler features such as props, AST code injections, stacks, and inheritance to develop a feature-rich domain language for page definitions.
 
 > **Note**
-> Attention, make sure to learn all the other aspects of Stempler before jumping into this section. You will also need a good cup of coffee.
+>  Make sure to learn all the other aspects of Stempler before jumping into this section. You will also need a good cup of coffee.
 
 The approach described in this article is possible because stacks can be defined within imported components.
 
