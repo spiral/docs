@@ -1,13 +1,11 @@
 # Stempler - Advancing DSL
 
-Combine Stempler features such as props, AST code injections, stacks, and inheritance to develop feature-rich domain
-language for page definitions.
+Combine Stempler features such as props, AST code injections, stacks, and inheritance to develop a feature-rich domain language for page definitions.
 
 > **Note**
-> Attention, make sure to learn all other aspects of Stempler before jumping into this section. You will also need good
-> cup of coffee.
+> Attention, make sure to learn all the other aspects of Stempler before jumping into this section. You will also need a good cup of coffee.
 
-The approach described in this article is possible since stacks can be defined within imported components.
+The approach described in this article is possible because stacks can be defined within imported components.
 
 ## Grid
 
@@ -16,7 +14,7 @@ multiple view files.
 
 ### Table
 
-Create root element for the component `app/views/grid/table.dark.php`:
+Create a root element for the component `app/views/grid/table.dark.php`:
 
 ```html
 <table class="grid-table">
@@ -31,12 +29,11 @@ Create root element for the component `app/views/grid/table.dark.php`:
 ```
 
 > **Note**
-> Note the `<hidden>${context}</hidden>`, it allows the component to handle content declared between open and close tags
-> without the need for `block` tags.
+> Note  `<hidden>${context}</hidden>`, it allows the component to handle the content declared between the  open and close tags without the need for `block` tags.
 
 ### Cell
 
-Create element `app/views/grid/cell.dark.php` to declare single table cell with it's header and value:
+Create an element `app/views/grid/cell.dark.php` to declare a single table cell with its header and value:
 
 ```html
 <stack:push name="thead">
@@ -52,7 +49,7 @@ Create element `app/views/grid/cell.dark.php` to declare single table cell with 
 
 ### Bundle
 
-We can pack our elements into bundle `app/views/grid/bundle.dark.php`:
+We can pack our elements into the bundle `app/views/grid/bundle.dark.php`:
 
 ```html
 <use:element path="grid/table" as="grid:table"/>
@@ -75,7 +72,7 @@ To render the grid in our template:
 </block:content>
 ```
 
-You can pass values into cell `context` directly:
+You can directly pass values into the cell `context` :
 
 ```html
 <extends:layout.base title="Homepage"/>
@@ -89,7 +86,7 @@ You can pass values into cell `context` directly:
 </block:content>
 ```
 
-In both cases the produced HTML:
+In both cases, the produced HTML is:
 
 ```html
 <body class="default">
@@ -112,8 +109,7 @@ Another example is related to the ability to assemble complex UI interfaces usin
 
 ### Base Layout
 
-To demonstrate complex UI assembly, we are going to create an interface with the ability to push CSS, JS resources
-easily, and define context using multiple tabs instead of a single content block.
+To demonstrate complex UI assembly, we are going to create an interface with the ability to  easily push CSS, JS resources, and define context using multiple tabs instead of a single content block.
 
 Create `app/views/tabs/layout.dark.php`:
 
@@ -139,7 +135,7 @@ Create `app/views/tabs/layout.dark.php`:
 
 ### Style and Script elements
 
-To simplify registration of style and script elements create components `app/views/tabs/script.dark.php`
+To simplify registration of style and script elements, create the components `app/views/tabs/script.dark.php`
 and `app/views/tabs/style.dark.php`:
 
 ```html
@@ -172,7 +168,7 @@ Create the tab element similar to `grid:cell` in `app/views/tabs/tab.dark.php`:
 
 ### Bundle
 
-Create bundle to represent the DSL for your UI framework `app/views/tabs/bundle.dark.php`:
+Create a bundle to represent the DSL for your UI framework `app/views/tabs/bundle.dark.php`:
 
 ```html
 # resources
@@ -185,7 +181,7 @@ Create bundle to represent the DSL for your UI framework `app/views/tabs/bundle.
 
 ### Example
 
-To render complex UI modify the `app/views/home.dark.php`.
+To render complex UI, modify `app/views/home.dark.php`.
 
 > **Note**
 > You can import more than one bundle.
