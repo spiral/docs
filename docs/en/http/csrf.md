@@ -2,7 +2,7 @@
 
 The default Web bundle includes CSRF protection middleware. To install it in alternative bundles:
 
-To activate the extension add `Spiral\Bootloader\Http\CsrfBootloader` to list of App bootloaders:
+To activate the extension, add `Spiral\Bootloader\Http\CsrfBootloader` to the list of App bootloaders:
 
 ```php
 [
@@ -15,8 +15,8 @@ The extension will activate `Spiral\Csrf\Middleware\CsrfMiddleware` to issue a u
 
 ## Enable Firewall
 
-The extension provides two middleware, which activates the protection on your routes or globally. To protect all the
-requests except for `GET`, `HEAD`, `OPTIONS `use `Spiral\Csrf\Middleware\CsrfFirewall`:
+The extension provides two middlewares which activate protection on your routes or globally. To protect all the
+requests except for `GET`, `HEAD`, `OPTIONS `, use `Spiral\Csrf\Middleware\CsrfFirewall`:
 
 ```php
 use Spiral\Csrf\Middleware\CsrfFirewall;
@@ -35,7 +35,7 @@ public function boot(RouterInterface $router): void
 ```
 
 > **Note**
-> To protect against all the HTTP verbs use `Spiral\Csrf\Middleware\StrictCsrfFirewall`.
+> To protect against all the HTTP verbs, use `Spiral\Csrf\Middleware\StrictCsrfFirewall`.
 
 ## Usage
 
@@ -80,7 +80,7 @@ public function index(ServerRequestInterface $request): string
 
 ## Activate Globally
 
-To activate CSRF protection globally register `Spiral\Csrf\Middleware\CsrfFirewall`
+To activate CSRF protection globally, register `Spiral\Csrf\Middleware\CsrfFirewall`
 or `Spiral\Csrf\Middleware\StrictCsrfFirewall` via `Spiral\Bootloader\Http\HttpBootloader`:
 
 ```php
