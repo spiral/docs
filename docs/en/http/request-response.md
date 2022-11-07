@@ -1,6 +1,6 @@
 # HTTP - Request and Response
 
-You controllers or endpoints will require a way to access active PSR-7 request and ability to generate the response. In
+Your controllers or endpoints will require a way to access active PSR-7 request and ability to generate the response. In
 this section, we will cover the use of requests/responses in the MVC setup.
 
 > **Note**
@@ -27,16 +27,16 @@ class HomeController implements SingletonInterface
 ```
 
 > **Note**
-> Attention, you are **not allowed** to use `Psr\Http\Message\ServerRequestInterface` as constructor injection in 
+> You are **not allowed** to use `Psr\Http\Message\ServerRequestInterface` as a constructor injection in 
 > singletons.
 
-Once the request obtained, you can use it to all read methods available
+Once the request is obtained, you can use it to all read methods available
 per [PSR-7 Standard](https://www.php-fig.org/psr/psr-7/).
 
 ## InputManager
 
 Alternatively, you can use context-manager `Spiral\Http\Request\InputManager`, which can be stored inside singleton
-services/controllers and always point to the current user request. This object provides several user-friendly methods
+services/controllers, and always point to the current user request. This object provides several user-friendly methods
 to read the incoming data.
 
 ```php
@@ -85,8 +85,8 @@ class HomeController
 > and `Spiral\Http\Request\InputManager` unless necessary, use **Request Filters** instead.
 
 You can use `Spiral\Http\Request\InputManager` to access the full array of input data or any specific field by its name 
-(dot notation is allowed for nested structures). Every input structure are represented 
-using `Spiral\Http\Request\InputBag` class with set of common methods, let's review query accessing as example:
+(dot notation is allowed for nested structures). Every input structure is represented 
+using `Spiral\Http\Request\InputBag` class with a set of common methods. Let's review query accessing as an example:
 
 ```php
 /** @var \Spiral\Http\Request\InputManager $input */
@@ -100,7 +100,7 @@ dump($input->query->all());
 // Count of query params
 dump($input->query->count());
  
-// Check if parameter "name" presented in query
+// Check if parameter "name" is presented in query
 dump($input->query->has('name'));
  
 // Get value for parameter "name"
@@ -122,15 +122,14 @@ dump($input->query('name'));
 
 > **Note**
 > In the situation when Input bag has a key with `null` value 
-> `new \Spiral\Http\Request\InputBag(['name' => null]);` the method `$input->query->has('name')` will return `true`,
-> but `isset($input->query['name])` will return `false`.
+> `new \Spiral\Http\Request\InputBag(['name' => null]);`, the method `$input->query->has('name')` will return `true` but `isset($input->query['name])` will return `false`.
  
 ### Input headers
 
 We can use the '**headers**' input bag and `header` method in `Spiral\Http\Request\InputManager` to access input 
 headers. `Spiral\Http\Request\HeadersBag` has a few additions we have to mention:
 
-* `Spiral\Http\Request\HeadersBag` will automatically normalize requested header name
+* `Spiral\Http\Request\HeadersBag` will automatically normalize a requested header name
 * "**get**" method will implode header values using ',' by default
 
 ```php
@@ -170,7 +169,7 @@ dump($input->server('name'));
 
 > **Note**
 > `Spiral\Http\Request\ServerBag` will automatically normalize all requested server values. This makes it possible to 
-> get value without using all uppercase letters for the names:
+> get value without using all uppercase letters for names:
 
 ```php
 /** @var \Spiral\Http\Request\InputManager $input */
@@ -212,7 +211,7 @@ dump($input->attribute('name'));
 #### Uploaded Files
 
 To get a list of the uploaded files or individual files, use the `files` bag and `file` method. Every uploaded file
-instance represented using `Psr\Http\Message\UploadedFileInterface`, which is part of PSR7.
+instance is represented using `Psr\Http\Message\UploadedFileInterface`, which is a part of PSR7.
 
 ```php
 /** @var \Spiral\Http\Request\InputManager $input */
@@ -223,7 +222,7 @@ dump($this->input->file('upload'));
 ```
 
 > **Note**
-> Per PSR, all files organized to logical hierarchy, which differs from default way php handle uploaded files. You can
+> Per PSR, all files are organized to a logical hierarchy, which differs from default way php handle uploaded files. You can
 > use dot notation to access nested file instances.
 
 ### Simplified methods
@@ -319,8 +318,8 @@ class AppBootloader extends Bootloader
 
 ## InputInterface
 
-The `Spiral\Http\Request\InputManager` does not have `get` prefix for its methods. The reason for that located in an 
-external package `spiral/filters` which require data source provider via `Spiral\Filters\InputInterface`:
+The `Spiral\Http\Request\InputManager` does not have `get` prefix for its methods. The reason for that is located in an 
+external package `spiral/filters` which requires a data source provider via `Spiral\Filters\InputInterface`:
 
 ```php
 namespace Spiral\Filters;
@@ -352,14 +351,14 @@ public function index(InputInterface $inputSource, InputManager $inputManager): 
 }
 ```
 
-This approach used to map incoming data into Request Filter.
+This approach is used to map the incoming data into Request Filter.
 
 > **Note**
 > You must activate `Spiral\Bootloader\Security\FiltersBootloader` in order to access `Spiral\Filters\InputInterface`.
 
 ## Generate Response
 
-You can return an instance of `Psr\Http\Message\ResponseInterface` from your controller, and it will be sent directly to
+You can return the instance `Psr\Http\Message\ResponseInterface` from your controller, and it will be sent directly to
 the user.
 
 ```php
@@ -380,7 +379,7 @@ class HomeController
 }
 ```
 
-The PSR-15 handler enabled by default provides the ability to generate the response automatically based on the returned
+The PSR-15 handler enabled by default provides you with an ability to generate the response automatically based on the returned
 string or the content of output buffer:
 
 ```php
@@ -456,7 +455,7 @@ class HomeController
 
 ## ResponseWrapper
 
-To generate more complex responses use `ResponseFactoryInterface` wrapper `Spiral\Http\ResponseWrapper` which adds
+To generate more complex responses, use `ResponseFactoryInterface` wrapper `Spiral\Http\ResponseWrapper` which adds
 a number of methods for simpler response generation:
 
 ```php
@@ -497,7 +496,7 @@ class HomeController
 }
 ```
 
-To create HTML response:
+To create an HTML response:
 
 ```php
 public function index(): ResponseInterface
@@ -518,7 +517,7 @@ public function index(): ResponseInterface
 }
 ```
 
-To send attachment:
+To send an attachment:
 
 ```php
 public function index(): ResponseInterface
