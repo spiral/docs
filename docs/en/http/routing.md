@@ -52,7 +52,7 @@ protected function defineRoutes(RoutingConfigurator $routes): void
 > **Note**
 > By default, the import of routes from the `app/routes/web.php` file is already configured in `spiral/app`.
 
-Open the `web.php` file, use the `add` method to add a new route .
+Open the `web.php` file, use the `add` method to add a new route.
 
 ```php
 use App\Controller\HomeController;
