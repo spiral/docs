@@ -55,7 +55,7 @@ The following route attributes are available:
 | priority   | int          | (Available since v2.9). Position in a routes list. Higher priority routes are sorted before lower ones. Helps to solve the cases when one request matches two routes. Defaults to 0. |
 
 > **Note**
-> If you won't define a route name, it will be generated automatically. For example, `#Route(route: '/api/news',  methods: ["POST", "PATCH"])` will generate `post,patch:/api/news`
+> If you don't define a route name, it will be generated automatically. For example, `#Route(route: '/api/news',  methods: ["POST", "PATCH"])` will generate `post,patch:/api/news`
 
 ## Route Groups
 
