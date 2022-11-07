@@ -1,6 +1,6 @@
 # HTTP - Request and Response
 
-Your controllers or endpoints will require a way to access active PSR-7 request and ability to generate the response. In
+Your controllers or endpoints will need a way to access active PSR-7 request and an ability to generate the response. In
 this section, we will cover the use of requests/responses in the MVC setup.
 
 > **Note**
