@@ -40,7 +40,7 @@ will automatically invalidate all cookie values set for all users.
 > **Note**
 > You can also disable encryption for performance reasons or use alternative HMAC signature method (see below).
 
-Cookie component will decrypt all values and update the request object, so you can get all cookies values using default
+A cookie component will decrypt all values and update the request object, so you can get all cookies values using default
 PSR-7 `ServerRequestInterface`:
 
 ```php
@@ -77,12 +77,12 @@ class HomeController
 > **Note**
 > You can also request cookie value in request filters.
 
-Note, if the cookie value is invalid and or can't be decrypted, its value will be set to NULL and not available to the
+Note that if the cookie value is invalid and or can't be decrypted, its value will be set to NULL and not available to the
 application.
 
 ## Write Cookie
 
-Since all of the cookie values must be encrypted or signed, you must use the proper way to write them.
+Since all cookie values must be encrypted or signed, you must use a proper way to write them.
 Use context-specific object `Spiral\Cookies\CookieQuery`.
 
 ```php
@@ -97,11 +97,11 @@ The method accepts the following arguments in the same order:
 | Parameter | Type   | Description                                                                                                                                                                                                                                                                                                                                              |
 |-----------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Name      | string | The name of the cookie.                                                                                                                                                                                                                                                                                                                                  |
-| Value     | string | The value of the cookie. This value stored on the client's computer; do not store sensitive information.                                                                                                                                                                                                                                                 |
-| Lifetime  | int    | Cookie lifetime. This value specified in seconds and declares a period in which cookie will expire relatively to the current time().                                                                                                                                                                                                                     |
+| Value     | string | The value of the cookie. This value is stored on the client's computer; do not store sensitive information.                                                                                                                                                                                                                                                 |
+| Lifetime  | int    | Cookie lifetime. This value is specified in seconds and declares a period in which a cookie will expire relatively to the current time.                                                                                                                                                                                                                     |
 | Path      | string | The path on the server in which the cookie will be available. If set to '/', the cookie will be available within the entire domain. If set to '/foo/', the cookie will only be available within the /foo/ directory and all sub-directories such as /foo/bar/ of the domain. The default value is the current directory that the cookie is being set in. |
 | Domain    | string | The domain that the cookie is available. To make the cookie available on all subdomains of example.com, then you'd set it to '.example.com'. The . is not required but makes it compatible with more browsers. Setting it to www.example.com will make the cookie only available in the www subdomain. Refer to tail matching in the spec for details.   |
-| Secure    | bool   | Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client. When set to true, the cookie will only set if a secure connection exists. On the server-side, it's on the programmer to send this kind of cookie only on a secure connection (e.g., for $_SERVER["HTTPS"]).                                         |
+| Secure    | bool   | Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client. When set to true, the cookie will only be set if there's a secure connection. On the server-side, it's a programmer's job to send this kind of cookie only on a secure connection (e.g., for $_SERVER["HTTPS"]).                                         |
 | HttpOnly  | bool   | When true, the cookie will be made accessible only through the HTTP protocol. This flag means that the cookie won't be available by scripting languages, such as JavaScript. This setting can effectively help to reduce identity theft through XSS attacks (although, not all browsers support it).                                                     |
 
 > **Note**
@@ -119,7 +119,7 @@ $container->get(CookieQuery::class)->set($name, $value);
 > **Note**
 > The best place to use `CookieQuery` is controller methods.
 
-If you already have access to `ServerRequestInterface` use can also use attribute `cookieQueue`:
+If you already have access to `ServerRequestInterface`, you can also use the attribute `cookieQueue`:
 
 ```php
 use Psr\Http\Message\ServerRequestInterface;
@@ -134,7 +134,7 @@ public function index(ServerRequestInterface $request): void
 
 ## Set Cookie Manually
 
-You can always write cookie header manually by invoking `withAddedHeader` of `Psr\Http\Message\ResponseInterface`:
+You can always write a cookie header manually by invoking `withAddedHeader` of `Psr\Http\Message\ResponseInterface`:
 
 ```php
 return $response->withAddedHeader('Set-Cookie', 'name=value');
@@ -155,7 +155,7 @@ public function boot(CookiesBootloader $cookies): void
 }
 ```
 
-To perform deeper configuration on cookie component create config file `cookies.php` in `app/config` directory:
+To perform deeper configuration on cookie component, create config file `cookies.php` in `app/config` directory:
 
 ```php
 <?php
