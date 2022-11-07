@@ -10,7 +10,7 @@ composer require spiral/annotated-routes
 ```
 
 > **Note**
-> Please note that the spiral/framework >= 2.6 already includes this component.
+> that the spiral/framework >= 2.6 already includes this component.
 
 Activate the bootloader `Spiral\Router\Bootloader\AnnotatedRoutesBootloader` in your application (you can disable the
 default `RoutesBootloader`):
@@ -42,7 +42,7 @@ class HomeController
 }
 ```
 
-Following route attributes are available:
+The following route attributes are available:
 
 | Attribute  | Type         | Description                                                                                                                                                                           |
 |------------|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -52,15 +52,15 @@ Following route attributes are available:
 | defaults   | array        | Default values for route pattern.                                                                                                                                                     |
 | group      | string       | Route group, defaults to `default`.                                                                                                                                                   |
 | middleware | array        | Route specific middleware class names.                                                                                                                                                |
-| priority   | int          | (Available since v2.9). Position in a routes list. Higher priority routes are sorted before lower ones. Helps to solve situations when one request matches two routes. Defaults to 0. |
+| priority   | int          | (Available since v2.9). Position in a routes list. Higher priority routes are sorted before lower ones. Helps to solve the cases when one request matches two routes. Defaults to 0. |
 
 > **Note**
-> If you won't define a route name it will be generated automatically. For example, `#Route(route: '/api/news',  methods: ["POST", "PATCH"])` will generate `post,patch:/api/news`
+> If you won't define a route name, it will be generated automatically. For example, `#Route(route: '/api/news',  methods: ["POST", "PATCH"])` will generate `post,patch:/api/news`
 
 ## Route Groups
 
 It is possible to apply shared rules, middleware, [domain core](/cookbook/domain-core.md), or prefix to the group of
-routes. Create and register bootloader to achieve that:
+routes. Create and register a bootloader to achieve that:
 
 ```php
 namespace App\Bootloader;
@@ -80,7 +80,7 @@ class APIRoutes extends Bootloader
 ```
 
 > **Note**
-> Make sure to register bootloader after `AnnotatedRoutesBootloader`. Use the `default` group to configure all the routes.
+> Make sure to register a bootloader after `AnnotatedRoutesBootloader`. Use the `default` group to configure all the routes.
 
 You can now assign the route to the group using the `group` attribute.
 
@@ -97,8 +97,8 @@ public function index(): ResponseInterface
 
 ## Route Cache
 
-By default, all the annotated routes cached when `DEBUG` is off. To turn on/off route-cache separately from `DEBUG` env
-variable set the `ROUTE_CACHE` env variable:
+By default, all the annotated routes are cached when `DEBUG` is off. To turn on/off route-cache separately from `DEBUG` env
+variable, set the `ROUTE_CACHE` env variable:
 
 ```dotenv
 DEBUG=true
