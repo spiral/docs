@@ -2,13 +2,13 @@
 
 The default application skeleton enables cookie integration by default.
 
-If you need to enable cookies it in alternative builds, require composer package `spiral/cookies` and add
+If you need to enable cookies in alternative builds, require composer package `spiral/cookies` and add
 bootloader `Spiral\Bootloader\Http\CookiesBootloader` into your app.
 
 ## Cookie Manager
 
 The easiest way to manage cookies in Spiral is to obtain an instance of `Spiral\Cookies\CookieManager`. This instance
-can be stored inside singleton services and controllers and provide access to active request scope.
+can be stored inside singleton services and controllers, and provide access to active request scope.
 
 ```php
 public function index(CookieManager $cookies): void
