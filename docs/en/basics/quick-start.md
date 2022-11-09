@@ -48,7 +48,7 @@ extension which will load ENV variables from the `.env` file.
 > **Note**
 > Tweak the application server and its plugins using `.rr.yaml` file.
 
-The application dependencies defined in `composer.json` and activated in `app/src/App.php` as Bootloaders.
+The application dependencies defined in `composer.json` and activated in `app/src/Application/Kernel.php` as Bootloaders.
 The default build includes quite a lot of pre-configured components.
 
 ### Developer Mode
@@ -69,7 +69,7 @@ You can also create and use an alternative configuration file via `-c` flag of t
 We won't need translation, session, GRPC, cookies, CSRF, routing configuration via RoutesBootloader in our demo application. 
 Remove these components and their bootloaders.
 
-Delete following bootloaders from `app/src/App.php`:
+Delete following bootloaders from `app/src/Application/Kernel.php`:
 
 ```php
 Spiral\Bootloader\I18nBootloader::class,
@@ -274,12 +274,12 @@ Let's install [Database Seeder](https://github.com/spiral-packages/database-seed
 composer require spiral-packages/database-seeder --dev
 ``` 
 
-Add the bootloader `Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader` to `LOAD` section in `app/src/App.php` 
+Add the bootloader `Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader` to `LOAD` section in `app/src/Application/Kernel.php` 
 to activate the package:
 
 ```diff
---- a/app/src/App.php
-+++ b/app/src/App.php
+--- a/app/src/Application/Kernel.php
++++ b/app/src/Application/Kernel.php
 @@ -85,5 +85,6 @@ class App extends Kernel
 
          RoadRunnerBridge\CommandBootloader::class,
@@ -294,11 +294,11 @@ to activate the package:
 ### Creating Routes
 
 In order to simplify the route definition we can use `spiral/annotated-routes` extension. Read more about the extension [here](/http/annotated-routes.md).
-Add the bootloader to `LOAD` in `app/src/App.php` to activate the component:
+Add the bootloader to `LOAD` in `app/src/Application/Kernel.php` to activate the component:
 
 ```diff
---- a/app/src/App.php
-+++ b/app/src/App.php
+--- a/app/src/Application/Kernel.php
++++ b/app/src/Application/Kernel.php
 @@ -85,5 +85,6 @@ class App extends Kernel
 
          SapiBootloader::class,
@@ -407,11 +407,11 @@ class AppBootloader extends DomainBootloader
 ```
 
 Enable the domain core in your application. We will demonstrate the use of the interceptor below.
-Add the bootloader to `APP` in `app/src/App.php`:
+Add the bootloader to `APP` in `app/src/Application/Kernel.php`:
 
 ```diff
---- a/app/src/App.php
-+++ b/app/src/App.php
+--- a/app/src/Application/Kernel.php
++++ b/app/src/Application/Kernel.php
 @@ -85,5 +85,6 @@ class App extends Kernel
 +        Bootloader\AppBootloader::class,
      ];
@@ -450,11 +450,11 @@ your entities.
 
 Enable the Cycle Bridge `Spiral\Cycle\Bootloader\ScaffolderBootloader` bootloader for using commands that create 
 entities and repositories.
-Add the bootloader to `APP` in `app/src/App.php`:
+Add the bootloader to `APP` in `app/src/Application/Kernel.php`:
 
 ```diff
---- a/app/src/App.php
-+++ b/app/src/App.php
+--- a/app/src/Application/Kernel.php
++++ b/app/src/Application/Kernel.php
 @@ -85,5 +85,6 @@ class App extends Kernel
         Scaffolder\ScaffolderBootloader::class,
 +       CycleBridge\ScaffolderBootloader::class,
@@ -1344,11 +1344,11 @@ To install the package:
 composer require spiral/validator
 ```
 
-Add the bootloader to `LOAD` in `app/src/App.php` to activate the component:
+Add the bootloader to `LOAD` in `app/src/Application/Kernel.php` to activate the component:
 
 ```diff
---- a/app/src/App.php
-+++ b/app/src/App.php
+--- a/app/src/Application/Kernel.php
++++ b/app/src/Application/Kernel.php
 @@ -85,5 +85,6 @@ class App extends Kernel
 
          ValidationBootloader::class,
