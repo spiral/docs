@@ -1,10 +1,10 @@
 # GRPC - Golang Services
 
-You can combine the PHP and Golang GRPC services within one application.
+You can combine the PHP and Golang GRPC services in one application.
 
 > Make sure to read how to [build application server](/framework/application-server.md).
 
-To demonstrate the ability to register Golang GRPC service define the proto file with needed agreements:
+To demonstrate the ability to register Golang GRPC service, define a proto file with the necessary agreements:
 
 ```json
 syntax = "proto3";
@@ -26,18 +26,18 @@ service Multiplier {
 }
 ```
 
-Generate the server code in `multiplier` folder:
+Generate the server code in the folder `multiplier`:
 
 ```bash
 mkdir multiplier
 protoc -I proto/ proto/multiplier.proto --go_out=plugins=grpc:multiplier
 ```
 
-> Make sure to install `protoc-gen-go`. Read about installation [here](/grpc/client.md).
+> Make sure to install `protoc-gen-go`. Read about the installation [here](/grpc/client.md).
 
 ## Create Service
 
-Create RoadRunner compatible service in the `multiplier` directory. Register GRPC service using the `*grpc.Service`
+Create a RoadRunner compatible service in the `multiplier` directory. Register the GRPC service using the `*grpc.Service`
 ->`AddService`:
 
 ```golang
@@ -167,7 +167,7 @@ func main() {
 }
 ```
 
-> Read more how to define services [here](/cookbook/golang-library.md)
+> Read more about how to define services [here](/cookbook/golang-library.md)
 > and [here](https://roadrunner.dev/docs/beep-beep-service).
 
 You can run the server now:
