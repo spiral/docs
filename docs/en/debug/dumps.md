@@ -1,6 +1,6 @@
 # Debug - Dumping Variables
 
-Spiral Framework 3.0 doesn't have any  out of the box tools for dumping variables.
+Spiral Framework 3.0 doesn't have any out of the box tools for dumping variables.
 
 But you can use third-party packages like `symfony/var-dumper` to view the content of your variables and instances.
 
