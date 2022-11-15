@@ -1,6 +1,6 @@
 # Composite Filters
 
-The component provides an  ability to create nested filters and a nested array of filters. To demonstrate the
+The component provides an ability to create nested filters and a nested array of filters. To demonstrate the
 composition, we will use a sample filter:
 
 ```php
