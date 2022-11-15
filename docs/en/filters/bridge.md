@@ -35,6 +35,6 @@ bootloader `Spiral\Filters\Bootloader\FiltersBootloader`:
 ]
 ```
 
-There is  no difference between using the `spiral/filters` component and the `spiral/filters-bridge` package, so you can use
+There is no difference between using the `spiral/filters` component and the `spiral/filters-bridge` package, so you can use
 [documentation](https://spiral.dev/docs/filters-configuration/2.14/en#create-filter) for the previous Spiral Framework 
 version.
