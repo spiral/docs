@@ -35,4 +35,4 @@ class HomeController
 > You can read more about declaring database schemas [here](https://cycle-orm.dev/docs/database-declaration/2.x/en).
 
 > **Note**
-> You can fibd Full documentation about using Query builder [here](https://cycle-orm.dev/docs/database-query-builders/2.x/en).
+> You can fiтd Full documentation about using Query builder [here](https://cycle-orm.dev/docs/database-query-builders/2.x/en).
