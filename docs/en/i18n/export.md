@@ -35,4 +35,4 @@ php app.php i18n:index -vv
 
 ## Import Locale
 
-Import thelocate into the project by placing the files `app/locale/{lang}` directory. Use the `GetText`, `PHP`, or `JSON` formats.
+Import the locale into the project by placing the files `app/locale/{lang}` directory. Use the `GetText`, `PHP`, or `JSON` formats.
