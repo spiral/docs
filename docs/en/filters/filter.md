@@ -410,7 +410,7 @@ We can accept and validate the following data structure:
 ```
 
 > **Note**
->  Error messages will be correctly mounted into the original location. You can also use composite filters for more
+> Error messages will be correctly mounted into the original location. You can also use composite filters for more
 > complex use-cases.
 
 ### Other Sources
