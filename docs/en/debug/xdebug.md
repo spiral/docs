@@ -20,7 +20,7 @@ env:
 > **Note**
 > Alter values according to your environment.
 
-To enable xDebug, runthe  application server with `-o` (overwrite flag) for the required service:
+To enable xDebug, run the application server with `-o` (overwrite flag) for the required service:
 
 ```bash
 ./rr serve -o "server.command=php -d zend_extension=xdebug app.php"
