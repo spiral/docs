@@ -1,7 +1,7 @@
 # Console - Installation and Configuration
 
-All of the provided application skeletons include the Console component by default. To enable component in alternative
-builds make sure to require composer package `spiral/console` and modify the application bootloader:
+All of the provided application skeletons include the Console component by default. To enable the component in alternative
+builds, make sure to require composer package `spiral/console` and modify the application bootloader:
 
 ```php
 [
@@ -10,7 +10,7 @@ builds make sure to require composer package `spiral/console` and modify the app
 ]
 ```
 
-Make sure to include this bootloader at last, as it will also activate the set of default commands for previously added
+Make sure to include this bootloader last, as it will also activate the set of default commands for previously added
 components.
 
 To invoke application command run:
@@ -25,7 +25,7 @@ To get a list of available commands:
 php app.php
 ```
 
-To get help about the particular command:
+To get help about a particular command:
 
 ```bash
 php app.php help command:name
@@ -60,7 +60,7 @@ public function test(Console $console): string
 
 ## Symfony/Console
 
-Spiral Console dispatcher built at the top of
+The Spiral Console dispatcher is built at the top of the
 powerful [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html) component.
 
 > **Note**
@@ -68,7 +68,7 @@ powerful [Symfony Console](http://symfony.com/doc/current/components/console/int
 
 ## Configuration
 
-To apply the custom configuration to the Console component use `Spiral\Config\ConfiguratorInterface` or create a config
+To apply the custom configuration to the Console component, use `Spiral\Config\ConfiguratorInterface` or create a config
 file in `app/config/console.php`:
 
 ```php
@@ -91,7 +91,7 @@ return [
 ```
 
 You can modify some of these values during application bootload via `Spiral\Bootloader\ConsoleBootloader`. To register
-new user command:
+a new user command:
 
 ```php
 public function boot(ConsoleBootloader $console): void
@@ -101,17 +101,17 @@ public function boot(ConsoleBootloader $console): void
 ```
 
 > **Note**
-> By default Console component use auto-discovery mode to find all user commands in `app/` automatically.
+> By default, the Console component uses an auto-discovery mode to find all user commands in `app/` automatically.
 
 ## Sequences
 
-There two type of sequences in the Spiral Framework:
+There are two types of sequences in the Spiral Framework:
 
 ### Configure
 
-The set of commands that will be run after invoke command `php app.php configure`
+A set of commands that will be run after invoke command `php app.php configure`
 
-To register command in configure sequence:
+To register a command in configure sequence:
 
 ```php
 use Symfony\Component\Console\Output\OutputInterface;
@@ -133,7 +133,7 @@ public function boot(ConsoleBootloader $console): void
 
 ### Update
 
-The set of commands that will be run after invoke command `php app.php update`
+A set of commands that will be run after invoke command `php app.php update`
 
 To register command in update sequence:
 
@@ -173,5 +173,5 @@ public function boot(ConsoleBootloader $console): void
 
 ## Connection with RoadRunner
 
-Please note, console commands invoke outside of the RoadRunner server. Make sure to run an instance of application
+Please note that console commands invoke outside of the RoadRunner server. Make sure to run an instance of application
 server if any of your commands must communicate with it.

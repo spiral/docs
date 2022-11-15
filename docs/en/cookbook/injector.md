@@ -12,7 +12,7 @@ abstract class Model
 }
 ```
 
-We can combine bootloader and injector into one instance:
+We can combine a bootloader and an injector into one instance:
 
 ```php
 namespace App\Bootloader;
@@ -66,7 +66,7 @@ class B extends Model
 }
 ```
 
-Now, any model request will include unique id, for example in the controller method:
+Now, any model request will include a unique id, for example in the controller method:
 
 ```php
 namespace App\Controller;
@@ -91,7 +91,7 @@ class HomeController
 
 ## Enum Injectors
 
-The `Spiral Boot` component provides an `Spiral\Boot\Injector\InjectableEnumInterface` that allows you to create `Enums` 
+The `Spiral Boot` component provides `Spiral\Boot\Injector\InjectableEnumInterface` that allows you to create `Enums` 
 that can then be automatically injected via `Container` with specific values.
 
 Let's create an `Enum`, with which we can easily determine the environment of our application.
@@ -140,7 +140,7 @@ enum AppEnvironment: string implements InjectableEnumInterface
 }
 ```
 
-Attribute `ProvideFrom` allows you to specify a `method` by which you can determine the current value of the `Enum`.
+The attribute `ProvideFrom` allows you to specify a `method` by which you can determine the current value of the `Enum`.
 The method will be called when the Container requests the Enum. The required dependencies from the Container will be 
 injected into it.
 
@@ -172,4 +172,4 @@ dump($appEnv->isProduction());
 ```
 
 > **Note**
-> The `AppEnvironment` is already available and was provided as an example only.
+> The `AppEnvironment` is already available and has been provided as an example only.

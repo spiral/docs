@@ -1,14 +1,14 @@
 # Cache
 
-The Spiral Framework provides a component for data caching. The component provides an implementation of `PSR-16` 
+The Spiral Framework provides a component for data caching. The component provides implementation of `PSR-16` 
 cache storage in `files` and `PHP arrays`.
 It also provides an easy way to integrate your own storages by configuration file.
 
-The component available by default in the [application bundle](https://github.com/spiral/app).
+The component is available by default in the [application bundle](https://github.com/spiral/app).
 
 ## Installation
 
-To enable the component, you just need to add `Spiral\Cache\Bootloader\CacheBootloader` to the bootloaders list, 
+To enable the component, you just need to add `Spiral\Cache\Bootloader\CacheBootloader` to the bootloader's list, 
 which is located in the class of your application.
 
 ```php

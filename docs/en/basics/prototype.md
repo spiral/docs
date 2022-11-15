@@ -13,7 +13,7 @@ composer require spiral/prototype
 ```
 
 > **Note**
-> Please note that the spiral/framework >= 2.7 already includes this component.
+> that the spiral/framework >= 2.7 already includes this component.
 
 Make sure to add `Spiral\Prototype\Bootloader\PrototypeBootloader` to your App class:
 
@@ -32,18 +32,18 @@ class App extends Kernel
 ```
 
 > **Note**
-> Attention, the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
+> that the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
 
 Now you can run `php app.php configure` to generate IDE tooltips.
 
 ## Usage of Prototype Properties
 
 To use the prototyping abilities of the framework, add `Spiral\Prototype\Traits\PrototypeTrait` to any of your classes.
-Once complete your IDE will immediately suggest you available classes and Cycle Repositories:
+Once it's added, your IDE will immediately suggest available classes and Cycle Repositories to you:
 
 ![IDE Tooltips](https://user-images.githubusercontent.com/796136/67619538-8f0c8c80-f805-11e9-9cd8-0597133bf33a.gif)
 
-You can use this suggestion directly, without need for any import:
+You can use this suggestion directly, without a need for any import:
 
 ```php
 namespace App\Controller;
@@ -64,9 +64,9 @@ class HomeController
 ```
 
 > **Note**
-> The code will work via magic `__get` on the object.
+> that the code will work via magic `__get` on the object.
 
-Once a prototyping phase is complete, you can remove the trait and inject dependencies via:
+Once the prototyping phase is complete, you can remove the trait and inject dependencies via:
 
 ```bash
 php app.php prototype:inject -r
@@ -75,7 +75,7 @@ php app.php prototype:inject -r
 > **Note**
 > Use `-r` flag to remove `PrototypeTrait`.
 
-The extension will modify your class into a given form:
+The extension will modify your class into the given form:
 
 ```php
 namespace App\Controller;
@@ -104,15 +104,15 @@ class HomeController
 ```
 
 > **Note**
-> The formatting around the injected lines will be affected.
+> that the formatting around the injected lines will be affected.
 
-For PHP 7.4 now available two additional flags:
+For PHP 7.4 there are two additional flags available now:
 
 - `typedProperties (t)` will inject properties with a type
 - `no-phpdoc` will omit PHP doc block for typed properties
 
 > **Note**
-> Note that these flags work only if the latest `nikic/php-parser` version with PHP 7.4 support is installed.
+> that these flags work only if the latest `nikic/php-parser` version with PHP 7.4 support is installed.
 
 ```bash
 php app.php prototype:inject -r -t --no-phpdoc
@@ -151,7 +151,7 @@ php app.php prototype:list
 ```
 
 > **Note**
-> You can remove the `spiral/prototype` extension after all injects are complete.
+> that you can remove the `spiral/prototype` extension after all the injects are complete.
 
 ## Custom Properties
 
@@ -166,7 +166,7 @@ public function boot(PrototypeBootloader $prototype): void
 ```
 
 > **Note**
-> You can combine such an approach with automatic class discovery to achieve better integration of domain layer
+> that you can combine such an approach with automatic class discovery to achieve better integration of domain layer
 > architecture into your development process.
 
 ## Attribute Based
@@ -190,7 +190,7 @@ Make sure to run `php app.php update` or `php app.php prototype:dump` to auto-lo
 
 ## Available Shortcuts
 
-There are number of component shortcuts available for your usage:
+There are a number of component shortcuts available for you to use:
 
 | Property     | Component                                                                                    |
 |--------------|----------------------------------------------------------------------------------------------|

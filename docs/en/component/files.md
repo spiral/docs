@@ -5,7 +5,7 @@ application bundles.
 
 ## Directory Registry
 
-Most of the spiral components rely on the directory registry instead of hard-coded paths. The registry represented 
+Most of the Spiral components rely on the directory registry instead of hard-coded paths. The registry is represented 
 using `Spiral\Boot\DirectoriesInterface`.
 
 You can configure application specific directories in the app entry point (app.php):
@@ -57,7 +57,7 @@ class HomeController
 ```
 
 > **Note**
-> You can also use the short function `directory` inside your config files. Note, this
+> You can also use the short function `directory` inside your config files. Note that this
 > function does not work outside of the framework as it relies on the global container scope.
 
 ## Files
@@ -99,7 +99,7 @@ class HomeController
 
 ### Create Directory
 
-To ensure that given directory exists use method `ensureDirectory`, the second argument accepts the access permission:
+To ensure that a given directory exists, use method `ensureDirectory`, the second argument accepts the access permission:
 
 ```php
 namespace App\Controller;
@@ -122,7 +122,7 @@ class HomeController
 }
 ```
 
-To check if directory exists:
+To check if a directory exists:
 
 ```php
 dump($files->isDirectory(__DIR__));
@@ -130,7 +130,7 @@ dump($files->isDirectory(__DIR__));
 
 ### Delete Directory
 
-To delete directory and its content:
+To delete a directory and its content:
 
 ```php
 $files->deleteDirectory('custom');
@@ -144,7 +144,7 @@ $files->deleteDirectory('custom', true);
 
 ### File Stats
 
-To check if file exists:
+To check if a file exists:
 
 ```php
 dump($files->exists(__FILE__)); // bool
@@ -162,19 +162,19 @@ To get file MD5:
 dump($files->md5('filename'));
 ```
 
-To get filename extension:
+To get a filename extension:
 
 ```php
 dump($files->extension(__FILE__)); // without leading "."
 ```
 
-To check if path is file:
+To check if the path is a file:
 
 ```php
 dump($files->isFile(__DIR__));
 ```
 
-To get file size:
+To get the file size:
 
 ```php
 dump($files->size(__DIR__));
@@ -194,7 +194,7 @@ To set file permissions:
 $files->setPermissions(__FILE__, 0777)
 ```
 
-Use constants to control file mode:
+Use constants to control the file mode:
 
 | Constant                 | Value |
 |--------------------------|-------|
@@ -203,13 +203,13 @@ Use constants to control file mode:
 
 ### Move and Copy
 
-To copy file from one path to another:
+To copy a file from one path to another:
 
 ```php
 $files->copy('old-path', 'new-path');
 ```
 
-To move file:
+To move a file:
 
 ```php
 $files->move('old-path', 'new-path');
@@ -217,19 +217,19 @@ $files->move('old-path', 'new-path');
 
 ### Temporary Files
 
-To *issue* temporary filename:
+To *issue* a temporary filename:
 
 ```php
 dump($files->tempFilename());
 ```
 
-To issue temporary filename with a specific extension:
+To issue a temporary filename with a specific extension:
 
 ```php
 dump($files->tempFilename('php'));
 ```
 
-To issue temporary filename in a specific location:
+To issue a temporary filename in a specific location:
 
 ```php
 dump($files->tempFilename('php', __DIR__));
@@ -242,19 +242,19 @@ resource):
 
 ### Write/Create file
 
-To write the content to the file (exclusive lock):
+To write content to a file (exclusive lock):
 
 ```php
 $files->write('filename', 'data');
 ```
 
-To write/create file and ensure proper access mode:
+To write/create a file and ensure a proper access mode:
 
 ```php
 $files->write('filename', 'data', 0777);
 ```
 
-To check and automatically create the file directory:
+To check and automatically create a file directory:
 
 ```php
 $files->write('filename', 'data', 0777, true);
@@ -271,13 +271,13 @@ To append file content:
 $files->append('filename', 'data');
 ```
 
-To append and ensure file mode:
+To append and ensure a file mode:
 
 ```php
 $files->append('filename', 'data', 0777);
 ```
 
-To append/create file and ensure that target directory exists:
+To append/create a file and ensure that a target directory exists:
 
 ```php
 $files->append('filename', 'data', 0777, true);
@@ -285,13 +285,13 @@ $files->append('filename', 'data', 0777, true);
 
 ### Touch
 
-To touch the file and create it if missing:
+To touch the file and create it, if missing:
 
 ```php
 $files->touch('filename');
 ```
 
-To touch file and ensure file mode:
+To touch the file and ensure a file mode:
 
 ```php
 $files->touch('filename', 0777);
@@ -306,4 +306,4 @@ dump($files->read('filename'));
 ```
 
 > **Note**
-> Make sure to handle `Spiral\Files\Exception\FileNotFoundException` when files not found.
+> Make sure to handle `Spiral\Files\Exception\FileNotFoundException` when files are not found.

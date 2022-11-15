@@ -26,9 +26,9 @@ class App extends Kernel
 
 This bootloader registers the implementation of the `Spiral\Events\ListenerFactoryInterface` and 
 `Spiral\Events\ListenerProcessorRegistry` in the application container. It also registers event listeners 
-in the application, how to add them will be described below.
+in the application. We'll describe below how to add them.
 
-After that, let's install a `PSR-14` implementation of a compatible `EventDispatcher`. We provide a 
+After that, let's install `PSR-14` implementation of a compatible `EventDispatcher`. We provide a 
 `spiral-packages/league-event` package that integrates a PSR-14 compatible `league/event` package into 
 an application based on the Spiral Framework.
 
@@ -36,7 +36,7 @@ an application based on the Spiral Framework.
 composer require spiral-packages/league-event
 ```
 
-After package install you need to register bootloader from the package.
+After the package is installed, you need to register a bootloader from the package.
 
 ```php
 namespace App;
@@ -56,18 +56,18 @@ class App extends Kernel
 ## Configuration
 
 The configuration file for `Events` component should be located at `app/config/events.php`. Within this file, you may
-configure event `listeners` and `processors`.
+configure the event `listeners` and `processors`.
 
 The `listeners` parameter represented an `array`, the key is the `fully qualified name of the event class`,
 and the value must be an `array` that contains the `fully qualified name of the event listener class`,
-or an `Spiral\Events\Config\EventListener` instance that allows you to configure additional listener options.
+or `Spiral\Events\Config\EventListener` instance that allows you to configure additional listener options.
 
 The `processors` parameter represented an `array` and contains the `full name of the processor class`. 
 
 > **Note**
 > More detailed information about `processors` will be provided below. This section only describes the configuration.
 
-For example, the configuration file might look like this:
+For example, a configuration file might look like this:
 
 ```php
 use App\Listener\RouteListener;
@@ -205,11 +205,11 @@ and `Spiral\Events\Processor\AttributeProcessor` from the config file.
 
 ## Processors
 
-Processors provide the ability to register event listeners in the application.
+Processors provide an ability to register event listeners in the application.
 Two processors are available by default.
 
-- `Spiral\Events\Processor\ConfigProcessor` - registers event listeners from the `configuration file`.
-- `Spiral\Events\Processor\AttributeProcessor` - registers event listeners with the `Spiral\Events\Attribute\Listener` attribute.
+- `Spiral\Events\Processor\ConfigProcessor` registers event listeners from the `configuration file`.
+- `Spiral\Events\Processor\AttributeProcessor` registers event listeners with the `Spiral\Events\Attribute\Listener` attribute.
 
 > **Note**
 > In the config file `app/config/events.php`, you can change this and use only one of them or add your own processor.
@@ -253,7 +253,7 @@ final class MyCustomProcessor extends AbstractProcessor
 ```
 
 Implementation of the `Spiral\Events\ListenerFactoryInterface` allows you to create a listener instance from 
-a fully qualified class name and a method name, adding all necessary dependencies to the constructor.
+a fully qualified class name and a method name, adding all the necessary dependencies to the constructor.
 
 After that, we need to register the processor in the configuration file.
 
@@ -275,11 +275,11 @@ return [
 
 As an implementation of EventDispatcher, we considered the package 
 [The League Event bridge for Spiral Framework](https://github.com/spiral-packages/league-event). 
-You can create your own implementation implementing `PSR-14 EventDispatcher`.
+You can create your own implementation using `PSR-14 EventDispatcher`.
 
 ### ListenerRegistry
 
-Let's create a class that will implement the `Spiral\Events\ListenerRegistryInterface` and provides the ability 
+Let's create a class that will implement the `Spiral\Events\ListenerRegistryInterface` and provides an ability 
 to register `event listeners`. The `addListener` method from this class is called by `processors`, 
 passing the `event`, `event listener`, and `priority` as parameters.
 

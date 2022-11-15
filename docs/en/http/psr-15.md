@@ -1,7 +1,7 @@
 # HTTP - Custom PSR-15 handlers
 
 Spiral Framework is compliant with `PSR-7`, `PSR-15`, and `PSR-17` community standards; it allows you to swap HTTP layer
-implementation to any alternative.
+implementation for any alternative.
 
 > **Note**
 > By default, `Psr\Http\Server\RequestHandlerInterface` is implemented and bound to `Spiral\Router\Router`. You would
@@ -10,14 +10,14 @@ implementation to any alternative.
 ## Fast Route
 
 As an example, we can replace the default spiral router with one based
-on [FastRoute](https://github.com/nikic/FastRoute). The implementation provided
+on [FastRoute](https://github.com/nikic/FastRoute). The implementation is provided
 by [https://github.com/middlewares/fast-route](https://github.com/middlewares/fast-route).
 
 ```bash
 composer require middlewares/fast-route middlewares/request-handler
 ```
 
-Create bootloader to bind this implementation to our http server. We can either bind handler 
+Create a bootloader to bind this implementation to our http server. We can either bind a handler 
 via `Spiral\Bootloader\Http\HttpBootloader` or simply declare `Psr\Http\Server\RequestHandlerInterface` in `SINGLETONS`:
 
 ```php
@@ -64,7 +64,7 @@ Add this Bootloader to your application, the route `/name/{name}` will be availa
 
 ## Custom Handler
 
-You can also implement your own handler, to shorten time we will implement handler directly in the bootloader:
+You can also implement your own handler. To save time, we will implement a handler directly in the bootloader:
 
 ```php
 use Psr\Http\Message\ResponseFactoryInterface;
