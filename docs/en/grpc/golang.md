@@ -6,7 +6,7 @@ You can combine the PHP and Golang GRPC services in one application.
 
 To demonstrate the ability to register Golang GRPC service, define a proto file with the necessary agreements:
 
-```json
+```proto
 syntax = "proto3";
 
 package multiplier;
