@@ -11,7 +11,7 @@ declaration and compiled into binary messages using the `protoc` compiler.
 To declare our first service, create a proto file in the desired direction. By default, the GRPC build suggests creating
  proto files in the`/proto` directory. Create a file `proto/calculator.proto`:
 
-```json
+```proto
 syntax = "proto3";
 
 option php_namespace = "App\\Calculator";
