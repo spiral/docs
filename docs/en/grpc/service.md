@@ -87,7 +87,7 @@ The code will be moved to the proper place automatically.
 
 ## Implement Service
 
-Implement the `CalculatorInterface` wich is located in `app/src/Calculator` to make your service work:
+Implement the `CalculatorInterface` which is located in `app/src/Calculator` to make your service work:
 
 ```php
 <?php
