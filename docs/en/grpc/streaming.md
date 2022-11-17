@@ -1,15 +1,15 @@
 # GRPC - Streaming
 
-In some cases, you might need to provide large portions of data for the consumer. Combine the ability to write a custom
-Golang GRPC service, Jobs, and Broadcast to stream data from PHP application.
+In some cases, you might need to provide large portions of data to the consumer. Combine the ability to write a custom
+Golang GRPC service, Jobs, and Broadcast to stream data from a PHP application.
 
-> Attention, this article an example implementation. Make sure to implement proper backoff strategy and timeout
-> management before going to production. Make sure to read other GRPC articles before this section.
+> Attention, this article an implementation example. Make sure to implement proper a backoff strategy and timeout
+> management before going to production. Read the other GRPC articles before this section.
 
 ## Service Definition
 
-We can define the service as a singular endpoint with a streaming response. The client will connect the streaming
-service and must stop consuming after the null message received. The consuming will initiate based on the provided `id`.
+We can define the service as a singular endpoint with a streaming response. The client will connect to the streaming
+service and must stop consuming after receiving the null message. The consuming will be initiated based on the provided `id`.
 
 ```json
 syntax = "proto3";
@@ -31,7 +31,7 @@ service Streamer {
 }
 ```
 
-Create direction `stream` and generate client and server SDK for Golang using:
+Create the direction `stream` and generate a client and server SDK for Golang using:
 
 ```bash
 mkdir stream
@@ -40,14 +40,14 @@ protoc -I proto/ proto/stream.proto --go_out=plugins=grpc:strea
 
 ## Consumer
 
-The client/consumer application will be displaying all streamed content directly into `stdout`. You can create it in a
+The client/consumer application will be displaying all the streamed content directly into `stdout`. You can create it in a
 separate directory. Copy the `stream` directory and `app.crt` to your client application.
 
 ```bash
 mod init client
 ```
 
-The application will look as follows:
+The application will look like this:
 
 ```golang
 package main
@@ -95,10 +95,10 @@ func main() {
 
 ## Producer
 
-The producer application contains Golang and PHP parts. The Golang will route message to background PHP process
-using spiral/jobs package and later read the produced response using unique broadcast topic.
+The producer application contains Golang and PHP parts. Golang will route the message to the background PHP process
+using the Spiral/Jobs package and then read the generated response using the broadcast's unique topic.
 
-The service will look as following:
+The service will look like this:
 
 ```golang
 package stream
@@ -174,13 +174,13 @@ func (s *Service) Stream(r *Request, srv Streamer_StreamServer) error {
 }
 ```
 
-Make sure to register service in `main.go`:
+Make sure to register the service in `main.go`:
 
 ```golang
 rr.Container.Register(stream.ID, &stream.Service{})
 ```
 
-The application will require `jobs` and `broadcast` services enabled (in both `.rr` and application bootloaders).
+The application will require the `jobs` and `broadcast` services enabled (in both `.rr` and application bootloaders).
 You do not need any GRPC workers.
 
 ```yaml
@@ -235,4 +235,4 @@ class Produce extends JobHandler
 
 > You can split the streaming into multiple smaller jobs.
 
-Run the server and then the client to test the streaming.
+Run the server and then the client to test streaming.

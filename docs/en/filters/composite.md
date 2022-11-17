@@ -1,6 +1,6 @@
 # Composite Filters
 
-The component provides the ability to create nested filters and a nested array of filters. To demonstrate the
+The component provides an ability to create nested filters and a nested array of filters. To demonstrate the
 composition, we will use a sample filter:
 
 ```php
@@ -31,7 +31,7 @@ This Filter can accept the following data format:
 ## Child Filter
 
 You can create compound filters by nesting other filters inside them. Simply declare the field with a child filter 
-and add attribute `Spiral\Filters\Attribute\NestedFilter`:
+and add the attribute `Spiral\Filters\Attribute\NestedFilter`:
 
 ```php
 namespace App\Request;
@@ -50,7 +50,7 @@ class ProfileFilter extends Filter
 }
 ```
 
-This Filter will accept the data in a format:
+This Filter will accept the data in the format:
 
 ```json
 {
@@ -71,7 +71,7 @@ public function index(ProfileFilter $profile): void
 }
 ```
 
-Both filters will be validated together. In case of an error in `address` filter the error will be mounted in sub-array:
+Both the filters will be validated together. In case of an error in the `address` filter, the error will be mounted in a sub-array:
 
 ```json
 {
@@ -84,7 +84,7 @@ Both filters will be validated together. In case of an error in `address` filter
 
 ### Custom Prefix
 
-In some cases, you might need to use data prefix different from the actual key assigned to the nested Filter, use 
+In some cases, you might need to use a data prefix different from the actual key assigned to the nested Filter, use the
 parameter `prefix` in the `NestedFilter`:
 
 ```php
@@ -116,12 +116,12 @@ This Filter can accept the following data format:
 ```
 
 > **Note**
-> You can skip using the `address` key internally, errors will be mounted accordingly.
+> You can skip the use of the `address` key internally, errors will be mounted accordingly.
 
 ## Array of Filters
 
-You can populate an array of filters at the same time. Use array property type and add attribute 
-`Spiral\Filters\Attribute\NestedArray` with Filter class for each element as parameter `class` and data input:
+You can populate an array of filters at the same time. Use an array property type and add  theattribute 
+`Spiral\Filters\Attribute\NestedArray` with a Filter class for each element as the parameter `class` and data input:
 
 ```php
 use Spiral\Filters\Attribute\Input\Post;
@@ -156,7 +156,7 @@ Such Filter can accept the following data format:
 }
 ```
 
-You can get access to the array filters via array accessor:
+You can access array filters via the array accessor:
 
 ```php
 public function index(MultipleAddressesFilter $ma)
@@ -171,7 +171,7 @@ public function index(MultipleAddressesFilter $ma)
 
 ### Custom Prefix
 
-You can create an array of filters based on data prefix different from the key name in the Filter, use
+You can create an array of filters based on a data prefix different from the key name in the Filter, use the
 parameter `prefix` in the `NestedArray`:
 
 ```php
@@ -210,7 +210,7 @@ This Filter supports the following data format:
 }
 ```
 
-You can still access the nested array filters using `addresses` property:
+You can still access the nested array filters using the `addresses` property:
 
 ```php
 public function index(MultipleAddressesFilter $ma): void
@@ -222,7 +222,7 @@ public function index(MultipleAddressesFilter $ma): void
 
 ## Composite Filters
 
-You can use nested child filters as part of a larger composite Filter. Use prefix `.` (root) to do that:
+You can use nested child filters as part of a larger composite Filter. Use the prefix `.` (root) to do that:
 
 ```php
 namespace App\Request;

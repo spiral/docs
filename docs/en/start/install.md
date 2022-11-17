@@ -15,7 +15,7 @@ Installation includes the following packages out of the box and framework-specif
 
 Server Requirements
 --------
-Make sure that your server configured with the following PHP version and extensions:
+Make sure that your server is configured with the following PHP version and extensions:
 
 * PHP 8.1+, 64bit
 * *mb-string* extension (spiral is UTF-8 centric framework)
@@ -25,7 +25,7 @@ Web Application Bundle
 Application bundle includes the following components:
 
 * High-performance HTTP, HTTP/2 server based on [RoadRunner](https://roadrunner.dev)
-  via [roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package.
+  via [roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package
 * Console commands via Symfony/Console
 * Queue support for AMQP, Beanstalk, Amazon SQS, in-Memory
 * Stempler template engine
@@ -48,7 +48,7 @@ composer create-project spiral/app
 > **Note**
 > Application server will be downloaded automatically (`php-curl` and `php-zip` required).
 
-Once the application installed, you can ensure that it was configured properly by executing:
+Once the application is installed, you can ensure that it has been configured properly by executing:
 
 ```bash
 php app.php configure

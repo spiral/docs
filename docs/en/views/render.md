@@ -1,14 +1,14 @@
 # Views - Rendering Views
 
-To render view, you must obtain an instance of `Spiral\Views\ViewsInterface`.
+To render a view, you must obtain an instance of `Spiral\Views\ViewsInterface`.
 
 > **Note**
-> The component is available via prototyped property `views`.
+> The component is available via the prototyped property `views`.
 
 ## Rendering
 
-To render view in the controller or other service simply invoke the `render` method of `ViewsInterface`. The view name
-does not need to include extension or namespace (default to be used).
+To render a view in the controller or other service, simply invoke the `render` method of `ViewsInterface`. The view name
+does not need to include an extension or namespace (default to be used).
 
 ```php
 use Spiral\Views\ViewsInterface;
@@ -21,7 +21,7 @@ public function index(ViewsInterface $views): string
 }
 ```
 
-To render the view with passed data, use the second array argument:
+To render the view with the passed data, use the second array argument:
 
 ```php
 use Spiral\Views\ViewsInterface;
@@ -38,7 +38,7 @@ public function index(ViewsInterface $views): string
 
 #### Namespaces
 
-To render view from specific namespace prepend it to view name using `:` separator:
+To render a view from a specific namespace, prepend it to the view name using `:` separator:
 
 ```php
 return $views->render('namespace:home', [
@@ -48,8 +48,8 @@ return $views->render('namespace:home', [
 
 ## View Object
 
-In some cases it might be more performant to cache the view in stateless component, obtain view
-object (`Spiral\Views\ViewInterface`) using method `get` of `ViewsInterface`:
+In some cases it might be more performant to cache the view in a stateless component, obtain the view
+object (`Spiral\Views\ViewInterface`) using the method `get` of `ViewsInterface`:
 
 ```php
 $view = $views->get('home');
@@ -66,7 +66,7 @@ return $view->render([
 ## Global variables
 
 You can add global variables that will be available in all views. There are several ways to add a global variable.
-Using configuration file `app/config/views.php`.
+You can use the configuration file `app/config/views.php`.
 
 ```php
 return [

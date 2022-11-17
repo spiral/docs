@@ -1,6 +1,6 @@
 # Framework - Finalizers
 
-Most of the framework components does not require any resetting after the request completion. However, there are
+Most of the framework components do not require any resetting after the request completion. However, there are
 multiple use-cases when you might want to reset your library after the user request is complete.
 
 > **Note**
@@ -44,13 +44,13 @@ All of the application dispatchers will invoke the finalizer. During:
 * console command is complete
 
 > **Warning**
-> Attention, the finalizer will only be invoked if the specific dispatcher has been started. You can freely invoke app
-> commands and HTTP methods without using dispatcher directly and without resetting your services after each request.
+> The finalizer will only be invoked if a specific dispatcher has been started. You can freely invoke app
+> commands and HTTP methods without using a dispatcher directly and without resetting your services after each request.
 
 Your handler will receive the first bool argument, which specifies if the app is going to terminate after the request.
 
 > **Note**
-> Avoid resetting IoC setting in finalizer as it might lead to some singleton service cache previous service
+> Avoid resetting IoC setting in the finalizer as it might lead to some singleton service cache previous service
 > version.
 
 ## Example Finalizer

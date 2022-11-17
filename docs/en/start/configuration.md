@@ -47,7 +47,7 @@ public function index(): void
 
 ## Configuration
 
-The default component configuration located inside the related Bootloader. You can alter such configuration using other
+The default component configuration is located inside the related Bootloader. You can alter such configuration using other
 bootloaders (see Auto-Configuration) or by creating a *default configuration* file in `app/config`.
 
 > **Note**
@@ -84,7 +84,7 @@ return [
 ];
 ```
 
-Identically, you can edit any configuration for any of component. For example, we can change default HTTP headers
+In exactly the same way, you can edit any configuration for any component. For example, we can change default HTTP headers
 via `app/config/http.php`:
 
 ```php
@@ -116,8 +116,8 @@ final class HttpConfig extends InjectableConfig
 
 ### Config objects
 
-All of the config object in the Spiral Framework are injectable. It means than when you try to resolve a config object 
-via container it will automatically load all values from config file or will use default settings.
+All of the config objects in the Spiral Framework are injectable. It means that when you try to resolve a config object 
+via container, it will automatically load all values from config file or will use default settings.
 
 ```php
 use Spiral\Http\Config\HttpConfig;

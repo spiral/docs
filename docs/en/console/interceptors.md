@@ -1,10 +1,10 @@
 # Console - Interceptors
 
-Interceptors allow to intercept the execution of a console command and execute some logic before or after the command execution.
+Interceptors allow you to intercept the execution of a console command and execute some logic before or after the command execution.
 
 ## Creating an Interceptor
 
-To create an interceptor, you need to create a class and implement an interface `Spiral\Core\CoreInterceptorInterface`.
+To create an interceptor, you need to create a class and implement the interface `Spiral\Core\CoreInterceptorInterface`.
 
 ```php
 namespace App;
@@ -43,7 +43,7 @@ class CustomInterceptor implements CoreInterceptorInterface
 
 ## Registering a new Interceptor
 
-For an interceptor works, it must be registered in the application. There are several ways to add a new interceptor.
+An interceptor must be registered in the application to work properly. There are several ways to add a new interceptor.
 
 ### Via configuration
 

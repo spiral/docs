@@ -1,6 +1,6 @@
 # Data Grids
 
-Use component `spiral/data-grid` and `spiral/data-grid-bridge` to generate Cycle and DBAL select queries automatically,
+Use the component `spiral/data-grid` and `spiral/data-grid-bridge` to generate Cycle and DBAL select queries automatically,
 based on specifications provided by the end-user.
 
 ## Installation
@@ -12,7 +12,7 @@ composer require spiral/data-grid-bridge
 ```
 
 > **Note**
-> Please note that the spiral/framework >= 2.7 already includes this component.
+> that the spiral/framework >= 2.7 already includes this component.
 
 Activate the bootloader `Spiral\DataGrid\Bootloader\GridBootloader` in your application after the Database and Cycle
 bootloaders:
@@ -30,7 +30,7 @@ To use the data grid, you will need two base abstractions - grid factory and gri
 
 ### Grid Schema
 
-Grid Schema is the object which describes how the data selector should be configured based on user input. Use
+Grid Schema is an object which describes how a data selector should be configured based on user input. Use
 `Spiral\DataGrid\GridSchema`:
 
 ```php
@@ -82,7 +82,7 @@ $result = $factory->create($users->select(), $schema);
 print_r(iterator_to_array($result));
 ```
 
-If you want any of the specifications be applied by default, you can pass them next way:
+If you want any of the specifications to be applied by default, you can pass them in the following way:
 
 ```php
 /** @var Spiral\DataGrid\GridFactory $factory */
@@ -131,7 +131,7 @@ $schema->setPaginator(new PagePaginator(10, [25, 50, 100, 500]));
 ```
 
 From the user input, such paginator accepts an array with 2 keys, `limit` and `page`.
-If limit is set it should be presented in the `allowedLimits` constructor param.
+If the limit is set, it should be presented in the `allowedLimits` constructor param.
 
 ```php
 use Spiral\DataGrid\Specification\Pagination\PagePagination;
@@ -146,11 +146,11 @@ $paginator->withValue(['limit' => 100, 'page' => 2]);
 ```
 
 Under the hood, this paginator converts `limit` and `page` into the `Limit` and `Offset` specification. You are free to 
-write your own paginator, like cursor-based one (for example: `lastID`+`limit`).
+write your own paginator, such as a cursor-based one (for example: `lastID`+`limit`).
 
 ## Sorter specifications
 
-Sorters are specifications that carry sorting direction. For sorters that can apply direction, you can pass one of the 
+Sorters are specifications that carry a sorting direction. For sorters that can apply direction, you can pass one of the 
 next values:
 
 - `1`, `'1'`, `'asc'`, `SORT_ASC` for ascending order
@@ -165,7 +165,7 @@ Next specifications are available for grids for now:
 
 ### Ordered sorters
 
-`AscSorter` and `DescSorter` contain the expressions that should be applied with ascending (or descending) sorting
+`AscSorter` and `DescSorter` contain expressions that should be applied with ascending (or descending) sorting
 order:
 
 ```php
@@ -177,8 +177,8 @@ $descSorter = new Sorter\DescSorter('first_name', 'last_name');
 
 ### Directional sorter
 
-This sorter contains 2 independent sorters each for ascending and descending order. By receiving the order via 
-`withValue` we will get one of the sorters:
+This sorter contains 2 independent sorters, each for ascending and descending order. By receiving the order via 
+`withValue`, we will get one of the sorters:
 
 ```php
 use Spiral\DataGrid\Specification\Sorter;
@@ -196,8 +196,8 @@ $descSorter = $sorter->withDirection('desc');
 ```
 
 > **Note**
-> Note that you can sort using different set of fields in both sorters.
-> If you have the same set of fields, use [sorter](#sorter-specifications-sorter-specification) instead.
+> that you can sort using a different set of fields in both sorters.
+> If you have the same set of fields, use a [sorter](#sorter-specifications-sorter-specification) instead.
 
 ### Sorter
 
@@ -238,8 +238,8 @@ $descSorter = $sorter->withDirection('desc');
 
 ## Filter specifications
 
-Filters are specifications that carry values. Values can be passed via the constructor directly. In this case the filter 
-value is fixed and will be applied as is.
+Filters are specifications that carry values. Values can be passed directly via the constructor. In this case, the filter 
+value is fixed and will be applied as it is.
 
 ```php
 use Spiral\DataGrid\Specification\Filter;
@@ -251,8 +251,7 @@ $filter = new Filter\Equals('name', 'Antony');
 $filter = $filter->withValue('John');   
 ```
 
-If you pass the `ValueInterface` to the constructor then you can use `withValue()` method. Then the incoming value will 
-be checked if it matches the `ValueInterface` type and be converted.
+If you pass the `ValueInterface` to the constructor, you can use `withValue()` method. Then, it will be checked if the incoming value matches the `ValueInterface` type and will be converted.
 
 ```php
 use Spiral\DataGrid\Specification\Filter;
@@ -264,11 +263,11 @@ $filter = new Filter\Equals('price', new Value\NumericValue());
 // the value will be converted to int and the price should be equal to 7  
 $filter = $filter->withValue('7'); 
 
-// this value is not applicable due to it is not numeric  
+// this value is not applicable as it is not numeric  
 $filter = $filter->withValue([123]);
 ```
 
-Next specifications are available for grids for now:
+The next specifications are available for grids now:
 
 * [all](#filter-specifications-all)
 * [any](#filter-specifications-any)
@@ -280,19 +279,19 @@ Next specifications are available for grids for now:
 * [select](#filter-specifications-select)
 * [between](#filter-specifications-between)
 
-> **Note**
-> There's much more interesting in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below
+> **Note** 
+> There are more interesting things in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below.
 
 ### All
 
 This is a union filter for logic `and` operation.
 
-Examples with fixed values:
+Some examples with fixed values:
 
 ```php
 use Spiral\DataGrid\Specification\Filter;
 
-// the price should be equal to 2 and the quantity be greater than 5
+// the price should be equal to 2 and the quantity should be greater than 5
 $all = new Filter\All(
     new Filter\Equals('price', 2),
     new Filter\Gt('quantity', 5)
@@ -313,7 +312,7 @@ $all = new Filter\All(
     new Filter\Lt('option_id', 4)
 );
 
-// the price should be equal to 5, the quantity be greater than 5 and the option_id less than 4
+// the price should be equal to 5, the quantity should be greater than 5 and the option_id less than 4
 $all = $all->withValue(5);
 ```
 
@@ -347,7 +346,7 @@ $any = new Filter\Any(
     new Filter\Lt('option_id', 4)
 );
 
-// the price should be equal to 5 or the quantity be greater than 5 or the option_id less than 4
+// the price should be equal to 5 or the quantity should be greater than 5 or the option_id less than 4
 $any = $any->withValue(5);
 ```
 
@@ -446,7 +445,7 @@ $notInArray = $notInArray->withValue(['2', '5']);
 ```
 
 Third param allows auto-wrapping the `ValueInterface` with `ArrayValue` (enabled by default). In case you have a 
-non-trivial value (or wrapped with an accessor value) pass `false` as 3rd argument to control the filter wrapping:
+non-trivial value (or wrapped with an accessor value), pass `false` as 3rd argument to control the filter wrapping:
 
 ```php
 use Spiral\DataGrid\Specification\Filter;
@@ -509,7 +508,7 @@ $map = new Filter\Map([
     'to'   => new Filter\Lt('quantity', new Value\NumericValue())
 ]);
 
-// the price should be greater than 2 and the quantity be less than 5
+// the price should be greater than 2 and the quantity should be less than 5
 $map = $map->withValue(['from' => 2, 'to' => 5]);
 
 // invalid input, map will be set to null
@@ -584,13 +583,13 @@ $filter = $select->withValue('four');
 This filter represents the SQL `between` operation, but can be presented as two `gt/gte` and `lt/lte` filters.
 
 You have an ability to define whether the boundary values should be included or not. If the boundary values aren't 
-included, this filter will be converted into `gt`+`lt` filters, otherwise when getting filters via `getFilters()` method 
-you can specify either use the original `between` operator or `gte`+`lte` filters.
+included, this filter will be converted into `gt`+`lt` filters, otherwise when getting filters via `getFilters()` method, 
+you can specify either usage of the original `between` operator or `gte`+`lte` filters.
 
 > **Note**
-> Not all databases support `between` operation, that's why conversion to `gt/gte`+`lt/lte` is by default.
+> Not all databases support `between` operation, that's why the conversion to `gt/gte`+`lt/lte` is used by default.
 
-Between filter has two modifications: field-based and value-based:
+Between filter has two modifications: field-based and value-based.
 
 ```php
 use Spiral\DataGrid\Specification\Filter;
@@ -642,7 +641,7 @@ $valueBetween  = new Filter\ValueBetween(new Value\DatetimeValue(), ['start_date
 $valueBetween = $valueBetween->withValue('2020 Apr, 10th');
 ```
 
-Select render type:
+Select a render type:
 
 ```php
 use Spiral\DataGrid\Specification\Filter;
@@ -660,12 +659,12 @@ $notIncludingBetween->getFilters(true);
 ```
 
 > **Note**
-> The same is for `ValueBetween` filter
+> The same is for `ValueBetween` filter.
 
 ## Mixed Specifications
 
 `Spiral\DataGrid\Specification\Filter\SortedFilter` and `Spiral\DataGrid\Specification\Sorter\FilteredSorter` are
-special sequence specifications that allows using both filters and sorters under the single name. 
+special sequence specifications that allow using both filters and sorters under a single name. 
 
 Usage:
 
@@ -691,13 +690,13 @@ $schema->addFilter(
 ```
 
 > **Note**
-> Using `upcoming` filter we apply both sorting and filtering.
+> We apply both sorting and filtering using the `upcoming` filter.
 
 ## Filter values
 
-Filter values is the way of converting input type and its validation. Please don't use `convert()` method without 
-validating the input via `accepts()` method. They can tell you is the input acceptable and converts it to a desired 
-type if possible. Next values are available for grids for now:
+We use filter values to convert the input type and its validation. Please don't use `convert()` method without 
+validating the input via `accepts()` method. They can tell you if the input is acceptable and converts it to a desired 
+type. Next values are available for grids for now:
 
 * [any](#filter-values-any)
 * [array](#filter-values-array)
@@ -825,7 +824,7 @@ $value->convert('2020-01-21'); // January 21st, 20
 ### Enum
 
 This value expects an input to be a part of a given enum array and converts it according to the base value type. All 
-enum values are converted also:
+enum values are also converted:
 
 ```php
 use Spiral\DataGrid\Specification\Value;
@@ -875,7 +874,7 @@ $value->convert('3');    // [3]
 
 ### String
 
-Applies string-like input, also empty strings (if a corresponding constructor param passed):
+Applies string-like input, also empty strings (if a corresponding constructor param is passed):
 
 ```php
 use Spiral\DataGrid\Specification\Value;
@@ -893,7 +892,7 @@ $allowEmpty->accepts(''); // true
 
 ### Scalar
 
-Applies scalar values, also empty strings (if a corresponding constructor param passed):
+Applies scalar values, also empty strings (if a corresponding constructor param is passed):
 
 ```php
 use Spiral\DataGrid\Specification\Value;
@@ -911,7 +910,7 @@ $allowEmpty->accepts('');  // true
 
 ### Regex
 
-Applies string-like input and check if it matches the given regex pattern, converts to string:
+Applies string-like input and checks if it matches the given regex pattern, converts to string:
 
 ```php
 use Spiral\DataGrid\Specification\Value;
@@ -948,8 +947,8 @@ $valid->accepts('00000000-0000-0000-0000-000000000000'); // true
 
 ### Range
 
-This value expects an input to be a inside of a given range and converts it according to the base value type. Range 
-boundary values are converted also. You can specify either the input can be also equals to the boundary values or not:
+This value expects an input to be the inside of a given range and converts it according to the base value type. Range 
+boundary values are also converted. You can also specify if the input can be equal to the boundary values or not:
 
 ```php
 use Spiral\DataGrid\Specification\Value;
@@ -967,7 +966,7 @@ $value->accepts(1);   // false
 
 ### Not-Empty
 
-If you need to check the value to be not empty first, wrap the value with `NotEmpty()`:
+If you need to check first that the value isn't empty, wrap the value with `NotEmpty()`:
 
 ```php
 use Spiral\DataGrid\Specification\Value;
@@ -982,8 +981,8 @@ $notEmpty->accepts(0); // false
 ## Value accessors
 
 Accessors act like values from the section above but have another purpose - you can use them to perform not-type
-transformations, for example using strings, you may want to trim the value or convert it to uppercase. They can be 
-applied only if the value applicable by a given `ValueInterface`. Examples Below:
+transformations, for example, using strings, you may want to trim the value or convert it to uppercase. They can be 
+applied only if the value is applicable by a given `ValueInterface`. Examples below:
 
 ```php
 use Spiral\DataGrid\Specification\Value;
@@ -1009,7 +1008,7 @@ $multiply->convert(2); // 2*2+2=6
 $add->convert(2);      // (2+2)*2=8
 ```
 
-Next accessors are available for grids for now:
+Next accessors are available for grids now:
 
 - `trim` trims a string
 - `toUpper` converts a string to upper case

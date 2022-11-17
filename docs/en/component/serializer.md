@@ -1,6 +1,6 @@
 # Serializer
 
-The Spiral Framework provides a component for serializing and deserializing data. Serialization is a complex topic. This
+The Spiral Framework provides a component for serializing and deserializing data. Serialization is a complex topic. The
 component provides only the simplest serializers out of the box and may not cover all your use cases. But it provides an
 easy way to integrate serialization tools into the Spiral Framework or develop your solutions for serializing data in
 your application.
@@ -109,7 +109,7 @@ class MyService
 
 ### SerializerManager
 
-Using the `Spiral\Serializer\SerializerManager`, you can get a specific serializer by serializer string key from config.
+Using the `Spiral\Serializer\SerializerManager`, you can get a specific serializer by a serializer string key from config.
 
 ```php
 namespace App\Service;
@@ -159,8 +159,8 @@ class CustomSerializer implements SerializerInterface
 }
 ```
 
-You need to implement the `serialize` method with the `$payload` parameter, and this method should return
-the serialized data. And the `unserialize` method, which in the parameters accepts serialized data `$payload`
+You need to implement 2 methods: the `serialize` method with the `$payload` parameter (and this method should return
+the serialized data) and the `unserialize` method, which in the parameters accepts serialized data `$payload`
 and optionally the name of the class or object `$type` into which the payload should be deserialized.
 
 ### Registering a new Serializer

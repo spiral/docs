@@ -2,7 +2,7 @@
 
 UI component for QR Codes
 
-They are located in toolkit bundle, that can be included like so:
+They are located in the toolkit bundle, that can be included like so:
 
 ```xhtml
 <use:bundle path="toolkit:bundle"/>
@@ -14,7 +14,7 @@ This is also automatically included when using
 <use:bundle path="keeper:bundle"/>
 ```
 
-See [Usage Samples](https://github.com/spiral/app-keeper/blob/master/app/views/keeper/showcase/qrcode.dark.php) in demo
+See [Usage Samples](https://github.com/spiral/app-keeper/blob/master/app/views/keeper/showcase/qrcode.dark.php) in the demo
 repository
 
 ## Usage
@@ -36,17 +36,17 @@ for [TinyMCE options](https://www.tiny.cloud/docs/configure/)
 | Parameter  | Required | Default | Description                                                                                                                |
 |------------|----------|---------|----------------------------------------------------------------------------------------------------------------------------|
 | value      | yes      | -       | Value to render                                                                                                            |
-| type       | no       | svg     | Type of render, 'canvas' or 'svg'                                                                                          |
-| size       | no       | 200     | Size of code                                                                                                               |
-| bgColor    | no       | white   | Background color                                                                                                           |
-| fgColor    | no       | black   | Foreground color                                                                                                           |
-| ecLevel    | no       | M       | Error correction level                                                                                                     |
-| logoUrl    | no       | -       | specifies URL of logo to render on top of code.                                                                            |
+| type       | no       | svg     | A type of render, 'canvas' or 'svg'                                                                                          |
+| size       | no       | 200     | Сode size                                                                                                               |
+| bgColor    | no       | white   | A background color                                                                                                           |
+| fgColor    | no       | black   | A foreground color                                                                                                           |
+| ecLevel    | no       | M       | An error correction level                                                                                                     |
+| logoUrl    | no       | -       | Specifies URL of the logo to render on top of the code.                                                                            |
 | logoHeight | no       | -       | Logo render height                                                                                                         |
 | logoWidth  | no       | -       | Logo render width                                                                                                          |
-| logoX      | no       | -       | position to render logo at                                                                                                 |
-| logoY      | no       | -       | position to render logo at                                                                                                 |
-| logoMargin | no       | -       | renders background color space around logo. Specify 0 to render only under logo. Omit to render logos with transparent BG. |
+| logoX      | no       | -       | A position to render the logo at                                                                                                 |
+| logoY      | no       | -       | A position to render the logo at                                                                                                 |
+| logoMargin | no       | -       | Renders the background color space around the logo. Specify 0 to render only under the logo. Omit to render logos with transparent BG. |
 
 ```xhtml
 <ui:qrcode value="HK3ARG6MYFMIDDHB"/>
