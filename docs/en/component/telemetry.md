@@ -122,19 +122,10 @@ public function handle(ServerRequestInterface $request): ResponseInterface
 }
 ```
 
-$tracer = $this->tracerFactory->make($ctx)->trace(
-    name: \sprintf('Interceptor [%s]', __CLASS__),
-    callback: static fn(): mixed => $core->callAction($controller, $action, $parameters),
-    attributes: [
-        'controller' => $controller,
-        'action' => $action,
-    ],
-    scoped: true,
-    traceKind: TraceKind::SERVER
-)
-```
-
 # Open Telemetry integration
+
+![OpenTelemetry](https://user-images.githubusercontent.com/773481/202469153-f0b6458c-535c-4cb7-8570-bab8c27abd29.png)
+
 
 Integration with OpenTelemetry is available via [spiral/otel-bridge](https://github.com/spiral/otel-bridge) package.
 
