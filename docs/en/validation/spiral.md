@@ -169,7 +169,7 @@ $validator = $validation->validate(
 
 ### Checker Rules
 
-You can split your rule name using `::` prefix, where first part is checker name and second is method name:
+You can split your rule name using `::` prefix, where the first part is the checker name and the second is the method name:
 
 Let's get `Spiral\Validator\Checker\FileChecker` checker, for example:
 
@@ -233,7 +233,7 @@ $validator = $validation->validate(
 
 ### Parameters
 
-All values listed in rule array will be passed as rule arguments. For example to check value using `in_array`:
+All the values listed in rule array will be passed as rule arguments. For example, to check value using `in_array`:
 
 ```php
 $validator = $validation->validate(
@@ -306,7 +306,7 @@ $validator = $validation->validate(
 
 ### Conditions
 
-In some cases the rule must only be activated based on some external condition, use rule attribute `if` for this
+In some cases the rule must be activated only based on some external condition, use rule attribute `if` for this
 purpose:
 
 ```php
@@ -382,12 +382,12 @@ Following conditions available for the usage:
 |------------|---------|-----------------------------------------------|
 | withAny    | *array* | When at least one field is not empty.         |
 | withoutAny | *array* | When at least one field is empty.             |
-| withAll    | *array* | When all fields are not empty.                |
-| withoutAll | *array* | When all fields are empty.                    |
-| present    | *array* | When all fields are presented in the request. |
-| absent     | *array* | When all fields are absent in the request.    |
-| noneOf     | *array* | When none of nested conditions is met.        |
-| anyOf      | *array* | When any of nested conditions is met.         |
+| withAll    | *array* | When all the fields are not empty.                |
+| withoutAll | *array* | When all the fields are empty.                    |
+| present    | *array* | When all the fields are presented in the request. |
+| absent     | *array* | When all the fields are absent in the request.    |
+| noneOf     | *array* | When none of the nested conditions is met.        |
+| anyOf      | *array* | When any of the nested conditions is met.         |
 
 > **Note**
 > You can create your conditions using `Spiral\Validator\ConditionInterface`.
@@ -444,18 +444,18 @@ The most used rule-set is available thought the set of shortcuts:
 
 | Rule     | Parameters             | Description                                   |
 |----------|------------------------|-----------------------------------------------|
-| notEmpty | asString:*bool* - true | Value should not be empty (same as `!empty`). |
-| notNull  | ---                    | Value should not be null.                     |
-| boolean  | ---                    | Value has to be boolean or integer[0,1].      |
+| notEmpty | asString:*bool* - true | The value should not be empty (same as `!empty`). |
+| notNull  | ---                    | The value should not be null.                     |
+| boolean  | ---                    | The value has to be boolean or integer[0,1].      |
 
 > **Note**
-> All of the rules of this checker are available without prefix.
+> All of the rules of this checker are available without the prefix.
 
 ### Required
 
 | Rule     | Parameters             | Description                |
 |----------|------------------------|----------------------------|
-| notEmpty | asString:*bool* - true | Value should not be empty. |
+| notEmpty | asString:*bool* - true |The value should not be empty. |
 
 Examples:
 
@@ -489,8 +489,8 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 | Rule       | Parameters                            | Description                                      |
 |------------|---------------------------------------|--------------------------------------------------|
-| cardNumber | ---                                   | Check credit card passed by Luhn algorithm.      |
-| match      | field:*string*, strict:*bool* - false | Check if value matches value from another field. |
+| cardNumber | ---                                   | Checks the credit card passed by Luhn algorithm.      |
+| match      | field:*string*, strict:*bool* - false | Checks if the value matches the value from another field. |
 
 > **Note**
 > All of the rules of this checker are available without prefix.
@@ -502,9 +502,9 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 | Rule  | Parameters                                              | Description              |
 |-------|---------------------------------------------------------|--------------------------|
-| email | ---                                                     | Check if email is valid. |
-| url   | schemas:*?array* - null, defaultSchema:*?string* - null | Check if URL is valid.   |
-| uri   | ---                                                     | Check if URI is valid.   |
+| email | ---                                                     | Checks if the email is valid. |
+| url   | schemas:*?array* - null, defaultSchema:*?string* - null | Checks if the URL is valid.   |
+| uri   | ---                                                     | Checks if the URI is valid.   |
 
 > **Note**
 > `email` and `url` rules are available without `address` prefix via aliases, for `uri` use `address::uri`.
@@ -516,9 +516,9 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 | Rule   | Parameters                 | Description                                                        |
 |--------|----------------------------|--------------------------------------------------------------------|
-| range  | begin:*float*, end:*float* | Check if the number is in a specified range.                       |
-| higher | limit:*float*              | Check if the value is bigger or equal to that which is specified.  |
-| lower  | limit:*float*              | Check if the value is smaller or equal to that which is specified. |
+| range  | begin:*float*, end:*float* | Checks if the number is in the specified range.                       |
+| higher | limit:*float*              | Checks if the value is bigger or equal to the specified one.  |
+| lower  | limit:*float*              | Checks if the value is smaller or equal to the specified one. |
 
 ### String
 
@@ -527,11 +527,11 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 | Rule    | Parameters              | Description                                                            |
 |---------|-------------------------|------------------------------------------------------------------------|
-| regexp  | expression:*string*     | Check string using regexp.                                             |
-| shorter | length:*int*            | Check if string length is shorter or equal that specified value.       |
-| longer  | length:*int*            | Check if the string length is longer or equal to that specified value. |
-| length  | length:*int*            | Check if the string length is equal to specified value.                |
-| range   | left:*int*, right:*int* | Check if the string length fits within the specified range.            |
+| regexp  | expression:*string*     | Checks the string using regexp.                                             |
+| shorter | length:*int*            | Checks if the string length is shorter or equal to the specified value.       |
+| longer  | length:*int*            | Checks if the string length is longer or equal to the specified value. |
+| length  | length:*int*            | Checks if the string length is equal to the specified value.                |
+| range   | left:*int*, right:*int* | Checks if the string length fits within the specified range.            |
 
 Examples:
 
@@ -564,10 +564,10 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 | Rule    | Parameters           | Description                                                           |
 |---------|----------------------|-----------------------------------------------------------------------|
-| count   | length:*int*         | Check that an array has a size equal to the given value.              |
-| shorter | length:*int*         | Check that an array has a size less than or equal to the given value. |
-| longer  | length:*int*         | Check that an array has a size more than or equal to the given value. |
-| range   | min:*int*, max:*int* | Check that an array has a size between the given min and max.         |
+| count   | length:*int*         | Checks if an array has a size equal to the given value.              |
+| shorter | length:*int*         | Checks if an array has a size smaller than or equal to the given value. |
+| longer  | length:*int*         | Checks if an array has a size bigger than or equal to the given value. |
+| range   | min:*int*, max:*int* | Checks if an array has a size between the given min and max.         |
 
 Examples:
 
@@ -592,10 +592,10 @@ File checker fully supports the filename provided in a string form or using `Upl
 
 | Rule      | Parameters            | Description                                                                      |
 |-----------|-----------------------|----------------------------------------------------------------------------------|
-| exists    | ---                   | Check if file exist.                                                             |
-| uploaded  | ---                   | Check if file was uploaded.                                                      |
-| size      | size:*int*            | Check if file size less that specified value in KB.                              |
-| extension | extensions:*array*    | Check if file extension in whitelist. Client name of uploaded file will be used! |                                                     |
+| exists    | ---                   | Checks if the file exist.                                                             |
+| uploaded  | ---                   | Checks if the file was uploaded.                                                      |
+| size      | size:*int*            | Checks if the file size is smaller than the specified value in KB.                              |
+| extension | extensions:*array*    | Checks if the file extension in whitelist. The client name of the uploaded file will be used! |                                                     |
 
 ### Image Checker
 
@@ -606,10 +606,10 @@ The image checker extends the file checker and fully supports its features.
 
 | Rule    | Parameters                    | Description                                                                          |
 |---------|-------------------------------|--------------------------------------------------------------------------------------|
-| type    | types:*array*                 | Check if the image is within a list of allowed image types.                          |
-| valid   | ---                           | Shortcut to check if the image has an allowed type (JPEG, PNG, and GIF are allowed). |
-| smaller | width:*int*, height:*int*     | Check if image is smaller than a specified shape (height check if optional).         |
-| bigger  | width:*int*, height:*int*     | Check if image is bigger than a specified shape (height check is optional).          |       
+| type    | types:*array*                 | Checks if the image is within the list of the allowed image types.                          |
+| valid   | ---                           | A shortcut to check if the image has an allowed type (JPEG, PNG, and GIF are allowed). |
+| smaller | width:*int*, height:*int*     | Checks if the image is smaller than the specified shape (height check if optional).         |
+| bigger  | width:*int*, height:*int*     | Checks if the image is bigger than the specified shape (height check is optional).          |       
 
 ### Datetime
 
@@ -620,13 +620,13 @@ This checker can apply `now` value in the constructor
 
 | Rule          | Parameters                                                                      | Description                                                            |
 |---------------|---------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | Value has to be a date in the future.                                  |
-| past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | Value has to be a date in the past.                                    |
-| format        | format:*string*                                                                 | Value should match the specified date format                           |
-| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come before a given threshold.                            |
-| after         | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | Value should come after a given threshold.                             |
-| valid         | ---                                                                             | Value has to be valid datetime definition including numeric timestamp. |
-| timezone      | ---                                                                             | Value has to be valid timezone.                                        |
+| future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | The value has to be a date in the future.                                  |
+| past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | The value has to be a date in the past.                                    |
+| format        | format:*string*                                                                 | The value should match the specified date format.                           |
+| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | The value should come before the given threshold.                            |
+| after         | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | The value should come after the given threshold.                             |
+| valid         | ---                                                                             | The value has to be a valid datetime definition including numeric timestamp. |
+| timezone      | ---                                                                             | The value has to be a valid timezone.                                        |
 
 > **Note**
 > Setting `useMicroSeconds` into true allows to check datetime with microseconds.<br/>

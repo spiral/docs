@@ -1,7 +1,7 @@
 # Queue and Jobs - Running Jobs
 
-You can run queue jobs in your application right after the installation of the application server. Web and GRPC bundles
-come with pre-configured `queue` service capable of running your tasks using an `ephemeral` broker.
+You can run queue jobs in your application right after the installation of the application server. The Web and GRPC bundles
+come with a pre-configured `queue` service capable of running your tasks using an `ephemeral` broker.
 
 ## Create Handler
 
@@ -23,7 +23,7 @@ class SampleJob extends JobHandler
 }
 ```
 
-You can freely use method injection in your handler:
+You can freely use the method injection in your handler:
 
 ```php
 namespace App\Jobs;
@@ -40,12 +40,12 @@ class SampleJob extends JobHandler
 ```
 
 > **Note**
-> You can define handlers as singletons for higher performance.
+> You can define handlers as singletons for better performance.
 
 ## Dispatch Job
 
-You can dispatch your job via `Spiral\Queue\QueueInterface` or via prototype property `queue`. The method `push` of
-`QueueInterface` accepts job name, the payload in array form, and additional options.
+You can dispatch your job via `Spiral\Queue\QueueInterface` or via the prototype property `queue`. The method `push` of
+`QueueInterface` accepts a job name, the payload in the array form, and additional options.
 
 ```php
 use App\Jobs\SampleJob;
@@ -57,14 +57,14 @@ public function createJob(QueueInterface $queue): void
 }
 ``` 
 
-You can use your handler name as a job name. It will be automatically converted into `-` identifier, for example,
+You can use your handler name as the job name. It will be automatically converted into `-` identifier, for example,
 `App\Jobs\SampleJob` will be presented as `app-jobs-sampleJob`.
 
 ## Passing Parameters
 
-Job handlers can accept any number of job parameters via the second argument of `QueueInterface->push()`. Parameters
-provided in array form. No objects are supported (see below how to bypass it) to ensure compatibility with consumers
-written on other languages.
+Job handlers can accept any number of job parameters via the second argument of `QueueInterface->push()`. The parameters
+provided in an array form. No objects are supported (see how to bypass it below) to ensure compatibility with consumers
+written in other languages.
 
 ```php
 use App\Jobs\SampleJob;
@@ -76,7 +76,7 @@ public function createJob(QueueInterface $queue): void
 }
 ```
 
-You can receive passed payload in handler using the parameter `payload` of `invoke` method:
+You can receive the passed payload in the handler using the parameter `payload` of the `invoke` method:
 
 ```php
 use Spiral\Queue\JobHandler;
@@ -107,7 +107,7 @@ class SampleJob extends JobHandler
 
 ## Job handler registry
 
-If you don't want to use job handler class name as a queue job name like in an example below:
+If you don't want to use the job handler class name as the queue job name as in the example below:
 
 ```php
 use Spiral\Queue\QueueInterface;
@@ -118,9 +118,9 @@ public function createJob(QueueInterface $queue): void
 }
 ```
 
-you need to tell a queue how to handle a job with name `sample::job`.
+you need to tell the queue how to handle a job with the name `sample::job`.
 
-You can do it via `app/config/queue.php` config:
+You can do it via the `app/config/queue.php` config:
 
 ```php
 <?php
@@ -152,10 +152,10 @@ class MyBootloader extends Bootloader
 
 ## Job Payload serialization
 
-When a job pushed into a queue, a job payload would be serialized via [Serializer component](../component/serializer.md).
+When a job pushed into a queue, the job payload is serialized via [Serializer component](../component/serializer.md).
 
 > **Note**
-> By default, the payload will be serialized with default serializer `Spiral\Serializer\Serializer\JsonSerializer`.
+> By default, the payload will be serialized with the default serializer `Spiral\Serializer\Serializer\JsonSerializer`.
 
 ### Changing serializer
 
@@ -188,7 +188,7 @@ a `fully-qualified class name`, a `serializer instance`, an `Autowire instance`.
 > **Note**
 > The serializer class must implement the `Spiral\Serializer\SerializerInterface` interface.
 
-Or register a serializer using the `setSerializer` method of the `Spiral\Queue\QueueRegistry` class.
+Or, register a serializer using the `setSerializer` method of the `Spiral\Queue\QueueRegistry` class.
 
 ```php
 namespace App\Bootloader;
@@ -212,7 +212,7 @@ class AppBootloader extends Bootloader
 
 ## Handle failed jobs
 
-By default, all failed jobs will be sent into spiral log. But you can change default behavior. At first, you need to
+By default, all failed jobs will be sent into the spiral log. But you can change the default behavior. At first, you need to
 create your own implementation for `Spiral\Queue\Failed\FailedJobHandlerInterface`.
 
 ### Custom handler example
@@ -249,7 +249,7 @@ class DatabaseFailedJobsHandler implements FailedJobHandlerInterface
 }
 ```
 
-Then you need to bind your implementation with `Spiral\Queue\Failed\FailedJobHandlerInterface` interface.
+Then you need to bind your implementation to the `Spiral\Queue\Failed\FailedJobHandlerInterface` interface.
 
 ```php
 namespace App\Bootloader;
@@ -278,5 +278,5 @@ protected const APP = [
 
 | Event                            | Description                                                 |
 |----------------------------------|-------------------------------------------------------------|
-| Spiral\Queue\Event\JobProcessing | The Event will be fired `before` executing the job handler. |
-| Spiral\Queue\Event\JobProcessed  | The Event will be fired `after` executing the job handler.  |
+| Spiral\Queue\Event\JobProcessing | The Event will be fired `before` the job handler is executed. |
+| Spiral\Queue\Event\JobProcessed  | The Event will be fired `after`  the job handler is executed.  |

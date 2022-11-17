@@ -1,6 +1,6 @@
 # Views - Twig
 
-The framework provides deep integration with [Twig Template](https://twig.symfony.com/) engine including access to IoC
+The framework provides deep integration with the [Twig Template](https://twig.symfony.com/) engine including access to IoC
 scopes, i18n integration, and caching.
 
 ## Installation and Configuration
@@ -23,7 +23,7 @@ protected const LOAD = [
 ];
 ```
 
-You can add any custom extension to Twig via `addExtension` method of `TwigBootloader`:
+You can add any custom extension to Twig via the `addExtension` method of `TwigBootloader`:
 
 ```php
 class TwigExtensionBootloader extends Bootloader
@@ -40,7 +40,7 @@ class TwigExtensionBootloader extends Bootloader
 
 ## Usage
 
-You can use twig views immediately. Create a view with `.twig` extension in `app/views` directory.
+You can use twig views immediately. Create a view with `.twig` extension in the `app/views` directory.
 
 ```twig
 Hello, {{ name }}!
@@ -56,7 +56,7 @@ public function index(): string
 ```
 
 > **Note**
-> You can freely use twig `include` and `extends` directives.
+> You can freely use twig's `include` and `extends` directives.
 
 To access the value from the IoC scope:
 

@@ -1,11 +1,11 @@
 # GRPC - Client SDK
 
-You must generate the client SDK to access your endpoints. This article based on proto file described
+You must generate the client SDK to access your endpoints. This article is based on the proto file described
 [earlier](/grpc/service.md).
 
 ## Prerequisites
 
-The PHP client library requires an installation of PHP `grpc` extension.
+The PHP client library requires the PHP `grpc` extension to be installed.
 
 ```bash
 sudo pecl install grpc
@@ -16,7 +16,7 @@ sudo pecl install grpc
 
 ### Compile grpc-php-plugin
 
-You must compile `grpc-php-plugin` in order to generate the PHP client code.
+You must compile `grpc-php-plugin` in order to generate PHP client code.
 Follow [this guide](https://www.grpc.io/docs/quickstart/php/#install-protobuf-plugin).
 
 ```bash
@@ -45,11 +45,11 @@ We can generate the PHP client SDK in a new project. Copy the `proto/` directory
 protoc -I proto/ --plugin=protoc-gen-grpc=grpc/bins/opt/grpc_php_plugin --php_out=. --grpc_out=. proto/calculator.proto 
 ```
 
-You can observe the generated client code in `App/Calculator/CalculatorClient.php`.
+You can see the generated client code in `App/Calculator/CalculatorClient.php`.
 
 ### Composer
 
-Make sure to create the `composer.json` and run `composer update` to make the generated code loadable:
+Make sure to create `composer.json` and run `composer update` to make the generated code loadable:
 
 ```json
 {
@@ -71,7 +71,7 @@ To connect to the running server, make sure to copy `app.crt` to your client app
 
 ## Example
 
-We can create the client now in `client.php`:
+Now we can create the client in `client.php`:
 
 ```php
 <?php
@@ -159,11 +159,11 @@ print_r($call->wait()[0]->getResult());
 print_r($call->getMetadata()['server-key']);
 ```
 
-You can now observe the metadata passing from the client and server.
+Now you can observe the metadata being passed from the client and server.
 
 ## Golang Clients
 
-GRPC allows you to create client SDK on any supported language. To generate client on Golang, install the GRPC toolkit
+GRPC allows you to create a client SDK in any supported language. To generate client on Golang, install the GRPC toolkit
 first:
 
 ```bash
@@ -173,7 +173,7 @@ go get -u github.com/golang/protobuf/protoc-gen-go
 > **Note**
 > Read more about how to create Golang GRPC clients and server [here](https://grpc.io/docs/tutorials/basic/go/).
 
-Init the project in the same folder as PHP client to reuse `.proto` and `.crt` files. To generate client stub code:
+Init the project in the same folder as the PHP client to reuse the `.proto` and `.crt` files. To generate client stub code:
 
 ```bash
 go mod init client
@@ -183,7 +183,7 @@ protoc -I proto/ proto/calculator.proto --go_out=plugins=grpc:calculator
 ```
 
 > **Note**
-> Note the `package` name in `calculator.proto`.
+> Notice the `package` name in `calculator.proto`.
 
 You can now create `main.go`:
 

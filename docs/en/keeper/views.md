@@ -16,7 +16,7 @@ Provides a permission check with context, uses `GuardInterface` call under the h
 
 ### Logout directive
 
-Wraps given logout url params and add current auth token:
+Wraps the given logout url params and adds the current auth token:
 
 ```html
 <a href="@logout(admin['auth:logout'])">[[Log out]]</a>
@@ -36,7 +36,7 @@ There's a convenient directive for generating uri in the given namespace:
 
 The next views and templates are worth mentioning:
 
-- `keeper:login` view contains sign-up form, can be extended for some customization or built from the scratch (don't
+- `keeper:login` view contains sign-up form, can be extended for some customization or built from scratch (don't
   forget to register the view in the keeper config):
 
 ```php
@@ -115,13 +115,13 @@ return [
 
 #### Some explanations:
 
-`sort="true"` allows sorting grid by that column.
-Additional `sort-dir="asc|desc"` and `sort-default="true"` enables default sorting with order.
+`sort="true"` allows sorting the grid by that column.
+Additional `sort-dir="asc|desc"` and `sort-default="true"` enable the default sorting with order.
 `name="first_name"` is used as a name of the sort key in the query (`http://example.com?sort[first_name]=asc`).
 
 `condition=""` allows showing/hiding the row if needed. `body="{firstName}"` is the name of the row column.
 
-`<grid:cell.render />` with `renderer` attribute allows using custom render template. Current item (grid row) and cell
+`<grid:cell.render />` with `renderer` attribute allows using a custom render template. The current item (grid row) and cell
 value are available inside.
 
 Grid example below:

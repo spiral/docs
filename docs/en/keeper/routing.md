@@ -1,7 +1,7 @@
 # Routing
 
 Keeper routes are accessible via global `Spiral\Router\RouterInterface`. You can register them directly in the router
-or via keeper bootloader and annotations. The last options allow you to isolate all routes in the given namespace.
+or via the keeper bootloader and annotations. The last options allow you to isolate all the routes in the given namespace.
 
 ## Permissions
 
@@ -54,7 +54,7 @@ The next routes will be created (see `php app.php route:list` output):
 
 ## Register routes via annotations
 
-Attributes is a more convenient way because annotated routes allows you to use [sitemaps](/keeper/sitemap.md) - another
+Attributes are a more convenient way because annotated routes allows you to use [sitemaps](/keeper/sitemap.md) - another
 powerful submodule for building menu navigation and breadcrumbs.
 
 `\Spiral\Keeper\Annotation\Action` and `\Spiral\Keeper\Annotation\Controller` attributes are available. They should be
@@ -134,7 +134,7 @@ The output will be the same: `/admin/users/new`
 
 ## Defaults
 
-To enable default controller routing it should be added explicitly to the config.
+To enable default controller routing, it should be added explicitly to the config.
 Either via `KeeperBootloader::DEFAULT_CONTROLLER` value or via config file:
 
 ```php
