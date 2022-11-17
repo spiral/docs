@@ -58,7 +58,7 @@ $result = $tracer->trace(
         SpanInterface $span, // Current span object
         HttpClientInterface $httpClient // You can use autowiring here
     ) (use $url): string {
-        // The conde inside the callback will be executed in the span context and information about the span will be
+        // The code inside the callback will be executed in the span context and information about the span will be
         // sent to the driver collector
         
         $response = $httpClient->get($url);
