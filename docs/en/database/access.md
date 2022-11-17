@@ -4,7 +4,7 @@ Follow the configuration instructions [here](/database/configuration.md).
 
 ## Access the Database
 
-Once DBAL component configured properly, you can access your databases in controllers and services multiple ways:
+Once DBAL component is configured properly, you can access your databases in controllers and services in several ways:
 
 ```php
 namespace App\Controller;
@@ -35,7 +35,7 @@ class HomeController
 
 ### Method and Constructor Injections
 
-DBAL component fully support [IoC injections](/framework/container.md) based on database name and their aliases:
+The DBAL component fully supports [IoC injections](/framework/container.md) based on the database name and their aliases:
 
 ```php
 public function index(Database $database, Database $primary, Database $slave): void
@@ -71,7 +71,7 @@ class HomeController
 
 ## Run Queries
 
-To run the database query use method `query`:
+To run the database query, use the method `query`:
 
 ```php
 dump(
@@ -84,7 +84,7 @@ dump(
 );
 ```
 
-To execute update or delete statement use the alternative method `execute`:
+To execute an update or delete statement, use the alternative method `execute`:
 
 ```php
 dump(

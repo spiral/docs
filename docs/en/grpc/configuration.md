@@ -2,21 +2,19 @@
 
 The [GRPC](https://grpc.io/) protocol provides an extremely efficient way of cross-service communication for distributed
 applications. The public toolkit includes instruments to generate client and server code-bases for many languages
-allowing the developer to use the most optimal language for the task.
+allowing developers to use the most optimal language for their task.
 
-The default [GRPC build](https://github.com/spiral/app-grpc) includes pre-installed version
-of [spiral/php-grpc](https://github.com/spiral/php-grpc)
-library.
+The default [GRPC build](https://github.com/spiral/app-grpc) includes a pre-installed version
+of the [spiral/php-grpc](https://github.com/spiral/php-grpc) library.
 
 > **Note**
-> You will need to generate an application key and certificate to make GRPC bundle work, see below how to do that.
+> You will need to generate an application key and certificate to make the GRPC bundle work, see below how to do that.
 
 You can read more about protobuf [here](https://developers.google.com/protocol-buffers/docs/overview).
 
 ## Toolkit Installation
 
-It is possible to run a PHP application without any dependencies out of the box. However, to develop, debug, and extend
-the GRPC project, you will need several instruments.
+It is possible to run a PHP application without any dependencies out of the box. However, to develop, debug, and extend the GRPC project, you will need several instruments.
 
 ### Install Protoc
 
@@ -30,14 +28,14 @@ from [https://github.com/protocolbuffers/protobuf/releases](https://github.com/p
 Download and install `protoc-gen-php-grpc`
 from [roadrunner-server/roadrunner releases page](https://github.com/roadrunner-server/roadrunner/releases).
 
-This plugin is required to generate a service code for your applications.
+This plugin is required to generate service code for your applications.
 
 > **Note**
 > Make sure that the plugin is available in your PATH.
 
 ### Install Protobuf extension (optional)
 
-To achieve higher performance on larger messages, make sure to install a `protobuf` extension for PHP.
+To achieve better performance with larger messages, make sure to install the `protobuf` extension for PHP.
 
 You can compile the extension manually or install it via [PECL](https://pecl.php.net/package/protobuf).
 
@@ -46,7 +44,7 @@ sudo pecl install protobuf
 ```
 
 > **Note**
-> In case of `Segmentation Fault` error, try to install different `protobuf` library. We recommend using `3.10.0`
+> In case of the `Segmentation Fault` error, try to install another `protobuf` library. We recommend using `3.10.0`
 > at the start.
 
 ```bash
@@ -73,7 +71,7 @@ protected const LOAD = [
 
 ## Configuration
 
-Create config file `app/config/grpc.php` if you want to configure generate service classes:
+Create the config file `app/config/grpc.php` if you want to configure generate service classes:
 
 ```php
 <?php
@@ -96,7 +94,7 @@ return [
 
 ## Application Server
 
-To enable the component in application server add the following configuration section:
+To enable the component in the application server, add the following configuration section:
 
 ```yaml
 grpc:
@@ -108,16 +106,16 @@ grpc:
 ```
 
 > **Note**
-> Full documentation about configuration RoadRunner `grpc`
+> Full documentation about configuration the RoadRunner `grpc`
 > plugin [here](https://roadrunner.dev/docs/app-server-grpc/2.x/en).
 
 ## Generate Certificate
 
-It is possible to run GRPC without any encryption layer. However, in other to secure our application, we must issue
-proper server key and certificate. You can use any normal SSL certificate (for example issued
+It is possible to run GRPC without any encryption layer. However, to secure our application, we must issue
+the proper server key and certificate. You can use any regular SSL certificate (for example, one issued
 by [https://letsencrypt.org/](https://letsencrypt.org/)) or issue it manually via [OpenSSL](https://www.openssl.org/).
 
-To issue server key and certificate:
+To issue a server key and certificate:
 
 ```bash
 openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -out app.crt
@@ -128,7 +126,7 @@ openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -out app.crt
 
 ## Example Application
 
-You can install `app-grpc` skeleton application to play with GRPC services:
+You can install the `app-grpc` skeleton application to play with the GRPC services:
 
 ```bash
 composer create-project spiral/app-grpc

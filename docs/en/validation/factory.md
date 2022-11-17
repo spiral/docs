@@ -1,21 +1,20 @@
 # Validation
 
-Validation in the Spiral Framework consists of three parts: the `Spiral Validation` package with validation interfaces,
-a [spiral/validator](https://github.com/spiral/validator) package with validation implementation and `Request Filters`.
+Validation in the Spiral Framework consists of three parts: `Spiral Validation` package with validation interfaces, [spiral/validator](https://github.com/spiral/validator) package with validation implementation and `Request Filters`.
 
 There are three validators for Spiral Framework you can use in your projects:
 
 - [Spiral Validator](https://github.com/spiral/validator)
 - [Symfony Validator](https://github.com/spiral-packages/symfony-validator)
-- [Laravel Validator](https://github.com/spiral-packages/laravel-validator)
-
+- [Laravel Validator](https://github.com/spiral-packages/symfony-validator)
+- 
 In this article, we will look at the `Spiral Validation` component.
 
 > **Note**
 > Read more about other validation parts [Request Filters](../filters/configuration.md)
 > or [Spiral Validator](spiral.md).
 
-The component available by default in the [application bundle](https://github.com/spiral/app).
+The component is available by default in the [application bundle](https://github.com/spiral/app).
 
 ## Installation
 
@@ -60,7 +59,7 @@ class App extends Kernel
 }
 ```
 
-The `Request Filters` will be validated automatically, and no further actions with the validator are required.
+`Request Filters` will be validated automatically, and no further actions with the validator are required.
 
 ```php
 namespace App\Controller;
@@ -79,7 +78,7 @@ class HomeController
 
 ### ValidationInterface
 
-The `Spiral\Validation\ValidationInterface` has one `validate` method that accepts `validation data`, 
+`Spiral\Validation\ValidationInterface` has one `validate` method that accepts `validation data`, 
 `validation rules`, and `context`. And should return a `Spiral\Validation\ValidatorInterface` instance.
 
 ```php
@@ -140,7 +139,7 @@ class HomeController
 
 ### ValidatorInterface
 
-The `Spiral\Validation\ValidatorInterface` provides basic API to get result errors and allows them to attach to 
+`Spiral\Validation\ValidatorInterface` provides basic API to get result errors and allows them to attach to 
 new data or context (immutable).
 
 ```php
@@ -221,7 +220,7 @@ class HomeController
 
 ### ValidationProviderInterface
 
-The `Spiral\Validation\ValidationProviderInterface` implementation stores registered validators that provide 
+`Spiral\Validation\ValidationProviderInterface` implementation stores registered validators that provide 
 validators packages. This interface has one `getValidation` method, which must return the registered 
 `ValidationInterface` instance.
 
@@ -268,7 +267,7 @@ class Validator implements ValidatorInterface
 
 ### FilterDefinition
 
-The validator must provide a `FilterDefinition` which must implement the `Spiral\Filters\Model\FilterDefinitionInterface` 
+The validator must provide `FilterDefinition` which must implement `Spiral\Filters\Model\FilterDefinitionInterface` 
 and `Spiral\Filters\Model\ShouldBeValidated` interfaces. 
 
 ```php
@@ -297,14 +296,14 @@ class FilterDefinition implements FilterDefinitionInterface, ShouldBeValidated
 }
 ```
 
-This object must be returned from the filter and must contain validation rules and mapping schema.
+This object must be returned from the filter and must contain the validation rules and a mapping schema.
 
 ### Validator registration
 
-Now we can register the created validator. To do this, use the `register` method in the 
+Now we can register the created validator. To do this, use the `register` method in  
 `Spiral\Validation\ValidationProvider` class.
 
-The `$name` parameter must be the fully qualified name of the `FilterDefinition` class. Otherwise, the 
+The `$name` parameter must be the fully qualified name of the `FilterDefinition` class. Otherwise 
 `ValidationProvider` will not be able to determine a validator for the Request Filter.
 
 ```php

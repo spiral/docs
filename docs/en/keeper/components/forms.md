@@ -2,7 +2,7 @@
 
 UI component for Forms
 
-They are located in toolkit bundle, that can be included like so:
+They are located in the toolkit bundle, that can be included like so:
 
 ```xhtml
 <use:bundle path="toolkit:bundle"/>
@@ -14,12 +14,12 @@ This is also automatically included when using
 <use:bundle path="keeper:bundle"/>
 ```
 
-See [Usage Samples](https://github.com/spiral/app-keeper/blob/master/app/views/keeper/showcase/forms.dark.php) in demo
+See [Usage Samples](https://github.com/spiral/app-keeper/blob/master/app/views/keeper/showcase/forms.dark.php) in the demo
 repository
 
 ## Usage
 
-Forms are mostly regular HTML forms that have ajax submission functionality on top
+Forms are mostly regular HTML forms that have the ajax submission functionality on top
 
 ```xhtml
 <form:wrapper action="/" method="PUT">
@@ -59,16 +59,16 @@ Forms are mostly regular HTML forms that have ajax submission functionality on t
 
 | Parameter          | Required | Default | Description                                                                                                                                               |
 |--------------------|----------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| action             | yes      | -       | action URL of form                                                                                                                                        |
-| method             | no       | POST    | Http method to use, GET or POST                                                                                                                           |
+| action             | yes      | -       | action URL of the form                                                                                                                                        |
+| method             | no       | POST    | a Http method to use, GET or POST                                                                                                                           |
 | id                 | no       | -       | id of form if you want to hardcode it                                                                                                                     |
-| class              | no       | -       | class to add to wrapper                                                                                                                                   |
-| immediate          | no       | -       | debounce value in ms. if specified any change event will trigger form submission                                                                          |
-| submit-on-reset    | no       | false   | submit form on "reset" event, i.e. reset button. Useful for filters for datagrids                                                                         |
-| data-before-submit | no       | -       | name of callback function in global JS scope that will be called before form is submitted. If that callback returns false, form will not be submitted.    |
-| data-after-submit  | no       | -       | name of callback function in global JS scope that will be called after form is submitted. Note you are expected to check form submission result yourself. |
+| class              | no       | -       | a class to add to the wrapper                                                                                                                                   |
+| immediate          | no       | -       | debounces value in ms. if it's specified, any change event will trigger a form submission                                                                          |
+| submit-on-reset    | no       | false   | submits the form on "reset" event, i.e. the reset button. Useful for filters for datagrids                                                                         |
+| data-before-submit | no       | -       | the name of a callback function in the global JS scope that will be called before the form is submitted. If that callback returns false, the form will not be submitted.    |
+| data-after-submit  | no       | -       | the name of a callback function in the global JS scope that will be called after the form is submitted. Note, you are expected to check the result of submitting the form yourself. |
 
-If you need more fine-grain control over form and it's callbacks, refer
+If you need more fine-grain control over the form and its callbacks, refer
 to [source code](https://github.com/spiral/toolkit/blob/master/packages/form/src/Form.ts)
 
 ### form:*
@@ -77,16 +77,16 @@ Most form inputs share common properties listed here
 
 | Parameter     | Required | Default | Description                         |
 |---------------|----------|---------|-------------------------------------|
-| label         | no       | -       | Label to render before input        |
-| required      | no       | false   | If true, renders red `*` near label |
-| wrapper-id    | no       | -       | Id to use for wrapper div           |
-| wrapper-class | no       | -       | Class to add to wrapper             |
-| size          | no       | 12      | Column size for grid system         |
+| label         | no       | -       | A Label to render before input        |
+| required      | no       | false   | If true, renders red `*` near the label |
+| wrapper-id    | no       | -       | Id to use for the wrapper div           |
+| wrapper-class | no       | -       | A class to add to the wrapper             |
+| size          | no       | 12      | Column size for the grid system         |
 | error         | no       | -       | Pre-rendered error feedback text    |
 | success       | no       | -       | Pre-rendered success feedback text  |
 | help          | no       | -       | Description text                    |
 
-**Important**: Most input fields will proxy all unrecognized attributes to corresponding input inside.
+**Important**: Most input fields will proxy all unrecognized attributes to the corresponding input inside.
 
 ### form:input
 
@@ -94,12 +94,12 @@ Simple form input
 
 | Parameter   | Required | Default | Description                          |
 |-------------|----------|---------|--------------------------------------|
-| name        | yes      | -       | Field name                           |
-| value       | no       | -       | Field value                          |
-| placeholder | no       | -       | Field placeholder                    |
-| class       | no       | -       | Additional class to render for field |
-| type        | no       | -       | Field type attribute                 |
-| disabled    | no       | -       | If field should be disabled          |
+| name        | yes      | -       | A field name                           |
+| value       | no       | -       | A field value                          |
+| placeholder | no       | -       | A field placeholder                    |
+| class       | no       | -       | An additional class to render for the field |
+| type        | no       | -       | A field type attribute                 |
+| disabled    | no       | -       | If the field should be disabled          |
 
 ```xhtml
 <form:input name="firstName" label="First Name" value="" size="6" required="true"/>
@@ -113,12 +113,12 @@ Simple form textarea
 
 | Parameter   | Required | Default | Description                          |
 |-------------|----------|---------|--------------------------------------|
-| name        | yes      | -       | Field name                           |
-| value       | no       | -       | Field value                          |
-| placeholder | no       | -       | Field placeholder                    |
-| class       | no       | -       | Additional class to render for field |
-| type        | no       | -       | Field type attribute                 |
-| disabled    | no       | -       | If field should be disabled          |
+| name        | yes      | -       | A field name                           |
+| value       | no       | -       | A field value                          |
+| placeholder | no       | -       | A field placeholder                    |
+| class       | no       | -       | An additional class to render for the field |
+| type        | no       | -       | A field type attribute                 |
+| disabled    | no       | -       | If the field should be disabled          |
 
 ### form:select
 
@@ -126,13 +126,13 @@ Simple form select dropdown
 
 | Parameter   | Required | Default | Description                                                                |
 |-------------|----------|---------|----------------------------------------------------------------------------|
-| name        | yes      | -       | Field name                                                                 |
-| value       | no       | -       | Field value, note when used with 'multiple', should contain an array       |
-| values      | no       | -       | Select options, mapping values to labels                                   |
-| placeholder | no       | -       | Field placeholder. Will be rendered as a separate option with empty value. |
-| class       | no       | -       | Additional class to render for field                                       |
-| type        | no       | -       | Field type attribute                                                       |
-| disabled    | no       | -       | If field should be disabled                                                |
+| name        | yes      | -       | A field name                                                                 |
+| value       | no       | -       | A field value, note that when it's used with 'multiple', it should contain an array       |
+| values      | no       | -       | Select options which are mapping values to labels                                   |
+| placeholder | no       | -       | A field placeholder. It will be rendered as a separate option with an empty value. |
+| class       | no       | -       | An additional class to render for the field                                       |
+| type        | no       | -       | A field type attribute                                                       |
+| disabled    | no       | -       | If the field should be disabled                                                |
 
 ```xhtml
 <form:select

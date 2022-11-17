@@ -1,17 +1,17 @@
 # GRPC - Service Code
 
-Unlike classic HTTP and REST endpoints GRPC enforce most strict request/response format driven by `.proto` files
-declaration and compiled into binary messages using `protoc` compiler.
+Unlike classic HTTP and REST endpoints GRPC enforce the most restrictive request/response, format driven by the `.proto` files
+declaration and compiled into binary messages using the `protoc` compiler.
 
 > **Note**
 > Use https://github.com/spiral/app-grpc as the base to speed up onboarding.
 
 ## Define the Service
 
-To declare our first service create a proto file in the desired direction. By default, the GRPC build proposes to create
-the proto files in `/proto` directory. Create file `proto/calculator.proto`:
+To declare our first service, create a proto file in the desired direction. By default, the GRPC build suggests creating
+ proto files in the`/proto` directory. Create a file `proto/calculator.proto`:
 
-```json
+```proto
 syntax = "proto3";
 
 option php_namespace = "App\\Calculator";
@@ -35,23 +35,23 @@ service Calculator {
 ```
 
 > **Note**
-> Make sure to use options `php_namespace` and `php_metadata_namespace` to properly configure PHP namespace. You can
-> read more about GRPC service declaration [here](https://grpc.io/docs/guides/concepts/).
+> Make sure to use the options `php_namespace` and `php_metadata_namespace` to properly configure PHP namespace. You can
+> read more about the GRPC service declaration [here](https://grpc.io/docs/guides/concepts/).
 
 At the moment you can only create Unidirectional APIs, use [Golang services](/grpc/golang.md) to handle
 [streaming and batch processing](/grpc/streaming.md).
 
 ## Generate the service
 
-You can generate the service code manually using the `protoc` compiler and `php-grpc` plugin. 
+You can generate the service code manually using the `protoc` compiler and the `php-grpc` plugin. 
 
-Execute the command below:
+Run the command below:
 
 ```bash
 protoc -I ./proto/ --php_out=app/src --php-grpc_out=app/src proto/calculator.proto
 ```
 
-The default `protoc` compiler does not respect the location of the application namespaces. The code will be generated in
+The default `protoc` compiler does not respect the location of application namespaces. The code will be generated in
 the `app/src/App/Calculator` and `app/src/App/GPBMetadata` directories. Move the generated code to make it loadable:
 
 - app/src/Calculator
@@ -59,7 +59,7 @@ the `app/src/App/Calculator` and `app/src/App/GPBMetadata` directories. Move the
 
 ### Generate Command
 
-Put proto file into `app/config/grpc.php`
+Put the proto file into `app/config/grpc.php`
 
 ```php
 'services' => [
@@ -67,7 +67,7 @@ Put proto file into `app/config/grpc.php`
 ],
 ```
 
-You can use the command embedded to the framework to simplify the service code generation, simply run:
+You can use the command embedded to the framework to simplify the service code generation, just run:
 
 ```bash
 php app.php grpc:generate
@@ -83,11 +83,11 @@ Compiling `proto/calculator.proto`:
 • app/src/GPBMetadata/Calculator.php
 ```
 
-The code will be moved into the proper place automatically.
+The code will be moved to the proper place automatically.
 
 ## Implement Service
 
-Implement the `CalculatorInterface` located in `app/src/Calculator` in order to make your service work:
+Implement the `CalculatorInterface` which is located in `app/src/Calculator` to make your service work:
 
 ```php
 <?php
@@ -123,7 +123,7 @@ grpc:
 
 ### Multiple Services
 
-Use the `import` directive of proto declarations to combine multiple services in one application or store message
+Use the `import` directive of proto declarations to combine multiple services in a single application, or store message
 declarations separately.
 
 ### Test the Service
@@ -136,7 +136,7 @@ You can test your service now:
 
 ## Metadata
 
-Use `Spiral\GRPC\ContextInterface` to access the request metadata. There are number of system metadata properties you
+Use `Spiral\GRPC\ContextInterface` to access request metadata. There are a number of system metadata properties you
 can read:
 
 ```php
@@ -162,7 +162,7 @@ public function Sum(GRPC\ContextInterface $ctx, Sum $in): Result
 
 ### Response Headers
 
-You can add any custom metadata to response using Context-specific response headers:
+You can add any custom metadata to the response using Context-specific response headers:
 
 ```php
 <?php
@@ -190,7 +190,7 @@ class Calculator implements CalculatorInterface
 
 ## Errors
 
-`spiral/roadrunner-grpc` component provides a number of exceptions to indicate the server or request error:
+The `spiral/roadrunner-grpc` component provides a number of exceptions to indicate a server or request error:
 
 | Exception                                                      | Error Code          |
 |----------------------------------------------------------------|---------------------|
@@ -236,7 +236,7 @@ class Calculator implements CalculatorInterface
 
 ## Best Practices
 
-The recommended approach of designing the GRPC API for spiral application is to generate service code interfaces,
+The recommended approach for designing the GRPC API for a spiral application is to generate service code interfaces,
 messages, and client code in a separate repository.
 
 Common:

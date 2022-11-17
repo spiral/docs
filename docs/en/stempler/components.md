@@ -1,10 +1,10 @@
 # Stempler - Components and Props
 
-Stempler provides the ability to create developer-driven template components in the form of virtual tags.
+Stempler provides an ability to create developer-driven template components as virtual tags.
 
 ## Simple Component
 
-In many cases your templates will reuse not only parent layout but also template partials, for example:
+In many cases, your templates will not only reuse the parent layout, but also template partials, for example:
 
 ```html
 <extends:layout.base title="Homepage"/>
@@ -29,7 +29,7 @@ In many cases your templates will reuse not only parent layout but also template
 </block:content>
 ```
 
-We can move the article div into separate template `app/views/partial/article.dark.php`:
+We can move the article div into a separate template `app/views/partial/article.dark.php`:
 
 ```html
 <div class="article">
@@ -38,7 +38,7 @@ We can move the article div into separate template `app/views/partial/article.da
 </div>
 ```
 
-To use this partial on your page make sure to import it first using `<use:element path=""/>` control tag:
+To use this partial on your page, first import it using the `<use:element path=""/>` control tag:
 
 ```html
 <extends:layout.base title="Homepage"/>
@@ -58,8 +58,8 @@ To use this partial on your page make sure to import it first using `<use:elemen
 
 ### Props
 
-It's is not very useful to create partials without the ability to configure their content. Use `block:name`
-or `${name|default}` syntax (similar as described [here](/stempler/inheritance.md)) to define replaceable parts:
+It's is not very useful to create partials without the ability to configure their content. Use the `block:name`
+or `${name|default}` syntax (similar to the one described [here](/stempler/inheritance.md)) to define replaceable parts:
 
 In our partial `app/views/partial/article.dark.php`:
 
@@ -74,7 +74,7 @@ In our partial `app/views/partial/article.dark.php`:
 </div>
 ```
 
-You can pass values similar way as in `extend` control tag:
+You can pass values similar way as in the `extend` control tag:
 
 ```html
 <extends:layout.base title="Homepage"/>
@@ -102,7 +102,7 @@ You can pass values similar way as in `extend` control tag:
 ```
 
 > **Note**
-> You can include original block content using `block:parent` tag. Extending components is also allowed.
+> You can include the original block content using the `block:parent` tag. Component expansion is also allowed.
 
 The resulted HTML:
 
@@ -145,11 +145,11 @@ This is homepage.
 
 ## Import Components
 
-Stempler provides multiple options to import components into your template.
+Stempler provides several options for importing components into your template.
 
 ### Import Element
 
-To import single component use `<use:element path=""/>` before component invocation.
+To import a single component, use `<use:element path=""/>` before component invocation.
 
 ```html
 <extends:layout.base title="Homepage"/>
@@ -160,8 +160,7 @@ To import single component use `<use:element path=""/>` before component invocat
 </block:content>
 ```
 
-The component will be available using the filename, in this case it's `article`. To define custom import alias use
-`as` tag attribute:
+The component will be available using the filename, in this case it's `article`. To define a custom import alias, use the tag attribute `as`:
 
 ```html
 
@@ -175,7 +174,7 @@ The component will be available using the filename, in this case it's `article`.
 
 ### Import Directory
 
-To import all partials from a given directory use `<use:dir dir="" ns=""/>`. You must specify the namespace prefix to 
+To import all the partials from a given directory, use `<use:dir dir="" ns=""/>`. You must specify a namespace prefix to 
 avoid collisions with other components and default HTML tags:
 
 ```html
@@ -189,8 +188,8 @@ avoid collisions with other components and default HTML tags:
 
 ### Inline Import
 
-To define component specific to the given template without the creation of physical view file
-use `<use:inline name=""></use:inline>` control tag. In `app/views/home.dark.php`:
+To define a component specific to a given template without creating a physical view file,
+use the `<use:inline name=""></use:inline>` control tag. In `app/views/home.dark.php`:
 
 ```html
 <extends:layout.base title="Homepage"/>
@@ -211,7 +210,7 @@ use `<use:inline name=""></use:inline>` control tag. In `app/views/home.dark.php
 
 Import multiple directories, components and/or inline components using bundled import via `<use:bundle path="">`.
 
-Create view file `app/views/my-bundle.dark.php` to define your bundle:
+Create a view file `app/views/my-bundle.dark.php` to define your bundle:
 
 ```html
 <use:element path="partial/article" as="article"/>
@@ -224,7 +223,7 @@ Create view file `app/views/my-bundle.dark.php` to define your bundle:
 </use:inline>
 ```
 
-You can use any of defined components in your `app/views/home.dark.php` template:
+You can use any of the defined components in your `app/views/home.dark.php` template:
 
 ```html
 <extends:layout.base title="Homepage"/>
@@ -236,7 +235,7 @@ You can use any of defined components in your `app/views/home.dark.php` template
 </block:content>
 ```
 
-To isolate imported bundle via prefix use `ns` attribute of `use:bundle` tag:
+To isolate an imported bundle via the prefix, use the `ns` attribute of the `use:bundle` tag:
 
 ```html
 <extends:layout.base title="Homepage"/>
@@ -250,10 +249,10 @@ To isolate imported bundle via prefix use `ns` attribute of `use:bundle` tag:
 
 ## Props
 
-The ability to pass values into components provides the ability to create complex elements condensed into simple tags.
-You are allowed to pass PHP values and echoes into your components.
+The ability to pass values into components makes it possible to create complex elements that are condensed into simple tags.
+You are allowed to pass PHP values and echoes to your components.
 
-Modify your controller to invoke template as following:
+Modify your controller to invoke the template like this:
 
 ```php
 return $this->views->render('home', ['value' => 'Hello&world!']);
@@ -268,7 +267,7 @@ Create `app/views/partial/input.dark.php`:
 </div>
 ```
 
-You can invoke this component in your template with the user supplied value:
+You can invoke this component in your template with a user supplied value:
 
 ```html
 <extends:layout.base title="Homepage"/>
@@ -294,12 +293,10 @@ The generated PHP:
 
 ### PHP in Components
 
-You can not only inject values into plain HTML but also inject source code into component PHP. It can be achieved
-using AST modification of the underlying template via macro function `inject("name", default)`.
+Not only can you inject values into plain HTML, but you can also inject source code into a PHP component. It can be achieved using an AST modification of the underlying template via the macro function `inject("name", default)`.
 
 > **Note**
-> The injection will automatically extract the variable or statement from the passed `{{ echo }}`, `<?php $variable ?>`
-> or `<?=$variable?>` attributes.
+> The injection will automatically extract the variable or statement from the passed `{{ echo }}`, `<?php $variable ?>` or `<?=$variable?>` attributes.
 
 To demonstrate it, modify `app/views/partial/input.dark.php`:
 
@@ -310,7 +307,7 @@ To demonstrate it, modify `app/views/partial/input.dark.php`:
 </div>
 ```
 
-Now the generated code will look like:
+Now the generated code will look like this:
 
 ```html
 <body class="default">
@@ -347,8 +344,7 @@ The compiled template:
 
 ### Complex Props
 
-You can inject your props not only to echo statements but into any PHP code in your component. Let's create `select`
-component `app/views/partial/select.dark.php`:
+You can inject your props not only in echo statements, but also in any PHP code of your component. Let's create the `select` component `app/views/partial/select.dark.php`:
 
 ```html
 <select name="${name}">
@@ -391,8 +387,7 @@ The generated template:
 </body>
 ```
 
-You are allowed to inject PHP blocks into default PHP tags. The `app/views/partial/select.dark.php` can be changed as
-follows:
+You are allowed to inject PHP blocks into default PHP tags. `app/views/partial/select.dark.php` can be changed like this:
 
 ```html
 <select name="${name}">
@@ -426,8 +421,8 @@ The generated template:
 
 ### Dynamic Attributes
 
-In some cases, you might want to bypass some attributes into elements directly. For example to allow user-driven
-`style` attribute for select we have to do the following:
+In some cases, you might want to bypass some attributes into elements directly. For example, to a allow user-driven
+`style` attribute for select, we have to do the following:
 
 ```html
 <select name="${name}" style="${style}">
@@ -437,7 +432,7 @@ In some cases, you might want to bypass some attributes into elements directly. 
 </select>
 ```
 
-Use `attr:aggregate` to scale such an approach:
+Use `attr:aggregate` to scale this approach:
 
 ```html
 <select name="${name}" attr:aggregate>

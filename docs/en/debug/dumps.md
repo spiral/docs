@@ -1,10 +1,10 @@
 # Debug - Dumping Variables
 
-The Spiral Framework 3.0 doesn't have tools for dumping variables out of the box.
+Spiral Framework 3.0 doesn't have any out of the box tools for dumping variables.
 
-But you can use third-party packages, like `symfony/var-dumper` to view content of your variables and instances.
+But you can use third-party packages like `symfony/var-dumper` to view the content of your variables and instances.
 
-If you want to dump content of your variables to the RoadRunner error log, you need to create a function, like in 
+If you want to dump the contents of your variables to the RoadRunner error log, you need to create a function, like in 
 the example below: 
 
 ```php
@@ -48,4 +48,4 @@ if (!\function_exists('dumprr')) {
 }
 ```
 
-> The package is included into `spiral/app` and a helper function `dumprr` also presented there.
+> The package is included into `spiral/app`, and there's also a helper function `dumprr`.

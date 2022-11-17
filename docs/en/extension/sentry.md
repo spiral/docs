@@ -1,6 +1,6 @@
 # Extensions - Sentry
 
-You can automatically send the exceptions to the Sentry.
+You can automatically send the exceptions to Sentry.
 
 ## Installation
 
@@ -9,13 +9,13 @@ To install the extension:
 ```bash
 composer require spiral/sentry-bridge
 ```
-After package install you need to add bootloader from the package in your application. The package provides two 
-bootloaders `Spiral\Sentry\Bootloader\SentryReporterBootloader` and `Spiral\Sentry\Bootloader\SentryBootloader`.
+After installing the, you need to add the bootloader from the package to your application. The package provides two 
+bootloaders: `Spiral\Sentry\Bootloader\SentryReporterBootloader` and `Spiral\Sentry\Bootloader\SentryBootloader`.
 
 ### Sentry as a reporter
 
-The `SentryReporterBootloader` registers the `Spiral\Sentry\SentryReporter` in the `Exceptions` component. 
-The Reporter sends the exception to the Sentry.
+`SentryReporterBootloader` registers `Spiral\Sentry\SentryReporter` in the `Exceptions` component. 
+The Reporter sends the exception to Sentry.
 
 ```php
 protected const LOAD = [
@@ -27,12 +27,11 @@ protected const LOAD = [
 
 ### Sentry as a snapshotter
 
-The `SentryBootloader` registers the `Spiral\Sentry\SentrySnapshotter` as `SnapshotterInterface` in `Snapshots` component.
-The bootloader sends the exception to the Sentry and also creates a snapshot with error ID received from the 
-Sentry. 
+`SentryBootloader` registers `Spiral\Sentry\SentrySnapshotter` as `SnapshotterInterface` in the `Snapshots` component.
+The bootloader sends the exception to the Sentry and also creates a snapshot with  the error ID received from Sentry. 
 
-Use this bootloader only if you need to save the snapshot of the exception with the ID under which the exception 
-is registered in the Sentry. 
+Use this bootloader only if you need to save a snapshot of the exception with the ID under which the exception 
+is registered in Sentry. 
 
 Also, you have to remove the default `Spiral\Bootloader\SnapshotsBootloader` bootloader.
 
@@ -45,9 +44,9 @@ protected const LOAD = [
 ```
 
 > **Note**
-> Use one of the provided bootloaders. Don't use both bootloaders.
+> Use one of the provided bootloaders. Don't use both of them.
 
-The component will look at `SENTRY_DSN` env value.
+The component will look at the `SENTRY_DSN` env value.
 
 ```dotenv
 SENTRY_DSN=https://...@sentry.io/...
@@ -55,20 +54,20 @@ SENTRY_DSN=https://...@sentry.io/...
 
 ## Additional Data
 
-To expose current application logs, PSR-7 request state, etc you can enable additional debug extensions
+To expose current application logs, PSR-7 request state, etc., you can enable additional debug extensions
 
 ### Http collector
 
-Use HTTP collector to send data about current HTTP request to the Sentry.
+Use an HTTP collector to send data about the current HTTP request to Sentry.
 
-It will send the following information about current request:
+It will send the following information about the current request:
  - method
  - url
  - headers
  - query params
  - request body
 
-To enable HTTP collector at first you need to register `Spiral\Bootloader\Debug\HttpCollectorBootloader` before 
+To enable the HTTP collector, you first need to register `Spiral\Bootloader\Debug\HttpCollectorBootloader` before 
 `SentryBootaloder` or `SentryReporterBootloader`.
 
 ```php
@@ -79,17 +78,17 @@ protected const LOAD = [
 ];
 ```
 
-Then you need to register middleware `Spiral\Debug\StateCollector\HttpCollector`. 
+Then you need to register the middleware `Spiral\Debug\StateCollector\HttpCollector`. 
 
 > **Note**
-> Read more how to register a middleware [here](/http/middleware.md).
+> Read more how to register middleware [here](/http/middleware.md).
 
 
 ### Logs collector
 
-Use Logs collector to send all received application logs to the Sentry.
+Use the Logs collector to send all received application logs to Sentry.
 
-To enable Logs collector you just need to register `Spiral\Bootloader\Debug\LogCollectorBootloader` before
+To enable the Logs collector, you just need to register `Spiral\Bootloader\Debug\LogCollectorBootloader` before
 `SentryBootaloder` or `SentryReporterBootloader`.
 
 ```php
@@ -102,9 +101,9 @@ protected const LOAD = [
 
 ### Custom data collector
 
-You can use `Spiral\Debug\StateInterface` class to send custom data to the Sentry.
+You can use the `Spiral\Debug\StateInterface` class to send custom data to Sentry.
 
-You can request State object from the container.
+You can request a State object from the container.
 
 ```php
 $state = $container->get(\Spiral\Debug\StateInterface::class);
@@ -112,7 +111,7 @@ $state = $container->get(\Spiral\Debug\StateInterface::class);
 
 #### Add a tag
 
-The method will add tags associated to the current scope
+The method will add tags associated with the current scope
 
 ```php
 $state->addTag('IP address', $currentRequest->getIpAddress());
@@ -121,7 +120,7 @@ $state->addTag('Environment', $env->get('APP_ENV'));
 
 #### Add a variable
 
-The method will add extra data associated to the current scope
+The method will add extra data associated with the current scope
 
 ```php
 $state->setVariable('query', $currentRequest->getQueryParams());

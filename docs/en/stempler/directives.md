@@ -1,9 +1,9 @@
 # Stempler - Directives
 
-Besides classic echo constructions, the Stempler supports many Blade-like directives to control the business logic of
+In addition to the classic echo constructions, Stempler supports many Blade-like directives to control the business logic of
 your templates.
 
-Unlike Blade or Twig, the Stempler directives only responsible for business logic management.
+Unlike Blade or Twig, Stempler directives are only responsible for managing business logic.
 
 See [Components and Props](/stempler/components.md) and [Inheritance](/stempler/inheritance.md) to check how to extend 
 your templates and implement virtual components.
@@ -21,11 +21,11 @@ Just double 'at' letter like
 To loop over a list of template variables, use the following directives.
 
 > **Note**
-> Directive declaration is similar to native PHP syntax.
+> The directive declaration is similar to native PHP syntax.
 
 ### Embed PHP
 
-To embed PHP logic in your template use classic `<?php` and `?>` tags or alternative `@php` and `@endphp`:
+To embed PHP logic in your template, use the classic `<?php` and `?>` tags or alternative `@php` and `@endphp`:
 
 ```php
 @php
@@ -35,7 +35,7 @@ To embed PHP logic in your template use classic `<?php` and `?>` tags or alterna
 
 ### For
 
-Use directive `@for` and `@endfor` to render the loop:
+Use the directive `@for` and `@endfor` to render the loop:
 
 ```php
 @for($i=0; $i<100; $i++)
@@ -45,7 +45,7 @@ Use directive `@for` and `@endfor` to render the loop:
 
 ### While
 
-Use directive `@while` and `@endwhile` to render `while` loop:
+Use the directive `@while` and `@endwhile` to render `while` loop:
 
 ```php
 @php $i = 0; @endphp
@@ -57,7 +57,7 @@ Use directive `@while` and `@endwhile` to render `while` loop:
 
 ### Break and Continue
 
-Use `@break` and `@continue` directives to interrupt your loops:
+Use the `@break` and `@continue` directives to interrupt your loops:
 
 ```php
 @php $i = 0; @endphp
@@ -86,7 +86,7 @@ return $this->views->render('welcome', [
 
 ### If and Else
 
-To create conditional statement use `@if` and `@endif` directives:
+To create a conditional statement, use the `@if` and `@endif` directives:
 
 ```php
 @if($value === 123)
@@ -94,7 +94,7 @@ To create conditional statement use `@if` and `@endif` directives:
 @endif
 ```
 
-To create `else` condition use `@else` directive:
+To create an `else` condition, use the `@else` directive:
 
 ```php
 @if($value !== 123)
@@ -104,7 +104,7 @@ To create `else` condition use `@else` directive:
 @endif
 ```
 
-To create conditional `else` use `elseif`:
+To create a conditional `else` use `elseif`:
 
 ```php
 @if($value === 124)
@@ -118,7 +118,7 @@ To create conditional `else` use `elseif`:
 
 ### Unless
 
-Use `@unless` directive to declare negative condition:
+Use the `@unless` directive to declare a negative condition:
 
 ```php
 @unless($value === 124)
@@ -127,11 +127,11 @@ Use `@unless` directive to declare negative condition:
 ```
 
 > **Note**
-> You can use `@else` and `@elseif` with a `@unless` directive.
+> You can use `@else` and `@elseif` with the `@unless` directive.
 
 ### Empty and Isset
 
-Use `@empty` and `@isset` conditions and `@endempty`, `@endisset` accordingly:
+Use the `@empty` and `@isset` conditions and `@endempty`, `@endisset` accordingly:
 
 ```php
 @empty($value)
@@ -148,7 +148,7 @@ Use `@empty` and `@isset` conditions and `@endempty`, `@endisset` accordingly:
 
 ### Switch case
 
-To create more complex conditions use `@swich`, `@case`, `@break` and `@endswitch` statements.
+To create more complex conditions, use the `@swich`, `@case`, `@break` and `@endswitch` statements.
 
 ```php
 @switch($value)
@@ -160,7 +160,7 @@ To create more complex conditions use `@swich`, `@case`, `@break` and `@endswitc
 
 ## Json Directive
 
-To render JSON on a page use `@json` directive:
+To render JSON on a page, use the `@json` directive:
 
 ```php
 @json($value)
@@ -183,7 +183,7 @@ In your template:
 </script>
 ```
 
-Alternatively you can use contextual echo via `{{ }}` statement:
+Alternatively, you can use the contextual echo via the `{{ }}` statement:
 
 ```php
 <script type="text/javascript">
@@ -192,7 +192,7 @@ Alternatively you can use contextual echo via `{{ }}` statement:
 </script>
 ``` 
 
-In both cases the generated view will look like:
+In both cases, the generated view will look like this:
 
 ```php
 <script type="text/javascript">
@@ -207,7 +207,7 @@ Spiral provides a number of framework-specific directives.
 
 ### Container
 
-To invoke container dependency into template use `@inject($variable, "class")` directive:
+To invoke a container dependency into a template, use the `@inject($variable, "class")` directive:
 
 ```php
 @inject($app, App\App::class)
@@ -216,13 +216,13 @@ To invoke container dependency into template use `@inject($variable, "class")` d
 
 ### Route
 
-To create route use directive `@route`:
+To create a route, use the directive `@route`:
 
 ```php
 <a href="@route('home:index')">click me</a>
 ```
 
-You can use `controller:action` pattern for targets handled by `default route` or route name:
+You can use the `controller:action` pattern for targets handled by a `default route` or route name:
 
 ```php
 $router->addRoute(
@@ -231,14 +231,13 @@ $router->addRoute(
 );
 ```
 
-Pass arguments using second parameter:
+Pass arguments using the second parameter:
 
 ```php
 <a href="@route('html', ['action' => 'index'])">click me</a>
 ```
 
-Parameters will be automatically slugified into route url. Parameters not found in route pattern will be passed as
-query parameters:
+The parameters will be automatically slugified into the route url. Those parameters that are not found in the route pattern will be passed as query parameters:
 
 ```php
 <a href="@route('html', ['action' => 'index', 'id' => 10])">click me</a>
@@ -250,9 +249,9 @@ The result `/index.html?id=10`.
 
 ## Custom Directives
 
-You can declare and register custom directives. To create custom directive create a class which extends
+You can declare and register custom directives. To create a custom directive, create a class that extends
 `Spiral\Stempler\Directive\AbstractDirective`. Directive methods must be prefixed with `render` and accept
-`Spiral\Stempler\Node\Dynamic\Directive` as parameter:
+`Spiral\Stempler\Node\Dynamic\Directive` as a parameter:
 
 ```php
 namespace App\Directive;
@@ -273,7 +272,7 @@ class CustomDirective extends AbstractDirective
 > You can also implement `Spiral\Stempler\Directive\DirectiveRendererInterface` to gain lower-level access to
 > functionality.
 
-Register your directive in one of your bootloaders via `StemplerBootloader`->`addDirective` method:
+Register your directive in one of your bootloaders via the `StemplerBootloader`->`addDirective` method:
 
 ```php
 namespace App\Bootloader;
@@ -303,7 +302,7 @@ Invoke the directive in your template:
 
 ### Passing values
 
-To access values passed to directive use `body` and `values` properties of `Directive` retrospectively:
+To access values passed to a directive, use the `body` and `values` properties of `Directive` retrospectively:
 
 ```php
 class CustomDirective extends AbstractDirective
@@ -328,7 +327,7 @@ Output:
 ```
 
 > **Note**
-> Make sure to check if `body` not NULL.
+> Make sure to check if `body` is not NULL.
 
 To access specific directive values separated by `,`:
 
@@ -352,7 +351,7 @@ Example:
 @custom(1, 2)
 ```
 
-Directive values will be supplied in their original PHP form, you must escape values manually. The following PHP will
+Directive values will be supplied in their original PHP form, you must escape the values manually. The following PHP will
 be generated for the Directive above:
 
 ```php
@@ -364,7 +363,7 @@ be generated for the Directive above:
 
 ### Directive Context
 
-To capture where directive is invoked from use `$directive->getContext()->getPath()`:
+To capture where a directive is invoked from, use `$directive->getContext()->getPath()`:
 
 ```php
 public function renderCustom(Directive $directive): string

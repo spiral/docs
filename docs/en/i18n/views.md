@@ -1,13 +1,11 @@
 # Internalization - View Localization
 
-The Spiral Framework includes the view process available for `Twig` and `Stempler` engines to translate view source code.
-The translated view will be stored in a separate view cache and provides the ability to translate views without the performance 
-penalty.
+The Spiral Framework includes a view process available for `Twig` and `Stempler` engines to translate view source code.
+The translated view will be stored in a separate view cache and it provides the ability to translate views without any performance penalty.
 
 ## View Translation
 
-To activate view translation enable bootloader `Spiral\Bootloader\Views\TranslatedCacheBootloader`. Make sure to add
-this bootloader before view engine bootloaders:
+To activate view translation, enable the bootloader `Spiral\Bootloader\Views\TranslatedCacheBootloader`. Make sure to add this bootloader before viewing engine bootloaders:
 
 ```php
 protected const LOAD = [
@@ -25,4 +23,4 @@ Embrace the string to be translated with `[[ string ]]` in your template:
 ```
 
 > **Note**
-> Change the locale in your application to switch translation in view.
+> Change the locale in your application to switch translation in the view.

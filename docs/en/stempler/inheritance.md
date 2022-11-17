@@ -1,9 +1,9 @@
 # Stempler - Inheritance and Stacks
-As your views become more complex, it's crucial to separate page and layout specific content between templates properly.
-Stempler provides several control statements to achieve such a goal.
+As your views get more complex, it's crucial to separate pages and layout specific content between templates properly.
+Stempler provides several control statements to achieve this.
 
 ## Extend Layout
-To start let's create standard HTML template for our page (`app/views/home.dark.php`):
+Firts, let's create a standard HTML template for our page (`app/views/home.dark.php`):
 
 ```html
 <!DOCTYPE html>
@@ -18,13 +18,13 @@ To start let's create standard HTML template for our page (`app/views/home.dark.
 </html>
 ```
 
-Most likely, your application will contain more than a one-page template. To avoid code duplication Stempler
-provides the ability to inherit parent layout.
+Most likely, your application will contain more than a one-page template. To avoid code duplication, Stempler
+provides an ability to inherit the parent layout.
 
-> Stempler will compile template and parent layout into an optimized PHP code. You can exclude as many layouts as you want
+> Stempler will compile the template and parent layout into an optimized PHP code. You can exclude as many layouts as you want
 > without a performance penalty.
 
-Create layour in `app/views/layout/base.dark.php`:
+Create a layot in `app/views/layout/base.dark.php`:
 
 ```html
 <!DOCTYPE html>
@@ -45,19 +45,19 @@ Now, we can extend this layout using the `home.dark.php` via `extends:path` tag:
 <extends:layout.base/>
 ```
 
-> Use `.` separator to include directory name into your template.
+> Use the separator `.` to include the directory name into your template.
 
-Alternatively use the syntax:
+Alternatively, use the syntax:
 
 ```html
 <extends path="layout/base"/>
 ```
 
-> You can use view namespaces in such declaration, for example: `<extends path="default:layout/base"/>`.
+> You can use view namespaces in such a declaration, for example: `<extends path="default:layout/base"/>`.
 
 ### Replace Blocks
-The extending of the parent layout does not make much sense unless we can redefine some of its content. To define
-replaceable block, use tag `<block:name>`. Change the `layout/base.dark.php`
+Extending the parent layout does not make much sense unless we can redefine some of its content. To define a
+replaceable block, use the tag `<block:name>`. Change the `layout/base.dark.php`
 accordingly:
 
 ```html
@@ -75,9 +75,9 @@ accordingly:
 </html>
 ```
 
-> You can include the default block content inside `<block:name></block:name>` tag pair.
+> You can include the default block content inside the `<block:name></block:name>` tag pair.
 
-To redefine the block values use `block:name` or similar tags in `home.dark.php` template:
+To redefine the block values, use `block:name` or similar tags in the `home.dark.php` template:
 
 ```html
 <extends:layout.base/>
@@ -90,8 +90,7 @@ To redefine the block values use `block:name` or similar tags in `home.dark.php`
 ```
 
 ### Short Syntax
-In cases when your block define short string or operates as tag argument use alternative syntaxt `${name|default}`. Change the
-layout to:
+In cases when your block define a short string or operates as a tag argument, use the alternative syntaxt `${name|default}`. Change the layout to:
 
 ```html
 <!DOCTYPE html>
@@ -122,7 +121,7 @@ Short syntax values can be supplied to the parent layout via `<block:name>value<
 </block:content>
 ```
 
-You can pass some block values using `extends` tag attributes to avoid large child templates, change `app/views/home.dark.php` accordingly:
+You can pass some block values using the `extends` tag attributes to avoid large child templates, change `app/views/home.dark.php` accordingly:
 
 ```html
 <extends:layout.base title="Homepage" body-class="homepage"/>
@@ -132,7 +131,7 @@ You can pass some block values using `extends` tag attributes to avoid large chi
 </block:content>
 ```
 
-In both cases the produced HTML will look like:
+In both cases, the produced HTML will look like this:
 
 ```html
 <!DOCTYPE html>
@@ -148,7 +147,7 @@ In both cases the produced HTML will look like:
 ```
 
 ### Invoke Parent Content
-To leave the parent block content use `<block:parent/>` in any place of redefined block:
+To leave the parent block content, use `<block:parent/>` in any place of the redefined block:
 
 ```html
 <extends:layout.base title="Homepage" body-class="homepage"/>
@@ -175,7 +174,7 @@ The produced HTML:
 </html>
 ```
 
-Use `${parent}` to achieve the same goal in short block definitions:
+Use `${parent}`, to achieve the same goal in short block definitions:
 
 ```html
 <extends:layout.base title="Homepage" body-class="homepage ${parent}"/>
@@ -216,7 +215,7 @@ It is possible to create layouts based on other layouts, create `app/views/layou
 </block:content>
 ```
 
-> Extend tags always require full path specification, make sure to include `layout` directory.
+> Extend tags always require full path specification, make sure to include the `layout` directory.
 
 You can extend this layout instead of `base` in `app/views/home.dark.php`:
 
@@ -246,14 +245,14 @@ The produced HTML:
 </html>
 ```
 
-> You can nest as many templates as you need, only the compilation speed will be affected.
+> You can nest as many templates as you need, it will only affect the compilation speed.
 
 ## Stacks
 Stempler includes the ability to aggregate multiple blocks defined within the template. 
 
 ### Classic Approach
-Often you would need to add custom JS or CSS resource to your layout. To achieve it use `block` directives
-wrap needed resources into the block and append content to it in your child template.
+You would often need to add a custom JS or CSS resource to your layout. To achieve it, use the `block` directives,
+wrap the necessary resources in a block and append content to it in your child template.
 
 Modify `app/views/layout/base.dark.php` as:
 
@@ -274,7 +273,7 @@ Modify `app/views/layout/base.dark.php` as:
 </html>
 ``` 
 
-To add custom style resource in your page template:
+To add a custom style resource in your page template:
 
 ```html
 <extends:layout.base title="Homepage" body-class="homepage ${parent}"/>
@@ -307,7 +306,7 @@ The produced HTML:
 
 ### Create Stack
 To demonstrate how the following can be achieved using stacks, we should start with a simple example in `app/home.dark.php`.
-Create stack placeholder using `<stack:collect name="name"/>`: 
+Create a stack placeholder using `<stack:collect name="name"/>`: 
 
 ```html
 <stack:collect name="my-stack">
@@ -316,7 +315,7 @@ Create stack placeholder using `<stack:collect name="name"/>`:
 
 ```
 
-To append value to stack:
+To append a value to stack:
 
 ```html
 <stack:collect name="my-stack">
@@ -335,7 +334,7 @@ The resulted HTML:
   my value
 ```
 
-To prepend value to stack:
+To prepend a value to stack:
 
 ```html
 <stack:collect name="my-stack">
@@ -354,7 +353,7 @@ The output:
   default content
 ```
 
-You can locate stack definition before or after `push` and `prepend` tags:
+You can locate stack definition before or after the `push` and `prepend` tags:
 
 ```html
 <stack:prepend name="my-stack">
@@ -367,10 +366,10 @@ You can locate stack definition before or after `push` and `prepend` tags:
 ```
 
 ### Deep Stacks
-The stack tag will only aggregate `push` and `prepend` values while located in a same tag tree level. 
+The stack tag will only aggregate `push` and `prepend` values if it's located on the same tag tree level. 
 
 
-For example given example will work:
+For example, this will work:
 
 ```html
 <stack:collect name="my-stack">
@@ -406,7 +405,7 @@ While this example won't work:
 
 > This limitation is caused by the AST nature of stack collectors.
 
-To bypass such limitation without moving the placeholder level above use `stack:collect` attribute `level`:
+To bypass this limitation without moving the placeholder level higher, use the`stack:collect` attribute `level`:
 
 ```html
 <div>
@@ -420,7 +419,7 @@ To bypass such limitation without moving the placeholder level above use `stack:
 </stack:prepend>
 ```
 
-The attribute `level` configures stack to be multiple active levels above. For example, given example **won't work**:
+The attribute `level` configures the stack to be multiple active levels higher. For example, this example **won't work**:
 
 ```html
 <div>
@@ -440,7 +439,7 @@ The attribute `level` configures stack to be multiple active levels above. For e
 </stack:prepend>
 ```
 
-But this example will work:
+But this one will:
 
 ```html
 <div>
@@ -498,14 +497,13 @@ Now you can push the value from `app/views/home.dark.php`:
 </block:page>
 ```
 
-> You have to make sure that `stack:push` is located in one of the extended blocks. See below how to bypass it.
+> You have to make sure that `stack:push` is located in one of the extended blocks. See  how to bypass it below.
 
 ## Context and Hidden content
-As you can see in the previous example, it's is not convenient to use both stack and blocks at the same time. It is happening because that stack collection occurs after the extension of the parent layout. Keeping stack outside of any `block` will
+As you can see in the previous example, it's not convenient to use both the stack and blocks at the same time. This is because that stack collection happens after the extension of the parent layout. Keeping the stack outside of any `block` will
 leave it out of the template.
 
-All stempler blocks defined in child template outside of `block` tag will appear in system block `context`. We can modify
-the parent layout `app/views/layout/base.dark.html` as the following:
+All the stempler blocks that are defined in the child template outside of the `block` tag will appear in the system block `context`. We can modify the parent layout `app/views/layout/base.dark.html` like this:
 
 ```html
 <!DOCTYPE html>
@@ -525,7 +523,7 @@ the parent layout `app/views/layout/base.dark.html` as the following:
 </html>
 ```
 
-No we can define the stack in `app/views/home.dark.php` as following:
+Now we can define the stack in `app/views/home.dark.php` like this:
 
 ```html
 <extends:layout.base title="Homepage" body-class="homepage ${parent}"/>
@@ -541,7 +539,7 @@ some random string
 </block:page>
 ```
 
-To understand how context works take a look at generated HTML:
+To understand how context works, take a look at the generated HTML:
 
 ```html
 <!DOCTYPE html>
@@ -558,9 +556,9 @@ some random string
 </html>
 ```
 
-Notice the `some random string` added at the place of `block:context`, this content has been declared by `app/views/home.dark.php`.
-Most likely you will use the areas between block definitions of your templates for comments and other control directives,
-to hide such content from end use use `<hidden></hidden>` tag in `app/views/layout/base.dark.php`:
+Notice that `some random string` is added instead of `block:context`, this content was declared by `app/views/home.dark.php`.
+You will most likely use the areas between block definitions of your templates for comments and other control directives.
+To hide such content from end use, use the `<hidden></hidden>` tag in `app/views/layout/base.dark.php`:
 
 ```html
 <!DOCTYPE html>
@@ -582,6 +580,6 @@ to hide such content from end use use `<hidden></hidden>` tag in `app/views/layo
 </html>
 ```
 
-Now, stacking will work as before. However, the `some random string` won't appear on a page.
+Now, stacking will work as before. However, `some random string` won't appear on a page.
 
 > Combine stacks with inheritance and [components](/stempler/components.md) to create domain specific rendering DSL.
