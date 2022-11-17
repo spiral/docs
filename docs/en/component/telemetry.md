@@ -57,7 +57,7 @@ $result = $tracer->trace(
     callback: static function(
         SpanInterface $span, // Current span object
         HttpClientInterface $httpClient // You can use autowiring here
-    ) (use $url): string {
+    ) use($url): string {
         // The code inside the callback will be executed in the span context and information about the span will be
         // sent to the driver collector
         
