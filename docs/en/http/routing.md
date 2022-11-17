@@ -664,7 +664,7 @@ class HomeController
         return 'other';
     }
 
-    public function user(int $id): string
+    public function user(string $id): string
     {
         return "hello {$id}";
     }
@@ -901,17 +901,17 @@ namespace App\Controller;
 
 class UserController
 {
-    public function getUser(int $id): string
+    public function getUser(string $id): string
     {
         return "get {$id}";
     }
 
-    public function postUser(int $id): string
+    public function postUser(string $id): string
     {
         return "post {$id}";
     }
 
-    public function deleteUser(int $id): string
+    public function deleteUser(string $id): string
     {
         return "delete {$id}";
     }
@@ -944,17 +944,17 @@ namespace App\Controller;
 
 class UserController
 {
-    public function load(int $id): string
+    public function load(string $id): string
     {
         return "get {$id}";
     }
 
-    public function store(int $id): string
+    public function store(string $id): string
     {
         return "post {$id}";
     }
 
-    public function delete(int $id): string
+    public function delete(string $id): string
     {
         return "delete {$id}";
     }
