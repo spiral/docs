@@ -63,7 +63,7 @@ $result = $tracer->trace(
         
         $response = $httpClient->get($url);
         
-        // Attributes that wile be added to the span object
+        // Attributes that will be added to the span object
         $span->setAttribute('http.response.code', $response->getStatusCode());
         $span->setAttribute('http.response.length', \strlen($response->getContent()));
         
