@@ -2,10 +2,10 @@
 
 Being able to broadcast data in real-time from servers to clients is a requirement for many modern web and mobile 
 applications. When some data is updated on the server, a message is typically sent over a WebSocket connection to be 
-handled by the client. WebSockets provide a more efficient alternative to continually polling your application's server 
+handled by the client. WebSockets provide a more efficient alternative to continually poll your application's server 
 for data changes that should be reflected in your UI.
 
-The component available by default in the [application bundle](https://github.com/spiral/app).
+The component is available by default in the [application bundle](https://github.com/spiral/app).
 
 ## Installation
 
@@ -35,13 +35,13 @@ registers `Spiral\Broadcasting\Middleware\AuthorizationMiddleware`.
 
 ### Supported Drivers
 
-The Broadcasting component requires a server that will receive events from the application. By default, Broadcasting
+The Broadcasting component requires a server that will receive events from the application. By default, the Broadcasting
 component supports `RoadRunner WebSockets`. The process of configuring the Broadcasting driver is described on the
 [RoadRunner Bridge documentation page](https://github.com/spiral/roadrunner-bridge).
 
 ## Configuration
 
-You can create config file `app/config/broadcasting.php` if you want to configure Broadcasting drivers.
+You can create a config file `app/config/broadcasting.php` if you want to configure Broadcasting drivers.
 
 ```php
 use Psr\Log\LogLevel;
@@ -195,7 +195,7 @@ class SomeClass
 
 ### Object as a topic
 
-The `publish` method can accept a `\Stringable` type, this allows to create a topic via object.
+The `publish` method can accept a `\Stringable` type, this allows us to create a topic via object.
 
 ```php
 namespace App\Broadcast\Topic;

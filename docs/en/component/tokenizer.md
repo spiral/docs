@@ -1,10 +1,10 @@
 # Tokenizer
 
-A lot of Spiral components based on automatic code discovery and analysis. The most used functionality of locating class
+A lot of Spiral components are based on automatic code discovery and analysis. The most used functionality of locating class
 declarations is provided by `Spiral\Tokenizer\ClassesInterface`.
 
 > **Note**
-> Tokenizer component is pre-installed with all framework bundles.
+> The tokenizer component is pre-installed with all framework bundles.
 
 ## Class Locator
 
@@ -30,7 +30,7 @@ public function boot(TokenizerBootloader $tokenizer)
 ```
 
 > **Note**
-> Attention, class lookup is not a fast process, only add necessary directories.
+> that the class lookup is not a fast process, only add necessary directories.
 
 ## Scoped Class Locator
 
@@ -78,23 +78,23 @@ final class SomeLocator
 
 ## Listeners
 
-For even more performance we recommend you to use tokenizer listeners instead of class locator. 
+For even better performance, we recommend using tokenizer listeners instead of a class locator. 
 
-There is a new feature Tokenizer Listener in the Spiral Framework 3.0. 
+There is a new feature called Tokenizer Listener in the Spiral Framework 3.0. 
 
 ### How it works
 
-The Spiral Framework used to scan registered directories in tokenizer every time when you request them via
+The Spiral Framework is used to scan registered directories in Tokenizer every time you request them via
 `Spiral\Tokenizer\ClassesInterface::getClasses` method. For example, if an application has 6 components that request
-classes from class locator via `getClasses` method, it will scan rectories 6 times.
+classes from a class locator via `getClasses` method, it will scan rectories 6 times.
 
-With the tokenizer listeners it will start iterating all found classes by `Spiral\Tokenizer\ClassesInterface` after 
+With the Tokenizer listeners, it will start iterating all found classes by `Spiral\Tokenizer\ClassesInterface` after 
 bootloading all application bootloaders only once and then send information about every found class to all registered 
-tokenizer listeners. In this case 6 components will register their listeners and will filter received class by their 
+Tokenizer Listeners. In this case, 6 components will register their listeners and will filter the received class by their 
 rules and will handle them.
 
-To start using Tokenizer listeners you just need to include `Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader` 
-bootloader in your project at the top of bootloaders list:
+To start using Tokenizer listeners, you just need to include `Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader` 
+bootloader in your project at the top of bootloader's list:
 
 ```php
 protected const LOAD = [
@@ -135,11 +135,11 @@ class MyAttributeListener implements TokenizationListenerInterface
     }
 
     /**
-     * The method will be fired after a class locator will finish iterating of found classes.
+     * The method will be fired after a class locator finishes the iteration of the found classes.
      */
     public function finalize(): void
     {
-        // Register found attributes in your registry
+        // Register the found attributes in your registry
         $this->registry->registerAttributes(
             $this->attributes
         );

@@ -1,12 +1,12 @@
 # HTTP - Error Pages
 
-Your application will expose some errors and exceptions, some of which must be delivered to the client, and some of them
-don't.
+Your application will expose some errors and exceptions, some of which must be delivered to the client and some of them
+must not.
 
-The HTTP component includes the default error handling middleware, which used to intercept and log critical errors and
+The HTTP component includes a default error handling middleware which is used to intercept and log critical errors and
 user-level exceptions.
 
-To enable such middleware add the `Spiral\Bootloader\Http\ErrorHandlerBootloader` to your application:
+To enable such middleware, add the `Spiral\Bootloader\Http\ErrorHandlerBootloader` to your application:
 
 ```php
 namespace App;
@@ -42,12 +42,12 @@ delivery of the exception details to the browser, set the env variable `DEBUG` t
 error page will be displayed.
 
 > **Note**
-> Do not deploy your application to production with enabled debug mode.
+> Do not deploy your application to production with an enabled debug mode.
 
 ## Client Exceptions
 
-There are several exceptions you can throw from your controllers and middleware to cause HTTP level error page, for
-example we can trigger `404 Not Found` using `NotFoundException`:
+There are several exceptions you can throw from your controllers and middleware to cause HTTP level error page. For
+example, we can trigger `404 Not Found` using `NotFoundException`:
 
 ```php
 namespace App\Controller;
@@ -81,7 +81,7 @@ Other exceptions include:
 ## Page Renderer
 
 By default, the middleware will use a simple error page without any styles attached. To implement your error page
-renderer implement and bind in container the `Spiral\Http\ErrorHandler\RendererInterface` interface:
+renderer, implement and bind the `Spiral\Http\ErrorHandler\RendererInterface` interface in the container:
 
 ```php
 declare(strict_types=1);
@@ -147,7 +147,7 @@ class ViewRenderer implements RendererInterface
 }
 ```
 
-Bind it via bootloader:
+Bind it via a bootloader:
 
 ```php
 namespace App\Bootloader;
@@ -169,11 +169,11 @@ class ViewRendererBootloader extends Bootloader
 }
 ```
 
-> `App\ErrorHandler\ViewRenderer` class included and registered in `spiral/app` by default.
+> `App\ErrorHandler\ViewRenderer` class is included and registered in `spiral/app` by default.
 
 ## Logging
 
-The default application includes Monolog handler, which, by default, subscribed to the messages sent by
+The default application includes Monolog handler, which, by default, is subscribed to the messages sent by
 the `ErrorHandlerMiddleware`. The http error log is located in `app/runtime/logs/http.log` and configured
 in `App\Bootloaders\LoggingBootloader`:
 

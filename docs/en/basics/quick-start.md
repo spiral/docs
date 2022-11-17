@@ -1,7 +1,7 @@
 # Long Start
 
 The Spiral Framework contains a lot of components built to operate seamlessly with each other. In this article, we will
-show how to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations
+show you how to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations
 (optional) and domain interceptors.
 
 > **Note**
@@ -21,28 +21,28 @@ cd spiral-demo
 > **Note**
 > Use the different build `spiral/app-cli` to install the spiral with minimal dependencies.
 
-If everything installed correctly, you could open your application immediately by starting the server:
+If everything is installed correctly, you can open your application immediately by starting the server:
 
 ```bash
 ./rr serve
 ```
 
-You just started an [application server](/framework/application-server.md). The same server can be used on production,
+You've just started an [application server](/framework/application-server.md). The same server can be used on production,
 making your development environment similar to the final setup. Out of the box, the server includes instruments to
 write portable applications with HTTP/2, GRPC, Queue, WebSockets, etc. and does not require external brokers to operate.
 
-By default, the application available on `http://localhost:8080`. The build includes multiple pre-defined pages you can
+By default, the application is available on `http://localhost:8080`. The build includes multiple pre-defined pages you can
 play with.
 
 > **Note**
-> Check the exception page `http://localhost:8080/exception.html`, at the right part of this page you can see all
+> Check the exception page `http://localhost:8080/exception.html`, at the right part of this page you can see all the
 > interceptors and middleware included in the default build. We will turn some of them off to make the application
 > runtime smaller.
 
 ## Configure
 
-Spiral applications configured using config files located in `app/config`, you can use the hardcoded values for the
-configuration, or get the values using available functions `env` and `directory`. The `spiral/app` bundle use DotEnv
+Spiral applications are configured using config files located in `app/config`, you can use the hardcoded values for the
+configuration, or get the values using available functions `env` and `directory`. The `spiral/app` bundle uses DotEnv
 extension which will load ENV variables from the `.env` file.
 
 > **Note**
@@ -69,7 +69,7 @@ You can also create and use an alternative configuration file via `-c` flag of t
 We won't need translation, session, GRPC, cookies, CSRF, routing configuration via RoutesBootloader in our demo application. 
 Remove these components and their bootloaders.
 
-Delete following bootloaders from `app/src/Application/Kernel.php`:
+Delete the following bootloaders from `app/src/Application/Kernel.php`:
 
 ```php
 Spiral\Bootloader\I18nBootloader::class,
@@ -107,8 +107,8 @@ class RoutesBootloader extends BaseRoutesBootloader
  }
 ```
 
-By default, the routing rules located in `app/src/Bootloader/RoutesBootloader.php`. You have many options on how
-to configure routing. Point route to actions, controllers, controller groups, set the default pattern parameters,
+By default, the routing rules are located in `app/src/Bootloader/RoutesBootloader.php`. You have many options on how
+to configure the routing. Point route to actions, controllers, controller groups, set the default pattern parameters,
 verbs, middleware, etc.
 
 Remove method `defineRoutes`. We will be adding routes using attributes:
@@ -183,20 +183,20 @@ class RoutesBootloader extends BaseRoutesBootloader
  }
 ```
 
-Delete following files and directories as no longer required:
+Delete the following files and directories as no longer required:
 
 - `app/locale`
 - `app/routes`
 - `app/src/Middleware`
 
 > **Note**
-> Note, the application won't work at the moment as we removed the dependency required to
+> Note that the application won't work at the moment as we removed the dependency required to
 > render `app/views/home.dark.php`.
 
 ### Database Connection
 
-Our application needs a database to operate. By default, the database configuration located in `app/config/database.php`
-file. The demo application comes with pre-configured SQLite database located in `runtime/runtime.db`.
+Our application needs a database to operate. By default, the database configuration is located in `app/config/database.php`
+file. The demo application comes with a pre-configured SQLite database located in `runtime/runtime.db`.
 
 ```php
 // database.php 
@@ -217,7 +217,7 @@ return [
 ];
 ```
 
-We can store the database name, username, password and port in `.env` file, add the following lines into it:
+We can store a database name, username, password and port in `.env` file, add the following lines into it:
 
 ```dotenv
 DB_HOST=localhost
@@ -256,7 +256,7 @@ return [
 ];
 ```
 
-To check that the database connection was successful run:
+To check that the database connection was successful, run:
 
 ```bash
 php app.php db:list
@@ -293,7 +293,7 @@ to activate the package:
 
 ### Creating Routes
 
-In order to simplify the route definition we can use `spiral/annotated-routes` extension. Read more about the extension [here](/http/annotated-routes.md).
+In order to simplify the route definition, we can use `spiral/annotated-routes` extension. Read more about the extension [here](/http/annotated-routes.md).
 Add the bootloader to `LOAD` in `app/src/Application/Kernel.php` to activate the component:
 
 ```diff
@@ -349,7 +349,7 @@ php app.php route:reset
 
 ### Domain Core
 
-Connect custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
+Connect a custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
 
 Let's create an interceptor that will catch validation errors and return them in JSON:
 
@@ -424,13 +424,13 @@ Add the bootloader to `APP` in `app/src/Application/Kernel.php`:
 ## Scaffold Database
 
 The framework can configure the database schema using a set of migration files. To configure migrations in your
-application run:
+application, run:
 
 ```bash
 php app.php migrate:init
 ```
 
-You can now observe the migration table structure using:
+You can now observe the migration table structure by using:
 
 ```bash
 php app.php db:list
@@ -448,7 +448,7 @@ You can write the migration manually, or let Cycle ORM generate it for you.
 The demo application comes with [Cycle ORM](https://cycle-orm.dev). By default, you can use attributes to configure
 your entities.
 
-Enable the Cycle Bridge `Spiral\Cycle\Bootloader\ScaffolderBootloader` bootloader for using commands that create 
+Enable the Cycle Bridge `Spiral\Cycle\Bootloader\ScaffolderBootloader` bootloader to use commands that create 
 entities and repositories.
 Add the bootloader to `APP` in `app/src/Application/Kernel.php`:
 
@@ -640,13 +640,13 @@ php app.php configure
 
 ### Generate Migration
 
-To generate the database schema run:
+To generate the database schema, run:
 
 ```bash
 php app.php cycle:migrate -v
 ```
 
-The generated migration located in `app/migrations/`. Execute it using:
+The generated migration is located in `app/migrations/`. Execute it using:
 
 ```bash
 php app.php migrate -vv
@@ -656,8 +656,7 @@ You can now observe the generated tables using `db:list` command.
 
 ### Create Relations
 
-Use [annotations](https://cycle-orm.dev/docs/annotated-relations) to define the relations between entities. Configure
-Post and Comment to belong to User and Post has many Comments.
+Use [attributes](https://cycle-orm.dev/docs/annotated-relations) to define the relations between entities. Configure Post and Comment  relations with type BelongsTo and add relation HasMany between User and Post.
 
 Post:
 
@@ -1022,7 +1021,7 @@ class PostController
 
 ### Test Method
 
-You can return various types of data from your controller methods. Following return values are valid:
+You can return various types of data from your controller methods. These are valid return values:
 
 - string
 - PSR-7 response
@@ -1033,7 +1032,7 @@ You can return various types of data from your controller methods. Following ret
 > Use custom [domain core](/cookbook/domain-core.md) to perform domain-specific response transformations. You can also
 > use the `$this->response` helper to write the data into PSR-7 response object.
 
-For demo purposes return `array`, the `status` key will be treated as response status.
+For demo purposes, return `array`, the `status` key will be treated as response status.
 
 ```php
 // ...
@@ -1078,7 +1077,7 @@ public function test(string $id): ResponseInterface
 
 ### Get Post
 
-To get post details use `PostRepository`, request such dependency in the constructor, `get` method, or use prototype
+To get post details, use `PostRepository`, request such dependency in the constructor, `get` method, or use prototype
 shortcut `posts`. You can access `id` via route parameter:
 
 ```php
@@ -1118,7 +1117,7 @@ class PostController
 ```
 
 You can replace direct repository access and use `Post` as method injection via connected `CycleInterceptor` (make sure
-that `AppBootloader` connected):
+that `AppBootloader` is connected):
 
 ```php
 namespace App\Controller;
@@ -1194,7 +1193,7 @@ class PostView implements SingletonInterface
 ```
 
 > **Note**
-> Run `php app.php configure` to generate the IDE highlight and register prototyped class.
+> Run `php app.php configure` to generate the IDE highlight and register a prototyped class.
 
 Modify the controller as follows:
 
@@ -1261,7 +1260,7 @@ public function list(): array
 
 ### Data Grid
 
-An approach provided above has its limitations since you have to paginate, filter, and order the result manually.
+The approach provided above has its limitations since you have to paginate, filter, and order the result manually.
 Use the [Data Grid component](/component/data-grid.md) to handle data formatting for you:
 
 ```bash
@@ -1319,9 +1318,9 @@ public function list(GridFactory $grids): array
 ```
 
 > **Note**
-> Do not forget to run `php app.php configure` after adding prototyped class.
+> Do not forget to run `php app.php configure` after adding a prototyped class.
 
-The grids are very flexible component with many customization options. By the default, grid configured to read
+The grids are a very flexible component with many customization options. By default, the grid is configured to read
 values from request query and data.
 
 | URL                                                                  | Comment                                  |
@@ -1332,7 +1331,7 @@ values from request query and data.
 | `http://localhost:8080/api/post?sort[author]=asc`                    | Sort by post->author->id.                |
 | `http://localhost:8080/api/post?filter[author]=1`                    | Find only posts with given author id.    |
 
-You can use sorters, filters, and pagination in one request. Multiple filters can activate at once.
+You can use sorters, filters, and pagination in one request. Multiple filters can be activated at once.
 
 ## Validate Request
 
@@ -1417,8 +1416,7 @@ class CommentService
 
 ### Controller Action
 
-Declare controller method and request filter instance. Since you filter implemented `HasFilterDefinition`, the Filters component
-will guarantee that filter is valid. Create `comment` endpoint to post message to a given post:
+Declare controller method and request filter instance. If a filter class implements `Spiral\Filters\Model\HasFilterDefinition` interface, the Filters component will guarantee that the filter is valid. Create `comment` endpoint to post a message to the given post:
 
 ```php
 #[Route(route: '/api/post/<post:\d+>/comment', name: 'post.comment', methods: 'POST')]
@@ -1456,7 +1454,7 @@ Response:
 }
 ```
 
-Or not found exception when post can not be found:
+Or not found exception when the post can not be found:
 
 ```bash
 curl -X POST -H 'content-type: application/json' --data '{"message":"test"}' http://localhost:8080/api/post/9999/comment
@@ -1476,8 +1474,8 @@ curl -X POST -H 'content-type: application/json' --data '{"message": "first comm
 
 ## Render Template
 
-To render post information into HTML form use [views](/views/configuration.md) and [Stempler](/stempler/configuration.md)
-component. Pass post list to the view using Grid object.
+To render post information into HTML form, use [views](/views/configuration.md) and [Stempler](/stempler/configuration.md)
+component. Pass a post list to the view using Grid object.
 
 ```php
 #[Route(route: '/posts', name: 'post.all', methods: 'GET')] 
@@ -1491,7 +1489,7 @@ public function all(GridFactory $grids): string
 
 ### Create Layout
 
-Create/edit layout file located in `app/views/layout/base.dark.php`:
+Create/edit a layout file located in `app/views/layout/base.dark.php`:
 
 ```html
 <!DOCTYPE html>
@@ -1530,7 +1528,7 @@ Create a view file `app/views/posts.dark.php` and extend parent layout.
 
 ### View Post
 
-To view post and all of its comments, create a new controller method in `PostController`. Load post manually via
+To view the post and all of its comments, create a new controller method in `PostController`. Load the post manually via
 repository to preload all author and comment information.
 
 ```php
@@ -1549,7 +1547,7 @@ public function view(string $id): string
 }
 ```
 
-Where the repository method is:
+This is where the repository method is:
 
 ```php
 public function findOneWithComments(string $id): ?Post
@@ -1599,7 +1597,7 @@ Open the post page using `http://localhost:8080/post/1`.
 
 ### Route
 
-Use `post.view` route name to generate link in `app/views/posts.dark.php`:
+Use `post.view` route name to generate a link in `app/views/posts.dark.php`:
 
 ```html
 <extends:layout.base title="Posts"/>
@@ -1621,7 +1619,7 @@ Use `post.view` route name to generate link in `app/views/posts.dark.php`:
 
 ## Next Steps
 
-Spiral provides a lot of pre-build functionality for you. Read the following sections to gain more insigns:
+Spiral provides a lot of pre-build functionality for you. Read the following sections to gain more insights:
 
 - [Authenticating users](/security/authentication.md)
 - [Authorize Access](/security/rbac.md)

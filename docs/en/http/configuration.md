@@ -1,6 +1,6 @@
 # HTTP - Installation and Configuration
 
-The web application bundle (`spiral/app`) ships with a pre-configured HTTP component. You will need several extensions
+The web application bundle (`spiral/app`) is shipped with a pre-configured HTTP component. You will need several extensions
 to enable it in alternative builds.
 
 ## Installation

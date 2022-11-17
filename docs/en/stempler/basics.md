@@ -1,9 +1,9 @@
 # Stempler - Basics
 
-Each view based on a template defined and stored inside `app/views` directory (or other configured
-via `ViewsBootloader`). The Stempler templates must have an extension `.dark.php`.
+Each view is based on a template defined and stored inside the `app/views` directory (or another one configured
+via the `ViewsBootloader`). Stempler templates must have the extension `.dark.php`.
 
-To render view template store file in `app/views/welcome.dark.php`.
+To render a view template, store the file in `app/views/welcome.dark.php`.
 
 ```php
 hello world
@@ -50,7 +50,7 @@ hello, <?=$name?>
 ```
 
 > **Note**
-> You can always use fallback to PHP when needed. Attention, this way, does not prevent XSS injections!
+> You can always use fallback to PHP when needed. Warning, this method does not prevent XSS injections!
 
 ### Auto-Escaping
 
@@ -65,7 +65,7 @@ hello, {{ $name }}
 
 ### Context-Aware escaping
 
-The escape strategy will change based on where you echo your value. You can echo/embed your values inside `script` tags:
+The escape strategy will change depending on where you echo your value. You can echo/embed your values inside `script` tags:
 
 ```php
 <script>
@@ -78,7 +78,7 @@ The escape strategy will change based on where you echo your value. You can echo
 
 ### Disable Escaping
 
-To echo value as is (**without anti-XSS**) use alternative syntax `{!! $value !!}`:
+To echo value as is (**without anti-XSS**), use the alternative syntax `{!! $value !!}`:
 
 ```php
 {!! $value !!}

@@ -4,8 +4,8 @@ Spiral Framework can work using classic Nginx/PHP-FPM setup. But the highest eff
 embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates a set of php processes
 for each dispatching/communication method (HTTP, GRPC, Queue, TCP, etc.).
 
-Every PHP process will only work within a single request/task. It allows you to write code as if you would typically do
-in classic frameworks (share nothing approach). You can also use every library as in the past with only minor
+Every PHP process will only work within a single request/task. It allows you to write code the way you would typically do
+in classic frameworks (share nothing approach). You can also use every library as you did in the past with only minor
 exceptions.
 
 > **Note**
@@ -59,7 +59,7 @@ http:
 ```
 
 ### Developer Mode
-To force worker reload after every request (full debug mode) and limit processing to single worker, add a `debug` option:
+To force worker reload after every request (full debug mode) and limit processing to a single worker, add a `debug` option:
 
 ```yaml
 http:
@@ -74,7 +74,7 @@ You can read more about RoadRunner [here](https://roadrunner.dev/docs).
 Every worker will contain a single application instance. Default application skeleton(s) are based
 on [spiral/boot](https://github.com/spiral/boot).
 
-The package allows quick application instantiation via static factory method `create` and run the created application via the `run` method:
+The package allows quick application instantiation via static factory method `create` and allows you to run the created application via the `run` method:
 
 ```php
 $app = \App\App::create(['root' => __DIR__])->run();
@@ -106,9 +106,9 @@ class App extends Kernel
 }
 ```
 
-The bootloaders will only be invoked once, without request/task context after that application will stay in the process
+The bootloaders will only be invoked once, without request/task context. After that, application will stay in the process
 memory permanently. Since the application bootload only happens once for many requests, you can add many components and
-extensions without the performance penalty (still, watch the memory consumption).
+extensions without performance penalty (still, watch the memory consumption).
 
 ## Gotchas
 
@@ -116,7 +116,7 @@ There are a couple of limitations to be aware of.
 
 #### Memory Leaks
 
-Since the application stays in memory for a long time, even a small memory leak might lead to the process restart.
+Since the application stays in memory for a long time, even a small memory leak might lead to process restart.
 RoadRunner will monitor memory consumption and perform a soft reset, but it is best to avoid memory leaks in your 
 application source code.
 

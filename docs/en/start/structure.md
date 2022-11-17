@@ -1,6 +1,6 @@
 # Directory Structure
 
-The framework does not enforce any specific namespace or directory structure. You can freely change them.
+The framework does not enforce any specific namespace or directory structure, so feel free to change them.
 
 ## Directories
 
@@ -45,7 +45,7 @@ $app = \App\App::create([
 ])->run();
 ```
 
-To resolve directory alias within your application use `Spiral\Boot\DirectoriesInterface`:
+To resolve directory alias within your application, use `Spiral\Boot\DirectoriesInterface`:
 
 ```php
 use Spiral\Boot\DirectoriesInterface;

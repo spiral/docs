@@ -4,7 +4,7 @@ The framework allows you to set [PSR-15 compatible](https://www.php-fig.org/psr/
 a specific route.
 
 > **Note**
-> Check https://github.com/middlewares/psr15-middlewares to find many publicly maintained middleware.
+> Check https://github.com/middlewares/psr15-middlewares to find many publicly maintained middlewares.
 
 ## Create Middleware
 
@@ -24,7 +24,7 @@ class MyMiddleware implements MiddlewareInterface
 
 ## Global Middleware
 
-To activate middleware for every user request, use `Spiral\Bootloader\Http\HttpBootloader`. You can only set this value
+To activate a middleware for every user request, use `Spiral\Bootloader\Http\HttpBootloader`. You can only set this value
 in application bootloaders.
 
 ```php
@@ -77,8 +77,7 @@ return [
 
 ## Route Specific Middleware
 
-To add middleware to the route object use `withMiddleware` method, make sure to use newly created route instance 
-(example is given for Bootloader):
+To add a middleware to the route object, use `withMiddleware` method. Make sure to use a newly created route instance, here's an example for Bootloader:
 
 ```php
 use App\Controller\HomeController;
@@ -158,7 +157,7 @@ public function index(UserContext $ctx): void
 
 ## Non-Direct Scope Configuration
 
-You can use already exists requests scope to carry user values. Create bootloader providing access method for the
+You can use already existing requests scope to carry user values. Create a bootloader providing access method for the
 context specific value:
 
 ```php

@@ -1,12 +1,12 @@
 # Extensions - Monolog
 
-Web and GRPC bundles include default integration with https://github.com/Seldaek/monolog to manage logs.
+The Web and GRPC bundles include default integration with https://github.com/Seldaek/monolog to manage logs.
 
 ## Configuration
 
-The extension can configure using a configuration file or a bootloader. 
+The extension can be configured using a configuration file or a bootloader. 
 
-The configuration file for this extension should be located at `app/config/monolog.php`. Within this file, you may
+The configuration file for this extension should be located in `app/config/monolog.php`. In this file, you can
 configure the default Monolog handler, global logging level, handlers and processors.
 
 For example, the configuration file might look like this:
@@ -88,7 +88,7 @@ return [
 ];
 ```
 
-Use `Spiral\Monolog\Bootloader\MonologBootloader` to declare handler and log-formatter for specific channel:
+Use `Spiral\Monolog\Bootloader\MonologBootloader` to declare a handler and a log-formatter for a specific channel:
 
 ```php
 namespace App\Bootloader;
@@ -117,7 +117,7 @@ class LoggingBootloader extends Bootloader
 
 ## Write to Log
 
-You receive `default` logger using `Psr\Log\LoggerInterface` dependency:
+You receive the `default` logger using the `Psr\Log\LoggerInterface` dependency:
 
 ```php
 use Psr\Log\LoggerInterface;
@@ -129,7 +129,7 @@ public function index(LoggerInterface $logger): void
 }
 ```
 
-To get logger for specific channel use `Spiral\Logger\LogsInterface`:
+To get a logger for a specific channel, use `Spiral\Logger\LogsInterface`:
 
 ```php
 use Spiral\Logger\LogsInterface;
@@ -141,7 +141,7 @@ public function index(LogsInterface $logs): void
 }
 ```
 
-Make sure to enable default handler to save content to the file:
+Make sure to enable the default handler for saving content to the file:
 
 ```php
 namespace App\Bootloader;
@@ -167,7 +167,7 @@ class LoggingBootloader extends Bootloader
 
 ## LoggerTrait
 
-You can use `Spiral\Logger\Traits\LoggerTrait` to assign Logger to any class quickly. The class name will be used as a
+You can use `Spiral\Logger\Traits\LoggerTrait` to quickly assign a Logger to any class. The class name will be used as the
 channel name:
 
 ```php
@@ -184,7 +184,7 @@ class HomeController
 }
 ```
 
-And assign logger to it:
+And assign a logger to it:
 
 ```php
 public function boot(MonologBootloader $monolog): void
@@ -197,11 +197,11 @@ public function boot(MonologBootloader $monolog): void
 ```
 
 > **Note**
-> LoggerTrait works only inside `$app->serve()` method via global IoC scope.
+> LoggerTrait only works inside the `$app->serve()` method via the global IoC scope.
 
 ## Errors
 
-To aggregate all application errors into a single log file subscribe to `default` channel:
+To aggregate all application errors into a single log file, subscribe to the `default` channel:
 
 ```php
 namespace App\Bootloader;
@@ -228,7 +228,7 @@ class LoggingBootloader extends Bootloader
 
 ## Debug
 
-Use the second argument of `dump` function to dump directly into `default` log channel:
+Use the second argument of the `dump` function to dump directly into the `default` log channel:
 
 ```php
 dump('hello', \Spiral\Debug\Dumper::LOGGER); 

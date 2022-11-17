@@ -1,6 +1,6 @@
 # Internationalization - Installation and Configuration
 
-The spiral i18n component is based on the `symfony/translator` package and provides compatible interfaces. 
+The Spiral i18n component is based on the `symfony/translator` package and provides compatible interfaces. 
 The web bundle includes this extension by default.
 
 To enable the extension in alternative builds:
@@ -10,7 +10,7 @@ composer require spiral/translator
 ```
 
 > **Note**
-> Please note that the spiral/framework >= 2.6 already includes this component.
+> The spiral/framework >= 2.6 already includes this component.
 
 Activate the bootloader `Spiral/Bootloader/I18nBootloader` in your application.
 
@@ -37,12 +37,11 @@ class HomeController
 To change the locale, use the `setLocale` method. 
 
 > **Note**
-> It's recommended to use the `setLocale` method inside middleware or domain core and properly reset the original locate after.
+> It's recommended to use the `setLocale` method inside middleware or domain core and  then properly reset the original locate.
 
 ## Default Configuration
 
-The framework supplies the default configuration automatically, inside the `I18nBootloader`. To alter the configuration
-create `app/config/translator.php` file:
+The framework supplies a default configuration automatically, inside `I18nBootloader`. To alter the configuration, create the `app/config/translator.php` file:
 
 ```php
 use Symfony\Component\Translation\Dumper;

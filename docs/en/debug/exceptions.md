@@ -4,7 +4,7 @@ Spiral Framework provides multiple ways to handle critical and application-level
 
 ## Using Middleware
 
-You can create HTTP middleware to intercept any specific exception type thrown inside your controllers. We can use
+You can create an HTTP middleware to intercept any specific type of exception thrown inside your controllers. We can use
 Whoops to demonstrate how to write it.
 
 ```bash
@@ -76,9 +76,9 @@ class WhoopsBootloader extends Bootloader
 ```
 
 > **Note**
-> Do not forget to disable default `Spiral\Bootloader\Http\ErrorHandlerBootloader`.
+> Do not forget to disable the default `Spiral\Bootloader\Http\ErrorHandlerBootloader`.
 
-You can use this approach to suppress the specific type of exceptions in your application.
+You can use this approach to suppress specific types of exceptions in your application.
 
 ## Using Interceptors
 
@@ -136,7 +136,7 @@ class WhoopsInterceptor implements CoreInterceptorInterface
 }
 ```
 
-Make sure to enable this interceptor via Bootloader:
+Make sure to enable this interceptor via the Bootloader:
 
 ```php
 use App\Middleware\WhoopsMiddleware;
@@ -155,11 +155,11 @@ class AppBootloader extends DomainBootloader
 
 ## Snapshots
 
-In addition to the custom middleware framework provides a unified way to handle exceptions registration (including fatal
-exceptions). Such functionality is delivered by `spiral/snapshots` package and intended for exception registration in
+In addition to the custom middleware, the framework provides a unified way to handle exception registration (including fatal
+exceptions). This functionality is delivered by the `spiral/snapshots` package and is intended for exception registration in
 external monitoring solutions (for example, Sentry):
 
-You can implement your snapshot provider via `Spiral\Snapshots\SnapshotterInterface`:
+You can implement your own snapshot provider via `Spiral\Snapshots\SnapshotterInterface`:
 
 ```php
 use Spiral\Snapshots\Snapshot;
