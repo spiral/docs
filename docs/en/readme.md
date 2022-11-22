@@ -40,6 +40,7 @@
     * [Code Generation](component/reactor.md)
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
+    * [Application telemetry](component/telemetry.md)
     * [Data Grids](component/data-grid.md)
     * [Serializer](component/serializer.md)
     * [SendIt](component/sendit.md)
