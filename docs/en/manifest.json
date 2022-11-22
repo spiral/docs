@@ -60,6 +60,7 @@
       "component/reactor": "Code Generation",
       "component/tokenizer": "Tokenizer",
       "component/metrics": "Prometheus Metrics",
+      "component/telemetry": "Application telemetry",
       "component/data-grid": "Data Grids",
       "component/serializer": "Serializer",
       "component/sendit": "SendIt",
