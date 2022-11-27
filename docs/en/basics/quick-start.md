@@ -1036,7 +1036,7 @@ For demo purposes, return `array`, the `status` key will be treated as response 
 
 ```php
 // ...
-#[Route(route: '/api/test/<id>', name="post.test", methods: 'GET')]
+#[Route(route: '/api/test/<id>', name: "post.test", methods: 'GET')]
 public function test(string $id): array
 {
     return [
