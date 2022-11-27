@@ -934,7 +934,7 @@ class UserFactory extends AbstractFactory
 ```
 ### BlogSeeder
 
-Let's create `UserFactory` class:
+Let's create `BlogSeeder` class:
 
 ```php
 // app/database/Seeder/BlogSeeder.php
