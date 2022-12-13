@@ -397,7 +397,7 @@ $router->setRoute('home', new Route(
 You can register route patterns in the `RoutesBootloader`.
 
 In this example we use default pattern registry, but 
-you can create your own registry that implements `RoutePatternRegistryInterface`.
+you can create and bind own registry which implements `RoutePatternRegistryInterface`.
 
 > **Note**
 > `DefaultPatternRegistry` already has `uuid` and `integer` patterns,
