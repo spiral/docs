@@ -392,6 +392,47 @@ $router->setRoute('home', new Route(
 > This route will only match URLs with numeric `id` but it doesn't mean that the route attribute `id` will contain integer
 > value. In this case, the attribute will always contain a string value.
 
+### Route patterns registration
+
+You can register route patterns in the `RoutesBootloader`.
+
+In this example we use default pattern registry, but 
+you can create your own registry that implements `RoutePatternRegistryInterface`.
+
+```php
+namespace App\Bootloader;
+
+use Spiral\Router\Registry\RoutePatternRegistryInterface;
+use Spiral\Router\Registry\DefaultPatternRegistry;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    protected const SINGLETONS = [
+        RoutePatternRegistryInterface::class => [self::class, 'patternRegistry'],
+    ];
+    
+    public function patternRegistry(): RoutePatternRegistryInterface
+    {
+        $registry = new DefaultPatternRegistry();
+        
+        $registry->register('uuid', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+        $registry->register('integer', '\d+');
+        
+        // Also you can register stringable objects
+        $registry->register('in_array', new InArrayPattern(['banana', 'apple']));
+
+        return $registry;
+    }
+}
+```
+
+Routes example:
+```php
+$routes->add('users', '/users/<uuid:uuid>')->controller(UserController::class);
+$routes->add('tasks', '/tasks/<int:integer>')->controller(TaskController::class);
+$routes->add('fruits', '/fruits/<name:in_array>')->controller(FruitController::class);
+```
+
 ### Route parameters casting
 
 If you want to use typed route parameters injection in controllers such as `function user(int $id)`, you need to cast
