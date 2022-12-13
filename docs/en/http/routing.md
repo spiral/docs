@@ -399,6 +399,10 @@ You can register route patterns in the `RoutesBootloader`.
 In this example we use default pattern registry, but 
 you can create your own registry that implements `RoutePatternRegistryInterface`.
 
+> **Note**
+> `DefaultPatternRegistry` already has `uuid` and `integer` patterns,
+> code below uses for registration demonstration 
+
 ```php
 namespace App\Bootloader;
 
