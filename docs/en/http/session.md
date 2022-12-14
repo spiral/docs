@@ -128,6 +128,7 @@ $this->session->regenerateID();
 
 To alter session configuration, create file `app/config/session.php` to change needed values:
 
+`FileHandler` configuration
 ```php
 <?php
 
@@ -145,6 +146,30 @@ return [
         [
             'directory' => directory('runtime') . 'session',
             'lifetime'  => 86400
+        ]
+    )
+];
+```
+
+`CacheHandler` configuration
+```php
+<?php
+
+declare(strict_types=1);
+
+use Spiral\Core\Container\Autowire;
+use Spiral\Session\Handler\CacheHandler;
+
+return [
+    'lifetime' => 86400,
+    'cookie'   => 'sid',
+    'secure'   => false,
+    'handler'  => new Autowire(
+        CacheHandler::class,
+        [
+            'storage' => 'my-storage', // Cache storage name. Default - current storage
+            'ttl'  => 86400,
+            'prefix' => 'foo:' // By default, session:
         ]
     )
 ];
