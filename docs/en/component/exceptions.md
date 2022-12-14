@@ -201,3 +201,15 @@ final class ExceptionHandlerBootloader extends Bootloader
     }
 }
 ```
+
+### Exception verbosity
+
+You can set `VERBOSITY_LEVEL` in `.env` that indicates the level of verbosity for an exception.
+
+The possible values are defined by the `Spiral\Exceptions\Verbosity` enum:
+
+- `basic` (0): Indicates that only basic information about the exception should be shown.
+- `verbose` (1): Indicates that verbose information about the exception should be shown. This is the default value if `VERBOSITY_LEVEL` is not specified or is set to an unknown value.
+- `debug` (2): Indicates that debug information about the exception should be shown.
+
+
