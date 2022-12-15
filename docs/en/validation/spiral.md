@@ -532,8 +532,8 @@ class MyFilter extends Filter implements HasFilterDefinition
 | longer   | length:*int*            | Checks if the string length is longer or equal to the specified value.  |
 | length   | length:*int*            | Checks if the string length is equal to the specified value.            |
 | range    | left:*int*, right:*int* | Checks if the string length fits within the specified range.            |
-| empty    | *string*                | Checks if the string value is empty.                                    |
-| notEmpty | *string*                | Checks if the string value isn't empty.                                 |
+| empty    | *string*                | Checks if the string is empty.                                          |
+| notEmpty | *string*                | Checks if the string isn't empty.                                       |
 
 Examples:
 
