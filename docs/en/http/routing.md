@@ -394,47 +394,40 @@ $router->setRoute('home', new Route(
 
 ### Route patterns registration
 
-You can register route patterns in the `RoutesBootloader`.
-
-In this example we use default pattern registry, but 
-you can create and bind own registry which implements `RoutePatternRegistryInterface`.
-
-> **Note**
-> `DefaultPatternRegistry` already has `uuid` and `integer` patterns,
-> code below uses for registration demonstration 
+You can register route patterns in the bootloader:
 
 ```php
-namespace App\Bootloader;
-
 use Spiral\Router\Registry\RoutePatternRegistryInterface;
-use Spiral\Router\Registry\DefaultPatternRegistry;
 
-final class RoutesBootloader extends BaseRoutesBootloader
+class AppBootloader extends Bootloader
 {
-    protected const SINGLETONS = [
-        RoutePatternRegistryInterface::class => [self::class, 'patternRegistry'],
-    ];
-    
-    public function patternRegistry(): RoutePatternRegistryInterface
-    {
-        $registry = new DefaultPatternRegistry();
-        
-        $registry->register('uuid', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
-        $registry->register('integer', '\d+');
-        
-        // Also you can register stringable objects
-        $registry->register('in_array', new InArrayPattern(['banana', 'apple']));
-
-        return $registry;
-    }
+   public function boot(RoutePatternRegistryInterface $patternRegistry) {
+      $patternRegistry->register(
+          'uuid', 
+          '[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}'
+      );
+      $patternRegistry->register(
+          'in_array', 
+          new InArrayPattern(['Tom', 'Jerry'])
+      );
+   }
 }
 ```
 
-Routes example:
+Using example:
 ```php
-$routes->add('users', '/users/<uuid:uuid>')->controller(UserController::class);
-$routes->add('tasks', '/tasks/<int:integer>')->controller(TaskController::class);
-$routes->add('fruits', '/fruits/<name:in_array>')->controller(FruitController::class);
+#Route(uri: 'blog/post/<post:uuid>')
+public function show(string $post)
+{ 
+    \var_dump($post); // f403554a-e70f-479a-969b-3edc047912a3
+}
+```
+```php
+#Route(uri: 'user/<name:in_array>')
+public function show(string $name)
+{ 
+    \var_dump($name); // Tom
+}
 ```
 
 ### Route parameters casting
