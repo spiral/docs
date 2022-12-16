@@ -562,12 +562,15 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 > prefix `array::`
 
-| Rule    | Parameters           | Description                                                           |
-|---------|----------------------|-----------------------------------------------------------------------|
-| count   | length:*int*         | Checks if an array has a size equal to the given value.              |
-| shorter | length:*int*         | Checks if an array has a size smaller than or equal to the given value. |
-| longer  | length:*int*         | Checks if an array has a size bigger than or equal to the given value. |
-| range   | min:*int*, max:*int* | Checks if an array has a size between the given min and max.         |
+| Rule           | Parameters           | Description                                                             |
+|----------------|----------------------|-------------------------------------------------------------------------|
+| count          | length:*int*         | Checks if an array has a size equal to the given value.                 |
+| shorter        | length:*int*         | Checks if an array has a size smaller than or equal to the given value. |
+| longer         | length:*int*         | Checks if an array has a size bigger than or equal to the given value.  |
+| range          | min:*int*, max:*int* | Checks if an array has a size between the given min and max.            |
+| isList         |                      | Checks array is list                                                    |
+| isAssoc        |                      | Checks array is assoc                                                   |
+| expectedValues | values:*array*       | Checks the array values are only allowed from a list                    |
 
 Examples:
 
@@ -578,6 +581,11 @@ class MyRequest extends \Spiral\Filters\Filter
         'tags' => [
             ['notEmpty'],
             ['array::range', 1, 10]
+        ],
+        'person' => [
+            ['array::isList'],
+            ['array::shorter', 3],
+            ['array::expectedValues', ['good', 'bad', 'ugly']]
         ]
     ];
 }
