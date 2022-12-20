@@ -408,7 +408,7 @@ class AppBootloader extends Bootloader
           '[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}'
       );
       $patternRegistry->register(
-          'in_array', 
+          'names', 
           new InArrayPattern(['Tom', 'Jerry'])
       );
    }
