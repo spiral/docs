@@ -409,7 +409,7 @@ class AppBootloader extends Bootloader
       );
       $patternRegistry->register(
           'names', 
-          new InArrayPattern(['Tom', 'Jerry'])
+          new InArrayPattern(['tom', 'jerry'])
       );
    }
 }
