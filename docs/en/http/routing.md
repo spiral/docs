@@ -424,7 +424,7 @@ public function show(string $post)
 }
 ```
 ```php
-#Route(uri: 'user/<name:in_array>')
+#Route(uri: 'user/<name:names>') // <===== Will match: /user/tom || /user/jerry
 public function show(string $name)
 { 
     \var_dump($name); // Tom
