@@ -392,7 +392,7 @@ $router->setRoute('home', new Route(
 > This route will only match URLs with numeric `id` but it doesn't mean that the route attribute `id` will contain integer
 > value. In this case, the attribute will always contain a string value.
 
-### Route patterns registration
+### Named route patterns
 
 If you would like a route parameter to always be constrained by a given regular expression, you may use named patterns. You should define these patterns via `Spiral\Router\Registry\RoutePatternRegistryInterface` in a bootloader:
 
