@@ -129,9 +129,7 @@ $this->session->regenerateID();
 To alter session configuration, create file `app/config/session.php` to change needed values.
 
 
-The session component is based on native PHP session implementation. By default, the session content is stored in the file system
-in the `runtime/session` directory. If your application will be load balanced across multiple web servers, you should choose a centralized 
-store that all servers can access, such as Redis.
+The session component is based on native PHP session implementation. By default, the session content is stored in the file system in the `runtime/session` directory. If your application will be load balanced across multiple web servers, you should choose a centralized store that all servers can access, such as Redis.
 
 The session `handler` configuration option defines where session data will be stored for each request. 
 Spiral Framework ships with several drivers out of the box:
