@@ -394,7 +394,7 @@ $router->setRoute('home', new Route(
 
 ### Route patterns registration
 
-You can register route patterns in the bootloader:
+If you would like a route parameter to always be constrained by a given regular expression, you may use named patterns. You should define these patterns via `Spiral\Router\Registry\RoutePatternRegistryInterface` in a bootloader:
 
 ```php
 use Spiral\Router\Registry\RoutePatternRegistryInterface;
