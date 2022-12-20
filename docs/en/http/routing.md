@@ -415,7 +415,9 @@ class AppBootloader extends Bootloader
 }
 ```
 
-Using example:
+Once the pattern has been defined, it is automatically applied to all routes using that parameter name: 
+
+#### Example:
 ```php
 #Route(uri: 'blog/post/<post:uuid>')  // <===== Will match: /blog/post/f403554a-e70f-479a-969b-3edc047912a3
 public function show(string $post)
