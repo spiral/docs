@@ -417,7 +417,7 @@ class AppBootloader extends Bootloader
 
 Using example:
 ```php
-#Route(uri: 'blog/post/<post:uuid>')
+#Route(uri: 'blog/post/<post:uuid>')  // <===== Will match: /blog/post/f403554a-e70f-479a-969b-3edc047912a3
 public function show(string $post)
 { 
     \var_dump($post); // f403554a-e70f-479a-969b-3edc047912a3
