@@ -71,7 +71,8 @@ function test(): void
 
 ### Helper class
 
-> **Note**: If you would like a directory names always be constrained by a specific method, you may create a helper 
+> **Note**: 
+> If you would like a directory names always be constrained by a specific method, you may create a helper 
 > class, for example AppDirectories.
 
 ```php
