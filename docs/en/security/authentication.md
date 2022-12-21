@@ -364,6 +364,8 @@ The user is authenticated.
 To see if the user authenticated, simply check if the auth context has a non-empty actor:
 
 ```php
+use Spiral\Http\Exception\ClientException\ForbiddenException;
+
 public function index()
 {
     if ($this->auth->getActor() === null) {
@@ -436,7 +438,9 @@ And activate the bootloader `Spiral\Bootloader\Auth\SecurityActorBootloader` to 
 
 You can protect some of your route targets by attaching the firewall middleware to prevent unauthorized access.
 
-By default, spiral provides only one firewall which will overwrite the target url:
+Spiral Framework provides the following firewall middlewares:
+
+#### Firewall which will overwrite the target url
 
 ```php
 use Spiral\Auth\Middleware\Firewall\OverwriteFirewall;
@@ -447,27 +451,49 @@ use Spiral\Auth\Middleware\Firewall\OverwriteFirewall;
         ->withMiddleware(new OverwriteFirewall(new Uri('/account/login')));
 ```
 
-### Custom Firewall
+#### Firewall which will throw an exceptions
+
+```php
+use Spiral\Auth\Middleware\Firewall\ExceptionFirewall;
+use Spiral\Http\Exception\ClientException\ForbiddenException;
+
+// ...
+
+(new Route('/account/<controller>/<action>', $accountTarget))
+        ->withMiddleware(new ExceptionFirewall(new ForbiddenException()));
+```
+
+```php
+use Spiral\Http\Exception\ClientException\RedirectFirewall;
+use Psr\Http\Message\ResponseFactoryInterface;
+
+// ...
+
+(new Route('/account/<controller>/<action>', $accountTarget))
+        ->withMiddleware(new RedirectFirewall(
+            uri: new Uri('/account/login'),
+            status: 302,
+            responseFactory: $container->get(ResponseFactoryInterface::class)
+        ));
+```
+
+#### Firewall which will redirect to the target url
+
+#### Custom firewall
 
 To implement your firewall, extend `Spiral\Auth\Middleware\Firewall\AbstractFirewall`:
 
 ```php
-use Spiral\Prototype\Traits\PrototypeTrait;
-use Psr\Http\Message\ResponseInterface;
-
-final class RedirectFirewall extends AbstractFirewall
+final class CustomFirewall extends AbstractFirewall
 {
-    use PrototypeTrait;
-    
     public function __construct(
-        private UriInterface $uri,
-        private int $status = 301
+        // args...
     ) {
     }
 
     protected function denyAccess(Request $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return $this->response->redirect((string) $this->uri, $this->status);
+        // return response
     }
 }
 ```
