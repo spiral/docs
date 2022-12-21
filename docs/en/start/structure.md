@@ -180,9 +180,6 @@ final class AppDirectories
 
 ## Namespaces
 
-
-## Namespaces
-
 By default, all skeleton applications use `App` root namespace pointing to `app/src` directory. You can change the base
 to any desired namespace in `composer.json`:
 
