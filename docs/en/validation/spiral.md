@@ -535,7 +535,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 | empty    | *string*                | Checks if the string is empty.                                          |
 | notEmpty | *string*                | Checks if the string isn't empty.                                       |
 
-Examples:
+**Examples:**
 
 ```php
 namespace App\Filter;
@@ -573,25 +573,46 @@ class MyFilter extends Filter implements HasFilterDefinition
 | expectedValues | *array*              | Checks if an array values are included in the given list of values.     |
 | listArray      | -                    | Checks if an array is list.                                             |
 | assocArray     | -                    | Checks if an array is associative.                                      |
-Examples:
+
+**Examples:**
 
 ```php
-class MyRequest extends \Spiral\Filters\Filter
+namespace App\Filter;
+
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+
+class MyRequest extends Filter implements HasFilterDefinition
 {
-    public const VALIDATES = [
-        'tags' => [
-            ['notEmpty'],
-            ['array::range', 1, 10]
-        ],
-        'person' => [  // <==== Request: ['ugly', 'old', 'long_hair']
-            ['array::isList'],
-            ['array::shorter', 3],
-            ['array::expectedValues', ['good', 'bad', 'ugly', 'long_hair', 'young', 'old', 'strong']]
-        ],
-        'settings' => [  // <====== Request ['setting1' => 'value', 'setting2' => 'value']
-            ['array::assocArray'],
-        ]
-    ];
+    #[Post]
+    public array $tags;
+    
+    #[Post]
+    public array $person = [];
+    
+    #[Post]
+    public array $settings = [];
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'tags' => [
+                ['notEmpty'],
+                ['array::range', 1, 10]
+            ],
+            'person' => [  // <==== Request: ['ugly', 'old', 'long_hair']
+                ['array::isList'],
+                ['array::shorter', 3],
+                ['array::expectedValues', ['good', 'bad', 'ugly', 'long_hair', 'young', 'old', 'strong']]
+            ],
+            'settings' => [  // <====== Request ['setting1' => 'value', 'setting2' => 'value']
+                ['array::assocArray'],
+            ]
+        ]);
+    }
 }
 ```
 
@@ -661,11 +682,6 @@ class DBChecker extends AbstractChecker
         // Method => Error message
         'user' => 'No such user.'
     ];
-
-    public function __construct(
-        private Database $db
-    ) {
-    }
 
     public function user(int $id): bool
     {
