@@ -9,7 +9,8 @@ You can use filters in two ways:
 
 ## Validators
 
-If you only need to populate the data from the request you don't need any validators for it. But if you need to validate data,
+If you only need to populate the data from the request you don't need any validators for it. But if you need to validate
+data,
 at first, you need to choose a validator for it.
 
 There are three validators for Spiral Framework that you can use:
@@ -146,7 +147,8 @@ We will use [Spiral Validator](https://github.com/spiral/validator) package in t
 
 ## Usage
 
-All the filter objects should implement `Spiral\Filters\Model\FilterInterface`. The interface will add the ability to inject
+All the filter objects should implement `Spiral\Filters\Model\FilterInterface`. The interface will add the ability to
+inject
 filters with populated data from `Spiral\Filters\InputInterface` from the container.
 
 ```php
@@ -238,7 +240,8 @@ dump($filter->getData()); // ['text' => '...']
 ```
 
 > **Note**
-> You can use both ways in your filter object. In this case the filter provider will build a mapping schema for properties
+> You can use both ways in your filter object. In this case the filter provider will build a mapping schema for
+> properties
 > with attributes and then merge the schema with the schema from the filter definition.
 
 ### Attributes
@@ -341,7 +344,8 @@ class MyFilter extends Filter implements HasFilterDefinition
 ```
 
 > **Note**
-> The most common source is `data` (points to PSR-7 - the parsed body), you can use this data to fetch values from the incoming
+> The most common source is `data` (points to PSR-7 - the parsed body), you can use this data to fetch values from the
+> incoming
 > JSON payloads.
 
 ### Dot Notation
@@ -418,15 +422,15 @@ We can accept and validate the following data structure:
 By design, you can use any method of [InputManager](../http/request-response.md) as a source where origin is passed
 parameter. The following sources are available:
 
-| Source         | Description                                                   |
-|----------------|---------------------------------------------------------------|
+| Source         | Description                                                       |
+|----------------|-------------------------------------------------------------------|
 | uri            | The current page Uri in a form of `Psr\Http\Message\UriInterface` |
 | path           | The current page path                                             |
-| method         | Http method (GET, POST, ...)                                  |
-| isSecure       | If https is used                                                |
-| isAjax         | If `X-Requested-With` is set as `xmlhttprequest`                 |
+| method         | Http method (GET, POST, ...)                                      |
+| isSecure       | If https is used                                                  |
+| isAjax         | If `X-Requested-With` is set as `xmlhttprequest`                  |
 | isJsonExpected | When the client expects `application/json`                        |
-| remoteAddress  | User ip address                                               |
+| remoteAddress  | User ip address                                                   |
 
 > **Note**
 > Read more about the InputManager [here](../http/request-response.md).
@@ -490,7 +494,8 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 ### Route Parameters
 
-Every route writes the matching parameters into the ServerRequestInterface attribute `matches`, is it possible to access route
+Every route writes the matching parameters into the ServerRequestInterface attribute `matches`, is it possible to access
+route
 values inside your filter.
 
 ```php
@@ -620,39 +625,54 @@ You can use all the checkers, conditions, and rules.
 
 ### Handle Validation errors
 
-By default, the Spiral Framework doesn't handle filter validation errors. When some of the filter rules has an error,
-`Spiral\Filters\Exception\ValidationException` exception will be thrown.
+When some of the filter rule has an error, `Spiral\Filters\Exception\ValidationException` exception will be thrown.
 
-There are two ways to handle a validation exception:
- - Middleware
- - Interceptions
+Spiral Framework will automatically catch this exception via the `Spiral\Filter\ValidationHandlerMiddleware` middleware
+and return a response with the error message via `Spiral\Filters\ErrorsRendererInterface`.
 
-Both the ways are similar. You can see an example of a validation exception handler below:
+You just need to register middleware:
 
 ```php
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Spiral\Filters\Exception\ValidationException;
+namespace App\Bootloader;
 
-class JsonValidationMiddleware implements MiddlewareInterface
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Filter\ValidationHandlerMiddleware;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    protected function globalMiddleware(): array
+    {
+        return [
+            // ...
+            ValidationHandlerMiddleware::class,
+        ];
+    }
+}
+```
+
+By default, the middleware uses `Spiral\Filter\JsonErrorsRenderer` for rendering filter errors. You can change the
+renderer by binding your own implementation of `Spiral\Filters\ErrorsRendererInterface` to the container.
+
+```php
+namespace App\Filter;
+use Psr\Http\Message\ResponseInterface;
+use Spiral\Filters\ErrorsRendererInterface;
+use Spiral\Http\ResponseWrapper;
+
+final class CustomJsonErrorsRenderer implements ErrorsRendererInterface
 {
     public function __construct(
-        private readonly ResponseFactoryInterface $responseFactory
-    ) 
-    {}
+        private readonly ResponseWrapper $wrapper
+    ) {
+    }
 
-    public function process(Request $request, RequestHandlerInterface $handler): Response
+    public function render(array $errors, mixed $context = null): ResponseInterface
     {
-        try {
-            return $handler->handle($request);
-        } catch (ValidationException $e) {
-            return $this->responseFactory->createResponse($e->getCode(), $e->getMessage())
-              ->getBody()
-              ->write(\json_encode([
-                  'errors' => $e->errors,
-              ]));
-        }
+        return $this->wrapper->json([
+            'errors' => $errors,
+            'context' => (string) $context
+        ])
+            ->withStatus(422, 'The given data was invalid.');
     }
 }
 ```
@@ -663,27 +683,17 @@ And then you need to register middleware for specific route group.
 namespace App\Bootloader;
 
 use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
-use Spiral\Cookies\Middleware\CookiesMiddleware;
-use Spiral\Csrf\Middleware\CsrfMiddleware;
-use Spiral\Session\Middleware\SessionMiddleware;
+use Spiral\Filters\ErrorsRendererInterface;
+use App\Filter\CustomJsonErrorsRenderer;
 
 final class RoutesBootloader extends BaseRoutesBootloader
 {
-    // ...
+    // Custom renderer to the container binding
+    protected const SINGLETONS = [
+        ErrorsRendererInterface::class => CustomJsonErrorsRenderer::class,
+    ];
 
-    protected function middlewareGroups(): array
-    {
-        return [
-            'web' => [
-                CookiesMiddleware::class,
-                SessionMiddleware::class,
-                CsrfMiddleware::class,
-            ],
-            'api' => [
-                JsonValidationMiddleware::class  // <===== Our new middleware
-            ],
-        ];
-    }
+    // ...
 }
 ```
 
@@ -716,7 +726,8 @@ class MyFilter extends Filter implements HasFilterDefinition
 }
 ```
 
-If you plan to localize the error message later, wrap the text in `[[]]` to automatically index and replace the translation:
+If you plan to localize the error message later, wrap the text in `[[]]` to automatically index and replace the
+translation:
 
 ```php
 namespace App\Filter;
