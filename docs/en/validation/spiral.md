@@ -570,7 +570,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 | shorter        | length:*int*         | Checks if an array has a size smaller than or equal to the given value. |
 | longer         | length:*int*         | Checks if an array has a size bigger than or equal to the given value.  |
 | range          | min:*int*, max:*int* | Checks if an array has a size between the given min and max.            |
-| expectedValues | *array*              | Checks if an array has given values.                                    |
+| expectedValues | *array*              | Checks if an array values are included in the given list of values. |
 | listArray      | -                    | Checks if an array is list.                                             |
 | assocArray     | -                    | Checks if an array is associative.                                      |
 Examples:
