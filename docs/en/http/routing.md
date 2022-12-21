@@ -394,10 +394,12 @@ $router->setRoute('home', new Route(
 
 ### Route parameters casting
 
+#### Integer values casting
+
 If you want to use typed route parameters injection in controllers such as `function user(int $id)`, you need to cast
 values by yourself. You can use domain interceptors for it.
 
-You can see an example of a simple interceptor below
+You can see an example of a simple interceptor below:
 
 ```php
 class StringToIntParametersInterceptor implements CoreInterceptorInterface
@@ -407,6 +409,52 @@ class StringToIntParametersInterceptor implements CoreInterceptorInterface
         foreach ($parameters as $key => $parameter) {
             if (ctype_digit($parameter)) {
                 $parameters[$key] = (int)$parameter;
+            }
+        }
+
+        return $core->callAction($controller, $action, $parameters);
+    }
+}
+```
+
+#### Value objects casting
+
+You can use the same approach to cast values to value objects.
+
+For example, if controller action expects `Ramsey\Uuid\Uuid` object
+
+```php
+use Ramsey\Uuid\UuidInterface;
+
+class UserController 
+{
+    public function user(UuidInterface $uuid): User
+    {
+        // ...
+    }
+}
+```
+
+You can automatically cast string values to `Ramsey\Uuid\Uuid` objects using the following interceptor:
+
+```php
+use Spiral\Core\CoreInterceptorInterface;
+use Spiral\Core\CoreInterface;
+use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
+
+final class UuidParametersConverterInterceptor implements CoreInterceptorInterface
+{
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core): mixed
+    {
+        $refMethod = new \ReflectionMethod($controller, $action);
+
+        // Iterate all Controller action arguments
+        foreach ($refMethod->getParameters() as $parameter) {
+            // If an arguments has Ramsey\Uuid\UuidInterface type hint.
+            if ($parameter->getType()->getName() === UuidInterface::class) {
+                // Replace argument value with Uuid instance.
+                $parameters[$parameter->getName()] = Uuid::fromString($parameters[$parameter->getName()]);
             }
         }
 
