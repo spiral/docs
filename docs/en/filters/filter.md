@@ -10,8 +10,7 @@ You can use filters in two ways:
 ## Validators
 
 If you only need to populate the data from the request you don't need any validators for it. But if you need to validate
-data,
-at first, you need to choose a validator for it.
+data, at first, you need to choose a validator for it.
 
 There are three validators for Spiral Framework that you can use:
 
@@ -241,8 +240,7 @@ dump($filter->getData()); // ['text' => '...']
 
 > **Note**
 > You can use both ways in your filter object. In this case the filter provider will build a mapping schema for
-> properties
-> with attributes and then merge the schema with the schema from the filter definition.
+> properties with attributes and then merge the schema with the schema from the filter definition.
 
 ### Attributes
 
@@ -345,8 +343,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 > **Note**
 > The most common source is `data` (points to PSR-7 - the parsed body), you can use this data to fetch values from the
-> incoming
-> JSON payloads.
+> incoming JSON payloads.
 
 ### Dot Notation
 
@@ -495,8 +492,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 ### Route Parameters
 
 Every route writes the matching parameters into the ServerRequestInterface attribute `matches`, is it possible to access
-route
-values inside your filter.
+route values inside your filter.
 
 ```php
 $router->setRoute(
