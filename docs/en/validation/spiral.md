@@ -570,7 +570,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 | shorter        | length:*int*         | Checks if an array has a size smaller than or equal to the given value. |
 | longer         | length:*int*         | Checks if an array has a size bigger than or equal to the given value.  |
 | range          | min:*int*, max:*int* | Checks if an array has a size between the given min and max.            |
-| expectedValues | *array*              | Checks if an array values are included in the given list of values. |
+| expectedValues | *array*              | Checks if an array values are included in the given list of values.     |
 | listArray      | -                    | Checks if an array is list.                                             |
 | assocArray     | -                    | Checks if an array is associative.                                      |
 Examples:
@@ -583,11 +583,14 @@ class MyRequest extends \Spiral\Filters\Filter
             ['notEmpty'],
             ['array::range', 1, 10]
         ],
-        'person' => [  // <==== ['ugly', 'old', 'long_hair']
+        'person' => [  // <==== Request: ['ugly', 'old', 'long_hair']
             ['array::isList'],
             ['array::shorter', 3],
             ['array::expectedValues', ['good', 'bad', 'ugly', 'long_hair', 'young', 'old', 'strong']]
         ],
+        'settings' => [  // <====== Request ['setting1' => 'value', 'setting2' => 'value']
+            ['array::assocArray'],
+        ]
     ];
 }
 ```
