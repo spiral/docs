@@ -583,15 +583,11 @@ class MyRequest extends \Spiral\Filters\Filter
             ['notEmpty'],
             ['array::range', 1, 10]
         ],
-        'person' => [
-            ['array::expectedValues', ['good', 'bad', 'ugly']]
+        'person' => [  // <==== ['ugly', 'old', 'long_hair']
+            ['array::isList'],
+            ['array::shorter', 3],
+            ['array::expectedValues', ['good', 'bad', 'ugly', 'long_hair', 'young', 'old', 'strong']]
         ],
-        'listArray' => [
-            ['array::isList'] // [1,2,3,4]
-        ],
-        'assocArray' => [
-            ['array::isAssoc'] // ['foo' => 1, 'bar' => 2]
-        ]
     ];
 }
 ```
