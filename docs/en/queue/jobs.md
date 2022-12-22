@@ -154,8 +154,29 @@ class MyBootloader extends Bootloader
 
 When a job pushed into a queue, the job payload is serialized via [Serializer component](../component/serializer.md).
 
-> **Note**
-> By default, the payload will be serialized with the default serializer `Spiral\Serializer\Serializer\JsonSerializer`.
+### Configure default serializer
+```php
+// file app/config/queue.php
+
+declare(strict_types=1);
+
+use Spiral\Core\Container\Autowire;
+use Spiral\Serializer\Serializer\JsonSerializer;
+use Spiral\Serializer\Serializer\PhpSerializer;
+
+return [
+    // ...
+
+    // via class name
+    'defaultSerializer' => JsonSerializer::class,
+    
+    // via instance
+    'defaultSerializer' => new JsonSerializer(),
+    
+    // via Autowire
+    'defaultSerializer' => new Autowire(PhpSerializer::class)
+];
+```
 
 ### Changing serializer
 
