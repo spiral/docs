@@ -349,40 +349,12 @@ php app.php route:reset
 
 ### Domain Core
 
-Connect a custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
+Domain Core refers to the central domain logic and business rules of an application. It is the core of the application's functionality and typically contains the most important and complex parts of the codebase.
 
-Let's create an interceptor that will catch validation errors and return them in JSON:
+We can change the default behavior of the application and enable Cycle Entity resolution using route parameter and
+`Guard` attribute. 
 
-```php
-// file app/src/Interceptor/ValidationInterceptor.php
-namespace App\Interceptor;
-
-use Spiral\Core\CoreInterceptorInterface;
-use Spiral\Core\CoreInterface;
-use Spiral\Filters\Exception\ValidationException;
-use Spiral\Http\ResponseWrapper;
-
-final class ValidationInterceptor implements CoreInterceptorInterface
-{
-    public function __construct(
-        private readonly ResponseWrapper $responseWrapper
-    ) {
-    }
-
-    public function process(string $controller, string $action, array $parameters, CoreInterface $core): mixed
-    {
-        try {
-            return $core->callAction($controller, $action, $parameters);
-        } catch (ValidationException $e) {
-            return $this->responseWrapper->json(['errors' => $e->errors], 400);
-        }
-    }
-}
-```
-
-We can change the default behavior of the application and enable Cycle Entity resolution using route parameter, 
-Filter validation and `Guard` attribute.
-
+Additionally, we can include the `ValidationHandlerMiddleware` to handle the validation of incoming HTTP requests.
 ```php
 namespace App\Bootloader;
 
@@ -391,6 +363,7 @@ use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
 use Spiral\Cycle\Interceptor\CycleInterceptor;
 use Spiral\Domain\GuardInterceptor;
+use Spiral\FilterValidationHandlerMiddleware;
 
 class AppBootloader extends DomainBootloader
 {
@@ -401,8 +374,12 @@ class AppBootloader extends DomainBootloader
     protected const INTERCEPTORS = [
         CycleInterceptor::class,
         GuardInterceptor::class,
-        ValidationInterceptor::class,
     ];
+    
+    public function boot(HttpBootloader $http)
+    {
+        $http->addMiddleware(ValidationHandlerMiddleware::class);
+    }
 }
 ```
 
