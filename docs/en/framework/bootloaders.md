@@ -99,11 +99,11 @@ final class QueueBootloader extends Bootloader
 
 > **Note**:
 > 1. Learn more about the `Spiral\Boot\EnvironmentInterface`, in the 
-> [Configuration](../start/configuration.md) section of the documentation.
+> [Configuration](../start/configuration.md) section.
 > 2. Learn more about the `Spiral\Boot\AbstractKernel` class (also known as the 'Kernel'), in
-> the [Kernel and Environment](../framework/kernel.md) section of the documentation.
+> the [Kernel and Environment](../framework/kernel.md) section.
 > 3. Learn more about the `Spiral\Config\ConfiguratorInterface` class, in
-> the [Config Objects](../framework/config.md) section of the documentation.
+> the [Config Objects](../framework/config.md) section.
 
 ### Boot
 
