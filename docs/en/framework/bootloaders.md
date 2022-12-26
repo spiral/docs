@@ -154,7 +154,7 @@ class MyBootloader extends Bootloader
 ```
 
 > **Note**:
-> The closure that you provided as an argument to the `bindSingleton` method will be called by the dependency injection 
+> The closure is provided as an argument to the `bindSingleton` method will be called by the dependency injection 
 > (DI) container when it needs to create an instance of `MyService`. When the closure is called, the DI container will 
 > automatically resolve and inject any dependencies that are required by the closure. 
 > 
