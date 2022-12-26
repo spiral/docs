@@ -47,6 +47,9 @@ class App extends Kernel
 }
 ```
 
+> **Note**
+> `APP` bootloader namespace is always loaded after `LOAD`, keep domain-specific bootloaders in it.
+
 Currently, your Bootloader doesn't do anything. A little bit later, we will add some functionality to it.
 
 ## Available methods
@@ -55,11 +58,11 @@ Bootloaders provide two methods `init` and `boot` that are executed when the app
 
 ### Init
 
-This method is executed *first*. It's recommended to set default values for configuration files. Modify configuration 
-files using special bootloader methods. Execute other logic that doesn't require reading configuration files 
-and doesn't depend on code execution in the `init` and `boot` methods of other bootloaders.
-In this method, you can add initialization callbacks, configure container bindings if this does not require 
-access to the application configuration.
+This method will be run **first**. It's a good idea to set default values for the config files before proceeding. You 
+can use the special bootloader methods to modify the config files as needed. After that, you can go ahead and run any 
+other logic that doesn't require reading the config files and isn't dependent on code execution in the `init` and `boot` 
+methods of other bootloaders. This is also a good time to add initialization callbacks and configure container bindings, 
+as long as it doesn't require accessing the app config.
 
 ```php
 use Spiral\Boot\AbstractKernel;
@@ -94,39 +97,44 @@ final class QueueBootloader extends Bootloader
 }
 ```
 
+> **Note**:
+> if you want to learn more about the `Spiral\Boot\EnvironmentInterface`, you can check out the 
+> [Configuration](../start/configuration.md) section of the documentation. It should have all the info you need.
+
+> **Note**:
+> if you want to learn more about the `Spiral\Boot\AbstractKernel` class (also known as the 'Kernel'), you can check out
+> the [Kernel and Environment](../framework/kernel.md) section of the documentation.
+
+> **Note**:
+> if you want to learn more about the `Spiral\Config\ConfiguratorInterface` class, you can check out
+> the [Config Objects](../framework/config.md) section of the documentation.
+
 ### Boot
 
-This method is executed *after* executing method `init` in all bootloaders. It can be used if you need the result 
-of the `init` methods in all bootloaders. For example, compiled configuration files.
+This method will be run after the `init` method in the bootloaders have been executed. The reason for this is that
+you might need the results of bootloader initialization in order to proceed. For example, compiled configuration files.
+
+Just keep in mind that it should be run after all those init methods have completed.
 
 ```php
 use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Config\ConfiguratorInterface;
 use Spiral\Session\Config\SessionConfig;
 
 final class SessionBootloader extends Bootloader
 {
     public function boot(
-        ConfiguratorInterface $config,
+        SessionConfig $session,
         CookiesBootloader $cookies
     ): void {
-        $session = $config->getConfig(SessionConfig::CONFIG);
-
-        $cookies->whitelistCookie($session['cookie']);
+        $cookies->whitelistCookie($session->getCookie());
     }
 }
 ```
-
-> **Note**
-> `APP` bootloader namespace is always loaded after `LOAD`, keep domain-specific bootloaders in it.
-
 ## Configuring Container
 
-The most common use-case of bootloaders is to configure a DI container, for example, we might want to bind multiple
-implementations to their interfaces or construct some service.
-
-We can use the method `init` or `boot` for these purposes. The method supports method injection, so we can request any services we
-need:
+Bootloaders are usually used to set up a DI container, like if we want to link multiple implementations to their 
+interfaces or create some service. We can use the `init` or `boot` method for this, which lets us request any services we 
+need using method injection.
 
 ```php
 namespace App\Bootloader;
@@ -142,12 +150,16 @@ class MyBootloader extends Bootloader
     {
         $container->bind(MyClassInterface::class, MyClass::class);
         
-        $container->bindSingleton(MyService::class, function(MyClass $myClass) {
+        $container->bindSingleton(MyService::class, static function(MyClass $myClass) {
             return new MyService($myClass); 
         });
     }
 }
 ```
+
+> **Note**:
+> Using dependency injection (DI) with a closure function, the dependencies will be automatically resolved and injected 
+> into the function when it is called.
 
 Bootloaders provide the ability to simplify container binding definition using constants `BINDINGS` and `SINGLETONS`.
 
@@ -162,12 +174,12 @@ use App\MyService;
 class MyBootloader extends Bootloader 
 {
     const BINDINGS = [
-        MyInterface::class => MyClass::class
+        MyClassInterface::class => MyClass::class
     ];
 
     public function boot(Container $container): void
     {
-        $container->bindSingleton(MyService::class, function(MyClass $myClass) {
+        $container->bindSingleton(MyService::class, static function(MyClass $myClass) {
             return new MyService($myClass); 
         });
     }
