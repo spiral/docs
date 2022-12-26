@@ -98,11 +98,11 @@ final class QueueBootloader extends Bootloader
 ```
 
 > **Note**:
-> 1. If you want to learn more about the `Spiral\Boot\EnvironmentInterface`, you can check out the 
-> [Configuration](../start/configuration.md) section of the documentation. It should have all the info you need.
-> 2. If you want to learn more about the `Spiral\Boot\AbstractKernel` class (also known as the 'Kernel'), you can check out
+> 1. Learn more about the `Spiral\Boot\EnvironmentInterface`, in the 
+> [Configuration](../start/configuration.md) section of the documentation.
+> 2. Learn more about the `Spiral\Boot\AbstractKernel` class (also known as the 'Kernel'), in
 > the [Kernel and Environment](../framework/kernel.md) section of the documentation.
-> 3. If you want to learn more about the `Spiral\Config\ConfiguratorInterface` class, you can check out
+> 3. Learn more about the `Spiral\Config\ConfiguratorInterface` class, in
 > the [Config Objects](../framework/config.md) section of the documentation.
 
 ### Boot
@@ -154,8 +154,12 @@ class MyBootloader extends Bootloader
 ```
 
 > **Note**:
-> Using dependency injection (DI) with a closure function, the dependencies will be automatically resolved and injected 
-> into the function when it is called.
+> The closure that you provided as an argument to the `bindSingleton` method will be called by the dependency injection 
+> (DI) container when it needs to create an instance of `MyService`. When the closure is called, the DI container will 
+> automatically resolve and inject any dependencies that are required by the closure. 
+> 
+> If you want to learn more about DI, you can check out the [Container and Factories](../framework/container.md) section
+> of the documentation. It should have all the info you need.
 
 Bootloaders provide the ability to simplify container binding definition using constants `BINDINGS` and `SINGLETONS`.
 
@@ -277,7 +281,7 @@ class MyBootloader extends Bootloader
 ```
 
 > **Note**
-> that you are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another
+> You are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another
 > bootloader). The framework would not allow you to change any configuration value after component initialization.
 
 ## Cascade bootloading
