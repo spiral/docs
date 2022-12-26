@@ -1,166 +1,42 @@
 # Debug - Handling Exceptions
 
-Spiral Framework provides multiple ways to handle critical and application-level exceptions.
+During the development process, it is common for errors and exceptions to arise. Debugging these exceptions can be a challenging and time-consuming task, but it is a critical aspect of the development process. The Spiral Framework offers a range of tools and techniques for debugging exceptions and identifying the underlying cause of issues. By utilizing these resources, you can efficiently troubleshoot and resolve exceptions in your application.
 
-## Using Middleware
+## Using Yii Error Handler bridge
 
-You can create an HTTP middleware to intercept any specific type of exception thrown inside your controllers. We can use
-Whoops to demonstrate how to write it.
+The Yii Error Handler bridge is a package for Spiral Framework that provides integration with the Yii framework's error handling mechanism. This allows developers to use the Yii error handling system within their Spiral applications.
 
+### Installation
 ```bash
-composer require filp/whoops
+composer require spiral/yii-error-handler-bridge
 ```
 
-And our middleware:
+### Usage
+After package install you need to register bootloader from the package:
 
 ```php
-namespace App\Middleware;
-
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-
-class WhoopsMiddleware implements MiddlewareInterface
-{
-    private ResponseFactoryInterface $responseFactory;
-
-    public function __construct(ResponseFactoryInterface $responseFactory)
-    {
-        $this->responseFactory = $responseFactory;
-    }
-
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    {
-        try {
-            return $handler->handle($request);
-        } catch (\Throwable $e) {
-            $response = $this->responseFactory->createResponse(500);
-            $response->getBody()->write($this->renderWhoops($e));
-
-            return $response;
-        }
-    }
-
-    private function renderWhoops(\Throwable $e): string
-    {
-        $whoops = new \Whoops\Run();
-        $whoops->allowQuit(false);
-        $whoops->writeToOutput(false);
-
-        $handler = new \Whoops\Handler\PrettyPageHandler();
-        $handler->handleUnconditionally(true); // whoops does not know about RoadRunner
-
-        $whoops->prependHandler($handler);
-
-        return $whoops->handleException($e);
-    }
-}
+protected const LOAD = [
+    // ...
+    \Spiral\YiiErrorHandler\Bootloader\YiiErrorHandlerBootloader::class,
+];
 ```
 
-Make sure to enable this middleware via Bootloader:
+The `YiiErrorHandlerBootloader` registers all available renderers during initialization. If you wish to register specific renderers, you can refer to the Exceptions documentation.
 
-```php
-use App\Middleware\WhoopsMiddleware;
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Bootloader\Http\HttpBootloader;
+### Built-in renderers
 
-class WhoopsBootloader extends Bootloader
-{
-    public function boot(HttpBootloader $http)
-    {
-        $http->addMiddleware(WhoopsMiddleware::class);
-    }
-}
-```
+The Yii Error Handler bridge provides several built-in renderers for rendering error pages:
 
-> **Note**
-> Do not forget to disable the default `Spiral\Bootloader\Http\ErrorHandlerBootloader`.
-
-You can use this approach to suppress specific types of exceptions in your application.
-
-## Using Interceptors
-
-You can also handle domain-specific exceptions in `Spiral\Core\CoreInterface`. We can use Whoops to demonstrate how to
-write it.
-
-```bash
-composer require filp/whoops
-```
-
-And our interceptor:
-
-```php
-namespace App\Interceptor;
-
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use \Spiral\Core\CoreInterface;
-use \Spiral\Core\CoreInterceptorInterface;
-
-class WhoopsInterceptor implements CoreInterceptorInterface
-{
-    private ResponseFactoryInterface $responseFactory;
-
-    public function __construct(ResponseFactoryInterface $responseFactory)
-    {
-        $this->responseFactory = $responseFactory;
-    }
-
-    public function process(string $controller, string $action, array $parameters, CoreInterface $core): ResponseInterface
-    {
-        try {
-            return $core->callAction($controller, $action, $parameters);
-        } catch (\Throwable $e) {
-            $response = $this->responseFactory->createResponse(500);
-            $response->getBody()->write($this->renderWhoops($e));
-
-            return $response;
-        }
-    }
-
-    private function renderWhoops(\Throwable $e): string
-    {
-        $whoops = new \Whoops\Run();
-        $whoops->allowQuit(false);
-        $whoops->writeToOutput(false);
-
-        $handler = new \Whoops\Handler\PrettyPageHandler();
-        $handler->handleUnconditionally(true); // whoops does not know about RoadRunner
-
-        $whoops->prependHandler($handler);
-
-        return $whoops->handleException($e);
-    }
-}
-```
-
-Make sure to enable this interceptor via the Bootloader:
-
-```php
-use App\Middleware\WhoopsMiddleware;
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Bootloader\Http\HttpBootloader;
-use Spiral\Bootloader\DomainBootloader;
-
-class AppBootloader extends DomainBootloader
-{
-    protected const INTERCEPTORS = [
-        //...
-        WhoopsInterceptor::class,
-    ];
-}
-```
+- `HtmlRenderer`: Renders error pages as HTML. This is the default renderer used by the yii error handler bridge.
+- `JsonRenderer`: Renders error pages as JSON. This can be useful for handling errors in API requests.
+- `XmlRenderer`: Renders error pages as XML. This can also be useful for handling errors in API requests.
+- `PlainTextRenderer`: Renders error pages as plain text.
 
 ## Snapshots
 
-In addition to the custom middleware, the framework provides a unified way to handle exception registration (including fatal
-exceptions). This functionality is delivered by the `spiral/snapshots` package and is intended for exception registration in
-external monitoring solutions (for example, Sentry):
+The framework offers a unified approach for managing exception registration, including fatal exceptions, through the `spiral/snapshots` package. This feature is designed to facilitate exception registration in external monitoring solutions such as Sentry.
 
-You can implement your own snapshot provider via `Spiral\Snapshots\SnapshotterInterface`:
-
+Custom snapshot providers can be implemented using the `Spiral\Snapshots\SnapshotterInterface` interface.
 ```php
 use Spiral\Snapshots\Snapshot;
 use Spiral\Snapshots\SnapshotInterface;
@@ -178,4 +54,4 @@ class MySnapshotter implements SnapshotterInterface
 ```
 
 > **Note**
-> Make sure to bind your implementation to `Spiral\Snapshots\SnapshotterInterface` to enable it.
+> To enable your implementation, it is necessary to bind it to the `Spiral\Snapshots\SnapshotterInterface` interface.
