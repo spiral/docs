@@ -152,9 +152,18 @@ class MyBootloader extends Bootloader
 
 ## Job Payload serialization
 
-When a job pushed into a queue, the job payload is serialized via [Serializer component](../component/serializer.md).
+The queue component supports the use of a serializer for converting objects to and from a serialized form suitable for storage in a queue. This allows you to easily enqueue and dequeue complex objects without having to manually serialize and deserialize them.
+
+The  [Serializer component](../component/serializer.md) is used to serialize the job payload when it is added to the queue and deserialize when it is retrieved from the queue and passed to a job handler for processing.
 
 ### Configure default serializer
+
+The default serializer for the queue component can be specified via the `queue.php` configuration file located in the `app/config` directory.
+
+It can be specified as a class name, a class instance, or an autowire instance. This allows the developer to easily customize the serialization strategy for the queue and choose the approach that best fits their needs.
+
+**Example:**
+ 
 ```php
 // file app/config/queue.php
 
