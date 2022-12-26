@@ -21,7 +21,7 @@ protected const LOAD = [
 ];
 ```
 
-The `YiiErrorHandlerBootloader` registers all available renderers during initialization. If you wish to register specific renderers, you can refer to the Exceptions documentation.
+The `YiiErrorHandlerBootloader` registers all available renderers during initialization. If you wish to register specific renderers, you can refer to the [Exceptions](/component/exceptions.md) documentation.
 
 ### Built-in renderers
 
