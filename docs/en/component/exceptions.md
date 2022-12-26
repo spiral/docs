@@ -209,7 +209,12 @@ You can set `VERBOSITY_LEVEL` in `.env` that indicates the level of verbosity fo
 The possible values are defined by the `Spiral\Exceptions\Verbosity` enum:
 
 - `basic` (0): Indicates that only basic information about the exception should be shown.
+  If an error occurs, you will see:
+  ![image](https://user-images.githubusercontent.com/44509066/209579347-6bc5d8e2-26ec-44f9-b4c1-f942dd551cc3.png)
 - `verbose` (1): Indicates that verbose information about the exception should be shown. This is the default value if `VERBOSITY_LEVEL` is not specified or is set to an unknown value.
+  If an error occurs, you will see:
+  ![image](https://user-images.githubusercontent.com/44509066/209579497-9aa1d366-b453-44df-b6e3-35e8d0062c2d.png)
 - `debug` (2): Indicates that debug information about the exception should be shown.
-
+  If an error occurs, you will see:
+  ![image](https://user-images.githubusercontent.com/44509066/209579507-91485250-1fd4-4da2-b5c3-8fed231b61c8.png)
 
