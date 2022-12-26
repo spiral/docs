@@ -242,13 +242,22 @@ class MyBootloader extends Bootloader
 
 ## Depending on other Bootloaders
 
-Bootloaders can depend on other bootloaders, in which case they will be automatically resolved and initialized before 
-the depending bootloader is loaded. This allows developers to define a specific order in which bootloaders should be 
-initialized, and to ensure that certain bootloaders are initialized before others.
+Depending on other bootloaders can be really useful in certain situations. For example, if you want to make sure a 
+certain bootloader is initialized before yours, you can use one of two main approaches: injecting the bootloader class 
+into the init or boot method as an argument, or using the `Bootloader::DEPENDENCIES` constant in your bootloader class. 
+
+This can be a good way to manage the initialization of your app and make sure all the necessary resources and 
+dependencies are available when you need them. Just keep in mind that dependent bootloaders will only be initialized 
+once, even if they are depended on by multiple other bootloaders.
 
 Some framework bootloaders can be used as a simple way to configure application settings. For example, we can
 use `Spiral\Bootloader\Http\HttpBootloader` to add global PSR-15 middleware:
 
+**There are two ways to define dependent bootloaders:**
+
+1. Injecting the bootloader class into the `init` or `boot` method as an argument of your bootloader class
+
+**For example:**
 ```php
 namespace App\Bootloader;
 
@@ -264,8 +273,35 @@ class MyBootloader extends Bootloader
 }
 ```
 
+2. Using the `Bootloader::DEPENDENCIES` constant in your bootloader class. This can be a convenient way to define
+   dependent bootloaders when you don't need to access them directly in your bootloader class.
+
+**For example:**
+```php
+namespace App\Bootloader;
+
+class MyBootloader extends Bootloader 
+{
+    protected const DEPENDENCIES = [
+        \Spiral\Bootloader\Http\HttpBootloader::class
+    ];
+    
+    public function boot(): void
+    {
+        // ...
+    }
+}
+```
+
+The Spiral Framework will automatically resolve and initialize the dependent bootloader before the depending bootloader 
+is initialized.
+
+Both of these approaches allow you to define dependent bootloaders in a declarative way, which can make it easier to 
+manage the initialization of your application and ensure that all necessary resources and dependencies are available
+when they are needed.
+
 > **Note**:
-> Dependent bootloaders will be initialized only once, even if they are depended on by multiple other bootloaders.
+> Dependent bootloaders will be only initialized once, even if multiple other bootloaders depend on them.
 
 ## Cascade bootloading
 
