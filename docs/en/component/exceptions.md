@@ -1,8 +1,8 @@
 # Exceptions
 
-The Spiral Framework provides an `Exceptions` component for handling exceptions in an application.
-Provides an interface and implementation of `ExceptionHandlerInterface`, functionality of `Reporters` and `Renderers`.
-The component available and configured by default in the [application bundle](https://github.com/spiral/app).
+The Spiral Framework provides the `Exceptions` component for handling exceptions in an application.
+It also provides an interface and implementation of `ExceptionHandlerInterface`, functionality of `Reporters` and `Renderers`.
+The component is available and configured by default in the [application bundle](https://github.com/spiral/app).
 
 ## Installation
 
@@ -23,7 +23,7 @@ $app = App::create(
 
 ## Configuration
 
-The application bundle contains an `App\Bootloader\ExceptionHandlerBootloader` that registers some reporters 
+The application bundle contains `App\Bootloader\ExceptionHandlerBootloader` that registers some reporters 
 and renderers. You can add your own renderers and reporters in this bootloader.
 
 ```php
@@ -74,7 +74,7 @@ final class ExceptionHandlerBootloader extends Bootloader
 
 ## Reporters
 
-The `Exceptions` component allows to create and register exception `reporters`.
+The `Exceptions` component allows creating and registering exception `reporters`.
 The interface `Spiral\Exceptions\ExceptionReporterInterface` for reporters is very simple, it contains one `report` 
 method, which accepts an exception.
 
@@ -95,7 +95,7 @@ of the `Exceptions` component but is available by default in the application.
 
 #### LoggerReporter
 
-This reporter adds the ability to log an exception using a logger registered in the application. Logger reporter enabled
+This reporter adds an ability to log an exception using a logger registered in the application. A logger reporter is enabled
 by default in the application bundle.
 
 #### FileReporter
@@ -106,7 +106,7 @@ In the [application bundle](https://github.com/spiral/app) this reporter enabled
 
 ### Adding a Reporter
 
-To add a new reporter, use the `addReporter` method in the `ExceptionHandler` class. By default, this class bound 
+To add a new reporter, use the `addReporter` method in the `ExceptionHandler` class. By default, this class is bound 
 to the `ExceptionHandlerInterface` interface and we can get it from the container using it. You can use the 
 `Spiral\Boot\Environment\AppEnvironment` class to determine the current application environment and 
 register reporters based on that.
@@ -146,7 +146,7 @@ final class ExceptionHandlerBootloader extends Bootloader
 
 ## Renderers
 
-The `Exceptions` component allows to create and register exception `renderers`.
+The `Exceptions` component allows to create and register the exception `renderers`.
 Renders are used to create a `string representation` of the exception according to the required `format`. 
 The application can contain different renders for different formats.
 Renderers must implement the `Spiral\Exceptions\ExceptionRendererInterface` interface with two methods `canRender` and
@@ -184,7 +184,7 @@ The `Spiral\Exceptions\Renderer\ConsoleRenderer`, `Spiral\Exceptions\Renderer\Js
 
 ### Adding a Renderer
 
-To add a new renderer, use the `addRenderer` method in the `ExceptionHandler` class. By default, this class bound
+To add a new renderer, use the `addRenderer` method in the `ExceptionHandler` class. By default, this class is bound
 to the `ExceptionHandlerInterface` interface and we can get it from the container using it.
 
 ```php

@@ -16,7 +16,7 @@ https://github.com/spiral/framework/releases
 
 ## Language Version Support
 
-As of 2022 the framework and its components support:
+As of 2022, the framework and its components support:
 
 | Language | Version |
 |----------|---------|

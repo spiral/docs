@@ -9,7 +9,7 @@ composer require spiral/views
 > **Note**
 > Please note that the spiral/framework >= 2.6 already includes this component.
 
-To activate the component use bootloader `Spiral\Views\Bootloader\ViewsBootloader`:
+To activate the component, use the bootloader `Spiral\Views\Bootloader\ViewsBootloader`:
 
 ```php
 [
@@ -24,7 +24,7 @@ store view files in multiple namespaces.
 
 ## Configuration
 
-To change the default component configuration create and edit file `app/config/views.php`:
+To change the default component configuration, create and edit the file `app/config/views.php`:
 
 ```php
 <?php
@@ -54,7 +54,7 @@ return [
 
 ## Auto-Configuration
 
-You can alter some of the component settings using bootloader `Spiral\Bootloaders\Views\ViewsBootloader`.
+You can alter some of the component settings using the bootloader `Spiral\Bootloaders\Views\ViewsBootloader`.
 
 ### View Namespace
 
@@ -77,7 +77,7 @@ class AppBootloader extends Bootloader
 
 ### View Engine
 
-To register a new view engine make sure to implement `Spiral\Views\EngineInterface`:
+To register a new view engine, make sure to implement `Spiral\Views\EngineInterface`:
 
 ```php
 namespace App\Bootloader;
@@ -101,7 +101,7 @@ By default, view caching is turned off if the env variable `DEBUG` is set to tru
 
 ## Purge
 
-Run the console command `views:reset` to delete view cache:
+Run the console command `views:reset` to delete the view cache:
 
 ```bash
 php app.php views:reset
@@ -109,11 +109,11 @@ php app.php views:reset
 
 ## Warmup
 
-To warmup cache before run `views:compile` or `configure`:
+To warmup cache, run `views:compile` or `configure`:
 
 ```bash
 php app.php views:compile
 ``` 
 
 > **Note**
-> Always warmup view cache before switching worker pool under load.
+> Always warmup the view cache before switching the worker pool under load.

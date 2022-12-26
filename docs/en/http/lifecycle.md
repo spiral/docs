@@ -7,11 +7,11 @@ Unlike most of the PHP frameworks, the HTTP requests begin outside of the applic
 ![Request Lifecycle](https://user-images.githubusercontent.com/773481/181182150-8cc2b6c4-2b50-4e85-afd7-e5c2d1c98b2c.png)
 
 > **Note**
-> The Response comes the way in a backward direction.
+> The Response makes its way in a backward direction.
 
 ## PSR
 
-The Spiral Framework based on a set of standards that make it compatible with other frameworks, routers, middleware,
+The Spiral Framework is based on a set of standards that make it compatible with other frameworks, routers, middleware,
 etc. You can read more about PSR standards used here:
 
 - [PSR-7: HTTP message interfaces](https://www.php-fig.org/psr/psr-7/)
@@ -20,8 +20,8 @@ etc. You can read more about PSR standards used here:
 
 ## Flow Description
 
-The user request comes to the RoadRunner application server. The server will pass it through the number of middleware
-layers, some of which used to enable web-socket broadcasting, serve static files
+A user request comes to the RoadRunner application server. The server will pass it through a number of middleware
+layers, some of which are used to enable web-socket broadcasting, serve static files
 or [implement domain-specific logic](/http/golang.md).
 
 Once all of the middleware processing is complete, the `net/http` request will be converted into `PSR-7` format and
@@ -34,11 +34,11 @@ Once all of the middleware processing is complete, the framework will create an 
 the request object. Such an approach allows you to use PSR-7 request as a classic global object, while technically, it
 only exists during the user request.
 
-The request is passed into the PSR-15 handler of your choice (by default `spiral/router`). The handler must generate the
-response which will be sent back to the user through all middleware layers.
+The request is passed into the PSR-15 handler of your choice (by default `spiral/router`). The handler must generate a
+response which will be sent back to the user through all the middleware layers.
 
 > **Note**
-> Spiral Router provides the ability to associate custom middleware set with each route.
+> Spiral Router provides an ability to associate custom middleware set with each route.
 
 ## Invoke HTTP Manually
 

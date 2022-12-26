@@ -1,7 +1,7 @@
 # Database - Installation and Configuration
 
-The `cycle/database` component is included by default in Web and GRPC builds. The DBAL focuses mainly on unifying
-database access rather than trying to get 100% of the specific DBMS feature set.
+The `cycle/database` component is included by default in the Web and GRPC builds. The DBAL focuses mainly on unifying
+database access rather than trying to get 100% of a specific DBMS feature set.
 
 However, you can always use direct queries to bypass the spiral abstractions.
 
@@ -26,7 +26,7 @@ protected const LOAD = [
 ];
 ```
 
-To enable migrations component:
+To enable the migrations component:
 
 ```php
 protected const LOAD = [
@@ -38,7 +38,7 @@ protected const LOAD = [
 
 ## Configuration
 
-By default, the database configuration located in `app/config/database.php` file. The configuration includes a set of
+By default, the database configuration is located in the `app/config/database.php` file. The configuration includes a set of
 options for each database driver, database-driver association, and database aliases.
 
 ```php
@@ -103,8 +103,8 @@ return [
 
 ### Declare Connection
 
-To create new database connection add a new section or alter existed options of `drivers` section of your configuration,
-you can use `env` function to keep your passwords and usernames separately.
+To create a new database connection, add a new section or alter the existing options in the `drivers` section of your configuration,
+you can use the `env` function to keep your passwords and usernames separately.
 
 ```php
 <?php
@@ -163,11 +163,11 @@ return [
 ```
 
 > **Note**
-> Use connection option `options` to set PDO specific attributes.
+> Use connection the option `options` to set PDO specific attributes.
 
 ### Declare Database
 
-In order to access connected database we have to add it into `databases` section first:
+In order to access a connected database, we must first add it to the `databases` section:
 
 ```php
 <?php
@@ -202,7 +202,7 @@ separate databases with relation to one physical database.
 > **Note**
 > Use aliases to configure IoC auto wiring.
 
-Example controller constructor:
+Controller constructor example:
 
 ```php
 public function __construct(Database $db, Database $other)
@@ -210,7 +210,7 @@ public function __construct(Database $db, Database $other)
 }
 ```
 
-To point `db` and `other` to specific database instance:
+To point `db` and `other` to a specific database instance:
 
 ```php
 <?php
@@ -310,4 +310,4 @@ Foreign Keys of default.posts:
 ```
 
 > **Note**
-> Read how to configure database [here](https://cycle-orm.dev/docs/database-configuration/2.x/en).
+> Read how to configure a database [here](https://cycle-orm.dev/docs/database-configuration/2.x/en).

@@ -2,12 +2,12 @@
 
 The default application skeleton enables session integration by default.
 
-If you need to enable session in an alternative bundle, require composer package `spiral/session` and add
+If you need to enable a session in an alternative bundle, require composer package `spiral/session` and add
 bootloader `Spiral\Bootloader\Http\SessionBootloader` into your app.
 
 ## SessionInterface
 
-User session can be accessed using context specific object `Spiral\Session\SessionInterface`:
+A user session can be accessed using context specific object `Spiral\Session\SessionInterface`:
 
 ```php
 use Spiral\Session\SessionInterface;
@@ -27,7 +27,7 @@ public function index(SessionInterface $session): void
 ## Session Section
 
 By default, you are not allowed to work with session directly, but rather allocate the isolated and named section
-which provides classing `set`, `get`, `delete` and etc functionality. Use `getSection` of session object for these
+which provides classing `set`, `get`, `delete` or any different functionality. Use `getSection` of session object for these
 purposes:
 
 ```php
@@ -43,9 +43,9 @@ public function index(SessionInterface $session): void
 
 ## Session Scope
 
-To simplify the usage of the session in singleton services and controllers, use `Spiral\Session\SessionScope`. This
+To simplify the usage of a session in singleton services and controllers, use `Spiral\Session\SessionScope`. This
 component is also available via prototype property `session`. The component can be used within singleton services and
-always point to active session context:
+always point to an active session context:
 
 ```php
 namespace App\Controller;
@@ -65,15 +65,14 @@ class HomeController
 
 ## Session Lifecycle
 
-The session will be automatically started on first data access and committed when the request will
-leave `SessionMiddleware`. To control session manually use methods of `Spiral\Session\SessionInterface` object.
+The session will be automatically started on first data access and committed when the request leaves `SessionMiddleware`. To control the session manually, use methods of `Spiral\Session\SessionInterface` object.
 
 > **Note**
 > SessionScope fully implements SessionInterface.
 
 ### Resume session
 
-To manually resume/create session:
+To manually resume/create a session:
 
 ```php
 $this->session->resume();
@@ -81,7 +80,7 @@ $this->session->resume();
 
 ### Commit
 
-To manually commit and close the session:
+To manually commit and close a session:
 
 ```php
 $this->session->commit();
@@ -89,7 +88,7 @@ $this->session->commit();
 
 ### Abort
 
-To discard all the changes and close the session:
+To discard all the changes and close a session:
 
 ```php
 $this->session->abort();
@@ -97,13 +96,13 @@ $this->session->abort();
 
 ### Get Session ID
 
-To get session ID (only when session resumed):
+To get a session ID (only when the session is resumed):
 
 ```php
 dump($this->session->getID());
 ```
 
-To check if session has been started:
+To check if the session has started:
 
 ```php
 dump($this->session->isStarted());
@@ -111,7 +110,7 @@ dump($this->session->isStarted());
 
 ### Destroy
 
-To destroy the session and all the content:
+To destroy a session and all the content:
 
 ```php
 $this->session->destroy();
@@ -119,7 +118,7 @@ $this->session->destroy();
 
 ### Regenerate ID
 
-To issue new session ID without affecting the session content:
+To issue a new session ID without affecting the session content:
 
 ```php
 $this->session->regenerateID();
@@ -127,7 +126,7 @@ $this->session->regenerateID();
 
 ## Custom Configuration
 
-To alter session configuration create file `app/config/session.php` to change needed values:
+To alter session configuration, create file `app/config/session.php` to change needed values:
 
 ```php
 <?php
@@ -153,7 +152,7 @@ return [
 
 ### Custom Session Handler
 
-The session component based on native PHP session implementation. By default, session content stored in the file system
+The session component is based on native PHP session implementation. By default, the session content is stored in the file system
 in the `runtime/session` directory.
 
 To change the session storage driver, use

@@ -1,6 +1,6 @@
 # Internalization - Say Trait
 
-It is possible to add translation abilities to any application object using specialized trait 
+It is possible to add translation abilities to any application object using the specialized trait 
 `Spiral\Translator\Traits\TranslatorTrait`.
 
 ## Usage
@@ -28,8 +28,7 @@ class HomeController
 
 ## Class messages
 
-In cases where a message defined by logic and can not be indexed use constants or properties to declare class messages,
-every string wrapped with `[[]]` will be automatically indexed.
+In cases where a message is defined by logic and can not be indexed, use constants or properties to declare class messages, every string wrapped with `[[]]` will be automatically indexed.
  
  ```php
 class HomeController 

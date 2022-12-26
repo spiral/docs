@@ -1,11 +1,11 @@
 # Extensions - Dotenv
 
-Default application skeleton includes the ability to read ENV values from `.env` file located in the root of the
+The default application skeleton includes the ability to read ENV values from the `.env` file located at the root of the
 project.
 
 ## Configuration
 
-To install Dotenv extension in non-default application skeleton:
+To install Dotenv extension in a non-default application skeleton:
 
 ```bash
 composer require spiral/dotenv-bridge
@@ -22,17 +22,17 @@ Add the following bootloader to your application:
 ```
 
 > **Note**
-> Make sure to add a bootloader at the top of the list to alter Env.
+> Make sure to add the bootloader to the top of the list to alter Env.
 
-The values from the `.env` the file will be copied into your env and available via `Spiral\Boot\EnvironmentInterface`
-or `env` function.
+The values from the `.env` the file will be copied to your env and available via `Spiral\Boot\EnvironmentInterface`
+or the `env` function.
 
 > **Note**
-> Attention, this component overwrites system ENV values.
+>  This component overwrites system ENV values.
 
 ## Pre-Processing
 
-Please remember that values in `.env` will be pre-processed, following changes will occur:
+Remember that the values in `.env` will be pre-processed, the following changes will take place:
 
 | Value   | PHP Value |
 |---------|-----------|

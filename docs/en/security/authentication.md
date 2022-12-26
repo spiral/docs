@@ -1,7 +1,7 @@
 # Security - User Authentication
 
-The framework includes the set of components to authorize users via temporary or permanent tokens from different
-sources and safely manage user context.
+The framework includes a set of components to authorize users via temporary or permanent tokens from different
+sources and safely manages the user context.
 
 > **Note**
 > The component does not enforce any specific User entity interface and does not limit the application to HTTP scope
@@ -14,11 +14,11 @@ currently authorized actor (User, API Client). The actor is fetched from `Spiral
 using `Spiral\Auth\TokenInterface`.
 
 The token is managed by `Spiral\Auth\TokenStorageInterface` and always includes the payload (for
-example `["userID" => $id]`, LDAP creds, etc.). The token payload used to find current application user 
+example `["userID" => $id]`, LDAP creds, etc.). The token payload is used to find current application user 
 via `Spiral\Auth\ActorProviderInterface`.
 
-The token storage can either store token in the external source (such as database, Redis, or file) or decode it on a
-fly. The framework includes multiple token implementations out of the box for more comfortable use.
+The token storage can either store a token in the external source (such as database, Redis, or file) or decode it on a
+fly. The framework includes multiple token implementations out of the box for a more comfortable use.
 
 > **Note**
 > You can use multiple token and actor providers inside one application.
@@ -87,7 +87,7 @@ Activate `Spiral\Cycle\Bootloader\BridgeBootloader` for this purpose:
 > Read more about installation and configuration `spiral/cycle-bridge` 
 > package [here](https://github.com/spiral/cycle-bridge).
 
-You must generate and run database migration or run `cycle:sync` in order to create needed table:
+You must generate and run database migration or run `cycle:sync` in order to create the needed table:
 
 ```bash
 php app.php migrate:init
@@ -100,8 +100,8 @@ Register `Spiral\Auth\Middleware\AuthMiddleware` or `Spiral\Auth\Middleware\Auth
 The difference between these middlewares is that `AuthMiddleware` uses all available transports, such as `cookies` and 
 `header`, while `AuthTransportMiddleware` uses only one specified transport.
 
-The [application bundle](https://github.com/spiral/app) provides `App\Bootloader\RoutesBootloader`, with which you can 
-easily configure the middlewares. Add `AuthMiddleware` or `AuthTransportMiddleware` in method `globalMiddleware`.
+The [application bundle](https://github.com/spiral/app) provides `App\Bootloader\RoutesBootloader`, which you can 
+easily configure the middlewares with. Add `AuthMiddleware` or `AuthTransportMiddleware` in the method `globalMiddleware`.
 
 ```php
 namespace App\Bootloader;
@@ -157,7 +157,7 @@ final class RoutesBootloader extends BaseRoutesBootloader
 
 ## Actor Provider and Token Payload
 
-The next step to configure a way to fetch actors/users based on token payloads, we must implement and register interface
+The next step to configure a way to fetch actors/users is based on token payloads, we must implement and register interface
 `Spiral\Auth\ActorProviderInterface` for these purposes.
 
 ```php
@@ -231,7 +231,7 @@ public function index(EntityManagerInterface $entityManager)
 }
 ```
 
-Register actor provider to enable it, create and activate the Bootloader in your application:
+Register the actor provider to enable it, create and activate the Bootloader in your application:
 
 ```php
 namespace App\Bootloader;
@@ -252,7 +252,7 @@ class UserBootloader extends Bootloader
 ## Authenticate User
 
 The user authentication process happens via `Spiral\Auth\AuthContextInterface`. You can receive the instance of the auth
-context object via method injection.
+context object via the method injection.
 
 ```php
 public function index(AuthContextInterface $auth): void
@@ -285,7 +285,7 @@ class HomeController
 
 ### Login
 
-The user login will require us to create a login form and proper request filter.
+The user login will require us to create a login form and a proper request filter.
 
 ```php
 namespace App\Request;
@@ -334,11 +334,11 @@ public function login(LoginRequest $login): array
 }
 ```
 
-To authenticate the user for the following requests, you must create token with the payload compatible with your
+To authenticate the user for the following requests, you must create a token with the payload compatible with your
 `ActorProviderInterface` (**userID** => **id**).
 
-We will need an instance of `AuthContextInterface` and `TokenStorageInterface` to do that. We can access both instances 
-via prototype properties `auth` and `authTokens`:
+We will need an instance of `AuthContextInterface` and `TokenStorageInterface` to do that. We can access both the instances 
+via the prototype properties `auth` and `authTokens`:
 
 ```php
 public function login(LoginRequest $login): array
@@ -357,11 +357,11 @@ public function login(LoginRequest $login): array
 }
 ```
 
-The user authenticated.
+The user is authenticated.
 
 ### Check if a used authenticated
 
-To see if the user authenticated simply check if auth context has non-empty actor:
+To see if the user authenticated, simply check if the auth context has a non-empty actor:
 
 ```php
 public function index()
@@ -379,7 +379,7 @@ public function index()
 
 ### Logout
 
-To log user out call method `close` of auth context or AuthScope:
+To log user out call the method `close` of auth context or AuthScope:
 
 ```php
 public function logout(): void
@@ -390,7 +390,7 @@ public function logout(): void
 
 ## RBAC security
 
-You can use authenticated user as an actor for the RBAC security component, make sure to
+You can use an authenticated user as an actor for the RBAC security component, make sure to
 implement `Spiral\Security\ActorInterface` in your `App\Database\User`:
 
 ```php
@@ -434,7 +434,7 @@ And activate the bootloader `Spiral\Bootloader\Auth\SecurityActorBootloader` to 
 
 ## Firewall Middleware
 
-You can protect some of your route targets by attaching firewall middleware to prevent unauthorized access.
+You can protect some of your route targets by attaching the firewall middleware to prevent unauthorized access.
 
 By default, spiral provides only one firewall which will overwrite the target url:
 

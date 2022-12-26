@@ -1,6 +1,6 @@
 # Scaffolding
 
-Most of the application code can be generated using the set of console commands.
+Most of the application code can be generated using a set of console commands.
 
 ## Installation
 
@@ -30,13 +30,12 @@ class App extends Kernel
 ```
 
 > **Note**
-> Attention, the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
+> that the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
 
 ## Configuration
 
 You can customize the scaffolder component by replacing declaration generators and their options using the `scaffolder`
-configuration file. The default configuration located in
-the [ScaffolderBootloader](https://github.com/spiral/scaffolder/blob/master/src/Bootloader/ScaffolderBootloader.php#L59)
+configuration file. The default configuration is located in the [ScaffolderBootloader](https://github.com/spiral/scaffolder/blob/master/src/Bootloader/ScaffolderBootloader.php#L59)
 .
 
 ### Adding custom declarations via ScaffolderBootloader
@@ -79,7 +78,7 @@ class ScaffolderBootloader extends Bootloader
 | create:jobHandler | Create Job Handler declaration |
 | create:middleware | Create Middleware declaration  |
 
-Some packages may provide their own Commands. For example, the `Cycle Bridge` package (if installed) provides Commands:
+Some packages may provide their own Commands. For example, the `Cycle Bridge` package (if installed) provides the following Commands:
 
 | Command            | Description                          
 |--------------------|--------------------------------------|
@@ -104,7 +103,7 @@ php app.php create:bootloader <name>
 php app.php create:bootloader my
 ```
 
-Output is:
+The output is:
 
 ```php
 use Spiral\Boot\Bootloader\Bootloader;
@@ -131,7 +130,7 @@ class MyBootloader extends Bootloader
 php app.php create:command <name> [alias]
 ```
 
-`<Name>Command` class will be created. Command name will be equal to `name` or `alias` (if this value set).
+`<Name>Command` class will be created. A command name will be equal to `name` or `alias` (if this value is set).
 
 #### Example without `alias`
 
@@ -139,7 +138,7 @@ php app.php create:command <name> [alias]
 php app.php create:command my
 ```
 
-Output is:
+The output is:
 
 ```php
 use Spiral\Console\Command;
@@ -166,7 +165,7 @@ class MyCommand extends Command
 php app.php create:command my alias
 ```
 
-Output is:
+The output is:
 
 ```php
 use Spiral\Console\Command;
@@ -198,16 +197,16 @@ exist.
 
 Available options:
 
-`reverse (r)` - Using this flag, scaffolder will look for `<app directory>/config/<name>.php` file and create a
+`reverse (r)` - Using this flag, the scaffolder will look for `<app directory>/config/<name>.php` file and create a
 rich `<Name>Config` class based on the given config file. The class will include default values and getters; in some
 cases, it will also include by-key-getters for array values.
 
 Details below:
-If an array-value consists of more than one sub-values with the same types for keys and sub-values, scaffolder will try
-to create a by-key-getter method. If a generated key is conflicting with an existing method, by-key-getter will be
+If an array-value consists of more than one sub-values with the same types for keys and sub-values, the scaffolder will try
+to create a by-key-getter method. If a generated key is conflicting with the existing method, by-key-getter will be
 omitted.
 
-#### Example with empty config file
+#### Example with an empty config file
 
 ```bash
 php app.php create:config my
@@ -283,7 +282,7 @@ return [
 php app.php create:config my -r
 ```
 
-Output is:
+The output is:
 
 ```php
 use Spiral\Core\InjectableConfig;
@@ -390,13 +389,13 @@ php app.php create:controller <name>
 * `action (a)` (multiple values allowed) - you can add actions using this option
 * `prototype (p)` - if set, `PrototypeTrait` will be added
 
-#### Example with empty actions list
+#### Example with an empty actions list
 
 ```bash
 php app.php create:controller my
 ```
 
-Output is:
+The output is:
 
 ```php
 class MyController
@@ -404,13 +403,13 @@ class MyController
 }
 ```
 
-#### Example with `prototype` option
+#### Example with a `prototype` option
 
 ```bash
 php app.php create:controller my -p
 ```
 
-Output is:
+The output is:
 
 ```php
 use Spiral\Prototype\Traits\PrototypeTrait;
@@ -421,7 +420,7 @@ class MyController
 }
 ```
 
-#### Example with actions list
+#### Example with an actions list
 
 ```bash
 php app.php create:controller my \
@@ -431,7 +430,7 @@ php app.php create:controller my \
       -a delete
 ```
 
-Output is:
+The output is:
 
 ```php
 use Psr\Http\Message\ResponseInterface;
@@ -487,7 +486,7 @@ php app.php create:jobHandler <name>
 php app.php create:jobHandler my
 ```
 
-Output is:
+The output is:
 
 ```php
 use Spiral\Queue\JobHandler;
@@ -514,7 +513,7 @@ php app.php create:middleware <name>
 php app.php create:middleware my
 ```
 
-Output is:
+The output is:
 
 ```php
 use Psr\Http\Message\ResponseInterface;

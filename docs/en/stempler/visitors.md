@@ -1,20 +1,19 @@
 # Stempler - AST Modifications
 
-Stempler template engine fully exposes template AST (DOM) and provides API for the modifications similar to
+The Stempler template engine fully exposes template AST (DOM) and provides an API for modifications similar to
 https://github.com/nikic/PHP-Parser.
 
 You can create magical (in both ways) workflows and helpers by implementing your Node Visitors.
 
 > **Note**
-> You can read more about how traversing
-> works [here](https://github.com/nikic/PHP-Parser/blob/master/doc/2_Usage_of_basic_components.markdown#node-traversation).
+> You can read more about how traversing works [here](https://github.com/nikic/PHP-Parser/blob/master/doc/2_Usage_of_basic_components.markdown#node-traversation).
 
 ## Create Visitor
 
-To create an AST visitor, you must implement interface provided by the Stempler engine
+To create an AST visitor, you must implement the interface provided by the Stempler engine
 - `Spiral\Stempler\VisitorInterface`.
 
-We will try to create visitor which automatically adds `alt` attribute to all `img` tags found in your templates:
+We will try to create a visitor that automatically adds an `alt` attribute to all `img` tags found in your templates:
 
 ```php
 use Spiral\Stempler\Node\HTML;
@@ -51,8 +50,7 @@ class AltImageVisitor implements VisitorInterface
 
 ## Register Visitor
 
-Call `StemplerBootloader`->`addVistitor` to register visitors in the template engine. We can do it using application
-bootloader:
+Call `StemplerBootloader`->`addVistitor` to register visitors in the template engine. We can do it with the application bootloader:
 
 ```php
 namespace App\Bootloader;
@@ -73,11 +71,11 @@ class AltImageBootloader extends Bootloader
 > **Note**
 > You have to clean view cache to view newly applied changes.
 
-Now all the `img` tags will always include `alt` attribute.
+Now all the `img` tags will always include the `alt` attribute.
 
 ## Standalone Usage
 
-You can use the Stempler to process any HTML content.
+You can use Stempler to process any HTML content.
 
 ```php
 use Spiral\Stempler;
