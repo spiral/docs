@@ -237,11 +237,16 @@ class MyBootloader extends Bootloader
 ```
 
 > **Note**
-> In the exact same way, you can mount middleware, change tokenizer directories, and much more.
+> You are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another
+> bootloader). The framework would not allow you to change any configuration value after component initialization.
 
 ## Depending on other Bootloaders
 
-Some framework bootloaders can be used as a simple path to configure application settings. For example, we can
+Bootloaders can depend on other bootloaders, in which case they will be automatically resolved and initialized before 
+the depending bootloader is loaded. This allows developers to define a specific order in which bootloaders should be 
+initialized, and to ensure that certain bootloaders are initialized before others.
+
+Some framework bootloaders can be used as a simple way to configure application settings. For example, we can
 use `Spiral\Bootloader\Http\HttpBootloader` to add global PSR-15 middleware:
 
 ```php
@@ -259,30 +264,8 @@ class MyBootloader extends Bootloader
 }
 ```
 
-If you want to ensure that `HttpBootloader` has always been initiated before `MyBootloader`, use constant `DEPENDENCIES`:
-
-```php
-namespace App\Bootloader;
-
-use Spiral\Bootloader\Http\HttpBootloader;
-use App\Middleware\MyMiddleware;
-
-class MyBootloader extends Bootloader 
-{
-    const DEPENDENCIES = [
-        HttpBootloader::class
-    ];
-
-    public function boot(HttpBootloader $http): void
-    {
-        $http->addMiddleware(MyMiddleware::class);
-    }
-}
-```
-
-> **Note**
-> You are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another
-> bootloader). The framework would not allow you to change any configuration value after component initialization.
+> **Note**:
+> Dependent bootloaders will be initialized only once, even if they are depended on by multiple other bootloaders.
 
 ## Cascade bootloading
 
