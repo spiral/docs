@@ -349,12 +349,12 @@ php app.php route:reset
 
 ### Domain Core
 
-Domain Core refers to the central domain logic and business rules of an application. It is the core of the application's functionality and typically contains the most important and complex parts of the codebase.
+The domain core represents the fundamental domain logic and business rules that drive the functionality of an application. It constitutes the central aspect of the codebase and often encompasses the most critical and intricate elements of the software.
 
-We can change the default behavior of the application and enable Cycle Entity resolution using route parameter and
-`Guard` attribute. 
+It is possible to modify the default behavior of the application by utilizing a route parameter and a `Guard` attribute to enable resolution of the Cycle Entity. 
+To further enhance the application, the `ValidationHandlerMiddleware` can be incorporated to properly validate incoming HTTP requests.
 
-Additionally, we can include the `ValidationHandlerMiddleware` to handle the validation of incoming HTTP requests.
+Here is the example:
 ```php
 namespace App\Bootloader;
 
