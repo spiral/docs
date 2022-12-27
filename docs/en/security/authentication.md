@@ -96,7 +96,7 @@ php app.php cycle:migrate -v -r
 
 ### Token Storage Provider
 
-The `Spiral\Auth\TokenStorageProvider` is a convenient way to manage token storages for authentication purposes. It allows you to define multiple token storages and easily switch between them as needed.
+The `Spiral\Auth\TokenStorageProvider` is a convenient way to manage token storages for authentication purposes. It allows you to define multiple token storages.
 
 ### Usage
 
