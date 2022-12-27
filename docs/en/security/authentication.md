@@ -96,11 +96,11 @@ php app.php cycle:migrate -v -r
 
 ### Token Storage Provider
 
-The `Spiral\Auth\TokenStorageProvider` is a convenient way to manage token storages for authentication purposes. It allows you to define multiple token storages.
+Token storage provider is a convenient way to manage token storages for authentication purposes. It allows you to define multiple token storages.
 
 ### Usage
 
-To use the `TokenStorageProvider`, you will need to include the `HttpAuthBootloader` in your Bootloader and add your token storage using the `addTokenStorage` method.
+To use the token storage provider, you will need to include the `HttpAuthBootloader` in your Bootloader and add your token storage using the `addTokenStorage` method.
 
 Here is an example of how to set this up:
 ```php
