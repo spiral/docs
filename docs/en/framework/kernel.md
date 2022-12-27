@@ -216,7 +216,7 @@ $myapp->run(new Environment(['key' => 'value']));
 > **Note**
 > Such an approach can be used to bootstrap the application for testing purposes.
 
-## Bootload manager
+## Bootload Manager
 
 The framework includes the `StrategyBasedBootloadManager` class, which allows you to implement a custom bootloading strategy for application.
 
