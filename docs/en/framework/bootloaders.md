@@ -42,7 +42,27 @@ class App extends Kernel
     protected const APP = [
         RoutesBootloader::class,
         LoggingBootloader::class,
-        MyBootloader::class
+        MyBootloader::class,
+        
+        // via object instance
+        new class () extends Bootloader {
+            public const BINDINGS = [
+              // ...
+            ];
+            public const SINGLETONS = [
+              // ...
+            ];
+            
+            public function init(BinderInterface $binder): void
+            {
+              // ...
+            }
+            
+            public function boot(BinderInterface $binder): void
+            {
+               // ...
+            }
+        },
     ];
 }
 ```

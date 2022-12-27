@@ -215,3 +215,57 @@ $myapp->run(new Environment(['key' => 'value']));
 
 > **Note**
 > Such an approach can be used to bootstrap the application for testing purposes.
+
+## Bootload manager
+The Spiral Framework includes the `StrategyBasedBootloadManager` class, which allows developers to implement custom bootloading strategy for their application.
+
+Here is the example:
+```php
+// file app.php
+
+use App\Application\Kernel;
+use App\Application\Service\ErrorHandler\Handler;
+use Spiral\Boot\BootloadManager\StrategyBasedBootloadManager;
+use Spiral\Boot\BootloadManager\Initializer;
+use Spiral\Core\Container;
+
+// ...
+
+$container = new Container();
+
+$app = Kernel::create(
+    directories: ['root' => __DIR__],
+    exceptionHandler: Handler::class,
+    bootloadManager: new StrategyBasedBootloadManager(
+        new RoadRunnerEnvInvokerStrategy(), 
+        $container, 
+        new Initializer($container, $container)
+    )
+)->run();
+
+// ...
+```
+
+Or via `Spiral\Core\Container\Autowire`:
+
+```php
+use App\Application\Kernel;
+use App\Application\Service\ErrorHandler\Handler;
+use Spiral\Boot\BootloadManager\StrategyBasedBootloadManager;
+use Spiral\Core\Container;
+use Spiral\Core\Container\Autowire;
+
+// ...
+
+$container = new Container();
+
+$app = Kernel::create(
+    directories: ['root' => __DIR__],
+    exceptionHandler: Handler::class,
+    bootloadManager: new Autowire(StrategyBasedBootloadManager::class, [
+        'invoker' => new CustomInvokerStrategy()
+    ])
+)->run();
+
+// ...
+```
