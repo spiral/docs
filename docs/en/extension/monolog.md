@@ -146,8 +146,10 @@ And then change the default monolog handler in the `.env` file:
 MONOLOG_DEFAULT_CHANNEL=roadrunner
 ```
 
-Make sure that you have the `spiral/roadrunner-bridge` package installed. This package provides the necessary classes
-and functions needed to integrate RoadRunner with Monolog.
+> **Note**
+>
+> Make sure that you have the `spiral/roadrunner-bridge` package installed. This package provides the necessary classes 
+> and functions needed to integrate RoadRunner with Monolog.
 
 
 ## Write to Log
@@ -208,6 +210,7 @@ public function boot(MonologBootloader $monolog): void
 ```
 
 > **Note**
+> 
 > LoggerTrait only works inside the `$app->serve()` method via the global IoC scope.
 
 ## Errors
