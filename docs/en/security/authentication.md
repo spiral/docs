@@ -95,10 +95,14 @@ php app.php cycle:migrate -v -r
 ```
 
 ### Token Storage Provider
-`Spiral\Auth\TokenStorageProvider` provides a convenient way to manage token storages for authentication.
 
-Here is the example of token storage registration:
+The `Spiral\Auth\TokenStorageProvider` is a convenient way to manage token storages for authentication purposes. It allows you to define multiple token storages and easily switch between them as needed.
 
+### Usage
+
+To use the `TokenStorageProvider`, you will need to include the `HttpAuthBootloader` in your Bootloader and add your token storage using the `addTokenStorage` method.
+
+Here is an example of how to set this up:
 ```php
 use Spiral\Boot\Bootloader;
 use Spiral\Bootloader\Auth\HttpAuthBootloader;
@@ -112,50 +116,11 @@ final class SomeBootloader extends Bootloader
 }
 ```
 
-`config/auth.php` example:
+In this example, we are adding a token storage named `database` that uses the `DatabaseTokenStorage` class. This class should implement the `Spiral\Auth\TokenStorageInterface` in order to be used as a token storage.
 
-```php
-use Spiral\Core\Container\Autowire;
-
-return [
-    'defaultTransport' => env('AUTH_TOKEN_TRANSPORT', 'cookie'),
-    'defaultStorage' => env('AUTH_TOKEN_STORAGE', 'session'),
-    'transports' => [],
-    'storages' => [
-         'session' => \Spiral\Auth\Session\TokenStorage::class,
-         'database' => new Autowire(\App\DataaseTokenStorage::class, ['table' => 'auth_tokens']),
-         'jwt' => new Autowire(\App\JwtTokenStorage::class, ['key' => 'secret']),
-         'cycle-orm' => 'cycleorm.storage' // Will be requested from the container
-    ]
-]
-```
-
-`RoutesBootloader` example:
-
-```php
-use Spiral\Core\Container\Autowire;
-use Spiral\Auth\Middleware\AuthTransportWithStorageMiddleware;
-
-return [
-    'web' => [
-        new Autowire(
-            AuthTransportWithStorageMiddleware::class,
-            ['transportName' => 'cookie', 'storage' => 'session']
-        ),
-    ],
-    'api' => [
-        new Autowire(
-            AuthTransportWithStorageMiddleware::class,
-            ['transportName' => 'header', 'storage' => 'jwt']
-        ),
-    ],
-];
-```
-
-You can use `AUTH_TOKEN_STORAGE` variable in `.env` to set default token storage.
-
+Once you have added your token storage, you can easily switch between them by specifying `AUTH_TOKEN_STORAGE` variable in the `.env` file.
 ```dotenv
-AUTH_TOKEN_STORAGE=session
+AUTH_TOKEN_STORAGE=database
 ```
 
 ### Middleware
