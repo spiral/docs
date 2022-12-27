@@ -44,7 +44,7 @@ class App extends Kernel
         LoggingBootloader::class,
         MyBootloader::class,
         
-        // via object instance
+        // anonymous bootloader via object instance
         new class () extends Bootloader {
             public const BINDINGS = [
               // ...
