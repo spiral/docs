@@ -201,3 +201,6 @@ class MyService
 | Spiral\Cache\Event\CacheMissed | The Event will be fired if the requested data is not found in the cache.    |
 | Spiral\Cache\Event\KeyDeleted  | The Event will be fired `after` the data is removed from the cache.         |
 | Spiral\Cache\Event\KeyWritten  | The Event will be fired `after` the data is stored in the cache.            |
+
+> **Note**
+> To learn more about dispatching events, see the [Events](../component/events.md) section in our documentation.
