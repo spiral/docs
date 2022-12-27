@@ -75,6 +75,7 @@ return [
 ```
 
 > **Note**
+> 
 > Use `MONOLOG_DEFAULT_CHANNEL` env variable to specify the default Monolog logger that should be used in your
 > application.
 
@@ -83,7 +84,7 @@ return [
 Use `Spiral\Monolog\Bootloader\MonologBootloader` also to declare a handler and a log-formatter for a specific channel.
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Monolog\Bootloader\MonologBootloader;
@@ -103,6 +104,11 @@ class LoggingBootloader extends Bootloader
     }
 }
 ```
+
+> **Note**
+> 
+> Make sure to add your Bootloader `App\Application\Bootloader\LoggingBootloader` at the top of the `Kernel::LOAD` list.
+
 
 ## Register RoadRunner log handler
 
@@ -144,9 +150,6 @@ Make sure that you have the `spiral/roadrunner-bridge` package installed. This p
 and functions needed to integrate RoadRunner with Monolog.
 
 
-> **Note**
-> Make sure to add your Bootloader `App\Application\Bootloader\LoggingBootloader` at the top of the `Kernel::LOAD` list.
-
 ## Write to Log
 
 You receive the `default` logger using the `Psr\Log\LoggerInterface` dependency:
@@ -176,8 +179,7 @@ public function index(LogsInterface $logs): void
 ## LoggerTrait
 
 You can use `Spiral\Logger\Traits\LoggerTrait` to quickly assign a Logger to any class. The class name will be used as
-the
-channel name:
+the channel name:
 
 ```php
 use Spiral\Logger\Traits\LoggerTrait;
