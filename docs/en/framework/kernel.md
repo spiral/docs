@@ -217,7 +217,8 @@ $myapp->run(new Environment(['key' => 'value']));
 > Such an approach can be used to bootstrap the application for testing purposes.
 
 ## Bootload manager
-The Spiral Framework includes the `StrategyBasedBootloadManager` class, which allows developers to implement custom bootloading strategy for their application.
+
+The framework includes the `StrategyBasedBootloadManager` class, which allows you to implement a custom bootloading strategy for application.
 
 Here is the example:
 ```php
