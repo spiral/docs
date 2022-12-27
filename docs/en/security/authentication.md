@@ -94,6 +94,70 @@ php app.php migrate:init
 php app.php cycle:migrate -v -r
 ```
 
+### Token Storage Provider
+`Spiral\Auth\TokenStorageProvider` provides a convenient way to manage token storages for authentication.
+
+Here is the example of token storage registration:
+
+```php
+use Spiral\Boot\Bootloader;
+use Spiral\Bootloader\Auth\HttpAuthBootloader;
+
+final class SomeBootloader extends Bootloader
+{
+    public function init(HttpAuthBootloader $httpAuth, DatabaseTokenStorage $storage): void 
+    {
+        $httpAuth->addTokenStorage('database', $storage);
+    }
+}
+```
+
+`config/auth.php` example:
+
+```php
+use Spiral\Core\Container\Autowire;
+
+return [
+    'defaultTransport' => env('AUTH_TOKEN_TRANSPORT', 'cookie'),
+    'defaultStorage' => env('AUTH_TOKEN_STORAGE', 'session'),
+    'transports' => [],
+    'storages' => [
+         'session' => \Spiral\Auth\Session\TokenStorage::class,
+         'database' => new Autowire(\App\DataaseTokenStorage::class, ['table' => 'auth_tokens']),
+         'jwt' => new Autowire(\App\JwtTokenStorage::class, ['key' => 'secret']),
+         'cycle-orm' => 'cycleorm.storage' // Will be requested from the container
+    ]
+]
+```
+
+`RoutesBootloader` example:
+
+```php
+use Spiral\Core\Container\Autowire;
+use Spiral\Auth\Middleware\AuthTransportWithStorageMiddleware;
+
+return [
+    'web' => [
+        new Autowire(
+            AuthTransportWithStorageMiddleware::class,
+            ['transportName' => 'cookie', 'storage' => 'session']
+        ),
+    ],
+    'api' => [
+        new Autowire(
+            AuthTransportWithStorageMiddleware::class,
+            ['transportName' => 'header', 'storage' => 'jwt']
+        ),
+    ],
+];
+```
+
+You can use `AUTH_TOKEN_STORAGE` variable in `.env` to set default token storage.
+
+```dotenv
+AUTH_TOKEN_STORAGE=session
+```
+
 ### Middleware
 
 Register `Spiral\Auth\Middleware\AuthMiddleware` or `Spiral\Auth\Middleware\AuthTransportMiddleware`.
