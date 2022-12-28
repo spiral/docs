@@ -22,7 +22,7 @@ class MyBootloader extends Bootloader
 }
 ```
 
-Every Bootloader must be activated in your application kernel. Add the class reference into `LOAD` or `APP` lists of
+Every Bootloader must be activated in your application kernel. Add the class reference into `defineBootloaders` or `defineAppBootloaders` functions of
 your `App\App` class:
 
 ```php
@@ -35,40 +35,46 @@ use App\Bootloader\MyBootloader;
 
 class App extends Kernel
 {
-    protected const LOAD = [
-        // ...
-    ];
+    public function defineBootloaders(): array
+    {
+        return [
+            // ...
+        ]
+    }
 
-    protected const APP = [
-        RoutesBootloader::class,
-        LoggingBootloader::class,
-        MyBootloader::class,
-        
-        // anonymous bootloader via object instance
-        new class () extends Bootloader {
-            public const BINDINGS = [
-              // ...
-            ];
-            public const SINGLETONS = [
-              // ...
-            ];
-            
-            public function init(BinderInterface $binder): void
-            {
-              // ...
-            }
-            
-            public function boot(BinderInterface $binder): void
-            {
-               // ...
-            }
-        },
-    ];
+    public function defineAppBootloaders(): array
+    {
+        return [
+           RoutesBootloader::class,
+           LoggingBootloader::class,
+           MyBootloader::class,
+           
+           // anonymous bootloader via object instance
+           new class () extends Bootloader {
+               public const BINDINGS = [
+                 // ...
+               ];
+               public const SINGLETONS = [
+                 // ...
+               ];
+               
+               public function init(BinderInterface $binder): void
+               {
+                 // ...
+               }
+               
+               public function boot(BinderInterface $binder): void
+               {
+                  // ...
+               }
+           },
+       ];
+    }
 }
 ```
 
 > **Note**
-> `APP` bootloader namespace is always loaded after `LOAD`, keep domain-specific bootloaders in it.
+> `defineAppBootloaders` is always loaded after `defineBootloaders`, keep domain-specific bootloaders in it.
 
 Currently, your Bootloader doesn't do anything. A little bit later, we will add some functionality to it.
 
