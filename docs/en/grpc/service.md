@@ -1,40 +1,58 @@
 # GRPC - Service Code
 
-Unlike classic HTTP and REST endpoints GRPC enforce the most restrictive request/response, format driven by the `.proto` files
-declaration and compiled into binary messages using the `protoc` compiler.
+Using gRPC can be simpler than building a REST API in some cases, because it provides a more structured and efficient
+way to define and communicate between APIs.
+
+Here are some benefits of using gRPC compared to REST APIs:
+
+- **Strongly-typed interfaces:** In gRPC, the service and message types are defined in a `.proto` file, which allows for
+  the creation of strongly-typed interfaces. This can make it easier to ensure that the correct data is being passed
+  between the client and server, as the types are checked at compile-time.
+
+- **Efficient binary encoding:** gRPC uses Protocol Buffers, a binary encoding format, to serialize and transmit data.
+  This can be more efficient than JSON, which is the common encoding format for REST APIs, as it requires fewer bytes to
+  transmit the same data.
+
+- **Language and platform agnostic:** gRPC uses a universal `.proto` file to define the service and message types, which
+  can be used to generate code in multiple languages and platforms. This allows for the creation of cross-platform APIs
+  that can be used by clients written in any language.
 
 > **Note**
-> Use https://github.com/spiral/app-grpc as the base to speed up onboarding.
+>
+> Use https://github.com/spiral/ticket-booking as the base to speed up onboarding.
 
 ## Define the Service
 
 To declare our first service, create a proto file in the desired direction. By default, the GRPC build suggests creating
- proto files in the`/proto` directory. Create a file `proto/calculator.proto`:
+proto files in the`/proto` directory. Create a file `proto/pinger.proto`:
 
 ```proto
 syntax = "proto3";
 
-option php_namespace = "App\\Calculator";
-option php_metadata_namespace = "App\\GPBMetadata";
+option php_namespace = "App\\GRPC\Pinger";
+option php_metadata_namespace = "App\\GRPC\\GPBMetadata";
 
-package app;
+package pinger;
 
-message Sum {
-    int32 a = 1;
-    int32 b = 2;
+service Pinger {
+  rpc ping (PingRequest) returns (PingResponse) {
+  }
 }
 
-message Result {
-    int32 result = 1;
+message PingRequest {
+  string url = 1;
 }
 
-service Calculator {
-    rpc Sum (app.Sum) returns (app.Result) {
-    }
+message PingResponse {
+  int32 status_code = 1;
 }
 ```
 
+This `.proto` file defines a service called **Pinger** with a single method, `ping`, which takes a `PingRequest` message
+as input and returns a `PingResponse` message.
+
 > **Note**
+>
 > Make sure to use the options `php_namespace` and `php_metadata_namespace` to properly configure PHP namespace. You can
 > read more about the GRPC service declaration [here](https://grpc.io/docs/guides/concepts/).
 
@@ -43,31 +61,52 @@ At the moment you can only create Unidirectional APIs, use [Golang services](/gr
 
 ## Generate the service
 
-You can generate the service code manually using the `protoc` compiler and the `php-grpc` plugin. 
+To compile the `.proto` file into PHP code, you will need to use the `protoc` compiler and the `protoc-gen-php-grpc`.
 
-Run the command below:
+> **Note**
+>
+> Here you can find the [installation instructions](./configuration.md) for the `grpc` PHP extension, `protoc` compiler 
+> and the `protoc-gen-php-grpc` plugin.
 
-```bash
-protoc -I ./proto/ --php_out=app/src --php-grpc_out=app/src proto/calculator.proto
-```
-
-The default `protoc` compiler does not respect the location of application namespaces. The code will be generated in
-the `app/src/App/Calculator` and `app/src/App/GPBMetadata` directories. Move the generated code to make it loadable:
-
-- app/src/Calculator
-- app/src/GPBMetadata
-
-### Generate Command
-
-Put the proto file into `app/config/grpc.php`
+At first, you need to generate the service stubs. To do this, you need to add them to the `app/config/grpc.php`
+configuration file:
 
 ```php
-'services' => [
-    __DIR__.'/../../proto/calculator.proto',
-],
+<?php
+
+declare(strict_types=1);
+
+return [
+    /**
+     * The path where generated DTO (Data Transfer Object) files will be stored.
+     */
+    'generatedPath' => directory('app') . '/GRPC',
+
+    /**
+     * The base namespace for the generated proto files.
+     */
+    'namespace' => '\App\GRPC',
+
+    /**
+     * The root dir for all proto files, where imports will be searched.
+     */
+    'servicesBasePath' => directory('root') . '/proto',
+
+    /**
+     * The path to the protoc-gen-php-grpc library.
+     */
+    'binaryPath' => directory('root').'/bin/protoc-gen-php-grpc',
+
+    /**
+     * An array of paths to proto files that should be compiled into PHP by the grpc:generate console command.
+     */
+    'services' => [
+        directory('root').'proto/pinger.proto',
+    ],
+];
 ```
 
-You can use the command embedded to the framework to simplify the service code generation, just run:
+Then, you can compile the `pinger.proto` file using the following command:
 
 ```bash
 php app.php grpc:generate
@@ -76,63 +115,67 @@ php app.php grpc:generate
 You should see the following output:
 
 ```bash
-Compiling `proto/calculator.proto`:
-• app/src/Calculator/CalculatorInterface.php
-• app/src/Calculator/Result.php
-• app/src/Calculator/Sum.php
-• app/src/GPBMetadata/Calculator.php
+Compiling `proto/pinger.proto`:
+• app/src/GRPC/Pinger/PingerInterface.php
+• app/src/GRPC/Pinger/PingRequest.php
+• app/src/GRPC/Pinger/PingResponse.php
+• app/src/GRPC/GPBMetadata/Pinger.php
 ```
 
-The code will be moved to the proper place automatically.
+The code will be generated in the `app/src/App/GRPC/Pinger` and `app/src/App/GRPC/GPBMetadata` directories.
 
 ## Implement Service
 
-Implement the `CalculatorInterface` which is located in `app/src/Calculator` to make your service work:
+Next, you will need to create a PHP class that implements the **Pinger** service defined in the `.proto` file. This 
+class should extend the `app/src/GRPC/PingerInterface` class generated from the `.proto` file and implement the 
+`ping()` `method:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace App\Calculator;
+namespace App\GRPC\Pinger;
 
 use Spiral\RoadRunner\GRPC;
 
-class Calculator implements CalculatorInterface
+final class Pinger implements PingerInterface
 {
-    public function Sum(GRPC\ContextInterface $ctx, Sum $in): Result
+    public function __construct(
+        private readonly HttpClientInterface $httpClient
+    ) {
+    }
+    
+    public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
     {
-        return new Result([
-            'result' => $in->getB() + $in->getA()
+        $statusCode = $this->httpClient->get($in->getUrl())->getStatusCode();
+    
+        return new PingResponse([
+            'status_code' => $statusCode
         ]);
     }
 }
 ```
 
-> **Note**
-> You can not use the method injection with GRPC services at the moment. Stick
-> to [Prototype component](/basics/prototype.md).
+## Start the gRPC server:
 
 Make sure to update the proto path in `.rr.yaml`:
 
 ```yaml
 grpc:
-  listen: tcp://0.0.0.0:50051
-  proto: "proto/calculator.proto"
+  listen: tcp://0.0.0.0:9001
+  proto:
+    - "proto/pinger.proto"
+```
+
+```bash
+./rr serve
 ```
 
 ### Multiple Services
 
 Use the `import` directive of proto declarations to combine multiple services in a single application, or store message
 declarations separately.
-
-### Test the Service
-
-You can test your service now:
-
-```bash
-./rr serve
-```
 
 ## Metadata
 
@@ -142,22 +185,23 @@ can read:
 ```php
 use Spiral\RoadRunner\GRPC;
 
-public function Sum(GRPC\ContextInterface $ctx, Sum $in): Result
+public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 {
-    dumprr($ctx->getValue(':authority'));
-    dumprr($ctx->getValue(':peer.address'));
-    dumprr($ctx->getValue(':peer.auth-type'));
+    dump($ctx->getValue(':authority'));
+    dump($ctx->getValue(':peer.address'));
+    dump($ctx->getValue(':peer.auth-type'));
 
-    dumprr($ctx->getValue('user-agent'));
-    dumprr($ctx->getValue('content-type'));
-
-    return new Result([
-        'result' => $in->getB() + $in->getA()
+    dump($ctx->getValue('user-agent'));
+    dump($ctx->getValue('content-type'));
+    
+    return new PingResponse([
+        'status_code' => $this->httpClient->get($in->getUrl())->getStatusCode()
     ]);
 }
 ```
 
 > **Note**
+> 
 > Read more about auth practices [here](https://grpc.io/docs/guides/auth/).
 
 ### Response Headers
@@ -165,26 +209,17 @@ public function Sum(GRPC\ContextInterface $ctx, Sum $in): Result
 You can add any custom metadata to the response using Context-specific response headers:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Calculator;
-
 use Spiral\RoadRunner\GRPC;
 
-class Calculator implements CalculatorInterface
+public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 {
-    public function Sum(GRPC\ContextInterface $ctx, Sum $in): Result
-    {
-        /** @var GRPC\ResponseHeaders $responseHeaders */
-        $responseHeaders = $ctx->getValue(GRPC\ResponseHeaders::class);
-        $responseHeaders->set('key', 'value');
-
-        return new Result([
-            'result' => $in->getB() + $in->getA()
-        ]);
-    }
+    /** @var GRPC\ResponseHeaders $responseHeaders */
+    $responseHeaders = $ctx->getValue(GRPC\ResponseHeaders::class);
+    $responseHeaders->set('key', 'value');
+    
+    return new PingResponse([
+        'status_code' => $this->httpClient->get($in->getUrl())->getStatusCode()
+    ]);
 }
 ```
 
@@ -202,35 +237,28 @@ The `spiral/roadrunner-grpc` component provides a number of exceptions to indica
 | Spiral\RoadRunner\GRPC\Exception\\**UnimplementedException**   | UNIMPLEMENTED(12)   |
 
 > **Note**
+> 
 > See all status codes in `Spiral\RoadRunner\GRPC\StatusCode`. Read more about GRPC error
 > codes [here](https://github.com/grpc/grpc/blob/master/doc/statuscodes.md).
 
 ### Example:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Calculator;
-
 use Spiral\RoadRunner\GRPC;
 
-class Calculator implements CalculatorInterface
+public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 {
-    public function Sum(GRPC\ContextInterface $ctx, Sum $in): Result
-    {
-        if ($in->getA() < 0 || $in->getB() < 0) {
-            throw new GRPC\Exception\GRPCException(
-                "A and B arguments should be above zero",
-                GRPC\StatusCode::INVALID_ARGUMENT
-            );
-        }
-
-        return new Result([
-            'result' => $in->getB() + $in->getA()
-        ]);
+    if ($in->getUrl() === '') {
+        throw new GRPC\ServiceException('URL is empty');
     }
+    
+    if (!\filter_var($url, FILTER_VALIDATE_URL)) {
+        throw new GRPC\ServiceException(\sprintf('URL "%s" is invalid', $url));
+    }
+
+    return new PingResponse([
+        'status_code' => $this->httpClient->get($in->getUrl())->getStatusCode(),
+    ]);
 }
 ```
 
