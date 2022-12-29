@@ -59,7 +59,8 @@ Activate the component using bootloader `Spiral\RoadRunnerBridge\Bootloader\GRPC
 ```php
 protected const LOAD = [
     // ...
-    \Spiral\RoadRunnerBridge\Bootloader\GRPCBootloader::class,
+    \Spiral\RoadRunnerBridge\Bootloader\GRPCBootloader::class
+    \Spiral\RoadRunnerBridge\Bootloader\CommandBootloader::class,
     // ...
 ];
 ```
