@@ -40,6 +40,7 @@
     * [Code Generation](component/reactor.md)
     * [Static Analysis Tools](component/tokenizer.md)
     * [Prometheus Metrics](component/metrics.md)
+    * [Application telemetry](component/telemetry.md)
     * [Data Grids](component/data-grid.md)
     * [Serializer](component/serializer.md)
     * [SendIt](component/sendit.md)
@@ -124,8 +125,7 @@
     * [Installation and Configuration](grpc/configuration.md)
     * [Service Code](grpc/service.md)
     * [Client SDK](grpc/client.md)
-    * [Golang Services](grpc/golang.md)
-    * [Data Streaming](grpc/streaming.md)
+    * [Interceptors](grpc/interceptors.md)
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * [XDebug](debug/xdebug.md)

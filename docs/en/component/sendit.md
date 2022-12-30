@@ -191,3 +191,6 @@ $message->setDelay(100);
 |------------------------------------|------------------------------------------------------|
 | Spiral\SendIt\Event\MessageSent    | The Event will be fired `after` sending the message. |
 | Spiral\SendIt\Event\MessageNotSent | The Event is fired if the message could not be sent. |
+
+> **Note**
+> To learn more about dispatching events, see the [Events](../component/events.md) section in our documentation.

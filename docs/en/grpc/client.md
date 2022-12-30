@@ -1,226 +1,234 @@
 # GRPC - Client SDK
 
-You must generate the client SDK to access your endpoints. This article is based on the proto file described
-[earlier](/grpc/service.md).
+In the previous part of this [article](./service.md), we showed you how to create a gRPC service `Pinger` in PHP with
+Spiral Framework and `spiral/roadrunner-bridge`. In this part, we will show you how to create a client service
+`Monitor` for communication with `Pinger` service.
 
-## Prerequisites
+## PHP client
 
-The PHP client library requires the PHP `grpc` extension to be installed.
-
-```bash
-sudo pecl install grpc
-```
+By following these steps, you will be able to create a client SDK for the Pinger service that can be easily used in your
+PHP applications. This will make it easier to communicate with the service and integrate it into your codebase.
 
 > **Note**
-> Read more about the extension [here](https://grpc.io/docs/quickstart/php/).
+>
+> Here you can find the [installation instructions](./configuration.md) for the `grpc` PHP extension, `protoc` compiler
+> and the `protoc-gen-php-grpc` plugin.
 
-### Compile grpc-php-plugin
+### 1. Generate PHP classes from the `.proto` file
 
-You must compile `grpc-php-plugin` in order to generate PHP client code.
-Follow [this guide](https://www.grpc.io/docs/quickstart/php/#install-protobuf-plugin).
+To create the client SDK, we will use the PHP classes generated from the `.proto` file in the
+[previous part](./service.md). You can easily generate these classes following the instructions in the previous part.
 
-```bash
-git clone --recursive -b v1.27.x https://github.com/grpc/grpc
-cd grpc
-cd third_party/protobuf 
-./autogen.sh
-./configure CC=clang CXX=clang++
-make
-make install
-cd ../..
-make 
-make grpc_php_plugin
-```
+### 2. Create a client class
 
-> **Note**
-> Make sure to install clang.
-
-The location of generated plugin is `grpc/bin/opt/grpc_php_plugin`.
-
-## Generate SDK
-
-We can generate the PHP client SDK in a new project. Copy the `proto/` directory into the designated folder.
-
-```bash
-protoc -I proto/ --plugin=protoc-gen-grpc=grpc/bins/opt/grpc_php_plugin --php_out=. --grpc_out=. proto/calculator.proto 
-```
-
-You can see the generated client code in `App/Calculator/CalculatorClient.php`.
-
-### Composer
-
-Make sure to create `composer.json` and run `composer update` to make the generated code loadable:
-
-```json
-{
-  "require": {
-    "grpc/grpc": "^1.27",
-    "google/protobuf": "^3.11"
-  },
-  "autoload": {
-    "psr-4": {
-      "App\\": "App"
-    }
-  }
-}
-```
-
-### Certificate
-
-To connect to the running server, make sure to copy `app.crt` to your client application.
-
-## Example
-
-Now we can create the client in `client.php`:
+We will create a class that implements the `app/src/GRPC/PingerInterface` interface and provides a simple interface for
+calling the service's methods.
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-require 'vendor/autoload.php';
+namespace App\Service;
 
-$client = new \App\Calculator\CalculatorClient(
-    'localhost:50051',
-    [
-        'credentials' => \Grpc\ChannelCredentials::createSsl(file_get_contents("app.crt")),
-    ]
-);
+use App\GRPC\Pinger;
+use Spiral\Core\CoreInterface;
+use Spiral\RoadRunner\GRPC;
 
-[$result, $mt] = $client->Sum(
-    new \App\Calculator\Sum([
-            'a' => 1,
-            'b' => 2
-    ])
-)->wait();
-
-print_r($result->getResult());
-```
-
-Run `php client.php` to test your client.
-
-### Passing Metadata
-
-You can pass the metadata using the second argument of the `Sum` function, use `$mt->metadata` to read the response
-metadata.
-
-To read and send metadata in `Calculator`:
-
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Calculator;
-
-use Spiral\GRPC;
-
-class Calculator implements CalculatorInterface
+final class PingerClient implements Pinger\PingerInterface extends \Grpc\BaseStub
 {
-    public function Sum(GRPC\ContextInterface $ctx, Sum $in): Result
+    public function ping(GRPC\ContextInterface $ctx, Pinger\PingRequest $in): Pinger\PingResponse
     {
-        dumprr($ctx->getValue('client-key'));
-        $ctx->getValue(GRPC\ResponseHeaders::class)->set('server-key', 'serverValue');
+        [$response, $status] = $this->_simpleRequest(
+            '/' . self::NAME . '/ping',
+            $in,
+            [Pinger\PingResponse::class, 'decode'],
+            (array) $ctx->getValue('metadata'),
+            (array) $ctx->getValue('options')
+        )->wait();
 
-        return new Result([
-            'result' => $in->getB() + $in->getA()
-        ]);
+        return $response;
     }
 }
 ```
 
-Change `client.php` to read metadata from the call:
+### 3. Register the client class in the container
+
+To use the client class in your application, you will need to register it in the container. You can do this in the
+Application bootloader:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-require 'vendor/autoload.php';
+namespace App\Bootloader;
 
-$client = new \App\Calculator\CalculatorClient(
-    'localhost:50051',
-    [
-        'credentials' => \Grpc\ChannelCredentials::createSsl(file_get_contents("app.crt")),
-    ]
-);
+use App\Service\PingerClient;
+use App\GRPC\Pinger\PingerInterface;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Boot\EnvironmentInterface;
 
-$call = $client->Sum(
-    new \App\Calculator\Sum([
-            'a' => 1,
-            'b' => 2
-    ]),
-    [
-        'client-key' => ['value']
-    ]
-);
+final class AppBootloader extends Bootloader
+{
+    protected const SINGLETONS = [
+        PingerInterface::class => [self::class, 'initPingService'],
+    ];
 
-print_r($call->wait()[0]->getResult());
-print_r($call->getMetadata()['server-key']);
+    private function initPingService(
+        EnvironmentInterface $env
+    ): PingerInterface {
+        return new PingerClient(
+            $env->get('PING_SERVICE_HOST', '127.0.0.1:9001'),
+            ['credentials' => \Grpc\ChannelCredentials::createInsecure()],
+        );
+    }
+}
 ```
 
-Now you can observe the metadata being passed from the client and server.
+Now the client class is registered as a singleton in the container.
+
+### 4. Client usage
+
+Finally, you can inject the client class into your code and use it to call the Pinger service.
+
+Here is an example of how you can use the `PingerClient`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Command;
+
+use App\GRPC\Pinger\PingerInterface;
+use App\GRPC\Pinger\PingRequest;
+use Spiral\Console\Command;
+use Spiral\RoadRunner\GRPC\Context;
+use Spiral\RoadRunner\GRPC\Exception\GRPCException;
+
+final class PingServiceCommand extends Command
+{
+    protected const SIGNATURE = 'ping {url : Url to ping}';
+    protected const DESCRIPTION = 'Ping service';
+
+    public function __invoke(
+        PingServiceInterface $client
+    ): int {
+        try {
+        
+            $response = $client->ping(
+                new Context(),
+                new PingRequest(['url' => $this->argument('url')])
+            );
+
+            $this->writeln(\sprintf(
+                'Response: code - %d',
+                $response->getStatus()
+            ));
+
+            $this->writeln($response->getContent());
+            
+        } catch (GRPCException $e) {
+        
+            $this->writeln(\sprintf(
+                'Error: code - %d, message - %s',
+                $e->getCode(),
+                $e->getMessage()
+            ));
+            
+        }
+
+        return self::SUCCESS;
+    }
+}
+```
+
+To use this command, run it from the command line:
+
+```bash
+php app.php ping https://google.com
+```
+
+This will call the Pinger service and print the HTTP status code of the response.
 
 ## Golang Clients
 
 GRPC allows you to create a client SDK in any supported language. To generate client on Golang, install the GRPC toolkit
 first:
 
+### 1. Install the necessary dependencies
+
+To use gRPC in Go, you will need to install the necessary dependencies. You can do this using the Go package manager:
+
 ```bash
+go get -u google.golang.org/grpc
 go get -u github.com/golang/protobuf/protoc-gen-go
 ```
 
 > **Note**
+>
 > Read more about how to create Golang GRPC clients and server [here](https://grpc.io/docs/tutorials/basic/go/).
 
-Init the project in the same folder as the PHP client to reuse the `.proto` and `.crt` files. To generate client stub code:
+### 2. Compile the `.proto` file
+
+Next, you will need to compile the `.proto` file into Go code. You can do this using the protoc compiler and the Go
+plugin:
 
 ```bash
-go mod init client
-go get google.golang.org/grpc
-mkdir calculator
-protoc -I proto/ proto/calculator.proto --go_out=plugins=grpc:calculator
+protoc -I proto/ proto/pinger.proto --go_out=plugins=grpc:pinger
 ```
 
-> **Note**
-> Notice the `package` name in `calculator.proto`.
+This will generate a` pinger.pb.go` file, which contains the Go classes for the service and messages defined in the
+`.proto` file.
 
-You can now create `main.go`:
+> **Note**
+>
+> Notice the `package` name in `pinger.proto`.
+
+### 3. Create the client
+
+Now you can create a client in Go for the Pinger service. Here is an example of a client that calls the `ping()` method 
+of the Pinger service and prints the HTTP status code to the console:
 
 ```golang
 package main
 
 import (
-	app "client/calculator"
 	"context"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
+	"fmt"
 	"log"
+
+	"google.golang.org/grpc"
+	"pinger"
 )
 
 func main() {
-	creds, err := credentials.NewClientTLSFromFile("app.crt", "")
+	// Set up a connection to the server.
+	conn, err := grpc.Dial("127.0.0.1:9001", grpc.WithInsecure())
 	if err != nil {
-		panic(err)
+		log.Fatalf("did not connect: %v", err)
+	}
+	
+	defer conn.Close()
+
+	client := pinger.NewPingerClient(conn)
+
+	// Call the ping method.
+	response, err := client.Ping(context.Background(), &pinger.PingRequest{
+		Url: "https://google.com",
+	})
+
+	if err != nil {
+		log.Fatalf("error calling ping: %v", err)
 	}
 
-	conn, err := grpc.Dial("localhost:50051", grpc.WithTransportCredentials(creds))
-	if err != nil {
-		panic(err)
-	}
-
-	client := app.NewCalculatorClient(conn)
-
-	res, err := client.Sum(context.Background(), &app.Sum{A: 1,B: 2})
-	if err != nil {
-		panic(err)
-	}
-
-	log.Printf("Result: %v", res.Result)
+	// Print the HTTP status code.
+	fmt.Println(response.StatusCode)
 }
 ```
 
-To test your client:
+You can run this client using the Go command:
 
 ```bash
 go run main.go
@@ -231,46 +239,50 @@ go run main.go
 To pass metadata between server and client:
 
 ```golang
+
 package main
 
 import (
-	app "client/calculator"
 	"context"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/metadata"
-
+	"fmt"
 	"log"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
+	"pinger"
 )
 
 func main() {
-	creds, err := credentials.NewClientTLSFromFile("app.crt", "")
+	// Set up a connection to the server.
+	conn, err := grpc.Dial("127.0.0.1:9001", grpc.WithInsecure())
 	if err != nil {
-		panic(err)
+		log.Fatalf("did not connect: %v", err)
 	}
+	
+	defer conn.Close()
 
-	conn, err := grpc.Dial("localhost:50051", grpc.WithTransportCredentials(creds))
-	if err != nil {
-		panic(err)
-	}
-
-	client := app.NewCalculatorClient(conn)
-
+	client := pinger.NewPingerClient(conn)
+	
 	// attach value to the server
 	ctx := metadata.AppendToOutgoingContext(context.Background(), "client-key", "client-value")
 
 	var header metadata.MD
-	res, err := client.Sum(ctx, &app.Sum{A: 1, B: 2}, grpc.Header(&header))
+	
+	// Call the ping method.
+	response, err := client.Ping(ctx, &pinger.PingRequest{
+		Url: "https://google.com",
+	}, grpc.Header(&header))
+
 	if err != nil {
-		panic(err)
+		log.Fatalf("error calling ping: %v", err)
 	}
 
-	log.Println(header["server-key"])
-
-	log.Printf("Result: %v", res.Result)
+	// Print the HTTP status code.
+	fmt.Println(response.StatusCode)
 }
 ```
 
 > **Note**
+> 
 > Read more about working with metadata in
 > Golang [here](https://github.com/grpc/grpc-go/blob/master/Documentation/grpc-metadata.md).

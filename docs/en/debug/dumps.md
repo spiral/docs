@@ -1,11 +1,9 @@
 # Debug - Dumping Variables
 
-Spiral Framework 3.0 doesn't have any out of the box tools for dumping variables.
+If you're using Spiral Framework 3.x, you might notice that there aren't any built-in tools for dumping variables.
 
-But you can use third-party packages like `symfony/var-dumper` to view the content of your variables and instances.
-
-If you want to dump the contents of your variables to the RoadRunner error log, you need to create a function, like in 
-the example below: 
+However, you can use third-party packages like `symfony/var-dumper` for dumping variables. If you want to dump the 
+contents of your variables to the RoadRunner error log, you can create a function like the one shown in the example below:
 
 ```php
 <?php
@@ -21,12 +19,14 @@ if (!\function_exists('dumprr')) {
     /**
      * Dump value int STDERR.
      */
-    function dumprr(mixed $value): mixed
+    function dumprr(mixed $value, mixed ...$values): mixed
     {
+        $previous = $_SERVER['VAR_DUMPER_FORMAT'] ?? false;
+        unset($_SERVER['VAR_DUMPER_FORMAT']);
+
         if (!\defined('STDERR')) {
             \define('STDERR', \fopen('php://stderr', 'wb'));
         }
-
         static $dumper = new CliDumper(STDERR);
 
         //
@@ -34,18 +34,28 @@ if (!\function_exists('dumprr')) {
         //
         $cloner = new VarCloner();
         // remove File and Line definitions from a custom closure dump
+        /** @psalm-suppress InvalidArgument */
         $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
 
         // Set new handler and store previous one
         $prevent = VarDumper::setHandler(static fn ($value) => $dumper->dump($cloner->cloneVar($value)));
         $result = VarDumper::dump($value);
 
+        foreach ($values as $v) {
+            VarDumper::dump($v);
+        }
+
         // Reset handler
         VarDumper::setHandler($prevent);
+
+        if ($previous) {
+            $_SERVER['VAR_DUMPER_FORMAT'] = $previous;
+        }
 
         return $result;
     }
 }
 ```
 
-> The package is included into `spiral/app`, and there's also a helper function `dumprr`.
+> **Note**
+> The `spiral/app` contains `symfony/var-dumper` package, and there's also a helpful function `dumprr` that you can use.

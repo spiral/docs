@@ -1,9 +1,15 @@
 # Queue and Jobs - Installation and Configuration
 
-The Web and GRPC bundles of Spiral Framework support background PHP processing and a queue out of the box. You can work with
-one or multiple message brokers such as Beanstalk, AMQP (RabbitMQ), or Amazon SQS.
+The Spiral Framework provides support for background PHP processing and a queue system for both the Web and GRPC
+bundles. This feature is available out of the box and allows you to work with a variety of message brokers including:
 
-To install the extensions in alternative bundles:
+- [Kafka](https://roadrunner.dev/docs/plugins-jobs/2.x/en#kafka-driver),
+- [AMQP (RabbitMQ)](https://roadrunner.dev/docs/plugins-jobs/2.x/en#amqp-driver),
+- [Amazon SQS](https://roadrunner.dev/docs/plugins-jobs/2.x/en#sqs-driver),
+- [Beanstalk](https://roadrunner.dev/docs/plugins-jobs/2.x/en#beanstalk-driver),
+- and [memory](https://roadrunner.dev/docs/plugins-jobs/2.x/en#memory-driver) driver.
+
+To install the necessary extensions in an alternative bundle, you can use the following command:
 
 ```bash
 composer require spiral/queue
@@ -13,8 +19,10 @@ Make sure to add `Spiral\Queue\Bootloader\QueueBootloader` to your application k
 
 ## Configuration
 
-By default, the queue configuration is located in the `app/config/queue.php` file. The configuration includes a set of
-options for each queue driver and aliases.
+The default queue configuration can be found in the `app/config/queue.php` file. This configuration file includes a set
+of
+options for each queue driver as well as aliases, which allow you to specify a default queue driver for your application
+to use.
 
 ```php
 <?php
@@ -22,14 +30,10 @@ options for each queue driver and aliases.
 declare(strict_types=1);
 
 return [
-    /**
-     *  Default queue connection name
-     */
+    /** Default queue connection name */
     'default' => env('QUEUE_CONNECTION', 'sync'),
 
-    /**
-     *  Aliases for queue connections, if you want to use domain specific queues
-     */
+    /** Aliases for queue connections, if you want to use domain specific queues */
     'aliases' => [
         // 'mailQueue' => 'roadrunner',
         // 'ratingQueue' => 'sync',
@@ -55,14 +59,13 @@ return [
 
 ### Declare Connection
 
-To create new queue connection, add a new section or alter existed options in the `connections` section of your
-configuration.
-
+To create a new queue connection in your application, you can add a new section to the `connections` section of the queue
+configuration file.
 
 ### Aliases
 
-Your application and modules can access the queue in several different ways. Queue aliasing allows you to use
-separate connections with relation to one physical queue.
+Queue aliasing is a feature that allows your application and modules to access the queue system in a variety of ways, 
+using separate connections that are related to a single physical queue.
 
 ```php
 <?php
@@ -78,18 +81,12 @@ return [
 ];
 ```
 
-```php
-use Spiral\Queue\QueueInterface;
+To obtain a queue instance by its name or alias, you can use the `getConnection` method of the 
+`Spiral\Queue\QueueConnectionProviderInterface`. This method takes a string argument representing the name of the 
+desired queue, and returns an instance of the `Spiral\Queue\QueueInterface`.
 
-public function __construct(QueueInterface $mailQueue, QueueInterface $ratingQueue)
-{
-    // ...
-}
-```
-
-To point `mailQueue` and `ratingQueue` to a specific queue instance:
-
-Or by using `Spiral\Queue\QueueConnectionProviderInterface`
+For example, if you want to get a queue instance for a name or alias called `mailQueue``, you could use the 
+following code:
 
 ```php
 use Spiral\Queue\QueueConnectionProviderInterface;
@@ -100,11 +97,11 @@ $container->bind(MyService::class, function(QueueConnectionProviderInterface $pr
 ```
 
 ```php
-class MyService
+final class MyService
 {
-    public function __construct(QueueInterface $queue)
-    {
-        // ...
+    public function __construct(
+        private readonly QueueInterface $queue
+    ) {
     }
 }
 ```

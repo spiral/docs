@@ -1,160 +1,40 @@
 # HTTP - Routing
 
-The framework [Web Bundle](https://github.com/spiral/app) includes a pre-configured router component. To install the
-router in alternative builds:
+The framework [Web Bundle](https://github.com/spiral/app) includes a pre-configured router component. 
+
+This component can be installed in alternative builds as needed.
 
 ```bash
 composer require spiral/router
 ```
 
-And activate its Bootloader:
+To use the router component, you will need to activate its Bootloader.
 
 ```php
 [
     //...
-    Spiral\Bootloader\Http\RouterBootloader::class,
+    \Spiral\Bootloader\Http\RouterBootloader::class,
 ]
 ```
 
-> **Note**
-> Read how to define routing using attributes or annotations [here](/http/annotated-routes.md).
+## Routes definition
 
-## Creating new routes via RoutesBootloader
+Spiral Framework offers a convenient and organized way for developers to define their application's routes using the 
+`defineRoutes` method of the `App\Application\Bootloader\RoutesBootloader` class. This method provides 
+a `Spiral\Router\Loader\Configurator\RoutingConfigurator` instance as its first argument, which offers a range of 
+methods for defining and configuring routes. With the `RoutingConfigurator`, developers can easily apply various settings 
+such as middleware, prefixes, and HTTP methods to their routes. Overall, the `RoutingConfigurator` class is a powerful 
+tool for defining and configuring routes in Spiral Framework applications.
 
-The default web application bundle allows you to configure application routes via `App\Bootloader\RoutesBootloader`.
-This bootloader contains the `defineRoutes` method, which contains the `Spiral\Router\Loader\Configurator\RoutingConfigurator` in the parameters.
+> **Warning**
+> `App\Application\Bootloader\RoutesBootloader` should be in the `LOAD` section of the bootloaders list.
 
-```php
-// file app/src/Bootloader/RoutesBootloader.php
+### Via RoutesBootloader
 
-use Spiral\Router\Loader\Configurator\RoutingConfigurator;
-
-protected function defineRoutes(RoutingConfigurator $routes): void
-{
-    // ...
-}
-```
-
-The `RoutingConfigurator` allows you to create and automatically register routes or import routes from specific files.
-
-## Import routes from files
-
-In the example below, you can see how to import routes from a specific file.
+The `RoutingConfigurator` allows you to create and automatically register routes.
 
 ```php
-// file app/src/Bootloader/RoutesBootloader.php
-protected function defineRoutes(RoutingConfigurator $routes): void
-{
-    $routes->import($this->dirs->get('app') . '/routes/web.php')->group('web');
-}
-```
-
-> **Note**
-> By default, the import of routes from the `app/routes/web.php` file is already configured in `spiral/app`.
-
-Open the `web.php` file, use the `add` method to add a new route.
-
-```php
-use App\Controller\HomeController;
-use Spiral\Router\Loader\Configurator\RoutingConfigurator;
-
-return function (RoutingConfigurator $routes): void {
-
-    // route to the controller action
-    $routes->add('index', '/')->action(HomeController::class, 'index');
-    
-    // route to all of the controller actions at once
-    $routes->add('html', '/<action>.html')->controller(HomeController::class);
-    
-    // route to all actions in multiple controllers
-    $routes->add('group', '/<controller>/<action>/<id>')->groupControllers([
-        'home' => HomeController::class,
-        'demo' => DemoController::class
-    ]);
-    
-    // route to the set of controllers located in the same namespace
-    $routes->add('namespaced', '/<controller>/<action>/<id>')->namespaced('\App\Controllers');
-    
-    // route with callable handler
-    $routes->add('hello', '/hello')->callable(static fn () => 'hello');
-
-    // route with custom handler
-    $routes->add('custom-handler', '/custom-handler')->handler(\App\Handlers\Handler::class);
-    
-};
-```
-
-To add HTTP verbs, default parameters, custom core, prefix, group:
-
-```php
-use App\Controller\HomeController;
-use Spiral\Router\Loader\Configurator\RoutingConfigurator;
-
-return function (RoutingConfigurator $routes): void {
-    // HTTP verbs
-    $routes
-        ->add('html', '/<action>.html')
-        ->controller(HomeController::class)
-        ->methods('GET'); // or ->methods(['GET', 'POST'])
-    
-    // default parameters
-    $routes
-        ->add('html', '/<action>.html')
-        ->controller(HomeController::class)
-        ->defaults(['action' => 'default']);
-    
-    // custom core
-    $routes
-        ->add('html', '/<action>.html')
-        ->controller(HomeController::class)
-        ->core($core);
-    
-    // prefix
-    $routes
-        ->add('html', '/<action>.html')
-        ->controller(HomeController::class)
-        ->prefix('profile');
-
-    // group
-    $routes
-        ->add('html', '/<action>.html')
-        ->controller(HomeController::class)
-        ->group('admin');    
-};
-```
-
-Routes with the same `prefix` and `group` can be grouped in a separate file. Need to create a new file, for example,
-`app/routes/api.php` and add api routes:
-
-```php
-use Spiral\Router\Loader\Configurator\RoutingConfigurator;
-
-return function (RoutingConfigurator $routes): void {
-    // routes
-};
-```
-
-Import this file in the `defineRoutes` method:
-
-```php
-// file app/src/Bootloader/RoutesBootloader.php
-protected function defineRoutes(RoutingConfigurator $routes): void
-{
-    // all routes from this file will have a prefix and a group
-    $routes
-        ->import($this->dirs->get('app') . '/routes/api.php')
-        ->group('api')
-        ->prefix('api');
-}
-```
-
-### Adding routes in defineRoutes method
-
-Routes can be added in the `defineRoutes` method using the `RoutingConfigurator`.
-The process of adding routes is exactly the same as in separate files:
-
-```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
 use Spiral\Router\Loader\Configurator\RoutingConfigurator;
@@ -162,12 +42,147 @@ use Spiral\Router\Loader\Configurator\RoutingConfigurator;
 final class RoutesBootloader extends BaseRoutesBootloader
 {
     // ...
-    
+ 
     protected function defineRoutes(RoutingConfigurator $routes): void
     {
-        $routes->add('index', '/')->action(HomeController::class, 'index');
+        $routes->add(name: 'news.show', pattern: '/news/<id:int>')
+            ->group('web')
+            ->methods(methods: ['GET'])
+            ->action(NewsController::class, 'show');
+            
+        ...
     }
 }
+```
+
+### Import routes from files
+
+The `RoutingConfigurator` has a handy feature that lets you import routes from specific files. 
+
+**Here's an example of how to do that:**
+
+```php
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+namespace App\Application\Bootloader;
+
+use Spiral\Boot\DirectoriesInterface;
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    public function __construct(
+        private readonly DirectoriesInterface $dirs
+    ) {
+    }
+    
+    // ...
+
+    protected function defineRoutes(RoutingConfigurator $routes): void
+    {
+        $routes->import($this->dirs->get('app') . '/routes/web.php')
+            ->group('web');
+            
+        $routes->import($this->dirs->get('app') . '/routes/api.php')
+            ->prefix('/api');
+            ->group('api');
+    }
+}
+```
+
+Open the `web.php` file, use the `add` method to add a new route.
+
+```php
+// app/routes/web.php
+
+use App\Controller\HomeController;
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+return function (RoutingConfigurator $routes): void {
+    $routes->add(name: 'news.show', pattern: '/news/<id:int>')
+        ->methods(methods: ['GET'])
+        ->action(NewsController::class, 'show');
+};
+```
+
+### Annotated routes
+
+If you're interested in defining routing using attributes or annotations, be sure to check 
+out [this resource](/http/annotated-routes.md) for more information.
+
+## Route configurator
+
+### Default route parameters
+
+```php
+$routes
+    ->add(name: 'html', pattern: '/<action>.html')
+    ->controller(HomeController::class)
+    ->defaults(['action' => 'default']);
+```
+
+### Custom domain core
+
+```php
+$core = new \Spiral\Core\InterceptableCore(...);
+$core->addInterceptor(...);
+
+$routes
+    ->add(name: 'html', pattern: '/<action>.html')
+    ->core($core)
+    ->...;
+```
+
+### Grouping routes
+
+```php
+$routes->add(name: 'news', pattern: '/news/<id:int>')
+    ->action(NewsController::class, 'show')
+    ->group('auth');
+    ->methods('GET');
+```
+
+### Prefixing routes
+
+```php
+$routes->add(name: 'news', pattern: '/news/<id:int>')
+    ->action(NewsController::class, 'show')
+    ->prefix('/api')
+    ->methods('GET');
+```
+
+### HTTP methods (verbs)
+
+```php
+$routes->add(name: 'html', pattern: '/<action>.html')
+    ->controller(HomeController::class)
+    ->methods('GET');
+
+// or
+
+$routes->add(name: 'news', pattern: '/news/<id:int>')
+    ->action(NewsController::class, 'showOrUpdate')
+    ->methods(['GET', 'POST']);
+```
+
+### Fallback route
+
+```php
+$routes->default('/[<controller>[/<action>]]')
+    ->namespaced('App\\Api\\Web\\Controller')
+    ->defaults([
+        'controller' => 'home',
+        'action' => 'index',
+    ]);
+```
+
+### Add middleware
+
+```php
+$routes->add(name: 'news', pattern: '/news/<id:int>')
+    ->action(NewsController::class, 'show')
+    ->middleware(LocaleSelector::class);
 ```
 
 ## Middleware
@@ -214,14 +229,16 @@ final class RoutesBootloader extends BaseRoutesBootloader
             ],
         ];
     }
+    
+    // ...
 }
 ```
 
-Globally configured middleware will be applied for all routes, but grouped middleware will be applied to the route
-groups with the same name and registered in the application container as a Pipelines with the following name
-pattern `middleware:{group}`, so you can use middleware in any routes.
+Globally configured middleware will be applied to all routes in your application. However, middleware that's grouped 
+will only be applied to routes within the corresponding group. These groups are registered in the app's container as 
+pipelines with the name middleware:{group}, so you can use them on any routes. 
 
-Grouped middleware registration in the container looks like in the example below:
+An example of grouped middleware registration in the container might look like this:
 
 ```php
 $container->bind(
@@ -236,14 +253,58 @@ $container->bind(
 );
 ```
 
- You can check out an example of how to register grouped middleware here:
+An example of how to register grouped middleware:
 
 ```php
-$route = new Route('/', fn () => 'hello world');
-$route->withMiddleware(['middleware:web', MyMiddleware::class]);
+$routes->add(name: 'news', pattern: '/news/<id:int>')
+    ->action(NewsController::class, 'show')
+    ->middleware(['middleware:web', MyMiddleware::class]);
 ```
 
-## Creating new routes via RouterInterface
+## Route group configurator
+
+Spiral Framework allows developers to easily configure route groups. You can easily organize your application's routes 
+into logical groups and apply middleware, prefixes, and other settings to all routes within a group with just a few 
+lines of code. This makes it easy to maintain and scale your application, and can save you a lot of time and effort 
+when working with large, complex projects.
+
+You can set up route groups via `App\Application\Bootloader\RoutesBootloader`. This bootloader contains the 
+`configureRouteGroups` method, which contains the `Spiral\Router\GroupRegistry` in the parameters.
+
+Here is a simple example of how to set up a route group:
+
+```php
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+namespace App\Application\Bootloader;
+
+use Spiral\Router\GroupRegistry;
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    // ...
+
+    protected function configureRouteGroups(GroupRegistry $groups): void
+    {
+        $groups->getGroup('api')
+            ->setNamePrefix('api.')
+            ->setPrefix('/api');
+            
+        $groups->getGroup('web')
+            ->addMiddleware(MyMiddelware::class);
+            ->setPrefix('/api');
+    }
+}
+```
+
+You can also set a default group for all routes:
+
+```php
+$groups->setDefaultGroup('api');
+```
+
+## Creating new routes via `Spiral\Router\RouterInterface`
 
 ### Default Configuration
 
@@ -394,10 +455,12 @@ $router->setRoute('home', new Route(
 
 ### Route parameters casting
 
+#### Integer values casting
+
 If you want to use typed route parameters injection in controllers such as `function user(int $id)`, you need to cast
 values by yourself. You can use domain interceptors for it.
 
-You can see an example of a simple interceptor below
+You can see an example of a simple interceptor below:
 
 ```php
 class StringToIntParametersInterceptor implements CoreInterceptorInterface
@@ -415,9 +478,54 @@ class StringToIntParametersInterceptor implements CoreInterceptorInterface
 }
 ```
 
+#### Value objects casting
+
+You can use the same approach to cast values to value objects.
+
+For example, if controller action expects `Ramsey\Uuid\Uuid` object
+
+```php
+use Ramsey\Uuid\UuidInterface;
+
+class UserController 
+{
+    public function user(UuidInterface $uuid): User
+    {
+        // ...
+    }
+}
+```
+
+You can automatically cast string values to `Ramsey\Uuid\Uuid` objects using the following interceptor:
+
+```php
+use Spiral\Core\CoreInterceptorInterface;
+use Spiral\Core\CoreInterface;
+use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
+
+final class UuidParametersConverterInterceptor implements CoreInterceptorInterface
+{
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core): mixed
+    {
+        $refMethod = new \ReflectionMethod($controller, $action);
+
+        // Iterate all Controller action arguments
+        foreach ($refMethod->getParameters() as $parameter) {
+            // If an arguments has Ramsey\Uuid\UuidInterface type hint.
+            if ($parameter->getType()->getName() === UuidInterface::class) {
+                // Replace argument value with Uuid instance.
+                $parameters[$parameter->getName()] = Uuid::fromString($parameters[$parameter->getName()]);
+            }
+        }
+
+        return $core->callAction($controller, $action, $parameters);
+    }
+}
+```
+
 > **Note**
 > Read more about using interceptors [here](/cookbook/domain-core.md#core-interceptors).
-
 
 ### Route pre-defined options
 
@@ -664,7 +772,7 @@ class HomeController
         return 'other';
     }
 
-    public function user(string $id): string
+    public function user(int $id): string
     {
         return "hello {$id}";
     }
@@ -901,17 +1009,17 @@ namespace App\Controller;
 
 class UserController
 {
-    public function getUser(string $id): string
+    public function getUser($id): string
     {
         return "get {$id}";
     }
 
-    public function postUser(string $id): string
+    public function postUser($id): string
     {
         return "post {$id}";
     }
 
-    public function deleteUser(string $id): string
+    public function deleteUser($id): string
     {
         return "delete {$id}";
     }
@@ -944,17 +1052,17 @@ namespace App\Controller;
 
 class UserController
 {
-    public function load(string $id): string
+    public function load($id): string
     {
         return "get {$id}";
     }
 
-    public function store(string $id): string
+    public function store($id): string
     {
         return "post {$id}";
     }
 
-    public function delete(string $id): string
+    public function delete($id): string
     {
         return "delete {$id}";
     }
@@ -1100,3 +1208,6 @@ public function index(RouterInterface $router)
 | Spiral\Router\Event\Routing       | The Event will be fired `before` matching the route.            |
 | Spiral\Router\Event\RouteMatched  | The Event will be fired when the route is successfully matched. |
 | Spiral\Router\Event\RouteNotFound | The Event will be fired when the route is not found.            |
+
+> **Note**
+> To learn more about dispatching events, see the [Events](../component/events.md) section in our documentation.

@@ -31,9 +31,20 @@ class HomeController
 }
 ```
 
-By default, `CoreInterface` is implemented by `Spiral\Core\Core` class and only provides support for the method injection.
+By default, `CoreInterface` is implemented by `Spiral\Core\Core` class and only provides support for the method
+injection.
 
 ## Core Interceptors
+
+Interceptors are classes that provide a way to intercept and modify the behavior of certain components in the framework.
+They can be used to perform tasks such as authentication, logging, or routing.
+
+You can use interceptors to add custom behavior to your application at various points in its execution, without
+modifying the core code of the application. This can help to keep your codebase more modular and maintainable.
+
+Interceptors should implement the `Spiral\Core\CoreInterceptorInterface` interface, which requires them to define
+a `callAction` method. This method is called by the framework at specific points in the application's execution, such
+as before or after a controller action is invoked. Below is an example of a simple interceptor:
 
 Use `Spiral\Core\InterceptableCore` and `Spiral\Core\CoreInterceptorInterface` to implement custom invoke logic:
 
@@ -159,7 +170,8 @@ Use this Bootloader to configure the application behavior globally via the set o
 
 ### Cycle Entity Resolution
 
-The [Cycle Bridge](https://github.com/spiral/cycle-bridge/) package provides `Spiral\Cycle\Interceptor\CycleInterceptor`.
+The [Cycle Bridge](https://github.com/spiral/cycle-bridge/) package
+provides `Spiral\Cycle\Interceptor\CycleInterceptor`.
 Use `CycleInterceptor` to automatically resolve entity injections based on parameter values:
 
 ```php
@@ -310,7 +322,8 @@ public function other(): string
 > Allowed values: `notFound` (404), `forbidden` (401), `error` (500), `badAction` (400).
 
 Use the attribute `Spiral\Domain\Annotation\GuardNamespace` to specify controller RBAC namespace and remove a prefix
-from every action. You can also skip the permission definition in `Guarded` when a namespace is specified (security component 
+from every action. You can also skip the permission definition in `Guarded` when a namespace is specified (security
+component
 will use `namespace.methodName` as a permission name).
 
 ```php
@@ -410,7 +423,8 @@ The method would not allow invoking the method with user id `1`.
 
 ### DataGrid Interceptor
 
-You can automatically apply datagrid specifications to an iterable output using `DataGrid` attribute and `GridInterceptor`.
+You can automatically apply datagrid specifications to an iterable output using `DataGrid` attribute
+and `GridInterceptor`.
 This interceptor is called after the endpoint invocation because it uses the output.
 
 ```php
@@ -588,7 +602,8 @@ Using the prev bootloader, we will get the next interceptors list:
 
 ### Use cases
 
-For example, it can be helpful when an endpoint should not apply any interceptor or not all of them are currently required:
+For example, it can be helpful when an endpoint should not apply any interceptor or not all of them are currently
+required:
 
 ```php
 #[Route(route: '/show/<user:int>/email/<email:int>', name: 'emails')]

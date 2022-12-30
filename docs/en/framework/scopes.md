@@ -15,15 +15,30 @@ only for a limited time. Such operation is performed using `Spiral\Core\ScopeInt
 spiral container `Spiral\Core\Container` implements this interface.
 
 ```php
+use Psr\Container\ContainerInterface;
+
 $container->runScope(
     [
         UserContext::class => $user
     ],
-    function () use($container) {
-        \dump($container->get(UserContext::class);
+    function (ContainerInterface $container) {
+    
+        dump($container->get(UserContext::class);
+
     }
 );
 ```
+
+The first argument of the `runScope` method is an array of values that should be bound to the container within the 
+callback's scope.
+
+The callback function receives the container as its argument and can use the container to retrieve the values that were 
+bound to it within the callback's scope. This can be useful for creating a temporary scope within which certain values 
+are available.
+
+In this example, the `runScope` method is creating a temporary scope within which the `UserContext` class is bound to the 
+`$user` variable. The callback function can then use the container to retrieve the `UserContext` object instance, which 
+is available within the callback's scope.
 
 > **Note**
 > Framework will guarantee that scope is clean after the execution, even in case of any exception.
@@ -49,7 +64,7 @@ will cause the controller to lock on first scope value:
 ```php
 class HomeController implements SingletonInterface
 {
-    private UserContext $userContext; // not allowed!
+    private UserContext $userContext; // <====== !!!not allowed!!!
 
     public function __construct(UserContext $userContext)
     {

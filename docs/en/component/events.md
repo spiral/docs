@@ -1,6 +1,6 @@
 # Events
 
-The `Events` component provides tools that allow your application components to communicate with each other
+The Events component provides tools that allow your application components to communicate with each other
 by dispatching events and listening to them. The component makes it easy to register event listeners in your application. 
 It also provides an easy way to integrate `PSR-14` compatible `EventDispatcher`.
 
@@ -10,18 +10,11 @@ To enable the component, you need to add `Spiral\Events\Bootloader\EventsBootloa
 list, which is located in the class of your application.
 
 ```php
-namespace App;
-
-use Spiral\Events\Bootloader\EventsBootloader;
-
-class App extends Kernel
-{
-    protected const LOAD = [
-        // ...
-        EventsBootloader::class,
-        // ...
-    ];
-}
+protected const LOAD = [
+    // ...
+    \Spiral\Events\Bootloader\EventsBootloader::class,
+    // ...
+];
 ```
 
 This bootloader registers the implementation of the `Spiral\Events\ListenerFactoryInterface` and 
@@ -32,31 +25,25 @@ After that, let's install `PSR-14` implementation of a compatible `EventDispatch
 `spiral-packages/league-event` package that integrates a PSR-14 compatible `league/event` package into 
 an application based on the Spiral Framework.
 
-```php
+```bash
 composer require spiral-packages/league-event
 ```
 
 After the package is installed, you need to register a bootloader from the package.
 
 ```php
-namespace App;
-
-use Spiral\League\Event\Bootloader\EventBootloader;
-
-class App extends Kernel
-{
-    protected const LOAD = [
-        // ...
-        EventBootloader::class,
-        // ...
-    ];
-}
+protected const LOAD = [
+    // ...
+    \Spiral\Events\Bootloader\EventsBootloader::class,
+    \Spiral\League\Event\Bootloader\EventBootloader::class,
+    // ...
+];
 ```
 
 ## Configuration
 
-The configuration file for `Events` component should be located at `app/config/events.php`. Within this file, you may
-configure the event `listeners` and `processors`.
+The configuration file for the Events component can be found at `app/config/events.php`. This file allows you to specify
+event `listeners` and `processors`.
 
 The `listeners` parameter represented an `array`, the key is the `fully qualified name of the event class`,
 and the value must be an `array` that contains the `fully qualified name of the event listener class`,
@@ -65,7 +52,7 @@ or `Spiral\Events\Config\EventListener` instance that allows you to configure ad
 The `processors` parameter represented an `array` and contains the `full name of the processor class`. 
 
 > **Note**
-> More detailed information about `processors` will be provided below. This section only describes the configuration.
+> Detailed information about `processors` will be provided below. This section only describes the configuration.
 
 For example, a configuration file might look like this:
 
@@ -139,7 +126,27 @@ final class UserWasCreated
 Dispatching an event.
 
 ```php
-$this->container->get(EventDispatcherInterface::class)->dispatch(new UserWasCreated($user));
+namespace App\Service;
+
+use Psr\EventDispatcher\EventDispatcherInterface;
+use App\Event\UserWasCreated;
+
+final class UserService 
+{
+    public function __construct(
+        private readonly EventDispatcherInterface $dispatcher
+    ) {
+    }
+
+    public function create(string $username): User
+    {
+        $user = new User(username: $username);
+        // ...
+        $this->dispatcher->dispatch(new UserWasCreated($user));
+        
+        return $user;
+    }
+}
 ```
 
 ### Listener
@@ -200,88 +207,84 @@ class UserWasCreatedListener
 ```
 
 The `Spiral\Events\Attribute\Listener` attribute is needed to automatically register an event listener in the application. 
-If you prefer to register listeners via `config file`, you can remove this attribute 
+If you prefer to register listeners via config file, you can remove this attribute 
 and `Spiral\Events\Processor\AttributeProcessor` from the config file.
 
-## Processors
+## Interceptors
 
-Processors provide an ability to register event listeners in the application.
-Two processors are available by default.
+The Events component provides an ability to intercept events. This is useful when you need to modify the event data or, for example,
+send it via websockets. To do this, you need to create an interceptor class that implements the `Spiral\Core\CoreInterceptorInterface` interface.
 
-- `Spiral\Events\Processor\ConfigProcessor` registers event listeners from the `configuration file`.
-- `Spiral\Events\Processor\AttributeProcessor` registers event listeners with the `Spiral\Events\Attribute\Listener` attribute.
-
-> **Note**
-> In the config file `app/config/events.php`, you can change this and use only one of them or add your own processor.
-
-### Creating a Processor
-
-A processor is a class that must implement the `Spiral\Events\Processor\ProcessorInterface` and implement 
-the `process` method.
+**Example**
 
 ```php
-namespace App\Processor;
+<?php
 
-use Spiral\Events\ListenerFactoryInterface;
-use Spiral\Events\ListenerRegistryInterface;
-use Spiral\Events\Processor\AbstractProcessor;
+declare(strict_types=1);
 
-final class MyCustomProcessor extends AbstractProcessor
+namespace App\Broadcasting;
+
+use Spiral\Broadcasting\BroadcastInterface;
+use Spiral\Core\CoreInterceptorInterface;
+use Spiral\Core\CoreInterface;
+use Spiral\Queue\SerializerRegistryInterface;
+
+final class BroadcastEventInterceptor implements CoreInterceptorInterface
 {
     public function __construct(
-        private readonly ListenerFactoryInterface $factory,
-        private readonly ?ListenerRegistryInterface $registry = null,
+        private readonly BroadcastInterface $broadcast,
+        private readonly SerializerRegistryInterface $registry
     ) {
     }
 
-    public function process(): void
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core): mixed
     {
-        // If the EventDispatcher implementation is not registered in the application,
-        // this interface implementation will not be registered and the processor will stop working.
-        if ($this->registry === null) {
-            return;
+        $event = $parameters['event'];
+        
+        // Dispatch event first
+        $result = $core->callAction($controller, $action, $parameters);
+
+        // Broadcast event after dispatch
+        if ($event instanceof ShouldBroadcastInterface) {
+            $this->broadcast->publish(
+                $event->getBroadcastTopics(),
+                $this->registry->getSerializer('json')->serialize(
+                    ['event' => $event->getEventName(), 'data' => $event->getPayload()]
+                )
+            );
         }
 
-        // Using the ListenerRegistryInterface implementation, we can register event listeners.
-        $this->registry->addListener(
-            event: $event,
-            listener: $this->factory->create($listener, $method),
-            priority: $priority
-        );
+        return $result;
     }
 }
 ```
 
-Implementation of the `Spiral\Events\ListenerFactoryInterface` allows you to create a listener instance from 
-a fully qualified class name and a method name, adding all the necessary dependencies to the constructor.
-
-After that, we need to register the processor in the configuration file.
+And then you will need to register it in the `events.php` configuration file, which is located in the `app/config` directory.
 
 ```php
-// file app/config/events.php    
-use App\Processor\MyCustomProcessor;
-
 return [
-    // ...
-    'processors' => [
-        MyCustomProcessor::class,
-        // ...
-    ],
-    // ...
+    'interceptors' => [
+        \App\Broadcasting\BroadcastEventInterceptor::class
+    ]
 ];
 ```
 
-## Creating an EventDispatcher
+> **Note**
+> Read more about interceptors in the [Interceptors](../cookbook/domain-core.md) section.
 
-As an implementation of EventDispatcher, we considered the package 
+## Creating an Event dispatcher
+
+As an implementation of Event dispatcher, we considered the package 
 [The League Event bridge for Spiral Framework](https://github.com/spiral-packages/league-event). 
-You can create your own implementation using `PSR-14 EventDispatcher`.
+This package provides a bridge between the Spiral Framework and the [The League Event](https://event.thephpleague.com/3.0/) package.
+
+You can create your own implementation using `PSR-14` event dispatcher.
 
 ### ListenerRegistry
 
 Let's create a class that will implement the `Spiral\Events\ListenerRegistryInterface` and provides an ability 
-to register `event listeners`. The `addListener` method from this class is called by `processors`, 
-passing the `event`, `event listener`, and `priority` as parameters.
+to register event listeners. The `addListener` method from this class is called by `processors`, passing the `event`, 
+`event listener`, and `priority` as parameters.
 
 ```php
 namespace App\EventDispatcher;
@@ -303,7 +306,7 @@ final class ListenerRegistry implements ListenerRegistryInterface, ListenerProvi
 }
 ```
 
-### EventDispatcher
+### Event dispatcher
 
 Create an implementation of `Psr\EventDispatcher\EventDispatcherInterface`.
 
@@ -355,3 +358,79 @@ final class EventBootloader extends Bootloader
 
 > **Note**
 > Don't forget to register the bootloader in the application.
+
+## Processors
+
+Event processors allow you to register event listeners from various sources within your application, such as
+configuration files or PHP attributes. This can be useful for organizing and centralizing the management of event
+listeners in your application.
+
+By default, the Events component provides two processors that you can use to register event listeners in your
+application.
+
+**These processors are:**
+
+- `Spiral\Events\Processor\ConfigProcessor`, which allows you to register event listeners from a configuration file.
+- `Spiral\Events\Processor\AttributeProcessor`, which allows you to register event listeners using PHP
+  attribute `Spiral\Events\Attribute\Listener`.
+
+> **Note**
+> You can use the provided processors, use only one of them, or add your own custom processors as needed. Simply update
+> the configuration file `app/config/events.php` to specify the processors that you want to use.
+
+### Creating a Processor
+
+A processor is a class that must implement the `Spiral\Events\Processor\ProcessorInterface` and implement
+the `process` method.
+
+```php
+namespace App\Processor;
+
+use Spiral\Events\ListenerFactoryInterface;
+use Spiral\Events\ListenerRegistryInterface;
+use Spiral\Events\Processor\AbstractProcessor;
+
+final class MyCustomProcessor extends AbstractProcessor
+{
+    public function __construct(
+        private readonly ListenerFactoryInterface $factory,
+        private readonly ?ListenerRegistryInterface $registry = null,
+    ) {
+    }
+
+    public function process(): void
+    {
+        // If the EventDispatcher implementation is not registered in the application,
+        // this interface implementation will not be registered and the processor will stop working.
+        if ($this->registry === null) {
+            return;
+        }
+
+        // Using the ListenerRegistryInterface implementation, we can register event listeners.
+        $this->registry->addListener(
+            event: $event,
+            listener: $this->factory->create($listener, $method),
+            priority: $priority
+        );
+    }
+}
+```
+
+Implementation of the `Spiral\Events\ListenerFactoryInterface` allows you to create a listener instance from
+a fully qualified class name and a method name, adding all the necessary dependencies to the constructor.
+
+After that, we need to register the processor in the configuration file.
+
+```php
+// file app/config/events.php    
+use App\Processor\MyCustomProcessor;
+
+return [
+    // ...
+    'processors' => [
+        MyCustomProcessor::class,
+        // ...
+    ],
+    // ...
+];
+```
