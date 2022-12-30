@@ -64,7 +64,6 @@
       "component/data-grid": "Data Grids",
       "component/serializer": "Serializer",
       "component/sendit": "SendIt",
-      "component/broadcasting": "Event Broadcasting",
       "component/exceptions": "Exceptions",
       "component/events": "Events"
     }
@@ -190,6 +189,14 @@
       "i18n/export": "Import and Export",
       "i18n/views": "View Localization",
       "i18n/say-trait": "Say Trait"
+    }
+  },
+  {
+    "title": "WebSockets",
+    "links": {
+      "websockets/configuration": "Installation and Configuration",
+      "websockets/services": "Event handlers",
+      "websockets/interceptors": "Interceptors"
     }
   },
   {

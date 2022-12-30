@@ -44,7 +44,6 @@
     * [Data Grids](component/data-grid.md)
     * [Serializer](component/serializer.md)
     * [SendIt](component/sendit.md)
-    * [Event Broadcasting](component/broadcasting.md)
     * [Exceptions](component/exceptions.md)
     * [Events](component/events.md)
 * Console
@@ -121,6 +120,10 @@
     * [Import and Export](i18n/export.md)
     * [View Localization](i18n/views.md)
     * [Say Trait](i18n/say-trait.md)
+* WebSockets
+    * [Installation and Configuration](websockets/configuration.md)
+    * [Event handlers](websockets/services.md)
+    * [Interceptors](websockets/interceptors.md)
 * GRPC
     * [Installation and Configuration](grpc/configuration.md)
     * [Service Code](grpc/service.md)
