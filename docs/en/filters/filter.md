@@ -289,6 +289,108 @@ class MyFilter extends Filter
 }
 ```
 
+### Creating a custom attribute
+
+You can create your own attribute, which will contain a custom data retrieval logic.
+For example, we need to receive uploaded files as a Symfony\Bridge\PsrHttpMessage\Factory\UploadedFile object.
+First of all, we need to create custom input bag for this:
+
+```php
+namespace App\Http\Request;
+
+use Spiral\Http\Request\InputBag;
+use Symfony\Bridge\PsrHttpMessage\Factory\UploadedFile;
+
+final class FilesBag extends InputBag
+{
+    public function __construct(array $data, string $prefix = '')
+    {
+        foreach ($data as $name => $file) {
+            $data[$name] = new UploadedFile($file, fn(): string => $this->getTemporaryPath());
+        }
+
+        parent::__construct($data, $prefix);
+    }
+
+    protected function getTemporaryPath(): string
+    {
+        return \tempnam(\sys_get_temp_dir(), \uniqid('symfony', true));
+    }
+}
+```
+
+After that, add the created `FilesBag` by the method `addInputBag` in the `HttpBootloader`.
+
+```php
+namespace App\Bootloader;
+
+use App\Http\Request\FilesBag;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Bootloader\Http\HttpBootloader;
+
+class AppBootloader extends Bootloader
+{
+    public function init(HttpBootloader $http): void
+    {
+        $http->addInputBag('symfonyFiles', [
+            'class'  => FilesBag::class,
+            'source' => 'getUploadedFiles',
+            'alias' => 'symfony-file'
+        ]);
+    }
+}
+```
+
+Let's create a filter attribute that will get the uploaded file. The attribute class must be extended from 
+the `Spiral\Filters\Attribute\Input\AbstractInput` class.
+
+```php
+namespace App\Validation\Attribute;
+
+use Spiral\Attributes\NamedArgumentConstructor;
+use Spiral\Filters\Attribute\Input\AbstractInput;
+use Spiral\Filters\InputInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\UploadedFile;
+
+#[\Attribute(\Attribute::TARGET_PROPERTY), NamedArgumentConstructor]
+final class File extends AbstractInput
+{
+    /**
+     * @param non-empty-string|null $key
+     */
+    public function __construct(
+        public readonly ?string $key = null,
+    ) {
+    }
+
+    public function getValue(InputInterface $input, \ReflectionProperty $property): ?UploadedFile
+    {
+        return $input->getValue('symfony-file', $this->getKey($property));
+    }
+
+    public function getSchema(\ReflectionProperty $property): string
+    {
+        return 'symfony-file:' . $this->getKey($property);
+    }
+}
+```
+
+After that, we can use our attribute in the Filter:
+
+```php
+namespace App\Filter;
+
+use App\Validation\Attribute\File;
+use Spiral\Filters\Model\Filter;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+class MyFilter extends Filter
+{
+    #[File]
+    public UploadedFile $image;
+}
+```
+
 ### Array based Filters
 
 For example, we can tell our Filter to point the field `login` to the QUERY param `username`:
