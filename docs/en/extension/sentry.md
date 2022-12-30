@@ -9,7 +9,7 @@ To install the extension:
 ```bash
 composer require spiral/sentry-bridge
 ```
-After installing the, you need to add the bootloader from the package to your application. The package provides two 
+After installing the package, you need to add the bootloader from the package to your application. The package provides two 
 bootloaders: `Spiral\Sentry\Bootloader\SentryReporterBootloader` and `Spiral\Sentry\Bootloader\SentryBootloader`.
 
 ### Sentry as a reporter
