@@ -100,9 +100,13 @@ Token storage provider is a convenient way to manage token storages for authenti
 
 ### Usage
 
-To use the token storage provider, you will need to include the `HttpAuthBootloader` in your Bootloader and add your token storage using the `addTokenStorage` method.
+The framework provides several ways to register the token storage provider.
 
-Here is an example of how to set this up:
+#### Through Bootloader
+
+You will need to obtain an instance of `HttpAuthBootloader` and use its `addTokenStorage` method. 
+This method takes two arguments: a name for the storage and a class that implements the `Spiral\Auth\TokenStorageInterface`.
+
 ```php
 use Spiral\Boot\Bootloader;
 use Spiral\Bootloader\Auth\HttpAuthBootloader;
@@ -116,11 +120,39 @@ final class SomeBootloader extends Bootloader
 }
 ```
 
-In this example, we are adding a token storage named `database` that uses the `DatabaseTokenStorage` class. This class should implement the `Spiral\Auth\TokenStorageInterface` in order to be used as a token storage.
+#### Through Config File
 
-Once you have added your token storage, you can easily switch between them by specifying `AUTH_TOKEN_STORAGE` variable in the `.env` file.
+`config/auth.php` 
+```php
+use Spiral\Core\Container\Autowire;
+
+return [
+    // ...
+    'storages' => [
+         'session' => \Spiral\Auth\Session\TokenStorage::class,
+         'database' => new Autowire(\App\DataaseTokenStorage::class, ['table' => 'auth_tokens']),
+         'jwt' => new Autowire(\App\JwtTokenStorage::class, ['key' => 'secret']),
+         'cycle-orm' => 'cycleorm.storage' // Will be requested from the container
+    ]
+]
+```
+
+For more information about `Autowire`, please see Autowire docs instead.
+
+### Default Token Storage
+
+Add `defaultStorage` to `config/auth.php`:
+
+```php
+return [
+    'defaultStorage' => env('AUTH_TOKEN_STORAGE', 'session'),
+    // ... storages
+]
+```
+
+Then define `AUTH_TOKEN_STORAGE` variable with default storage in `.env` file:
 ```dotenv
-AUTH_TOKEN_STORAGE=database
+AUTH_TOKEN_STORAGE=session
 ```
 
 ### Middleware
