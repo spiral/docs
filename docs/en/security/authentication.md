@@ -130,7 +130,7 @@ return [
     // ...
     'storages' => [
          'session' => \Spiral\Auth\Session\TokenStorage::class,
-         'database' => new Autowire(\App\DataaseTokenStorage::class, ['table' => 'auth_tokens']),
+         'database' => new Autowire(\App\DatabaseTokenStorage::class, ['table' => 'auth_tokens']),
          'jwt' => new Autowire(\App\JwtTokenStorage::class, ['key' => 'secret']),
          'cycle-orm' => 'cycleorm.storage' // Will be requested from the container
     ]
