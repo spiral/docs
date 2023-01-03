@@ -196,6 +196,7 @@
     "links": {
       "websockets/configuration": "Installation and Configuration",
       "websockets/services": "Event handlers",
+      "websockets/broadcasting": "Broadcasting",
       "websockets/interceptors": "Interceptors"
     }
   },
