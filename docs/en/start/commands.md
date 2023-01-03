@@ -25,7 +25,7 @@ php app.php db:table -h
 ```
 
 > **Note**
-> You can read how to create your own commands in the following sections.
+> You can read how to create your own commands [here](https://spiral.dev/docs/console-configuration/3.3/en).
 
 ## Aliases
 
@@ -62,4 +62,4 @@ The application server (RoadRunner) includes its own set of commands. To list al
 ```
 
 > **Note**
-> You can read more about server commands [here](https://roadrunner.dev/docs/beep-beep-cli).
+> You can read more about server commands [here](https://roadrunner.dev/docs/app-server-cli/2.x/en).
