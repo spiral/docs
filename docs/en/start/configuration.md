@@ -3,13 +3,12 @@
 ## Introduction
 
 All of the configuration files for Spiral Framework are located in the `app/config` directory.
-These files contain options that allow you to configure your database connection, cache storage, session lifetime, encryption key, and more.
-You can  add your configuration files.
+These files contain options that allow you to configure your database connection, cache storage, sessions and more.
 
 ## Environment
 
 It can be useful to have different configuration values depending on the environment in which the application is running.
-For example, you might want to use a different cache driver in your local development environment than you do on your production server.
+For example, you might want to use a different cache storage in your local development environment than you do on your production server.
 
 To make it easy to manage different configuration values for different environments, Spiral uses the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library.
 In a new project installation, you will find a `.env.sample` file in the root directory of your application that defines several common environment variables.
