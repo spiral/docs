@@ -12,7 +12,7 @@ For example, you may want a simple cache storage for local development in order 
 
 To make it easy to manage different configuration values for different environments, Spiral uses the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library.
 In a new project installation, you will find a `.env.sample` file in the root directory of your application that defines several common environment variables.
-When you install Spiral, this file is automatically copied to `.env`.
+When you install Spiral app, this file is automatically copied to `.env`.
 
 Here is the example of `.env` in the application:
 
