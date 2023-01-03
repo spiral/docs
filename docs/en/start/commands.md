@@ -1,6 +1,10 @@
 # Console Commands
 
-The framework exposes the number of commands to control the build and help in development.
+## Introduction
+
+In the Spiral Framework, console commands allow you to perform various tasks from the command line.
+These tasks can range from simple operations like clearing a cache, to more complex ones like running migrations or seeding a database.
+Console commands are a useful tool for automating repetitive tasks and can save you time when developing and maintaining your application.
 
 To list all available console commands use the following command:
 
@@ -25,23 +29,22 @@ php app.php db:table -h
 
 ## Aliases
 
-Spiral Console is based on Symfony/Console, it means you can use short command names as long as there is enough
-information to find the target command:
+To use command aliases, simply type the abbreviated version of the command you wish to use instead of the full command name.
+For example, if you have a command called "send-email", you can use the alias "se" by typing "se" instead of "send-email".
 
 ```bash
-# can be resolved into `update`
-php app.php up 
+# Common variant
+php app.php send-email 
 
-# Collides with `configure`, `cache:clean`, `cycle:*` commands.
-php app.php c
+# Can be resolved into `send-email`
+php app.php se
 ```
 
-## Configure
+## Verify Application Installation
 
-Your application includes one main command `configure`. This command will run the sequence of operations to ensure
-that the application is properly installed, create needed directions and verify permissions to the resources.
-
-To run this command in verbose mode:
+The `configure` command included in your application performs a series of operations to set up and verify the proper installation of the application.
+It creates necessary directories and checks permissions for resources.
+To run this command with verbose output, use the `--verbose` flag.
 
 ```bash
 php app.php configure -vv
