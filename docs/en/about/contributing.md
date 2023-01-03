@@ -1,37 +1,34 @@
-# Contributing
-Feel free to contribute to the development of the Framework or its components. Please make sure that the following
- requirements are satisfied before submitting your pull request:
+# Contribution Guide
 
-* KISS
-* PSR-12
-* `declare(strict_types=1);` is mandatory
-* Your code must include tests
+The Spiral Framework is an open-source project that relies on the contributions of developers from around the world to improve and maintain the framework.
+If you are interested in contributing to the Spiral Framework, there are many ways that you can get involved and help make the framework even better.
 
-> Use our discord server to search for advice or suggestions https://discord.gg/TFeEmCs
+One way to contribute to the framework is by submitting pull requests on GitHub.
+If you have a fix or improvement, you can submit a [pull request](https://github.com/spiral/framework/pulls) and it will be reviewed by the maintainers.
+There are a few requirements that you should be aware of when making a pull request:
 
-## Help Needed
-If you'd like to help but don't know where to start:
+- Keep it simple: This means that we prefer simple solutions over complex ones. When making a pull request, try to keep your code as simple and straightforward as possible.
 
-* TODOs, typos, comments
-* Updating to latest dev-dependencies (PHPUnit, Mockery, etc.)
-* RFCs
-* Check [Open Issues](https://github.com/spiral/framework/issues)
-* More tests are always welcome
-* More static analyzers and linters are also welcome 
-* Documentation translation
+- Follow the PSR-12 coding standard: This means that your code should be formatted and structured in a way that is consistent with the PSR-12 standard.
 
-Feel free to suggest any ideas related to architecture, docs (___docs are never complete___), adaptation, or community.
+- Declare strict types: The framework requires that all PHP files declare strict types using the `declare(strict_types=1);` directive at the top of the file. This helps ensure that code is type-safe and reduces the risk of bugs and errors.
 
-> The original guide author is not a native English speaker, feel free to create PR for any text corrections.
+- Include tests: It is important to include tests with your pull request to ensure that the code you are submitting is working as intended. This helps the Spiral Framework maintainers verify that your code is correct and does not introduce any new issues.
 
-## Critical/Security Issues
-If you found something which shouldn't be there or a bug which opens a security hole, please let me know immediately by email 
-[wolfy-j@spiralscout.com](mailto:team@spiralscout.com)
+## Support Questions
 
-## Official Support
-Spiral Framework and all related components are maintained by [Spiral Scout](https://spiralscout.com/). 
+If you have any questions or need advice or suggestions, join our [Discord](https://discord.gg/TFeEmCs) channel for support from the framework maintainers and community members.
 
-For commercial support, please contact team@spiralscout.com.
+## Issues
+
+If you find anything that shouldn't be there or a security vulnerability, please [report it](https://github.com/spiral/framework/issues).
+
+## Commercial Support
+
+Spiral Framework and all related components are maintained by [Spiral Scout](https://spiralscout.com/).
+
+For commercial support, please contact [team@spiralscout.com](mailto:team@spiralscout.com).
 
 ## Licensing
-Spiral Frameworks and its components will remain under [MIT license](/license.md) indefinitely.
+
+Spiral Framework and its components will remain under [MIT license](/license.md) indefinitely.
