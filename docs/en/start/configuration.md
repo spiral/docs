@@ -1,29 +1,87 @@
 # Configuration
 
-All of the provided application skeletons are already pre-configured using optimal settings. You can edit any of the
-settings by editing the file(s) in `app/config/`.
+## Introduction
 
-> **Note**
-> If config file does not exist - create it using `<?php return [];` as a base.
+All of the configuration files for Spiral Framework are located in the `app/config` directory.
+These files contain options that allow you to configure your database connection, cache storage, session lifetime, encryption key, and more.
+You can  add your configuration files.
 
 ## Environment
 
-[Web](https://github.com/spiral/app) and [GRPC](https://github.com/spiral/app-grpc) templates 
-use [DotEnv](../extension/dotenv.md) extension to read environment values from `.env` file located in the root of your
-project.
+It can be useful to have different configuration values depending on the environment in which the application is running.
+For example, you might want to use a different cache driver in your local development environment than you do on your production server.
+
+To make it easy to manage different configuration values for different environments, Spiral uses the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library.
+In a new project installation, you will find a `.env.sample` file in the root directory of your application that defines several common environment variables.
+When you install Spiral, this file is automatically copied to `.env`.
+
+Here is the example of `.env` in the application:
 
 ```dotenv
-# Debug mode set to TRUE disables view caching and enables higher verbosity.
+# Environment (prod or local)
+APP_ENV=local
+
+# Debug mode set to TRUE disables view caching and enables higher verbosity
 DEBUG=true
 
-# Set to application-specific value, used to encrypt/decrypt cookies, etc.
-ENCRYPTER_KEY={encrypt-key}
+# Verbosity level
+VERBOSITY_LEVEL=verbose # basic, verbose, debug
 
-# Set to TRUE to disable confirmation in `migrate` commands.
+# Set to an application specific value, used to encrypt/decrypt cookies etc
+ENCRYPTER_KEY=def000006531014288871c4c553d2b010e51e35a7f9550d6d23cecdd8b0729acdf9a0323f9d50a94c6d9166ef3ca6b931ac6b5579a71c4a32103b00ed64fa8987411238f
+
+# Monolog
+MONOLOG_DEFAULT_CHANNEL=default
+MONOLOG_DEFAULT_LEVEL=DEBUG # DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL, ALERT, EMERGENCY
+
+# Queue
+QUEUE_CONNECTION=roadrunner
+
+# Cache
+CACHE_STORAGE=rr-local
+
+# Storage
+STORAGE_DEFAULT=default
+
+# Telemetry
+TELEMETRY_DRIVER=null
+
+# Session
+SESSION_LIFETIME=86400
+SESSION_COOKIE=sid
+
+# Authorization
+AUTH_TOKEN_TRANSPORT=cookie
+AUTH_TOKEN_STORAGE=session
+
+# Mailer
+MAILER_DSN=
+MAILER_QUEUE=local
+MAILER_QUEUE_CONNECTION=
+MAILER_FROM="Spiral <sendit@local.host>"
+
+# Set to TRUE to disable confirmation in `migrate` commands
 SAFE_MIGRATIONS=true
+
+# Cycle Bridge
+CYCLE_SCHEMA_CACHE=true
+CYCLE_SCHEMA_WARMUP=false
+
+# Sentry
+SENTRY_DSN=
+
+# RoadRunner Logger
+LOGGER_FORMAT="%message% %context% %extra%\n"
+
+# Serializer
+DEFAULT_SERIALIZER_FORMAT=json # csv, xml, yaml
+
+# Temporal bridge configuration
+TEMPORAL_ADDRESS=127.0.0.1:7233
+TEMPORAL_TASK_QUEUE=default
 ```
 
-You can access these values using `Spiral\Boot\EnvironmentInterface` 
+You can access these values using `Spiral\Boot\EnvironmentInterface`
 
 ```php
 public function index(EnvironmentInterface $env): void
@@ -32,7 +90,7 @@ public function index(EnvironmentInterface $env): void
 }
 ```
 
-or via a short function `env`
+or via `env()` function
 
 ```php
 public function index(): void
@@ -42,7 +100,7 @@ public function index(): void
 ```
 
 > **Note**
-> Any variable in your `.env` file can be overridden by external environment variables such as server-level or 
+> Any variable in your `.env` file can be overridden by external environment variables such as server-level or
 > system-level environment variables.
 
 ## Configuration
@@ -110,14 +168,14 @@ final class HttpConfig extends InjectableConfig
 ```
 
 > **Note**
-> See the reference for each component configuration in the related documentation section. 
+> See the reference for each component configuration in the related documentation section.
 
 ## Accessing Configuration Values
 
 ### Config objects
 
-All of the config objects in the Spiral Framework are injectable. It means that when you try to resolve a config object 
-via container, it will automatically load all values from config file or will use default settings.
+In the Spiral Framework, all config objects are injectable.
+This means that when you try to resolve a config object through the container, it will automatically load all values from the config file or use default settings.
 
 ```php
 use Spiral\Http\Config\HttpConfig;
