@@ -25,7 +25,7 @@ php app.php db:table -h
 ```
 
 > **Note**
-> You can read how to create your own commands [here](https://spiral.dev/docs/console-configuration/3.3/en).
+> You can read how to create your own commands [here](https://spiral.dev/docs/console-commands/3.3/en).
 
 ## Aliases
 
