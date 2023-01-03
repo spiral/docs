@@ -123,6 +123,7 @@
 * WebSockets
     * [Installation and Configuration](websockets/configuration.md)
     * [Event handlers](websockets/services.md)
+    * [Broadcasting](websockets/broadcasting.md)
     * [Interceptors](websockets/interceptors.md)
 * GRPC
     * [Installation and Configuration](grpc/configuration.md)

@@ -138,7 +138,7 @@ class ConnectService implements ServiceInterface
             }
             
             // You can also disconnect connection
-            if(!$userId) {
+            if (!$userId) {
                 $request->disconnect('403', 'Connection is not allowed.');
                 return;
             }
@@ -157,6 +157,7 @@ class ConnectService implements ServiceInterface
 > Read more about connection requests in
 > the [Centrifugo documentation](https://centrifugal.dev/docs/server/proxy#connect-request-fields).
 
+
 Here is an example of how to pass an `authToken` for client authentication using the Centrifugo JavaScript SDK:
 
 ```javascript
@@ -172,6 +173,95 @@ const centrifuge = new Centrifuge('http://127.0.0.18000/connection/websocket', {
 > **Note**
 > For more information on using JavaScript SDK and passing additional data to the server, refer to the
 > [documentation](https://github.com/centrifugal/centrifuge-js#data).
+
+### Subscribe request
+
+This service receives a `RoadRunner\Centrifugo\Request\Subscribe` object and performs some action based on the
+connection
+request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\SubscribeResponse` object.
+
+In this example, we will create a service that will allow users to subscribe to channels only if they are authenticated
+with rules provided by the `Spiral\Broadcasting\TopicRegistryInterface` interface.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Interfaces\Centrifuge;
+
+use RoadRunner\Centrifugo\Payload\SubscribeResponse;
+use RoadRunner\Centrifugo\Request\Subscribe;
+use RoadRunner\Centrifugo\Request\RequestInterface;
+use Spiral\RoadRunnerBridge\Centrifugo\ServiceInterface;
+use Spiral\Broadcasting\TopicRegistryInterface;
+
+final class SubscribeService implements ServiceInterface
+{
+    public function __construct(
+        private readonly InvokerInterface $invoker,
+        private readonly ScopeInterface $scope,
+        private readonly TopicRegistryInterface $topics,
+    ) {
+    }
+
+    /**
+     * @param Subscribe $request
+     */
+    public function handle(RequestInterface $request): void
+    {
+        try {
+            if (!$this->authorizeTopic($request->channel, $request->user)) {
+                $request->disconnect('403', 'Channel is not allowed.');
+                return;
+            }
+        
+            $request->respond(
+                new SubscribeResponse()
+            );
+        } catch (\Throwable $e) {
+            $request->error($e->getCode(), $e->getMessage());
+        }
+    }
+    
+    private function authorizeTopic(Subscribe $request): bool
+    {
+        $parameters = [];
+        $callback = $this->topics->findCallback($request->channel, $parameters);
+        if ($callback === null) {
+            return false;
+        }
+
+        return $this->invoke($request, $callback, $parameters + ['topic' => $topic, 'userId' => $request->user]);
+    }
+
+    private function invoke(Subscribe $request, callable $callback, array $parameters = []): bool
+    {
+        return $this->scope->runScope(
+            [
+                RequestInterface::class => $request,
+            ],
+            fn (): bool => $this->invoker->invoke($callback, $parameters)
+        );
+    }
+}
+```
+
+You can register channel authorization rules in the `app/config/broadcasting.php` file:
+
+```php
+use RoadRunner\Centrifugo\Request\Subscribe;
+'authorize' => [
+    'topics' => [
+        'topic' => static fn (Subscribe $request): bool => $request->getHeader('SECRET')[0] == 'secret',
+        'user.{uuid}' => static fn (string $uuid, string $userId): bool => $userId === $uuid
+    ],
+],
+```
+
+> **Note**
+> Read more about subscribe requests in
+> the [Centrifugo documentation](https://centrifugal.dev/docs/server/proxy#subscribe-request-fields).
 
 ### Refresh connection request
 
@@ -349,62 +439,23 @@ import {Centrifuge} from 'centrifuge';
 const centrifuge = new Centrifuge('http://127.0.0.18000/connection/websocket');
 
 // Post request
-centrifuge.rpc("post:news/store", {"title": "News title"}).then(function(res) {
-  console.log('rpc result', res);
-}, function(err) {
-  console.error('rpc error', err);
+centrifuge.rpc("post:news/store", {"title": "News title"}).then(function (res) {
+    console.log('rpc result', res);
+}, function (err) {
+    console.error('rpc error', err);
 });
 
 // Get request with query params
-centrifuge.rpc("get:news/123", {"lang": "en"}).then(function(res) {
-  console.log('rpc result', res);
-}, function(err) {
-  console.error('rpc error', err);
+centrifuge.rpc("get:news/123", {"lang": "en"}).then(function (res) {
+    console.log('rpc result', res);
+}, function (err) {
+    console.error('rpc error', err);
 });
 ```
 
 > **Note**
 > For more information on using JavaScript SDK and RPC method, refer to the
 > [documentation](https://github.com/centrifugal/centrifuge-js#rpc-method).
-
-### Subscribe request
-
-This service receives a `RoadRunner\Centrifugo\Request\Subscribe` object and performs some action based on the connection
-request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\SubscribeResponse` object.
-
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Interfaces\Centrifuge;
-
-use RoadRunner\Centrifugo\Payload\SubscribeResponse;
-use RoadRunner\Centrifugo\Request;
-use RoadRunner\Centrifugo\Request\RequestInterface;
-use Spiral\RoadRunnerBridge\Centrifugo\ServiceInterface;
-
-final class SubscribeService implements ServiceInterface
-{
-    /**
-     * @param Request\Subscribe $request
-     */
-    public function handle(RequestInterface $request): void
-    {
-        try {
-            $request->respond(
-                new SubscribeResponse()
-            );
-        } catch (\Throwable $e) {
-            $request->error($e->getCode(), $e->getMessage());
-        }
-    }
-}
-```
-
-> **Note**
-> Read more about subscribe requests in
-> the [Centrifugo documentation](https://centrifugal.dev/docs/server/proxy#subscribe-request-fields).
 
 ### Publish request
 
