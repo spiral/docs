@@ -19,7 +19,7 @@ There are a few requirements that you should be aware of when making a pull requ
 
 ## Support Questions
 
-If you have any questions or need advice or suggestions, join our [Discord](https://discord.gg/TFeEmCs) channel for support from the framework maintainers and community members.
+If you have any questions or need advice or suggestions, feel free to join our [Discord](https://discord.gg/TFeEmCs) channel for support from the framework maintainers and community members.
 
 ## Issues
 
