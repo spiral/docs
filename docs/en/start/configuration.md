@@ -27,7 +27,7 @@ DEBUG=true
 VERBOSITY_LEVEL=verbose # basic, verbose, debug
 
 # Set to an application specific value, used to encrypt/decrypt cookies etc
-ENCRYPTER_KEY=def000006531014288871c4c553d2b010e51e35a7f9550d6d23cecdd8b0729acdf9a0323f9d50a94c6d9166ef3ca6b931ac6b5579a71c4a32103b00ed64fa8987411238f
+ENCRYPTER_KEY={encrypt-key}
 
 # Monolog
 MONOLOG_DEFAULT_CHANNEL=default
