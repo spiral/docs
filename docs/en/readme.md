@@ -21,6 +21,7 @@
     * [Design Approach](framework/design.md)
     * [Application Server](framework/application-server.md)
     * [Kernel and Environment](framework/kernel.md)
+    * [Dispatchers](framework/dispatcher.md)
     * [Container and Factories](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
     * [Config Objects](framework/config.md)
