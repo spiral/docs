@@ -306,6 +306,82 @@ final class RoutesBootloader extends BaseRoutesBootloader
 > **Note**
 > Read more about [middleware](../http/middleware.md).
 
+## Token transport
+
+In the Spiral framework, the `Spiral\Auth\HttpTransportInterface` is used to read and write authentication tokens in
+HTTP requests and responses using the PSR-7 interfaces.
+
+This interface defines three methods:
+
+- The `fetchToken` method is used to retrieve an authentication token from an incoming request. This could be from a
+  cookie, a header, or any other location where the token might be stored.
+
+- The `commitToken` method is used to write an authentication token to an outgoing response. This might involve setting
+  a cookie, adding a header, or any other method of storing the token.
+
+- The `removeToken` method is used to remove an authentication token from an outgoing response. This might involve
+  unsetting a cookie or removing a header.
+
+There are two transports available for use with the `HttpTransportInterface`:
+
+- `cookie` stores the authentication token in a cookie. When the client makes a request to the server, the cookie is
+  included in the request and can be used to identify the client.
+
+- `header` stores the authentication token in an HTTP header `X-Auth-Token` by default.
+
+You can set the default transport for your application by using the `AUTH_TOKEN_TRANSPORT` environment variable.
+
+Or define by using `defaultTransport` key in the `app/config/auth.php`:
+
+```php
+return [
+    'defaultTransport' => env('AUTH_TOKEN_TRANSPORT', 'cookie'),
+    // ... storages
+]
+```
+
+The Spiral framework provides several ways to register a token transport.
+
+#### Through Bootloader
+
+You will need to obtain an instance of `HttpAuthBootloader` and use its `addTransport` method.
+This method takes two arguments: a name for the transport and a class that implements
+the `Spiral\Auth\HttpTransportInterface`.
+
+```php
+use Spiral\Boot\Bootloader;
+use Spiral\Bootloader\Auth\HttpAuthBootloader;
+use Spiral\Auth\Transport\CookieTransport;
+use Spiral\Auth\Transport\HeaderTransport;
+
+final class AppBootloader extends Bootloader
+{
+    public function boot(HttpAuthBootloader $httpAuth): void 
+    {
+        $httpAuth->addTransport('cookie', new CookieTransport(cookie: 'token', basePath: '/'));
+        $httpAuth->addTransport('header', new HeaderTransport(header: 'X-Auth-Token'));
+    }
+}
+```
+
+#### Through config file
+
+You can also register a token transport through the configuration file `app/config/auth.php`.
+
+```php
+use Spiral\Auth\Transport\CookieTransport;
+use Spiral\Auth\Transport\HeaderTransport;
+
+return [
+    // ...
+    'transports' => [
+         'header' => new HeaderTransport(header: 'X-Auth-Token'),
+         'cookie' => new CookieTransport(cookie: 'token', basePath: '/')
+         // ...
+    ]
+]
+```
+
 ## Actor Provider and Token Payload
 
 The next step to configure a way to fetch actors/users is based on token payloads, we must implement and register
