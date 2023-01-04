@@ -1,153 +1,302 @@
 # Advanced - Custom Dispatcher
 
-It is possible to invoke application kernel using a custom data source, for example, Kafka, state-machine events, or
-attach to user-defined interrupt. In this section, we will try to demonstrate how to write a RoadRunner service and a kernel
-dispatcher to consume data from this service. In this example, we will be sending "ticks" to the kernel every second.
+It is possible to invoke application kernel using a custom data source, for example, **Kafka**, **state-machine**
+events, or attach to user-defined interrupt. In this section, we will try to demonstrate how to write a RoadRunner
+service plugin and a kernel dispatcher to consume data from this service. It is a good starting point for anyone who is
+interested in building custom plugins for RoadRunner or in using the Spiral Framework to build scalable and extensible
+web applications.
 
-> Attention! Make sure to read about an [application server](/framework/application-server.md) first. This article expects
-> that you are proficient in writing Golang code.
+In this example, we will be sending "ticks" to the kernel every second. 
 
-## RoadRunner Service
+> **Attention**
+> Make sure to read about an [application server](../framework/application-server.md) first. This article expects that
+> you are proficient in writing Golang code.
 
-First, let's create a RoadRunner service with an encapsulated worker server. Check these articles for references:
+## RoadRunner Service plugin
 
-- https://roadrunner.dev/docs/beep-beep-service
-- https://roadrunner.dev/docs/library-standalone-usage
+One way to take advantage of RoadRunner's performance is to use its plugin system, which allows you to extend the
+functionality of the server and customize it to fit your needs.
 
-We will need a configuration for our service:
+In this tutorial, we'll show you how to create a simple RoadRunner plugin called "ticker", which will periodically send
+ticks to the PHP workers with defined interval. This can be useful for tasks such as sending periodic updates to clients
+or running scheduled tasks.
+
+### Prerequisites
+
+Before we begin, you'll need to have the following installed on your machine:
+
+- [Go](https://golang.org/doc/install)
+- [Velox](https://github.com/roadrunner-server/velox/releases)- the official RoadRunner builder tool. It allows you
+  to build custom RoadRunner binaries from github and gitlab repositories.
+
+> **Note**
+> Read more how to create a RoadRunner plugin [here](https://roadrunner.dev/docs/plugins-intro/) and how to build a
+> binary with custom plugins [here](https://roadrunner.dev/docs/app-server-build).
+
+### Plugin Configuration
+
+Here is an example of how to configure the ticker plugin in `.rr.yaml`:
+
+```yaml
+version: '2.7'
+
+server:
+  command: php app.php
+
+ticker:
+  interval: 1s
+  pool:
+    num_workers: 2
+```
+
+As you can see, our configuration allows us to define the interval between ticks in the format `1s, 1m, 10s, ...` and
+configure the worker pool. The `interval` field specifies the amount of time to wait between ticks.
+
+Let's create a configuration file `config.go` for our service:
 
 ```go
 package ticker
 
 import (
-	"errors"
-	"github.com/spiral/roadrunner"
-	"github.com/spiral/roadrunner/service"
+	"time"
+	"github.com/roadrunner-server/sdk/v3/pool"
 )
 
-// Config configures RoadRunner HTTP server.
 type Config struct {
-	// Interval defines tick internal in seconds.
-	Interval int
-
-	// Workers configures rr server and worker pool.
-	Workers *roadrunner.ServerConfig
+	Interval time.Duration `mapstructure:"interval"`
+	Pool     *pool.Config  `mapstructure:"pool"`
 }
 
-// Hydrate must populate Config values using a given Config source. Must return an error if Config is not valid.
-func (c *Config) Hydrate(cfg service.Config) error {
-	if c.Workers == nil {
-		c.Workers = &roadrunner.ServerConfig{}
+func (c *Config) InitDefaults() {
+	if c.Pool == nil {
+		c.Pool = &pool.Config{}
 	}
 
-	c.Workers.InitDefaults()
+    // Init default pool settings
+	c.Pool.InitDefaults()
 
-	if err := cfg.Unmarshal(c); err != nil {
-		return err
+	// use default interval 1s when inteval is not defined or defined with wrong value 
+	if c.Interval == 0 {
+		c.Interval = time.Second
 	}
-
-	c.Workers.UpscaleDurations()
-
-	if c.Interval < 1 {
-		return errors.New("interval must be at least one second")
-	}
-
-	return nil
 }
 ```
 
-And the service itself:
+In the `config.go` file, we defined a struct called `Config` to store the plugin configuration. It has an
+`Interval` field for storing the tick interval and a `Pool` field for storing the worker pool configuration.
+The `InitDefaults` function sets default values for these fields if they are not specified in the `.rr.yaml` file.
+The default interval is set to 1 second, and the default worker pool configuration is set to the default values provided
+by the RoadRunner SDK.
+
+### Plugin Service
+
+We have defined the configuration for our ticker plugin, let's move on to creating the plugin service.
+
+The plugin service is responsible for managing the workers and sending the ticks to them. To create the service, create
+a new file called `plugin.go` and add the following code to it:
 
 ```go
 package ticker
 
 import (
+	"context"
 	"fmt"
-	"github.com/spiral/roadrunner"
-	"github.com/spiral/roadrunner/service/env"
+	"sync"
 	"time"
+
+	"github.com/roadrunner-server/errors"
+	"github.com/roadrunner-server/sdk/v3/payload"
+	"github.com/roadrunner-server/sdk/v3/pool"
+	"github.com/roadrunner-server/sdk/v3/pool/static_pool"
+	"github.com/roadrunner-server/sdk/v3/worker"
+	"go.uber.org/zap"
 )
 
-const ID = "ticker"
+type Configurer interface {
+	// UnmarshalKey takes a single key and unmarshal it into a Struct.
+	UnmarshalKey(name string, out any) error
 
-type Service struct {
-	cfg  *Config
-	env  env.Environment
-	stop chan interface{}
+	// Has checks if config section exists.
+	Has(name string) bool
 }
 
-func (s *Service) Init(cfg *Config, env env.Environment) (bool, error) {
-	s.cfg = cfg
-	s.env = env
-	return true, nil
+// Server creates workers for the application.
+type Server interface {
+	NewPool(ctx context.Context, cfg *pool.Config, env map[string]string, _ *zap.Logger) (*static_pool.Pool, error)
 }
 
-func (s *Service) Serve() error {
-	s.stop = make(chan interface{})
+type Pool interface {
+	// Workers returns worker list associated with the pool.
+	Workers() (workers []*worker.Process)
 
-	if s.env != nil {
-		if err := s.env.Copy(s.cfg.Workers); err != nil {
-			return nil
-		}
+	// Exec payload
+	Exec(ctx context.Context, p *payload.Payload) (*payload.Payload, error)
+
+	// Reset kill all workers inside the watcher and replaces with new
+	Reset(ctx context.Context) error
+
+	// Destroy all underlying stack (but let them to complete the task).
+	Destroy(ctx context.Context)
+}
+
+const (
+	rrMode     string = "RR_MODE"
+	pluginName string = "ticker"
+)
+
+type Plugin struct {
+	mu     sync.RWMutex
+	cfg    *Config
+	server Server
+	stopCh chan struct{}
+	pool   Pool
+}
+
+func (p *Plugin) Init(cfg Configurer, server Server) error {
+	// If config file doesn't contain plugin section, ignore it
+    if !cfg.Has(pluginName) {
+		return errors.E(errors.Disabled)
 	}
 
-	// identify our service for app kernel
-	s.cfg.Workers.SetEnv("rr_ticker", "true")
-
-	rr := roadrunner.NewServer(s.cfg.Workers)
-	defer rr.Stop()
-
-	if err := rr.Start(); err != nil {
+	// read plugin config
+	err := cfg.UnmarshalKey(pluginName, &p.cfg)
+	if err != nil {
 		return err
 	}
 
+	p.cfg.InitDefaults()
+
+	p.stopCh = make(chan struct{}, 1)
+	p.server = server
+
+	return nil
+}
+
+func (p *Plugin) Serve() chan error {
+	errCh := make(chan error, 1)
+
+	var err error
+	p.mu.Lock()
+    // Create workers pool
+	p.pool, err = p.server.NewPool(context.Background(), p.cfg.Pool, map[string]string{rrMode: pluginName}, nil)
+	p.mu.Unlock()
+
+	if err != nil {
+		errCh <- err
+		return errCh
+	}
+
 	go func() {
-		var (
-			numTicks = 0
-			lastTick time.Time
-		)
+		var numTicks = 0
+		var lastTick time.Time
+        // Be careful with ticker! You should always stop it
+		ticker := time.NewTicker(p.cfg.Interval)
+		defer ticker.Stop()
 
 		for {
 			select {
-			case <-s.stop:
+			case <-p.stopCh:
 				return
-			case <-time.NewTicker(time.Second * time.Duration(s.cfg.Interval)).C:
-				// error handling is omitted
-				rr.Exec(&roadrunner.Payload{
+			case <-ticker.C:
+				p.mu.RLock()
+				_, err2 := p.pool.Exec(context.Background(), &payload.Payload{
 					Context: []byte(fmt.Sprintf(`{"lastTick": %v}`, lastTick.Unix())),
 					Body:    []byte(fmt.Sprintf(`{"tick": %v}`, numTicks)),
 				})
+				p.mu.RUnlock()
+				if err != nil {
+					errCh <- err2
+					return
+				}
 
-				lastTick = time.Now()
 				numTicks++
+				lastTick = time.Now()
 			}
 		}
 	}()
 
-	<-s.stop
+	return errCh
+}
+
+func (p *Plugin) Reset() error {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+
+	if p.pool == nil {
+		return nil
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	err := p.pool.Reset(ctx)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func (s *Service) Stop() {
-	close(s.stop)
+func (p *Plugin) Stop() error {
+	p.stopCh <- struct{}{}
+	return nil
+}
+
+func (p *Plugin) Name() string {
+	return pluginName
+}
+
+func (p *Plugin) Weight() uint {
+	return 10
 }
 ```
 
-We can enable this service in our roadrunner build and `.rr` configuration:
+When RoadRunner starts PHP workers, it can pass a value for the `RR_MODE` variable to indicate which plugin should be
+used. The Spiral Framework can then use the value of this variable to choose the appropriate dispatcher for the current
+environment.
 
-```go
-rr.Container.Register(ticker.ID, &ticker.Service{})
+### Build the RoadRunner Binary with Velox
+
+Next, we will use [Velox](https://roadrunner.dev/docs/app-server-build) to build a custom RoadRunner binary with our
+plugin.
+
+Create a new file called `plugins.toml` and add the following configuration:
+
+```toml
+[velox]
+build_args = ['-trimpath', '-ldflags', '-s -X github.com/roadrunner-server/roadrunner/v2/internal/meta.version=v2.12.1.custom -X github.com/roadrunner-server/roadrunner/v2/internal/meta.buildTime=00:00:00']
+
+[roadrunner]
+ref = "v2.12.1"
+
+[github]
+[github.token]
+token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# ref -> master, commit or tag
+[github.plugins]
+logger = { ref = "master", owner = "roadrunner-server", repository = "logger" }
+server = { ref = "master", owner = "roadrunner-server", repository = "server" }
+ticker = { ref = "main", owner = "roadrunner-php", repository = "rr-examples", folder = "ticker" }
+
+
+[log]
+level = "debug"
+mode = "development"
 ```
 
-In configuration:
+Then, run the following command to build the RoadRunner binary:
 
-```yaml
-ticker:
-  internal: 1
-  workers.command: "php app.php"
+```bash
+vx build -c plugins.toml -o .
 ```
 
 ## Application Dispatcher
+
+At first, we need to install `spiral/roadrunner-worker` package:
+
+```bash
+composer require spiral/roadrunner-worker
+```
 
 Now we can create our dispatcher:
 
@@ -160,45 +309,32 @@ use Spiral\Boot\EnvironmentInterface;
 use Spiral\Boot\FinalizerInterface;
 use Spiral\RoadRunner\Worker;
 
-class TickerDispatcher implements DispatcherInterface
+final class TickerDispatcher implements DispatcherInterface
 {
-    /** @var EnvironmentInterface */
-    private $env;
-
-    /** @var FinalizerInterface */
-    private $finalizer;
-
-    /** @var ContainerInterface */
-    private $container;
-
     public function __construct(
-        EnvironmentInterface $env,
-        FinalizerInterface $finalizer,
-        ContainerInterface $container
+        private readonly EnvironmentInterface $env,
+        private readonly FinalizerInterface $finalizer,
+        private readonly ContainerInterface $container
     ) {
-        $this->env = $env;
-        $this->finalizer = $finalizer;
-        $this->container = $container;
     }
 
     public function canServe(): bool
     {
-        return (php_sapi_name() == 'cli' && $this->env->get('RR_TICKER') !== null);
+        return $this->env->get('RR_MODE') === 'ticker';
     }
 
-    public function serve()
+    public function serve(): void
     {
         /** @var Worker $worker */
         $worker = $this->container->get(Worker::class);
 
-        while (($body = $worker->receive($ctx)) !== null) {
-            $lastTick = json_decode($ctx)->lastTick;
-            $numTick = json_decode($body)->tick;
-
-            // do something
-            file_put_contents('ticks.txt', $numTick . "\n", FILE_APPEND);
-
-            $worker->send("OK");
+        while ($payload = $worker->waitPayload()) {
+            $data = \json_decode($payload->body, true);
+            
+            // Handle tick ... 
+        
+            // Respond Answer
+            $worker->respond(new \Spiral\RoadRunner\Payload('OK'));
 
             // reset some stateful services
             $this->finalizer->finalize();
@@ -206,6 +342,9 @@ class TickerDispatcher implements DispatcherInterface
     }
 }
 ```
+
+> **Note**
+> Read more about the Dispatchers [here](../framework/dispatcher.md).
 
 Create a Bootloader to register our dispatcher in the kernel:
 
@@ -216,13 +355,20 @@ use App\Dispatcher\TickerDispatcher;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Boot\KernelInterface;
 
-class TickerBootloader extends Bootloader
+final class TickerBootloader extends Bootloader
 {
-    public function boot(KernelInterface $kernel, TickerDispatcher $ticker)
+    public function boot(KernelInterface $kernel, TickerDispatcher $ticker): void
     {
         $kernel->addDispatcher($ticker);
     }
 }
 ```
 
-We can build our application server and test the dispatcher now.
+Now we can run our application:
+
+```bash
+./rr serve
+```
+
+> **Note:**
+> You can find code of ticker plugin [here](https://github.com/roadrunner-php/rr-examples)
