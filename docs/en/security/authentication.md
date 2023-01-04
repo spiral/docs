@@ -94,7 +94,7 @@ php app.php migrate:init
 php app.php cycle:migrate -v -r
 ```
 
-### Token Storage Provider
+## Token Storage Provider
 
 Token storage provider is a convenient way to manage token storages for authentication purposes. It allows you to define multiple token storages.
 
