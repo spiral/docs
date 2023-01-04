@@ -89,7 +89,7 @@ public function index(EnvironmentInterface $env): void
 }
 ```
 
-or via `env()` function
+or via a short function `env()`
 
 ```php
 public function index(): void
