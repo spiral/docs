@@ -174,7 +174,7 @@ final class HttpConfig extends InjectableConfig
 ### Config objects
 
 In the Spiral Framework, all config objects are injectable.
-This means that when you try to resolve a config object through the container, it will automatically load all values from the config file or use default settings.
+This means that when you try to resolve a config object through the container, it will automatically load all values from the config file or will use default settings.
 
 ```php
 use Spiral\Http\Config\HttpConfig;
