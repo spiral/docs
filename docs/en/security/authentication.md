@@ -52,8 +52,7 @@ deleting authentication tokens. The framework includes multiple implementations 
 - Session storage - stores tokens in the session (default)
 - Database storage - stores tokens in the database
 
-You can set the default storage for your application by using the `AUTH_TOKEN_STORAGE` environment variable. This allows
-you to specify which implementation of the `TokenStorageInterface` should be retrieved from the container by default.
+You can set the default storage for your application by using the `AUTH_TOKEN_STORAGE` environment variable.
 
 ```php
 $container->get(\Spiral\Auth\TokenStorageInterface::class); // Will return Session token storage by default
@@ -67,6 +66,9 @@ return [
     // ... storages
 ]
 ```
+
+This allows you to specify which implementation of the `TokenStorageInterface` should be retrieved from the container
+by default.
 
 Keep in mind that you can also create your own custom implementations of the `TokenStorageInterface` if the provided
 implementations do not meet your needs. This allows you to use any storage mechanism that you choose for storing
