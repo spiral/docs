@@ -47,10 +47,7 @@ To activate the component add the bootloader `Spiral\Bootloader\Auth\HttpAuthBoo
 ## Token Storage
 
 The `Spiral\Auth\TokenStorageInterface` is an interface that defines a set of methods for storing, retrieving and
-deleting authentication tokens. The framework includes multiple implementations of this interface:
-
-- Session storage - stores tokens in the session (default)
-- Database storage - stores tokens in the database
+deleting authentication tokens.
 
 You can set the default storage for your application by using the `AUTH_TOKEN_STORAGE` environment variable.
 
@@ -69,10 +66,6 @@ by default.
 ```php
 $container->get(\Spiral\Auth\TokenStorageInterface::class); // Will return Session token storage by default
 ```
-
-Keep in mind that you can also create your own custom implementations of the `TokenStorageInterface` if the provided
-implementations do not meet your needs. This allows you to use any storage mechanism that you choose for storing
-authentication tokens in your application.
 
 ### Session Token Storage
 
@@ -118,6 +111,10 @@ php app.php cycle:migrate -v -r
 ```
 
 ### Custom Token Storage
+
+Keep in mind that you can also create your own custom implementations of the `TokenStorageInterface` if the provided
+implementations do not meet your needs. This allows you to use any storage mechanism that you choose for storing
+authentication tokens in your application.
 
 To create a custom storage in the Spiral Framework, you will need to create a class that implements
 the `Spiral\Auth\TokenStorageInterface` interface.
