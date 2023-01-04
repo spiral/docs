@@ -10,7 +10,7 @@ These files contain options that allow you to configure for example, database co
 It can be useful to have different configuration values depending on the environment in which the application is running.
 For example, you may want a simple cache storage for local development in order to reduce the resource requirements of your testing environment, while a more robust and scalable storage may be preferred for production.
 
-To make it easy to manage different configuration values for different environments, Spiral uses the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library.
+To make it easy to manage different configuration values for different environments, Spiral uses the [dotenv](../extension/dotenv.md) bridge.
 In a new project installation, you will find a `.env.sample` file in the root directory of your application that defines several common environment variables.
 When you install Spiral app, this file is automatically copied to `.env`.
 
