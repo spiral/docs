@@ -6,7 +6,7 @@ optimized for modern PHP applications. One of the key features of the Spiral Fra
 kernel dispatchers, which are responsible for routing incoming requests to the appropriate handler based on the current
 environment.
 
-Let's imagine that we have three dispatchers: `console` and `http`.
+Let's imagine that we have two dispatchers: `console` and `http`.
 
 Here is an example of `http` dispatcher:
 
@@ -144,6 +144,9 @@ The Spiral Framework comes with several built-in dispatchers:
   you to consume messages from a queue and route them to the appropriate handler. This is useful if you want to build a
   system that is based on message-driven architecture.
   This is the dispatcher that is used when your application is running as a Queue consumer service.
+
+> **Note**
+> Read how to create custom dispatcher [here](../cookbook/custom-dispatcher.md)
 
 The Spiral Framework kernel dispatchers provide a flexible and powerful way to route incoming requests to the
 appropriate handler. They are an essential component of the Spiral Framework and are an important part of its overall
