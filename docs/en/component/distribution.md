@@ -25,8 +25,10 @@ bootloader list, which is located in the class of your application.
 
 ```php
 protected const LOAD = [
+    // ...
     // Added distribution bootloader
     \Spiral\Distribution\Bootloader\DistributionBootloader::class,
+    // ...
 ];
 ```
 

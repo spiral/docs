@@ -20,18 +20,11 @@ To enable the component, you just need to add `Spiral\Validator\Bootloader\Valid
 list, which is located in the class of your application.
 
 ```php
-namespace App;
-
-use Spiral\Validator\Bootloader\ValidatorBootloader;
-
-class App extends Kernel
-{
-    protected const LOAD = [
-        // ...
-        ValidatorBootloader::class,
-        // ...
-    ];
-}
+protected const LOAD = [
+    // ...
+    \Spiral\Validator\Bootloader\ValidatorBootloader::class,
+    // ...
+];
 ```
 
 The configuration file for this component should be located at `app/config/validator.php`:

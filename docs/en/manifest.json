@@ -111,22 +111,6 @@
     }
   },
   {
-    "title": "Keeper",
-    "links": {
-      "keeper/intro": "Intro",
-      "keeper/bootloaders": "Bootloaders",
-      "keeper/routing": "Routing",
-      "keeper/sitemap": "Sitemap and breadcrumbs",
-      "keeper/views": "Views",
-      "keeper/components/datagrid": "Component: DataGrids",
-      "keeper/components/forms": "Component: Forms",
-      "keeper/components/autocomplete": "Component: Autocomplete",
-      "keeper/components/datepicker": "Component: Datepicker",
-      "keeper/components/richtext": "Component: Rich Text",
-      "keeper/components/qrcode": "Component: QR Codes"
-    }
-  },
-  {
     "title": "Request Validation",
     "links": {
       "filters/configuration": "Installation and Configuration",
@@ -136,7 +120,7 @@
     }
   },
   {
-    "title": "Databases",
+    "title": "Database",
     "links": {
       "database/configuration": "Installation and Configuration",
       "database/access": "Access Database",
@@ -160,6 +144,24 @@
       "queue/jobs": "Running Jobs",
       "queue/roadrunner": "RoadRunner integration",
       "queue/interceptors": "Interceptors"
+    }
+  },
+  {
+    "title": "WebSockets",
+    "links": {
+      "websockets/configuration": "Installation and Configuration",
+      "websockets/services": "Event handlers",
+      "websockets/broadcasting": "Broadcasting",
+      "websockets/interceptors": "Interceptors"
+    }
+  },
+  {
+    "title": "GRPC",
+    "links": {
+      "grpc/configuration": "Installation and Configuration",
+      "grpc/service": "Service Code",
+      "grpc/client": "Client SDK",
+      "grpc/interceptors": "Interceptors"
     }
   },
   {
@@ -193,21 +195,19 @@
     }
   },
   {
-    "title": "WebSockets",
+    "title": "Keeper",
     "links": {
-      "websockets/configuration": "Installation and Configuration",
-      "websockets/services": "Event handlers",
-      "websockets/broadcasting": "Broadcasting",
-      "websockets/interceptors": "Interceptors"
-    }
-  },
-  {
-    "title": "GRPC",
-    "links": {
-      "grpc/configuration": "Installation and Configuration",
-      "grpc/service": "Service Code",
-      "grpc/client": "Client SDK",
-      "grpc/interceptors": "Interceptors"
+      "keeper/intro": "Intro",
+      "keeper/bootloaders": "Bootloaders",
+      "keeper/routing": "Routing",
+      "keeper/sitemap": "Sitemap and breadcrumbs",
+      "keeper/views": "Views",
+      "keeper/components/datagrid": "Component: DataGrids",
+      "keeper/components/forms": "Component: Forms",
+      "keeper/components/autocomplete": "Component: Autocomplete",
+      "keeper/components/datepicker": "Component: Datepicker",
+      "keeper/components/richtext": "Component: Rich Text",
+      "keeper/components/qrcode": "Component: QR Codes"
     }
   },
   {

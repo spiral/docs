@@ -143,6 +143,7 @@ After package install you need to register bootloader from the package.
 protected const LOAD = [
     // ...
     \Spiral\OpenTelemetry\Bootloader\OpenTelemetryBootloader::class,
+    // ...
 ];
 ```
 

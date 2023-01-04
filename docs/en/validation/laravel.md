@@ -19,18 +19,11 @@ To enable the component, you just need to add `Spiral\Validation\Laravel\Bootloa
 to the bootloaders list, which is located in the class of your application.
 
 ```php
-namespace App;
-
-use Spiral\Validation\Laravel\Bootloader\ValidatorBootloader;
-
-class App extends Kernel
-{
-    protected const LOAD = [
-        // ...
-        ValidatorBootloader::class,
-        // ...
-    ];
-}
+protected const LOAD = [
+    // ...
+    \Spiral\Validation\Laravel\Bootloader\ValidatorBootloader::class,
+    // ...
+];
 ```
 
 ## Usage

@@ -35,7 +35,8 @@ bootloader list, which is located in the class of your application.
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Bootloader\Attributes\AttributesBootloader::class
+    \Spiral\Bootloader\Attributes\AttributesBootloader::class,
+    // ...
 ];
 ```
 

@@ -10,8 +10,8 @@ To activate view translation, enable the bootloader `Spiral\Bootloader\Views\Tra
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Views\Bootloader\ViewsBootloader::class,
-    Framework\Views\TranslatedCacheBootloader::class,
+    \Spiral\Views\Bootloader\ViewsBootloader::class,
+    \Spiral\Bootloader\Views\TranslatedCacheBootloader::class,
     // ...
 ];
 ```

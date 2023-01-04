@@ -19,18 +19,11 @@ To enable the component, you just need to add `Spiral\Validation\Symfony\Bootloa
 to the bootloaders list, which is located in the class of your application.
 
 ```php
-namespace App;
-
-use Spiral\Validation\Symfony\Bootloader\ValidatorBootloader;
-
-class App extends Kernel
-{
-    protected const LOAD = [
-        // ...
-        ValidatorBootloader::class,
-        // ...
-    ];
-}
+protected const LOAD = [
+    // ...
+    \Spiral\Validation\Symfony\Bootloader\ValidatorBootloader::class,
+    // ...
+];
 ```
 
 ## Usage

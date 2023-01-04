@@ -10,20 +10,12 @@ and`Spiral\SendIt\Bootloader\MailerBootloader`
 classes to the bootloaders list, which is located in the class of your application.
 
 ```php
-namespace App;
-
-use Spiral\SendIt\Bootloader\BuilderBootloader;
-use Spiral\SendIt\Bootloader\MailerBootloader;
-
-class App extends Kernel
-{
-    protected const LOAD = [
-        // ...
-        BuilderBootloader::class,
-        MailerBootloader::class,
-        // ...
-    ];
-}
+protected const LOAD = [
+    // ...
+    \Spiral\SendIt\Bootloader\BuilderBootloader::class,
+    \Spiral\SendIt\Bootloader\MailerBootloader::class,
+    // ...
+];
 ```
 
 The `BuilderBootloader` bootloader registers package views and provides an ability to generate email templates using

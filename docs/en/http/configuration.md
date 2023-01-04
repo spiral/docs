@@ -14,27 +14,20 @@ composer require spiral/nyholm-bridge
 Activate the extension by adding two bootloaders:
 
 ```php
-class App extends Kernel
-{
-    /*
-     * List of components and extensions to be automatically registered
-     * within system container on application start.
-     */
-    protected const LOAD = [
-        // ...
+protected const LOAD = [
+    // ...
 
-        // Fast PSR-7 implementation
-        \Spiral\Nyholm\Bootloader\NyholmBootloader::class,
+    // Fast PSR-7 implementation
+    \Spiral\Nyholm\Bootloader\NyholmBootloader::class,
 
-        // HTTP core
-        Spiral\Bootloader\Http\HttpBootloader::class,
+    // HTTP core
+    \Spiral\Bootloader\Http\HttpBootloader::class,
 
-        // PSR-15 handler      
-        Spiral\Bootloader\Http\RouterBootloader::class,
+    // PSR-15 handler      
+    \Spiral\Bootloader\Http\RouterBootloader::class,
 
-        // ...
-    ];
-}
+    // ...
+];
 ```
 
 > **Note**
