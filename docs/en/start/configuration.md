@@ -3,7 +3,7 @@
 ## Introduction
 
 All of the configuration files for Spiral Framework are located in the `app/config` directory.
-These files contain options that allow you to configure your database connection, cache storage, sessions and more.
+These files contain options that allow you to configure for example, database connection, cache storage, sessions and more.
 
 ## Environment
 
