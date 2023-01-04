@@ -261,6 +261,8 @@ $container->get(\Spiral\Auth\TokenStorageProviderInterface::class)->getStorage('
 
 ## Usage with HTTP layer
 
+### Middleware
+
 There are three middleware classes that can be used to obtain the authentication token from the request and authenticate
 the user based on the token.
 
@@ -306,7 +308,7 @@ final class RoutesBootloader extends BaseRoutesBootloader
 > **Note**
 > Read more about [middleware](../http/middleware.md).
 
-## Token transport
+### Token transport
 
 In the Spiral framework, the `Spiral\Auth\HttpTransportInterface` is used to read and write authentication tokens in
 HTTP requests and responses using the PSR-7 interfaces.
