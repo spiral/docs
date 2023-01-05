@@ -28,7 +28,7 @@ There are three validator bridges available for use with the Spiral Framework va
 - [Symfony Validator](./symfony.md) - This validator bridge provides integration
   with the Symfony Validator component, which is a more powerful and feature-rich validation library.
 - [Laravel Validator](./laravel.md) - This validator bridge provides integration
-  with the Laravel Validator, which is a validation library used in the Laravel framework.
+  with the Laravel Validator, which is a validation component used in the Laravel framework.
 
 You can use any of these validator bridges in your application, depending on your needs and preferences.
 
@@ -209,3 +209,7 @@ final class ValidatorBootloader extends Bootloader
 
 > **Note**
 > Read more about Bootloaders [here](../framework/bootloaders.md).
+
+It's worth noting that this is just one example of how you might create a custom validator in the Spiral Framework.
+There are many other approaches and techniques you can use to customize and extend the validation process, depending on
+your specific needs and requirements.

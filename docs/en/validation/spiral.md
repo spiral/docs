@@ -1,16 +1,15 @@
 # Spiral Validator
 
-You can validate your data using the [spiral/validator](https://github.com/spiral/validator) component. The component 
-provides an array-based DSL to construct complex validation chains.
-
-The component contains `Checkers`, `Conditions`, and `Validation` object. 
+The Spiral Framework provides a validation component that allows you to validate data using
+the [spiral/validator](https://github.com/spiral/validator) package. This is a simple, lightweight validator
+that provides an array-based Domain Specific Language (DSL) to construct complex validation chains.
 
 > **Note**
 > Read more about [Validation](factory.md) in the Spiral Framework.
 
 ## Installation and Configuration
 
-To install the component:
+To install the component run the following command:
 
 ```bash
 composer require spiral/validator
@@ -27,7 +26,8 @@ protected const LOAD = [
 ];
 ```
 
-The configuration file for this component should be located at `app/config/validator.php`:
+The configuration file for this component should be located at `app/config/validator.php`. Here you can register all
+required validation checkers, conditions and aliases required for your application.
 
 ```php
 <?php
@@ -102,6 +102,117 @@ return [
 ];
 ```
 
+## Usage
+
+When the validation component is enabled in your application, it will register itself with
+the `\Spiral\Validator\FilterDefinition` class as validation name and be available for use with the Spiral Framework
+validation component.
+
+You can use the `Spiral\Validator\ValidatorInterface` interface to access the validator and perform validation tasks.
+Alternatively, you can use the `Spiral\Validation\ValidationProviderInterface` interface to access the validator by its
+class name.
+
+```php
+use Spiral\Http\Request\InputManager;
+use Spiral\Validation\ValidationProviderInterface;
+
+class UserController
+{
+    public function create(InputManager $input, ValidationProviderInterface $provider)
+    {
+        $validator = $provider->getValidation(\Spiral\Validator\FilterDefinition::class)
+            ->validate(...);
+    }
+}
+```
+
+## Filters
+
+The Filters component is a tool for validating HTTP request data in Spiral Framework. It allows you to create a "Filter"
+object, which defines the required data that should be extracted from the request object and mapped into the filter
+object's properties.
+
+> **Note**
+> Read more about the Spiral Framework Filters [here](../filters/filter.md).
+
+### Filter with attributes
+
+One way to implement the request fields mapping is through the use of PHP attributes. This allows you to specify which
+request field should be mapped to each filter property.
+
+Here is an example of filter object with attributes:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+use Spiral\Validator\Attribute\Input\File;
+
+final class CreatePostFilter extends Filter implements HasFilterDefinition
+{
+    #[Post]
+    public string $title;
+
+    #[Post]
+    public string $slug;
+
+    #[Post]
+    public int $sort;
+
+    #[File]
+    public UploadedFile $image;
+
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'title' => ['required', ['string::length', 5]]
+            'slug' =>  ['required', ['string::length', 5]]
+            'sort' =>  ['required', 'integer']
+            'image' => ['required', 'image']
+        ]);
+    }
+}
+```
+
+By implementing the `Spiral\Filters\Model\HasFilterDefinition` interface you can specify the validation rules that
+should be applied to the data contained in the filter object. The Validation component will then use these rules to
+validate the data when the filter object is used.
+
+### Filter with array mapping
+
+If you prefer to configure fields mapping using arrays, you can define fields mapping in a `filterDefinition` method.
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
+
+final class CreatePostFilter extends Filter implements HasFilterDefinition
+{
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'title' => ['required', ['string::length', 5]]
+            'slug' =>  ['required', ['string::length', 5]]
+            'sort' =>  ['required', 'integer']
+            'image' => ['required', 'image']
+        ], [
+            'title' => 'title',
+            'slug' => 'slug',
+            'sort' => 'sort',
+            'image' => 'symfony-file:image',
+        ]);
+    }
+}
+```
+
 ## Validation DSL
 
 The default Spiral Validator accepts validation rules in form of `nested array`. The key is the `name` of the `property`
@@ -162,7 +273,8 @@ $validator = $validation->validate(
 
 ### Checker Rules
 
-You can split your rule name using `::` prefix, where the first part is the checker name and the second is the method name:
+You can split your rule name using `::` prefix, where the first part is the checker name and the second is the method
+name:
 
 Let's get `Spiral\Validator\Checker\FileChecker` checker, for example:
 
@@ -371,10 +483,10 @@ There are two composition conditions: `anyOf` and `noneOf`, they contain nested 
 
 Following conditions available for the usage:
 
-| Name       | Options | Description                                   |
-|------------|---------|-----------------------------------------------|
-| withAny    | *array* | When at least one field is not empty.         |
-| withoutAny | *array* | When at least one field is empty.             |
+| Name       | Options | Description                                       |
+|------------|---------|---------------------------------------------------|
+| withAny    | *array* | When at least one field is not empty.             |
+| withoutAny | *array* | When at least one field is empty.                 |
 | withAll    | *array* | When all the fields are not empty.                |
 | withoutAll | *array* | When all the fields are empty.                    |
 | present    | *array* | When all the fields are presented in the request. |
@@ -435,8 +547,8 @@ The most used rule-set is available thought the set of shortcuts:
 > **Note**
 > prefix `type::`
 
-| Rule     | Parameters             | Description                                   |
-|----------|------------------------|-----------------------------------------------|
+| Rule     | Parameters             | Description                                       |
+|----------|------------------------|---------------------------------------------------|
 | notEmpty | asString:*bool* - true | The value should not be empty (same as `!empty`). |
 | notNull  | ---                    | The value should not be null.                     |
 | boolean  | ---                    | The value has to be boolean or integer[0,1].      |
@@ -446,9 +558,9 @@ The most used rule-set is available thought the set of shortcuts:
 
 ### Required
 
-| Rule     | Parameters             | Description                |
-|----------|------------------------|----------------------------|
-| notEmpty | asString:*bool* - true |The value should not be empty. |
+| Rule     | Parameters             | Description                    |
+|----------|------------------------|--------------------------------|
+| notEmpty | asString:*bool* - true | The value should not be empty. |
 
 Examples:
 
@@ -480,9 +592,9 @@ class MyFilter extends Filter implements HasFilterDefinition
 > **Note**
 > prefix `mixed::`
 
-| Rule       | Parameters                            | Description                                      |
-|------------|---------------------------------------|--------------------------------------------------|
-| cardNumber | ---                                   | Checks the credit card passed by Luhn algorithm.      |
+| Rule       | Parameters                            | Description                                               |
+|------------|---------------------------------------|-----------------------------------------------------------|
+| cardNumber | ---                                   | Checks the credit card passed by Luhn algorithm.          |
 | match      | field:*string*, strict:*bool* - false | Checks if the value matches the value from another field. |
 
 > **Note**
@@ -493,8 +605,8 @@ class MyFilter extends Filter implements HasFilterDefinition
 > **Note**
 > prefix `address::`
 
-| Rule  | Parameters                                              | Description              |
-|-------|---------------------------------------------------------|--------------------------|
+| Rule  | Parameters                                              | Description                   |
+|-------|---------------------------------------------------------|-------------------------------|
 | email | ---                                                     | Checks if the email is valid. |
 | url   | schemas:*?array* - null, defaultSchema:*?string* - null | Checks if the URL is valid.   |
 | uri   | ---                                                     | Checks if the URI is valid.   |
@@ -507,9 +619,9 @@ class MyFilter extends Filter implements HasFilterDefinition
 > **Note**
 > prefix `number::`
 
-| Rule   | Parameters                 | Description                                                        |
-|--------|----------------------------|--------------------------------------------------------------------|
-| range  | begin:*float*, end:*float* | Checks if the number is in the specified range.                       |
+| Rule   | Parameters                 | Description                                                   |
+|--------|----------------------------|---------------------------------------------------------------|
+| range  | begin:*float*, end:*float* | Checks if the number is in the specified range.               |
 | higher | limit:*float*              | Checks if the value is bigger or equal to the specified one.  |
 | lower  | limit:*float*              | Checks if the value is smaller or equal to the specified one. |
 
@@ -616,12 +728,12 @@ class MyRequest extends Filter implements HasFilterDefinition
 
 File checker fully supports the filename provided in a string form or using `UploadedFileInterface` (PSR-7).
 
-| Rule      | Parameters            | Description                                                                      |
-|-----------|-----------------------|----------------------------------------------------------------------------------|
-| exists    | ---                   | Checks if the file exist.                                                             |
-| uploaded  | ---                   | Checks if the file was uploaded.                                                      |
-| size      | size:*int*            | Checks if the file size is smaller than the specified value in KB.                              |
-| extension | extensions:*array*    | Checks if the file extension in whitelist. The client name of the uploaded file will be used! |                                                     |
+| Rule      | Parameters         | Description                                                                                   |
+|-----------|--------------------|-----------------------------------------------------------------------------------------------|
+| exists    | ---                | Checks if the file exist.                                                                     |
+| uploaded  | ---                | Checks if the file was uploaded.                                                              |
+| size      | size:*int*         | Checks if the file size is smaller than the specified value in KB.                            |
+| extension | extensions:*array* | Checks if the file extension in whitelist. The client name of the uploaded file will be used! |                                                     |
 
 ### Image Checker
 
@@ -630,12 +742,12 @@ File checker fully supports the filename provided in a string form or using `Upl
 
 The image checker extends the file checker and fully supports its features.
 
-| Rule    | Parameters                    | Description                                                                          |
-|---------|-------------------------------|--------------------------------------------------------------------------------------|
-| type    | types:*array*                 | Checks if the image is within the list of the allowed image types.                          |
-| valid   | ---                           | A shortcut to check if the image has an allowed type (JPEG, PNG, and GIF are allowed). |
-| smaller | width:*int*, height:*int*     | Checks if the image is smaller than the specified shape (height check if optional).         |
-| bigger  | width:*int*, height:*int*     | Checks if the image is bigger than the specified shape (height check is optional).          |       
+| Rule    | Parameters                | Description                                                                            |
+|---------|---------------------------|----------------------------------------------------------------------------------------|
+| type    | types:*array*             | Checks if the image is within the list of the allowed image types.                     |
+| valid   | ---                       | A shortcut to check if the image has an allowed type (JPEG, PNG, and GIF are allowed). |
+| smaller | width:*int*, height:*int* | Checks if the image is smaller than the specified shape (height check if optional).    |
+| bigger  | width:*int*, height:*int* | Checks if the image is bigger than the specified shape (height check is optional).     |       
 
 ### Datetime
 
@@ -644,15 +756,15 @@ The image checker extends the file checker and fully supports its features.
 
 This checker can apply `now` value in the constructor
 
-| Rule          | Parameters                                                                      | Description                                                            |
-|---------------|---------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| future        | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | The value has to be a date in the future.                                  |
-| past          | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | The value has to be a date in the past.                                    |
-| format        | format:*string*                                                                 | The value should match the specified date format.                           |
-| before        | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | The value should come before the given threshold.                            |
-| after         | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | The value should come after the given threshold.                             |
-| valid         | ---                                                                             | The value has to be a valid datetime definition including numeric timestamp. |
-| timezone      | ---                                                                             | The value has to be a valid timezone.                                        |
+| Rule     | Parameters                                                                      | Description                                                                  |
+|----------|---------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| future   | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | The value has to be a date in the future.                                    |
+| past     | orNow:*bool* - false,<br/>useMicroSeconds:*bool* - false                        | The value has to be a date in the past.                                      |
+| format   | format:*string*                                                                 | The value should match the specified date format.                            |
+| before   | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | The value should come before the given threshold.                            |
+| after    | field:*string*,<br/>orEquals:*bool* - false,<br/>useMicroSeconds:*bool* - false | The value should come after the given threshold.                             |
+| valid    | ---                                                                             | The value has to be a valid datetime definition including numeric timestamp. |
+| timezone | ---                                                                             | The value has to be a valid timezone.                                        |
 
 > **Note**
 > Setting `useMicroSeconds` into true allows to check datetime with microseconds.<br/>
