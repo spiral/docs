@@ -9,6 +9,8 @@ sources and safely manages the user context.
 
 ## Principle of Work
 
+![Auth](https://user-images.githubusercontent.com/773481/210746599-cb43c8ad-8021-4c9a-8a9a-45eea55b4c22.png)
+
 The authentication extension will create an IoC scope for `Spiral\Auth\AuthContextInterface` which points to the
 currently authorized actor (User, API Client). The actor is fetched from `Spiral\Auth\ActorProviderInterface`
 using `Spiral\Auth\TokenInterface`.
