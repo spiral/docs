@@ -1,6 +1,6 @@
 # Filters from Spiral Framework 2.x
 
-If you are migrating from Spiral Framework 2.x and you want to continue using the old filters you can
+If you are migrating from Spiral Framework 2.x, and you want to continue using the old filters you can
 use the [spiral/filters-bridge](https://github.com/spiral/filters-bridge) package.
 
 The package `spiral/filters-bridge` provides support for request validation, composite validation, an error message
@@ -28,7 +28,7 @@ The package does not require any configuration and can be activated using the
 bootloader `Spiral\Filters\Bootloader\FiltersBootloader`:
 
 ```php
-[
+protected const LOAD = [
     // ...
     \Spiral\Filters\Bootloader\FiltersBootloader::class
     // ...

@@ -12,18 +12,11 @@ To enable the component, you just need to add `Spiral\Cache\Bootloader\CacheBoot
 which is located in the class of your application.
 
 ```php
-namespace App;
-
-use Spiral\Cache\Bootloader\CacheBootloader;
-
-class App extends Kernel
-{
-    protected const LOAD = [
-        // ...
-        CacheBootloader::class,
-        // ...
-    ];
-}
+protected const LOAD = [
+    // ...
+    \Spiral\Cache\Bootloader\CacheBootloader::class,
+    // ...
+];
 ```
 
 ## Configuration

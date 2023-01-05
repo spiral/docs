@@ -98,7 +98,7 @@ bootloader in your project at the top of bootloader's list:
 
 ```php
 protected const LOAD = [
-    Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader::class,
+    \Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader::class,
     // ...
 ];
 ```

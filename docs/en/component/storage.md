@@ -25,7 +25,8 @@ Make sure to add `Spiral\Storage\Bootloader\StorageBootloader` to your App class
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Storage\Bootloader\StorageBootloader::class
+    \Spiral\Storage\Bootloader\StorageBootloader::class,
+    // ...
 ];
 ```
 

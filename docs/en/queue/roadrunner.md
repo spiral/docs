@@ -18,7 +18,7 @@ Activate the bootloader `Spiral\RoadRunnerBridge\Bootloader\QueueBootloader` in 
 ```php
 protected const LOAD = [
     // ...
-    Spiral\RoadRunnerBridge\Bootloader\QueueBootloader::class,
+    \Spiral\RoadRunnerBridge\Bootloader\QueueBootloader::class,
     // ...
 ];
 ```

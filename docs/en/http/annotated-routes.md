@@ -17,7 +17,9 @@ default `RoutesBootloader`):
 
 ```php
 protected const LOAD = [
-    Spiral\Router\Bootloader\AnnotatedRoutesBootloader::class
+    // ...
+    \Spiral\Router\Bootloader\AnnotatedRoutesBootloader::class,
+    // ...
 ];
 ```
 

@@ -26,25 +26,15 @@ Every Bootloader must be activated in your application kernel. Add the class ref
 your `App\App` class:
 
 ```php
-namespace App;
+protected const LOAD = [
+   // ...
+   \App\Bootloader\RoutesBootloader::class,
+];
 
-use Spiral\Framework\Kernel;
-use App\Bootloader\RoutesBootloader;
-use App\Bootloader\LoggingBootloader;
-use App\Bootloader\MyBootloader;
-
-class App extends Kernel
-{
-    protected const LOAD = [
-        // ...
-    ];
-
-    protected const APP = [
-        RoutesBootloader::class,
-        LoggingBootloader::class,
-        MyBootloader::class
-    ];
-}
+protected const APP = [
+   \App\Bootloader\LoggingBootloader::class,
+   \App\Bootloader\MyBootloader::class,
+];
 ```
 
 > **Note**
