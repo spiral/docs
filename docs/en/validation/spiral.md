@@ -128,9 +128,9 @@ class UserController
 
 ## Filters
 
-The Filters component is a tool for validating HTTP request data in Spiral Framework. It allows you to create a "Filter"
-object, which defines the required data that should be extracted from the request object and mapped into the filter
-object's properties.
+The `spiral/filters` component is a tool for validating HTTP request data in Spiral Framework. It allows you to create 
+a "Filter" object, which defines the required data that should be extracted from the request object and mapped into the 
+filter object's properties.
 
 > **Note**
 > Read more about the Spiral Framework Filters [here](../filters/filter.md).
