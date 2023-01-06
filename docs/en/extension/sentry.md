@@ -9,7 +9,7 @@ To install the extension:
 ```bash
 composer require spiral/sentry-bridge
 ```
-After installing the, you need to add the bootloader from the package to your application. The package provides two 
+After installing the package, you need to add the bootloader from the package to your application. The package provides two 
 bootloaders: `Spiral\Sentry\Bootloader\SentryReporterBootloader` and `Spiral\Sentry\Bootloader\SentryBootloader`.
 
 ### Sentry as a reporter
@@ -20,7 +20,7 @@ The Reporter sends the exception to Sentry.
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Sentry\Bootloader\SentryReporterBootloader::class,
+    \Spiral\Sentry\Bootloader\SentryReporterBootloader::class,
     // ...
 ];
 ```
@@ -38,7 +38,7 @@ Also, you have to remove the default `Spiral\Bootloader\SnapshotsBootloader` boo
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Sentry\Bootloader\SentryBootloader::class,
+    \Spiral\Sentry\Bootloader\SentryBootloader::class,
     // ...
 ];
 ```
@@ -73,7 +73,7 @@ To enable the HTTP collector, you first need to register `Spiral\Bootloader\Debu
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Bootloader\Debug\HttpCollectorBootloader::class, 
+    \Spiral\Bootloader\Debug\HttpCollectorBootloader::class, 
     // ...
 ];
 ```
@@ -94,7 +94,7 @@ To enable the Logs collector, you just need to register `Spiral\Bootloader\Debug
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Bootloader\Debug\LogCollectorBootloader::class,   
+    \Spiral\Bootloader\Debug\LogCollectorBootloader::class,   
     // ...
 ];
 ```

@@ -1,30 +1,46 @@
-# Filter Objects
+# Filters - Installation and Configuration
 
-The framework component `spiral/filters` provides support for request validation, composite validation, an error message
-mapping and locations, etc.
+The `spiral/filters` is a powerful component for filtering and validating input data. It allows you to define a set of
+rules for each input field, and then use those rules to ensure that the input data is in the correct format and meets
+any other requirements you have set. You can use filters to validate data from HTTP requests, gRPC requests, console
+commands, and other sources.
+
+One of the benefits of using filters is that it helps to centralize your input validation logic in a single place. This
+can make it easier to maintain your code, as you don't need to duplicate validation logic in multiple places throughout
+your application.
+
+Additionally, filters can be reused across different parts of your application, which can help to reduce code
+duplication and make it easier to manage your validation logic.
+
+![Filters](https://user-images.githubusercontent.com/773481/211005150-ba8803ed-42c1-40eb-9cf0-7e45e15b0b73.png)
+*Illustration of the process of filtering and validating input data in an HTTP layer*
+
+<br />
 
 > **Note**
-> If you are migrating from Spiral Framework 2.x and you want to continue using the old filters you can use
-> [spiral/filters-bridge](https://github.com/spiral/filters-bridge) package.
-> Read more about using the package [here](../filters/bridge.md).
+> Read more about how to use filters for console commands [here](../cookbook/console-validation.md)
+
+<br />
 
 ## Installation
+<br />
+
 
 > **Note**
-> The component relies on [Validation](/security/validation.md) library, make sure to read it first.
+> The component relies on [Validation](../validation/factory.md) component, make sure to read it first.
 
 The component does not require any configuration and can be activated using the
 bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
 
 ```php
-[
+protected const LOAD = [
     // ...
-    Spiral\Bootloader\Security\FiltersBootloader::class
+    \Spiral\Bootloader\Security\FiltersBootloader::class,
     // ...
-]
+];
 ```
 
-## Input Binding
+## Input sources
 
 The filter components operate using the `Spiral\Filter\InputInterface` as a primary data source:
 
@@ -37,8 +53,10 @@ interface InputInterface
 }
 ```
 
-By default, this interface is bound to [InputManager](/http/request-response.md) and allows to access
-any request's attribute using a **source** and **origin** pair with dot-notation support. For example:
+By default, this interface is bound to [InputManager](../http/request-response.md) and allows to access
+any request's attribute using a **source** and **origin** pair with dot-notation support.
+
+For example:
 
 ```php
 namespace App\Controller;
@@ -60,12 +78,105 @@ class HomeController
 }
 ```
 
-Input binding is the primary way of delivering data into the filter object.
+Input binding is the primary way of delivering data from request into the filter object.
 
 ## Create Filter
 
-The implementation of the filter object might vary from package to package. The default implementation is provided via  the abstract class
-`Spiral\Filters\Model\Filter`. To create a custom filter to validate a query:
+The implementation of the filter object might vary from package to package. The default implementation is provided via
+the abstract class `Spiral\Filters\Model\Filter`. To create a custom filter to validate a simple query value with
+key `username`:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Model\Filter;
+
+final class UserFilter extends Filter
+{
+    #[Query]
+    public string $username;
+}
+```
+
+You can request the Filter as a method injection (it will be automatically bound to the current HTTP request input):
+
+```php
+namespace App\Controller;
+
+use App\Filter\UserFilter;
+
+class UserController
+{
+    public function show(UserFilter $filter): void
+    {     
+        dump($filter->username);
+    }
+}
+```
+
+By default, filters do not perform validation. However, if you want to validate a filter, you can implement the
+`HasFilterDefinition` interface and define a set of validation rules for the filter properties using
+the `FilterDefinition` class with `Spiral\Filters\Model\ShouldBeValidated` interface implementation:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filter;
+
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\ShouldBeValidated;
+
+final class MyFilterDefinition implements FilterDefinitionInterface, ShouldBeValidated
+{
+    public function __construct(
+        private readonly array $validationRules = [],
+        private readonly array $mappingSchema = []
+    ) {
+    }
+
+    public function validationRules(): array
+    {
+        return $this->validationRules;
+    }
+
+    public function mappingSchema(): array
+    {
+        return $this->mappingSchema;
+    }
+}
+```
+
+Here is an example of registering a filter definition and binding with a validator that will be used to validate filters
+with the `MyFilterDefinition` definition:
+
+```php
+namespace App\Bootloader;
+
+use App\Validation;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Validation\Bootloader\ValidationBootloader;
+use Spiral\Validation\ValidationInterface;
+use Spiral\Validation\ValidationProvider;
+
+final class ValidatorBootloader extends Bootloader
+{
+    public function boot(ValidationProvider $provider): void
+    {
+        $provider->register(
+            \App\Filter\MyFilterDefinition::class,
+            static fn(Validation $validation): ValidationInterface => new MyValidation()
+        );
+    }
+}
+```
+
+> **Note**
+> Red more about Validation component [here](../validation/factory.md) .
+
+And now you can use the filter definition in your filter:
 
 ```php
 namespace App\Filter;
@@ -74,37 +185,22 @@ use Spiral\Filters\Attribute\Input\Query;
 use Spiral\Filters\Model\Filter;
 use Spiral\Filters\Model\FilterDefinitionInterface;
 use Spiral\Filters\Model\HasFilterDefinition;
-use Spiral\Validator\FilterDefinition;
+use App\Filter\MyFilterDefinition;
 
-class MyFilter extends Filter implements HasFilterDefinition
+final class UserFilter extends Filter implements HasFilterDefinition
 {
     #[Query]
-    public string $abc;
+    public string $username;
 
     public function filterDefinition(): FilterDefinitionInterface
     {
-        return new FilterDefinition([
-            'abc' => ['string', 'required']
+        return new MyFilterDefinition([
+            'username' => ['string', 'required']
         ]);
     }
 }
 ```
 
-You can request the Filter as a method injection (it will be automatically bound to the current http input):
-
-```php
-namespace App\Controller;
-
-use App\Filter\MyFilter;
-
-class HomeController
-{
-    public function index(MyFilter $filter): void
-    {     
-        dump($filter->abc);
-    }
-}
-```
-
 > **Note**
-> Try URL with `?abc=1`. The Filter will automatically pre-validate your request before delivering it to the controller.
+> Try URL with `?username=john`. The `UserFilter` will automatically pre-validate your request before delivering it to
+> the controller.

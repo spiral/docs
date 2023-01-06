@@ -10,20 +10,12 @@ and`Spiral\SendIt\Bootloader\MailerBootloader`
 classes to the bootloaders list, which is located in the class of your application.
 
 ```php
-namespace App;
-
-use Spiral\SendIt\Bootloader\BuilderBootloader;
-use Spiral\SendIt\Bootloader\MailerBootloader;
-
-class App extends Kernel
-{
-    protected const LOAD = [
-        // ...
-        BuilderBootloader::class,
-        MailerBootloader::class,
-        // ...
-    ];
-}
+protected const LOAD = [
+    // ...
+    \Spiral\SendIt\Bootloader\BuilderBootloader::class,
+    \Spiral\SendIt\Bootloader\MailerBootloader::class,
+    // ...
+];
 ```
 
 The `BuilderBootloader` bootloader registers package views and provides an ability to generate email templates using
@@ -191,3 +183,6 @@ $message->setDelay(100);
 |------------------------------------|------------------------------------------------------|
 | Spiral\SendIt\Event\MessageSent    | The Event will be fired `after` sending the message. |
 | Spiral\SendIt\Event\MessageNotSent | The Event is fired if the message could not be sent. |
+
+> **Note**
+> To learn more about dispatching events, see the [Events](../component/events.md) section in our documentation.

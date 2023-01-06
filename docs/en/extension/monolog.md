@@ -1,18 +1,19 @@
 # Extensions - Monolog
 
-The Web and GRPC bundles include default integration with https://github.com/Seldaek/monolog to manage logs.
+The Web and GRPC bundles come with default integration with the Monolog https://github.com/Seldaek/monolog for
+log management.
 
 ## Configuration
 
-The extension can be configured using a configuration file or a bootloader. 
+The extension can be configured using either a configuration file or a bootloader. The configuration file for this
+extension should be located in `app/config/monolog.php`. In this file, you can specify the default Monolog handler,
+global logging level, as well as configure handlers and processors.
 
-The configuration file for this extension should be located in `app/config/monolog.php`. In this file, you can
-configure the default Monolog handler, global logging level, handlers and processors.
-
-For example, the configuration file might look like this:
+For example, the configuration file might have the following format:
 
 ```php
 <?php
+
 return [
     /**
      * -------------------------------------------------------------------------
@@ -48,19 +49,7 @@ return [
                     'level' => \Monolog\Logger::DEBUG,
                 ],
             ],
-        ],
-        'stderr' => [
-            \Monolog\Handler\ErrorLogHandler::class,
-        ],
-        'stdout' => [
-            [
-                'class' => \Monolog\Handler\SyslogHandler::class,
-                'options' => [
-                    'ident' => 'app',
-                    'facility' => LOG_USER,
-                ],
-            ],
-        ],
+        ]
     ],
 
     /**
@@ -74,9 +63,6 @@ return [
      */
     'processors' => [
         'default' => [
-// ...
-        ],
-        'stdout' => [
             [
                 'class' => \Monolog\Processor\PsrLogMessageProcessor::class,
                 'options' => [
@@ -88,10 +74,17 @@ return [
 ];
 ```
 
-Use `Spiral\Monolog\Bootloader\MonologBootloader` to declare a handler and a log-formatter for a specific channel:
+> **Note**
+> 
+> Use `MONOLOG_DEFAULT_CHANNEL` env variable to specify the default Monolog logger that should be used in your
+> application.
+
+## Register handler
+
+Use `Spiral\Monolog\Bootloader\MonologBootloader` also to declare a handler and a log-formatter for a specific channel.
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Monolog\Bootloader\MonologBootloader;
@@ -110,10 +103,54 @@ class LoggingBootloader extends Bootloader
         );
     }
 }
-``` 
+```
 
 > **Note**
-> You can use any monolog handler as the second argument. Make sure to add your Bootloader at the top of the LOAD list.
+> 
+> Make sure to add your Bootloader `App\Application\Bootloader\LoggingBootloader` at the top of the `Kernel::LOAD` list.
+
+
+## Register RoadRunner log handler
+
+The `Spiral\Monolog\Bootloader\MonologBootloader` allows registering of different Monolog log handlers. For instance,
+you can register a log handler for [RoadRunner](https://roadrunner.dev/docs/plugins-applogger/2.x/en) using the
+`Spiral\RoadRunnerBridge\Logger\Handler` class.
+
+The following code sample demonstrates how this can be achieved through the use of the `LoggingBootloader`:
+
+```php
+namespace App\Application\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Monolog\Bootloader\MonologBootloader;
+use Spiral\RoadRunnerBridge\Logger\Handler as RoadRunnerHandler;
+use Spiral\RoadRunnerBridge\Bootloader\LoggerBootloader;
+
+class LoggingBootloader extends Bootloader
+{
+    protected const DEPENDENCIES = [
+        MonologBootloader::class,
+        LoggerBootloader::class,
+    ];
+    
+    public function boot(MonologBootloader $monolog, RoadRunnerHandler $handler): void
+    {
+        $monolog->addHandler('roadrunner', $handler);
+    }
+}
+```
+
+And then change the default monolog handler in the `.env` file:
+
+```dotenv
+MONOLOG_DEFAULT_CHANNEL=roadrunner
+```
+
+> **Note**
+>
+> Make sure that you have the `spiral/roadrunner-bridge` package installed. This package provides the necessary classes 
+> and functions needed to integrate RoadRunner with Monolog.
+
 
 ## Write to Log
 
@@ -141,34 +178,10 @@ public function index(LogsInterface $logs): void
 }
 ```
 
-Make sure to enable the default handler for saving content to the file:
-
-```php
-namespace App\Bootloader;
-
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Monolog\Bootloader\MonologBootloader;
-
-class LoggingBootloader extends Bootloader
-{
-    protected const DEPENDENCIES = [
-        MonologBootloader::class
-    ];
-
-    public function boot(MonologBootloader $monolog): void
-    {
-        $monolog->addHandler(
-            'default',
-            $monolog->logRotate(directory('runtime') . 'logs/debug.log')
-        );
-    }
-}
-```
-
 ## LoggerTrait
 
-You can use `Spiral\Logger\Traits\LoggerTrait` to quickly assign a Logger to any class. The class name will be used as the
-channel name:
+You can use `Spiral\Logger\Traits\LoggerTrait` to quickly assign a Logger to any class. The class name will be used as
+the channel name:
 
 ```php
 use Spiral\Logger\Traits\LoggerTrait;
@@ -197,6 +210,7 @@ public function boot(MonologBootloader $monolog): void
 ```
 
 > **Note**
+> 
 > LoggerTrait only works inside the `$app->serve()` method via the global IoC scope.
 
 ## Errors
@@ -224,12 +238,4 @@ class LoggingBootloader extends Bootloader
         );
     }
 }
-```
-
-## Debug
-
-Use the second argument of the `dump` function to dump directly into the `default` log channel:
-
-```php
-dump('hello', \Spiral\Debug\Dumper::LOGGER); 
 ```

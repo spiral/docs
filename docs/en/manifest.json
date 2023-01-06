@@ -33,6 +33,7 @@
       "framework/design": "Design Approach",
       "framework/application-server": "Application Server",
       "framework/kernel": "Kernel and Environment",
+      "framework/dispatcher": "Dispatchers",
       "framework/container": "Container and Factories",
       "framework/bootloaders": "Bootloaders",
       "framework/config": "Config Objects",
@@ -46,7 +47,8 @@
     "links": {
       "cookbook/domain-core": "Domain Core and Controllers",
       "cookbook/injector": "Container Injectors",
-      "cookbook/custom-dispatcher": "Custom Dispatcher"
+      "cookbook/custom-dispatcher": "Custom Dispatcher",
+      "cookbook/console-validation": "Console command validation"
     }
   },
   {
@@ -64,7 +66,6 @@
       "component/data-grid": "Data Grids",
       "component/serializer": "Serializer",
       "component/sendit": "SendIt",
-      "component/broadcasting": "Event Broadcasting",
       "component/exceptions": "Exceptions",
       "component/events": "Events"
     }
@@ -74,6 +75,7 @@
     "links": {
       "console/configuration": "Installation and Configuration",
       "console/commands": "User Commands",
+      "console/sequences": "Command Sequences",
       "console/interceptors": "Interceptors"
     }
   },
@@ -111,32 +113,17 @@
     }
   },
   {
-    "title": "Keeper",
-    "links": {
-      "keeper/intro": "Intro",
-      "keeper/bootloaders": "Bootloaders",
-      "keeper/routing": "Routing",
-      "keeper/sitemap": "Sitemap and breadcrumbs",
-      "keeper/views": "Views",
-      "keeper/components/datagrid": "Component: DataGrids",
-      "keeper/components/forms": "Component: Forms",
-      "keeper/components/autocomplete": "Component: Autocomplete",
-      "keeper/components/datepicker": "Component: Datepicker",
-      "keeper/components/richtext": "Component: Rich Text",
-      "keeper/components/qrcode": "Component: QR Codes"
-    }
-  },
-  {
     "title": "Request Validation",
     "links": {
       "filters/configuration": "Installation and Configuration",
       "filters/filter": "Filter Object",
       "filters/composite": "Composite Filters",
+      "filters/interceptors": "Interceptors",
       "filters/bridge": "Migration from 2.x"
     }
   },
   {
-    "title": "Databases",
+    "title": "Database",
     "links": {
       "database/configuration": "Installation and Configuration",
       "database/access": "Access Database",
@@ -160,6 +147,24 @@
       "queue/jobs": "Running Jobs",
       "queue/roadrunner": "RoadRunner integration",
       "queue/interceptors": "Interceptors"
+    }
+  },
+  {
+    "title": "WebSockets",
+    "links": {
+      "websockets/configuration": "Installation and Configuration",
+      "websockets/services": "Event handlers",
+      "websockets/broadcasting": "Broadcasting",
+      "websockets/interceptors": "Interceptors"
+    }
+  },
+  {
+    "title": "GRPC",
+    "links": {
+      "grpc/configuration": "Installation and Configuration",
+      "grpc/service": "Service Code",
+      "grpc/client": "Client SDK",
+      "grpc/interceptors": "Interceptors"
     }
   },
   {
@@ -193,11 +198,19 @@
     }
   },
   {
-    "title": "GRPC",
+    "title": "Keeper",
     "links": {
-      "grpc/configuration": "Installation and Configuration",
-      "grpc/service": "Service Code",
-      "grpc/client": "Client SDK"
+      "keeper/intro": "Intro",
+      "keeper/bootloaders": "Bootloaders",
+      "keeper/routing": "Routing",
+      "keeper/sitemap": "Sitemap and breadcrumbs",
+      "keeper/views": "Views",
+      "keeper/components/datagrid": "Component: DataGrids",
+      "keeper/components/forms": "Component: Forms",
+      "keeper/components/autocomplete": "Component: Autocomplete",
+      "keeper/components/datepicker": "Component: Datepicker",
+      "keeper/components/richtext": "Component: Rich Text",
+      "keeper/components/qrcode": "Component: QR Codes"
     }
   },
   {

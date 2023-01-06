@@ -1,14 +1,18 @@
 # Tokenizer
 
-A lot of Spiral components are based on automatic code discovery and analysis. The most used functionality of locating class
-declarations is provided by `Spiral\Tokenizer\ClassesInterface`.
+The tokenizer component is a tool for discovering and analyzing code in specified directories. The most used
+functionality of locating class declarations is provided by `Spiral\Tokenizer\ClassesInterface`.
 
 > **Note**
 > The tokenizer component is pre-installed with all framework bundles.
 
 ## Class Locator
 
-Use `Spiral\Tokenizer\ClassesInterface` to find available classes by their name, interface or trait:
+To use the tokenizer component, you will need to use the `Spiral\Tokenizer\ClassesInterface` interface. This interface
+provides a getClasses method which allows you to search for classes by name, interface, or trait.
+
+Here is an example of how to use this method to search for classes that implement the
+`\Psr\Http\Server\MiddlewareInterface` interface:
 
 ```php
 public function findClasses(ClassesInterface $classes): void
@@ -19,24 +23,64 @@ public function findClasses(ClassesInterface $classes): void
 }
 ```
 
-By default, the component will be looking for classes available in the `app` directory only. You can add any other
-directory using `Spiral\Bootloader\TokenizerBootloader`:
+The `getClasses` method will then return an array of `ReflectionClass` objects representing the classes found.
+
+By default, the tokenizer component will only search for classes in the `app` directory. However, you can add additional
+directories to be searched using the `Spiral\Bootloader\TokenizerBootloader`.
 
 ```php
-public function boot(TokenizerBootloader $tokenizer)
+use Spiral\Bootloader\TokenizerBootloader;
+use Spiral\Boot\DirectoriesInterface;
+
+class AppBootloader extends Bootloader
 {
-    $tokenizer->addDirectory(directory('vendor') . 'name/extension/src');
+    public function boot(DirectoriesInterface $directories, TokenizerBootloader $tokenizer): void
+    {
+        $tokenizer->addDirectory($directories->get('vendor') . 'vendor/my-org/my-package/src');
+    }
 }
 ```
 
+And here is an example of how to add an additional directory using the `app\config\tokenizer.php` config file:
+
+```php
+return [
+    'directories' => [
+        directory('app'),
+        directory('vendor') . 'vendor/my-org/my-package/src',
+    ],
+];
+```
+
+You can also specify directories to be excluded from the search using the exclude option:
+
+```php
+return [
+    'directories' => [
+        //...
+    ],
+    'exclude' => [
+        directory('resources'),
+        directory('config'),
+        'tests',
+        'migrations',
+    ],
+];
+```
+
 > **Note**
-> that the class lookup is not a fast process, only add necessary directories.
+> The class lookup is not a fast process, only add necessary directories.
 
 ## Scoped Class Locator
 
-To improve the performance of class searching, you can configure the search scope.
+If you need to search for classes in a large number of directories, the tokenizer component may suffer from poor
+performance. In this case, you can use the scoped class locator to improve performance.
 
-First of all, let's add `scopes` in the configuration file:
+With the scoped class locator, you can define directories to be searched within named scopes. This allows you to
+selectively search only the directories that are relevant to your current task.
+
+To use the scoped class locator, you will need to define your scopes in the `app\config\tokenizer.php` config file. Here
+is an example of how to define a scope named `scopeName` that searches the `app/Directory` directory:
 
 ```php
 // file app/config/tokenizer.php
@@ -57,9 +101,15 @@ return [
 > **Note**
 > With the `exclude` parameter, we can exclude some directories from the search.
 
-Use `Spiral\Tokenizer\ScopedClassesInterface` to find available classes by the scope name in scope directories:
+The `Spiral\Tokenizer\ScopedClassesInterface` interface provides a `getScopedClasses` method that allows you to search
+for classes within a specific scope.
+
+To use the method, you will need to pass in the name of the `scope` as an argument. The method will then return an
+array of `ReflectionClass` objects representing the classes found within that scope.
 
 ```php
+use Spiral\Tokenizer\ScopedClassesInterface;
+
 final class SomeLocator
 {
     public function __construct(
@@ -76,78 +126,78 @@ final class SomeLocator
 }
 ```
 
-## Listeners
+## Class Listeners
 
-For even better performance, we recommend using tokenizer listeners instead of a class locator. 
+The Tokenizer Class Listeners is a way to use the `Spiral\Tokenizer\ClassesInterface` interface in a more efficient
+manner, particularly when working with large codebases.
 
-There is a new feature called Tokenizer Listener in the Spiral Framework 3.0. 
+Normally, when you use the `ClassesInterface` to search for classes, the tokenizer component will scan the specified
+directories every time the `getClasses` method is called. This can be slow, particularly if you have many components
+that make repeated calls to the method.
 
-### How it works
+To improve performance, it allows you to register listeners that will be notified when a class is found by
+the `ClassesInterface`. This means that the tokenizer component will only need to scan the directories
+once, during application bootstrapping. After the initial scan, the tokenizer will iterate over all the found classes
+and send information about each class to all registered listeners.
 
-The Spiral Framework is used to scan registered directories in Tokenizer every time you request them via
-`Spiral\Tokenizer\ClassesInterface::getClasses` method. For example, if an application has 6 components that request
-classes from a class locator via `getClasses` method, it will scan rectories 6 times.
+### Usage
 
-With the Tokenizer listeners, it will start iterating all found classes by `Spiral\Tokenizer\ClassesInterface` after 
-bootloading all application bootloaders only once and then send information about every found class to all registered 
-Tokenizer Listeners. In this case, 6 components will register their listeners and will filter the received class by their 
-rules and will handle them.
-
-To start using Tokenizer listeners, you just need to include `Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader` 
+To use this feature, you will need to include `Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader`
 bootloader in your project at the top of bootloader's list:
 
 ```php
 protected const LOAD = [
-    Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader::class,
+    \Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader::class,
     // ...
 ];
 ```
 
-Create a listener:
+Now you can create a listener class that implements the `Spiral\Tokenizer\TokenizationListenerInterface` interface.
+This interface requires you to implement a `listen` method, which will be called for each class that is found by
+the `ClassesInterface`.
+
+In addition `TokenizationListenerInterface` also includes a `finalize` method. This method is called after all classes
+have been iterated, and can be used to perform any final processing on the classes that have been found during
+listening.
 
 ```php
-
 use Spiral\Attributes\ReaderInterface;
 
-class MyAttributeListener implements TokenizationListenerInterface
+class RouteAttributeListener implements TokenizationListenerInterface
 {
     private array $attributes = [];
 
     public function __construct(
         private readonly ReaderInterface $reader,
-        private readonly MyAttributeRegistry $registry
+        private readonly RouterInterface $router
     ) {
     }
     
-    /**
-     * The method will be fired for every found class by a class locator.
-     */
     public function listen(\ReflectionClass $class): void
     {
-        // Find MyAttribute attribute in the given class
-        $attr = $this->reader->firstClassMetadata($class, MyAttribute::class);
+        foreach ($class->getMethods() as $method) {
+            $route = $this->reader->firstFunctionMetadata($method, Route::class);
 
-        if ($attr === null) {
-            continue;
+            if ($route === null) {
+                continue;
+            }
+
+            $this->attributes[] = [$method, $route];
         }
-    
-        $this->attributes[] = $attr;
     }
 
-    /**
-     * The method will be fired after a class locator finishes the iteration of the found classes.
-     */
     public function finalize(): void
     {
-        // Register the found attributes in your registry
-        $this->registry->registerAttributes(
-            $this->attributes
-        );
+        foreach ($this->attributes as [$method, $route]) {
+            $this->router->addRoute(...);
+        }
     }
 }
 ```
 
-And then register it in your bootloader
+To register your listener, you will need to use the `Spiral\Tokenizer\TokenizerListenerRegistryInterface`.
+
+Here is an example of how to register a listener:
 
 ```php
 use Spiral\Tokenizer\TokenizerListenerRegistryInterface;
@@ -156,9 +206,18 @@ class AppBootloader extends Bootloader
 {
     public function init(
         TokenizerListenerRegistryInterface $listenerRegistry,
-        MyAttributeListener $listener
+        RouteAttributeListener $listener
     ): void {
         $listenerRegistry->addListener($listener);
     }
 }
 ```
+
+> **Warning**
+> To ensure that your listeners are called correctly, make sure to register them in bootloaders from within the `LOAD`
+> section of the application Kernel. Listeners will not be called if you register them  within the `APP` kernel section.
+
+Overall, the Tokenizer Listeners are a useful way to improve performance when using the `ClassesInterface` to search
+for classes in a large codebase. By registering listeners and allowing the tokenizer component to scan the directories
+only once, you can reduce the number of times the directories are scanned and improve the overall performance of your
+application.

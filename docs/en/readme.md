@@ -21,6 +21,7 @@
     * [Design Approach](framework/design.md)
     * [Application Server](framework/application-server.md)
     * [Kernel and Environment](framework/kernel.md)
+    * [Dispatchers](framework/dispatcher.md)
     * [Container and Factories](framework/container.md)
     * [Bootloaders](framework/bootloaders.md)
     * [Config Objects](framework/config.md)
@@ -31,6 +32,7 @@
     * [Domain Core and Controllers](cookbook/domain-core.md)
     * [Container Injectors](cookbook/injector.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
+    * [Console command validation](cookbook/console-validation.md)
 * Components
     * [Attributes](component/attributes.md)
     * [Cache](component/cache.md)
@@ -44,12 +46,12 @@
     * [Data Grids](component/data-grid.md)
     * [Serializer](component/serializer.md)
     * [SendIt](component/sendit.md)
-    * [Event Broadcasting](component/broadcasting.md)
     * [Exceptions](component/exceptions.md)
     * [Events](component/events.md)
 * Console
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
+    * [Command Sequences](console/sequences.md)
     * [Interceptors](console/interceptors.md)
 * HTTP
     * [Installation and Configuration](http/configuration.md)
@@ -72,23 +74,13 @@
     * [Spiral Validator](validation/spiral.md)
     * [Symfony Validator](validation/symfony.md)
     * [Laravel Validator](validation/laravel.md)
-* Keeper
-    * [Intro](keeper/intro.md)
-    * [Bootloaders](keeper/bootloaders.md)
-    * [Routing](keeper/routing.md)
-    * [Sitemap](keeper/sitemap.md)
-    * [Views](keeper/views.md)
-    * [DataGrid](keeper/components/datagrid.md)
-    * [Forms](keeper/components/forms.md)
-    * [Autocomplete](keeper/components/autocomplete.md)
-    * [DatePicker](keeper/components/datepicker.md)
-    * [QR Codes](keeper/components/qrcode.md)
 * Request Validation
     * [Installation and Configuration](filters/configuration.md)
     * [Filter Object](filters/filter.md)
     * [Composite Filters](filters/composite.md)
+    * [Interceptors](filters/interceptors.md)
     * [Migration from 2.x](filters/bridge.md)
-* Databases
+* Database
     * [Installation and Configuration](database/configuration.md)
     * [Access Database](database/access.md)
     * [Query Builders](database/query-builders.md)
@@ -103,6 +95,16 @@
     * [Running Jobs](queue/jobs.md)
     * [RoadRunner integration](queue/roadrunner.md)
     * [Interceptors](queue/interceptors.md)
+* WebSockets
+    * [Installation and Configuration](websockets/configuration.md)
+    * [Event handlers](websockets/services.md)
+    * [Broadcasting](websockets/broadcasting.md)
+    * [Interceptors](websockets/interceptors.md)
+* GRPC
+    * [Installation and Configuration](grpc/configuration.md)
+    * [Service Code](grpc/service.md)
+    * [Client SDK](grpc/client.md)
+    * [Interceptors](grpc/interceptors.md)
 * Views
     * [Installation and Configuration](views/configuration.md)
     * [Rendering Views](views/render.md)
@@ -121,12 +123,17 @@
     * [Import and Export](i18n/export.md)
     * [View Localization](i18n/views.md)
     * [Say Trait](i18n/say-trait.md)
-* GRPC
-    * [Installation and Configuration](grpc/configuration.md)
-    * [Service Code](grpc/service.md)
-    * [Client SDK](grpc/client.md)
-    * [Golang Services](grpc/golang.md)
-    * [Data Streaming](grpc/streaming.md)
+* Keeper
+    * [Intro](keeper/intro.md)
+    * [Bootloaders](keeper/bootloaders.md)
+    * [Routing](keeper/routing.md)
+    * [Sitemap](keeper/sitemap.md)
+    * [Views](keeper/views.md)
+    * [DataGrid](keeper/components/datagrid.md)
+    * [Forms](keeper/components/forms.md)
+    * [Autocomplete](keeper/components/autocomplete.md)
+    * [DatePicker](keeper/components/datepicker.md)
+    * [QR Codes](keeper/components/qrcode.md)
 * Debug and Profiling
     * [Dumping Variables](debug/dumps.md)
     * [XDebug](debug/xdebug.md)

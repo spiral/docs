@@ -126,7 +126,17 @@ $this->session->regenerateID();
 
 ## Custom Configuration
 
-To alter session configuration, create file `app/config/session.php` to change needed values:
+To alter session configuration, create file `app/config/session.php` to change needed values.
+
+
+The session component is based on native PHP session implementation. By default, the session content is stored in the file system in the `runtime/session` directory. If your application will be load balanced across multiple web servers, you should choose a centralized store that all servers can access, such as Redis.
+
+The session `handler` configuration option defines where session data will be stored for each request. 
+Spiral Framework ships with several drivers out of the box:
+
+### **FileHandler** configuration
+
+Sessions are stored in `runtime/session` folder.
 
 ```php
 <?php
@@ -138,9 +148,9 @@ use Spiral\Session\Handler\FileHandler;
 
 return [
     'lifetime' => 86400,
-    'cookie'   => 'sid',
-    'secure'   => false,
-    'handler'  => new Autowire(
+    'cookie' => 'sid',
+    'secure' => false,
+    'handler' => new Autowire(
         FileHandler::class,
         [
             'directory' => directory('runtime') . 'session',
@@ -150,13 +160,39 @@ return [
 ];
 ```
 
+### **CacheHandler** configuration
+
+Sessions are stored in one of cache based storages configured in Cache component.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Spiral\Core\Container\Autowire;
+use Spiral\Session\Handler\CacheHandler;
+
+$ttl = 86400;
+
+return [
+    'lifetime' => $ttl,
+    'cookie' => 'sid',
+    'secure' => false,
+    'handler' => new Autowire(
+        CacheHandler::class,
+        [
+            'storage' => 'my-storage', // (Optional)  Cache storage name. Default - current cache storage
+            'ttl' => $ttl,
+            'prefix' => 'foo:' // (Optional) By default, session:
+        ]
+    )
+];
+```
+
 ### Custom Session Handler
 
-The session component is based on native PHP session implementation. By default, the session content is stored in the file system
-in the `runtime/session` directory.
-
-To change the session storage driver, use
-any `SessionHandlerInterface` [compatible handler](https://www.php.net/manual/en/class.sessionhandlerinterface.php).
+If none of the existing session drivers fit your application's needs, Spiral Framework makes it possible to write your own session handler.
+Your custom session driver should implement PHP's built-in [`SessionHandlerInterface`](https://www.php.net/manual/en/class.sessionhandlerinterface.php). 
 
 ```php
 <?php
@@ -166,7 +202,7 @@ return [
         [
             'driver' => 'redis',
             'database' => 1,
-            'lifetime'  => 86400
+            'lifetime' => 86400
         ]
     )
 ];

@@ -9,30 +9,13 @@ user-level exceptions.
 To enable such middleware, add the `Spiral\Bootloader\Http\ErrorHandlerBootloader` to your application:
 
 ```php
-namespace App;
-
-use Spiral\Bootloader as Framework;
-use Spiral\DotEnv\Bootloader as DotEnv;
-use Spiral\Framework\Kernel;
-use Spiral\Prototype\Bootloader as Prototype;
-use Spiral\Scaffolder\Bootloader\ScaffolderBootloader;
-
-class App extends Kernel
-{
-    /*
-     * List of components and extensions to be automatically registered
-     * within system container on application start.
-     */
-    protected const LOAD = [
-        // ...
-
-        Framework\Http\HttpBootloader::class,
-        Framework\Http\RouterBootloader::class,
-        Framework\Http\ErrorHandlerBootloader::class,
-
-        // ...
-    ];
-}
+protected const LOAD = [
+    // ...
+    \Spiral\Bootloader\Http\HttpBootloader::class,
+    \Spiral\Bootloader\Http\RouterBootloader::class,
+    \Spiral\Bootloader\Http\ErrorHandlerBootloader::class,
+    // ...
+];
 ```
 
 ## Application Exceptions

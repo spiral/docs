@@ -13,18 +13,11 @@ To enable the component, you just need to add `Spiral\Serializer\Bootloader\Seri
 list, which is located in the class of your application.
 
 ```php
-namespace App;
-
-use Spiral\Serializer\Bootloader\SerializerBootloader;
-
-class App extends Kernel
-{
-    protected const LOAD = [
-        // ...
-        SerializerBootloader::class,
-        // ...
-    ];
-}
+protected const LOAD = [
+    // ...
+    \Spiral\Serializer\Bootloader\SerializerBootloader::class,
+    // ...
+];
 ```
 
 ## Configuration

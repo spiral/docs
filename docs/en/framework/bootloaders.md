@@ -39,13 +39,13 @@ class App extends Kernel
     {
         return [
             // ...
+           RoutesBootloader::class,
         ]
     }
 
     public function defineAppBootloaders(): array
     {
         return [
-           RoutesBootloader::class,
            LoggingBootloader::class,
            MyBootloader::class,
            

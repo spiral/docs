@@ -1,0 +1,148 @@
+# Console - Sequences
+
+The Spiral Framework provides a way to group together and execute a series of console commands or closures in a specific
+order. These groups of commands and closures are called "sequences", and there are two types: `configure` and
+`update` sequences.
+
+Using console sequences can be a convenient way to automate common tasks or operations in your application, and can help
+to ensure that they are performed consistently and in the correct order.
+
+## Command registration
+
+### Configure Sequences
+
+Configure sequences are intended to be used for tasks related to setting up or configuring an application. These
+commands
+are run after the `php app.php configure` command is invoked.
+
+Here is an example of a configure sequence:
+
+```php
+use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Container\ContainerInterface;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Console\Bootloader\ConsoleBootloader;
+
+class AppBootloader extends Bootloader
+{
+    public function boot(ConsoleBootloader $console): void
+    {
+        $console->addConfigureSequence(
+            sequence: 'generate:keys', 
+            header: '<info>Generating SSH keys for the application...</info>'
+        );
+        
+        // Add closure in a sequence
+        // It supports auto-wiring of arguments
+        $console->addConfigureSequence(
+            static function(OutputInterface $output, ContainerInterface $container): void {
+                // do something
+            }, 
+            '<info>Caching something...</info>'
+        );
+    }
+}
+```
+
+### Update Sequences
+
+Update sequences are intended to be used for tasks related to updating or modifying an application. These commands
+are run after the `php app.php update` command is invoked.
+
+Here is an example of an update sequence:
+
+```php
+use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Container\ContainerInterface;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Console\Bootloader\ConsoleBootloader;
+
+class AppBootloader extends Bootloader
+{
+    public function boot(ConsoleBootloader $console): void
+    {
+        $console->addUpdateSequence('db:migrate', '<info>Database migration...</info>');
+        
+        // Add closure in a sequence
+        // It supports auto-wiring of arguments
+        $console->addConfigureSequence(
+            static function(OutputInterface $output, ContainerInterface $container): void {
+                // do something
+            }, 
+            '<info>Caching something...</info>'
+        );
+    }
+}
+```
+
+## Custom sequences
+
+In addition to these predefined sequences, the Spiral Framework also allows you to create custom sequences. Custom
+console sequences are groups of console commands or closures that are intended to be run in a specific order, and are
+created and managed by the user.
+
+Here is an example of an update sequence:
+
+```php
+use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Container\ContainerInterface;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Console\Bootloader\ConsoleBootloader;
+
+class AppBootloader extends Bootloader
+{
+    public function boot(ConsoleBootloader $console): void
+    {
+        $console->addSequence(
+            name: 'cache_everything', 
+            sequence: 'route:cache',
+            header: '<info>Route caching...</info>',
+            footer: '<info>Route caching completed.</info>'
+        );
+         
+        $console->addSequence(
+            name: 'cache_everything', 
+            sequence: 'config:cache',
+            header: '<info>Config caching...</info>',
+            footer: '<info>Config caching completed.</info>'
+        );
+        
+        // ... 
+    }
+}
+```
+
+Custom sequences can be run from a console command that extends the `Spiral\Console\Sequence\SequenceCommand` class.
+
+Here is an example of a custom sequence command:
+
+```php
+namespace App\Command;
+
+use Psr\Container\ContainerInterface;
+use Spiral\Console\Config\ConsoleConfig;
+
+final class CacheEverythingCommand extends SequenceCommand
+{
+    protected const NAME = 'cache:everything';
+    protected const DESCRIPTION = 'Cache everything in the project';
+
+    public function perform(ConsoleConfig $config, ContainerInterface $container): int
+    {
+        $this->info('Caching everything in the project...');
+        $this->newLine();
+
+        return $this->runSequence($config->getSequence('cache_everything'), $container);
+    }
+}
+```
+
+Custom sequences can be a useful tool for automating tasks or operations in your application, and can help to streamline
+your development and maintenance processes.
+
+## Sequence execution
+
+Once you have added your commands and closures to a sequence, you can execute the sequence using the
+`php app.php configure` command for the configure sequence or the `php app.php update` command for the update sequence.
+The console will display the description of each command or closure as it is run, along with any output generated by the
+command or closure.

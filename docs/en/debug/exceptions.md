@@ -20,6 +20,7 @@ After package install you need to register bootloader from the package:
 protected const LOAD = [
     // ...
     \Spiral\YiiErrorHandler\Bootloader\YiiErrorHandlerBootloader::class,
+    // ...
 ];
 ```
 

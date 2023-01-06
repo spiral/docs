@@ -87,3 +87,6 @@ class HomeController implements SingletonInterface
 |-----------------------------------|-------------------------------------------------------------------|
 | Spiral\Http\Event\RequestReceived | The Event will be fired when the request is received.             |
 | Spiral\Http\Event\RequestHandled  | The Event will be fired when the request is successfully handled. |
+
+> **Note**
+> To learn more about dispatching events, see the [Events](../component/events.md) section in our documentation.

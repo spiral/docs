@@ -1,20 +1,17 @@
-# Filter Object
+# Filters - filter object
 
-The Filter object is used to perform complex data validation and filtration using PSR-7 or any other input.
-
-You can use filters in two ways:
-
-1. Map the data from the request into the object properties.
-2. Map and automatically validate the data from the request.
+The Filter class represents a set of request input fields that can be filtered and validated. It provides a set of basic
+features for creating filters, such as the ability to bind request input data to filter properties and to access
+filtered data.
 
 ## Validators
 
-If you only need to populate the data from the request you don't need any validators for it. But if you need to validate
-data, at first, you need to choose a validator for it.
+There are three validator bridges available for use with the Spiral Framework filers. You can use any of these
+validator bridges in your application, depending on your needs and preferences.
 
-There are three validators for Spiral Framework that you can use:
+### [Spiral Validator](../validation/spiral.md)
 
-- [Spiral Validator](https://github.com/spiral/validator)
+This is the default validator bridge. It is a simple, lightweight validator that can handle basic validation tasks.
 
 ```php
 <?php
@@ -60,7 +57,10 @@ class CreatePostFilter implements FilterInterface, HasFilterDefinition
 }
 ```
 
-- [Symfony Validator](https://github.com/spiral-packages/symfony-validator)
+### [Symfony Validator](../validation/symfony.md)
+
+This validator bridge provides integration with the Symfony Validator component, which is a more powerful and
+feature-rich validation library.
 
 ```php
 <?php
@@ -99,7 +99,10 @@ final class CreatePostFilter extends AttributesFilter
 }
 ```
 
-- [Laravel Validator](https://github.com/spiral-packages/symfony-validator)
+### [Laravel Validator](../validation/laravel.md)
+
+This validator bridge provides integration with the Laravel Validator, which is a validation component used in the
+Laravel framework.
 
 ```php
 <?php
@@ -142,13 +145,11 @@ final class CreatePostFilter extends Filter implements HasFilterDefinition
 }
 ```
 
-We will use [Spiral Validator](https://github.com/spiral/validator) package in the article examples.
-
 ## Usage
 
-All the filter objects should implement `Spiral\Filters\Model\FilterInterface`. The interface will add the ability to
-inject
-filters with populated data from `Spiral\Filters\InputInterface` from the container.
+All the filter objects should implement `Spiral\Filters\Model\FilterInterface`. The interface is injectable, it means
+that when you request a filter class from the container, it will be automatically created and request data will be
+mapped to each filter property.
 
 ```php
 namespace App\Filter;
@@ -167,14 +168,18 @@ class MyFilter implements FilterInterface
 dump($container->get(MyFilter::class)); 
 ```
 
-You can also use `Spiral\Filters\Model\FilterProviderInterface`->`createFilter` to create an instance:
+You can also use `Spiral\Filters\Model\FilterProviderInterface->createFilter` to create an instance:
 
 ```php
 $provider = $container->get(\Spiral\Filters\Model\FilterProviderInterface::class);
-$provider->createFilter(MyFilter::class, $container->get(\Spiral\Filters\InputInterface::class));
+
+$provider->createFilter(
+    MyFilter::class, 
+    $container->get(\Spiral\Filters\InputInterface::class)
+);
 ```
 
-or simply request the filter as a dependency for example, in some controller
+or simply request the filter as a dependency for example, in some controller method:
 
 ```php
 use App\Filter\MyFilter;
@@ -192,9 +197,11 @@ class HomeController
 
 There are two ways to define the filter schema.
 
-- Using attributes with filter properties.
+### Attributes
 
 ```php
+use Spiral\Filters\Attribute\Input\Post;
+
 class MyFilter implements FilterInterface
 {
     #[Post(key: 'text')]
@@ -203,14 +210,16 @@ class MyFilter implements FilterInterface
 ```
 
 ```php
-$filter = $container->get(MyFilter::class);
-
-dump($filter->text); // '...'
-dump($filter->getData()); // ['text' => '...'] 
+public function index(MyFilter $filter): void
+{
+    dump($filter->text);
+}
 ```
 
-- Using an array schema mapping. In this case the filter should implement `Spiral\Filters\Model\HasFilterDefinition` and
-  extend the `Spiral\Filters\Model\Filter` class to have access to the mapped data from the request.
+### Array schema mapping
+
+In this case the filter should implement `Spiral\Filters\Model\HasFilterDefinition` and extend
+the`Spiral\Filters\Model\Filter` abstract class to have access to the mapped data from the request.
 
 ```php
 namespace App\Filter;
@@ -224,28 +233,44 @@ class MyFilter extends Filter implements HasFilterDefinition
 {
     public function filterDefinition(): FilterDefinitionInterface
     {
-        return new FilterDefinition(mappingSchema: 
-            [
-                'text' => 'data:text'
-            ]
+        return new FilterDefinition(
+            mappingSchema: ['text' => 'data:text']
         );
     }
 }
 ```
 
 ```php
-$filter = $container->get(MyFilter::class);
-dump($filter->getData()); // ['text' => '...'] 
+public function index(MyFilter $filter): void
+{
+    dump($filter->getData());
+}
 ```
 
+#### Sources
+
+By design, you can use any method of [InputManager](../http/request-response.md) as a source where origin is passed
+parameter. The following sources are available:
+
+| Source         | Description                                                       |
+|----------------|-------------------------------------------------------------------|
+| uri            | The current page Uri in a form of `Psr\Http\Message\UriInterface` |
+| path           | The current page path                                             |
+| method         | Http method (GET, POST, ...)                                      |
+| isSecure       | If https is used                                                  |
+| isAjax         | If `X-Requested-With` is set as `xmlhttprequest`                  |
+| isJsonExpected | When the client expects `application/json`                        |
+| remoteAddress  | User ip address                                                   |
+
 > **Note**
-> You can use both ways in your filter object. In this case the filter provider will build a mapping schema for
+> You can use both ways in your filter object. In both cases the filter provider will build a mapping schema for
 > properties with attributes and then merge the schema with the schema from the filter definition.
 
-### Attributes
+## Attributes
 
-You can add properties with the needed type and add an attribute that points to the data source.
-For example, we can tell our Filter to map the field `login` to the QUERY param `username`:
+To use request filter attributes in Spiral, you can use one of the available attributes to specify where the data for
+the property should be sourced from. For example, you could use the `Spiral\Filters\Attribute\Input\Query` attribute to
+map a query string parameter to a class property, like this:
 
 ```php
 namespace App\Filter;
@@ -260,7 +285,32 @@ class MyFilter extends Filter
 }
 ```
 
-You can combine multiple sources inside the Filter object:
+In this example, the `Query` attribute will map the value of the query string parameter with the key `username` to the
+`login` property.
+
+When using an attribute, you can either specify a `key` argument or omit it. If you omit the key argument, the attribute
+will use the name of the class property as the key.
+
+For example:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Model\Filter;
+
+class MyFilter extends Filter
+{
+    #[Query]
+    public string $login;
+}
+```
+
+In this case, the `Query` attribute will map the value of the query string parameter with the key `login` to the `login`
+property.
+
+You can use multiple attributes in a single filter class to map different parts of the request data to different class
+properties.
 
 ```php
 namespace App\Filter;
@@ -278,218 +328,47 @@ class MyFilter extends Filter
     #[Cookie]
     public string $memberCookie;
 
-    #[Post]
+    #[Post(key: 'user')]
     public string $username;
 
     #[Post]
     public string $password;
 
-    #[Post]
+    #[Post(key: 'remember')]
     public string $rememberMe;
 }
 ```
 
-### Array based Filters
+By using multiple attributes in this way, you can easily extract and map different pieces of request data to the
+appropriate class properties.
 
-For example, we can tell our Filter to point the field `login` to the QUERY param `username`:
+### Available attributes
 
-```php
-namespace App\Filter;
+Here is a list of the available request filter attributes:
 
-use Spiral\Filters\Model\Filter;
-use Spiral\Filters\Model\FilterDefinitionInterface;
-use Spiral\Filters\Model\HasFilterDefinition;
-use Spiral\Validator\FilterDefinition;
+- `Spiral\Filters\Attribute\Input\Post`: a value from the POST data.
+- `Spiral\Filters\Attribute\Input\Query`: a value from the query string.
+- `Spiral\Filters\Attribute\Input\Input`: a value from either the POST data or the query string.
+- `Spiral\Filters\Attribute\Input\Data`: a value from any of the request data (POST, query string, etc.).
+- `Spiral\Filters\Attribute\Input\File`: an uploaded file. It will return `Psr\Http\Message\UploadedFileInterface`
+  object or `null`.
+- `Spiral\Filters\Attribute\Input\Cookie`: a value from a cookie.
+- `Spiral\Filters\Attribute\Input\Header`: a value from the request headers.
+- `Spiral\Filters\Attribute\Input\IsAjax`: a boolean value indicating whether the request was made with the
+  `X-Requested-With` header set to `xmlhttprequest`.
+- `Spiral\Filters\Attribute\Input\IsJsonExpected`: a boolean value indicating whether the client expects a
+  `application/json` response.
+- `Spiral\Filters\Attribute\Input\IsSecure`: a boolean value indicating whether the request was made over HTTPS.
+- `Spiral\Filters\Attribute\Input\Method`: the HTTP method of the request (e.g. GET, POST, etc.).
+- `Spiral\Filters\Attribute\Input\Path`: the current request path.
+- `Spiral\Filters\Attribute\Input\RemoteAddress`: the IP address of the client.
+- `Spiral\Filters\Attribute\Input\Route`: a value from the current route attributes.
+- `Spiral\Filters\Attribute\Input\Server`: a value from the request server data.
+- `Spiral\Filters\Attribute\Input\Uri`: the current page URI in the form of a `Psr\Http\Message\UriInterface` object.
+- `Spiral\Filters\Attribute\Input\BearerToken`: the value of the `Authorization` header to a class property.
 
-class MyFilter extends Filter implements HasFilterDefinition
-{
-    public function filterDefinition(): FilterDefinitionInterface
-    {
-        return new FilterDefinition(mappingSchema: 
-            [
-                'login' => 'query:username'
-            ]
-        );
-    }
-}
-```
 
-You can combine multiple sources inside the Filter:
-
-```php
-namespace App\Filter;
-
-use Spiral\Filters\Model\Filter;
-use Spiral\Filters\Model\FilterDefinitionInterface;
-use Spiral\Filters\Model\HasFilterDefinition;
-use Spiral\Validator\FilterDefinition;
-
-class MyFilter extends Filter implements HasFilterDefinition
-{
-    public function filterDefinition(): FilterDefinitionInterface
-    {
-        return new FilterDefinition(mappingSchema: 
-            [
-                'redirectTo'   => 'query:redirectURL',
-                'memberCookie' => 'cookie:memberCookie',
-                'username'     => 'data:username',
-                'password'     => 'data:password',
-                'rememberMe'   => 'data:rememberMe'
-            ]
-        );
-    }
-}
-```
-
-> **Note**
-> The most common source is `data` (points to PSR-7 - the parsed body), you can use this data to fetch values from the
-> incoming JSON payloads.
-
-### Dot Notation
-
-The data **origin** can be specified using the dot notation pointing to some nested structure.
-
-Via attributes:
-
-```php
-namespace App\Filter;
-
-use Spiral\Filters\Attribute\Input\Post;
-use Spiral\Filters\Model\Filter;
-use Spiral\Filters\Model\FilterDefinitionInterface;
-use Spiral\Filters\Model\HasFilterDefinition;
-use Spiral\Validator\FilterDefinition;
-
-class MyFilter extends Filter implements HasFilterDefinition
-{
-    #[Post(key: 'names.first')]
-    public string $firstName;
-    
-    public function filterDefinition(): FilterDefinitionInterface
-    {
-        return new FilterDefinition([
-            'firstName' => ['string', 'required']
-        ]);
-    }
-}
-```
-
-Via array mapping:
-
-```php
-namespace App\Filter;
-
-use Spiral\Filters\Model\Filter;
-use Spiral\Filters\Model\FilterDefinitionInterface;
-use Spiral\Filters\Model\HasFilterDefinition;
-use Spiral\Validator\FilterDefinition;
-
-class MyFilter extends Filter implements HasFilterDefinition
-{
-    public function filterDefinition(): FilterDefinitionInterface
-    {
-        return new FilterDefinition(
-            [
-                'firstName' => ['string', 'required']
-            ], 
-            [
-                'firstName' => 'data:names.first'
-            ]
-        );
-    }
-}
-```
-
-We can accept and validate the following data structure:
-
-```json
-{
-  "names": {
-    "first": "Antony"
-  }
-}
-```
-
-> **Note**
-> Error messages will be correctly mounted into the original location. You can also use composite filters for more
-> complex use-cases.
-
-### Other Sources
-
-By design, you can use any method of [InputManager](../http/request-response.md) as a source where origin is passed
-parameter. The following sources are available:
-
-| Source         | Description                                                       |
-|----------------|-------------------------------------------------------------------|
-| uri            | The current page Uri in a form of `Psr\Http\Message\UriInterface` |
-| path           | The current page path                                             |
-| method         | Http method (GET, POST, ...)                                      |
-| isSecure       | If https is used                                                  |
-| isAjax         | If `X-Requested-With` is set as `xmlhttprequest`                  |
-| isJsonExpected | When the client expects `application/json`                        |
-| remoteAddress  | User ip address                                                   |
-
-> **Note**
-> Read more about the InputManager [here](../http/request-response.md).
-
-For example, to check if a user request is made over https.
-
-Via attributes:
-
-```php
-namespace App\Filter;
-
-use Spiral\Filters\Attribute\Input\IsSecure;
-use Spiral\Filters\Model\Filter;
-use Spiral\Filters\Model\FilterDefinitionInterface;
-use Spiral\Filters\Model\HasFilterDefinition;
-use Spiral\Validator\FilterDefinition;
-
-class MyFilter extends Filter implements HasFilterDefinition
-{
-    #[IsSecure]
-    public bool $httpsRequest;
-
-    public function filterDefinition(): FilterDefinitionInterface
-    {
-        return new FilterDefinition([
-            'httpsRequest' => [
-                ['required', 'error' => 'Connection is not secure.']
-            ]
-        ]);
-    }
-}
-```
-
-Via array mapping:
-
-```php
-namespace App\Filter;
-
-use Spiral\Filters\Model\Filter;
-use Spiral\Filters\Model\FilterDefinitionInterface;
-use Spiral\Filters\Model\HasFilterDefinition;
-use Spiral\Validator\FilterDefinition;
-
-class MyFilter extends Filter implements HasFilterDefinition
-{
-    public function filterDefinition(): FilterDefinitionInterface
-    {
-        return new FilterDefinition(
-            [
-                'httpsRequest' => [
-                    ['required', 'error' => 'Connection is not secure.']
-                ]
-            ],
-            [
-                'httpsRequest' => 'isSecure:httpsRequest'
-            ]
-        );
-    }
-}
-```
-
-### Route Parameters
+#### Route Parameters
 
 Every route writes the matching parameters into the ServerRequestInterface attribute `matches`, is it possible to access
 route values inside your filter.
@@ -539,16 +418,106 @@ class MyFilter extends Filter implements HasFilterDefinition
 }
 ```
 
-### Setters
+### Data sanitization
 
-Use setters to typecast the incoming value before passing it to the validator. The Filter will assign null to the value
-in case of a typecast error:
+The `Spiral\Filters\Attribute\Setter` attribute allows you to apply a filter function to the incoming value
+before it is set on the class property. This can be useful if you want to perform some kind of transformation or
+manipulation on the value before it is stored in the class.
+
+Here is an example of how you can use the attribute:
 
 ```php
 namespace App\Filter;
 
 use Spiral\Filters\Attribute\Input\Query;
-use Spiral\Filters\Attribute\Setter;
+use Spiral\Filters\Model\Filter;
+
+class MyFilter extends Filter
+{
+    #[Query]
+    #[Setter(filter: 'trim')]
+    public string $login;
+
+    #[Query]
+    #[Setter(filter: 'intval')]
+    public int $age;
+
+    #[Query]
+    #[Setter(filter: [self::class, 'sanitizeContent'])]
+    public string $description = '';
+}
+```
+
+> **Note**
+> You can use any default PHP functions like `intval`, `strval` etc.
+
+### Creating a custom attribute
+
+You can create your own custom request filter attributes by extending the `Spiral\Filters\Attribute\Input\AbstractInput`
+class and implementing the `getValue` and `getSchema` methods. This allows you to define your own data retrieval logic
+and specify the type of value that should be returned by the attribute.
+
+```php
+namespace App\Validation\Attribute;
+
+use Spiral\Attributes\NamedArgumentConstructor;
+use Spiral\Filters\Attribute\Input\AbstractInput;
+use Spiral\Filters\InputInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\UploadedFile;
+
+#[\Attribute(\Attribute::TARGET_PROPERTY), NamedArgumentConstructor]
+final class Base64DecodedQuery extends AbstractInput
+{
+    /**
+     * @param non-empty-string|null $key
+     */
+    public function __construct(
+        public readonly ?string $key = null,
+    ) {
+    }
+
+    public function getValue(InputInterface $input, \ReflectionProperty $property): ?string
+    {
+        $value = $input->getValue('query', $this->getKey($property));
+        if ($value === null) {
+            return null;
+        }
+        
+        return \base64_decode($value);
+    }
+
+    public function getSchema(\ReflectionProperty $property): string
+    {
+        return 'query:' . $this->getKey($property);
+    }
+}
+```
+
+After that, we can use our attribute in the Filter:
+
+```php
+namespace App\Filter;
+
+use App\Validation\Attribute\Base64DecodedQuery;
+use Spiral\Filters\Model\Filter;
+
+class MyFilter extends Filter
+{
+    #[Base64DecodedQuery]
+    public ?string $hash = null;
+}
+```
+
+### Dot Notation
+
+The data **origin** can be specified using the dot notation pointing to some nested structure.
+
+Via attributes:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Model\Filter;
 use Spiral\Filters\Model\FilterDefinitionInterface;
 use Spiral\Filters\Model\HasFilterDefinition;
@@ -556,21 +525,32 @@ use Spiral\Validator\FilterDefinition;
 
 class MyFilter extends Filter implements HasFilterDefinition
 {
-    #[Query(key: 'id')]
-    #[Setter(filter: 'intval')]
-    public int $number;
-
+    #[Post(key: 'names.first')]
+    public string $firstName;
+    
     public function filterDefinition(): FilterDefinitionInterface
     {
         return new FilterDefinition([
-            'number' => ['required', ['number::higher', 5]]
+            'firstName' => ['string', 'required']
         ]);
     }
 }
 ```
 
+We can accept and validate the following data structure:
+
+```json
+{
+  "names": {
+    "first": "Antony"
+  }
+}
+```
+
 > **Note**
-> You can use any default PHP functions like `intval`, `strval` etc.
+> Error messages will be correctly mounted into the original location. You can also use composite filters for more
+> complex use-cases.
+
 
 ```php
 namespace App\Controller;
@@ -588,11 +568,11 @@ class HomeController
 
 ## Validation
 
+The validation rules can be defined using the same approach as in [Validator](../validation/spiral.md) component.
+
 > **Note**
 > FilterDefinition class should implement `Spiral\Filters\Model\ShouldBeValidated` if a filter object should be
 > validated.
-
-The validation rules can be defined using the same approach as in [Validator](../validation/spiral.md) component.
 
 ```php
 namespace App\Filter;
@@ -616,8 +596,6 @@ class MyFilter extends Filter implements HasFilterDefinition
     }
 }
 ```
-
-You can use all the checkers, conditions, and rules.
 
 ### Handle Validation errors
 
@@ -651,6 +629,7 @@ renderer by binding your own implementation of `Spiral\Filters\ErrorsRendererInt
 
 ```php
 namespace App\Filter;
+
 use Psr\Http\Message\ResponseInterface;
 use Spiral\Filters\ErrorsRendererInterface;
 use Spiral\Http\ResponseWrapper;
@@ -672,8 +651,6 @@ final class CustomJsonErrorsRenderer implements ErrorsRendererInterface
     }
 }
 ```
-
-And then you need to register middleware for specific route group.
 
 ```php
 namespace App\Bootloader;
@@ -753,8 +730,6 @@ class MyFilter extends Filter implements HasFilterDefinition
 ## Usage
 
 Once the Filter is configured you can access its fields (filtered data).
-The `Spiral\Filters\Model\Interceptor\ValidateFilterInterceptor` will automatically validate the data when the filter
-is requested and throw a `Spiral\Filters\Exception\ValidationException` if the data is not valid.
 
 ### Get Fields
 

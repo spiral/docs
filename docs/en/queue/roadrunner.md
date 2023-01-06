@@ -1,6 +1,7 @@
 # Queue and Jobs - RoadRunner integration
 
-Roadrunner queues provide a unified queueing API across a variety of different queue backends. You can read full information about supported pipelines on the [official site](https://roadrunner.dev/docs/plugins-jobs/2.x/en).
+Roadrunner queues provide a unified queueing API across a variety of different queue backends. You can read full 
+information about supported pipelines on the [official site](https://roadrunner.dev/docs/plugins-jobs/2.x/en).
 
 The `spiral/roadrunner-bridge` package is included by default in the Web and GRPC builds.
 
@@ -17,7 +18,7 @@ Activate the bootloader `Spiral\RoadRunnerBridge\Bootloader\QueueBootloader` in 
 ```php
 protected const LOAD = [
     // ...
-    Spiral\RoadRunnerBridge\Bootloader\QueueBootloader::class,
+    \Spiral\RoadRunnerBridge\Bootloader\QueueBootloader::class,
     // ...
 ];
 ```
@@ -87,6 +88,7 @@ return [
 ```
 
 > **Note**
-> Connections with the roadrunner driver will automatically declare pipelines without configuring on the RoadRunner side. If the pipeline is declared via the RoadRunner config, Queue manager will just connect to it (without declaring).
+> Connections with the roadrunner driver will automatically declare pipelines without configuring on the RoadRunner 
+> side. If the pipeline is declared via the RoadRunner config, Queue manager will just connect to it (without declaring).
 
 

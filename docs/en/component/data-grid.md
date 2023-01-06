@@ -20,7 +20,8 @@ bootloaders:
 ```php
 protected const LOAD = [
     // ...
-    Spiral\DataGrid\Bootloader\GridBootloader::class
+    \Spiral\DataGrid\Bootloader\GridBootloader::class,
+    // ...
 ];
 ```
 

@@ -21,7 +21,7 @@ Activate the bootloader `Spiral\Cycle\Bootloader\DatabaseBootloader` in your app
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Cycle\Bootloader\DatabaseBootloader::class,
+    \Spiral\Cycle\Bootloader\DatabaseBootloader::class,
     // ...
 ];
 ```
@@ -31,7 +31,7 @@ To enable the migrations component:
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Cycle\Bootloader\MigrationsBootloader::class,
+    \Spiral\Cycle\Bootloader\MigrationsBootloader::class,
     // ...
 ];
 ```
@@ -250,7 +250,7 @@ Activate the bootloader `Spiral\Cycle\Bootloader\CommandBootloader` in your appl
 ```php
 protected const LOAD = [
     // ...
-    Spiral\Cycle\Bootloader\CommandBootloader::class,
+    \Spiral\Cycle\Bootloader\CommandBootloader::class,
     // ...
 ];
 ```
