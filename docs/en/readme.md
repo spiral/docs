@@ -95,16 +95,19 @@
     * [Running Jobs](queue/jobs.md)
     * [RoadRunner integration](queue/roadrunner.md)
     * [Interceptors](queue/interceptors.md)
-* WebSockets
-    * [Installation and Configuration](websockets/configuration.md)
-    * [Event handlers](websockets/services.md)
-    * [Broadcasting](websockets/broadcasting.md)
-    * [Interceptors](websockets/interceptors.md)
+* Temporal
+  * [Installation and Configuration](temporal/configuration.md) 
+  * [Creating Workflows](temporal/workflow.md)
 * GRPC
     * [Installation and Configuration](grpc/configuration.md)
     * [Service Code](grpc/service.md)
     * [Client SDK](grpc/client.md)
     * [Interceptors](grpc/interceptors.md)
+* WebSockets
+  * [Installation and Configuration](websockets/configuration.md)
+  * [Event handlers](websockets/services.md)
+  * [Broadcasting](websockets/broadcasting.md)
+  * [Interceptors](websockets/interceptors.md)
 * Views
     * [Installation and Configuration](views/configuration.md)
     * [Rendering Views](views/render.md)
