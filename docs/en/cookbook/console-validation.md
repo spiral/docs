@@ -11,6 +11,11 @@ Using filters to validate console command input data can help to ensure that you
 data, and can also make it easier to manage your validation logic. Additionally, filters can be reused across different
 console commands, which can help to reduce code duplication and make it easier to maintain your application.
 
+## Prinsiples of work
+
+![Console Filters](https://user-images.githubusercontent.com/773481/211006701-170ee6b7-158c-4310-96bc-d675ff22aac2.png)
+*Illustration of the process of filtering and validating input data in an Console application*
+
 ## Console command
 
 Let's imagine that we have a console command that accepts a user's name and email address as input:
