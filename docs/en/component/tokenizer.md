@@ -213,6 +213,10 @@ class AppBootloader extends Bootloader
 }
 ```
 
+> **Warning**
+> To ensure that your listeners are called correctly, make sure to register them in bootloaders from within the `LOAD`
+> section of the application Kernel. Listeners will not be called if you register them  within the `APP` kernel section.
+
 Overall, the Tokenizer Listeners are a useful way to improve performance when using the `ClassesInterface` to search
 for classes in a large codebase. By registering listeners and allowing the tokenizer component to scan the directories
 only once, you can reduce the number of times the directories are scanned and improve the overall performance of your
