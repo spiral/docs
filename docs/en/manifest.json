@@ -117,6 +117,7 @@
       "filters/configuration": "Installation and Configuration",
       "filters/filter": "Filter Object",
       "filters/composite": "Composite Filters",
+      "filters/interceptors": "Interceptors",
       "filters/bridge": "Migration from 2.x"
     }
   },

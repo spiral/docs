@@ -77,6 +77,7 @@
     * [Installation and Configuration](filters/configuration.md)
     * [Filter Object](filters/filter.md)
     * [Composite Filters](filters/composite.md)
+    * [Interceptors](filters/interceptors.md)
     * [Migration from 2.x](filters/bridge.md)
 * Database
     * [Installation and Configuration](database/configuration.md)
