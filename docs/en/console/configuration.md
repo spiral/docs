@@ -1,19 +1,20 @@
 # Console - Installation and Configuration
 
-All of the provided application skeletons include the Console component by default. To enable the component in alternative
-builds, make sure to require composer package `spiral/console` and modify the application bootloader:
+The Spiral Framework's Console component makes it easy to create and manage console commands within your application. By
+leveraging the power of the symfony/console package, the Console component provides a convenient interface for working
+with console commands.
+
+All of the provided application skeletons include the Console component by default. To enable the component in
+alternative builds, make sure to require composer package `spiral/console` and modify the application bootloader:
 
 ```php
-[
+protected const LOAD = [
     //...
     Spiral\Bootloader\CommandBootloader::class,
-]
+];
 ```
 
-Make sure to include this bootloader last, as it will also activate the set of default commands for previously added
-components.
-
-To invoke application command run:
+To invoke application command just run:
 
 ```bash
 php app.php command:name
@@ -33,10 +34,14 @@ php app.php help command:name
 
 ## Invoke in Application
 
-You can invoke console commands inside your application or application tests. This approach can be useful to create mock
-data for tests or automatically pre-configure the database.
+It is possible to invoke console commands inside your application or application tests. This can be a useful approach
+for creating mock data for tests, automatically pre-configuring the database, or performing other tasks that require the
+use of console commands.
 
-Use `Spiral\Console\Console` to do that:
+To invoke a console command from within your application or tests, you can use the `Spiral\Console\Console` service.
+This service provides a `run()` method that allows you to execute a console command by its name with arguments.
+
+Here is an example of how you might use it to invoke a console command from within your application:
 
 ```php
 use Spiral\Console\Console;
@@ -101,77 +106,9 @@ public function boot(ConsoleBootloader $console): void
 ```
 
 > **Note**
-> By default, the Console component uses an auto-discovery mode to find all user commands in `app/` automatically.
-
-## Sequences
-
-There are two types of sequences in the Spiral Framework:
-
-### Configure
-
-A set of commands that will be run after invoke command `php app.php configure`
-
-To register a command in configure sequence:
-
-```php
-use Symfony\Component\Console\Output\OutputInterface;
-use Psr\Container\ContainerInterface;
-
-public function boot(ConsoleBootloader $console): void
-{
-    // Add console command in a sequence
-    $console->addConfigureSequence('my:command', '<info>Running my:command...</info>');
-    
-    // Add closure in a sequence
-    // It supports auto-wiring of arguments
-    $console->addConfigureSequence(function(OutputInterface $output, ContainerInterface $container) {
-        // do something
-        $output->writeln('...');
-    }, '<info>Running my:command...</info>');
-}
-```
-
-### Update
-
-A set of commands that will be run after invoke command `php app.php update`
-
-To register command in update sequence:
-
-```php
-public function boot(ConsoleBootloader $console): void
-{
-    $console->addUpdateSequence('my:command', '<info>Running my:command...</info>');
-    
-    // Add closure in a sequence
-    // It supports auto-wiring of arguments
-    $console->addUpdateSequence(function(OutputInterface $output, ContainerInterface $container) {
-        // do something
-        $output->writeln('...');
-    }, '<info>Running my:command...</info>');
-}
-```
-
-### Adding sequence
-
-You can create your own sequence. To create a new sequence (or to add a command to an already created custom sequence), 
-call the `addSequence` method in the `Spiral\Console\Bootloader\ConsoleBootloader` class. The name of the sequence must 
-be passed as the first parameter. The sequence name cannot be `configure` or `update`. They are already used in the framework.
-
-```php
-public function boot(ConsoleBootloader $console): void
-{
-    $console->addSequence('name', 'my:command', '<info>Running my:command...</info>');
-    
-    // Add closure in a sequence
-    // It supports auto-wiring of arguments
-    $console->addSequence('name', function(OutputInterface $output, ContainerInterface $container) {
-        // do something
-        $output->writeln('...');
-    }, '<info>Running my:command...</info>');
-}
-```
+> The component is configured by default to automatically discover commands located in the `app/src` directory.
 
 ## Connection with RoadRunner
 
-Please note that console commands invoke outside of the RoadRunner server. Make sure to run an instance of application
-server if any of your commands must communicate with it.
+**Please note that console commands invoke outside of the RoadRunner server. Make sure to run an instance of application
+server if any of your commands must communicate with it.**
