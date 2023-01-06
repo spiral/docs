@@ -75,6 +75,7 @@
     "links": {
       "console/configuration": "Installation and Configuration",
       "console/commands": "User Commands",
+      "console/sequences": "Command Sequences",
       "console/interceptors": "Interceptors"
     }
   },

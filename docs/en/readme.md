@@ -51,6 +51,7 @@
 * Console
     * [Installation and Configuration](console/configuration.md)
     * [User Commands](console/commands.md)
+    * [Command Sequences](console/sequences.md)
     * [Interceptors](console/interceptors.md)
 * HTTP
     * [Installation and Configuration](http/configuration.md)
