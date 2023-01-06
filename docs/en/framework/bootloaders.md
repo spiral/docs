@@ -22,23 +22,59 @@ class MyBootloader extends Bootloader
 }
 ```
 
-Every Bootloader must be activated in your application kernel. Add the class reference into `LOAD` or `APP` lists of
+Every Bootloader must be activated in your application kernel. Add the class reference into `defineBootloaders` or `defineAppBootloaders` functions of
 your `App\App` class:
 
 ```php
-protected const LOAD = [
-   // ...
-   \App\Bootloader\RoutesBootloader::class,
-];
+namespace App;
 
-protected const APP = [
-   \App\Bootloader\LoggingBootloader::class,
-   \App\Bootloader\MyBootloader::class,
-];
+use Spiral\Framework\Kernel;
+use App\Bootloader\RoutesBootloader;
+use App\Bootloader\LoggingBootloader;
+use App\Bootloader\MyBootloader;
+
+class App extends Kernel
+{
+    public function defineBootloaders(): array
+    {
+        return [
+            // ...
+           RoutesBootloader::class,
+        ]
+    }
+
+    public function defineAppBootloaders(): array
+    {
+        return [
+           LoggingBootloader::class,
+           MyBootloader::class,
+           
+           // anonymous bootloader via object instance
+           new class () extends Bootloader {
+               public const BINDINGS = [
+                 // ...
+               ];
+               public const SINGLETONS = [
+                 // ...
+               ];
+               
+               public function init(BinderInterface $binder): void
+               {
+                 // ...
+               }
+               
+               public function boot(BinderInterface $binder): void
+               {
+                  // ...
+               }
+           },
+       ];
+    }
+}
 ```
 
 > **Note**
-> `APP` bootloader namespace is always loaded after `LOAD`, keep domain-specific bootloaders in it.
+> `defineAppBootloaders` is always loaded after `defineBootloaders`, keep domain-specific bootloaders in it.
 
 Currently, your Bootloader doesn't do anything. A little bit later, we will add some functionality to it.
 

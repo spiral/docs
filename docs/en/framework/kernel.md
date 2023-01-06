@@ -215,3 +215,122 @@ $myapp->run(new Environment(['key' => 'value']));
 
 > **Note**
 > Such an approach can be used to bootstrap the application for testing purposes.
+
+## Bootload Manager
+
+The framework includes the `StrategyBasedBootloadManager` class, which allows you to implement a custom bootloading strategy for application.
+
+Here is the example:
+```php
+// file app.php
+
+use App\Application\Kernel;
+use App\Application\Service\ErrorHandler\Handler;
+use Spiral\Boot\BootloadManager\StrategyBasedBootloadManager;
+use Spiral\Boot\BootloadManager\Initializer;
+use Spiral\Core\Container;
+
+// ...
+
+$container = new Container();
+
+$app = Kernel::create(
+    directories: ['root' => __DIR__],
+    exceptionHandler: Handler::class,
+    bootloadManager: new StrategyBasedBootloadManager(
+        new RoadRunnerEnvInvokerStrategy(), 
+        $container, 
+        new Initializer($container, $container)
+    )
+)->run();
+
+// ...
+```
+
+Or via `Spiral\Core\Container\Autowire`:
+
+```php
+use App\Application\Kernel;
+use App\Application\Service\ErrorHandler\Handler;
+use Spiral\Boot\BootloadManager\StrategyBasedBootloadManager;
+use Spiral\Core\Container;
+use Spiral\Core\Container\Autowire;
+
+// ...
+
+$container = new Container();
+
+$app = Kernel::create(
+    directories: ['root' => __DIR__],
+    exceptionHandler: Handler::class,
+    bootloadManager: new Autowire(StrategyBasedBootloadManager::class, [
+        'invoker' => new CustomInvokerStrategy()
+    ])
+)->run();
+
+// ...
+```
+
+### Custom Bootload Manager
+
+You are free to create a custom manager for specific case. Simply create a class that extends `AbstractBootloadManager` and register it itself.
+
+Here is the example:
+```php
+use Spiral\Boot\BootloadManager\Spiral\Boot\BootloadManager;
+
+class MyBootloadManager extends AbstractBootloadManager
+{
+    protected function boot(array $classes, array $bootingCallbacks, array $bootedCallbacks): void
+    {
+        // ...
+    }
+}
+```
+
+Then register it:
+```php
+// file app.php
+
+use App\Application\Kernel;
+use App\Application\Service\ErrorHandler\Handler;
+use Spiral\Boot\BootloadManager\Initializer;
+use Spiral\Core\Container;
+
+// ...
+
+$container = new Container();
+
+$app = Kernel::create(
+    directories: ['root' => __DIR__],
+    exceptionHandler: Handler::class,
+    bootloadManager: new MyBootloadManager(
+        // ...
+    )
+)->run();
+
+// ...
+```
+
+Or via `Spiral\Core\Container\Autowire`:
+
+```php
+use App\Application\Kernel;
+use App\Application\Service\ErrorHandler\Handler;
+use Spiral\Core\Container;
+use Spiral\Core\Container\Autowire;
+
+// ...
+
+$container = new Container();
+
+$app = Kernel::create(
+    directories: ['root' => __DIR__],
+    exceptionHandler: Handler::class,
+    bootloadManager: new Autowire(MyBootloadManager::class, [
+        'parameter' => // ...
+    ])
+)->run();
+
+// ...
+```
