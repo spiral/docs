@@ -8,18 +8,15 @@ show you how to create a demo blog application with REST API, ORM, Migrations, r
 > The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more
 > information. You can find the demo repository [here](https://github.com/spiral/demo).
 
-
 ## Installation
 
 Use composer to install the default `spiral/app` bundle with most of the components out of the box:
 
 ```bash
 composer create-project spiral/app spiral-demo
+
 cd spiral-demo
 ```
-
-> **Note**
-> Use the different build `spiral/app-cli` to install the spiral with minimal dependencies.
 
 If everything is installed correctly, you can open your application immediately by starting the server:
 
@@ -27,12 +24,14 @@ If everything is installed correctly, you can open your application immediately 
 ./rr serve
 ```
 
-You've just started an [application server](/framework/application-server.md). The same server can be used on production,
+You've just started an [application server](/framework/application-server.md). The same server can be used on
+production,
 making your development environment similar to the final setup. Out of the box, the server includes instruments to
-write portable applications with HTTP/2, GRPC, Queue, WebSockets, etc. and does not require external brokers to operate.
+write portable applications with HTTP/2, [GRPC](../grpc/configuration.md), [Queue](../queue/configuration.md),
+[WebSockets](../broadcast/configuration.md), etc. and does not require external brokers to operate.
 
-By default, the application is available on `http://localhost:8080`. The build includes multiple pre-defined pages you can
-play with.
+By default, the application is available on `http://127.0.0.1:8080`. The build includes multiple pre-defined pages you
+can play with.
 
 > **Note**
 > Check the exception page `http://localhost:8080/exception.html`, at the right part of this page you can see all the
@@ -42,14 +41,15 @@ play with.
 ## Configure
 
 Spiral applications are configured using config files located in `app/config`, you can use the hardcoded values for the
-configuration, or get the values using available functions `env` and `directory`. The `spiral/app` bundle uses DotEnv
-extension which will load ENV variables from the `.env` file.
+configuration, or get the values using available functions `env` and [`directory`](../start/structure.md).
+The `spiral/app` bundle uses [DotEnv](../extension/dotenv.md) extension which will load ENV variables from the`.env` 
+file.
 
 > **Note**
 > Tweak the application server and its plugins using `.rr.yaml` file.
 
-The application dependencies defined in `composer.json` and activated in `app/src/Application/Kernel.php` as Bootloaders.
-The default build includes quite a lot of pre-configured components.
+The application dependencies defined in `composer.json` and activated in `app/src/Application/Kernel.php` as
+Bootloaders. The default build includes quite a lot of pre-configured components.
 
 ### Developer Mode
 
@@ -66,8 +66,9 @@ You can also create and use an alternative configuration file via `-c` flag of t
 > Read more about Workers and Lifecycle [here](/start/workers.md).
 
 ### Lighter Up
-We won't need translation, session, GRPC, cookies, CSRF, routing configuration via RoutesBootloader in our demo application. 
-Remove these components and their bootloaders.
+
+We won't need translation, session, GRPC, cookies, CSRF, routing configuration via RoutesBootloader in our demo
+application. Remove these components and their bootloaders.
 
 Delete the following bootloaders from `app/src/Application/Kernel.php`:
 
@@ -107,11 +108,11 @@ class RoutesBootloader extends BaseRoutesBootloader
  }
 ```
 
-By default, the routing rules are located in `app/src/Bootloader/RoutesBootloader.php`. You have many options on how
-to configure the routing. Point route to actions, controllers, controller groups, set the default pattern parameters,
-verbs, middleware, etc.
+By default, the routing rules are located in `app/src/Application/Bootloader/RoutesBootloader.php`. You have many
+options on how to configure the routing. Point route to actions, controllers, controller groups, set the default 
+pattern parameters, verbs, middleware, etc.
 
-Remove method `defineRoutes`. We will be adding routes using attributes:
+Remove method `defineRoutes`. We will add routes using attributes:
 
 ```diff
 class RoutesBootloader extends BaseRoutesBootloader
@@ -195,8 +196,9 @@ Delete the following files and directories as no longer required:
 
 ### Database Connection
 
-Our application needs a database to operate. By default, the database configuration is located in `app/config/database.php`
-file. The demo application comes with a pre-configured SQLite database located in `runtime/runtime.db`.
+Our application needs a database to operate. By default, the database configuration is located
+in `app/config/database.php` file. The demo application comes with a pre-configured SQLite database located in
+`runtime/runtime.db`.
 
 ```php
 // database.php 
@@ -267,15 +269,15 @@ php app.php db:list
 
 ### Connect Database Seeder
 
-We will need some sample data for the application. 
+We will need some sample data for the application.
 Let's install [Database Seeder](https://github.com/spiral-packages/database-seeder).
 
 ```bash
 composer require spiral-packages/database-seeder --dev
 ``` 
 
-Add the bootloader `Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader` to `LOAD` section in `app/src/Application/Kernel.php` 
-to activate the package:
+Add the bootloader `Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader` to `LOAD` section
+in `app/src/Application/Kernel.php` to activate the package:
 
 ```diff
 --- a/app/src/Application/Kernel.php
@@ -293,8 +295,9 @@ to activate the package:
 
 ### Creating Routes
 
-In order to simplify the route definition, we can use `spiral/annotated-routes` extension. Read more about the extension [here](/http/annotated-routes.md).
-Add the bootloader to `LOAD` in `app/src/Application/Kernel.php` to activate the component:
+In order to simplify the route definition, we can use `spiral/annotated-routes` extension. Read more about the
+extension [here](/http/annotated-routes.md). Add the bootloader to `LOAD` in `app/src/Application/Kernel.php` to 
+activate the component:
 
 ```diff
 --- a/app/src/Application/Kernel.php
@@ -349,39 +352,15 @@ php app.php route:reset
 
 ### Domain Core
 
-Connect a custom controller interceptor (domain-core) to enrich your domain layer with additional functionality.
+The domain core represents the fundamental domain logic and business rules that drive the functionality of an
+application. It constitutes the central aspect of the codebase and often encompasses the most critical and intricate
+elements of the software.
 
-Let's create an interceptor that will catch validation errors and return them in JSON:
+It is possible to modify the default behavior of the application by utilizing a route parameter and a `Guard` attribute
+to enable resolution of the Cycle Entity. To further enhance the application, the `ValidationHandlerMiddleware` can be 
+incorporated to properly validate incoming HTTP requests.
 
-```php
-// file app/src/Interceptor/ValidationInterceptor.php
-namespace App\Interceptor;
-
-use Spiral\Core\CoreInterceptorInterface;
-use Spiral\Core\CoreInterface;
-use Spiral\Filters\Exception\ValidationException;
-use Spiral\Http\ResponseWrapper;
-
-final class ValidationInterceptor implements CoreInterceptorInterface
-{
-    public function __construct(
-        private readonly ResponseWrapper $responseWrapper
-    ) {
-    }
-
-    public function process(string $controller, string $action, array $parameters, CoreInterface $core): mixed
-    {
-        try {
-            return $core->callAction($controller, $action, $parameters);
-        } catch (ValidationException $e) {
-            return $this->responseWrapper->json(['errors' => $e->errors], 400);
-        }
-    }
-}
-```
-
-We can change the default behavior of the application and enable Cycle Entity resolution using route parameter, 
-Filter validation and `Guard` attribute.
+Here is the example:
 
 ```php
 namespace App\Bootloader;
@@ -391,6 +370,7 @@ use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
 use Spiral\Cycle\Interceptor\CycleInterceptor;
 use Spiral\Domain\GuardInterceptor;
+use Spiral\FilterValidationHandlerMiddleware;
 
 class AppBootloader extends DomainBootloader
 {
@@ -401,8 +381,12 @@ class AppBootloader extends DomainBootloader
     protected const INTERCEPTORS = [
         CycleInterceptor::class,
         GuardInterceptor::class,
-        ValidationInterceptor::class,
     ];
+    
+    public function boot(HttpBootloader $http)
+    {
+        $http->addMiddleware(ValidationHandlerMiddleware::class);
+    }
 }
 ```
 
@@ -440,17 +424,16 @@ php app.php db:table migrations
 You can write the migration manually, or let Cycle ORM generate it for you.
 
 > **Note**  
-> Read more about migrations [here](https://cycle-orm.dev/docs/database-migrations). Use [Scaffolder](/basics/scaffolding.md) 
-> component to create migrations manually. 
+> Read more about migrations [here](https://cycle-orm.dev/docs/database-migrations).
+> Use [Scaffolder](/basics/scaffolding.md) component to create migrations manually.
 
 ### Define ORM Entities
 
 The demo application comes with [Cycle ORM](https://cycle-orm.dev). By default, you can use attributes to configure
 your entities.
 
-Enable the Cycle Bridge `Spiral\Cycle\Bootloader\ScaffolderBootloader` bootloader to use commands that create 
-entities and repositories.
-Add the bootloader to `APP` in `app/src/Application/Kernel.php`:
+Enable the Cycle Bridge `Spiral\Cycle\Bootloader\ScaffolderBootloader` bootloader to use commands that create
+entities and repositories. Add the bootloader to `APP` in `app/src/Application/Kernel.php`:
 
 ```diff
 --- a/app/src/Application/Kernel.php
@@ -497,6 +480,7 @@ class Post
  ```
 
 We can move the definition of the `$title` and `$content` properties to the `__construct` method:
+
 ```php
 namespace App\Database;
 
@@ -605,7 +589,7 @@ class Comment
 }
 ```
 
-Let's add the `Spiral\Prototype\Annotation\Prototyped` attribute to the repositories so that we can use them 
+Let's add the `Spiral\Prototype\Annotation\Prototyped` attribute to the repositories so that we can use them
 as users and posts properties during development:
 
 ```php
@@ -656,7 +640,8 @@ You can now observe the generated tables using `db:list` command.
 
 ### Create Relations
 
-Use [attributes](https://cycle-orm.dev/docs/annotated-relations) to define the relations between entities. Configure Post and Comment  relations with type BelongsTo and add relation HasMany between User and Post.
+Use [attributes](https://cycle-orm.dev/docs/annotated-relations) to define the relations between entities. Configure
+Post and Comment relations with type BelongsTo and add relation HasMany between User and Post.
 
 Post:
 
@@ -748,10 +733,10 @@ php app.php db:table comments
 
 ## Factories and seeders
 
-To generate test data, we need factories that will describe the rules for generating an entity. 
+To generate test data, we need factories that will describe the rules for generating an entity.
 And seeders that will fill the database.
 
-We will store them separately from the application code, in the `app/database` folder. 
+We will store them separately from the application code, in the `app/database` folder.
 Let's add a separate `Database` namespace to Composer autoload:
 
 ```diff
@@ -932,6 +917,7 @@ class UserFactory extends AbstractFactory
     }
 }
 ```
+
 ### BlogSeeder
 
 Let's create `BlogSeeder` class:
@@ -1267,7 +1253,8 @@ Use the [Data Grid component](/component/data-grid.md) to handle data formatting
 composer require spiral/data-grid-bridge
 ``` 
 
-Activate the `Spiral\DataGrid\Bootloader\GridBootloader` and `Spiral\Cycle\Bootloader\DataGridBootloader` in your application.
+Activate the `Spiral\DataGrid\Bootloader\GridBootloader` and `Spiral\Cycle\Bootloader\DataGridBootloader` in your
+application.
 
 To use data grids, we have to specify our data schema first, create `App\View\PostGrid` class:
 
@@ -1337,6 +1324,9 @@ You can use sorters, filters, and pagination in one request. Multiple filters ca
 
 To validate the request, we will use the [spiral/validator](https://github.com/spiral/validator) package.
 
+> **Note**
+> Read more about request validation [here](../filters/configuration.md).
+
 To install the package:
 
 ```bash
@@ -1369,7 +1359,7 @@ use Spiral\Validator\FilterDefinition;
 
 class CommentFilter extends Filter implements HasFilterDefinition
 {
-    #[Post(key: 'message')]
+    #[Post]
     public readonly string $message;
 
     public function filterDefinition(): FilterDefinitionInterface
@@ -1416,7 +1406,9 @@ class CommentService
 
 ### Controller Action
 
-Declare controller method and request filter instance. If a filter class implements `Spiral\Filters\Model\HasFilterDefinition` interface, the Filters component will guarantee that the filter is valid. Create `comment` endpoint to post a message to the given post:
+Declare controller method and request filter instance. If a filter class
+implements `Spiral\Filters\Model\HasFilterDefinition` interface, the Filters component will guarantee that the filter is
+valid. Create `comment` endpoint to post a message to the given post:
 
 ```php
 #[Route(route: '/api/post/<post:\d+>/comment', name: 'post.comment', methods: 'POST')]
@@ -1433,7 +1425,7 @@ public function comment(Post $post, CommentFilter $commentFilter): array
 ```
 
 > **Note**
-> Use `spiral/toolkit` Stempler extension to create AJAX-native forms in HTML. 
+> Use `spiral/toolkit` Stempler extension to create AJAX-native forms in HTML.
 
 ### Execute
 
@@ -1470,12 +1462,12 @@ curl -X POST -H 'content-type: application/json' --data '{"message": "first comm
 ```
 
 > **Note**
-> Read more about filters [here](/filters/filter.md). 
+> Read more about filters [here](/filters/filter.md).
 
 ## Render Template
 
-To render post information into HTML form, use [views](/views/configuration.md) and [Stempler](/stempler/configuration.md)
-component. Pass a post list to the view using Grid object.
+To render post information into HTML form, use [views](/views/configuration.md)
+and [Stempler](/stempler/configuration.md) component. Pass a post list to the view using Grid object.
 
 ```php
 #[Route(route: '/posts', name: 'post.all', methods: 'GET')] 
@@ -1514,10 +1506,10 @@ Create a view file `app/views/posts.dark.php` and extend parent layout.
 
 <define:body>
     @foreach($posts as $post)
-        <div class="post">
-            <div class="title">{{$post->title}}</div>
-            <div class="author">{{$post->author->name}}</div>
-        </div>
+    <div class="post">
+        <div class="title">{{$post->title}}</div>
+        <div class="author">{{$post->author->name}}</div>
+    </div>
     @endforeach
 </define:body>
 ```
@@ -1572,6 +1564,7 @@ public function findOneWithComments(string $id): ?Post
 And corresponding view `app/views/post.dark.php`:
 
 ```html
+
 <extends:layout.base title="Posts"/>
 
 <define:body>
@@ -1581,10 +1574,10 @@ And corresponding view `app/views/post.dark.php`:
     </div>
     <div class="comments">
         @foreach($post->comments as $comment)
-            <div class="comment">
-                <div class="message">{{$comment->message}}</div>
-                <div class="author">{{$comment->author->name}}</div>
-            </div>
+        <div class="comment">
+            <div class="message">{{$comment->message}}</div>
+            <div class="author">{{$comment->author->name}}</div>
+        </div>
         @endforeach
     </div>
 </define:body>
@@ -1600,17 +1593,18 @@ Open the post page using `http://localhost:8080/post/1`.
 Use `post.view` route name to generate a link in `app/views/posts.dark.php`:
 
 ```html
+
 <extends:layout.base title="Posts"/>
-       
+
 <define:body>
-   @foreach($posts as $post)
-       <div class="post">
-           <div class="title">
-               <a href="@route('post.view', ['id' => $post->id])">{{$post->title}}</a>
-           </div>
-           <div class="author">{{$post->author->name}}</div>
-       </div>
-   @endforeach
+    @foreach($posts as $post)
+    <div class="post">
+        <div class="title">
+            <a href="@route('post.view', ['id' => $post->id])">{{$post->title}}</a>
+        </div>
+        <div class="author">{{$post->author->name}}</div>
+    </div>
+    @endforeach
 </define:body>
 ```
 
