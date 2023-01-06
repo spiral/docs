@@ -1,8 +1,19 @@
 # Filters - Installation and Configuration
 
-The `spiral/filters` allows you to create filters that can be used to filter and validate request input data. A filter
-is a PHP class that contains a set of properties, each of which represents a request input field that can be filtered
-and validated.
+The `spiral/filters` is a powerful component for filtering and validating input data. It allows you to define a set of
+rules for each input field, and then use those rules to ensure that the input data is in the correct format and meets
+any other requirements you have set. You can use filters to validate data from HTTP requests, gRPC requests, console
+commands, and other sources.
+
+> **Note**
+> Read more about how to use filters for console commands [here](../cookbook/console-validation.md)
+
+One of the benefits of using filters is that it helps to centralize your input validation logic in a single place. This
+can make it easier to maintain your code, as you don't need to duplicate validation logic in multiple places throughout
+your application.
+
+Additionally, filters can be reused across different parts of your application, which can help to reduce code
+duplication and make it easier to manage your validation logic.
 
 > **Note**
 > If you are migrating from Spiral Framework 2.x and want to continue using the old filters you can use
@@ -25,7 +36,7 @@ protected const LOAD = [
 ];
 ```
 
-## Input Binding
+## Input sources
 
 The filter components operate using the `Spiral\Filter\InputInterface` as a primary data source:
 
@@ -163,7 +174,6 @@ final class ValidatorBootloader extends Bootloader
 
 And now you can use the filter definition in your filter:
 
-
 ```php
 namespace App\Filter;
 
@@ -188,5 +198,5 @@ final class UserFilter extends Filter implements HasFilterDefinition
 ```
 
 > **Note**
-> Try URL with `?username=john`. The `UserFilter` will automatically pre-validate your request before delivering it to 
+> Try URL with `?username=john`. The `UserFilter` will automatically pre-validate your request before delivering it to
 > the controller.

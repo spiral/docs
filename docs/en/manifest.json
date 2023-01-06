@@ -47,7 +47,8 @@
     "links": {
       "cookbook/domain-core": "Domain Core and Controllers",
       "cookbook/injector": "Container Injectors",
-      "cookbook/custom-dispatcher": "Custom Dispatcher"
+      "cookbook/custom-dispatcher": "Custom Dispatcher",
+      "cookbook/console-validation": "Console command validation"
     }
   },
   {

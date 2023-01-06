@@ -1,6 +1,7 @@
 # Console - Interceptors
 
-Interceptors allow you to intercept the execution of a console command and execute some logic before or after the command execution.
+Interceptors allow you to intercept the execution of a console command and execute some logic before or after the
+command execution.
 
 ## Creating an Interceptor
 
