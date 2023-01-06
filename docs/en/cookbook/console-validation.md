@@ -1,6 +1,6 @@
 # Console command input validation
 
-The ёspiral/filtersё is a powerful component for filtering and validating input data. It allows you to create filters
+The `spiral/filters` is a powerful component for filtering and validating input data. It allows you to create filters
 that can be used to map and validate input data from various sources, such as HTTP requests, gRPC requests and console
 commands.
 
