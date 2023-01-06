@@ -5,9 +5,6 @@ rules for each input field, and then use those rules to ensure that the input da
 any other requirements you have set. You can use filters to validate data from HTTP requests, gRPC requests, console
 commands, and other sources.
 
-> **Note**
-> Read more about how to use filters for console commands [here](../cookbook/console-validation.md)
-
 One of the benefits of using filters is that it helps to centralize your input validation logic in a single place. This
 can make it easier to maintain your code, as you don't need to duplicate validation logic in multiple places throughout
 your application.
@@ -15,12 +12,19 @@ your application.
 Additionally, filters can be reused across different parts of your application, which can help to reduce code
 duplication and make it easier to manage your validation logic.
 
+![Filters](https://user-images.githubusercontent.com/773481/211005150-ba8803ed-42c1-40eb-9cf0-7e45e15b0b73.png)
+*Illustration of the process of filtering and validating input data in an HTTP layer*
+
+<br />
+
 > **Note**
-> If you are migrating from Spiral Framework 2.x and want to continue using the old filters you can use
-> [spiral/filters-bridge](https://github.com/spiral/filters-bridge) package.
-> Read more about using the package [here](../filters/bridge.md).
+> Read more about how to use filters for console commands [here](../cookbook/console-validation.md)
+
+<br />
 
 ## Installation
+<br />
+
 
 > **Note**
 > The component relies on [Validation](../validation/factory.md) component, make sure to read it first.
