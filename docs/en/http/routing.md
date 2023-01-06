@@ -453,6 +453,47 @@ $router->setRoute('home', new Route(
 > This route will only match URLs with numeric `id` but it doesn't mean that the route attribute `id` will contain integer
 > value. In this case, the attribute will always contain a string value.
 
+### Named route patterns
+
+If you would like a route parameter to always be constrained by a given regular expression, you may use named patterns. You should define these patterns via `Spiral\Router\Registry\RoutePatternRegistryInterface` in a bootloader:
+
+```php
+use Spiral\Router\Registry\RoutePatternRegistryInterface;
+
+class AppBootloader extends Bootloader
+{
+   public function boot(RoutePatternRegistryInterface $patternRegistry): void
+   {
+      $patternRegistry->register(
+          'uuid', 
+          '[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}'
+      );
+      $patternRegistry->register(
+          'names', 
+          new InArrayPattern(['tom', 'jerry'])
+      );
+   }
+}
+```
+
+Once the pattern has been defined, it is automatically applied to all routes using that parameter name: 
+
+#### Example:
+```php
+#Route(uri: 'blog/post/<post:uuid>')  // <===== Will match: /blog/post/f403554a-e70f-479a-969b-3edc047912a3
+public function show(string $post)
+{ 
+    \var_dump($post); // f403554a-e70f-479a-969b-3edc047912a3
+}
+```
+```php
+#Route(uri: 'user/<name:names>') // <===== Will match: /user/tom || /user/jerry
+public function show(string $name)
+{ 
+    \var_dump($name); // tom
+}
+```
+
 ### Route parameters casting
 
 #### Integer values casting
