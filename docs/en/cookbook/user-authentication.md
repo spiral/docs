@@ -191,7 +191,7 @@ After that, you can set the `JWTTokenStorage` as the default token storage:
 AUTH_TOKEN_STORAGE=jwt
 ```
 
-## Steps for implementing user authentication in a Spiral Framework application
+## Steps for implementing user authentication
 
 ### 1. Create a login form
 
