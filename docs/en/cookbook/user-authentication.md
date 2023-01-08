@@ -22,7 +22,7 @@ incoming request for a valid authentication token and loading the user's authent
 storage if one is found.
 
 > **Note:**
-> Read more about the middleware купшыекфешщт in the [Route](../http/routing.md#middleware) section.
+> Read more about the middleware registration in the [Route](../http/routing.md#middleware) section.
 
 When the `AuthMiddleware` loads an authentication token from the incoming request, it creates a new scope and binds an
 instance of the `Spiral\Auth\AuthContext` to the `Spiral\Auth\AuthContextInterface` in the scoped container. This
