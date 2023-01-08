@@ -14,13 +14,15 @@ For example, the `Spiral\Auth\TokenStorageInterface` can be used to generate and
 while the `Spiral\Auth\HttpTransportInterface` can be used to send or receive tokens to clients.
 
 > **Note:**
-> Read more about the `TokenStorageInterface` and `HttpTransportInterface` in
-> the [Authentication](../security/authentication.md) section.
+> Read more about the interfaces in the [Authentication](../security/authentication.md) section.
 
 Before you can implement user authentication in an application, you will need to add
 the `Spiral\Auth\Middleware\AuthMiddleware` to the middleware list. This middleware is responsible for checking the
 incoming request for a valid authentication token and loading the user's authentication information from the token
 storage if one is found.
+
+> **Note:**
+> Read more about the middleware купшыекфешщт in the [Route](../http/routing.md#middleware) section.
 
 When the `AuthMiddleware` loads an authentication token from the incoming request, it creates a new scope and binds an
 instance of the `Spiral\Auth\AuthContext` to the `Spiral\Auth\AuthContextInterface` in the scoped container. This
