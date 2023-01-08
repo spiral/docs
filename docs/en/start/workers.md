@@ -20,7 +20,7 @@ isolated and works independently, following a "share nothing" approach where res
 This allows developers to write code in a way that is familiar to them and allows workers to be horizontally scaled,
 improving resource utilization and increasing the capacity to handle incoming requests.
 
-![RoadRunner HTTP bootstraping](https://user-images.githubusercontent.com/773481/211190619-4b8f680e-b1b6-4e12-885a-1246039d76fe.jpg)
+![RoadRunner HTTP bootstraping](https://user-images.githubusercontent.com/773481/211197998-96b09ff1-4ede-4db0-9b1d-902e996920be.jpg)
 
 Using RoadRunner can significantly improve the speed and efficiency by eliminating the need for
 the application to go through the bootstrapping process repeatedly. This can save on CPU and memory resources and reduce
