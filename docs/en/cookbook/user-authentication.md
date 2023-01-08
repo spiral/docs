@@ -29,6 +29,10 @@ instance of the `Spiral\Auth\AuthContext` to the `Spiral\Auth\AuthContextInterfa
 allows you to access the `AuthContext` and its associated authentication information (such as the user's ID)
 throughout the current request by injecting the `AuthContextInterface` into your controllers or other components.
 
+**Here is a schematic diagram of the authentication process:**
+
+![Auth](https://user-images.githubusercontent.com/773481/211204078-a19fa13e-e326-448a-be58-84869e344bea.jpg)
+
 ## Implementing a JWT token storage
 
 In the case of using a JWT for authentication, you will need to implement the `JWTTokenStorage` and defile it as the
