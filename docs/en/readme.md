@@ -32,6 +32,7 @@
     * [Domain Core and Controllers](cookbook/domain-core.md)
     * [Container Injectors](cookbook/injector.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
+    * [Authentication based on JWT](cookbook/user-authentication.md)
     * [Console command validation](cookbook/console-validation.md)
 * Components
     * [Attributes](component/attributes.md)

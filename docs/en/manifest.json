@@ -48,6 +48,7 @@
       "cookbook/domain-core": "Domain Core and Controllers",
       "cookbook/injector": "Container Injectors",
       "cookbook/custom-dispatcher": "Custom Dispatcher",
+      "cookbook/user-authentication": "Authentication based on JWT",
       "cookbook/console-validation": "Console command validation"
     }
   },
