@@ -32,7 +32,9 @@
     * [Domain Core and Controllers](cookbook/domain-core.md)
     * [Container Injectors](cookbook/injector.md)
     * [Custom Dispatcher](cookbook/custom-dispatcher.md)
+    * [Authentication based on JWT](cookbook/user-authentication.md)
     * [Console command validation](cookbook/console-validation.md)
+    * [Custom HTTP request handler](cookbook/psr-15.md)
 * Components
     * [Attributes](component/attributes.md)
     * [Cache](component/cache.md)
@@ -64,7 +66,6 @@
     * [Cookies](http/cookies.md)
     * [Session](http/session.md)
     * [CSRF protection](http/csrf.md)
-    * [Custom PSR-15 Handlers](http/psr-15.md)
 * Security
     * [Data Encryption](security/encrypter.md)
     * [Role Based Access Control](security/rbac.md)
