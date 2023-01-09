@@ -138,6 +138,10 @@ protected function perform(MyService $service): int
 To get user's data via arguments and/or options, you can make use of `$this->argument("argName")` or
 `$this->option("optName")`.
 
+> **Note**
+> In addition [here](/cookbook/console-validation.md) you can find information how to use `spiral/filters` component 
+> for console commands. 
+
 ## Helper Methods
 
 You can use a set of helper methods available inside the `Spiral\Console\Command`. Given examples are intended to be

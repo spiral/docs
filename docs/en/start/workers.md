@@ -1,22 +1,44 @@
 # Application Lifecycle
 
-Spiral Framework can work using classic Nginx/PHP-FPM setup. But the highest effectiveness can be achieved using an
-embedded application server (based on [RoadRunner](https://roadrunner.dev/)). The server creates a set of php processes
-for each dispatching/communication method (HTTP, GRPC, Queue, TCP, etc.).
+The Spiral Framework can be used with a traditional Nginx/PHP-FPM setup, where Nginx acts as the web server and PHP-FPM
+processes incoming requests and initializes the application. However, this can be resource-intensive as it requires CPU
+and memory resources to complete with every incoming request.
 
-Every PHP process will only work within a single request/task. It allows you to write code the way you would typically do
-in classic frameworks (share nothing approach). You can also use every library as you did in the past with only minor
-exceptions.
+![Nginx HTTP bootstraping](https://user-images.githubusercontent.com/773481/211190445-06c17d86-58d6-43d8-995f-36cf448714ae.jpg)
+
+To improve the performance of the Spiral Framework, an alternative solution is to use application
+server [RoadRunner](https://roadrunner.dev/).
+
+RoadRunner is a high-performance application server designed to handle a wide range of request types, including HTTP,
+gRPC, TCP, Queue Job consuming, and Temporal. It operates by running workers only once when it is initiated and then
+directing requests to a [dispatcher](../framework/dispatcher.md) based on their type. This means that each worker is
+isolated and works independently, following a "share nothing" approach where resources are not shared between workers.
 
 > **Note**
-> Read more about Framework and application server symbiosis [here](/framework/design.md). Read about PSR-7 request 
+> The approach of running application is similar to other languages like **Java**, **C#**, etc.
+
+This allows developers to write code in a way that is familiar to them and allows workers to be horizontally scaled,
+improving resource utilization and increasing the capacity to handle incoming requests.
+
+![RoadRunner HTTP bootstraping](https://user-images.githubusercontent.com/773481/211197998-96b09ff1-4ede-4db0-9b1d-902e996920be.jpg)
+
+Using RoadRunner can significantly improve the speed and efficiency by eliminating the need for
+the application to go through the bootstrapping process repeatedly. This can save on CPU and memory resources and reduce
+response time.
+
+Another cool thing is that it allows developers to be a bit more flexible with how they bootstrap the application. For
+example, they can load configs or routes from various sources like attributes or files without having to worry about
+caching them. This can make it easier to modify and update the application as needed.
+
+> **Note**
+> Read more about Framework and application server symbiosis [here](/framework/design.md). Read about PSR-7 request
 > flow [here](/http/lifecycle.md).
 
 ## Application Server
 
-The RoadRunner Application Server is installed using the [RoadRunner Bridge](https://github.com/spiral/roadrunner-bridge) 
-integration package. In the [spiral/app](https://github.com/spiral/app) skeleton, this package is already installed and
-configured.
+The RoadRunner Application Server is installed using
+the [RoadRunner Bridge](https://github.com/spiral/roadrunner-bridge) integration package. In
+the [spiral/app](https://github.com/spiral/app) skeleton, this package is already installed and configured.
 
 > **Note**
 > Learn more about the [RoadRunner Bridge](https://spiral.dev/docs/packages-roadrunner-bridge):
@@ -32,10 +54,6 @@ rpc:
 server:
   command: "php app.php"
   relay: pipes
-
-# serve static files
-static:
-  dir: "public"
 
 # HTTP plugin settings
 http:
@@ -59,12 +77,14 @@ http:
 ```
 
 ### Developer Mode
-To force worker reload after every request (full debug mode) and limit processing to a single worker, add a `debug` option:
+
+To force worker reload after every request (full debug mode) and limit processing to a single worker, add a `debug`
+option:
 
 ```yaml
 http:
   pool:
-      debug: true
+    debug: true
 ```
 
 You can read more about RoadRunner [here](https://roadrunner.dev/docs).
@@ -72,9 +92,10 @@ You can read more about RoadRunner [here](https://roadrunner.dev/docs).
 ## Application Kernel
 
 Every worker will contain a single application instance. Default application skeleton(s) are based
-on [spiral/boot](https://github.com/spiral/boot).
+on [spiral/boot](https://github.com/spiral/boot) component.
 
-The package allows quick application instantiation via static factory method `create` and allows you to run the created application via the `run` method:
+The package allows quick application instantiation via static factory method `create` and allows you to run the created
+application via the `run` method:
 
 ```php
 $app = \App\App::create(['root' => __DIR__])->run();
@@ -106,9 +127,9 @@ class App extends Kernel
 }
 ```
 
-The bootloaders will only be invoked once, without request/task context. After that, application will stay in the process
-memory permanently. Since the application bootload only happens once for many requests, you can add many components and
-extensions without performance penalty (still, watch the memory consumption).
+The bootloaders will only be invoked once, without request/task context. After that, application will stay in the
+process memory permanently. Since the application bootload only happens once for many requests, you can add many
+components and extensions without performance penalty (still, watch the memory consumption).
 
 ## Gotchas
 
@@ -117,7 +138,7 @@ There are a couple of limitations to be aware of.
 #### Memory Leaks
 
 Since the application stays in memory for a long time, even a small memory leak might lead to process restart.
-RoadRunner will monitor memory consumption and perform a soft reset, but it is best to avoid memory leaks in your 
+RoadRunner will monitor memory consumption and perform a soft reset, but it is best to avoid memory leaks in your
 application source code.
 
 Though Framework and all of its components are written with memory management in mind, you still have to make sure that
@@ -126,7 +147,7 @@ your domain code is not leaking.
 #### Application State
 
 > **Note**
-> Framework includes a set of instruments to simplify the development process and avoid memory/state leaks such as 
+> Framework includes a set of instruments to simplify the development process and avoid memory/state leaks such as
 > IoC Scopes, Cycle ORM, Immutable Configs, Domain Cores, Routes, and Middleware.
 
 ## Events

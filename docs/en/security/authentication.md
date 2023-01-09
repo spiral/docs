@@ -151,65 +151,23 @@ final class JwtTokenStorage implements TokenStorageInterface
 
     public function load(string $id): ?TokenInterface
     {
-        try {
-            $token = (array) JWT::decode(
-                $id,
-                new Key(
-                    $this->secret,
-                    $this->algorithm
-                )
-            );
-        } catch (ExpiredException $exception) {
-            throw $exception;
-        } catch (\Throwable $exception) {
-            return null;
-        }
-
-        if (
-            false === isset($token['data'])
-            || false === isset($token['iat'])
-            || false === isset($token['exp'])
-        ) {
-            return null;
-        }
-
-        return new Token(
-            $id,
-            $token,
-            (array) $token['data'],
-            (new \DateTimeImmutable())->setTimestamp($token['iat']),
-            (new \DateTimeImmutable())->setTimestamp($token['exp'])
-        );
+        // ...
     }
 
     public function create(array $payload, \DateTimeInterface $expiresAt = null): TokenInterface
     {
-        $issuedAt = ($this->time)('now');
-        $expiresAt = $expiresAt ?? ($this->time)($this->expiresAt);
-        $token = [
-            'iat' => $issuedAt->getTimestamp(),
-            'exp' => $expiresAt->getTimestamp(),
-            'data' => $payload,
-        ];
-
-        return new Token(
-            JWT::encode(
-                $token,
-                $this->secret,
-                $this->algorithm
-            ),
-            $token,
-            $payload,
-            $issuedAt,
-            $expiresAt
-        );
+        // ...
     }
 
     public function delete(TokenInterface $token): void
     {
+        // ...
     }
 }
 ```
+
+> **Note**
+> Full example of custom token storage can be found [here](../cookbook/user-authentication.md).
 
 The Spiral framework provides several ways to register a token storage.
 
@@ -479,136 +437,6 @@ class UserBootloader extends Bootloader
     }
 }
 ```
-
-## Authenticate User
-
-The user authentication process happens via `Spiral\Auth\AuthContextInterface`. You can receive the instance of the auth
-context object via the method injection.
-
-```php
-public function index(AuthContextInterface $auth): void
-{
-    // work with auth context
-}
-```
-
-> **Note**
-> You are not allowed to store `AuthContextInterface` inside singleton services, see above how to bypass it.
-
-Alternatively, you can use `Spiral\Auth\AuthScope` which can be stored in singleton services and prototyped via property
-`auth`.
-
-```php
-namespace App\Controller;
-
-use Spiral\Prototype\Traits\PrototypeTrait;
-
-class HomeController
-{
-    use PrototypeTrait;
-
-    public function index(): void
-    {
-        dump($this->auth);
-    }
-}
-```
-
-### Login
-
-The user login will require us to create a login form and a proper request filter.
-
-```php
-namespace App\Request;
-
-use Spiral\Filters\Filter;
-
-class LoginRequest extends Filter
-{
-    public const SCHEMA = [
-        'username' => 'data:username',
-        'password' => 'data:password'
-    ];
-
-    public const VALIDATES = [
-        'username' => ['notEmpty'],
-        'password' => ['notEmpty']
-    ];
-}
-```
-
-Create login method in the controller dedicated to authentication:
-
-```php
-public function login(LoginRequest $login): array
-{
-    if (!$login->isValid()) {
-        return [
-            'status' => 400,
-            'errors' => $login->getErrors()
-        ];
-    }
-
-    // application specific login logic
-    $user = $this->users->findOne(['username' => $login->getField('username')]);
-    if (
-        $user === null
-        || !password_verify($login->getField('password'), $user->password)
-    ) {
-        return [
-            'status' => 400,
-            'error'  => 'No such user'
-        ];
-    }
-
-    // create token
-}
-```
-
-To authenticate the user for the following requests, you must create a token with the payload compatible with your
-`ActorProviderInterface` (**userID** => **id**).
-
-We will need an instance of `AuthContextInterface` and `TokenStorageInterface` to do that. We can access both the
-instances via the prototype properties `auth` and `authTokens`:
-
-```php
-public function login(LoginRequest $login): array
-{
-    // ... see above
-
-    // create token
-    $this->auth->start(
-        $this->authTokens->create(['userID' => $user->id])
-    );
-
-    return [
-        'status'  => 200,
-        'message' => 'Authenticated!'
-    ];
-}
-```
-
-The user is authenticated.
-
-### Check if a used authenticated
-
-To see if the user authenticated, simply check if the auth context has a non-empty actor:
-
-```php
-use Spiral\Http\Exception\ClientException\ForbiddenException;
-
-public function index()
-{
-    if ($this->auth->getActor() === null) {
-        throw new ForbiddenException();
-    }
-    
-    dump($this->auth->getActor());
-}
-```
-
-> **Note**
-> You can use RBAC Security to authenticate and authorize users at the same time.
 
 ### Logout
 

@@ -48,7 +48,9 @@
       "cookbook/domain-core": "Domain Core and Controllers",
       "cookbook/injector": "Container Injectors",
       "cookbook/custom-dispatcher": "Custom Dispatcher",
-      "cookbook/console-validation": "Console command validation"
+      "cookbook/user-authentication": "Authentication based on JWT",
+      "cookbook/console-validation": "Console command validation",
+      "cookbook/psr-15": "Custom HTTP request handler"
     }
   },
   {
@@ -91,8 +93,7 @@
       "http/middleware": "Middleware",
       "http/cookies": "Cookies",
       "http/session": "Session",
-      "http/csrf": "CSRF protection",
-      "http/psr-15": "Custom PSR-15 Handlers"
+      "http/csrf": "CSRF protection"
     }
   },
   {
