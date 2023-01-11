@@ -102,9 +102,11 @@ Once you have your controller set up, you'll need to test it by running the Road
 Now you can test your controller by visiting the route in your browser. Just open the following URL in your
 browser: http://127.0.0.1/date
 
-## What's Next?
+<br><br>
 
-That's it! You've successfully set up your first controller in the Spiral Framework. 
+**That's it! You've successfully set up your first controller in the Spiral Framework.**
+
+## What's Next?
 
 Now, dive deeper into the fundamentals by reading some articles:
 
