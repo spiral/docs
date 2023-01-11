@@ -1,4 +1,4 @@
-# HTTP - Error Pages
+# HTTP — Error Pages
 
 Your application will expose some errors and exceptions, some of which must be delivered to the client and some of them
 must not.

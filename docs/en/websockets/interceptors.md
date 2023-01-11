@@ -1,4 +1,4 @@
-# WebSockets - Interceptors
+# Websockets — Interceptors
 
 Spiral Framework provides interceptors for WebSockets services that allow you to intercept and modify requests and
 responses at various points in the request lifecycle.

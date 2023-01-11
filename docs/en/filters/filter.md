@@ -1,4 +1,4 @@
-# Filters - filter object
+# Filters — filter object
 
 The Filter class represents a set of request input fields that can be filtered and validated. It provides a set of basic
 features for creating filters, such as the ability to bind request input data to filter properties and to access

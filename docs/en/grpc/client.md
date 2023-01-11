@@ -1,4 +1,4 @@
-# GRPC - Client SDK
+# GRPC — Client SDK
 
 In the previous part of this [article](./service.md), we showed you how to create a gRPC service `Pinger` in PHP with
 Spiral Framework and `spiral/roadrunner-bridge`. In this part, we will show you how to create a client service
@@ -10,7 +10,6 @@ By following these steps, you will be able to create a client SDK for the Pinger
 PHP applications. This will make it easier to communicate with the service and integrate it into your codebase.
 
 > **Note**
->
 > Here you can find the [installation instructions](./configuration.md) for the `grpc` PHP extension, `protoc` compiler
 > and the `protoc-gen-php-grpc` plugin.
 
@@ -167,7 +166,6 @@ go get -u github.com/golang/protobuf/protoc-gen-go
 ```
 
 > **Note**
->
 > Read more about how to create Golang GRPC clients and server [here](https://grpc.io/docs/tutorials/basic/go/).
 
 ### 2. Compile the `.proto` file
@@ -183,7 +181,6 @@ This will generate a` pinger.pb.go` file, which contains the Go classes for the 
 `.proto` file.
 
 > **Note**
->
 > Notice the `package` name in `pinger.proto`.
 
 ### 3. Create the client
@@ -283,6 +280,5 @@ func main() {
 ```
 
 > **Note**
-> 
 > Read more about working with metadata in
 > Golang [here](https://github.com/grpc/grpc-go/blob/master/Documentation/grpc-metadata.md).

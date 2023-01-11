@@ -1,4 +1,4 @@
-# Console - User Commands
+# Console — User Commands
 
 You can add new console commands to your application or register plugin commands using bootloaders. The component is
 configured by default to automatically discover commands located in the `app/src` directory.

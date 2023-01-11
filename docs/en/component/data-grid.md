@@ -1,4 +1,4 @@
-# Data Grids
+# Component — Data Grids
 
 Use the component `spiral/data-grid` and `spiral/data-grid-bridge` to generate Cycle and DBAL select queries automatically,
 based on specifications provided by the end-user.

@@ -1,4 +1,4 @@
-# Security - Role-Based Access Control
+# Security — Role-Based Access Control
 
 The framework includes the component `spiral/security`, which provides the ability to authorize user/actor access to the
 specific resources or actions based on the list of associated privileges. The components implements "Flat RBAC" patterns
@@ -34,7 +34,7 @@ interface ActorInterface
 > **Note**
 > Use IoC scopes to set Actor during the user request.
 
-Read how to use the authenticated user as an actor [here](/security/authentication.md).
+Read how to use the authenticated user as an actor [here](../security/authentication.md).
 
 By default, the application uses `Spiral\Security\Actor\Guest` as the default actor. You can set the Actor globally or
 inside IoC scope using the container binding.
@@ -456,7 +456,7 @@ class SampleRule extends Rule implements SingletonInterface
 ## @Guarded Attribute
 
 You can use `Guarded` attribute to automatically check the access to the controller methods using 
-the [domain cores](/cookbook/domain-core.md).
+the [domain cores](../cookbook/domain-core.md).
 
 ```php
 namespace App\Controller;

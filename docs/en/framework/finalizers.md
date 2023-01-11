@@ -1,4 +1,4 @@
-# Framework - Finalizers
+# Framework — Finalizers
 
 Most of the framework components do not require any resetting after the request completion. However, there are
 multiple use-cases when you might want to reset your library after the user request is complete.

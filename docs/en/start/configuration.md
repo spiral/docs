@@ -1,20 +1,33 @@
-# Configuration
+# Getting started — Configuration
 
-## Introduction
+The Spiral Framework makes it super easy to set up your application with config files. All the config files live in the
+`app/config` directory, and they let you configure things like connection to a database, set up cache storage, and
+manage sessions, etc.
 
-All of the configuration files for Spiral Framework are located in the `app/config` directory.
-These files contain options that allow you to configure for example, database connection, cache storage, sessions and more.
+You don't even have to create any config files yourself, because the Spiral Framework comes with a default setup. But if
+you want to, you can also use environment variables to change the main parameters of your application.
 
-## Environment
+> **Note**
+> Caching the config files is not necessary as they are only loaded once during application bootstrapping and not
+> reloaded unless the application is restarted.
 
-It can be useful to have different configuration values depending on the environment in which the application is running.
-For example, you may want a simple cache storage for local development in order to reduce the resource requirements of your testing environment, while a more robust and scalable storage may be preferred for production.
+## Environment Variables
 
-To make it easy to manage different configuration values for different environments, Spiral uses the [dotenv](../extension/dotenv.md) bridge.
-In a new project installation, you will find a `.env.sample` file in the root directory of your application that defines several common environment variables.
-When you install Spiral app, this file is automatically copied to `.env`.
+Using environment variables is a great way to separate the configuration of your application from the code itself. This
+makes it easy to change certain options depending on the environment you're running the application in, without having
+to modify the code.
 
-Here is the example of `.env` in the application:
+For example, you may have different database credentials for your local development environment and for production.
+Instead of hardcoding these credentials in the code, you can set them as environment variables and then reference them
+in your configuration files.
+
+The Spiral Framework integrates with `dotenv`, so you can store all your environment variables in a `.env` file at
+the root of your project.
+
+> **Note**
+> If you're starting a new project, there's a `.env.sample` file that you can use as a guide.
+
+Here is the example of available environment variables:
 
 ```dotenv
 # Environment (prod or local)
@@ -22,12 +35,10 @@ APP_ENV=local
 
 # Debug mode set to TRUE disables view caching and enables higher verbosity
 DEBUG=true
-
-# Verbosity level
 VERBOSITY_LEVEL=verbose # basic, verbose, debug
 
 # Set to an application specific value, used to encrypt/decrypt cookies etc
-ENCRYPTER_KEY={encrypt-key}
+ENCRYPTER_KEY=...
 
 # Monolog
 MONOLOG_DEFAULT_CHANNEL=default
@@ -37,13 +48,13 @@ MONOLOG_DEFAULT_LEVEL=DEBUG # DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL, ALE
 QUEUE_CONNECTION=roadrunner
 
 # Cache
-CACHE_STORAGE=rr-local
-
-# Storage
-STORAGE_DEFAULT=default
+CACHE_STORAGE=roadrunner
 
 # Telemetry
 TELEMETRY_DRIVER=null
+
+# Serializer
+DEFAULT_SERIALIZER_FORMAT=json # csv, xml, yaml
 
 # Session
 SESSION_LIFETIME=86400
@@ -55,94 +66,48 @@ AUTH_TOKEN_STORAGE=session
 
 # Mailer
 MAILER_DSN=
-MAILER_QUEUE=local
-MAILER_QUEUE_CONNECTION=
-MAILER_FROM="Spiral <sendit@local.host>"
-
-# Set to TRUE to disable confirmation in `migrate` commands
-SAFE_MIGRATIONS=true
-
-# Cycle Bridge
-CYCLE_SCHEMA_CACHE=true
-CYCLE_SCHEMA_WARMUP=false
-
-# Sentry
-SENTRY_DSN=
-
-# RoadRunner Logger
-LOGGER_FORMAT="%message% %context% %extra%\n"
-
-# Serializer
-DEFAULT_SERIALIZER_FORMAT=json # csv, xml, yaml
-
-# Temporal bridge configuration
-TEMPORAL_ADDRESS=127.0.0.1:7233
-TEMPORAL_TASK_QUEUE=default
-```
-
-You can access these values using `Spiral\Boot\EnvironmentInterface`
-
-```php
-public function index(EnvironmentInterface $env): void
-{
-    dump($env->get('ENCRYPTER_KEY'));
-}
-```
-
-or via a short function `env()`
-
-```php
-public function index(): void
-{
-    dump(env('ENCRYPTER_KEY'));
-}
+MAILER_FROM="My site <no-reply@site.com>"
 ```
 
 > **Note**
 > Any variable in your `.env` file can be overridden by external environment variables such as server-level or
 > system-level environment variables.
 
-## Configuration
+### Accessing Environment Variables
 
-The default component configuration is located inside the related Bootloader. You can alter such configuration using other
-bootloaders (see Auto-Configuration) or by creating a *default configuration* file in `app/config`.
-
-> **Note**
-> Each of the documentation sections will include the content of the default component configuration.
-
-Web and GRPC skeletons include `app/config/database.php` config file:
+You can access these values using `Spiral\Boot\EnvironmentInterface`
 
 ```php
-use Cycle\Database\Config;
+use Spiral\Boot\EnvironmentInterface;
 
+class GithubClient
+{
+    public function __construct(
+        private readonly EnvironmentInterface $env
+    ) {}
+    
+    public function getAccessToken(): string
+    {
+        return $this->env->get('GITHUB_ACCESS_TOKEN');
+    }
+}
+```
+
+or via a short function `env()`
+
+```php
 return [
-    'logger' => [
-        'default' => null,
-        'drivers' => [
-            // 'runtime' => 'stdout'
-        ],
-    ],
-
-    'default' => 'default',
-
-    'databases' => [
-        'default' => [
-            'driver' => 'runtime',
-        ],
-    ],
-
-    'drivers' => [
-        'runtime' => new Config\SQLiteDriverConfig(
-            connection: new Config\SQLite\MemoryConnectionConfig(),
-            queryCache: true
-        ),
-        // ...
-    ],
+    'access_token' => env('GITHUB_ACCESS_TOKEN'),
+    // ...
 ];
 ```
 
-In exactly the same way, you can edit any configuration for any component. For example, we can change default HTTP headers
-via `app/config/http.php`:
+## Configuration
+
+Sometimes, you need to change parameters that can't be configured through environment variables. That's no problem,
+because you can just change a config file for the specific component.
+
+For example, you can change the default HTTP headers in `app/config/http.php`:
 
 ```php
 return [
@@ -155,8 +120,33 @@ return [
 ];
 ```
 
-To find which config file corresponds to the proper config object, check the value
-of [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php#L19):
+### Accessing Configuration Values
+
+### Config objects
+
+In the Spiral Framework, all config objects are injectable, which makes it easy to use them in your application.
+
+```php
+use Spiral\Http\Config\HttpConfig;
+
+final class HttpClient 
+{
+    private readonly string $basePath;
+
+    public function __construct(
+        HttpConfig $config // <-- Container will automatically load values from app/config/http.php
+    ) {
+        $this->basePath = $this->config->getBasePath();
+    }
+}
+```
+
+Each injectable config class in the Spiral Framework contains
+a [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php#L19) that defines the name of
+the corresponding config file. When the container resolves an injectable config object, it automatically loads all
+values from the config file and assigns them to the properties of the config object.
+
+For example, for **HTTP config**:
 
 ```php
 final class HttpConfig extends InjectableConfig
@@ -164,30 +154,17 @@ final class HttpConfig extends InjectableConfig
     const CONFIG = 'http';
     
     // ...
+}
 ```
 
 > **Note**
 > See the reference for each component configuration in the related documentation section.
 
-## Accessing Configuration Values
+## What's Next?
 
-### Config objects
+That's it! You've successfully configured your awesome application.
 
-In the Spiral Framework, all config objects are injectable.
-This means that when you try to resolve a config object through the container, it will automatically load all values from the config file or will use default settings.
+Now, dive deeper into the fundamentals by reading some articles:
 
-```php
-use Spiral\Http\Config\HttpConfig;
-
-class SomeService 
-{
-    public function __construct(
-        private HttpConfig $config // <-- Container will automatically load values from app/config/http.php
-    ) {
-        $path = $this->config->getBasePath();
-    }
-}
-```
-
-> **Note**
-> Read more about config objects [here](../framework/config.md)
+* [Config objects](../framework/config.md)
+* [Kernel and Environment](../framework/kernel.md)

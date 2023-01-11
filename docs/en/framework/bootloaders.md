@@ -1,4 +1,4 @@
-# Framework - Bootloaders
+# Framework — Bootloaders
 
 Bootloaders are the central piece in Spiral Framework and your application. These objects are responsible
 for [Container](../framework/container.md) configuration, default configuration, etc.
@@ -123,7 +123,7 @@ final class QueueBootloader extends Bootloader
 }
 ```
 
-> **Note**:
+> **Note**
 > 1. Learn more about the `Spiral\Boot\EnvironmentInterface`, in the 
 > [Configuration](../start/configuration.md) section.
 > 2. Learn more about the `Spiral\Boot\AbstractKernel` class (also known as the 'Kernel'), in
@@ -179,7 +179,7 @@ class MyBootloader extends Bootloader
 }
 ```
 
-> **Note**:
+> **Note**
 > The closure is provided as an argument to the `bindSingleton` method will be called by the dependency injection 
 > (DI) container when it needs to create an instance of `MyService`. When the closure is called, the DI container will 
 > automatically resolve and inject any dependencies that are required by the closure. 
@@ -326,7 +326,7 @@ Both of these approaches allow you to define dependent bootloaders in a declarat
 manage the initialization of your application and ensure that all necessary resources and dependencies are available
 when they are needed.
 
-> **Note**:
+> **Note**
 > Dependent bootloaders will be only initialized once, even if multiple other bootloaders depend on them.
 
 ## Cascade bootloading

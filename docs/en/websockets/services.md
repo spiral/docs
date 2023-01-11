@@ -1,4 +1,4 @@
-# WebSockets - Services
+# Websockets — Services
 
 In a Spiral application, a service is a class that is responsible for processing incoming messages, performing
 actions based on the message content, and returning a response to the sender. There are several types of events that can

@@ -1,4 +1,4 @@
-# Framework - Dispatchers
+# Framework — Dispatchers
 
 The Spiral Framework is a high-performance PHP web application framework that is designed to be scalable, extensible,
 and easy to use. It is built on top of the RoadRunner server, which is a high-performance PHP application server that is

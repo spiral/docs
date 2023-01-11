@@ -1,4 +1,4 @@
-# HTTP - Cookies
+# HTTP — Cookies
 
 The default application skeleton enables cookie integration by default.
 

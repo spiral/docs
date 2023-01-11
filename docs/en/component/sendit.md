@@ -1,4 +1,4 @@
-# SendIt
+# Component — Mailer
 
 The Spiral Framework provides a simple component for creating and sending emails. The component is available by default in
 the [application bundle](https://github.com/spiral/app).
@@ -125,7 +125,7 @@ The `queueConnection` key uses a specifying queue that will be used for handling
 will be sent using `sync` connection.
 
 > **Note**
-> Read more about queue connection configuration [here](/queue/configuration.md).
+> Read more about queue connection configuration [here](../queue/configuration.md).
 
 ## Usage
 

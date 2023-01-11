@@ -5,11 +5,11 @@ Keeper contains the next bootloaders:
 - `Spiral\Keeper\Bootloader\KeeperBootloader` is the entrypoint for all other bootloaders
 - `Spiral\Keeper\Bootloader\GuestBootloader` grants full access to guest users (use it only for tests)
 - `Spiral\Keeper\Bootloader\AnnotatedBootloader` reads `Controller` and `Action` annotations (
-  see [Routing](/keeper/routing.md))
+  see [Routing](../keeper/routing.md))
 - `Spiral\Keeper\Bootloader\SitemapBootloader` reads the sitemap annotations, can also be used for `Sitemap` definition
-  via code (see [Sitemap](/keeper/sitemap.md))
+  via code (see [Sitemap](../keeper/sitemap.md))
 - `Spiral\Keeper\Bootloader\UIBootloader` registers keeper views - layout, sidebar, breadcrumbs, grids, etc. (
-  see [Sitemap](/keeper/sitemap.md) and [Views](/keeper/views.md))
+  see [Sitemap](../keeper/sitemap.md) and [Views](../keeper/views.md))
 
 ## Usage
 

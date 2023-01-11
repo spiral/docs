@@ -1,4 +1,4 @@
-# Console - Sequences
+# Console — Sequences
 
 The Spiral Framework provides a way to group together and execute a series of console commands or closures in a specific
 order. These groups of commands and closures are called "sequences", and there are two types: `configure` and

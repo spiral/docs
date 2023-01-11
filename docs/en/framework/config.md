@@ -1,4 +1,4 @@
-# Framework - Config Objects
+# Framework — Config Objects
 
 The Spiral framework exposes all the underlying configuration of its components using config objects. The core purpose
 of config objects is to separate the bootload and runtime phase and provide an easily accessible source of the

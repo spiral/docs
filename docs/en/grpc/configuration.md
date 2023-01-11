@@ -1,4 +1,4 @@
-# GRPC - Installation and Configuration
+# GRPC — Installation and Configuration
 
 Using REST APIs for communication between microservices has been a common approach for many years. However, REST APIs
 have some limitations and challenges that can impact the performance, scalability, and reliability of your system.
@@ -9,7 +9,6 @@ instruments to generate client and server code-bases for many languages allowing
 language for their task.
 
 > **Note**
->
 > You can read more about protobuf [here](https://developers.google.com/protocol-buffers/docs/overview).
 
 ## Toolkit Installation
@@ -22,7 +21,6 @@ the GRPC project, you will need several instruments.
 To compile `.proto` files into the target language, you will have to install the `protoc` compiler.
 
 > **Note**
->
 > You can download the latest `protoc` binaries from[https://github.com/protocolbuffers/protobuf/releases.
 
 ### Install Protobuf extension (optional)
@@ -69,7 +67,6 @@ After the package installed you will need to download the `protoc-gen-php-grpc`.
 that generates PHP code for gRPC services.
 
 > **Note**
->
 > To download the binary, you can use `download-protoc-binary` console command provided by the
 > `spiral/roadrunner-cli` package. This command will download the latest version of the `protoc-gen-php-grpc` binary and
 > save it to the root directory of your project.
@@ -135,7 +132,6 @@ grpc:
 ```
 
 > **Note**
->
 > Full documentation about configuration the RoadRunner gRPC
 > plugin [here](https://roadrunner.dev/docs/app-server-grpc/2.x/en).
 
@@ -166,5 +162,4 @@ openssl req -newkey rsa:2048 -nodes -keyout app.key -x509 -days 365 -out app.crt
 ```
 
 > **Note**
->
 > Make sure to use a proper domain name or `localhost`, it will be required to make your clients connect properly.

@@ -12,7 +12,7 @@ applications.
 composer require spiral/keeper
 ```
 
-2. Register a keeper bootloader (see [bootloaders](/keeper/bootloaders.md) section)
+2. Register a keeper bootloader (see [bootloaders](../keeper/bootloaders.md) section)
 
 ## Namespace
 
@@ -27,16 +27,16 @@ Configuration can be performed via code or annotations.
 
 ## Components
 
-Keeper comes with a set of frontend components for [Stempler](/stempler/basics.md) engine, backed 
+Keeper comes with a set of frontend components for [Stempler](../stempler/basics.md) engine, backed 
 by [JavaScript Toolkit](https://github.com/spiral/toolkit)
 
 A demo project featuring a usage of all the components is available [here](https://github.com/spiral/app-keeper).
 
 Most notable components are:
 
-- [Forms](/keeper/components/forms.md)
-- [Autocomplete](/keeper/components/autocomplete.md)
-- [DatePicker](/keeper/components/datepicker.md)
-- [DataGrids](/keeper/components/datagrid.md)
+- [Forms](../keeper/components/forms.md)
+- [Autocomplete](../keeper/components/autocomplete.md)
+- [DatePicker](../keeper/components/datepicker.md)
+- [DataGrids](../keeper/components/datagrid.md)
 
 

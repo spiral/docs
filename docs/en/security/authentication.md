@@ -1,4 +1,4 @@
-# Security - User Authentication
+# Security — User Authentication
 
 The framework includes a set of components to authorize users via temporary or permanent tokens from different
 sources and safely manages the user context.

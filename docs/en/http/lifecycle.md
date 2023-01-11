@@ -1,4 +1,4 @@
-# HTTP - Request Lifecycle
+# HTTP — Request Lifecycle
 
 Unlike most of the PHP frameworks, the HTTP requests begin outside of the application in the application server
 
@@ -22,7 +22,7 @@ etc. You can read more about PSR standards used here:
 
 A user request comes to the RoadRunner application server. The server will pass it through a number of middleware
 layers, some of which are used to enable web-socket broadcasting, serve static files
-or [implement domain-specific logic](/http/golang.md).
+or [implement domain-specific logic](../http/golang.md).
 
 Once all of the middleware processing is complete, the `net/http` request will be converted into `PSR-7` format and
 passed to the first available PHP worker.
@@ -30,7 +30,7 @@ passed to the first available PHP worker.
 The worker will handle this request using the `spiral/http` extension and `Spiral\Http\Http` core. The core will pass
 the PSR-7 request object (`Psr\Http\Message\ServerRequestInterface`) through a set of PSR-15 compatible middleware.
 
-Once all of the middleware processing is complete, the framework will create an [IoC scope](/framework/scopes.md) for
+Once all of the middleware processing is complete, the framework will create an [IoC scope](../framework/scopes.md) for
 the request object. Such an approach allows you to use PSR-7 request as a classic global object, while technically, it
 only exists during the user request.
 

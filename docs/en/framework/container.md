@@ -1,4 +1,4 @@
-# Framework - Container and Factories
+# Framework — Container and DI
 
 The framework includes a set of interfaces and components intended to simplify dependency injection and object
 construction in your application.

@@ -1,4 +1,4 @@
-# Event broadcasting
+# Websockets — Event broadcasting
 
 Being able to broadcast data in real-time from servers to clients is a requirement for many modern web and mobile
 applications. When some data is updated on the server, a message is typically sent over a WebSocket connection to be

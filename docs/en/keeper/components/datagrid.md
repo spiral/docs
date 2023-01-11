@@ -1,6 +1,6 @@
 # DataGrids
 
-UI component for DataGrids provides UI component for [DataGrids](/component/data-grid.md)
+UI component for DataGrids provides UI component for [DataGrids](../component/data-grid.md)
 
 They are located in the keeper bundle, that can be included like so:
 

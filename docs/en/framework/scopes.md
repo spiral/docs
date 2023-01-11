@@ -1,4 +1,4 @@
-# Framework - IoC Scopes
+# Framework — IoC Scopes
 
 An essential aspect of developing long-living applications is proper context management. In demonized applications,
 you are no longer allowed to treat user requests as a global singleton object and store references to its instance in your

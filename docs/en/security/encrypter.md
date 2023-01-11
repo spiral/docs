@@ -1,4 +1,4 @@
-# Security - Data Encryption
+# Security — Data Encryption
 
 Both Web and GRPC application skeletons include Encrypter component by default. To install Encrypter in other builds:
 
@@ -18,7 +18,7 @@ encryption key provided by your application.
 
 By default, `EncrypterBootloader` will load Base64 encoded key from the environment variable `ENCRYPTER_KEY`.
 
-If you use [Dotenv](/extension/dotenv.md) extension you can specify this key value in `.env` file located in the root of
+If you use [Dotenv](../extension/dotenv.md) extension you can specify this key value in `.env` file located in the root of
 your application. To issue a new key into `.env`, run:
 
 ```bash
@@ -74,7 +74,7 @@ interface EncrypterInterface
 }
 ```
 
-Encrypter is also available as [prototype property](/basics/prototype.md) `encrypter`:
+Encrypter is also available as [prototype property](../basics/prototype.md) `encrypter`:
 
 ```php
 protected function index(EncrypterInterface $encrypter): void

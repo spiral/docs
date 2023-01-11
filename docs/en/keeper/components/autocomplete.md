@@ -42,7 +42,7 @@ Autocomplete uses the same API as DataGrids. Autocomplete by default only operat
 phase it will make a request to server to fetch the current labels. I.e. The sample above will make a request
 with `filter[id][]=1` body to `keeper/users/list` URL on load.
 
-To handle comma separated values on backend, implement a [value accessor](/component/data-grid#value-accessors)
+To handle comma separated values on backend, implement a [value accessor](../component/data-grid#value-accessors)
 
 ## form:autocomplete
 

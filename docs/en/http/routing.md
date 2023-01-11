@@ -1,4 +1,4 @@
-# HTTP - Routing
+# HTTP — Routing
 
 The framework [Web Bundle](https://github.com/spiral/app) includes a pre-configured router component. 
 
@@ -109,7 +109,7 @@ return function (RoutingConfigurator $routes): void {
 ### Annotated routes
 
 If you're interested in defining routing using attributes or annotations, be sure to check 
-out [this resource](/http/annotated-routes.md) for more information.
+out [this resource](../http/annotated-routes.md) for more information.
 
 ## Route configurator
 
@@ -566,7 +566,7 @@ final class UuidParametersConverterInterceptor implements CoreInterceptorInterfa
 ```
 
 > **Note**
-> Read more about using interceptors [here](/cookbook/domain-core.md#core-interceptors).
+> Read more about using interceptors [here](../cookbook/domain-core.md#core-interceptors).
 
 ### Route pre-defined options
 

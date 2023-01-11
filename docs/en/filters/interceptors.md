@@ -1,4 +1,4 @@
-# Filters - Interceptors
+# Filters — Interceptors
 
 Spiral Framework provides a way for developers to customize the behavior of their filters through the use of
 interceptors. An interceptor is a piece of code that is executed after a filter created, and

@@ -1,4 +1,4 @@
-# Framework - Kernel and Environment
+# Framework — Kernel and Environment
 
 Each Spiral build will contain a kernel object with a set of application-specific services. Unlike Symfony,
 The Spiral needs only one Kernel for all the dispatching methods (HTTP, Queue, GRPC, Console, etc). The kernel will

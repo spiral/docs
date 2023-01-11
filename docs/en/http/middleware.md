@@ -1,4 +1,4 @@
-# HTTP - Middleware
+# HTTP — Middleware
 
 The framework allows you to set [PSR-15 compatible](https://www.php-fig.org/psr/psr-15/) HTTP middleware globally or to
 a specific route.

@@ -1,4 +1,4 @@
-# HTTP - Annotated Routing
+# HTTP — Annotated Routing
 
 If you're using the Spiral Framework to build a PHP web application, you will be able to define HTTP routes using 
 attributes. This means that you can define your routes directly in your controller methods, rather than in a separate 

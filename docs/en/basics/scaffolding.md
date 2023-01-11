@@ -1,4 +1,4 @@
-# Scaffolding
+# The Basics — Scaffolding
 
 Most of the application code can be generated using a set of console commands.
 

@@ -1,4 +1,4 @@
-# Views - Installation and Configuration
+# Views — Installation and Configuration
 
 The `spiral/views` component is available in Web bundle by default, to install it in alternative builds:
 

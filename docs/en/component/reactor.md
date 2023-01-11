@@ -1,4 +1,4 @@
-# Code Generation
+# Component — Code Generation
 
 You can use the component `spiral/reactor` to generate PHP classes code using fluent declarative wrappers. This component
 is based on `nette/php-generator`.

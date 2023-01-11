@@ -1,4 +1,4 @@
-# Installation and Configuration
+# Websockets — Installation and Configuration
 
 One of the key features of the Spiral Framework is its integration with
 the [Centrifugo WebSocket server](https://centrifugal.dev/). This integration is facilitated by the

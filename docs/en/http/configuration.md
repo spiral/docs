@@ -1,4 +1,4 @@
-# HTTP - Installation and Configuration
+# HTTP — Installation and Configuration
 
 The web application bundle (`spiral/app`) is shipped with a pre-configured HTTP component. You will need several extensions
 to enable it in alternative builds.
@@ -31,9 +31,9 @@ protected const LOAD = [
 ```
 
 > **Note**
-> See how to use custom PSR-15 handler [here](/http/psr-15.md).
+> See how to use custom PSR-15 handler [here](../http/psr-15.md).
 
-Make sure to configure [routing](/http/routing.md).
+Make sure to configure [routing](../http/routing.md).
 
 ## Configuration
 

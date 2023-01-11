@@ -1,4 +1,4 @@
-# Framework - Design Approach
+# Framework — Design Approach
 
 The framework components attempt to follow the principle of pragmatic (KISS) design. Practically, it means that each component must follow the given rules:
 
@@ -18,4 +18,4 @@ delivery of efficient business logic. The application server, Golang based, is f
 ![High Level Architecture Diagram](https://user-images.githubusercontent.com/773481/180764832-d91daec4-36fb-4651-ace3-64eac6f289c8.png)
 
 > **Note**
-> Read about the application lifecycle [here](/start/workers.md).
+> Read about the application lifecycle [here](../start/workers.md).

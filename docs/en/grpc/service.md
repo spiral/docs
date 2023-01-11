@@ -1,4 +1,4 @@
-# GRPC - Service Code
+# GRPC — Service Code
 
 Using gRPC can be simpler than building a REST API in some cases, because it provides a more structured and efficient
 way to define and communicate between APIs.
@@ -18,7 +18,6 @@ Here are some benefits of using gRPC compared to REST APIs:
   that can be used by clients written in any language.
 
 > **Note**
->
 > Use https://github.com/spiral/ticket-booking as the base to speed up onboarding.
 
 ## Define the Service
@@ -52,19 +51,17 @@ This `.proto` file defines a service called **Pinger** with a single method, `pi
 as input and returns a `PingResponse` message.
 
 > **Note**
->
 > Make sure to use the options `php_namespace` and `php_metadata_namespace` to properly configure PHP namespace. You can
 > read more about the GRPC service declaration [here](https://grpc.io/docs/guides/concepts/).
 
-At the moment you can only create Unidirectional APIs, use [Golang services](/grpc/golang.md) to handle
-[streaming and batch processing](/grpc/streaming.md).
+At the moment you can only create Unidirectional APIs, use [Golang services](../grpc/golang.md) to handle
+[streaming and batch processing](../grpc/streaming.md).
 
 ## Generate the service
 
 To compile the `.proto` file into PHP code, you will need to use the `protoc` compiler and the `protoc-gen-php-grpc`.
 
 > **Note**
->
 > Here you can find the [installation instructions](./configuration.md) for the `grpc` PHP extension, `protoc` compiler 
 > and the `protoc-gen-php-grpc` plugin.
 
@@ -201,7 +198,6 @@ public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 ```
 
 > **Note**
-> 
 > Read more about auth practices [here](https://grpc.io/docs/guides/auth/).
 
 ### Response Headers
@@ -237,7 +233,6 @@ The `spiral/roadrunner-grpc` component provides a number of exceptions to indica
 | Spiral\RoadRunner\GRPC\Exception\\**UnimplementedException**   | UNIMPLEMENTED(12)   |
 
 > **Note**
-> 
 > See all status codes in `Spiral\RoadRunner\GRPC\StatusCode`. Read more about GRPC error
 > codes [here](https://github.com/grpc/grpc/blob/master/doc/statuscodes.md).
 

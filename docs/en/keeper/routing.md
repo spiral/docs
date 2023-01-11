@@ -54,7 +54,7 @@ The next routes will be created (see `php app.php route:list` output):
 
 ## Register routes via annotations
 
-Attributes are a more convenient way because annotated routes allows you to use [sitemaps](/keeper/sitemap.md) - another
+Attributes are a more convenient way because annotated routes allows you to use [sitemaps](../keeper/sitemap.md) - another
 powerful submodule for building menu navigation and breadcrumbs.
 
 `\Spiral\Keeper\Annotation\Action` and `\Spiral\Keeper\Annotation\Controller` attributes are available. They should be

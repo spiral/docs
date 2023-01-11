@@ -1,4 +1,4 @@
-# HTTP - CSRF protection
+# HTTP — CSRF protection
 
 The default Web bundle includes CSRF protection middleware. To install it in alternative bundles:
 

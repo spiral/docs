@@ -1,4 +1,4 @@
-# Directory Structure
+# Getting started — Directory Structure
 
 The framework does not enforce any specific namespace or directory structure, so feel free to change them.
 
@@ -71,7 +71,7 @@ function test(): void
 
 ### Helper class
 
-> **Note**: 
+> **Note**
 > If you would like a directory names always be constrained by a specific method, you may create a helper 
 > class, for example AppDirectories.
 

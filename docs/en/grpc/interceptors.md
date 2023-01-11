@@ -1,4 +1,4 @@
-# GRPC - Interceptors
+# GRPC — Interceptors
 
 Spiral Framework provides interceptors for gRPC services that allow you to intercept and modify requests and responses
 at various points in the request lifecycle.
