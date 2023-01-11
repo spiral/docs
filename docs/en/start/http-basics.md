@@ -32,7 +32,7 @@ The next step is to associate a route with your controller.
 
 :::: tabs
 
-::: tab Attributes
+::: tab Using Attributes
 
 Spiral Framework makes it easy to define your application's
 routes by using PHP attributes. All you have to do is add the `#[Route]` attribute to the controller's method like so:
@@ -51,7 +51,7 @@ public function show(): string
 
 :::
 
-::: tab PHP
+::: tab Using RoutingConfigurator
 
 Spiral Framework offers a convenient and organized way for developers to define their application's routes using the
 `defineRoutes` method of the `App\Application\Bootloader\RoutesBootloader` class.

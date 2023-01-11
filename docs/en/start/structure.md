@@ -1,6 +1,8 @@
 # Getting started — Directory Structure
 
-The framework does not enforce any specific namespace or directory structure, so feel free to change them.
+The Spiral Framework does not impose any directory structure for your application, so you have the flexibility to
+organize your files and directories. However, it provides a recommended structure that can be used as
+a starting point. This structure can also be easily modified.
 
 ## Directories
 
@@ -28,59 +30,71 @@ Some components will declare their own directories such as:
 
 ## Init Directories
 
-You can specify `root` or any other directory value in your `app.php` file as argument to `App`:
+You can set the value of the `root` directory, or any other directory, in your `app.php` file.
 
 ```php
-$app = \App\App::create([
-    'root' => __DIR__
-])->run();
+$app = \App\Application\Kernel::create(
+    directories: ['root' => __DIR__]
+)->run();
 ```
 
-For example, we can change runtime directory location:
+For example, if you wanted to change the location of the `runtime` directory to the system's temporary directory, you
+would do this:
 
 ```php
-$app = \App\App::create([
-    'root' => __DIR__, 
-    'runtime' => \sys_get_temp_dir()
-])->run();
+$app = \App\Application\Kernel::create(
+    directories: [
+        'root' => __DIR__, 
+        'runtime' => \sys_get_temp_dir()
+    ]
+)->run();
 ```
 
-To resolve directory alias within your application, use `Spiral\Boot\DirectoriesInterface`:
+You can access the paths of various directories in your application using the `Spiral\Boot\DirectoriesInterface` class.
+This interface provides methods to access the paths of the various directories that are defined through
+the `mapDirectories` method.
+
+Here's an example of how you can use the `DirectoriesInterface` class to access the path of the `runtime` directory:
 
 ```php
 use Spiral\Boot\DirectoriesInterface;
 
-// ...
-
-function test(DirectoriesInterface $dirs): void
-{
-    \dump($dirs->get('app'));
-    // output: <your root path>/app/
+final class UploadService {
+    public function __construct(
+        private readonly DirectoriesInterface $dirs
+    ) {}
+    
+    public function store(UploadedFile $file) {
+        $filePath = $this->dirs->get('runtime') . 'uploads/' . $file->getFilename();
+        // ...
+    }
 }
 ```
 
 You can also use the function `directory` inside the global IoC scope (config files, controllers, service code).
 
 ```php
-function test(): void
-{
-    \dump(directory('app'));
-    // output: <your root path>/app/
-}
+// app/config/cache.php
+
+return [
+    'storages' => [
+        'file' => [
+            'path' => directory('runtime') . 'cache',
+        ],   
+    ],
+]
 ```
 
 ### Helper class
 
 > **Note**
-> If you would like a directory names always be constrained by a specific method, you may create a helper 
-> class, for example AppDirectories.
+> If you would like a directory names always be constrained by a specific method, you may create a helper
+> class, for example `AppDirectories`.
 
 ```php
-<?php
-
 declare(strict_types=1);
 
-namespace App;
+namespace App\Application;
 
 use Spiral\Boot\DirectoriesInterface;
 
@@ -93,7 +107,6 @@ final class AppDirectories
 
     /**
      * Application root directory.
-     *
      * @return non-empty-string
      */
     public function getRoot(?string $path = null): string
@@ -103,7 +116,6 @@ final class AppDirectories
 
     /**
      * Application directory.
-     *
      * @return non-empty-string
      */
     public function getApp(?string $path = null): string
@@ -113,7 +125,6 @@ final class AppDirectories
 
     /**
      * Public directory.
-     *
      * @return non-empty-string
      */
     public function getPublic(?string $path = null): string
@@ -123,7 +134,6 @@ final class AppDirectories
 
     /**
      * Runtime directory.
-     *
      * @return non-empty-string
      */
     public function getRuntime(?string $path = null): string
@@ -133,7 +143,6 @@ final class AppDirectories
 
     /**
      * Runtime cache directory.
-     *
      * @return non-empty-string
      */
     public function getCache(?string $path = null): string
@@ -143,7 +152,6 @@ final class AppDirectories
 
     /**
      * Vendor libraries directory.
-     *
      * @return non-empty-string
      */
     public function getVendor(?string $path = null): string
@@ -153,7 +161,6 @@ final class AppDirectories
 
     /**
      * Config directory.
-     *
      * @return non-empty-string
      */
     public function getConfig(?string $path = null): string
@@ -163,7 +170,6 @@ final class AppDirectories
 
     /**
      * Resources directory.
-     *
      * @return non-empty-string
      */
     public function getResources(?string $path = null): string
@@ -192,3 +198,10 @@ to any desired namespace in `composer.json`:
   }
 }
 ```
+
+## What's Next?
+
+Now, dive deeper into the fundamentals by reading some articles:
+
+* [Kernel and Environment](../framework/kernel.md)
+* [Files and Directories](../basics/files.md)
