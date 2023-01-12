@@ -56,25 +56,27 @@
       "advanced/memory": "Static Memory",
       "advanced/attributes": "Attributes",
       "advanced/tokenizer": "Static analysis",
-      "advanced/prometheus-metrics": "Prometheus metrics",
+      "advanced/prometheus-metrics": "Application Metrics",
       "advanced/telemetry": "Application telemetry",
       "advanced/serializer": "Serializer",
       "advanced/events": "Events",
-      "advanced/discoverer": "Bootloaders Discoverer",
       "advanced/exceptions": "Exceptions handling",
       "advanced/injectors": "Container injectors",
       "advanced/scheduler": "Task Scheduling",
-      "advanced/i18n": "Internalization"
+      "advanced/i18n": "Internalization",
+      "component/sendit": "Mailer",
+      "component/notifications": "Notifications"
     }
   },
   {
-    "title": "Tutorials",
+    "title": "Cookbook",
     "links": {
       "cookbook/quick-start": "Quick start",
       "cookbook/custom-dispatcher": "Custom Dispatcher",
       "cookbook/user-authentication": "Authentication based on JWT",
       "cookbook/console-validation": "Console command validation",
-      "cookbook/psr-15": "Custom HTTP request handler"
+      "cookbook/psr-15": "Custom HTTP request handler",
+      "cookbook/discoverer": "Bootloaders Discoverer"
     }
   },
   {
@@ -169,8 +171,6 @@
     "links": {
       "component/storage": "Storage and Cloud Distribution",
       "component/data-grid": "Data Grids",
-      "component/sendit": "Mailer",
-      "component/notifications": "Notifications",
       "component/reactor": "Code Generation"
     }
   },

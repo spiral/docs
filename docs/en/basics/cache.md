@@ -26,7 +26,7 @@ configure available storages and default storage.
 
 For example, the configuration file might look like this:
 
-```php
+```php app/config/cache.php
 use Spiral\Cache\Storage\ArrayStorage;
 use Spiral\Cache\Storage\FileStorage;
 
@@ -196,4 +196,4 @@ class MyService
 | Spiral\Cache\Event\KeyWritten  | The Event will be fired `after` the data is stored in the cache.            |
 
 > **Note**
-> To learn more about dispatching events, see the [Events](../component/events.md) section in our documentation.
+> To learn more about dispatching events, see the [Events](../advanced/events.md) section in our documentation.
