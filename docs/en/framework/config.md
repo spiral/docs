@@ -1,49 +1,70 @@
 # Framework — Config Objects
 
-The Spiral framework exposes all the underlying configuration of its components using config objects. The core purpose
-of config objects is to separate the bootload and runtime phase and provide an easily accessible source of the
-configuration.
+The Spiral framework uses config objects to separate the bootload and runtime phases of an application, and to provide
+an easily accessible source of configuration.
+
+The main benefit of using config objects is that they allow for easy modification of configuration during the bootload
+process, while ensuring that the configuration remains immutable at runtime. This helps to prevent unexpected changes to
+the configuration and allows for more predictable behavior of the application.
 
 ![Application Control Phases](https://user-images.githubusercontent.com/67324318/186413037-e60f89fd-9313-44c5-b4f8-eb2585a77230.png)
 
-While configuration can change during the bootload process, at runtime all the values are frozen and forbidden for
-modification.
+**Here are some benefits of using config objects:**
+
+- Config objects allow for easy modification of configuration values during the bootload process, making it simple to
+  change the behavior of an application without modifying the code.
+- Once the application has started, config objects freeze the values, preventing unexpected changes to the configuration
+  at runtime. This helps to ensure that the application behaves as expected.
+- Config objects centralize configuration information, making it easy to locate and modify as needed. This improves the
+  overall organization and maintainability of the codebase.
+- By keeping configuration information separate from the application's code, config objects help to improve the
+  separation of concerns and make it easier to understand and maintain the codebase.
 
 ## Configuration Provider
 
-All of the configuration values can be accessed via `Spiral\Config\ConfiguratorInterface` in the form of an array.
+The Spiral framework provides a `Spiral\Config\ConfiguratorInterface` which allows for easy access to configuration
+values stored in config files. It provides methods to retrieve and check the existence of config values.
 
-To demonstrate that, we can create a config file `app/config/app.php`:
+To demonstrate that, we can create a config file `app/config/github.php`:
 
-```php
+```php app/config/github.php
 <?php
 
-declare(strict_types=1);
-
 return [
-    'values' => [123]
+    'access_token' => 'xxx-xxxx',
+    // ...
 ];
 ```
+
+You can use any name you want, but it's recommended to use the name of the service that will use this config.
 
 > **Note**
 > You can use `json` format as well, or extend `ConfiguratorInterface` to add custom config readers.
 
-To access the configuration values in your service or controller:
+### Using
+
+To access the configuration values in your service, you can use the `ConfiguratorInterface` in the following way:
 
 ```php
-use App\Config\AppConfig;
 use Spiral\Config\ConfiguratorInterface;
 
-// ...
-
-public function index(ConfiguratorInterface $configurator)
+final class GithubClient
 {
-    dump($configurator->getConfig(AppConfig::CONFIG));
+    private readonly string $accessToken;
+    
+    public function __construct(ConfiguratorInterface $configurator)
+    {
+        if (!$configurator->exists('github')) {
+            throw new \RuntimeException('Github configuration is missing');
+        }
+        
+        $config = $configurator->get('github');
+        $this->accessToken = $config['access_token'] ?? throw new \RuntimeException('Missing access token');
+    }
+
+    // ...
 }
 ```
-
-> **Note**
-> You can check if configuration exists using method `exists`. 
 
 ## Config Object
 
@@ -51,31 +72,31 @@ It is not very convenient to read the configuration in the form of arrays. The f
 read your values. We can create this class manually or automatically generate it via `spiral/scaffolder`:
 
 ```bash
-php app.php create:config app -r
+php app.php create:config github -r
 ``` 
 
 > **Note**
-> Use option `-r` to reverse engineer the configuration structure.
+> `-r` option is used to reverse-engineer the configuration structure from the config file `app/config/github.php`.
 
-The resulted config class located in `app/src/config/AppConfig.php`:
+The resulted config class located in `app/src/Config/GithubConfig.php`:
 
-```php
+```php app/src/Config/GithubConfig.php
 namespace App\Config;
 
 use Spiral\Core\InjectableConfig;
 
-class AppConfig extends InjectableConfig
+class GithubConfig extends InjectableConfig
 {
-    public const CONFIG = 'app';
+    public const CONFIG = 'github';
 
     protected array $config = [
-        'values' => []
+        'access_token' => '',
+        // ...
     ];
 
-    /** @return int[] */
-    public function getValues(): array
+    public function getAccessToken(): string
     {
-        return $this->config['values'];
+        return $this->config['access_token'];
     }
 }
 ``` 
@@ -83,14 +104,22 @@ class AppConfig extends InjectableConfig
 The base class `Spiral\Core\InjectableConfig` allows you to request this object immediately in your code without any
 IoC container configuration. The constant `CONFIG` contains the name of the configuration file.
 
+> **Note**
+> It's also possible to customize the generated class and add additional methods as needed.
+
 ```php
-use App\Config\AppConfig;
+use App\Config\GithubConfig;
 
-// ...
-
-public function index(AppConfig $appConfig)
+final class GithubClient
 {
-    \dump($appConfig->getValues());
+    private readonly string $accessToken;
+    
+    public function __construct(GithubConfig $config)
+    {
+        $this->accessToken = $config->getAccessToken();
+    }
+
+    // ...
 }
 ```
 
@@ -100,37 +129,45 @@ public function index(AppConfig $appConfig)
 
 Every Spiral component provides the config object you can use in your application.
 
+By using a config class, it's easy to access and manage configuration values in your Spiral application,
+while also enjoying the benefits of using OOP abstraction and improved code organization.
+
 ## Default Configuration in Bootloader
 
-In many cases, the default configuration might be enough for most of the applications. Use a custom bootloader to define
-default configuration values to avoid the need to create unnecessary files. Environment variables can be used as default 
-values.
+Use a custom bootloader to define default configuration values to avoid the need to create unnecessary files.
+Environment variables can be used as default values.
+
+This can be useful in cases where the default configuration is enough for most of the applications, and to avoid the
+need to create unnecessary config files.
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
-use App\Config\AppConfig;
+use App\Config\GithubConfig;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Boot\EnvironmentInterface;
 use Spiral\Config\ConfiguratorInterface;
 
-class AppBootloader extends Bootloader
+final class GithubBootloader extends Bootloader
 {
     public function init(ConfiguratorInterface $configurator, EnvironmentInterface $env): void
     {
-        $configurator->setDefaults(AppConfig::CONFIG, [
-            'values' => [432],
-            'other' => $env->get('VALUE_FROM_ENV', 'default')
+        $configurator->setDefaults(GithubConfig::CONFIG, [
+            'access_token' => $env->get('GITHUB_ACCESS_TOKEN')
+            'authentication_type' => $env->get('GITHUB_AUTHENTICATION_TYPE', 'token')
         ]);
     }
 }
 ```
 
-The file `app/config/app.php` will overwrite default configuration values. Remove this file to use the default
-configuration.
+This approach can be useful to set default configuration values that are common to all environments, or to provide a
+fallback value if a specific environment variable is not set
+
+If you want to use the default configuration, you can simply remove the `app/config/github.php` file.
 
 > **Note**
-> The overwrite is done on the first level keys of configuration array.
+> This feature allows to set default configuration values that can be easily overridden if needed, while still providing
+> a fallback if no configuration file is present.
 
 ## Auto-Configuration
 
@@ -144,32 +181,35 @@ We can provide our auto-configuration API in our Bootloader. Use `ConfiguratorIn
 Our Bootloader will be declared as Singleton to speed up processing a bit.
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
-use App\Config\AppConfig;
+use App\Config\GithubConfig;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Config\ConfiguratorInterface;
-use Spiral\Config\Patch\Append;
+use Spiral\Config\Patch\Set;
 use Spiral\Core\Container\SingletonInterface;
 
-class AppBootloader extends Bootloader implements SingletonInterface
+class GithubBootloader extends Bootloader implements SingletonInterface
 {
     public function __construct(
-        private ConfiguratorInterface $configurator
+        private readonly ConfiguratorInterface $configurator
     ) {
     }
 
     public function init(): void
     {
-        $this->configurator->setDefaults(AppConfig::CONFIG, [
-            'values' => [432]
+        $configurator->setDefaults(GithubConfig::CONFIG, [
+            'access_token' => $env->get('GITHUB_ACCESS_TOKEN')
+            'authentication_type' => $env->get('GITHUB_AUTHENTICATION_TYPE', 'token')
         ]);
     }
 
-    public function addValue(int $value): void
+    public function setAccessToken(string $token): void
     {
-        // append new value to the values section of app config
-        $this->configurator->modify(AppConfig::CONFIG, new Append('values', null, $value));
+        $this->configurator->modify(
+          GithubConfig::CONFIG, 
+          new Set('access_token', $token)
+        );
     }
 }
 ```
@@ -177,15 +217,15 @@ class AppBootloader extends Bootloader implements SingletonInterface
 Now, we can modify configuration via strict API from another bootloader:
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 
-class ValueBootloader extends Bootloader
+class SomeBootloader extends Bootloader
 {
-    public function init(AppBootloader $app): void
+    public function init(GithubBootloader $github): void
     {
-        $app->addValue(800);
+        $github->setAccessToken('xxx-xxxx');
     }
 }
 ```
@@ -195,27 +235,27 @@ class ValueBootloader extends Bootloader
 The framework provides a security mechanism to make sure that you are not changing config values after the config object
 is requested by any of the components (a.k.a. config is frozen).
 
-To demonstrate it, inject `AppConfig` to `ValueBootloader`:
+To demonstrate it, inject `GithubConfig` to `SomeBootloader`:
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
-use App\Config\AppConfig;
+use App\Config\GithubConfig;
 use Spiral\Boot\Bootloader\Bootloader;
 
-class ValueBootloader extends Bootloader
+class SomeBootloader extends Bootloader
 {
-    public function boot(AppBootloader $app, AppConfig $appConfig): void
+    public function boot(GithubBootloader $github, GithubConfig $config): void
     {
         // forbidden
-        $app->addValue(800);
+        $github->setAccessToken(800);
     }
 }
 ```
 
-You will receive this exception `Spiral\Config\Exception\ConfigDeliveredException`: *Unable to patch config `app`,
+You will receive this exception `Spiral\Config\Exception\ConfigDeliveredException`: *Unable to patch config `github`,
 config object has already been delivered.*
 
-It's recommended to set default values and change configs in the `init` method. And request a configuration file only in 
-the `boot` method. The `init` method is called before `boot`. This will ensure that when the `boot` method is called, 
+It's recommended to set default values and change configs in the `init` method. And request a configuration file only in
+the `boot` method. The `init` method is called before `boot`. This will ensure that when the `boot` method is called,
 the configs will be in the correct state.
