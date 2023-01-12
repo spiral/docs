@@ -1,8 +1,7 @@
 # Advanced — Injectors
 
 The Spiral Framework provides a way to control the creation process of any interface or abstract class children using an
-injection interface. The `Spiral\Core\Container\InjectorInterface` is implemented by the Injector class which provides
-a method that will be used every time when a specific class is requested from the container.
+injection interface.
 
 **There are several benefits to using the Spiral Framework's injection interface:**
 
@@ -22,11 +21,10 @@ Let's imagine that we have an interface `Psr\SimpleCache\CacheInterface` that pr
 
 ### Creating an injector
 
-When we want to get a specific cache implementation based on a context. The injector class should implement the
-`Spiral\Core\Container\InjectorInterface` which provides a method called `createInjection`. This method is used every
-time a specific class is requested from the container.
+The injector class should implement the `Spiral\Core\Container\InjectorInterface` which provides a method
+called `createInjection`. This method is used every time a specific class is requested from the container.
 
-In oue example we can combine a bootloader and an injector into one instance:
+In our example we can combine a bootloader and an injector into one instance:
 
 ```php
 namespace App\Application\Bootloader;
@@ -45,6 +43,7 @@ class CacheBootloader extends Bootloader implements InjectorInterface
 
     public function boot(BinderInterface $binder): void
     {
+        // Register injectable class
         $binder->bindInjector(CacheInterface::class, self::class);
     }
 
@@ -62,14 +61,16 @@ class CacheBootloader extends Bootloader implements InjectorInterface
 > **Note**
 > Do not forget to activate the bootloader.
 
+### Using the injector
+
+Now we can use the injector to get a specific cache implementation based on the context.
+
 When the container resolves the `CacheInterface`, it will request it from the injector using the `createInjection`
 method. The method takes in two arguments, `$class` and `$context`. The `$class` argument returns the `ReflectionClass`
 object for the requested class and the `$context` argument returns a Parameter or alias name (for example, the argument
 name of the method or function that requested the injectable class).
 
-### Using the injector
-
-Now we can use the injector to get a specific cache implementation based on the context:
+Here is an example of how to use the injector:
 
 ```php
 namespace App\Application\Controller;
@@ -99,8 +100,11 @@ interface based on the context that was passed to the injector's `createInjectio
 
 ### Class inheritance
 
-Yes, class inheritance is possible with the injector. Currently, the injector only supports classes that extend a base
-class, but future releases of the Spiral Framework will also support interface inheritance.
+Class inheritance is possible with the injector.
+
+> **Note**
+> Currently, the injector only supports classes (not interfaces) that extend a base class, but future releases of the
+> Spiral Framework will also support interface inheritance.
 
 ```php
 abstract class RedisCacheInterface implements CacheInterface
@@ -133,10 +137,21 @@ public function createInjection(\ReflectionClass $class, string $context = null)
 
 The `spiral/boot` component provides a convenient way for resolving enum classes using the
 `Spiral\Boot\Injector\InjectableEnumInterface` interface. When the container requests an Enum, it will call a specified
-method to determine the current value of the Enum and inject any required dependencies. This allows for easy management
-of Enums throughout the application and allows for the dynamic resolution of Enum values based on the current state of
-the application. This feature can be very useful for managing application-wide variables such as the current environment
-or the current user's role.
+method to determine the current value of the Enum and inject any required dependencies. 
+
+**There are several benefits to using Enum injections:**
+
+- **Type Safety:** Injections allow for type safety, ensuring that the correct type of variable is being passed to
+  a method or class.
+- **Dynamic Resolution:** Injections allow for the dynamic resolution of Enum values based on the current state of
+  the application, this makes it easy to change the value of an Enum without having to manually update it in multiple
+  places throughout the application.
+- **Reusability:** Injections can be reused across different parts of the application, making it more efficient to
+  manage the creation of Enum instances.
+- **Improved readability:** Injections make the code more readable and self-explanatory by providing a clear
+  meaning of the Enum instances used in the code.
+- **Improved maintainability:** Injections make the code more maintainable as the variables are centralised in one
+  place and can be easily managed.
 
 Let's create an `Enum`, with which we can easily determine the environment of our application.
 
@@ -190,9 +205,7 @@ container will be injected into it.
 
 ### Usage
 
-The Container will automatically inject an Enum with the correct value by using the method specified in
-the `ProvideFrom`
-attribute.
+The Container will automatically inject an Enum with the correct value.
 
 ```php
 final class MigrateCommand extends Command 
@@ -208,6 +221,3 @@ final class MigrateCommand extends Command
      }
 }
 ```
-
-This makes it easy to manage application-wide variables such as the current environment, without having to pass them
-around or hardcode them in multiple places throughout the application.
