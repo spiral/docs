@@ -9,7 +9,7 @@ It also provides an easy way to integrate `PSR-14` compatible `EventDispatcher`.
 To enable the component, you need to add `Spiral\Events\Bootloader\EventsBootloader` to the bootloaders
 list, which is located in the class of your application.
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Events\Bootloader\EventsBootloader::class,
@@ -31,7 +31,7 @@ composer require spiral-packages/league-event
 
 After the package is installed, you need to register a bootloader from the package.
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Events\Bootloader\EventsBootloader::class,

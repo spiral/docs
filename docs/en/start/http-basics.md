@@ -83,11 +83,12 @@ php app.php route:list
 
 You should see your `current-date` route in the list:
 
-```bash
+```output
 +--------------+--------+----------+------------------------------------------------+--------+
-| Name:        | Verbs: | Pattern: | Target:                                        | Group: |
+|[32m Name:        [39m|[32m Verbs: [39m|[32m Pattern: [39m|[32m Target:                                        [39m|[32m Group: [39m|
 +--------------+--------+----------+------------------------------------------------+--------+
-| current-date | GET    | /date    | App\Interface\Http\CurrentDateController->show | web    |
+| current-date | [32mGET[39m    | /date    | App\Interface\Http\CurrentDateController->show | web    |
+| data-time    | [32mGET[39m    | date     | App\Interface\Http\CurrentDateController->show | web    |
 +--------------+--------+----------+------------------------------------------------+--------+
 ```
 
@@ -114,3 +115,4 @@ Now, dive deeper into the fundamentals by reading some articles:
 * [Annotated Routing](../http/annotated-routes.md)
 * [Middleware](../http/middleware.md)
 * [Error Pages](../http/errors.md)
+* [Custom HTTP handler](../cookbook/psr-15.md)

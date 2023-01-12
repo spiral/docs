@@ -11,7 +11,7 @@ abstract classes that define the expected behavior of a validator.
 To enable the component, you just need to add `Spiral\Validation\Bootloader\ValidationBootloader` to the bootloaders
 list.
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Validation\Bootloader\ValidationBootloader::class,

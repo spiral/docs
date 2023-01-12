@@ -60,7 +60,7 @@ composer require spiral/twig-bridge
 
 The extension can be enabled using `Spiral\Twig\Bootloader\TwigBootloader`.
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Views\Bootloader\ViewsBootloader::class,

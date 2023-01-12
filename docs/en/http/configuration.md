@@ -13,7 +13,7 @@ composer require spiral/nyholm-bridge
 
 Activate the extension by adding two bootloaders:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
 

@@ -17,7 +17,7 @@ composer require spiral/data-grid-bridge
 Activate the bootloader `Spiral\DataGrid\Bootloader\GridBootloader` in your application after the Database and Cycle
 bootloaders:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\DataGrid\Bootloader\GridBootloader::class,

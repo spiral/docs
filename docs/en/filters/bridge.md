@@ -27,7 +27,7 @@ composer require spiral/filters-bridge
 The package does not require any configuration and can be activated using the
 bootloader `Spiral\Filters\Bootloader\FiltersBootloader`:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Filters\Bootloader\FiltersBootloader::class

@@ -15,7 +15,7 @@ composer require spiral/roadrunner-bridge
 
 Activate the bootloader `Spiral\RoadRunnerBridge\Bootloader\QueueBootloader` in your application:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\RoadRunnerBridge\Bootloader\QueueBootloader::class,

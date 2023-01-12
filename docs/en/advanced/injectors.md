@@ -15,7 +15,7 @@ abstract class Model
 We can combine a bootloader and an injector into one instance:
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use App\Model;
 use Spiral\Boot\Bootloader\Bootloader;

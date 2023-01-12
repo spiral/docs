@@ -75,7 +75,7 @@ return [
 Call method `addInterceptor` in the `Spiral\Console\Bootloader\ConsoleBootloader` class.
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use App\CustomInterceptor;
 use Spiral\Boot\Bootloader\Bootloader;

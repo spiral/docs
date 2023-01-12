@@ -13,6 +13,12 @@ you want to, you can also use environment variables to change the main parameter
 
 ## Environment Variables
 
+The Spiral Framework integrates with [Dotenv](https://github.com/vlucas/phpdotenv), so you can store all your
+environment variables in a `.env` file at the root of your project.
+
+> **Note**
+> If you're starting a new project, there's a `.env.sample` file that you can use as a guide.
+
 Using environment variables is a great way to separate the configuration of your application from the code itself. This
 makes it easy to change certain options depending on the environment you're running the application in, without having
 to modify the code.
@@ -21,13 +27,8 @@ For example, you may have different database credentials for your local developm
 Instead of hardcoding these credentials in the code, you can set them as environment variables and then reference them
 in your configuration files.
 
-The Spiral Framework integrates with [Dotenv](https://github.com/vlucas/phpdotenv), so you can store all your
-environment variables in a `.env` file at the root of your project.
-
-> **Note**
-> If you're starting a new project, there's a `.env.sample` file that you can use as a guide.
-
-Here is the example of available environment variables:
+<details>
+  <summary>Click to show example of available environment variables.</summary>
 
 ```dotenv
 # Environment (prod or local)
@@ -68,8 +69,9 @@ AUTH_TOKEN_STORAGE=session
 MAILER_DSN=
 MAILER_FROM="My site <no-reply@site.com>"
 ```
+</details>
 
-> **Note**
+> **Warning**
 > Any variable in your `.env` file can be overridden by external environment variables such as server-level or
 > system-level environment variables.
 

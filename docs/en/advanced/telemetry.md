@@ -139,7 +139,7 @@ composer require spiral/otel-bridge
 
 After package install you need to register bootloader from the package.
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\OpenTelemetry\Bootloader\OpenTelemetryBootloader::class,

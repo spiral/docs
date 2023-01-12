@@ -29,7 +29,7 @@ composer require spiral/roadrunner-bridge
 Once the package is installed, you can add the `Spiral\RoadRunnerBridge\Bootloader\MetricsBootloader` to the list of
 bootloaders:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\RoadRunnerBridge\Bootloader\MetricsBootloader::class,

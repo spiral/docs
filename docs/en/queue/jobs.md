@@ -357,7 +357,7 @@ final class QueueFailedJobsBootloader extends Bootloader
 
 And register this bootloader after `QueueFailedJobsBootloader` in your application
 
-```php
+```php  app/src/Application/Kernel.php
 protected const APP = [
     // ...
     \App\Bootloader\QueueFailedJobsBootloader::class,

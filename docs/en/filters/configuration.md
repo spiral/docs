@@ -32,7 +32,7 @@ duplication and make it easier to manage your validation logic.
 The component does not require any configuration and can be activated using the
 bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Bootloader\Security\FiltersBootloader::class,

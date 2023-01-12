@@ -12,7 +12,7 @@ organized and maintainable way to set up your routes, attribute-based routing mi
 Activate the bootloader `Spiral\Router\Bootloader\AnnotatedRoutesBootloader` in your application (you can disable the
 default `RoutesBootloader`):
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Router\Bootloader\AnnotatedRoutesBootloader::class,

@@ -233,11 +233,11 @@ the user based on the token.
 - `Spiral\Auth\Middleware\AuthTransportWithStorageMiddleware` - obtains the token from the request with using a specific
   token storage and a specific transport.
 
-The [application bundle](https://github.com/spiral/app) provides `App\Bootloader\RoutesBootloader`, where you can
-easily define middleware.
+The [application bundle](https://github.com/spiral/app) provides `App\Application\Bootloader\RoutesBootloader`, where
+you can easily define middleware.
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use Spiral\Auth\Middleware\AuthMiddleware;
 use Spiral\Auth\Middleware\AuthTransportMiddleware;

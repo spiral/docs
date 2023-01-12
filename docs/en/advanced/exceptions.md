@@ -23,11 +23,11 @@ $app = App::create(
 
 ## Configuration
 
-The application bundle contains `App\Bootloader\ExceptionHandlerBootloader` that registers some reporters 
+The application bundle contains `App\Application\Bootloader\ExceptionHandlerBootloader` that registers some reporters 
 and renderers. You can add your own renderers and reporters in this bootloader.
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use App\ErrorHandler\ViewRenderer;
 use App\Exception\CollisionRenderer;
@@ -112,7 +112,7 @@ to the `ExceptionHandlerInterface` interface and we can get it from the containe
 register reporters based on that.
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Boot\Environment\AppEnvironment;
@@ -188,7 +188,7 @@ To add a new renderer, use the `addRenderer` method in the `ExceptionHandler` cl
 to the `ExceptionHandlerInterface` interface and we can get it from the container using it.
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Exceptions\ExceptionHandlerInterface;

@@ -15,16 +15,14 @@ composer require spiral/scaffolder
 
 Make sure to add `Spiral\Scaffolder\Bootloader\ScaffolderBootloader` to your App class:
 
-```php
-use Spiral\Scaffolder\Bootloader\ScaffolderBootloader;
-
+```php app/src/Application/Kernel.php
 class App extends Kernel
 {
     // ...
 
     protected const APP = [
         // ...
-        ScaffolderBootloader::class
+        \Spiral\Scaffolder\Bootloader\ScaffolderBootloader::class
     ];
 }
 ```
@@ -43,7 +41,7 @@ configuration file. The default configuration is located in the [ScaffolderBootl
 Some components can provide their own declarations to create elements using the Scaffolder. 
 Such components can register their custom declarations with the `ScaffolderBootloader`:
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use Spiral\Scaffolder\Bootloader\ScaffolderBootloader as BaseScaffolderBootloader;
 

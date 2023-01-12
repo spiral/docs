@@ -84,7 +84,7 @@ callback function that returns response.
 
 Add this Bootloader to your application:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Bootloader\Http\HttpBootloader::class,

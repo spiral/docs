@@ -7,10 +7,10 @@ with console commands.
 All of the provided application skeletons include the Console component by default. To enable the component in
 alternative builds, make sure to require composer package `spiral/console` and modify the application bootloader:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     //...
-    Spiral\Bootloader\CommandBootloader::class,
+    \Spiral\Bootloader\CommandBootloader::class,
 ];
 ```
 

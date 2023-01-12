@@ -7,7 +7,7 @@ The translated view will be stored in a separate view cache and it provides the 
 
 To activate view translation, enable the bootloader `Spiral\Bootloader\Views\TranslatedCacheBootloader`. Make sure to add this bootloader before viewing engine bootloaders:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Views\Bootloader\ViewsBootloader::class,

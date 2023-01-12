@@ -13,6 +13,7 @@
     "title": "Getting started",
     "links": {
       "start/installation": "Installation",
+      "start/server": "Application Server",
       "start/structure": "Directory Structure",
       "start/configuration": "Configuration",
       "start/http-basics": "First HTTP controller",

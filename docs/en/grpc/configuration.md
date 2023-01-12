@@ -54,7 +54,7 @@ composer require spiral/roadrunner-bridge
 
 Activate the component using bootloader `Spiral\RoadRunnerBridge\Bootloader\GRPCBootloader`:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\RoadRunnerBridge\Bootloader\GRPCBootloader::class,

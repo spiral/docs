@@ -17,7 +17,7 @@ The component is available by default in the [application bundle](https://github
 To enable the serializer component in your Spiral Framework application, you need to add
 `Spiral\Serializer\Bootloader\SerializerBootloader` to the bootloaders list.
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Serializer\Bootloader\SerializerBootloader::class,
@@ -189,7 +189,7 @@ There are two ways to register a custom serializer in the Spiral Framework:
 1. Using the `Spiral\Serializer\SerializerRegistryInterface`:
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use App\CustomSerializer;
 use Spiral\Boot\Bootloader\Bootloader;

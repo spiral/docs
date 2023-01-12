@@ -13,12 +13,12 @@ composer require spiral/dotenv-bridge
 
 Add the following bootloader to your application:
 
-```php
-    protected const SYSTEM = [
-        Spiral\DotEnv\Bootloader\DotenvBootloader::class,
-        
-        //...
-    ]
+```php app/src/Application/Kernel.php
+protected const SYSTEM = [
+    \Spiral\DotEnv\Bootloader\DotenvBootloader::class,
+    
+    //...
+]
 ```
 
 > **Note**

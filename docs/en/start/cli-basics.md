@@ -14,7 +14,7 @@ Here are the basic steps to creating a console command in the Spiral Framework:
 
 Here's an example of a basic console command that outputs current date to the console:
 
-```php
+```php app/src/App/Interface/Console/CurrentDateCommand.php
 namespace App\Interface\Console;
 
 use Spiral\Console\Command;
@@ -45,26 +45,25 @@ php app.php help current:date
 
 This will display the command's signature, description, and any available arguments or options.
 
-```bash
-Description:
+```output
+[33mDescription:[39m
   Get current date
 
-Usage:
+[33mUsage:[39m
   current:date [<format>]
 
-Arguments:
-  format                Date format [default: "Y-m-d"]
+[33mArguments:[39m
+  [32mformat[39m                Date format[33m [default: "Y-m-d"][39m
 
-Options:
-  -h, --help            Display help for the given command. When no command is given display help for the list command
-  -q, --quiet           Do not output any message
-  -V, --version         Display this application version
-      --ansi|--no-ansi  Force (or disable --no-ansi) ANSI output
-  -n, --no-interaction  Do not ask any interactive question
-  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 ```
 
-<br>
 <br>
 
 **That's it! You've successfully set up your first console command in the Spiral Framework.**

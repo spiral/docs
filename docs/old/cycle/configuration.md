@@ -14,7 +14,7 @@ composer require spiral/cycle-bridge
 
 Activate the bootloader `Spiral\Cycle\Bootloader\BridgeBootloader` in your application:
 
-```php
+```php app/src/Application/Kernel.php
 use Spiral\Cycle\Bootloader as CycleBridge;
 
 protected const LOAD = [

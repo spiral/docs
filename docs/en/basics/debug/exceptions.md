@@ -16,7 +16,7 @@ composer require spiral/yii-error-handler-bridge
 
 After package install you need to register bootloader from the package:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\YiiErrorHandler\Bootloader\YiiErrorHandlerBootloader::class,

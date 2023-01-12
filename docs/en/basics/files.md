@@ -1,37 +1,42 @@
 # The Basics — Files and Directories
 
-The framework provides a simple component to work with the filesystem. The component is available in all of the
-application bundles.
+The framework provides a simple component `spiral/files` to work with the filesystem.
 
 ## Directory Registry
 
-Most of the Spiral components rely on the directory registry instead of hard-coded paths. The registry is represented 
+Most of the Spiral components rely on the directory registry instead of hard-coded paths. The registry is represented
 using `Spiral\Boot\DirectoriesInterface`.
 
-You can configure application specific directories in the app entry point (app.php):
+> **Note**
+> Read more about application directory structure in the [Getting started — Directory Structure](../start/structure.md)
+> section.
+
+You can configure application specific directories in the app entry point (`app.php`):
 
 ```php
-$app = \App\App::create([
-    'root'      => __DIR__,
-    'customDir' => __DIR__ . '/custom'
-])->run();
+$app = \App\Application\Kernel::create(
+    directories: [
+        'root' => __DIR__,
+        'uploadDir' => __DIR__ . '/upload'
+    ]
+)->run();
 ```
 
 Or using the Bootloader:
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Boot\DirectoriesInterface;
 
-class AppBootloader extends Bootloader
+final class AppBootloader extends Bootloader
 {
-    public function boot(DirectoriesInterface $directories)
+    public function boot(DirectoriesInterface $dirs): void
     {
-        $directories->set(
-            'customDir',
-            $directories->get('root') . '/custom'
+        $dirs->set(
+            'uploadDir',
+            $dirs->get('root') . '/upload'
         );
     }
 }
@@ -40,41 +45,143 @@ class AppBootloader extends Bootloader
 To access the directory paths:
 
 ```php
-namespace App\Controller;
-
 use Spiral\Boot\DirectoriesInterface;
 
-class HomeController
-{
-    public function index(DirectoriesInterface $dirs)
-    {
-        dump($dirs->get('root'));
-        dump($dirs->get('customDir'));
-
-        dump($dirs->getAll());
+final class UploadService {
+    public function __construct(
+        private readonly DirectoriesInterface $dirs
+    ) {}
+    
+    public function store(UploadedFile $file) {
+        $filePath = $this->dirs->get('uploadDir') . $file->getFilename();
+        // ...
     }
 }
 ```
 
 > **Note**
-> You can also use the short function `directory` inside your config files. Note that this
-> function does not work outside of the framework as it relies on the global container scope.
+> You can also use the short function `directory` inside your config files. Note that this function does not work 
+> outside of the framework as it relies on the global container scope.
+
+
+If you would like a directory names always be constrained by a specific method, you may create a helper class, for
+example `AppDirectories`.
+
+<details>
+  <summary>Click to show an example.</summary>
+
+```php
+namespace App\Application;
+
+use Spiral\Boot\DirectoriesInterface;
+
+final class AppDirectories
+{
+    public function __construct(
+        private readonly DirectoriesInterface $directories
+    ) {
+    }
+
+    /**
+     * Application root directory.
+     * @return non-empty-string
+     */
+    public function getRoot(?string $path = null): string
+    {
+        return $this->buildPath('root', $path);
+    }
+
+    /**
+     * Application directory.
+     * @return non-empty-string
+     */
+    public function getApp(?string $path = null): string
+    {
+        return $this->buildPath('app', $path);
+    }
+
+    /**
+     * Public directory.
+     * @return non-empty-string
+     */
+    public function getPublic(?string $path = null): string
+    {
+        return $this->buildPath('public', $path);
+    }
+
+    /**
+     * Runtime directory.
+     * @return non-empty-string
+     */
+    public function getRuntime(?string $path = null): string
+    {
+        return $this->buildPath('runtime', $path);
+    }
+
+    /**
+     * Runtime cache directory.
+     * @return non-empty-string
+     */
+    public function getCache(?string $path = null): string
+    {
+        return $this->buildPath('cache', $path);
+    }
+
+    /**
+     * Vendor libraries directory.
+     * @return non-empty-string
+     */
+    public function getVendor(?string $path = null): string
+    {
+        return $this->buildPath('vendor', $path);
+    }
+
+    /**
+     * Config directory.
+     * @return non-empty-string
+     */
+    public function getConfig(?string $path = null): string
+    {
+        return $this->buildPath('config', $path);
+    }
+
+    /**
+     * Resources directory.
+     * @return non-empty-string
+     */
+    public function getResources(?string $path = null): string
+    {
+        return $this->buildPath('resources', $path);
+    }
+
+    private function buildPath(string $key, ?string $path = null): string
+    {
+        return \rtrim($this->directories->get($key), '/') . ($path ? '/' . \ltrim($path, '/') : '');
+    }
+}
+```
+</details>
 
 ## Files
 
 Use the `Spiral\Files\FilesInterface` component to work with the filesystem:
 
 ```php
-namespace App\Controller;
-
 use Spiral\Files\FilesInterface;
 
-class HomeController
-{
-    public function index(FilesInterface $files)
+final class FileService
+{   
+    public function __construct(
+        private readonly FilesInterface $files,
+        private readonly AppDirectories $dirs
+    ) {}
+
+    public function getRootFiles()
     {
         // get all files from root directory recursively
-        dump($files->getFiles(directory('root')));
+        dump(
+            $files->getFiles($dirs->getRoot())
+        );
     }
 }
 ```
@@ -86,39 +193,36 @@ namespace App\Controller;
 
 use Spiral\Prototype\Traits\PrototypeTrait;
 
-class HomeController
+final class FileService
 {
     use PrototypeTrait;
-
-    public function index()
+   
+    public function __construct(
+        private readonly AppDirectories $dirs
+    ) {}
+    
+    public function store()
     {
         dump($this->files->exists(__FILE__)); // true
     }
 }
 ```
 
+> **Note**
+> Read more about prototyped properties in [The Basics — Prototyping](../basics/prototype.md) section.
+
 ### Create Directory
 
-To ensure that a given directory exists, use method `ensureDirectory`, the second argument accepts the access permission:
+To ensure that a given directory exists, use method `ensureDirectory`, the second argument accepts the access
+permission:
 
 ```php
-namespace App\Controller;
-
-use Spiral\Boot\DirectoriesInterface;
-use Spiral\Files\FilesInterface;
-use Spiral\Prototype\Traits\PrototypeTrait;
-
-class HomeController
+public function store()
 {
-    use PrototypeTrait;
-
-    public function index(DirectoriesInterface $dirs)
-    {
-        $this->files->ensureDirectory(
-            $dirs->get('customDir'),
-            FilesInterface::READONLY // or FilesInterface::RUNTIME for editable dirs and files
-        );
-    }
+    $this->files->ensureDirectory(
+        $dirs->get('customDir'),
+        FilesInterface::READONLY // or FilesInterface::RUNTIME for editable dirs and files
+    );
 }
 ```
 
@@ -237,7 +341,7 @@ dump($files->tempFilename('php', __DIR__));
 
 ## Read and Write operations
 
-The component provides multiple methods to operate with file content in an atomic way (without acquiring the file 
+The component provides multiple methods to operate with file content in an atomic way (without acquiring the file
 resource):
 
 ### Write/Create file

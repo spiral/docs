@@ -1,7 +1,5 @@
 # The Basics — Session
 
-The default application skeleton enables session integration by default.
-
 If you need to enable a session in an alternative bundle, require composer package `spiral/session` and add
 bootloader `Spiral\Bootloader\Http\SessionBootloader` into your app.
 

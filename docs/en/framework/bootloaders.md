@@ -1,6 +1,6 @@
 # Framework — Bootloaders
 
-Bootloaders are the central piece in Spiral Framework and your application. These objects are responsible
+Bootloaders are the central part in Spiral Framework and your application. These objects are responsible
 for [Container](../framework/container.md) configuration, default configuration, etc.
 
 Bootloaders are only executed once while loading your application. Since the app will stay in memory for long - you can

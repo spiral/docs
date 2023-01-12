@@ -11,7 +11,7 @@ The component is available by default in the [application bundle](https://github
 To enable the component, you just need to add `Spiral\Cache\Bootloader\CacheBootloader` to the bootloader's list, 
 which is located in the class of your application.
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Cache\Bootloader\CacheBootloader::class,

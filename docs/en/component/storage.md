@@ -22,7 +22,7 @@ composer require spiral/storage
 
 Make sure to add `Spiral\Storage\Bootloader\StorageBootloader` to your App class:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Storage\Bootloader\StorageBootloader::class,
@@ -695,7 +695,7 @@ composer require spiral/distribution
 To enable the component, you just need to add the `Spiral\Distribution\Bootloader\DistributionBootloader` class to the
 bootloader list, which is located in the class of your application.
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     // Added distribution bootloader

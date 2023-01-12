@@ -145,7 +145,7 @@ and send information about each class to all registered listeners.
 To use this feature, you will need to include `Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader`
 bootloader in your project at the top of bootloader's list:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     \Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader::class,
     // ...

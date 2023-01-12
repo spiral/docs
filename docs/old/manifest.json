@@ -13,6 +13,7 @@
     "title": "Getting Started",
     "links": {
       "start/install": "Installation",
+      "start/server": "Application Server",
       "start/workers": "Application Lifecycle",
       "start/structure": "Directory Structure",
       "start/configuration": "Configuration",

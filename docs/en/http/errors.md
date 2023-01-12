@@ -8,7 +8,7 @@ user-level exceptions.
 
 To enable such middleware, add the `Spiral\Bootloader\Http\ErrorHandlerBootloader` to your application:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Bootloader\Http\HttpBootloader::class,
@@ -158,10 +158,10 @@ class ViewRendererBootloader extends Bootloader
 
 The default application includes Monolog handler, which, by default, is subscribed to the messages sent by
 the `ErrorHandlerMiddleware`. The http error log is located in `app/runtime/logs/http.log` and configured
-in `App\Bootloaders\LoggingBootloader`:
+in `App\Application\Bootloader\LoggingBootloader`:
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Http\Middleware\ErrorHandlerMiddleware;

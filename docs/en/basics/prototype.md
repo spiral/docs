@@ -17,16 +17,15 @@ composer require spiral/prototype
 
 Make sure to add `Spiral\Prototype\Bootloader\PrototypeBootloader` to your App class:
 
-```php
+```php  app/src/Application/Kernel.php
 class App extends Kernel
 {
     // ...
 
     protected const APP = [
-        RoutesBootloader::class,
-        LoggingBootloader::class,
+        //...
 
-        PrototypeBootloader::class
+        \Spiral\Prototype\Bootloader\PrototypeBootloader::class
     ];
 }
 ```

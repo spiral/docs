@@ -32,7 +32,7 @@ composer require spiral/attributes
 To enable the component, you just need to add the `Spiral\Bootloader\Attributes\AttributesBootloader` class to the 
 bootloader list, which is located in the class of your application.
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Bootloader\Attributes\AttributesBootloader::class,

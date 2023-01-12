@@ -37,7 +37,7 @@ Register the Bootloader `Spiral\RoadRunnerBridge\Bootloader\CentrifugoBootloader
 
 After installing the package, you need to add the bootloader from the package to your application.
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\RoadRunnerBridge\Bootloader\CentrifugoBootloader::class,

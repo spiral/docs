@@ -349,7 +349,7 @@ final class TickerDispatcher implements DispatcherInterface
 Create a Bootloader to register our dispatcher in the kernel:
 
 ```php
-namespace App\Bootloader;
+namespace App\Application\Bootloader;
 
 use App\Dispatcher\TickerDispatcher;
 use Spiral\Boot\Bootloader\Bootloader;
