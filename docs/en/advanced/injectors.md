@@ -1,4 +1,4 @@
-# Cookbook - Injectors
+# Advanced — Injectors
 
 You can control the creation process of any interface or abstract class children using an injection interface. This
 article demonstrates how to create a class instance and assign a unique value to it, no matter what children implement

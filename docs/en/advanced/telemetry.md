@@ -1,4 +1,4 @@
-# Application telemetry
+# Advanced — Application telemetry
 
 The telemetry service allows you to collect and send application metrics to the telemetry server or to the logs. By
 default, it uses `null` driver and do nothing.

@@ -12,7 +12,7 @@ to the client.
 
 Here's an example of a simple controller that returns the current date and time:
 
-```php
+```php app/src/Interface/Http/CurrentDateController.php
 declare(strict_types=1);
 
 namespace App\Interface\Http;
@@ -37,7 +37,7 @@ The next step is to associate a route with your controller.
 Spiral Framework makes it easy to define your application's
 routes by using PHP attributes. All you have to do is add the `#[Route]` attribute to the controller's method like so:
 
-```php
+```php app/src/Interface/Http/CurrentDateController.php
 use Spiral\Router\Annotation\Route;
 
 // ...
@@ -58,7 +58,7 @@ Spiral Framework offers a convenient and organized way for developers to define 
 
 Here is an example of how to define a route that will handle our controller:
 
-```php
+```php app/src/Application/Bootloader/RoutesBootloader.php
 final class RoutesBootloader extends BaseRoutesBootloader
 {
     // ...

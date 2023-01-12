@@ -1,4 +1,4 @@
-# Exceptions
+# Advanced — Exceptions
 
 The Spiral Framework provides the `Exceptions` component for handling exceptions in an application.
 It also provides an interface and implementation of `ExceptionHandlerInterface`, functionality of `Reporters` and `Renderers`.

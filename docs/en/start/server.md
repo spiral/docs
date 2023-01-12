@@ -73,7 +73,7 @@ sudo dpkg -i roadrunner-2.X.X-linux-amd64.deb
 
 You can configure the number of workers, memory limits, and other plugins using `.rr.yaml` file:
 
-```yaml
+```yaml .rr.yaml
 version: '2.7'
 
 rpc:
@@ -98,7 +98,7 @@ http:
 
 To set the number of workers for HTTP:
 
-```yaml
+```yaml .rr.yaml
 http:
   pool:
     num_workers: 4
@@ -109,7 +109,7 @@ http:
 To force worker reload after every request (full debug mode) and limit processing to a single worker, add a `debug`
 option:
 
-```yaml
+```yaml .rr.yaml
 http:
   pool:
     debug: true

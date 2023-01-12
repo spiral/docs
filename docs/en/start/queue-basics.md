@@ -10,7 +10,7 @@ Here are the basic steps you'll need to follow:
 
 First, let's create a new job by creating a new class `PingSiteJob`:
 
-```php
+```php app/src/Interface/Jobs/PingSiteJob.php
 namespace App\Interface\Jobs;
 
 use Spiral\Queue\JobHandler;
@@ -30,7 +30,7 @@ final class PingSiteJob extends JobHandler
 
 Make sure that the jobs plugin is enabled in the RoadRunner config file `.rr.yaml`:
 
-```yaml
+```yaml .rr.yaml
 version: '2.7'
 
 rpc:
@@ -45,7 +45,7 @@ jobs:
 Next, we need to configure our application to send jobs to RoadRunner. We can do this in the `app/config/queue.php`
 config file:
 
-```php
+```php app/config/queue.php
 use Spiral\RoadRunner\Jobs\Queue\MemoryCreateInfo;
 
 return [
@@ -73,7 +73,7 @@ this pipeline, it will be added to the in-memory queue and RoadRunner will send 
 
 Now that our job and RoadRunner are configured, we can create a console command to push a job to the queue.
 
-```php
+```php app/src/Interface/Console/PingSiteCommand.php
 namespace App\Interface\Console;
 
 use App\Interface\Jobs\PingSiteJob;
@@ -117,8 +117,8 @@ php app.php ping:site https://google.com
 
 You should see the following output:
 
-```bash
-Job 3332e595-9774-434c-908c-3c419f80c967 pushed
+```output
+Job [32m3332e595-9774-434c-908c-3c419f80c967[39m pushed
 ```
 
 When the job is pushed to the queue, it will be sent to RoadRunner. Then, RoadRunner will send it to a consumer to

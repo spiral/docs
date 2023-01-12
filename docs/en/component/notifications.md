@@ -295,12 +295,14 @@ final class UserBanService {
 You can also send a notification via queue:
 
 ```php
-// Queued notification will be sent via `queueConnection` from notification config.
 $this->notifier->sendQueued(
     new UserBannedNotification(subject: 'Your profile banned for activity that violates rules'),
     $user
 );
 ```
+
+> **Note**
+> Queued notification will be sent via `queueConnection` from notification config.
 
 ## Custom notification transport
 

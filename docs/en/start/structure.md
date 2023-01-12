@@ -73,9 +73,7 @@ final class UploadService {
 
 You can also use the function `directory` inside the global IoC scope (config files, controllers, service code).
 
-```php
-// app/config/cache.php
-
+```php app/config/cache.php
 return [
     'storages' => [
         'file' => [
@@ -90,7 +88,7 @@ return [
 By default, all skeleton applications use `App` root namespace pointing to `app/src` directory. You can change the base
 to any desired namespace in `composer.json`:
 
-```json
+```json composer.json
 {
   "autoload": {
     "psr-4": {

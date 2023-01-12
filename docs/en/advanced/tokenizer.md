@@ -1,4 +1,4 @@
-# Tokenizer
+# Advanced — Static analysis
 
 The tokenizer component is a tool for discovering and analyzing code in specified directories. The most used
 functionality of locating class declarations is provided by `Spiral\Tokenizer\ClassesInterface`.

@@ -1,4 +1,4 @@
-# Framework - Static Memory
+# Advanced — Static Memory
 
 Framework (component `spiral/boot`) provides a convenient interface to store some computation data shared between
 processes.

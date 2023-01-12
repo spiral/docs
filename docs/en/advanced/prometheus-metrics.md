@@ -1,4 +1,4 @@
-# Application Metrics
+# Advanced — Application Metrics
 
 As a professional, you know the importance of keeping track of key metrics for your application.
 With [Prometheus](https://prometheus.io/), an open-source monitoring system, you can collect and store time series data

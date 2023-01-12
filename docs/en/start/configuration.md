@@ -30,7 +30,7 @@ in your configuration files.
 <details>
   <summary>Click to show example of available environment variables.</summary>
 
-```dotenv
+```dotenv .env
 # Environment (prod or local)
 APP_ENV=local
 
@@ -97,7 +97,7 @@ final class GithubClient
 
 or via a short function `env()`
 
-```php
+```php 
 return [
     'access_token' => env('GITHUB_ACCESS_TOKEN'),
     // ...
@@ -111,9 +111,9 @@ you need to make more complex or fine-grained changes to the configuration that 
 environment variables alone. In such cases, you can directly modify the config files for the specific components that
 you want to change.
 
-For example, you can change the default HTTP headers in `app/config/http.php`:
+For example, you can change the default HTTP headers:
 
-```php
+```php app/config/http.php
 return [
     'basePath'   => '/',
     'headers' => [
@@ -157,7 +157,7 @@ values from the config file and assigns them to the properties of the config obj
 
 For example, for **HTTP config**:
 
-```php
+```php spiral/framework/src/Http/src/Config/HttpConfig.php
 final class HttpConfig extends InjectableConfig
 {
     const CONFIG = 'http';

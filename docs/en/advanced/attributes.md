@@ -1,9 +1,22 @@
-# Attributes
+# Advanced — Attributes
 
-The `spiral/attributes` component serves two very important purposes:
+Attributes in PHP are a way to add metadata to classes, properties, functions, constants, and parameters. This metadata
+can be used to provide additional information about the element or to change the behavior of the element in certain
+situations.
 
-- The ability to combine different types of metadata in one place. You shouldn't
-  care if the developer is
+The `spiral/attributes` component provides a simple and consistent way to work with attributes in PHP.
+
+**Benefits of using attributes in PHP application:**
+
+- They provide a way to add metadata to elements in a way that is separate from the logic of the element.
+- They can be used to change the behavior of elements in certain situations, such as providing additional validation for
+  a property or changing the behavior of a function based on its attributes.
+- They can be used to provide additional information about elements, such as providing documentation for a class or
+  property.
+
+**The component also serves two very important purposes:**
+
+- The ability to combine different types of metadata in one place. You shouldn't care if the developer is
   using [Doctrine Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html)
   or [PHP Attributes](https://wiki.php.net/rfc/attributes_v2) added in PHP 8.
 - The ability to read attributes in any version of the language. This means that you can use the PHP 8 Attributes right
@@ -14,7 +27,8 @@ Component provides a metadata reader bridge allowing both modern
 [Doctrine annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html) to be used in
 the same project.
 
-This documentation uses the term "metadata" to refer to both "attributes" and "annotations".
+> **Note:** 
+> This documentation uses the term "metadata" to refer to both "attributes" and "annotations".
 
 ## Installation
 
@@ -26,10 +40,7 @@ composer require spiral/attributes
 
 ### Framework Integration
 
-> **Note**
-> Please note that the spiral/framework >= 2.8 already includes this component.
-
-To enable the component, you just need to add the `Spiral\Bootloader\Attributes\AttributesBootloader` class to the 
+To enable the component, you just need to add the `Spiral\Bootloader\Attributes\AttributesBootloader` class to the
 bootloader list, which is located in the class of your application.
 
 ```php app/src/Application/Kernel.php
@@ -40,13 +51,12 @@ protected const LOAD = [
 ];
 ```
 
-After that, the following interfaces will become available to you for access through the container:
-
-- `Spiral\Attributes\ReaderInterface`
 
 ## Usage
 
-The reader provides a set of following methods:
+The component provides a set of interfaces and classes for working with attributes.
+The `Spiral\Attributes\ReaderInterface` provides a set of methods for reading attributes from classes, properties,
+functions, constants, and parameters.
 
 ```php
 interface ReaderInterface
@@ -96,7 +106,11 @@ $attribute = $reader->firstClassMetadata($reflection, Entity::class);
 // returns Entity|null
 ```
 
-Since v2.10.0, supports read attributes from traits that are used in the class.
+Since **v2.10.0**, supports read attributes from traits that are used in the class.
+
+:::: tabs
+
+::: tab Attributes
 
 ```php
 #[Cycle\Entity]
@@ -115,6 +129,36 @@ trait TsTrait
     private ?DateTimeImmutable $updatedAt = null;
 }
 ```
+
+:::
+
+::: tab Annotations
+
+```php
+/**
+ * @Cycle\Entity
+ */
+class Entity {
+    use TsTrait;
+}
+
+/**
+ * @Behavior\CreatedAt
+ * @Behavior\UpdatedAt
+ */
+trait TsTrait
+{
+    #[Cycle\Column(type: 'datetime')]
+    private DateTimeImmutable $createdAt;
+
+    #[Cycle\Column(type: 'datetime', nullable: true)]
+    private ?DateTimeImmutable $updatedAt = null;
+}
+```
+
+:::
+
+::::
 
 ### Property Metadata
 
@@ -245,7 +289,8 @@ $getter = $reader->firstConstantMetadata($reflection, PreCondition::class);
 
 > **Note**
 > For details on using doctrine annotations, please see
-> the [doctrine documentation](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html#create-an-annotation-class).
+>
+the [doctrine documentation](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html#create-an-annotation-class).
 
 You should use "hybrid" syntax to create metadata classes that will work on any version of PHP.
 
@@ -263,19 +308,27 @@ class MyEntityMetadata
 
 In this case you can use this metadata class on any PHP version.
 
+:::: tabs
+
+::: tab Attributes
+
 ```php
-/**
- * PHP 8.0 syntax
- */
 #[MyEntityMetadata(table: 'users')] 
 class User {}
+```
 
+:::
+
+:::: tab Annotations
+```php
 /**
- * Doctrine syntax
  * @MyEntityMetadata(table="users")
  */
 class User {}
 ```
+:::
+
+::::
 
 ### Instantiation
 
@@ -284,13 +337,31 @@ compatibility.
 
 Let's say you use your metadata class as follows, passing in one field "`property`" with the string value "`value`".
 
+:::: tabs
+
+::: tab Attributes
+
 ```php
-/** @CustomMetadataClass(property="value") */
 #[CustomMetadataClass(property: "value")]
 class AnnotatedClass
 {
 }
 ```
+
+:::
+
+::: tab Annotations
+
+```php
+/** @CustomMetadataClass(property="value") */
+class AnnotatedClass
+{
+}
+```
+
+:::
+
+::::
 
 In this case, the annotation class itself might look like this:
 
@@ -298,7 +369,9 @@ In this case, the annotation class itself might look like this:
 
 In this case, when declaring a metadata class, the attribute/annotation properties will be filled.
 
-> See also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
+> See
+>
+also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
 
 ```php
 /** @Annotation */
@@ -314,7 +387,9 @@ class CustomMetadataClass
 In the case of a constructor declaration, all data when using the metadata class will be passed to this constructor as
 an array.
 
-> See also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
+> See
+>
+also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
 
 ```php
 /** @Annotation */
@@ -331,8 +406,8 @@ class CustomMetadataClass
 #### Named Arguments (Interface Marker)
 
 If you want to use named constructor parameters (see
-also [https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments)), 
-then you have to add an interface `Spiral\Attributes\NamedArgumentConstructorAttribute` to the metadata class that will 
+also [https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments)),
+then you have to add an interface `Spiral\Attributes\NamedArgumentConstructorAttribute` to the metadata class that will
 mark the required metadata class as one that takes named arguments.
 
 ```php
@@ -422,12 +497,29 @@ The implementation automatically selects the correct reader based on the syntax 
 is required if you use both syntax at the same time in the same project. For example, in the case of an already
 working project, which is refactored and the syntax of annotations is translated into the modern syntax of attributes.
 
+:::: tabs
+
+::: tab Attributes
+
+```php
+#[ExampleAttribute]
+class ClassWithAttributes {}
+```
+
+:::
+
+::: tab Annotations
+
 ```php
 /** @ExampleAnnotation */
 class ClassWithAnnotations {}
-#[ExampleAttribute]
-class ClassWithAttributes {}
+```
 
+:::
+
+::::
+
+```php
 $reader = new \Spiral\Attributes\Composite\SelectiveReader([
     new \Spiral\Attributes\AnnotationReader(),
     new \Spiral\Attributes\AttributeReader(),
