@@ -26,7 +26,7 @@ called `createInjection`. This method is used every time a specific class is req
 
 In our example we can combine a bootloader and an injector into one instance:
 
-```php
+```php app/src/Application/Bootloader/CacheBootloader.php
 namespace App\Application\Bootloader;
 
 use Psr\Container\ContainerInterface;
@@ -72,8 +72,8 @@ name of the method or function that requested the injectable class).
 
 Here is an example of how to use the injector:
 
-```php
-namespace App\Application\Controller;
+```php app/src/Interface/Controller/BlogController.php
+namespace App\Interface\Controller;
 
 use Psr\SimpleCache\CacheInterface;
 
@@ -118,7 +118,7 @@ For example, in the `createInjection` method, we can check if the requested clas
 and return a `RedisCache` instance, or check if the requested class is a subclass of `MemcachedCacheInterface` and
 return a `MemcachedCache` instance.
 
-```php
+```php app/src/Application/Bootloader/CacheBootloader.php
 public function createInjection(\ReflectionClass $class, string $context = null): CacheInterface
 {
     if ($class->isSubclassOf(RedisCacheInterface::class)) {
@@ -207,7 +207,7 @@ container will be injected into it.
 
 The Container will automatically inject an Enum with the correct value.
 
-```php
+```php app/src/Interface/Console/MigrateCommand.php
 final class MigrateCommand extends Command 
 {
      const NAME = '...';

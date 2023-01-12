@@ -95,7 +95,7 @@ Options are a form of user input that is prefixed by two hyphens `--` when speci
 `SIGNATURE` constant, options are defined using the syntax `{--name}`, `{--name=value}` or `{--n|name}` if you want to
 use shortcut.
 
-Yes, you can use shortcuts for options to make it easier for users to specify the option when calling the command.
+You can use shortcuts for options to make it easier for users to specify the option when calling the command.
 
 For example, `{--S|skip-ssl-errors}` defines an option named `skip-ssl-errors` with a shortcut of `S`. This means that
 the option can be specified using either `--skip-ssl-errors` or `--S` on the command line.

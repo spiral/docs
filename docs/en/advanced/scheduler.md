@@ -107,7 +107,7 @@ php app.php schedule:list
 
 ### Callbacks
 
-Yes, you can use the `before`, `then`, `when`, and `skip` methods to register callbacks.
+You can use the `before`, `then`, `when`, and `skip` methods to register callbacks.
 
 #### Before callback
 
