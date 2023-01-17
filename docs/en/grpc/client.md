@@ -145,7 +145,7 @@ final class PingServiceCommand extends Command
 
 To use this command, run it from the command line:
 
-```bash
+```terminal
 php app.php ping https://google.com
 ```
 

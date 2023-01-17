@@ -6,7 +6,7 @@ Most of the application code can be generated using a set of console commands.
 
 To install the extension:
 
-```bash
+```terminal
 composer require spiral/scaffolder
 ```
 
@@ -89,7 +89,7 @@ Some packages may provide their own Commands. For example, the `Cycle Bridge` pa
 
 ### Bootloader
 
-```bash
+```terminal
 php app.php create:bootloader <name>
 ```
 
@@ -97,7 +97,7 @@ php app.php create:bootloader <name>
 
 #### Example
 
-```bash
+```terminal
 php app.php create:bootloader my
 ```
 
@@ -124,7 +124,7 @@ class MyBootloader extends Bootloader
 
 ### Command
 
-```bash
+```terminal
 php app.php create:command <name> [alias]
 ```
 
@@ -132,7 +132,7 @@ php app.php create:command <name> [alias]
 
 #### Example without `alias`
 
-```bash
+```terminal
 php app.php create:command my
 ```
 
@@ -159,7 +159,7 @@ class MyCommand extends Command
 
 #### Example with alias
 
-```bash
+```terminal
 php app.php create:command my alias
 ```
 
@@ -186,7 +186,7 @@ class MyCommand extends Command
 
 ### Config
 
-```bash
+```terminal
 php app.php create:config <name>
 ```
 
@@ -206,7 +206,7 @@ omitted.
 
 #### Example with an empty config file
 
-```bash
+```terminal
 php app.php create:config my
 ```
 
@@ -276,7 +276,7 @@ return [
 ];
 ```
 
-```bash
+```terminal
 php app.php create:config my -r
 ```
 
@@ -378,7 +378,7 @@ class MyConfig extends InjectableConfig
 
 ### Controller
 
-```bash
+```terminal
 php app.php create:controller <name>
 ```
 
@@ -389,7 +389,7 @@ php app.php create:controller <name>
 
 #### Example with an empty actions list
 
-```bash
+```terminal
 php app.php create:controller my
 ```
 
@@ -403,7 +403,7 @@ class MyController
 
 #### Example with a `prototype` option
 
-```bash
+```terminal
 php app.php create:controller my -p
 ```
 
@@ -472,7 +472,7 @@ class MyController
 
 ### Job Handler
 
-```bash
+```terminal
 php app.php create:jobHandler <name>
 ```
 
@@ -480,7 +480,7 @@ php app.php create:jobHandler <name>
 
 #### Example
 
-```bash
+```terminal
 php app.php create:jobHandler my
 ```
 
@@ -499,7 +499,7 @@ class MyJob extends JobHandler
 
 ### Middleware
 
-```bash
+```terminal
 php app.php create:middleware <name>
 ```
 
@@ -507,7 +507,7 @@ php app.php create:middleware <name>
 
 #### Example
 
-```bash
+```terminal
 php app.php create:middleware my
 ```
 

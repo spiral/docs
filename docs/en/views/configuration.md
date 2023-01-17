@@ -2,7 +2,7 @@
 
 The `spiral/views` component is available in Web bundle by default, to install it in alternative builds:
 
-```bash
+```terminal
 composer require spiral/views
 ```
 
@@ -103,7 +103,7 @@ By default, view caching is turned off if the env variable `DEBUG` is set to tru
 
 Run the console command `views:reset` to delete the view cache:
 
-```bash
+```terminal
 php app.php views:reset
 ```
 
@@ -111,7 +111,7 @@ php app.php views:reset
 
 To warmup cache, run `views:compile` or `configure`:
 
-```bash
+```terminal
 php app.php views:compile
 ``` 
 

@@ -102,7 +102,7 @@ exit($code);
 When we run our application, the appropriate dispatcher will be chosen based on the current environment. For example, if
 we run the following command:
 
-```bash
+```terminal
 php app.php db:migrate
 ```
 

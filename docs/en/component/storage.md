@@ -12,7 +12,7 @@ classic file systems have) for working with directories, or a list of files are 
 
 To install the component:
 
-```bash
+```terminal
 composer require spiral/storage
 ```
 
@@ -215,7 +215,7 @@ Please note that in order to interact with this type of servers, you must have o
 installed (either). You must install the `league/flysystem-aws-s3-v3` or `league/flysystem-async-aws-s3` package using
 the Composer.
 
-```bash
+```terminal
 composer require league/flysystem-aws-s3-v3 ^2.0
 // OR
 composer require league/flysystem-async-aws-s3 ^2.0
@@ -683,7 +683,7 @@ external suppliers.
 
 Use Composer to install the component:
 
-```bash
+```terminal
 composer require spiral/distribution
 ```
 

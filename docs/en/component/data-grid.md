@@ -7,7 +7,7 @@ based on specifications provided by the end-user.
 
 To install the component:
 
-```bash
+```terminal
 composer require spiral/data-grid-bridge
 ```
 

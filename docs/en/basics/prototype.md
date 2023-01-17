@@ -8,7 +8,7 @@ tooltips for most common framework components and Cycle Repositories.
 
 To install the extension:
 
-```bash
+```terminal
 composer require spiral/prototype
 ```
 
@@ -67,7 +67,7 @@ class HomeController
 
 Once the prototyping phase is complete, you can remove the trait and inject dependencies via:
 
-```bash
+```terminal
 php app.php prototype:inject -r
 ```
 
@@ -113,7 +113,7 @@ For PHP 7.4 there are two additional flags available now:
 > **Note**
 > that these flags work only if the latest `nikic/php-parser` version with PHP 7.4 support is installed.
 
-```bash
+```terminal
 php app.php prototype:inject -r -t --no-phpdoc
 ```
 
@@ -145,7 +145,7 @@ class HomeController
 
 To view all the classes which use prototyped properties without modifying them:
 
-```bash
+```terminal
 php app.php prototype:list
 ```
 

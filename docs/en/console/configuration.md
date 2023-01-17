@@ -16,19 +16,19 @@ protected const LOAD = [
 
 To invoke application command just run:
 
-```bash
+```terminal
 php app.php command:name
 ```
 
 To get a list of available commands:
 
-```bash
-php app.php
+```terminal
+php app.php list
 ```
 
 To get help about a particular command:
 
-```bash
+```terminal
 php app.php help command:name
 ```
 

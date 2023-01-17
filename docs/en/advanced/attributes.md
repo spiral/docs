@@ -13,6 +13,8 @@ The `spiral/attributes` component provides a simple and consistent way to work w
   a property or changing the behavior of a function based on its attributes.
 - They can be used to provide additional information about elements, such as providing documentation for a class or
   property.
+- By utilizing the attributes in combination with interceptors, developers can implement Aspect-Oriented Programming
+  practices within their codebase, resulting in benefits such as smaller, faster, and more easily testable code.
 
 **The component also serves two very important purposes:**
 
@@ -27,14 +29,14 @@ Component provides a metadata reader bridge allowing both modern
 [Doctrine annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html) to be used in
 the same project.
 
-> **Note:** 
+> **Note:**
 > This documentation uses the term "metadata" to refer to both "attributes" and "annotations".
 
 ## Installation
 
 To install the component:
 
-```bash
+```terminal 
 composer require spiral/attributes
 ```
 
@@ -50,7 +52,6 @@ protected const LOAD = [
     // ...
 ];
 ```
-
 
 ## Usage
 
@@ -320,12 +321,14 @@ class User {}
 :::
 
 :::: tab Annotations
+
 ```php
 /**
  * @MyEntityMetadata(table="users")
  */
 class User {}
 ```
+
 :::
 
 ::::

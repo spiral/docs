@@ -39,7 +39,7 @@ your commands or create a separate configuration file for them.
 
 To get help information for your command, you can run the followed command in your terminal.
 
-```bash
+```terminal
 php app.php help current:date
 ```
 
@@ -67,6 +67,8 @@ This will display the command's signature, description, and any available argume
 <br>
 
 **That's it! You've successfully set up your first console command in the Spiral Framework.**
+
+<hr>
 
 ## What's Next?
 

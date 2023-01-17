@@ -8,7 +8,7 @@ The Yii Error Handler is a bridge package for Spiral Framework that provides int
 
 ### Installation
 
-```bash
+```terminal
 composer require spiral/yii-error-handler-bridge
 ```
 

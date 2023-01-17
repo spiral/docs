@@ -173,6 +173,8 @@ final class HttpConfig extends InjectableConfig
 
 **That's it! You've successfully configured your awesome application.**
 
+<hr>
+
 ## What's Next?
 
 Now, dive deeper into the fundamentals by reading some articles:

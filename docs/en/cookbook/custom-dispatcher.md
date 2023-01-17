@@ -1,4 +1,4 @@
-# Advanced - Custom Dispatcher
+# Cookbook — Custom Dispatcher
 
 It is possible to invoke application kernel using a custom data source, for example, **Kafka**, **state-machine**
 events, or attach to user-defined interrupt. In this section, we will try to demonstrate how to write a RoadRunner
@@ -294,7 +294,7 @@ vx build -c plugins.toml -o .
 
 At first, we need to install `spiral/roadrunner-worker` package:
 
-```bash
+```terminal
 composer require spiral/roadrunner-worker
 ```
 
@@ -366,7 +366,7 @@ final class TickerBootloader extends Bootloader
 
 Now we can run our application:
 
-```bash
+```terminal
 ./rr serve
 ```
 

@@ -38,7 +38,7 @@ Use constants `NAME` and `DESCRIPTION` to give a name to your Command.
 
 To invoke your command, run the following command in the console:
 
-```bash
+```terminal
 php app.php my:command 
 ```
 

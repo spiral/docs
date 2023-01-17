@@ -48,7 +48,7 @@ tools to generate proto files, client code, and a bootloader for your applicatio
 
 To install the `spiral/roadrunner-bridge` package, use the following command:
 
-```bash
+```terminal
 composer require spiral/roadrunner-bridge
 ```
 
@@ -71,7 +71,7 @@ that generates PHP code for gRPC services.
 > `spiral/roadrunner-cli` package. This command will download the latest version of the `protoc-gen-php-grpc` binary and
 > save it to the root directory of your project.
 
-```bash
+```terminal
 ./vendor/bin/rr download-protoc-binary
 ```
 

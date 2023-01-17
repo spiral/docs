@@ -82,11 +82,12 @@
   {
     "title": "Testing",
     "links": {
-      "testing/configuration": "Installation and Configuration",
-      "testing/common": "Common",
+      "testing/start": "Getting Started",
       "testing/http": "HTTP Tests",
       "testing/queue": "Queue Tests",
-      "testing/mail": "Mail Tests"
+      "testing/mail": "Mail Tests",
+      "testing/event": "Event Tests",
+      "testing/view": "View Tests"
     }
   },
   {

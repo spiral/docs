@@ -6,7 +6,7 @@ support for Blade-like directives and echoing, HTML components, stacks, and more
 
 To install the extensions in alternative bundles:
 
-```bash
+```terminal
 composer require spiral/stempler-bridge
 ```
 

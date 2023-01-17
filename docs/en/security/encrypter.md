@@ -2,7 +2,7 @@
 
 Both Web and GRPC application skeletons include Encrypter component by default. To install Encrypter in other builds:
 
-```bash
+```terminal
 composer require spiral/encrypter
 ```
 
@@ -21,7 +21,7 @@ By default, `EncrypterBootloader` will load Base64 encoded key from the environm
 If you use [Dotenv](../extension/dotenv.md) extension you can specify this key value in `.env` file located in the root of
 your application. To issue a new key into `.env`, run:
 
-```bash
+```terminal
 php app.php encrypt:key -m .env
 ```
 

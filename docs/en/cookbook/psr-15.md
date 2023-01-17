@@ -1,4 +1,4 @@
-# Advanced - Custom HTTP request handler
+# Cookbook — Custom HTTP request handler
 
 The Spiral Framework is a modern, open-source PHP web application framework designed to help developers build scalable
 and flexible web applications. It is compliant with several community standards,

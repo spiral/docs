@@ -105,7 +105,7 @@ return [
 
 Then, you can compile the `pinger.proto` file using the following command:
 
-```bash
+```terminal
 php app.php grpc:generate
 ```
 
@@ -165,7 +165,7 @@ grpc:
     - "proto/pinger.proto"
 ```
 
-```bash
+```terminal
 ./rr serve
 ```
 

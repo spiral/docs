@@ -26,7 +26,13 @@ automatically.
 
 Just install the package in your project and run the following command:
 
-```bash
+```terminal
+composer require spiral/roadrunner-cli
+```
+
+And run the following command to download the latest version of the RoadRunner:
+
+```terminal
 ./vendor/bin/rr get
 ```
 
@@ -36,16 +42,24 @@ Just install the package in your project and run the following command:
 
 ::: tab Docker
 
-To get the roadrunner binary file you can use our docker image: `spiralscout/roadrunner:2.X.X` or use the GitHub
-package: `ghcr.io/roadrunner-server/roadrunner:2.X.X`
+RoadRunner provides pre-compiled RoadRunner server binaries within a Docker image. 
 
-```bash
-FROM ghcr.io/roadrunner-server/roadrunner:2.X.X AS roadrunner
+**The image is available on:**
+- **Github**— [ghcr.io/roadrunner-server/roadrunner](https://github.com/roadrunner-server/roadrunner/pkgs/container/roadrunner)
+- **Docker Hub** — [spiralscout/roadrunner](https://hub.docker.com/r/spiralscout/roadrunner)
+
+```docker Dockerfile
+FROM spiralscout/roadrunner as roadrunner
+# OR
+# FROM ghcr.io/roadrunner-server/roadrunner as roadrunner
+
 FROM php:8.1-cli
 
+# Copy the RoadRunner binary from the roadrunner image to the local bin directory
 COPY --from=roadrunner /usr/bin/rr /usr/local/bin/rr
 
-# USE THE RR
+# Run the RoadRunner server command
+CMD ["rr", "serve"]
 ```
 
 :::
@@ -126,7 +140,7 @@ http:
 
 Use the following command to start application server on **Linux**
 
-```bash
+```terminal
 ./rr serve
 ```
 
@@ -138,9 +152,10 @@ Use the following command to start application server on **Linux**
 ::: tab Windows
 Use the following command to start application server on **Windows**
 
-```bash
+```terminal
 ./rr.exe serve
 ```
+
 :::
 
 ::::
@@ -177,6 +192,8 @@ your domain code is not leaking.
 > **Note**
 > Framework includes a set of instruments to simplify the development process and avoid memory/state leaks such as
 > IoC Scopes, Cycle ORM, Immutable Configs, Domain Cores, Routes, and Middleware.
+
+<hr>
 
 ## What's Next?
 

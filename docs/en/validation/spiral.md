@@ -11,7 +11,7 @@ that provides an array-based Domain Specific Language (DSL) to construct complex
 
 To install the component run the following command:
 
-```bash
+```terminal
 composer require spiral/validator
 ```
 

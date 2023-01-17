@@ -71,7 +71,7 @@ final class GithubClient
 It is not very convenient to read the configuration in the form of arrays. The framework provides the OOP abstraction to
 read your values. We can create this class manually or automatically generate it via `spiral/scaffolder`:
 
-```bash
+```terminal
 php app.php create:config github -r
 ``` 
 

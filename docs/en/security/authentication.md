@@ -29,7 +29,7 @@ fly. The framework includes multiple token implementations out of the box for a 
 
 To install authorization extension for Web bundle:
 
-```bash
+```terminal
 composer require spiral/auth spiral/auth-http
 ```
 
@@ -107,7 +107,7 @@ AUTH_TOKEN_STORAGE=database
 
 You must generate and run database migration or run `cycle:sync` in order to create the needed table:
 
-```bash
+```terminal
 php app.php migrate:init
 php app.php cycle:migrate -v -r
 ```

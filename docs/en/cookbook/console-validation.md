@@ -1,4 +1,4 @@
-# Console command input validation
+# Cookbook — Console command input validation
 
 The `spiral/filters` is a powerful component for filtering and validating input data. It allows you to create filters
 that can be used to map and validate input data from various sources, such as HTTP requests, gRPC requests and console
@@ -254,7 +254,7 @@ CMD;
 
 Now you can run the console command:
 
-```bash
+```terminal
 php app.php user:register john_smith john@site.com -as
 ```
 
@@ -303,7 +303,7 @@ class UserRegisterFilter extends Filter implements HasFilterDefinition
 
 Now if you run the console command with invalid input data, you will get an error message:
 
-```bash
+```terminal
 php app.php user:register jh john
 ```
 
@@ -367,7 +367,7 @@ return [
 
 That's it. Now if you run the console command with invalid input data:
 
-```bash
+```terminal
 php app.php user:register jh john -as
 ```
 

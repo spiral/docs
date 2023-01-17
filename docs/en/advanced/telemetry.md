@@ -133,7 +133,7 @@ Integration with OpenTelemetry is available via [spiral/otel-bridge](https://git
 
 You can install the package via composer:
 
-```bash
+```terminal
 composer require spiral/otel-bridge
 ```
 

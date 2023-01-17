@@ -25,7 +25,7 @@ After that, let's install `PSR-14` implementation of a compatible `EventDispatch
 `spiral-packages/league-event` package that integrates a PSR-14 compatible `league/event` package into 
 an application based on the Spiral Framework.
 
-```bash
+```terminal
 composer require spiral-packages/league-event
 ```
 

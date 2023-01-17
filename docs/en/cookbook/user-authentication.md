@@ -1,4 +1,4 @@
-# Advanced - User authentication based on JWT token storage
+# Cookbook — User authentication based on JWT token storage
 
 The Spiral Framework is designed to be flexible and allow developers to use a variety of authentication storage
 mechanisms. In addition to traditional session-based authentication and database-based authentication, the framework

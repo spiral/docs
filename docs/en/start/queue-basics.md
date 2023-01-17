@@ -103,7 +103,7 @@ container resolves it, it will provide an instance of the `default` queue connec
 
 To run the job, we first need to start the RoadRunner server with the command:
 
-```bash
+```terminal
 ./rr serve
 ```
 
@@ -111,7 +111,7 @@ To run the job, we first need to start the RoadRunner server with the command:
 
 Then, we can run our console command to push a job to the queue.
 
-```bash
+```terminal
 php app.php ping:site https://google.com
 ```
 
@@ -126,6 +126,8 @@ handle.
 
 That's it! You've now created your first background job using the Spiral Framework and RoadRunner. With this setup, you
 can easily add more jobs and perform tasks asynchronously to keep your application running smoothly.
+
+<hr>
 
 ## What's Next?
 

@@ -54,7 +54,7 @@ scopes, i18n integration, and caching.
 
 To install Twig:
 
-```bash
+```terminal
 composer require spiral/twig-bridge
 ```
 

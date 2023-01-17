@@ -98,6 +98,8 @@ to any desired namespace in `composer.json`:
 }
 ```
 
+<hr>
+
 ## What's Next?
 
 Now, dive deeper into the fundamentals by reading some articles:

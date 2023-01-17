@@ -232,7 +232,7 @@ protected const LOAD = [
 
 To view available databases, drivers, and tables:
 
-```bash
+```terminal
 php app.php db:list
 ```
 
@@ -251,7 +251,7 @@ The output:
 
 To view the details about a particular table:
 
-```bash
+```terminal
 php app.php db:table posts
 ```
 
@@ -293,7 +293,7 @@ Make sure that your server is configured with following PHP version and extensio
 
 Run the following command to install the package:
 
-```bash
+```terminal
 composer require spiral/cycle-bridge
 ```
 

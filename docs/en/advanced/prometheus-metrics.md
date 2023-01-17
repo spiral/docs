@@ -22,7 +22,7 @@ At first, you need to install the [spiral/roadrunner-bridge](https://github.com/
 
 Simply run the following command to install the package:
 
-```bash
+```terminal
 composer require spiral/roadrunner-bridge
 ```
 

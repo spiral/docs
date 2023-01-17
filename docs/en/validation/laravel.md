@@ -11,7 +11,7 @@ provides integration with the Laravel Validator, which is a validation component
 
 To install the component run the following command:
 
-```bash
+```terminal
 composer require spiral-packages/laravel-validator
 ```
 

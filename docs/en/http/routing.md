@@ -4,7 +4,7 @@ The framework [Web Bundle](https://github.com/spiral/app) includes a pre-configu
 
 This component can be installed in alternative builds as needed.
 
-```bash
+```terminal
 composer require spiral/router
 ```
 

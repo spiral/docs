@@ -12,7 +12,7 @@ powerful and feature-rich validation library.
 
 To install the component run the following command:
 
-```bash
+```terminal
 composer require spiral-packages/symfony-validator
 ```
 

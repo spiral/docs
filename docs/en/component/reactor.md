@@ -7,7 +7,7 @@ is based on `nette/php-generator`.
 
 To install the component:
 
-```bash
+```terminal
 composer require spiral/reactor
 ```
 

@@ -17,7 +17,7 @@ Make sure that your server is configured with the following PHP version and exte
 
 To install the package:
 
-```bash
+```terminal
 composer require spiral/filters-bridge
 ```
 

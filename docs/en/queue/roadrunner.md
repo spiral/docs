@@ -9,7 +9,7 @@ The `spiral/roadrunner-bridge` package is included by default in the Web and GRP
 
 To install the component in alternative bundles or as a standalone library:
 
-```bash
+```terminal
 composer require spiral/roadrunner-bridge
 ```
 

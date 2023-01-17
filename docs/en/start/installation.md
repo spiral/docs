@@ -23,16 +23,16 @@ Make sure that your server is configured with the following PHP version and exte
 ## Installation
 
 
-```bash
+```terminal
 composer create-project spiral/app my-app
 ```
 
 > **Note**
-> Application server will be downloaded automatically (`php-curl` and `php-zip` required).
+> Application server will be downloaded automatically. `php-curl` and `php-zip` required.
 
 Once the application is installed, you can ensure that it has been configured properly by executing:
 
-```bash
+```terminal
 php app.php configure
 ```
 
@@ -44,7 +44,7 @@ To start application server execute:
 
 Use the following command to run RoadRunner server on **Linux**
 
-```bash
+```terminal
 ./rr serve
 ```
 
@@ -56,7 +56,7 @@ Use the following command to run RoadRunner server on **Linux**
 ::: tab Windows
 Use the following command to run RoadRunner server on **Windows**
 
-```bash
+```terminal
 ./rr.exe serve
 ```
 :::

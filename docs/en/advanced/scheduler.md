@@ -9,7 +9,7 @@ This package is a great tool for scheduling repetitive tasks in your project bas
 
 To install the package, you can use the following command:
 
-```bash
+```terminal
 composer require spiral-packages/scheduler
 ```
 
@@ -33,7 +33,7 @@ To run the schedule, you have two options:
 2. Run the schedule via RoadRunner by using the `schedule:work` command. This command will run in the foreground and
    invoke the scheduler every minute until you terminate the command:
 
-```bash
+```terminal
 php app.php schedule:work
 ```
 
@@ -91,7 +91,7 @@ intervals and how to configure the schedule to prevent overlapping and log outpu
 
 Now you can check that cron job tasks are registered:
 
-```bash
+```terminal
 php app.php schedule:list
 ```
 
@@ -294,7 +294,7 @@ Additionally, you can use helper methods to define your schedule in a more human
 
 Use the `schedule:list` command to list all of the scheduled jobs:
 
-```bash
+```terminal
 php app.php schedule:list
 ```
 
@@ -302,6 +302,6 @@ php app.php schedule:list
 
 Use the `schedule:work` command to start the schedule worker:
 
-```bash
+```terminal
 php app.php schedule:work
 ```

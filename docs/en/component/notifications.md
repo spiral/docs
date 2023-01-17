@@ -11,7 +11,7 @@ You just need to install the package, register it in your application and you're
 
 To install the package, you can use the composer command:
 
-```bash
+```terminal
 composer require spiral-packages/notifications
 ```
 

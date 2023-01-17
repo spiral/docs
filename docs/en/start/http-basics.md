@@ -77,7 +77,7 @@ final class RoutesBootloader extends BaseRoutesBootloader
 
 To see the list of routes, use the `php app.php route:list` command in your terminal.
 
-```bash
+```terminal
 php app.php route:list
 ```
 
@@ -96,7 +96,7 @@ You should see your `current-date` route in the list:
 
 Once you have your controller set up, you'll need to test it by running the RoadRunner server with the command
 
-```bash
+```terminal
 ./rr serve
 ```
 
@@ -106,6 +106,8 @@ browser: http://127.0.0.1/date
 <br><br>
 
 **That's it! You've successfully set up your first controller in the Spiral Framework.**
+
+<hr>
 
 ## What's Next?
 

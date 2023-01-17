@@ -11,7 +11,7 @@ bundles. This feature is available out of the box and allows you to work with a 
 
 To install the necessary extensions in an alternative bundle, you can use the following command:
 
-```bash
+```terminal
 composer require spiral/queue
 ```
 

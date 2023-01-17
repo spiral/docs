@@ -1,1 +1,1 @@
-# Advanced — Bootloaders Discoverer
+# Cookbook — Bootloaders Discoverer

@@ -7,7 +7,7 @@ to enable it in alternative builds.
 
 To install the extension:
 
-```bash
+```terminal
 composer require spiral/nyholm-bridge
 ```
 
