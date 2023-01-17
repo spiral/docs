@@ -345,4 +345,7 @@ $app = Kernel::create(
 | Spiral\Boot\Event\DispatcherFound    | The Event will be fired when a dispatcher for handling incoming requests in a current environment is found.        |
 | Spiral\Boot\Event\DispatcherNotFound | The Event will be fired when an application dispatcher is not found.                                               |
 | Spiral\Boot\Event\Finalizing         | The Event will be fired when finalizer are executed `before` running finalizers.                                   |
+
+> **Note**
+> To learn more about dispatching events, see the [Events](../advanced/events.md) section in our documentation.
  

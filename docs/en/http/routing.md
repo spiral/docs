@@ -1251,4 +1251,4 @@ public function index(RouterInterface $router)
 | Spiral\Router\Event\RouteNotFound | The Event will be fired when the route is not found.            |
 
 > **Note**
-> To learn more about dispatching events, see the [Events](../component/events.md) section in our documentation.
+> To learn more about dispatching events, see the [Events](../advanced/events.md) section in our documentation.

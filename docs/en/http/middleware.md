@@ -207,3 +207,6 @@ class UserContextBootloader extends Bootloader
 | Event                                  | Description                                              |
 |----------------------------------------|----------------------------------------------------------|
 | Spiral\Http\Event\MiddlewareProcessing | The Event will be fired `before` calling the middleware. |
+
+> **Note**
+> To learn more about dispatching events, see the [Events](../advanced/events.md) section in our documentation.

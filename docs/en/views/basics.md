@@ -7,7 +7,8 @@ To render a view, you must obtain an instance of `Spiral\Views\ViewsInterface`.
 
 ## Rendering
 
-To render a view in the controller or other service, simply invoke the `render` method of `ViewsInterface`. The view name
+To render a view in the controller or other service, simply invoke the `render` method of `ViewsInterface`. The view
+name
 does not need to include an extension or namespace (default to be used).
 
 ```php
@@ -119,3 +120,6 @@ After that, you can use the variable in the view.
 | Event                           | Description                                         |
 |---------------------------------|-----------------------------------------------------|
 | Spiral\Views\Event\ViewNotFound | The Event will be fired when the view is not found. |
+
+> **Note**
+> To learn more about dispatching events, see the [Events](../advanced/events.md) section in our documentation.

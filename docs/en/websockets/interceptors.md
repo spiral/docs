@@ -3,6 +3,9 @@
 Spiral Framework provides interceptors for WebSockets services that allow you to intercept and modify requests and
 responses at various points in the request lifecycle.
 
+> **Note**
+> Read more about interceptors in the [Interceptors](../framework/interceptors.md) section.
+
 They are typically used to add cross-cutting functionality such as logging, authentication, or monitoring to the server.
 
 ## Example

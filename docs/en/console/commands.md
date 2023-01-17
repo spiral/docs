@@ -323,3 +323,6 @@ const OPTIONS = [
 |--------------------------------------|-----------------------------------------------------------------|
 | Spiral\Console\Event\CommandStarting | The Event will be fired `before` executing the console command. |
 | Spiral\Console\Event\CommandFinished | The Event will be fired `after` executing the console command.  |
+
+> **Note**
+> To learn more about dispatching events, see the [Events](../advanced/events.md) section in our documentation.

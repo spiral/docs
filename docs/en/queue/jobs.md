@@ -372,4 +372,4 @@ protected const APP = [
 | Spiral\Queue\Event\JobProcessed  | The Event will be fired `after`  the job handler is executed. |
 
 > **Note**
-> To learn more about dispatching events, see the [Events](../component/events.md) section in our documentation.
+> To learn more about dispatching events, see the [Events](../advanced/events.md) section in our documentation.

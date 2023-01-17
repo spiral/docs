@@ -563,3 +563,6 @@ final class CustomFirewall extends AbstractFirewall
 |---------------------------------|-----------------------------------------------------------------|
 | Spiral\Auth\Event\Authenticated | The Event will be fired `after` the user authenticated success. |
 | Spiral\Auth\Event\Logout        | The Event will be fired `after` the user logout success.        |
+
+> **Note**
+> To learn more about dispatching events, see the [Events](../advanced/events.md) section in our documentation.

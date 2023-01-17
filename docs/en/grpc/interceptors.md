@@ -3,6 +3,9 @@
 Spiral Framework provides interceptors for gRPC services that allow you to intercept and modify requests and responses
 at various points in the request lifecycle.
 
+> **Note**
+> Read more about interceptors in the [Interceptors](../framework/interceptors.md) section.
+
 There are two types of interceptors:
 
 1. Server interceptors

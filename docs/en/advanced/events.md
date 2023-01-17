@@ -1,7 +1,8 @@
 # Advanced — Events
 
 The Events component provides tools that allow your application components to communicate with each other
-by dispatching events and listening to them. The component makes it easy to register event listeners in your application. 
+by dispatching events and listening to them. The component makes it easy to register event listeners in your
+application.
 It also provides an easy way to integrate `PSR-14` compatible `EventDispatcher`.
 
 ## Installation
@@ -17,12 +18,12 @@ protected const LOAD = [
 ];
 ```
 
-This bootloader registers the implementation of the `Spiral\Events\ListenerFactoryInterface` and 
-`Spiral\Events\ListenerProcessorRegistry` in the application container. It also registers event listeners 
+This bootloader registers the implementation of the `Spiral\Events\ListenerFactoryInterface` and
+`Spiral\Events\ListenerProcessorRegistry` in the application container. It also registers event listeners
 in the application. We'll describe below how to add them.
 
-After that, let's install `PSR-14` implementation of a compatible `EventDispatcher`. We provide a 
-`spiral-packages/league-event` package that integrates a PSR-14 compatible `league/event` package into 
+After that, let's install `PSR-14` implementation of a compatible `EventDispatcher`. We provide a
+`spiral-packages/league-event` package that integrates a PSR-14 compatible `league/event` package into
 an application based on the Spiral Framework.
 
 ```terminal
@@ -49,7 +50,7 @@ The `listeners` parameter represented an `array`, the key is the `fully qualifie
 and the value must be an `array` that contains the `fully qualified name of the event listener class`,
 or `Spiral\Events\Config\EventListener` instance that allows you to configure additional listener options.
 
-The `processors` parameter represented an `array` and contains the `full name of the processor class`. 
+The `processors` parameter represented an `array` and contains the `full name of the processor class`.
 
 > **Note**
 > Detailed information about `processors` will be provided below. This section only describes the configuration.
@@ -151,8 +152,9 @@ final class UserService
 
 ### Listener
 
-A listener can be represented by a simple class with a method that will be called to handle the event. 
-The method name can be configured in the Listener attribute parameter or in the configuration file (`__invoke` by default).
+A listener can be represented by a simple class with a method that will be called to handle the event.
+The method name can be configured in the Listener attribute parameter or in the configuration file (`__invoke` by
+default).
 
 ```php
 namespace App\Listener;
@@ -206,14 +208,19 @@ class UserWasCreatedListener
 }
 ```
 
-The `Spiral\Events\Attribute\Listener` attribute is needed to automatically register an event listener in the application. 
-If you prefer to register listeners via config file, you can remove this attribute 
+The `Spiral\Events\Attribute\Listener` attribute is needed to automatically register an event listener in the
+application.
+If you prefer to register listeners via config file, you can remove this attribute
 and `Spiral\Events\Processor\AttributeProcessor` from the config file.
 
 ## Interceptors
 
-The Events component provides an ability to intercept events. This is useful when you need to modify the event data or, for example,
-send it via websockets. To do this, you need to create an interceptor class that implements the `Spiral\Core\CoreInterceptorInterface` interface.
+The Events component provides an ability to intercept events. This is useful when you need to modify the event data or,
+for example, send it via websockets. To do this, you need to create an interceptor class that implements
+the `Spiral\Core\CoreInterceptorInterface` interface.
+
+> **Note**
+> Read more about interceptors in the [Interceptors](../framework/interceptors.md) section.
 
 **Example**
 
@@ -259,7 +266,8 @@ final class BroadcastEventInterceptor implements CoreInterceptorInterface
 }
 ```
 
-And then you will need to register it in the `events.php` configuration file, which is located in the `app/config` directory.
+And then you will need to register it in the `events.php` configuration file, which is located in the `app/config`
+directory.
 
 ```php
 return [
@@ -274,16 +282,17 @@ return [
 
 ## Creating an Event dispatcher
 
-As an implementation of Event dispatcher, we considered the package 
-[The League Event bridge for Spiral Framework](https://github.com/spiral-packages/league-event). 
-This package provides a bridge between the Spiral Framework and the [The League Event](https://event.thephpleague.com/3.0/) package.
+As an implementation of Event dispatcher, we considered the package
+[The League Event bridge for Spiral Framework](https://github.com/spiral-packages/league-event).
+This package provides a bridge between the Spiral Framework and
+the [The League Event](https://event.thephpleague.com/3.0/) package.
 
 You can create your own implementation using `PSR-14` event dispatcher.
 
 ### ListenerRegistry
 
-Let's create a class that will implement the `Spiral\Events\ListenerRegistryInterface` and provides an ability 
-to register event listeners. The `addListener` method from this class is called by `processors`, passing the `event`, 
+Let's create a class that will implement the `Spiral\Events\ListenerRegistryInterface` and provides an ability
+to register event listeners. The `addListener` method from this class is called by `processors`, passing the `event`,
 `event listener`, and `priority` as parameters.
 
 ```php
@@ -326,7 +335,8 @@ final class EventDispatcher implements EventDispatcherInterface
 
 ### Bootloader
 
-After that, we need to create a bootloader that will register the implementation of interfaces in the application container.
+After that, we need to create a bootloader that will register the implementation of interfaces in the application
+container.
 
 ```php
 namespace App\EventDispatcher\Bootloader;

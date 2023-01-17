@@ -4,6 +4,9 @@ Spiral Framework provides a way for developers to customize the behavior of thei
 use of interceptors. An interceptor is a piece of code that is executed before or after a job is pushed or consumed, and
 which allows developers to hook into the job processing pipeline to perform some action.
 
+> **Note**
+> Read more about interceptors in the [Interceptors](../framework/interceptors.md) section.
+
 Interceptors can be useful for a variety of purposes, such as handling errors, adding additional context to the job, or
 performing some other action based on the job being processed.
 

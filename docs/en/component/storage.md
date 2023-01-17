@@ -1,14 +1,25 @@
 # Storage and Cloud distribution
 
+The Spiral Framework offers a comprehensive solution for file storage and distribution through its `spiral/storage` and
+`spiral/distribution` components. The `spiral/storage` component provides powerful storage abstraction utilizing the
+capabilities of the Flysystem PHP package, offering convenient drivers for working with both local file systems and
+Amazon S3. The `spiral/distribution` component, which is integrated with the`spiral/storage` component, is responsible
+for generating public HTTP links for resources stored through the storage component.
+
+## Storage
+
 The component `spiral/storage` provides powerful storage abstraction thanks to the
 wonderful [Flysystem](https://github.com/thephpleague/flysystem) PHP package by Frank de Jonge. The Storage component
 integration provides simple drivers for working with local filesystems and Amazon S3. Even better, it's super simple
 to switch between these storage options between your local development machine and production server as the API remains
 the same for each system.
 
-Please note that, unlike classical file systems, the store component provides an API which provides the operations of
-writing a file, checking its existence, reading and getting a public address of this file. All operations (which
-classic file systems have) for working with directories, or a list of files are not available.
+> **Note**
+> Unlike classical file systems, the store component provides an API which provides the operations of
+> writing a file, checking its existence, reading and getting a public address of this file. All operations (which
+> classic file systems have) for working with directories, or a list of files are not available.
+
+### Installation
 
 To install the component:
 
@@ -16,11 +27,7 @@ To install the component:
 composer require spiral/storage
 ```
 
-## Framework Integration
-
-> Please note that the spiral/framework >= 2.8 already includes this component.
-
-Make sure to add `Spiral\Storage\Bootloader\StorageBootloader` to your App class:
+Make sure to add `Spiral\Storage\Bootloader\StorageBootloader` to the list of bootloaders in your application:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
@@ -30,16 +37,16 @@ protected const LOAD = [
 ];
 ```
 
-## Configuration
+### Configuration
 
-A storage config file should be located (by default) at `app/config/storage.php`. Within this file, you may configure
-the
-servers (the "`servers`" section) and the specific storages (the "`buckets`" section) that your servers will use and
-which you will use.
+A storage configuration file, by default, is located at `app/config/storage.php`. This file allows for the configuration
+of servers and specific storages, also known as "`buckets`". The "`servers`" section is where you can configure the
+servers that your application will use, while the "`buckets`" section allows you to specify which storages will be used
+by your servers.
 
 For example, the simplest configuration with one server and two storages might look like this:
 
-```php
+```php app/config/storage.php
 return [
 
     /**
@@ -115,7 +122,7 @@ return [
 > **Note**
 > Please note that this configuration is only available when used with the Spiral Framework.
 
-### Manual Configuration (Outside The Framework)
+#### Manual Configuration (Outside The Framework)
 
 This way of using the component is required only if it is installed separately, outside the framework.
 
@@ -137,7 +144,7 @@ As you may have noticed, you can use the
 existing [flysystem adapters](https://flysystem.thephpleague.com/v2/docs/adapter/local/)
 to create a bucket. Just install the one you want and add it to the store using the `Bucket::fromAdapter()` method.
 
-### Local Server
+#### Local Server
 
 The local server, as the name implies, is located in the local file system (in the same place where the executable code
 of your application is located).
@@ -146,7 +153,10 @@ You have already seen an example of local server settings earlier, however, to s
 have been specially removed. Let's now take a look at the complete configuration of this type of server, leaving all
 the possible configuration sections.
 
-```php
+<details>
+  <summary>Click to show example of configuration.</summary>
+
+```php app/config/storage.php
 return [
     'servers' => [
         'local' => [
@@ -201,7 +211,9 @@ return [
 ];
 ```
 
-### S3 Server
+</details>
+
+#### S3 Server
 
 This type of server is designed to interact with an external distributed file system using the S3 protocol. S3 is the
 main protocol for communicating with [Amazon](https://s3.console.aws.amazon.com/s3/home) servers. In addition to Amazon
@@ -225,7 +237,10 @@ During configuration, you should specify which of the packages you will use in t
 The `"s3"` value corresponds to the `league/flysystem-aws-s3-v3` package, while the `"s3-async"` value corresponds
 to the `league/flysystem-async-aws-s3` package.
 
-```php
+<details>
+  <summary>Click to show example of configuration.</summary>
+
+```php app/config/storage.php
 return [
     'servers' => [
         'local' => [
@@ -354,7 +369,9 @@ return [
 ];
 ```
 
-### Custom Server
+</details>
+
+#### Custom Server
 
 In some cases, standard adapters may not be enough and in this case you may need to specify your own. You can also use
 your config file to configure your custom adapter.
@@ -362,7 +379,10 @@ your config file to configure your custom adapter.
 In this case, the adapter section must refer to the `League\Flysystem\FilesystemAdapter` implementation, and the
 "options" section will contain an array of arguments passed to the constructor of this adapter.
 
-```php
+<details>
+  <summary>Click to show example of configuration.</summary>
+
+```php app/config/storage.php
 return [
     'servers' => [
         'custom' => [
@@ -391,7 +411,9 @@ return [
 ];
 ```
 
-## Usage
+</details>
+
+### Usage
 
 Finally, after we have familiarized ourselves with what types of servers the component supports, we can move on to
 using them.
@@ -482,7 +504,7 @@ From each of the levels, you can refer to the child.
 After we have got to know the options to use the same methods at different levels of the store, we
 can go on to describe the available possibilities. Let's start!
 
-### Create And Write
+#### Create And Write
 
 If you want to create a file, you can use one of the two available methods: `create()` or `write()`. The first creates
 an
@@ -502,7 +524,7 @@ $file = $bucket->write('file.txt', 'message');
 $file = $bucket->write('file.txt', fopen(__DIR__ . '/local/file.txt', 'rb+'));
 ```
 
-### Copy And Move
+#### Copy And Move
 
 To copy files, use the `copy()` method, which contains one required argument with the name of a new file and one
 optional - the bucket where the file should be copied. If the second argument is not specified, the compilation
@@ -519,7 +541,7 @@ $moved  = $firstBucket->move('backup.txt', 'to.txt', $secondBucket);
 > Please note that when a file is moved (or copied) from a bucket with private permissions to a distribution with public
 > permissions, the visibility of the file will also change to the one corresponding to this bucket.
 
-### Delete
+#### Delete
 
 To delete a file, just use the `delete()` method. This method accepts an optional boolean argument which means deleting
 an
@@ -529,7 +551,7 @@ empty directory where the file was located.
 $bucket->delete('file.txt');
 ```
 
-### Reading Content
+#### Reading Content
 
 There are two ways to read the contents of an existing file: Using the `getContents()` and `getStream()` methods. The
 first one returns the string content of the file, and the second resource is a stream for working with streaming data.
@@ -540,7 +562,7 @@ $string = $bucket->getContents('text.txt');
 $resource = $bucket->getStream('music.mp3');
 ```
 
-### Existence Check
+#### Existence Check
 
 To check the existence of a file, use the `exists()` method, which returns a boolean value `true` if the file exists
 in the bucket, or `false` if it does not exist.
@@ -549,7 +571,7 @@ in the bucket, or `false` if it does not exist.
 $isExists = $bucket->exists('file.txt');
 ```
 
-### File Size
+#### File Size
 
 To get information about the size of a file, use the `getSize()` method, which returns the size of an existing file in
 bytes.
@@ -558,7 +580,7 @@ bytes.
 $bytes = $bucket->getSize('file.txt');
 ```
 
-### Last Modification Time
+#### Last Modification Time
 
 To retrieve information about the date of the last modification of a file, use the `getLastModified()` method, which
 returns the time in UNIX timestamp format.
@@ -567,7 +589,7 @@ returns the time in UNIX timestamp format.
 $timestamp = $bucket->getLastModified('file.txt');
 ```
 
-### Mime Type
+#### Mime Type
 
 To get the file mime type, use the `getMimeType()` method, which returns a string mime type representation of the file.
 
@@ -575,7 +597,7 @@ To get the file mime type, use the `getMimeType()` method, which returns a strin
 $mime = $bucket->getMimeType('file.txt');
 ```
 
-### Visibility
+#### Visibility
 
 In addition to such characteristics as file existence, there is also file visibility. You can get
 information about the visibility of a file using the `getVisibility()` method, and update the visibility using the
@@ -596,7 +618,7 @@ if ($visibility === Visibility::VISIBILITY_PRIVATE) {
 > **Note**
 > In case of using a bucket located on Windows OS, this functionality may not work.
 
-### URI Publishing
+#### URI Publishing
 
 The storage component initially provides only operations for working with files on arbitrary file systems. However,
 some systems, in addition to storage, allow HTTP to organize an access point to such files to receive their contents
@@ -669,17 +691,16 @@ $uri = $file->toUri(new \DateInterval('PT30S'));
 $uri = $file->toUriFrom($resolver, new \DateInterval('PT30S'));
 ```
 
-# Distribution
+## Distribution
 
 The `spiral/distribution` component is responsible for providing public HTTP links on arbitrary resources. In most
 cases, this will be the same address as the address of the site itself, however, in some cases, resources may be located
 on external servers such as [Amazon CloudFront](https://aws.amazon.com/cloudfront/) or some other CDN. In these cases,
 generating a public link to the resource needs to use a specific API of the provider, or write one's own code for the
-used
-CDN. The component makes this interaction easier and provides a number of built-in drivers for generating URIs to
+used CDN. The component makes this interaction easier and provides a number of built-in drivers for generating URIs to
 external suppliers.
 
-## Installation
+### Installation
 
 Use Composer to install the component:
 
@@ -687,13 +708,8 @@ Use Composer to install the component:
 composer require spiral/distribution
 ```
 
-### Framework Integration
-
-> **Note**
-> Please note that the spiral/framework >= 2.8 already includes this component.
-
 To enable the component, you just need to add the `Spiral\Distribution\Bootloader\DistributionBootloader` class to the
-bootloader list, which is located in the class of your application.
+bootloader list:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
@@ -704,13 +720,11 @@ protected const LOAD = [
 ];
 ```
 
-## Configuration
+### Configuration
 
-The configuration file for this component looks like the one below. Just create a `distribution.php` file and add it to
-the
-directory with the rest of your configuration files (e.g. `~/app/config/distribution.php`).
+A distribution configuration file, by default, is located at `app/config/distribution.php`.
 
-```php
+```php app/config/distribution.php
 <?php
 
 return [
@@ -764,10 +778,11 @@ return [
 ];
 ```
 
-> **Note**
-> The configuration above is only available when used with a Spiral Framework.
+> **Warning**
+> The provided configuration example is specific to the Spiral Framework and would not be applicable outside of that
+> context. The configuration options and structure will vary depending on the specific framework or system being used.
 
-### Manual Configuration (Outside The Framework)
+#### Manual Configuration (Outside The Framework)
 
 This way of using the component is required only if it is installed separately, outside the framework.
 
@@ -775,8 +790,6 @@ First you need to create a manager instance where all your uri resolvers will be
 get arbitrary resolvers from it by the desired name.
 
 ```php
-<?php
-
 $manager = new \Spiral\Distribution\Manager();
 
 $manager->add('resolver-name', new CustomResolver());
@@ -787,8 +800,6 @@ $manager->resolver('resolver-name'); // object(CustomResolver)
 After that, you can add there either your own managers, or provided by the component, such as for example "static".
 
 ```php
-<?php
-
 use Nyholm\Psr7\Uri;
 use Spiral\Distribution\Manager;
 use Spiral\Distribution\Resolver\StaticResolver;
@@ -797,7 +808,7 @@ $manager = new Manager();
 $manager->add('local', new StaticResolver(new Uri('https://static.example.com')));
 ```
 
-## Usage
+### Usage
 
 Once you've configured your component, you can start using it.
 
@@ -806,8 +817,6 @@ If you are using the Spiral Framework, the manager is already configured. You ca
 via [dependency injection](../framework/container.md#dependency-injection).
 
 ```php
-<?php
-
 use Spiral\Distribution\DistributionInterface;
 
 class FilesController
@@ -825,8 +834,6 @@ If you need a default resolver defined in the "default" configuration section, y
 get the entire manager instance. You can get the resolver you want from the container right away.
 
 ```php
-<?php
-
 use Spiral\Distribution\UriResolverInterface;
 
 class FilesController
@@ -854,14 +861,14 @@ $uri = $resolver->resolve('path/to/file.txt');
 > Some resolvers support additional options when getting a link,
 > for example: `$cloudfront->resolve('path/to/file.txt', expiration: new \DateInterval('PT60S'));`
 
-### Static URI Resolver
+#### Static URI Resolver
 
 This type of a resolver generates an address to a resource simply by adding the passed file link to the end of the URI
 specified in the resolver configuration.
 
 To configure this type of resolver, you only need to specify two required fields.
 
-```php
+```php app/config/distribution.php
 return [
     // ...
     'resolvers' => [
@@ -900,12 +907,12 @@ echo $resolver->resolve('path/to/file.txt');
 //
 ```
 
-### CloudFront URI Resolver
+#### CloudFront URI Resolver
 
 CloudFront is a popular static distribution service used in conjunction with Amazon services. To use it, you must
 install the `aws/aws-sdk-php` package using the Composer.
 
-```bash
+```terminal
 composer require aws/aws-sdk-php ^3.0
 ```
 
@@ -916,7 +923,7 @@ on "[Security Credentials](https://console.aws.amazon.com/iam/home#/security_cre
 
 To configure this resolver, simply specify the connection parameters in the configuration sections:
 
-```php
+```php app/config/distribution.php
 return [
     // ...
     'resolvers' => [
@@ -1045,13 +1052,13 @@ $cloudfront = (new \Spiral\Distribution\Resolver\CloudFrontResolver(...))
     ->withExpirationDate('PT30S');
 ```
 
-### S3 URI Resolver
+#### S3 URI Resolver
 
 If, for some reason, you cannot use the CloudFront resolver (for example, in the case of using
 a [Minio Server](https://docs.min.io/)), you can use the resolver that generates links to the S3 server. To use it, you
 must also install the `aws/aws-sdk-php` package using the Composer.
 
-```bash
+```terminal
 composer require aws/aws-sdk-php ^3.0
 ```
 
@@ -1059,7 +1066,7 @@ To use it with AWS S3, you need account credentials, and a working bucket which 
 create [on "Amazon S3" page](https://s3.console.aws.amazon.com/s3/home). After creating the bucket, you will need to
 fill in the following configuration parameters.
 
-```php
+```php app/config/distribution.php
 return [
     // ...
     'resolvers' => [
@@ -1182,13 +1189,13 @@ $url = $s3->resolve($file, new DateTime('+30 sec'));
 All similar methods for specifying the global URI expiration, the "current time" generator, and the "expiration time"
 parsers are also available.
 
-### Custom URI Resolver
+#### Custom URI Resolver
 
 In some cases, you may find tasks for generating URI's that do not fit the existing implementations of resolvers. In
 this case, you can register your own resolver class in the config. To pass additional arguments to the constructor of
 this resolver, simply specify the `options` section in the configuration file.
 
-```php
+```php app/config/distribution.php
 return [
     // ...
     'resolvers' => [
