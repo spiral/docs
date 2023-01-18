@@ -128,7 +128,8 @@
       "http/errors": "Error Pages",
       "http/middleware": "Middleware",
       "http/cookies": "Cookies",
-      "http/csrf": "CSRF protection"
+      "http/csrf": "CSRF protection",
+      "http/interceptors": "Interceptors"
     }
   },
   {

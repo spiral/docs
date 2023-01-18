@@ -1,6 +1,5 @@
 # Framework — Interceptors
 
-The Spiral Framework is a modern PHP framework that allows developers to easily build high-performance web applications.
 One of the key features of the Spiral Framework is its support for interceptors, which can be used to add functionality
 to the application without modifying the core code of the application. This can help to keep your codebase more modular
 and maintainable.
@@ -24,7 +23,7 @@ and maintainable.
 
 You can use interceptors with various components such as:
 
-- HTTP
+- [HTTP](../http/interceptors.md)
 - [Events](../advanced/events.md#interceptors)
 - [gRPC](../grpc/interceptors.md)
 - [Websockets](../websockets/interceptors.md)
@@ -36,8 +35,10 @@ You can use interceptors with various components such as:
 ## Domain Core
 
 In order to use interceptors, you need to have a core class that will be responsible for running the specific logic that
-can be intercepted before or after the call. For example, let's say you need to log database queries, measure query
-times, and log slow queries.
+can be intercepted before or after the call.
+
+For example, let's say you have a database layer and you need to log database queries, measure query times, and log slow
+queries.
 
 To achieve this, you can create a `DatabaseQueryCore` class that implements the `Spiral\Core\CoreInterface`. This class
 would be responsible for running the database query and returning the query result.
