@@ -1,7 +1,7 @@
 # Framework — Bootloaders
 
-The Spiral Framework is a PHP web application development framework that utilizes bootloader classes during the
-bootstrapping process to handle application configuration. One key feature of the Spiral Framework is that bootloaders
+The Spiral Framework is a PHP application development framework that utilizes bootloader classes during the
+bootstrapping process to handle application configuration. One key feature is that bootloaders
 are executed only once during the loading of the application, meaning that adding additional code to them will not
 negatively impact runtime performance.
 
