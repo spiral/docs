@@ -1,38 +1,37 @@
 # Framework — Kernel and Environment
 
-Each Spiral build will contain a kernel object with a set of application-specific services. Unlike Symfony,
-The Spiral needs only one Kernel for all the dispatching methods (HTTP, Queue, GRPC, Console, etc). The kernel will
-select a dispatching method automatically, based on connected `Spiral\Boot\DispatcherInterface` instances.
+The Spiral framework utilizes a kernel object that contains a set of application-specific services. Unlike Symfony, The
+Spiral only requires one kernel for all dispatching methods, such as HTTP, Queue, GRPC Console, etc. The kernel
+automatically selects the appropriate dispatching method based on the
+connected [Dispatcher](../framework/dispatcher.md).
 
 > **Note**
 > The base kernel implementation is located in `spiral/boot` repository.
 
 ## Kernel Responsibilities
 
-The `Spiral\Boot\AbstractKernel` class is only responsible for the following aspects of your application:
+The Spiral\Boot\AbstractKernel class is responsible for the following aspects of the application:
 
-- container initialization via a set of application-specific bootloaders
-- environment and directory structure initialization
-- selection of an appropriate dispatching method
+- Initializing the container through a set of application-specific bootloaders
+- Initializing the bootloaders
+- Initializing the environment and directory structure
+- Initializing the exception handler (if required)
+- Selecting the appropriate dispatcher
 
-To create your kernel extends `Spiral\Boot\AbstractKernel`.
+To create an application kernel, one must extend the `Spiral\Boot\AbstractKernel` class. An example of this can be seen
+in the following code snippet:
 
-```php
-namespace App;
+```php app/src/Application/MyApp.php
+namespace App\Application;
 
 use Spiral\Boot\AbstractKernel;
 use Spiral\Boot\Exception\BootException;
 
-class MyApp extends AbstractKernel
+final class MyApp extends AbstractKernel
 {
     protected const LOAD = [
         // bootloaders to initialize
     ];
-
-    public function get(string $service): mixed
-    {
-        return $this->container->get($service);
-    }
 
     protected function bootstrap(): void
     {
@@ -77,53 +76,72 @@ class MyApp extends AbstractKernel
 
 ## Kernel initialization
 
-To init the kernel invoke static method `create`:
+To initialize the kernel, the static method `create` should be invoked. An example of this can be seen in the following
+code snippet:
 
-```php
+```php app.php
 $myapp = MyApp::create(
-    [
-        'root' => __DIR__
+    directories: [
+        'root' => __DIR__,
     ],
-    false // do not mount error handler
+    handleErrors: false // do not mount error handler
 );
 
-$myapp->run(null); // use default env 
+$myapp->run(environment: null); // use default env 
 
 \dump($myapp->get(\Spiral\Boot\DirectoriesInterface::class)->getAll());
 ```
 
-### Initialization callbacks
+> **Note**
+> During initialization, `MyApp` will be bound to `Spiral\Boot\KernelInterface` in the container as a singleton.
 
-The `Spiral\Boot\AbstractKernel` class provides `running`, `booting`, `booted` callbacks that are executed at 
-various times during application initialization.
+### Callbacks
+
+The `Spiral\Boot\AbstractKernel` class provides several callbacks that are executed at different stages of application
+initialization. These callbacks are `running`, `booting`, `booted`, and `bootstrapped`. The `Spiral\Framework\Kernel`
+class, which extends `AbstractKernel`, adds additional callbacks, `appBooting` and `appBooted`. This allows developers
+to perform custom actions at specific stages of the application initialization process.
+
+> **Note**
+> In the application bundle, the default `App\Application\Kernel` class extends the `Spiral\Framework\Kernel` class and
+> makes use of these callbacks.
 
 #### Running
 
-`Running` is the first callbacks to be executed. They are executed when the `run` method is called, immediately after 
-binding the `EnvironmentInterface` in the application container.
+The `running` callback is the first callback to be executed during the application initialization process. It is
+executed when the `run` method is called, immediately after binding the `EnvironmentInterface` in the application
+container.
 
-To register a callback, call the `running` method:
+Here is an example of the `running` callback:
 
-```php
-$app = App::create(
-    directories: ['root' => __DIR__]
-);
+```php app.php
+$app = MyApp::create(directories: ['root' => __DIR__]);
 
-$app->running(function () {
-    // ...
+$app->running(static function (): void {
+    // Do something
 });
 
 $app->run();
 ```
 
+> **Note**
+> Callbacks can be called multiple time to register multiple callbacks, they will be invoked in the order they have
+> been registered.
+
 #### Booting
 
-`Booting` is the callbacks that will be executed *before* all the framework bootloaders in the `LOAD` section are booted.
+The `booting` callback is executed before all the framework bootloaders in the `LOAD` section are booted.
 
-To register a callback, call the `booting` method:
+There are two ways to register a callback for the `booting` stage:
 
-```php
-$app = App::create(
+:::: tabs
+
+::: tab Kernel initialization
+
+The `booting` method can be called on the application instance after it has been created.
+
+```php app.php
+$app = MyApp::create(
     directories: ['root' => __DIR__]
 );
 
@@ -134,213 +152,95 @@ $app->booting(function () {
 $app->run();
 ```
 
-#### Booted
+:::
 
-`Booted` is the callbacks that will be executed *after* all the framework bootloaders in the `LOAD` section are booted.
+::: tab Kernel bootloaders
 
-To register a callback, call the `booted` method:
+The `init` method of a bootloader can also be used to register a booting callback. This method is executed before the
+callback fired.
 
-```php
-$app = App::create(
-    directories: ['root' => __DIR__]
-);
+```php app/src/Application/Bootloader/AppBootloader.php
+namespace App\Application\Bootloader;
 
-$app->booted(function () {
-    // ...
-});
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Boot\KernelInterface;
 
-$app->run();
-```
-
-The `Spiral\Framework\Kernel` class provides additional `appBooting` and `appBooted` callbacks.
-In an [application bundle](https://github.com/spiral/app), the default `App\App` class inherits from this `Kernel` 
-class and has access to this functionality.
-
-#### AppBooting
-
-`AppBooting` is the callbacks that will be executed *before* all the application bootloaders in the `APP` section are booted.
-
-To register a callback, call the `appBooting` method:
-
-```php
-$app = App::create(
-    directories: ['root' => __DIR__]
-);
-
-$app->appBooting(function () {
-    // ...
-});
-
-$app->run();
-```
-
-#### AppBooted
-
-`AppBooted` is the callbacks that will be executed *after* all the application bootloaders in the `APP` section are booted.
-
-To register a callback, call the `appBooted` method:
-
-```php
-$app = App::create(
-    directories: ['root' => __DIR__]
-);
-
-$app->appBooted(function () {
-    // ...
-});
-
-$app->run();
-```
-
-## Environment
-
-Use `Spiral\Boot\EnvironmentInterface` to access a list of ENV variables. By default, the framework relies on
-system-level environment values. To redefine env values while initializing the kernel pass custom `EnvironmentInterface`
-to the `create` method.
-
-```php
-use \Spiral\Boot\Environment;
-
-$myapp = MyApp::create(
-    [
-        'root' => __DIR__
-    ],
-    false // do not mount error handler
-);
-
-$myapp->run(new Environment(['key' => 'value']));
-
-\dump($myapp->get(\Spiral\Boot\EnvironmentInterface::class)->getAll());
-```
-
-> **Note**
-> Such an approach can be used to bootstrap the application for testing purposes.
-
-## Bootload Manager
-
-The framework includes the `StrategyBasedBootloadManager` class, which allows you to implement a custom bootloading strategy for application.
-
-Here is the example:
-```php
-// file app.php
-
-use App\Application\Kernel;
-use App\Application\Service\ErrorHandler\Handler;
-use Spiral\Boot\BootloadManager\StrategyBasedBootloadManager;
-use Spiral\Boot\BootloadManager\Initializer;
-use Spiral\Core\Container;
-
-// ...
-
-$container = new Container();
-
-$app = Kernel::create(
-    directories: ['root' => __DIR__],
-    exceptionHandler: Handler::class,
-    bootloadManager: new StrategyBasedBootloadManager(
-        new RoadRunnerEnvInvokerStrategy(), 
-        $container, 
-        new Initializer($container, $container)
-    )
-)->run();
-
-// ...
-```
-
-Or via `Spiral\Core\Container\Autowire`:
-
-```php
-use App\Application\Kernel;
-use App\Application\Service\ErrorHandler\Handler;
-use Spiral\Boot\BootloadManager\StrategyBasedBootloadManager;
-use Spiral\Core\Container;
-use Spiral\Core\Container\Autowire;
-
-// ...
-
-$container = new Container();
-
-$app = Kernel::create(
-    directories: ['root' => __DIR__],
-    exceptionHandler: Handler::class,
-    bootloadManager: new Autowire(StrategyBasedBootloadManager::class, [
-        'invoker' => new CustomInvokerStrategy()
-    ])
-)->run();
-
-// ...
-```
-
-### Custom Bootload Manager
-
-You are free to create a custom manager for specific case. Simply create a class that extends `AbstractBootloadManager` and register it itself.
-
-Here is the example:
-```php
-use Spiral\Boot\BootloadManager\Spiral\Boot\BootloadManager;
-
-class MyBootloadManager extends AbstractBootloadManager
+class AppBootloader extends Bootloader
 {
-    protected function boot(array $classes, array $bootingCallbacks, array $bootedCallbacks): void
+    public function init(KernelInterface $app): void
     {
-        // ...
+        $app->booting(function () {
+            // ...
+        });
     }
 }
 ```
 
-Then register it:
-```php
-// file app.php
+:::
 
-use App\Application\Kernel;
-use App\Application\Service\ErrorHandler\Handler;
-use Spiral\Boot\BootloadManager\Initializer;
-use Spiral\Core\Container;
+::::
 
-// ...
+#### Booted
 
-$container = new Container();
-
-$app = Kernel::create(
-    directories: ['root' => __DIR__],
-    exceptionHandler: Handler::class,
-    bootloadManager: new MyBootloadManager(
-        // ...
-    )
-)->run();
-
-// ...
-```
-
-Or via `Spiral\Core\Container\Autowire`:
+The `booted` callback is executed after all the framework bootloaders in the `LOAD` section have completed their
+initialization process.
 
 ```php
-use App\Application\Kernel;
-use App\Application\Service\ErrorHandler\Handler;
-use Spiral\Core\Container;
-use Spiral\Core\Container\Autowire;
-
-// ...
-
-$container = new Container();
-
-$app = Kernel::create(
-    directories: ['root' => __DIR__],
-    exceptionHandler: Handler::class,
-    bootloadManager: new Autowire(MyBootloadManager::class, [
-        'parameter' => // ...
-    ])
-)->run();
-
-// ...
+$app->booted(function () {
+    // ...
+});
 ```
 
+#### AppBooting
+
+The `appBooting` callback is executed before all the application bootloaders in the `APP` section are booted.
+
+```php
+$app->appBooting(function () {
+    // ...
+});
+```
+
+#### AppBooted
+
+The `appBooted` callback is executed after all the application bootloaders in the `APP` section have completed their
+initialization process.
+
+```php
+$app->appBooted(function () {
+    // ...
+});
+```
+
+## Environment
+
+The `Spiral\Boot\EnvironmentInterface` is used to access a list of environment variables (ENV vars). By default, the
+framework relies on system-level environment values. However, it is possible to redefine these values while initializing
+the kernel by passing a custom `Spiral\Boot\Environment` object to the `run` method.
+
+> **Note**
+> Read more about application environments in the [Getting started — Configuration](../start/configuration.md) section.
+
+An example of this can be seen in the following code snippet:
+
+```php app.php
+use \Spiral\Boot\Environment;
+
+// Create an application instance ...
+
+$app->run(new Environment(['DEBUG' => true]));
+
+\dump($app->get(\Spiral\Boot\EnvironmentInterface::class)->getAll());
+```
+
+> **Note**
+> This approach can be used to bootstrap the application for testing purposes.
 
 ## Events
 
 | Event                                | Description                                                                                                        |
 |--------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| Spiral\Boot\Event\Bootstrapped       | The Event will be fired `after` all bootloaders from SYSTEM, LOAD and APP sections initialized.                    |
+| Spiral\Boot\Event\Bootstrapped       | The Event will be fired `after` all bootloaders from `SYSTEM`, `LOAD` and `APP` sections initialized.              |
 | Spiral\Boot\Event\Serving            | The Event will be fired `before` looking for a dispatcher for handling incoming requests in a current environment. |
 | Spiral\Boot\Event\DispatcherFound    | The Event will be fired when a dispatcher for handling incoming requests in a current environment is found.        |
 | Spiral\Boot\Event\DispatcherNotFound | The Event will be fired when an application dispatcher is not found.                                               |

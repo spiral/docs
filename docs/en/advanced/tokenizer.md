@@ -36,18 +36,17 @@ class AppBootloader extends Bootloader
 {
     public function boot(DirectoriesInterface $directories, TokenizerBootloader $tokenizer): void
     {
-        $tokenizer->addDirectory($directories->get('vendor') . 'vendor/my-org/my-package/src');
+        $tokenizer->addDirectory($directories->get('vendor') . 'spiral/validator/src');
     }
 }
 ```
 
 And here is an example of how to add an additional directory using the `app\config\tokenizer.php` config file:
-
 ```php
 return [
     'directories' => [
         directory('app'),
-        directory('vendor') . 'vendor/my-org/my-package/src',
+        directory('vendor') . 'spiral/validator/src',
     ],
 ];
 ```
@@ -88,10 +87,10 @@ return [
     'scopes' => [
         'scopeName' => [
             'directories' => [
-                directory('app/Directory')
+                directory('app') . 'Directory',
             ],
             'exclude' => [
-                directory('app/Directory/Other')
+                directory('app') . 'Directory/Excluded',
             ]
         ],
     ]

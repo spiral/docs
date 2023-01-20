@@ -426,3 +426,93 @@ Assert that the response does not have a given cookie.
 ```php
 $response->assertCookieMissed(key: 'theme');
 ```
+
+## Testing File Uploads
+
+Yes, the `FakeHttp` class provides a `getFileFactory` method which can be used to generate dummy files or images for
+testing purposes. This method returns an instance of `Spiral\Testing\Http\FileFactory`, which has several methods to
+create different types of files.
+
+This feature allows you to easily test how your application handles file uploads, and ensure that it is functioning
+correctly.
+
+```php tests/Feature/UserControllerTest.php 
+namespace Tests\Feature;
+
+use Spiral\Testing\Http\FakeHttp;
+use Tests\TestCase;
+
+final class UserControllerTest extends TestCase
+{
+    private FakeHttp $http;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->http = $this->fakeHttp();
+    }
+
+    public function testUploadAvatar(): void
+    {
+        // Create a fake image 640x480
+        $image = $http->getFileFactory()->createImage('avatar.jpg', 640, 480);
+
+        $response = $http->post(uri: '/user/1', files: ['avatar' => $image]);
+        $response->assertOk();
+    }
+}
+```
+
+### Create a fake image
+
+```php
+$image = $http->getFileFactory()->createImage(
+    filename: 'avatar.jpg', 
+    width: 640, 
+    height: 480
+);
+```
+
+### Create a fake file
+
+```php
+$file = $http->getFileFactory()->createFile(
+    filename: 'foo.txt'
+);
+```
+
+#### With file size
+
+You can set a file size in kilobytes:
+
+```php
+// Create a file with size - 100kb
+$file = $http->getFileFactory()->createFile(
+    filename: 'foo.txt', 
+    kilobytes: 100
+);
+```
+
+#### With mime type
+
+You can set a mime type:
+
+```php
+// Create a file with size - 100kb
+$file = $http->getFileFactory()->createFile(
+    filename: 'foo.txt', 
+    mimeType: 'text/plain'
+);
+```
+
+#### With content
+
+You can set a file with specific content:
+
+```php
+$file = $http->getFileFactory()->createFileWithContent(
+    filename: 'foo.txt', 
+    content: 'Hello world', 
+    mimeType: 'text/plain'
+);
+```

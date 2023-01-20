@@ -349,7 +349,7 @@ $this->assertBootloaderMissed(\MyPackage\Bootloaders\PackageBootloader::class);
 ----
 
 
-### Interaction with dispatcher
+### Interaction with Dispatcher
 
 #### Check if a dispatcher is registered
 
