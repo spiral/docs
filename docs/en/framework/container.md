@@ -1,148 +1,234 @@
 # Framework — Container and DI
 
-The framework includes a set of interfaces and components intended to simplify dependency injection and object
-construction in your application.
+The Spiral framework includes a set of tools that makes it easier to manage dependencies and create objects in your
+code. One of the main tools is the container, which helps you handle class dependencies and automatically "injects" them
+into the class. This means that instead of creating objects and setting up dependencies manually, the container takes
+care of it for you.
+
 
 > **Note**
-> Container implementation is fully compatible with [PSR-11 Container](https://github.com/php-fig/container).
+> Container implementation is fully compatible with .
 
 ## PSR-11 Container
 
-You can always access the container directly in your code by requesting `Psr\Container\ContainerInterface`:
+The Spiral container also follows a set of [PSR-11 Container](https://github.com/php-fig/container) standards, which
+ensures compatibility with other libraries.
 
-```php
-use Psr\Container\ContainerInterface;
+In your code, you can access the container by asking for the `Psr\Container\ContainerInterface`.
 
-class HomeController
+```php app/src/Interface/Controller/UserController.php
+final class UserController
 {
-    public function index(ContainerInterface $container): void
+    public function __construct(
+        private readonly \Psr\Container\ContainerInterface $container
+    ) {}
+
+    public function show(string $id): void
     {
-        dump($container->get(App\App::class));
+       $repository = $this->container->get(UserRepository::class);
+       // ...
     }
 }
 ```
 
 ## Dependency Injection
 
-Spiral supports both method and constructor injections for your classes:
+The Spiral container allows you to use both **constructor** and **method** injections for your classes. This means that
+you can have dependencies automatically **injected** into the class through the constructor, or through a specific
+method.
 
-```php
-class UserMailer
+:::: tabs
+
+::: tab Constructor
+
+For example, in the `UserController` class, the `UserRepository` dependency is injected through the `__construct()`
+method. This means that the container will automatically create and deliver the UserRepository object when the method is
+called.
+
+```php app/src/Interface/Controller/UserController.php
+use Psr\Container\ContainerInterface;
+
+final class UserController
 {
-    protected Mailer $mailer;
+    public function __construct(
+        private readonly UserRepository $users
+    ) {}
 
-    public function __construct(Mailer $mailer)
+    public function show(string $id): void
     {
-        $this->mailer = $mailer;
-    }
-    
-    public function do(): void
-    {
-        $this->mailer->sendMail(...);
+       $user = $this->users->findOrFail($id);
+       // ...
     }
 }
 ```
 
-The `Mailer` dependency will be automatically delivered by the container (auto-wiring).
+:::
+
+::: tab Method
+
+For example, in the `UserController` class, the `UserRepository` dependency is injected through the `show()` method.
+This means that the container will automatically create and deliver the UserRepository object when the method is
+called.
+
+```php app/src/Interface/Controller/UserController.php
+final class UserController
+{
+    public function show(UserRepository $users, string $id): void
+    {
+       $user = $users->findOrFail($id);
+       // ...
+    }
+}
+```
+
+:::
+::::
 
 > **Note**
-> that your controllers, commands, and jobs support method injection.
-> Auto-wiring supports union types, variadic arguments, referenced parameters, and default object values.
+> This feature is available for classes like controllers, console commands, and queue jobs.
+> Additionally, the container also supports advanced features like union types, variadic arguments, referenced
+> parameters and default object values for the auto-wiring.
 
 ## Configuring Container
 
-You can configure a container by creating a set of bindings between aliases or interfaces to concrete implementations.   
-Use [Bootloaders](../framework/bootloaders.md) to define bindings.
+The Spiral container allows you to configure it by creating bindings between interfaces or aliases to specific
+implementations. You can use [Bootloaders](../framework/bootloaders.md) to define these bindings.
 
-We can either use `Spiral\Core\BinderInterface` or `Spiral\Core\Container` to configure the application container.
+There are two ways to configure the container, either by using the `Spiral\Core\BinderInterface` or
+the `Spiral\Core\Container`.
 
-To bind interface to concrete implementation:
+To bind an interface to a concrete implementation, you can use the following code snippet:
 
-```php
-use Spiral\Core\Container;
+:::: tabs
 
-//...
-public function boot(Container $container): void
+::: tab BinderInterface
+
+```php app/src/Application/Bootloader/AppBootloader.php
+use Spiral\Core\BinderInterface;
+
+public function boot(BinderInterface $binder): void
 {
-    $container->bind(MyInterface::class, MyImplementation::class);
+    $binder->bind(
+        UserRepositoryInterface::class, 
+        CycleUserRepository::class
+    );
 }
 ```
 
-To bind a singleton:
+:::
 
-```php
+::: tab Container
+
+```php app/src/Application/Bootloader/AppBootloader.php
 use Spiral\Core\Container;
 
-//...
 public function boot(Container $container): void
 {
-    $container->bindSingleton(MyImplementation::class, MyImplementation::class);
+    $container->bind(
+        UserRepositoryInterface::class, 
+        CycleUserRepository::class
+    );
 }
 ```
 
-To bind with specific parameters:
+:::
+::::
 
-```php
-use Spiral\Core\Container;
+To bind a singleton, you can use the following code snippet:
 
-//...
-public function boot(Container $container): void
+```php app/src/Application/Bootloader/AppBootloader.php
+use Spiral\Core\BinderInterface;
+
+public function boot(BinderInterface $binder): void
 {
-    $container->bindSingleton(MyImplementation::class, bind(MyImplementation::class, [
-        'param' => 'value'
-    ]));
+    $binder->bindSingleton(
+        UserRepositoryInterface::class, 
+        CycleUserRepository::class
+    );
 }
 ```
 
-> **Note**
-> Read about [Config Objects](../framework/config.md) to see how to manage config dependencies.
+You can also bind with specific parameters by using the `Autowire` class like this:
 
-You can also use `closure` to configure your class automatically:
+```php app/src/Application/Bootloader/AppBootloader.php
+use Spiral\Core\BinderInterface;
+use Spiral\Core\Container\Autowire;
 
-```php
-use Spiral\Core\Container;
-
-//...
-public function boot(Container $container): void
+public function boot(BinderInterface $binder): void
 {
-    $container->bindSingleton(MyImplementation::class, function() {
-        return new MyImplementation('some-value');
-    });
+    $binder->bindSingleton(
+        UserRepositoryInterface::class, 
+        new Autowire(CycleUserRepository::class, ['table' => 'users'])
+    );
+}
+```
+
+Lastly, you can use closures to configure your class automatically by passing a closure to the bind or `bindSingleton`
+method like this:
+
+```php app/src/Application/Bootloader/AppBootloader.php
+use Spiral\Core\BinderInterface;
+
+public function boot(BinderInterface $binder): void
+{
+    $binder->bindSingleton(
+        UserRepositoryInterface::class, 
+        static fn() => new CycleUserRepository(table: users)
+    );
 }
 ```
 
 Closures also support dependencies:
 
-```php
-use Spiral\Core\Container;
+```php app/src/Application/Bootloader/AppBootloader.php
+use Spiral\Core\BinderInterface;
+use Spiral\Core\Container\Autowire;
 
-//...
-public function boot(Container $container): void
+public function boot(BinderInterface $binder): void
 {
-    $container->bindSingleton(MyImplementation::class, function(SomeClass $class) {
-        return new MyImplementation($class);
-    });
+    $binder->bindSingleton(
+        UserRepositoryInterface::class, 
+        static fn(UserConfig $config) => new CycleUserRepository(table: $config->getTable())
+    );
 }
 ```
+
+When this closure is executed, the container will automatically resolve an instance of `UserConfig` and pass it as an
+argument to the closure. This allows you to easily configure your classes with dependencies without having to manually
+instantiate and manage them.
 
 To check if a container has binding use:
 
 ```php
-dump($container->has(MyImplementation::class));
+use Spiral\Core\Container;
+
+public function boot(Container $container): void
+{
+    $container->has(UserRepositoryInterface::class)
+}
 ```
 
 To remove the container binding:
 
 ```php
-$container->removeBinding(MyService::class);
+use Spiral\Core\BinderInterface;
+
+public function boot(BinderInterface $binder): void
+{
+    $binder->removeBinding(UserRepositoryInterface::class)
+}
 ```
 
 Container supports `WeakReference` binding:
 
-```php
-use Spiral\Core\Container;
+:::: tabs
 
-// alias isn't class name
+::: tab String alias
+
+```php app/src/Application/Bootloader/AppBootloader.php
+use Spiral\Core\Container;
+use WeakReference;
+
 public function boot(Container $container): void
 {
     $object = new stdClass();
@@ -157,9 +243,17 @@ public function boot(Container $container): void
     // New object can't be created because classname has not been stored
     dump($container->get('test-alias')); // null
 }
+```
 
-// alias class name
-public function init(Container $container): void
+:::
+
+::: tab Class name alias
+
+```php app/src/Application/Bootloader/AppBootloader.php
+use Spiral\Core\Container;
+use WeakReference;
+
+public function boot(Container $container): void
 {
     $object = new stdClass();
     $hash = \spl_object_hash($object);
@@ -175,61 +269,78 @@ public function init(Container $container): void
 }
 ```
 
+:::
+::::
+
 ## Lazy Singletons
 
-You can skip singleton binding by implementing `Spiral\Core\Container\SingletonInterface` in your class:
+The framework also allows you to use "lazy singletons" which are classes that are automatically treated as
+singletons by the container without the need to explicitly bind them as such.
+
+To use this feature, you can simply implement the `Spiral\Core\Container\SingletonInterface` interface in your class,
+like this:
 
 ```php
 use Spiral\Core\Container\SingletonInterface;
 
-class MyService implements SingletonInterface
+final class UserService implements SingletonInterface
 {
-    public function method(): void
+    public function store(User $user): void
     {
         //...
     }
 }
 ```
 
-Now, the container will automatically treat this class as a singleton in your application:
+Now, the container will automatically treat this class as a singleton and only create one instance of it for the entire
+application, regardless of how many times it is requested.
 
 ```php
-protected function index(MyService $service): void
+protected function index(UserService $service): void
 {
-    dump($this->container->get(MyService::class) === $service);
+    dump($this->container->get(UserService::class) === $service);
 }
 ```
 
 ## FactoryInterface
 
-In some cases, you might want to construct a desired class without resolving all of its `__constructor` dependencies.
-You can use `Spiral\Core\FactoryInterface` for that purpose:
+The framework also provides a `Spiral\Core\FactoryInterface` that you can use to construct a class without resolving
+all of its constructor dependencies. This can be useful in situations where you only need a specific subset of a class's
+dependencies or if you want to pass in specific values for some of the dependencies.
 
 ```php
 public function makeClass(FactoryInterface $factory): MyClass
 {
-    return $factory->make(MyClass::class, [
-        'parameter' => 'value'
-        // other dependencies will be resolved automatically
+    return $factory->make(UserService::class, [
+        'table' => 'users'
     ]); 
 }
 ```
 
+In the example above, the `make()` method is used to create an instance of `UserService` and pass in the value `table`
+for the parameter constructor dependency. The other constructor dependencies will be resolved automatically by the
+container.
+
+This allows you to have more control over the construction of your classes, and can be particularly useful in situations
+where you need to create multiple instances of a class with different constructor dependencies.
+
 ## ResolverInterface
 
-If you want to resolve method arguments to dynamic target (i.e., controller method), use `Spiral\Core\ResolverInterface`:
+The framework also provides the `Spiral\Core\ResolverInterface` that you can use to resolve method arguments to
+dynamic targets, such as controller methods. This can be useful in situations where you want to invoke a method and need
+to resolve its dependencies at runtime.
 
 ```php
 abstract class Handler
 {
     public function __construct(
-        protected ResolverInterface $resolver
+        protected readonly ResolverInterface $resolver
     ) {
     }
 
     public function run(array $params): bool
     {
-        $method = new \ReflectionMethod($this, 'do'); // the method to invoke with method injection
+        $method = new \ReflectionMethod($this, 'do');
 
         return $method->invokeArgs(
             $this, 
@@ -239,19 +350,27 @@ abstract class Handler
 }
 ```
 
-Method `do` now can request method injection:
+The `run()` method uses the `ResolverInterface` to invoke the `do` method with method injection. Now, the `do` method
+can request method injection:
 
 ```php
-class MyHandler extends Handler
+class UserStoreHandler extends Handler
 {
-    public function do(SomeClass $some): bool
+    public function do(UserService $service): bool
     {
-        // ...
+        // Store user
     }
 }
 ```
 
-The default implementation of `ResolverInterface` supports Union types. One of the available dependencies of 
+This way, you can easily resolve the dependencies of a method at runtime and invoke it with the required arguments,
+regardless of whether the dependencies are passed in as parameters or if they need to be resolved by the container.
+
+### Supported types
+
+#### Union types
+
+The default implementation of `ResolverInterface` supports Union types. One of the available dependencies of
 the needed type will be passed:
 
 ```php
@@ -267,7 +386,7 @@ final class Entities
 }
 ```
 
-Supports variadic arguments:
+#### Variadic arguments
 
 ```php
 $resolver = $this->container->get(ResolverInterface::class);
@@ -299,7 +418,7 @@ dump($args); // [1]
 
 ```
 
-Supports reference arguments:
+#### Reference arguments
 
 ```php
 $resolver = $this->container->get(ResolverInterface::class);
@@ -316,7 +435,7 @@ $bar = 42;
 dump($args); // [42]
 ```
 
-Supports default object value:
+#### Default object value
 
 ```php
 $resolver = $this->container->get(ResolverInterface::class);
@@ -335,9 +454,9 @@ dump($args);
 
 ### Arguments validation
 
-In some cases, you may want to validate a function or method arguments. To do this, you can use the public 
-`validateArguments` method, in which you need to pass `ReflectionMethod` or `ReflectionFunction` and 
-`array of arguments`. If you received the arguments using the `resolveArguments` method and didn't pass `false` in the 
+In some cases, you may want to validate a function or method arguments. To do this, you can use the public
+`validateArguments` method, in which you need to pass `ReflectionMethod` or `ReflectionFunction` and
+`array of arguments`. If you received the arguments using the `resolveArguments` method and didn't pass `false` in the
 `$validate` parameter, they don't need additional validation. They will be checked automatically.
 If the arguments are not valid, `Spiral\Core\Exception\Resolver\InvalidArgumentException` will be thrown.
 
@@ -350,54 +469,72 @@ $resolver->validateArguments(new \ReflectionFunction($function), [42]);
 
 ## InvokerInterface
 
-In some cases, you might want to invoke a desired method with auto wiring all of its dependencies.
-You can use `Spiral\Core\InvokerInterface` for that purpose:
+The framework also provides the `Spiral\Core\InvokerInterface` that you can use to invoke a desired method with
+automatic resolution of its dependencies. This can be useful in situations where you want to invoke a method on an
+object and need to resolve its dependencies at runtime.
 
-### Invoke an instance method of the object
+### Invoke a class method
+
+The InvokerInterface has a `invoke()` method that you can use to invoke a method on an object and pass in specific
+values for its dependencies.
+
+Here is an example of how you can use it:
 
 ```php
-public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
+use Spiral\Core\InvokerInterface;
+
+abstract class Handler
 {
-    return $invoker->invoke([$instance, 'handle'], [
-        'parameter' => 'value'
-        // other dependencies will be resolved automatically
-    ]); 
+    public function __construct(
+        protected readonly InvokerInterface $invoker
+    ) {
+    }
+
+    public function run(array $params): bool
+    {
+        return $this->invoker->invoke([$this, 'do'], $params)
+    }
 }
 ```
 
-if you pass as first callable array value a string `['foo', 'bar']`, it will be requested from the container.
+if you pass as first callable array value a string `['user-service', 'store']`, it (`user-service`) will be requested
+from the container.
 
 ```php
-$container->bind('some-job', SomeJob::class);
-
+$container->bind('user-service', UserService::class);
 // ...
-public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
-{
-    return $invoker->invoke(['some-job', 'handle'], [ // some-job will be requested from the container
-        'parameter' => 'value'
-        // other dependencies will be resolved automatically
-    ]); 
-}
+$invoker->invoke(
+    ['user-service', 'store'], 
+    $params
+);
 ```
+
+The container will resolve the class `user-service` and call the method `store` on it.
+
+This allows you to easily invoke methods on classes that are managed by the container without having to manually
+instantiate them. This is particularly useful in situations where you want to use a class as a service and invoke its
+methods from multiple parts of your codebase.
 
 > **Note**
-> Invokable method can have both `public` and `protected` , `private` visibility.
+> A method can have any visibility (public, protected, or private) and still be invoked.
 
 ### Invoke callable
 
-In some cases, you might want to invoke a desired closure with auto wiring all of its dependencies.
+The `InvokerInterface` can also be used to invoke closures and automatically resolve their dependencies.
 
 ```php
-public function invokeMethod(\Spiral\Core\InvokerInterface $invoker): mixed
-{
-    return $invoker->invoke(function (MyClass $class, string $parameter) {
+$invoker->invoke(
+    function (MyClass $class, string $parameter) {
         return new MyClassService($class);
-    }, [
-        'parameter' => 'value'
-        // other dependencies will be resolved automatically
-    ]); 
-}
+    },
+    [
+        'parameter' => 'value',
+    ]
+); 
 ```
+
+This allows you to easily invoke closures with the required dependencies, regardless of whether the dependencies are
+passed in as parameters or if they need to be resolved by the container.
 
 ## Auto Wiring
 
@@ -421,15 +558,15 @@ class MyController
 }
 ```
 
-In the provided example, the container will attempt to give the instance of `OtherClass` by automatically constructing it.
-However, `SomeInterface` would not be resolved unless you have proper binding in your container.
+In the provided example, the container will attempt to give the instance of `OtherClass` by automatically constructing
+it. However, `SomeInterface` would not be resolved unless you have proper binding in your container.
 
 ```php
 $container->bind(SomeInterface::class, SomeClass::class); 
 ```
 
-Please note that the container will try to resolve *all* constructor dependencies (unless you manually provide some values).
-It means that all class dependencies must be available, or parameter must be declared as optional:
+Please note that the container will try to resolve *all* constructor dependencies (unless you manually provide some
+values). It means that all class dependencies must be available, or parameter must be declared as optional:
 
 ```php
 // will fail if `value` dependency not provided
@@ -445,6 +582,35 @@ __construct(OtherClass $class, SomeInterface $some)
 __construct(OtherClass $class, SomeInterface $some = null) 
 ```
 
+### Autowire class
+
+The `Spiral\Core\Container\Autowire` class allows you to delegate options to the container and pass specific
+configuration values to your classes without hardcoding them. This can be useful for keeping your configuration separate
+from your code and for making it easier to modify your application's behavior without changing the code itself.
+
+```php app/config/session.php
+use Spiral\Core\Container\Autowire;
+use Spiral\Session\Handler\FileHandler;
+
+return [
+    // ...
+    'handler' => new Autowire(
+        FileHandler::class,
+        [
+            'directory' => directory('runtime') . 'session',
+            'lifetime' => (int)env('SESSION_LIFETIME', 86400),
+        ]
+    ),
+];
+```
+
+When the container tries to resolve the `Autowire`, it will automatically create an instance of the `FileHandler`
+class and pass the `directory` and `lifetime` options to the constructor.
+
+This allows you to easily configure your classes and pass in specific options without having to hardcode them in your
+code, and can be particularly useful for configuring classes that have many options or that are used in multiple parts
+of your codebase.
+
 ### Contextual Auto Wiring
 
 In addition to regular method injections, a container can resolve the injection context automatically. Such a
@@ -458,62 +624,10 @@ protected function index(Database $primary, Database $secondary): void
 }
 ```
 
+Where `primary` and `secondary` are database names.
+
 > **Note**
-> It's where `primary` and `secondary` are database names.
-
-Implement `Spiral\Core\Container\InjectorInterface` to create an injection factory and define a class responsible for such
-injections:
-
-```php
-class MyClassInjector implements InjectorInterface
-{
-    public function createInjection(\ReflectionClass $class, string $context = null)
-    {
-        return new MyClass($context);
-    }
-}
-```
-
-Where `MyClass` is:
-
-```php
-class MyClass 
-{
-    public string $name;
-    public function __construct(string $name)
-    {
-        $this->name = $name;
-    }
-}
-```
-
-Make sure to register inject in the container:
-
-```php
-$container->bindInjector(MyClass::class, MyClassInjector::class);
-```
-
-The container has a special method that allows you to check if an injector is registered for a class or interface:
-
-```php
-dump($container->hasInjector(MyClass::class)); // true
-```
-
-As a result we can request instance of `MyClass` using method arguments:
-
-```php
-public function method(MyClass $john, MyClass $bob): void
-{
-    dump($john); // $john->name === 'john'
-    dump($bob);  // $bob->name === 'bob'
-}
-```
-
-You can always bypass contextual injection in `Spiral\Core\FactoryInterface`:
-
-```php
-dump($factory->make(MyClass::class, ['name' => 'abc']));
-```
+> Read more about injectors in [Advanced — Injectors](../advanced/injectors.md) section.
 
 ## Singletons
 
@@ -594,34 +708,20 @@ class Service implements SingletonService
 
 Using such an approach, you can perform complex computations only once and rely on RAM cache on later user requests.
 
-## Replacing a container instance
+## Replacing an application container
 
-In some cases, you might want to replace `container instance` in the application. You can do this when you create 
+In some cases, you might want to replace a container instance in the application. You can do this when you create
 an application instance.
 
-```php
+```php app.php
 use Spiral\Core\Container;
+use App\Application\Kernel;
 
-$app = App::create(
+$container = new Container();
+$container->bind(...);
+
+$app = Kernel::create(
     directories: ['root' => __DIR__],
-    container: new Container()
-)
-```
-
-## Container configuration
-
-In some cases, you might want to replace internal container services. You can do this when you create
-a container instance.
-
-```php
-use Spiral\Core\Container;
-
-$app = App::create(
-    directories: ['root' => __DIR__],
-    container: new Container(
-        config: new Config(
-            resolver: CustomResolver::class
-        )
-    )
+    container: $container
 )
 ```
