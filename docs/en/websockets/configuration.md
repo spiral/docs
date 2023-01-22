@@ -26,13 +26,6 @@ high-quality applications that require efficient management of real-time data tr
 
 ## Installation
 
-To install the Centrifuge plugin, you must first
-install [spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package.
-
-> **Note**
-> Read more about `spiral/roadrunner-bridge` package installation and
-> configuration [here](../framework/application-server.md)
-
 Register the Bootloader `Spiral\RoadRunnerBridge\Bootloader\CentrifugoBootloader` in your application.
 
 After installing the package, you need to add the bootloader from the package to your application.
@@ -44,6 +37,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+> **Note**
+> Make sure that you have the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package installed.
+> This package provides the necessary classes to integrate Cache component with RoadRunner Centrifuge plugin.
+
 
 ## Configuration
 

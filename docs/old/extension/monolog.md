@@ -113,7 +113,7 @@ class LoggingBootloader extends Bootloader
 ## Register RoadRunner log handler
 
 The `Spiral\Monolog\Bootloader\MonologBootloader` allows registering of different Monolog log handlers. For instance,
-you can register a log handler for [RoadRunner](https://roadrunner.dev/docs/plugins-applogger/2.x/en) using the
+you can register a log handler for [RoadRunner](https://roadrunner.dev/docs/plugins-applogger) using the
 `Spiral\RoadRunnerBridge\Logger\Handler` class.
 
 The following code sample demonstrates how this can be achieved through the use of the `LoggingBootloader`:

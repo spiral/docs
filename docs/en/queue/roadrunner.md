@@ -1,19 +1,14 @@
 # Queue and Jobs — RoadRunner integration
 
 Roadrunner queues provide a unified queueing API across a variety of different queue backends. You can read full 
-information about supported pipelines on the [official site](https://roadrunner.dev/docs/plugins-jobs/2.x/en).
-
-The `spiral/roadrunner-bridge` package is included by default in the Web and GRPC builds.
+information about supported pipelines on the [official site](https://roadrunner.dev/docs/plugins-jobs).
 
 ## Installation
 
-To install the component in alternative bundles or as a standalone library:
+At first, you need to install the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package.
 
-```terminal
-composer require spiral/roadrunner-bridge
-```
-
-Activate the bootloader `Spiral\RoadRunnerBridge\Bootloader\QueueBootloader` in your application:
+Once the package is installed, you can add the `Spiral\RoadRunnerBridge\Bootloader\QueueBootloader` to the list of
+bootloaders:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [

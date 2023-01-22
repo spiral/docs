@@ -5,9 +5,8 @@ gRPC, TCP, Queue Job consuming, and Temporal. It operates by running workers onl
 directing requests to a [dispatcher](../framework/dispatcher.md) based on their type. This means that each worker is
 isolated and works independently, following a "share nothing" approach where resources are not shared between workers.
 
-Using RoadRunner can significantly improve the speed and efficiency by eliminating the need for
-the application to go through the bootstrapping process repeatedly. This can save on CPU and memory resources and reduce
-response time.
+Using RoadRunner can significantly improve the speed and efficiency by eliminating the need for the application to go 
+through the bootstrapping process repeatedly. This can save on CPU and memory resources and reduce response time.
 
 > **Note**
 > Read more about Framework and application server symbiosis
@@ -42,10 +41,12 @@ And run the following command to download the latest version of the RoadRunner:
 
 ::: tab Docker
 
-RoadRunner provides pre-compiled RoadRunner server binaries within a Docker image. 
+RoadRunner provides pre-compiled RoadRunner server binaries within a Docker image.
 
 **The image is available on:**
-- **Github**— [ghcr.io/roadrunner-server/roadrunner](https://github.com/roadrunner-server/roadrunner/pkgs/container/roadrunner)
+
+- **Github
+  **— [ghcr.io/roadrunner-server/roadrunner](https://github.com/roadrunner-server/roadrunner/pkgs/container/roadrunner)
 - **Docker Hub** — [spiralscout/roadrunner](https://hub.docker.com/r/spiralscout/roadrunner)
 
 ```docker Dockerfile
@@ -165,14 +166,40 @@ Use the following command to start application server on **Windows**
 
 ## RoadRunner bridge
 
-The [spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package is a composer package that provides
-integration between the Spiral framework and the RoadRunner application server.
+The [spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package provides full integration between 
+the Spiral framework and the RoadRunner. This package allows developers to use RoadRunner's various plugins, 
+including `http`, `grpc`, `jobs`, `tcp`, `kv`, `centrifugo`, `logger`, and `metrics`, with the Spiral framework.
 
 > **Note**
 > The component is available by default in the [application bundle](https://github.com/spiral/app).
 
-This package allows developers to use RoadRunner's various plugins, including `http`, `grpc`, `jobs`, `tcp`, `kv`,
-`centrifugo`, `logger`, and `metrics`, with the Spiral framework.
+### Installation
+
+To install the package, run the following command:
+
+```terminal
+composer require spiral/roadrunner-bridge
+```
+
+Once installed, you need to add the package's bootloaders to your application in the `Kernel`, choosing the specific
+bootloaders that correspond to the plugins you want to use:
+
+```php app/src/Application/Kernel.php
+use Spiral\RoadRunnerBridge\Bootloader as RoadRunnerBridge;
+
+protected const LOAD = [
+    RoadRunnerBridge\HttpBootloader::class, // Optional, if it needs to work with http plugin
+    RoadRunnerBridge\QueueBootloader::class, // Optional, if it needs to work with jobs plugin
+    RoadRunnerBridge\CacheBootloader::class, // Optional, if it needs to work with KV plugin
+    RoadRunnerBridge\GRPCBootloader::class, // Optional, if it needs to work with GRPC plugin
+    RoadRunnerBridge\BroadcastingBootloader::class, // Optional, if it needs to work with broadcasting plugin
+    RoadRunnerBridge\CommandBootloader::class,
+    RoadRunnerBridge\TcpBootloader::class, // Optional, if it needs to work with TCP plugin
+    RoadRunnerBridge\MetricsBootloader::class, // Optional, if it needs to work with metrics plugin
+    RoadRunnerBridge\LoggerBootloader::class, // Optional, if it needs to work with app-logger plugin
+    // ...
+];
+```
 
 ## Gotchas
 

@@ -18,13 +18,7 @@ application metrics to Prometheus.
 
 ## Installation
 
-At first, you need to install the [spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package.
-
-Simply run the following command to install the package:
-
-```terminal
-composer require spiral/roadrunner-bridge
-```
+At first, you need to install the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package.
 
 Once the package is installed, you can add the `Spiral\RoadRunnerBridge\Bootloader\MetricsBootloader` to the list of
 bootloaders:

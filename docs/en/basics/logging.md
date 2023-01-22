@@ -143,7 +143,7 @@ protected const LOAD = [
 ### RoadRunner handler
 
 It allows for the registration of different Monolog log handlers, such as the `Spiral\RoadRunnerBridge\Logger\Handler`
-class for sending logs to the [RoadRunner app logger](https://roadrunner.dev/docs/plugins-applogger/2.x/en).
+class for sending logs to the [RoadRunner app logger](https://roadrunner.dev/docs/plugins-applogger).
 
 ```php app/src/Application/Bootloader/LoggingBootloader.php
 namespace App\Application\Bootloader;
@@ -175,7 +175,7 @@ MONOLOG_DEFAULT_CHANNEL=roadrunner
 ```
 
 > **Warning**
-> Make sure that you have the [spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package installed.
+> Make sure that you have the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package installed.
 > This package provides the necessary classes to integrate RoadRunner with Monolog.
 
 ## Usage

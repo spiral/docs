@@ -3,11 +3,11 @@
 The Spiral Framework provides support for background PHP processing and a queue system for both the Web and GRPC
 bundles. This feature is available out of the box and allows you to work with a variety of message brokers including:
 
-- [Kafka](https://roadrunner.dev/docs/plugins-jobs/2.x/en#kafka-driver),
-- [AMQP (RabbitMQ)](https://roadrunner.dev/docs/plugins-jobs/2.x/en#amqp-driver),
-- [Amazon SQS](https://roadrunner.dev/docs/plugins-jobs/2.x/en#sqs-driver),
-- [Beanstalk](https://roadrunner.dev/docs/plugins-jobs/2.x/en#beanstalk-driver),
-- and [memory](https://roadrunner.dev/docs/plugins-jobs/2.x/en#memory-driver) driver.
+- [Kafka](https://roadrunner.dev/docs/plugins-jobs#kafka-driver),
+- [AMQP (RabbitMQ)](https://roadrunner.dev/docs/plugins-jobs#amqp-driver),
+- [Amazon SQS](https://roadrunner.dev/docs/plugins-jobs#sqs-driver),
+- [Beanstalk](https://roadrunner.dev/docs/plugins-jobs#beanstalk-driver),
+- and [memory](https://roadrunner.dev/docs/plugins-jobs#memory-driver) driver.
 
 To install the necessary extensions in an alternative bundle, you can use the following command:
 

@@ -12,22 +12,13 @@ To install the extension:
 composer require spiral/prototype
 ```
 
-> **Note**
-> that the spiral/framework >= 2.7 already includes this component.
-
 Make sure to add `Spiral\Prototype\Bootloader\PrototypeBootloader` to your App class:
 
-```php  app/src/Application/Kernel.php
-class App extends Kernel
-{
-    // ...
-
-    protected const APP = [
-        //...
-
-        \Spiral\Prototype\Bootloader\PrototypeBootloader::class
-    ];
-}
+```php app/src/Application/Kernel.php
+protected const APP = [
+    //...
+    \Spiral\Prototype\Bootloader\PrototypeBootloader::class
+];
 ```
 
 > **Note**
