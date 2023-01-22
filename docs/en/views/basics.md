@@ -1,4 +1,4 @@
-# Views — Rendering Views
+# Views — Basics
 
 To render a view, you must obtain an instance of `Spiral\Views\ViewsInterface`.
 
@@ -8,8 +8,7 @@ To render a view, you must obtain an instance of `Spiral\Views\ViewsInterface`.
 ## Rendering
 
 To render a view in the controller or other service, simply invoke the `render` method of `ViewsInterface`. The view
-name
-does not need to include an extension or namespace (default to be used).
+name does not need to include an extension or namespace (default to be used).
 
 ```php
 use Spiral\Views\ViewsInterface;
@@ -69,8 +68,9 @@ return $view->render([
 You can add global variables that will be available in all views. There are several ways to add a global variable.
 You can use the configuration file `app/config/views.php`.
 
-```php
+```php app/config/views.php
 return [
+    // ...
     'globalVariables' => [
         'some_var' => env('SOME_VALUE'),
         'other_var' => 'other_value'
@@ -80,8 +80,8 @@ return [
 
 Or you can use `Spiral\Views\GlobalVariablesInterface`.
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/AppBootloader.php
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Views\GlobalVariablesInterface ;
@@ -97,7 +97,7 @@ class AppBootloader extends Bootloader
 }
 ```
 
-After that, you can use the variable in the view.
+After that, you can use the variables in the view.
 
 ```php
 <!doctype html>

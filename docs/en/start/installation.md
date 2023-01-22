@@ -102,3 +102,13 @@ By default, the application will be available on `http://localhost:8080`.
 
 > **Note**
 > Read more about application server in the [Getting started — Application Server](../start/server.md) section.
+
+<hr>
+
+## What's Next?
+
+Now, dive deeper into the fundamentals by reading some articles:
+
+* [Application server](../start/server.md)
+* [Directory Structure](../start/structure.md)
+* [First HTTP controller](../start/http-basics.md)

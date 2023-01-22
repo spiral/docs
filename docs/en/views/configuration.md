@@ -6,13 +6,10 @@ The `spiral/views` component is available in Web bundle by default, to install i
 composer require spiral/views
 ```
 
-> **Note**
-> Please note that the spiral/framework >= 2.6 already includes this component.
-
 To activate the component, use the bootloader `Spiral\Views\Bootloader\ViewsBootloader`:
 
-```php
-[
+```php app/src/Application/Kernel.php
+protected const LOAD = [
     // ...
     Spiral\Views\Bootloader\ViewsBootloader::class,
     // ...
@@ -26,10 +23,7 @@ store view files in multiple namespaces.
 
 To change the default component configuration, create and edit the file `app/config/views.php`:
 
-```php
-<?php
-declare(strict_types=1);
-
+```php app/config/views.php
 use Spiral\Views\Engine\Native\NativeEngine;
 
 return [
@@ -60,8 +54,8 @@ You can alter some of the component settings using the bootloader `Spiral\Bootlo
 
 To assign a new directory to view namespace:
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/AppBootloader.php
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Views\Bootloader\ViewsBootloader;
@@ -79,8 +73,8 @@ class AppBootloader extends Bootloader
 
 To register a new view engine, make sure to implement `Spiral\Views\EngineInterface`:
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/AppBootloader.php
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Views\Bootloader\ViewsBootloader;
@@ -115,5 +109,5 @@ To warmup cache, run `views:compile` or `configure`:
 php app.php views:compile
 ``` 
 
-> **Note**
+> **Warning**
 > Always warmup the view cache before switching the worker pool under load.
