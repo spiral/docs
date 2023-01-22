@@ -58,7 +58,7 @@
       "advanced/attributes": "Attributes",
       "advanced/tokenizer": "Static analysis",
       "advanced/prometheus-metrics": "Application Metrics",
-      "advanced/telemetry": "Application telemetry",
+      "advanced/telemetry": "Application Telemetry",
       "advanced/serializer": "Serializer",
       "advanced/events": "Events",
       "advanced/injectors": "Container injectors",
@@ -181,7 +181,8 @@
     "links": {
       "views/configuration": "Installation and Configuration",
       "views/basics": "Basics",
-      "views/templates": "Twig and plain PHP templates",
+      "views/templates": "Plain PHP templating",
+      "views/twig": "Twig templating",
       "views/stempler": "Stempler templating"
     }
   },

@@ -3,6 +3,7 @@
 The Events component provides tools that allow your application components to communicate with each other
 by dispatching events and listening to them. The component makes it easy to register event listeners in your
 application.
+
 It also provides an easy way to integrate `PSR-14` compatible `EventDispatcher`.
 
 ## Installation
