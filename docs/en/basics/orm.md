@@ -1,23 +1,11 @@
-# The Basics — Working with Databases and ORM
-
-CycleORM is an ORM (Object-Relational Mapping) and Data Modelling engine, which means it allows you to interact with
-your database using plain PHP objects, rather than writing raw SQL. It has a lot of features like support for different
-types of relations between tables, lazy and eager loading, and the ability to work with different types of PHP objects.
-It also has a flexible configuration options and
-supports different types of databases like MySQL, PostgresSQL, and SQLite. Overall, it's designed to make working with
-databases in PHP easier and more efficient.
+# The Basics — Databases and ORM
 
 The spiral framework provides a component `spiral/cycle-bridge` to work with the ORM and database in your application.
-The package is included in `spiral/app` skeleton and will be suggested to install when you create a new project.
 
 ## Installation
 
-If you want to install the component in you application follow the next steps:
-
-Make sure that your server is configured with following PHP version and extensions:
-
-- PHP 8.1+
-- PDO Extension with desired database drivers
+The package is included in `spiral/app` skeleton and will be suggested to install when you create a new project, but if
+you want to install it in your existing project, you can do it with composer.
 
 Run the following command to install the package:
 
@@ -73,6 +61,245 @@ protected const LOAD = [
 ];
 ```
 
+## Cycle ORM
+
+CycleORM is a powerful and flexible Object-Relational Mapping (ORM) tool for PHP that allows developers to interact with
+databases in an object-oriented way. It provides a range of features that make it easy to work with data including a
+flexible configuration options, a powerful query builder and support for dynamic mapping of schemas.
+
+It supports a variety of popular relational databases such as MySQL, MariaDB, PostgresSQL, SQLServer, and SQLite.
+
+> **Note**
+> Full documentation is available on the official site [CycleORM](https://cycle-orm.dev/docs).
+
+### Configuration
+
+The configuration for spiral framework's ORM services is located in your application's `app/config/cycle.php`
+
+```php app/config/cycle.php
+use Cycle\ORM\SchemaInterface;
+
+return [
+    'schema' => [
+        /**
+         * true (Default) - Schema will be stored in a cache after compilation.
+         * It won't be changed after entity modification. Use `php app.php cycle` to update schema.
+         *
+         * false - Schema won't be stored in a cache after compilation.
+         * It will be automatically changed after entity modification. (Development mode)
+         */
+        'cache' => false,
+
+        /**
+         * The CycleORM provides the ability to manage default settings for
+         * every schema with not defined segments
+         */
+        'defaults' => [
+            SchemaInterface::MAPPER => \Cycle\ORM\Mapper\Mapper::class,
+            SchemaInterface::REPOSITORY => \Cycle\ORM\Select\Repository::class,
+            SchemaInterface::SCOPE => null,
+            SchemaInterface::TYPECAST_HANDLER => [
+                \Cycle\ORM\Parser\Typecast::class
+            ],
+        ],
+
+        'collections' => [
+            'default' => 'array',
+            'factories' => [
+                'array' => new \Cycle\ORM\Collection\ArrayCollectionFactory(),
+                // 'doctrine' => new \Cycle\ORM\Collection\DoctrineCollectionFactory(),
+                // 'illuminate' => new \Cycle\ORM\Collection\IlluminateCollectionFactory(),
+            ],
+        ],
+
+        /**
+         * Schema generators (Optional)
+         * null (default) - Will be used schema generators defined in bootloaders
+         */
+        'generators' => null,
+
+        // 'generators' => [
+        //        \Cycle\Schema\Generator\ResetTables::class,
+        //        \Cycle\Annotated\Embeddings::class,
+        //        \Cycle\Annotated\Entities::class,
+        //        \Cycle\Annotated\TableInheritance::class,
+        //        \Cycle\Annotated\MergeColumns::class,
+        //        \Cycle\Schema\Generator\GenerateRelations::class,
+        //        \Cycle\Schema\Generator\GenerateModifiers::class,
+        //        \Cycle\Schema\Generator\ValidateEntities::class,
+        //        \Cycle\Schema\Generator\RenderTables::class,
+        //        \Cycle\Schema\Generator\RenderRelations::class,
+        //        \Cycle\Schema\Generator\RenderModifiers::class,
+        //        \Cycle\Annotated\MergeIndexes::class,
+        //        \Cycle\Schema\Generator\GenerateTypecast::class,
+        // ],
+    ],
+
+    /**
+     * Prepare all internal ORM services (mappers, repositories, typecasters...)
+     */
+    'warmup' => false,
+];
+```
+
+### ORM
+
+You can access the ORM instance from the container by using the `Cycle\ORM\ORMInterface` interface.
+
+### Repositories
+
+Let's imagine that we have a `User` entity 
+
+```php
+use Cycle\Annotated\Annotation as Cycle;
+
+#[Cycle\Entity(repository: UserRepository::class)]
+class User
+{
+    // ...
+}
+```
+
+with a `UserRepository` repository.
+
+```php 
+class UserRepository extends \Cycle\ORM\Select\Repository
+{
+    public function findByEmail(string $email): ?User
+    {
+        return $this->findOne(['email' => $email]);
+    }
+}
+```
+
+You can request a repository from the ORM instance by yourself, by providing the entity or role name.
+
+```php
+use Cycle\ORM\ORMInterface;
+use Cycle\ORM\RepositoryInterface;
+
+class UserService
+{   
+    private readonly RepositoryInterface $repository;
+
+    public function __construct(
+        Cycle\ORM\ORMInterface $orm
+    ) {
+        $this->repository = $orm->getRepository(User::class);
+    }
+    
+    public function getProfile(string $email): User
+    {
+        $user = $this->repository->findOne(['email' => $email]);
+        // ...
+    }
+}
+```
+
+Yu can also request a repository from the container. The framework uses [IoC injections](../advanced/injectors.md) to 
+inject repositories into your code that implement `Cycle\ORM\RepositoryInterface`.
+
+
+```php
+class UserService
+{
+    public function __construct(
+        private readonly UserRepository $repository
+    ) {
+    }
+    
+    public function getProfile(string $email): User
+    {
+        $user = $this->repository->findByEmail($email);
+        // ...
+    }
+}
+```
+
+When you request a repository from the container, the Spiral Framework will automatically request the repository from
+the ORM and associate it with the correct Entity.
+
+### Transactions
+
+To persist entity changes, your application services and controllers will require `Cycle\ORM\EntityManagerInterface`.
+
+By default, the framework will automatically create a transaction on-demand from the container. Considering that
+transactions always clean after the operation `run`, you can request it as a constructor parameter.
+
+> **Note:**
+> You can read more about transactions in
+> the [CycleORM documentation](https://cycle-orm.dev/docs/advanced-entity-manager).
+
+Here is an example of a service that uses the `EntityManagerInterface`:
+
+```php
+use Cycle\ORM\EntityManagerInterface;
+
+class UserService
+{
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager
+    ) {
+    }
+    
+    public function create(string $name, string $email): User
+    {
+        $user = new User($name, $email);
+        
+        $this->entityManager->persist($user);
+        $this->entityManager->run();
+        
+        return $user;
+    }
+}
+```
+
+> **Note:**
+> Make sure that the `persist/delete` and run methods are always called within the same method scope while using
+> service-specific transactions.
+
+### Console Commands
+
+The Cycle ORM integration provides multiple commands for easier control. You can get help for any of the commands using
+
+```bash
+php app.php help cycle...
+```
+
+> **Note**
+> Make sure to enable `Spiral\Cycle\Bootloader\CommandBootloader` after the cycle bootloaders to activate helper
+> commands.
+
+#### Migrations
+
+| Command            | Description                                                                                       |
+|--------------------|---------------------------------------------------------------------------------------------------|
+| `migrate`          | Performs one or all the outstanding migrations.<br/>`--one` Execute only one (first) migration.   |
+| `migrate:replay`   | Replays (down, up) one or multiple migrations.<br/>`--all` Replays all the migrations.            |
+| `migrate:rollback` | Rolls back  (default) or multiple migrations.<br/>`--all` Rolls back all the executed migrations. |
+| `migrate:init`     | Initiates the migrations component (create a migrations table).                                   |
+| `migrate:status`   | Gets a list of all available migrations and their statuses.                                       |
+
+#### Database
+
+| Command            | Description                                                                                                               |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------|
+| `db:list [db]`     | Gets a list of available databases, their tables and records count.<br/>`db` database name.                               |
+| `db:table <table>` | Describes a table schema of a specific database.<br/>`table` A table name (required).<br/>`--database` A source database. |
+
+#### ORM and Schema
+
+| Command         | Description                                                                                |
+|-----------------|--------------------------------------------------------------------------------------------|
+| `cycle`         | Updates (init) the cycle schema from the database and annotated classes.                   |
+| `cycle:migrate` | Generates the ORM schema migrations.<br/>`--run` Automatically runs a generated migration. |
+| `cycle:render`  | Renders the available CycleORM schemas.<br/>`--no-color` Displays output without colors.   |
+
+> **Note**
+> You can run any cycle command with the `-vv` flag to see a list of modified tables.
+
+<hr>
+
 ## Database
 
 ### Configuration
@@ -84,7 +311,7 @@ application's environment variables.
 
 Here is an example configuration file that defines a database connection:
 
-```php
+```php app/config/database.php
 use Cycle\Database\Config;
 
 return [
@@ -279,156 +506,3 @@ Foreign Keys of default.posts:
 | posts_user_id_fk | user_id | users          | id              | CASCADE    | CASCADE    |
 +------------------+---------+----------------+-----------------+------------+------------+
 ```
-
-## ORM
-
-Full documentation is available on the official site: [CycleORM](https://cycle-orm.dev/docs).
-
-### Configuration
-
-The configuration for spiral framework's ORM services is located in your application's `app/config/cycle.php`
-
-```php
-use Cycle\ORM\SchemaInterface;
-
-return [
-    'schema' => [
-        /**
-         * true (Default) - Schema will be stored in a cache after compilation.
-         * It won't be changed after entity modification. Use `php app.php cycle` to update schema.
-         *
-         * false - Schema won't be stored in a cache after compilation.
-         * It will be automatically changed after entity modification. (Development mode)
-         */
-        'cache' => false,
-
-        /**
-         * The CycleORM provides the ability to manage default settings for
-         * every schema with not defined segments
-         */
-        'defaults' => [
-            SchemaInterface::MAPPER => \Cycle\ORM\Mapper\Mapper::class,
-            SchemaInterface::REPOSITORY => \Cycle\ORM\Select\Repository::class,
-            SchemaInterface::SCOPE => null,
-            SchemaInterface::TYPECAST_HANDLER => [
-                \Cycle\ORM\Parser\Typecast::class
-            ],
-        ],
-
-        'collections' => [
-            'default' => 'array',
-            'factories' => [
-                'array' => new \Cycle\ORM\Collection\ArrayCollectionFactory(),
-                // 'doctrine' => new \Cycle\ORM\Collection\DoctrineCollectionFactory(),
-                // 'illuminate' => new \Cycle\ORM\Collection\IlluminateCollectionFactory(),
-            ],
-        ],
-
-        /**
-         * Schema generators (Optional)
-         * null (default) - Will be used schema generators defined in bootloaders
-         */
-        'generators' => null,
-
-        // 'generators' => [
-        //        \Cycle\Schema\Generator\ResetTables::class,
-        //        \Cycle\Annotated\Embeddings::class,
-        //        \Cycle\Annotated\Entities::class,
-        //        \Cycle\Annotated\TableInheritance::class,
-        //        \Cycle\Annotated\MergeColumns::class,
-        //        \Cycle\Schema\Generator\GenerateRelations::class,
-        //        \Cycle\Schema\Generator\GenerateModifiers::class,
-        //        \Cycle\Schema\Generator\ValidateEntities::class,
-        //        \Cycle\Schema\Generator\RenderTables::class,
-        //        \Cycle\Schema\Generator\RenderRelations::class,
-        //        \Cycle\Schema\Generator\RenderModifiers::class,
-        //        \Cycle\Annotated\MergeIndexes::class,
-        //        \Cycle\Schema\Generator\GenerateTypecast::class,
-        // ],
-    ],
-
-    /**
-     * Prepare all internal ORM services (mappers, repositories, typecasters...)
-     */
-    'warmup' => false,
-];
-```
-
-### Transactions
-
-To persist entity changes, your application services and controllers will require `Cycle\ORM\EntityManagerInterface`.
-
-By default, the framework will automatically create a transaction on-demand from the container. Considering that
-transactions always clean after the operation `run`, you can request it as a constructor parameter.
-
-> **Note:**
-> You can read more about transactions in
-> the [CycleORM documentation](https://cycle-orm.dev/docs/advanced-entity-manager).
-
-Here is an example of a service that uses the `EntityManagerInterface`:
-
-```php
-use Cycle\ORM\EntityManagerInterface;
-
-class UserService
-{
-    public function __construct(
-        private readonly EntityManagerInterface $entityManager
-    ) {
-    }
-    
-    public function create(string $name, string $email): User
-    {
-        $user = new User($name, $email);
-        
-        $this->entityManager->persist($user);
-        $this->entityManager->run();
-        
-        return $user;
-    }
-}
-```
-
-> **Note:**
-> Make sure that the `persist/delete` and run methods are always called within the same method scope while using
-> service-specific transactions.
-
-### Console Commands
-
-The Cycle ORM integration provides multiple commands for easier control. You can get help for any of the commands using
-
-```bash
-php app.php help cycle...
-```
-
-> **Note**
-> Make sure to enable `Spiral\Cycle\Bootloader\CommandBootloader` after the cycle bootloaders to activate helper 
-> commands.
-
-#### Migrations
-
-| Command            | Description                                                                                       |
-|--------------------|---------------------------------------------------------------------------------------------------|
-| `migrate`          | Performs one or all the outstanding migrations.<br/>`--one` Execute only one (first) migration.   |
-| `migrate:replay`   | Replays (down, up) one or multiple migrations.<br/>`--all` Replays all the migrations.            |
-| `migrate:rollback` | Rolls back  (default) or multiple migrations.<br/>`--all` Rolls back all the executed migrations. |
-| `migrate:init`     | Initiates the migrations component (create a migrations table).                                   |
-| `migrate:status`   | Gets a list of all available migrations and their statuses.                                       |
-
-#### Database
-
-| Command            | Description                                                                                                               |
-|--------------------|---------------------------------------------------------------------------------------------------------------------------|
-| `db:list [db]`     | Gets a list of available databases, their tables and records count.<br/>`db` database name.                               |
-| `db:table <table>` | Describes a table schema of a specific database.<br/>`table` A table name (required).<br/>`--database` A source database. |
-
-#### ORM and Schema
-
-| Command         | Description                                                                                |
-|-----------------|--------------------------------------------------------------------------------------------|
-| `cycle`         | Updates (init) the cycle schema from the database and annotated classes.                   |
-| `cycle:migrate` | Generates the ORM schema migrations.<br/>`--run` Automatically runs a generated migration. |
-| `cycle:render`  | Renders the available CycleORM schemas.<br/>`--no-color` Displays output without colors.   |
-
-> **Note**
-> You can run any cycle command with the `-vv` flag to see a list of modified tables.

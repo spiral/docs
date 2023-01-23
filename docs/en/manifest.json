@@ -40,7 +40,7 @@
   {
     "title": "The Basics",
     "links": {
-      "basics/orm": "Working with Databases and ORM",
+      "basics/orm": "Databases and ORM",
       "basics/session": "Sessions",
       "basics/files": "Files and Directories",
       "basics/cache": "Cache",

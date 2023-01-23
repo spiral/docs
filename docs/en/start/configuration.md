@@ -13,22 +13,19 @@ you want to, you can also use environment variables to change the main parameter
 
 ## Environment Variables
 
-The Spiral Framework integrates with [Dotenv](https://github.com/vlucas/phpdotenv), so you can store all your
-environment variables in a `.env` file at the root of your project.
-
-> **Note**
-> If you're starting a new project, there's a `.env.sample` file that you can use as a guide.
-
 Using environment variables is a great way to separate the configuration of your application from the code itself. This
-makes it easy to change certain options depending on the environment you're running the application in, without having
-to modify the code.
+makes it easy to store sensitive information like database credentials, API keys, and other configs that you don't want 
+to hardcode into your application.
 
-For example, you may have different database credentials for your local development environment and for production.
-Instead of hardcoding these credentials in the code, you can set them as environment variables and then reference them
-in your configuration files.
+The Spiral Framework integrates with [Dotenv](https://github.com/vlucas/phpdotenv) through the
+`Spiral\DotEnv\Bootloader\DotenvBootloader` class. This bootloader is responsible for loading the environment variables
+from the `.env` file and making them available to the application.
+
+It is a common practice to include a `.env.sample` file in a new project which can be used as a guide for setting up the
+environment variables.
 
 <details>
-  <summary>Click to show example of available environment variables.</summary>
+  <summary>Click to show .env.sample</summary>
 
 ```dotenv .env
 # Environment (prod or local)
@@ -69,11 +66,15 @@ AUTH_TOKEN_STORAGE=session
 MAILER_DSN=
 MAILER_FROM="My site <no-reply@site.com>"
 ```
+
 </details>
 
 > **Warning**
-> Any variable in your `.env` file can be overridden by external environment variables such as server-level or
-> system-level environment variables.
+> A variable that is defined in the `$_SERVER` or `$_ENV` superglobal will take precedence over the value 
+> of the same variable that is defined in the `.env` file.
+
+The values from the `.env` the file will be copied to your application environment and available
+via `Spiral\Boot\EnvironmentInterface` or the `env` function.
 
 ### Accessing Environment Variables
 
@@ -103,6 +104,23 @@ return [
     // ...
 ];
 ```
+
+### Pre-Processing
+
+Remember that the values in `.env` will be pre-processed, the following changes will take place:
+
+| Value   | PHP Value |
+|---------|-----------|
+| true    | true      |
+| (true)  | true      |
+| false   | false     |
+| (false) | false     |
+| null    | null      |
+| (null)  | null      |
+| empty   | ''        |
+
+> **Note**
+> The quotes around strings will be stripped automatically.
 
 ## Configuration
 

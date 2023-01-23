@@ -214,6 +214,12 @@ $app->appBooted(function () {
 
 ## Environment
 
+The Spiral Framework integrates with [Dotenv](https://github.com/vlucas/phpdotenv) through the
+`Spiral\DotEnv\Bootloader\DotenvBootloader` class. This bootloader is responsible for loading the environment variables
+from the `.env` file and making them available to the application.
+
+### Environment variables
+
 The `Spiral\Boot\EnvironmentInterface` is used to access a list of environment variables (ENV vars). By default, the
 framework relies on system-level environment values. However, it is possible to redefine these values while initializing
 the kernel by passing a custom `Spiral\Boot\Environment` object to the `run` method.
@@ -235,6 +241,41 @@ $app->run(new Environment(['DEBUG' => true]));
 
 > **Note**
 > This approach can be used to bootstrap the application for testing purposes.
+
+### .env file location
+
+By default, the bootloader looks for the `.env` file in the root of the project, but you can change its location by
+defining the `DOTENV_PATH` environment variable when running the Kernel:
+
+```php app.php
+use Spiral\Boot\Environment;
+
+$app = App\Application\Kernel::create(...);
+
+$app->run(new Environment(['DOTENV_PATH' => __DIR__ . '/.env.production']));
+```
+
+> **Note**
+> In addition, you can also create your own implementation of the `DotenvBootloader` class. This allows you to customize
+> the behavior of loading environment variables, such as changing the location where the .env file is searched for, or
+> adding additional functionality. This can be useful in cases where the default bootloader does not meet the specific
+> requirements of your application.
+
+### Overwriting variables
+
+By default, the Spiral Framework does not overwrite previously set environment variables when loading new ones from the
+`.env` file. However, this behavior can be changed by setting the `overwrite` parameter to `true` when initializing the
+`Environment` class.
+
+```php
+use Spiral\Boot\Environment;
+
+$app = App\Application\Kernel::create(...);
+
+$app->run(new Environment([
+    'APP_ENV' => 'production'
+], overwrite: true));
+```
 
 ## Events
 
