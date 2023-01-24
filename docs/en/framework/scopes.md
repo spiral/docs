@@ -61,14 +61,12 @@ for any normal dependency, but you **must not store** it between scopes.
 As mentioned above, you are not allowed to store any reference to the scoped instance, the following code is invalid and
 will cause the controller to lock on first scope value:
 
-```php
+```php app/src/Interface/Controller/HomeController.php
 class HomeController implements SingletonInterface
 {
-    private UserContext $userContext; // <====== !!!not allowed!!!
-
-    public function __construct(UserContext $userContext)
-    {
-        $this->userContext = $userContext;
+    public function __construct(
+        private readonly UserContext $userContext // <====== !!!not allowed!!!
+    ) {
     }
 }
 ```
@@ -77,13 +75,11 @@ Instead, it is recommended to use objects specifically crafted to provide access
 Managers. A simple context manager can be written as follows:
 
 ```php
-class UserScope
+final class UserScope
 {
-    private ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        private readonly ContainerInterface $container
+    ) {
     }
 
     public function getUserContext(): ?UserContext
@@ -101,13 +97,12 @@ class UserScope
 
 You can use this manager in any of your services, including singletons.
 
-```php
+```php app/src/Interface/Controller/HomeController.php
 class HomeController implements SingletonInterface
 {
-    private UserScope $userScope; // allowed
-
-    public function __construct(UserScope $userManager)
-    {
+    public function __construct(
+        private readonly UserScope $userManager
+    ) {
         $this->userScope = $userManager;
     }
 }
