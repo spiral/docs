@@ -1,16 +1,25 @@
 # HTTP — Middleware
 
-The framework allows you to set [PSR-15 compatible](https://www.php-fig.org/psr/psr-15/) HTTP middleware globally or to
-a specific route.
+The Spiral Framework is a modern, high-performance PHP web application framework that uses
+[PSR-15 compatible](https://www.php-fig.org/psr/psr-15/) HTTP middleware.
 
-> **Note**
-> Check https://github.com/middlewares/psr15-middlewares to find many publicly maintained middlewares.
+Middleware is responsible for handling functionality that is related to the request and response, such as
+authentication, caching, or logging. It can modify the request and response before they are passed on to the router, but
+it cannot make decisions about which routes should be handled by the application. This is the responsibility of the
+router, and middleware should not attempt to bypass or override the router's decisions.
+
+[Interceptors](./interceptors.md) are well suited to handle functionality that is related to the application router.
+They are executed after the request has been passed on to the application and have more access to the application's
+internal state, including the router.
 
 ## Create Middleware
 
-Implement `Psr\Http\Server\MiddlewareInterface` to create your middleware:
+The `Psr\Http\Server\MiddlewareInterface` is a standard interface provided by PSR-15 for creating middleware in PHP. To
+create your own middleware, you need to implement this interface and define the methods it requires.
 
 ```php
+use Psr\Http\Server\MiddlewareInterface;
+
 class MyMiddleware implements MiddlewareInterface
 {
     public function process(
@@ -22,17 +31,62 @@ class MyMiddleware implements MiddlewareInterface
 }
 ```
 
-## Global Middleware
+> **Note**
+> Check https://github.com/middlewares/psr15-middlewares to find many publicly maintained middlewares.
 
-To activate a middleware for every user request, use `Spiral\Bootloader\Http\HttpBootloader`. You can only set this value
-in application bootloaders.
 
-```php
+The Spiral Framework provides several ways to set middleware, allowing developers to choose the approach that best fits
+their needs.
+
+### Global Middleware
+
+These middlewares are applied to all routes and requests. They are typically used for functionality that should be
+applied to all requests, such as authentication or logging.
+
+You can activate a global middleware in the `RoutesBootloader`:
+
+```php app/src/Application/Bootloader/RoutesBootloader.php
+namespace App\Application\Bootloader;
+
+use App\Middleware\LocaleSelector;
+use Spiral\Auth\Middleware\AuthTransportMiddleware;
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Cookies\Middleware\CookiesMiddleware;
+use Spiral\Core\Container\Autowire;
+use Spiral\Csrf\Middleware\CsrfMiddleware;
+use Spiral\Debug\StateCollector\HttpCollector;
+use Spiral\Http\Middleware\ErrorHandlerMiddleware;
+use Spiral\Http\Middleware\JsonPayloadMiddleware;
+use Spiral\Session\Middleware\SessionMiddleware;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    protected function globalMiddleware(): array
+    {
+        return [
+            LocaleSelector::class,
+            ErrorHandlerMiddleware::class,
+            JsonPayloadMiddleware::class,
+            HttpCollector::class,
+            MyMiddleware::class,
+        ];
+    }
+    
+    // ...
+}
+```
+
+Or you can activate a global middleware for every user request, use `Spiral\Bootloader\Http\HttpBootloader`. You can
+only set this value in application bootloaders.
+
+```php app/src/Application/Bootloader/AppBootloader.php
+namespace App\Application\Bootloader;
+
 use Spiral\Bootloader\Http\HttpBootloader;
 use Spiral\Core\Container\Autowire;
 use Psr\Container\ContainerInterface;
 
-class MyMiddlewareBootloader extends Bootloader
+class AppBootloader extends Bootloader
 {
     public function boot(HttpBootloader $http, ContainerInterface $container): void
     {
@@ -52,9 +106,9 @@ class MyMiddlewareBootloader extends Bootloader
 
 Middleware object will be instantiated on demand.
 
-Or you can configure middlewares in the config file `app/config/http.php`:
+Or you can configure middleware in the config file `app/config/http.php`:
 
-```php
+```php app/config/http.php
 return [
     // ...
     'middleware' => [
@@ -72,14 +126,87 @@ return [
 ];
 ```
 
-> **Note**
-> Make sure to add this Bootloader before `RoutesBootloader` in your app.
+## Middleware groups
+
+Middleware that's grouped will only be applied to routes within the corresponding group. These groups are registered in
+the app's container as pipelines with the name `middleware:{group}`, so you can use them on any routes.
+
+```php app/src/Application/Bootloader/RoutesBootloader.php
+namespace App\Application\Bootloader;
+
+use App\Middleware\LocaleSelector;
+use Spiral\Auth\Middleware\AuthTransportMiddleware;
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Cookies\Middleware\CookiesMiddleware;
+use Spiral\Core\Container\Autowire;
+use Spiral\Csrf\Middleware\CsrfMiddleware;
+use Spiral\Debug\StateCollector\HttpCollector;
+use Spiral\Http\Middleware\ErrorHandlerMiddleware;
+use Spiral\Http\Middleware\JsonPayloadMiddleware;
+use Spiral\Session\Middleware\SessionMiddleware;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    // ...
+
+    protected function middlewareGroups(): array
+    {
+        return [
+            'web' => [
+                CookiesMiddleware::class,
+                SessionMiddleware::class,
+                CsrfMiddleware::class,
+                MyMiddleware::class,
+                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'cookie'])
+            ],
+            'api' => [
+                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'header'])
+            ],
+        ];
+    }
+    
+    // ...
+}
+```
 
 ## Route Specific Middleware
 
-To add a middleware to the route object, use `withMiddleware` method. Make sure to use a newly created route instance, here's an example for Bootloader:
+These middlewares are applied to a specific route. This allows developers to apply middleware to a single route, such as
+a specific API endpoint.
 
-```php
+:::: tabs
+
+::: tab Routing configurator
+
+To add a middleware to the route object, use `middleware` method:
+
+```php app/src/Application/Bootloader/RoutesBootloader.php
+namespace App\Application\Bootloader;
+
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    // ...
+ 
+    protected function defineRoutes(RoutingConfigurator $routes): void
+    {
+        $routes->add(name: 'news.show', pattern: '/news/<id:int>')
+            ->middleware(['middleware:web', MyMiddleware::class]);
+        ...
+    }
+}
+```
+
+:::
+
+::: tab Router
+
+To add a middleware to the route object, use `withMiddleware` method. Make sure to use a newly created route instance,
+here's an example:
+
+```php app/src/Application/Bootloader/AppBootloader.php
 use App\Controller\HomeController;
 use App\MyMiddleware;
 use Spiral\Router\Route;
@@ -97,9 +224,17 @@ public function boot(RouterInterface $router): void
 }
 ```
 
+:::
+
+::::
+
 ## Combine with IoC scopes
 
-You can combine middleware with the IoC scope to create a request-specific application context.
+The Spiral Framework allows developers to combine middleware with the [IoC scope](../framework/scopes.md) to create a
+request-specific application context.
+
+This allows developers to set up a context for the current request, which can be accessed by other parts of the
+application. This can be useful for tasks such as logging or data access, where the context of the request is important.
 
 ```php
 class UserContext
@@ -115,7 +250,8 @@ class UserContext
 }
 ```
 
-Use `Spiral\Core\ScopeInterface` to set application scope in your middleware:
+By using the `Spiral\Core\ScopeInterface` in your middleware, you can set an application scope that is specific
+to the current request.
 
 ```php
 use Psr\Http\Message\ResponseInterface;
@@ -126,11 +262,9 @@ use Spiral\Core\ScopeInterface;
 
 class MyMiddleware implements MiddlewareInterface
 {
-    private ScopeInterface $scope;
-
-    public function __construct(ScopeInterface $scope)
-    {
-        $this->scope = $scope;
+    public function __construct(
+        private readonly ScopeInterface $scope
+    ) {
     }
 
     public function process(
@@ -146,7 +280,8 @@ class MyMiddleware implements MiddlewareInterface
 }
 ```
 
-You can request this context from the container or via method injection of your controller:
+Once the request-specific context has been set up in your middleware, you can then request it from the container or via
+method injection in your controllers.
 
 ```php
 public function index(UserContext $ctx): void
@@ -154,6 +289,11 @@ public function index(UserContext $ctx): void
     dump($ctx);
 }
 ```
+
+> **Note**
+> It's also important to note that the scope set up in the middleware is only valid for the duration of the request, 
+> and it will not affect other requests. This allows you to maintain the isolation and integrity of the context for 
+> each request.
 
 ## Non-Direct Scope Configuration
 
@@ -201,6 +341,17 @@ class UserContextBootloader extends Bootloader
     }
 }
 ```
+
+## Available Middlewares
+
+HTTP extension includes multiple middlewares you might want to activate in your project:
+
+| Bootloader                                    | Middleware                                                            |
+|-----------------------------------------------|-----------------------------------------------------------------------|
+| Spiral\Bootloader\Http\ErrorHandlerBootloader | Hide exceptions in non debug mode and render HTTP error pages.        |
+| Spiral\Bootloader\Http\JsonPayloadsBootloader | Parse body of `application/json` requests.                            |
+| Spiral\Bootloader\Http\PaginationBootloader   | Use request query parameters to automatically configure paginator(s). |
+| Spiral\Bootloader\Http\DiactorosBootloader    | Use Zend/Diactoros as PSR-7 implementation (legacy).                  |
 
 ## Events
 

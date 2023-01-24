@@ -157,10 +157,7 @@ public function boot(CookiesBootloader $cookies): void
 
 To perform deeper configuration on cookie component, create config file `cookies.php` in `app/config` directory:
 
-```php
-<?php
-declare(strict_types=1);
-
+```php app/config/cookies.php
 use Spiral\Cookies\Config\CookiesConfig;
 
 return [

@@ -1,4 +1,4 @@
-# Views
+# Keeper — Views
 
 Keeper comes with several stempler directives, views and templates
 

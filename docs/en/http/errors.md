@@ -32,8 +32,8 @@ error page will be displayed.
 There are several exceptions you can throw from your controllers and middleware to cause HTTP level error page. For
 example, we can trigger `404 Not Found` using `NotFoundException`:
 
-```php
-namespace App\Controller;
+```php app/src/Interface/Controller/HomeController.php
+namespace App\Interface\Controller;
 
 use Spiral\Core\Container\SingletonInterface;
 use Spiral\Http\Exception\ClientException\NotFoundException;
@@ -67,8 +67,6 @@ By default, the middleware will use a simple error page without any styles attac
 renderer, implement and bind the `Spiral\Http\ErrorHandler\RendererInterface` interface in the container:
 
 ```php
-declare(strict_types=1);
-
 namespace App\ErrorHandler;
 
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -132,8 +130,8 @@ class ViewRenderer implements RendererInterface
 
 Bind it via a bootloader:
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/ViewRendererBootloader.php
+namespace App\Application\Bootloader;
 
 use App\ErrorHandler\ViewRenderer;
 use Spiral\Boot\Bootloader\Bootloader;
@@ -160,7 +158,7 @@ The default application includes Monolog handler, which, by default, is subscrib
 the `ErrorHandlerMiddleware`. The http error log is located in `app/runtime/logs/http.log` and configured
 in `App\Application\Bootloader\LoggingBootloader`:
 
-```php
+```php app/src/Application/Bootloader/LoggingBootloader.php
 namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
@@ -169,9 +167,6 @@ use Spiral\Monolog\Bootloader\MonologBootloader;
 
 class LoggingBootloader extends Bootloader
 {
-    /**
-     * @param MonologBootloader $monolog
-     */
     public function boot(MonologBootloader $monolog)
     {
         $monolog->addHandler(
@@ -181,3 +176,6 @@ class LoggingBootloader extends Bootloader
     }
 }
 ```
+
+> **Note**
+> Read more about Logging in [The Basics — Logging](../basics/logging.md) section.

@@ -1,4 +1,4 @@
-# Sitemap
+# Keeper — Sitemap
 
 Sitemap is a submodule for building menu navigation and breadcrumbs. It consists of 4 types of nodes:
 

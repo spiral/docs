@@ -77,11 +77,10 @@
       "http/lifecycle": "Request Lifecycle",
       "http/request-response": "Request and Response",
       "http/routing": "Routing",
-      "http/annotated-routes": "Annotated Routes",
-      "http/errors": "Error Pages",
       "http/middleware": "Middleware",
       "http/cookies": "Cookies",
       "http/csrf": "CSRF protection",
+      "http/errors": "Error Pages",
       "http/interceptors": "Interceptors"
     }
   },
@@ -212,12 +211,7 @@
       "keeper/routing": "Routing",
       "keeper/sitemap": "Sitemap and breadcrumbs",
       "keeper/views": "Views",
-      "keeper/components/datagrid": "DataGrids",
-      "keeper/components/forms": "Forms",
-      "keeper/components/autocomplete": "Autocomplete",
-      "keeper/components/datepicker": "Datepicker",
-      "keeper/components/richtext": "Rich Text",
-      "keeper/components/qrcode": "QR Codes"
+      "keeper/components": "Components"
     }
   }
 ]

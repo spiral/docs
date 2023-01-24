@@ -4,8 +4,8 @@ The default Web bundle includes CSRF protection middleware. To install it in alt
 
 To activate the extension, add `Spiral\Bootloader\Http\CsrfBootloader` to the list of App bootloaders:
 
-```php
-[
+```php app/src/Application/Kernel.php
+protected const LOAD = [
     //...
     Spiral\Bootloader\Http\CsrfBootloader::class,
 ]

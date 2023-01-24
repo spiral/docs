@@ -39,7 +39,7 @@ Make sure to configure [routing](../http/routing.md).
 
 The HTTP extension can be configured via `app/config/http.php` file:
 
-```php
+```php app/config/http.php
 return [
     // default base path
     'basePath'   => '/',
@@ -58,33 +58,3 @@ return [
 
 > **Note**
 > The default configuration will be used if such file does not exist.
-
-You can register Middleware during the bootload phase via `HttpBootloader`:
-
-```php
-namespace App\Bootloader;
-
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Bootloader\Http\HttpBootloader;
-use Spiral\Http\Middleware\JsonPayloadMiddleware;
-
-class AppBootloader extends Bootloader
-{
-    public function boot(HttpBootloader $http): void
-    {
-        // parse json payloads
-        $http->addMiddleware(JsonPayloadMiddleware::class);
-    }
-}
-```
-
-## Middleware
-
-HTTP extension includes multiple middlewares you might want to activate in your project:
-
-| Bootloader                                    | Middleware                                                            |
-|-----------------------------------------------|-----------------------------------------------------------------------|
-| Spiral\Bootloader\Http\ErrorHandlerBootloader | Hide exceptions in non debug mode and render HTTP error pages.        |
-| Spiral\Bootloader\Http\JsonPayloadsBootloader | Parse body of `application/json` requests.                            |
-| Spiral\Bootloader\Http\PaginationBootloader   | Use request query parameters to automatically configure paginator(s). |
-| Spiral\Bootloader\Http\DiactorosBootloader    | Use Zend/Diactoros as PSR-7 implementation (legacy).                  |
