@@ -106,13 +106,12 @@ return [
 ];
 ```
 
-The `aliases` option allows you to give domain-specific names to storages that are defined in the `storages` section
-of the configuration file. This makes it easier to manage and maintain the cache data for different parts of the
-application.
+The `aliases` option allows you to give domain-specific names to storages that are defined in the `storages` section. 
+This makes it easier to manage and maintain the cache data for different parts of the application.
 
-For example, you can have a storage called `array` in the `storages` section, and then define an alias
-called `user-data` in the aliases section, which refers to the `array` storage. This way, you can use the `user-data`
-alias throughout your application to refer to the `array` storage.
+For example, you can have a storage called `rr-redis` in the `storages` section, and then define an alias
+called `user-data` in the aliases section, which refers to the `rr-redis` storage. This way, you can use the `user-data`
+alias throughout your application to refer to the `rr-redis` storage.
 
 The `aliases` section also allows you to request cache storage `Spiral\Cache\CacheStorageProviderInterface` by alias
 name, which will be resolved to the actual storage instance. This allows you to reference the cache storage by a more
@@ -141,7 +140,7 @@ kv:
 
 > **Note**
 > Read more about the configuration of the RoadRunner KV plugin in
-> the [RoadRunner documentation](https://roadrunner.dev/docs/plugins-k).
+> the [RoadRunner documentation](https://roadrunner.dev/docs/plugins-kv).
 
 ## Usage
 
@@ -242,27 +241,44 @@ if ($this->cache->has('key')) {
 To store an item in the cache, you can use the `set` method.
 
 ```php
-$this->cache->set(key: 'key', value: ['some' => 'data'], ttl: 3600);
+$this->cache->set(
+    key: 'key', 
+    value: ['some' => 'data'], 
+    ttl: 3600
+);
 ```
 
 You can also specify how long the item should be stored for (TTL) by passing in the number of `seconds` or a
 `DateInterval` or `DateTimeInterface` object.
 
 ```php
-$this->cache->set(key: 'key', value: ['some' => 'data'], ttl: \Carbon\Carbon::now()->addHour());
+$this->cache->set(
+    key: 'key', 
+    value: ['some' => 'data'], 
+    ttl: \Carbon\Carbon::now()->addHour()
+);
 ```
 
 If no value is specified, the cache value will be stored indefinitely (or for as long as the underlying storage driver
 allows).
 
 ```php
-$this->cache->set(key: 'key', value: ['some' => 'data']);
+$this->cache->set(
+    key: 'key', 
+    value: ['some' => 'data']
+);
 ```
 
 You can also store multiple items at once by using the `setMultiple` method and passing in an array of key/value pairs.
 
 ```php
-$this->cache->setMultiple(values: ['key' => ['some' => 'data'], 'other' => ['foo' => 'bar']], ttl: 3600);
+$this->cache->setMultiple(
+    values: [
+        'key' => ['some' => 'data'], 
+        'other' => ['foo' => 'bar']
+    ], 
+    ttl: 3600
+);
 ```
 
 ### Removing items

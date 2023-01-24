@@ -34,13 +34,9 @@ supported event type.
 
 ### Service registration
 
-Here is an example of how to register an event handler service in the `app\config\centrifugo.php` configuration file:
+Here is an example of how to register an event handler service in the `app/config/centrifugo.php` configuration file:
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/centrifugo.php
 use RoadRunner\Centrifugo\Request\RequestType;
 use App\Centrifuge;
 
@@ -69,12 +65,8 @@ request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\
 
 Here is an example of a service that accepts all connection requests:
 
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Centrifuge;
+```php app/src/Interfaces/Centrifuge/ConnectService.php
+namespace App\Interfaces\Centrifuge;
 
 use RoadRunner\Centrifugo\Request\Connect;
 use RoadRunner\Centrifugo\Payload\ConnectResponse;
@@ -105,12 +97,8 @@ can be used for a variety of purposes, such as client authentication.
 
 Here is an example of a service that accepts only authenticated connection requests:
 
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Centrifuge;
+```php app/src/Interfaces/Centrifuge/ConnectService.php
+namespace App\Interfaces\Centrifuge;
 
 use RoadRunner\Centrifugo\Request\Connect;
 use RoadRunner\Centrifugo\Payload\ConnectResponse;
@@ -183,11 +171,7 @@ request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\
 In this example, we will create a service that will allow users to subscribe to channels only if they are authenticated
 with rules provided by the `Spiral\Broadcasting\TopicRegistryInterface` interface.
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/src/Interfaces/Centrifuge/SubscribeService.php
 namespace App\Interfaces\Centrifuge;
 
 use RoadRunner\Centrifugo\Payload\SubscribeResponse;
@@ -249,7 +233,7 @@ final class SubscribeService implements ServiceInterface
 
 You can register channel authorization rules in the `app/config/broadcasting.php` file:
 
-```php
+```php app/config/broadcasting.php
 use RoadRunner\Centrifugo\Request\Subscribe;
 'authorize' => [
     'topics' => [
@@ -270,12 +254,8 @@ request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\
 
 Here is an example of a service:
 
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Centrifuge;
+```php app/src/Interfaces/Centrifuge/RefreshService.php
+namespace App\Interfaces\Centrifuge;
 
 use RoadRunner\Centrifugo\Request\Refresh;
 use RoadRunner\Centrifugo\Payload\RefreshResponse;
@@ -311,12 +291,8 @@ request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\
 
 Here is an example of a service that receives a `ping` RPC call and responds with `pong`:
 
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Centrifuge;
+```php app/src/Interfaces/Centrifuge/RPCService.php
+namespace App\Interfaces\Centrifuge;
 
 use RoadRunner\Centrifugo\Payload\RPCResponse;
 use RoadRunner\Centrifugo\Request\RequestInterface;
@@ -356,12 +332,8 @@ final class RPCService implements ServiceInterface
 
 Here is an example of how to proxy RPC methods to the HTTP layer and return the result to the Centrifugo server:
 
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Centrifuge;
+```php app/src/Interfaces/Centrifuge/RPCService.php
+namespace App\Interfaces\Centrifuge;
 
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -462,12 +434,9 @@ centrifuge.rpc("get:news/123", {"lang": "en"}).then(function (res) {
 This service receives a `RoadRunner\Centrifugo\Request\Publish` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\PublishResponse` object.
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/src/Interfaces/Centrifuge/PublishService.php
 namespace App\Interfaces\Centrifuge;
+
 
 use RoadRunner\Centrifugo\Payload\PublishResponse;
 use RoadRunner\Centrifugo\Request;

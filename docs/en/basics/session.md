@@ -7,7 +7,7 @@ bootloader `Spiral\Bootloader\Http\SessionBootloader` into your app.
 
 A user session can be accessed using context specific object `Spiral\Session\SessionInterface`:
 
-```php
+```php app/src/Interface/Controller/HomeController.php
 use Spiral\Session\SessionInterface;
 
 // ...
@@ -25,10 +25,11 @@ public function index(SessionInterface $session): void
 ## Session Section
 
 By default, you are not allowed to work with session directly, but rather allocate the isolated and named section
-which provides classing `set`, `get`, `delete` or any different functionality. Use `getSection` of session object for these
+which provides classing `set`, `get`, `delete` or any different functionality. Use `getSection` of session object for
+these
 purposes:
 
-```php
+```php app/src/Interface/Controller/HomeController.php
 public function index(SessionInterface $session): void
 {
     $cart = $session->getSection('cart');
@@ -45,8 +46,8 @@ To simplify the usage of a session in singleton services and controllers, use `S
 component is also available via prototype property `session`. The component can be used within singleton services and
 always point to an active session context:
 
-```php
-namespace App\Controller;
+```php app/src/Interface/Controller/HomeController.php
+namespace App\Interface\Controller;
 
 use Spiral\Prototype\Traits\PrototypeTrait;
 
@@ -63,7 +64,8 @@ class HomeController
 
 ## Session Lifecycle
 
-The session will be automatically started on first data access and committed when the request leaves `SessionMiddleware`. To control the session manually, use methods of `Spiral\Session\SessionInterface` object.
+The session will be automatically started on first data access and committed when the request
+leaves `SessionMiddleware`. To control the session manually, use methods of `Spiral\Session\SessionInterface` object.
 
 > **Note**
 > SessionScope fully implements SessionInterface.
@@ -126,21 +128,18 @@ $this->session->regenerateID();
 
 To alter session configuration, create file `app/config/session.php` to change needed values.
 
+The session component is based on native PHP session implementation. By default, the session content is stored in the
+file system in the `runtime/session` directory. If your application will be load balanced across multiple web servers,
+you should choose a centralized store that all servers can access, such as Redis.
 
-The session component is based on native PHP session implementation. By default, the session content is stored in the file system in the `runtime/session` directory. If your application will be load balanced across multiple web servers, you should choose a centralized store that all servers can access, such as Redis.
-
-The session `handler` configuration option defines where session data will be stored for each request. 
+The session `handler` configuration option defines where session data will be stored for each request.
 Spiral Framework ships with several drivers out of the box:
 
 ### **FileHandler** configuration
 
 Sessions are stored in `runtime/session` folder.
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/session.php
 use Spiral\Core\Container\Autowire;
 use Spiral\Session\Handler\FileHandler;
 
@@ -162,11 +161,7 @@ return [
 
 Sessions are stored in one of cache based storages configured in Cache component.
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/session.php
 use Spiral\Core\Container\Autowire;
 use Spiral\Session\Handler\CacheHandler;
 
@@ -189,11 +184,11 @@ return [
 
 ### Custom Session Handler
 
-If none of the existing session drivers fit your application's needs, Spiral Framework makes it possible to write your own session handler.
-Your custom session driver should implement PHP's built-in [`SessionHandlerInterface`](https://www.php.net/manual/en/class.sessionhandlerinterface.php). 
+If none of the existing session drivers fit your application's needs, Spiral Framework makes it possible to write your
+own session handler. Your custom session driver should implement PHP's
+built-in [`SessionHandlerInterface`](https://www.php.net/manual/en/class.sessionhandlerinterface.php).
 
-```php
-<?php
+```php app/config/session.php
 return [
     'handler' => new Autowire(
         MemoryHandler::class,
@@ -214,7 +209,6 @@ return [
 The session is initialized using a special factory `Spiral\Session\SessionFactoryInterface`.
 
 ```php
-
 namespace Spiral\Session;
 
 interface SessionFactoryInterface

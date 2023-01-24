@@ -169,7 +169,7 @@ final class Token implements TokenInterface
 
 Register it through the configuration file `app/config/auth.php`.
 
-```php
+```php app/config/auth.php
 use Spiral\Core\Container\Autowire;
 
 return [
@@ -187,7 +187,7 @@ return [
 
 After that, you can set the `JWTTokenStorage` as the default token storage:
 
-```dotenv
+```dotenv .env
 AUTH_TOKEN_STORAGE=jwt
 ```
 
@@ -244,10 +244,8 @@ credentials.
 
 Here is an example of a login method that can be used to authenticate users:
 
-```php
-declare(strict_types=1);
-
-namespace App\Controller;
+```php app/src/Interface/Controller/LoginController.php
+namespace App\Interface\Controller;
 
 use App\Filters\LoginRequest;
 use App\Repository\UserRepository;
@@ -288,7 +286,7 @@ class LoginController
 If the credentials are valid, the method should create a token that can be used to authenticate the user for subsequent
 requests. This method should use the `AuthContextInterface` to generate a token with a payload (e.g. `userID => id`).
 
-```php
+```php app/src/Interface/Controller/LoginController.php
 public function login(LoginRequest $request)
 {
     // ... see above
@@ -346,7 +344,7 @@ public function index()
 
 To log user out call the method close of auth context or `AuthContextInterface`:
 
-```php
+```php app/src/Interface/Controller/LoginController.php
 public function logout(): void
 {
     $this->auth->close();

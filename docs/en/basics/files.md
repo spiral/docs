@@ -13,7 +13,7 @@ using `Spiral\Boot\DirectoriesInterface`.
 
 You can configure application specific directories in the app entry point (`app.php`):
 
-```php
+```php app.php
 $app = \App\Application\Kernel::create(
     directories: [
         'root' => __DIR__,
@@ -24,7 +24,7 @@ $app = \App\Application\Kernel::create(
 
 Or using the Bootloader:
 
-```php
+```php app/src/Application/Bootloader/AppBootloader.php
 namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
@@ -70,7 +70,7 @@ example `AppDirectories`.
 <details>
   <summary>Click to show an example.</summary>
 
-```php
+```php app/src/Application/AppDirectories.php
 namespace App\Application;
 
 use Spiral\Boot\DirectoriesInterface;
@@ -189,8 +189,6 @@ final class FileService
 You can also access this instance using prototyped property `files`:
 
 ```php
-namespace App\Controller;
-
 use Spiral\Prototype\Traits\PrototypeTrait;
 
 final class FileService

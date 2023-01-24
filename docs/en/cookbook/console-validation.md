@@ -309,7 +309,7 @@ php app.php user:register jh john
 
 Something like this:
 
-```
+```output
 [Spiral\Filters\Exception\ValidationException]
 The given data was invalid.
 ```
@@ -349,11 +349,7 @@ class HandleValidationExceptions implements CoreInterceptorInterface
 
 And register the interceptor in `app\config\console.php`:
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app\config\console.php
 return [
     'interceptors' => [
         App\Command\HandleValidationExceptions::class,
@@ -373,7 +369,7 @@ php app.php user:register jh john -as
 
 you will get an error message with details about the validation errors like this:
 
-```
+```output
 Validation errors:
 username: Text must be longer or equal to 3.
 email: Must be a valid email address.

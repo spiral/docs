@@ -24,10 +24,6 @@ We will create a class that implements the `app/src/GRPC/PingerInterface` interf
 calling the service's methods.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Service;
 
 use App\GRPC\Pinger;
@@ -56,12 +52,8 @@ final class PingerClient implements Pinger\PingerInterface extends \Grpc\BaseStu
 To use the client class in your application, you will need to register it in the container. You can do this in the
 Application bootloader:
 
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/AppBootloader.php
+namespace App\Application\Bootloader;
 
 use App\Service\PingerClient;
 use App\GRPC\Pinger\PingerInterface;
@@ -93,11 +85,7 @@ Finally, you can inject the client class into your code and use it to call the P
 
 Here is an example of how you can use the `PingerClient`:
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/src/Command/PingServiceCommand.php
 namespace App\Command;
 
 use App\GRPC\Pinger\PingerInterface;
@@ -236,7 +224,6 @@ go run main.go
 To pass metadata between server and client:
 
 ```golang
-
 package main
 
 import (

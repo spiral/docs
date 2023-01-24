@@ -26,18 +26,14 @@ and a `null` driver for disabling broadcasting during testing.
 
 The default driver can be changed using the `BROADCAST_CONNECTION` environment variable:
 
-```dotenv
+```dotenv .env
 # Broadcasting
 BROADCAST_CONNECTION=log
 ```
 
 or by modifying the `default` setting in the configuration file.
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/broadcasting.php
 use Spiral\Broadcasting\Driver\LogBroadcast;
 use Spiral\Broadcasting\Driver\NullBroadcast;
 
@@ -65,8 +61,6 @@ The Spiral Framework provides the `Spiral\Broadcasting\BroadcastInterface` inter
 connection using the `publish method`.
 
 ```php
-namespace App\Service;
-
 use Spiral\Broadcasting\BroadcastInterface;
 use Spiral\Serializer\SerializerInterface;
 
@@ -95,8 +89,6 @@ Spiral Framework provides the `Spiral\Broadcasting\BroadcastManagerInterface` fo
 a connection instance for a specific driver and use it to publish events.
 
 ```php
-namespace App;
-
 use Spiral\Broadcasting\BroadcastManagerInterface;
 use Spiral\Serializer\SerializerInterface;
 
@@ -143,8 +135,6 @@ final class Order implements \Stringable
 Here is an example of how the `Order` class could be used with the `publish` method:
 
 ```php
-namespace App;
-
 use Spiral\Broadcasting\BroadcastManagerInterface;
 use Spiral\Serializer\SerializerInterface;
 
@@ -175,7 +165,7 @@ class OrderService
 Read more about integration with Centrifugo Websocket server [here](./configuration.md). After installation, you can
 activate driver using the `BROADCAST_CONNECTION` environment variable:
 
-```dotenv
+```dotenv .env
 # Broadcasting
 BROADCAST_CONNECTION=centrifugo
 ```
@@ -214,11 +204,7 @@ final class PusherBroadcast extends AbstractBroadcast
 
 And then you can register it in the `app/config/broadcasting.php` file.
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/broadcasting.php
 use Spiral\Broadcasting\Driver\LogBroadcast;
 use Spiral\Broadcasting\Driver\NullBroadcast;
 use App\Broadcast\PusherBroadcast;
@@ -311,7 +297,7 @@ The `Spiral\Broadcasting\TopicRegistryInterface` is a central place for register
 topics in the Spiral Framework's broadcasting component. You can register authorization rules using
 the `app/config/broadcasting.php` file.
 
-```php
+```php app/config/broadcasting.php
 'authorize' => [
     'path' => env('BROADCAST_AUTHORIZE_PATH'),
     'topics' => [ // <===============
@@ -332,7 +318,7 @@ appropriate response indicating whether the client is authorized to access the w
 you will need to [register](../http/routing.md#middleware) it in your application and specify the authorization endpoint 
 in the `app/config/broadcasting.php` configuration file.
 
-```php
+```php app/config/broadcasting.php
 'authorize' => [
     'path' => '/pusher/user-auth', // <===============
     'topics' => [
@@ -344,7 +330,7 @@ in the `app/config/broadcasting.php` configuration file.
 
 or using the `BROADCAST_AUTHORIZE_PATH` environment variable.
 
-```dotenv
+```dotenv .env
 # Broadcasting
 BROADCAST_AUTHORIZE_PATH=/pusher/user-auth
 ```

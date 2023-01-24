@@ -7,20 +7,18 @@ within the application.
 
 By default, the framework does not provide its own implementation, however, the `spiral/monolog-bridge` component is
 available, which fully integrates with the [Seldaek/monolog](https://github.com/Seldaek/monolog) package and offers
-support for various powerful log handlers. The framework makes it simple to configure these handlers, allowing for
-customization of log handling through the use of different channels.
+support for various powerful log handlers.
 
-The framework makes it easy to configure these handlers, allowing for customization of log handling through the use of
+The framework makes it simple to configure these handlers, allowing for customization of log handling through the use of
 different channels.
 
 ## Configuration
 
 To configure this component, it can be set up to your preference via a config file or a bootloader. The config file for
 this component is typically located in `app/config/monolog.php`. Through this file, you can select a default handler,
-set
-a global logging level, and customize handlers and processors to meet your specific needs.
+set a global logging level, and customize handlers and processors to meet your specific needs.
 
-For example, the configuration file might have the following format:
+Here is an example of a config file:
 
 ```php app/config/monolog.php
 use Monolog\Handler\ErrorLogHandler;
@@ -142,8 +140,8 @@ protected const LOAD = [
 
 ### RoadRunner handler
 
-It allows for the registration of different Monolog log handlers, such as the `Spiral\RoadRunnerBridge\Logger\Handler`
-class for sending logs to the [RoadRunner app logger](https://roadrunner.dev/docs/plugins-applogger).
+The RoadRunner bridge package provides `Spiral\RoadRunnerBridge\Logger\Handler` class for sending logs to 
+the [RoadRunner app logger](https://roadrunner.dev/docs/plugins-applogger).
 
 ```php app/src/Application/Bootloader/LoggingBootloader.php
 namespace App\Application\Bootloader;
@@ -167,7 +165,7 @@ final class LoggingBootloader extends Bootloader
 }
 ```
 
-To make this handler as the default handler, you can change the default channel in the `.env` file:
+To make this handler as the default handler, you need to change the default channel in the `.env` file:
 
 ```dotenv .env
 # ...
@@ -283,7 +281,7 @@ final class LoggingBootloader extends Bootloader
 ### Handling only specific log levels
 
 In some cases, you may want to log only specific log levels. For example, you may want to aggregate only application
-errors into a single log file. 
+errors into a single log file.
 
 **To do this, you can subscribe to the default channel:**
 

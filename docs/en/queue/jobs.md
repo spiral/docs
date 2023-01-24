@@ -126,11 +126,7 @@ you need to tell the queue how to handle a job with the name `sample::job`.
 
 You can do it via the `app/config/queue.php` config:
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/queue.php
 return [
     'registry' => [
         'handlers' => [
@@ -220,11 +216,7 @@ their needs.
 
 **Example:**
 
-```php
-// file app/config/queue.php
-
-declare(strict_types=1);
-
+```php app/config/queue.php
 use Spiral\Core\Container\Autowire;
 use Spiral\Serializer\Serializer\JsonSerializer;
 use Spiral\Serializer\Serializer\PhpSerializer;
@@ -255,7 +247,7 @@ the `Spiral\Serializer\SerializerRegistryInterface`.
 
 You can configure the serializer for a specific job type in the `app/config/queue.php` configuration file.
 
-```php
+```php app/config/queue.php
 use Spiral\Core\Container\Autowire;
 
 return [
@@ -280,8 +272,8 @@ a `fully-qualified class name`, a `serializer instance`, an `Autowire instance`.
 
 Or, register a serializer using the `setSerializer` method of the `Spiral\Queue\QueueRegistry` class.
 
-```php
-namespace App\Bootloader;
+```php app/src/ApplicationBootloader/AppBootloader.php
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Core\Container\Autowire;
@@ -341,8 +333,8 @@ class DatabaseFailedJobsHandler implements FailedJobHandlerInterface
 
 Then you need to bind your implementation to the `Spiral\Queue\Failed\FailedJobHandlerInterface` interface.
 
-```php
-namespace App\Bootloader;
+```php app/src/ApplicationBootloader/AppBootloader.php
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\RoadRunnerBridge\Queue\Failed\FailedJobHandlerInterface;

@@ -22,11 +22,7 @@ protected const LOAD = [
 
 You can create a config file `app/config/queue.php` if you want to configure Queue connections:
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/queue.php
 use Spiral\RoadRunner\Jobs\Queue\MemoryCreateInfo;
 use Spiral\RoadRunner\Jobs\Queue\AMQPCreateInfo;
 use Spiral\RoadRunner\Jobs\Queue\BeanstalkCreateInfo;

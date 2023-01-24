@@ -1,4 +1,4 @@
-# Filters — filter object
+# Filters — Filter object
 
 The Filter class represents a set of request input fields that can be filtered and validated. It provides a set of basic
 features for creating filters, such as the ability to bind request input data to filter properties and to access
@@ -14,10 +14,6 @@ validator bridges in your application, depending on your needs and preferences.
 This is the default validator bridge. It is a simple, lightweight validator that can handle basic validation tasks.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Filters;
 
 use Spiral\Filters\Model\FilterInterface;
@@ -63,10 +59,6 @@ This validator bridge provides integration with the Symfony Validator component,
 feature-rich validation library.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Filters;
 
 use Psr\Http\Message\UploadedFileInterface;
@@ -105,10 +97,6 @@ This validator bridge provides integration with the Laravel Validator, which is 
 Laravel framework.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Filters;
 
 use Spiral\Filters\Attribute\Input\Post;
@@ -151,6 +139,9 @@ All the filter objects should implement `Spiral\Filters\Model\FilterInterface`. 
 that when you request a filter class from the container, it will be automatically created and request data will be
 mapped to each filter property.
 
+> **Note**
+> Read more about injectors in the [Advanced — Container injectors](../advanced/injectors.md) section.
+
 ```php
 namespace App\Filter;
 
@@ -164,22 +155,12 @@ class MyFilter implements FilterInterface
 }
 ```
 
-```php
-dump($container->get(MyFilter::class)); 
-```
+Now we can use the filter in our application. There are three ways to do it:
 
-You can also use `Spiral\Filters\Model\FilterProviderInterface->createFilter` to create an instance:
+:::: tabs
 
-```php
-$provider = $container->get(\Spiral\Filters\Model\FilterProviderInterface::class);
-
-$provider->createFilter(
-    MyFilter::class, 
-    $container->get(\Spiral\Filters\InputInterface::class)
-);
-```
-
-or simply request the filter as a dependency for example, in some controller method:
+::: tab DI
+Simply request the filter as a dependency for example, in some controller method:
 
 ```php
 use App\Filter\MyFilter;
@@ -193,11 +174,40 @@ class HomeController
 }
 ```
 
+:::
+
+::: tab Filter Provider
+You can also use `Spiral\Filters\Model\FilterProviderInterface->createFilter` to create a filter instance:
+
+```php
+$provider = $container->get(\Spiral\Filters\Model\FilterProviderInterface::class);
+
+$provider->createFilter(
+    MyFilter::class, 
+    $container->get(\Spiral\Filters\InputInterface::class)
+);
+```
+
+:::
+
+::: tab Container
+When you request a filter from the container, it will be automatically created and request data will be mapped.
+
+```php
+dump($container->get(MyFilter::class)); 
+```
+
+:::
+
+::::
+
 ## Filter Schema
 
-There are two ways to define the filter schema.
+There are two ways to define the filter schema:
 
-### Attributes
+:::: tabs
+
+::: tab Attributes
 
 ```php
 use Spiral\Filters\Attribute\Input\Post;
@@ -209,6 +219,8 @@ class MyFilter implements FilterInterface
 }
 ```
 
+Request data will be mapped to the filter properties, and you will be able to access them directly.
+
 ```php
 public function index(MyFilter $filter): void
 {
@@ -216,7 +228,9 @@ public function index(MyFilter $filter): void
 }
 ```
 
-### Array schema mapping
+:::
+
+::: tab Array schema
 
 In this case the filter should implement `Spiral\Filters\Model\HasFilterDefinition` and extend
 the`Spiral\Filters\Model\Filter` abstract class to have access to the mapped data from the request.
@@ -240,12 +254,18 @@ class MyFilter extends Filter implements HasFilterDefinition
 }
 ```
 
+Request data will be mapped according to the `mappingSchema` and you will be able to access them using `getData` method.
+
 ```php
 public function index(MyFilter $filter): void
 {
     dump($filter->getData());
 }
 ```
+\
+:::
+
+::::
 
 #### Sources
 
@@ -268,9 +288,9 @@ parameter. The following sources are available:
 
 ## Attributes
 
-To use request filter attributes in Spiral, you can use one of the available attributes to specify where the data for
-the property should be sourced from. For example, you could use the `Spiral\Filters\Attribute\Input\Query` attribute to
-map a query string parameter to a class property, like this:
+To use request filter attributes, you can use one of the available attributes to specify where the data for the property
+should be sourced from. For example, you could use the `Spiral\Filters\Attribute\Input\Query` attribute to map a query 
+string parameter to a class property, like this:
 
 ```php
 namespace App\Filter;
@@ -346,27 +366,25 @@ appropriate class properties.
 
 Here is a list of the available request filter attributes:
 
-- `Spiral\Filters\Attribute\Input\Post`: a value from the POST data.
-- `Spiral\Filters\Attribute\Input\Query`: a value from the query string.
-- `Spiral\Filters\Attribute\Input\Input`: a value from either the POST data or the query string.
-- `Spiral\Filters\Attribute\Input\Data`: a value from any of the request data (POST, query string, etc.).
-- `Spiral\Filters\Attribute\Input\File`: an uploaded file. It will return `Psr\Http\Message\UploadedFileInterface`
-  object or `null`.
-- `Spiral\Filters\Attribute\Input\Cookie`: a value from a cookie.
-- `Spiral\Filters\Attribute\Input\Header`: a value from the request headers.
-- `Spiral\Filters\Attribute\Input\IsAjax`: a boolean value indicating whether the request was made with the
-  `X-Requested-With` header set to `xmlhttprequest`.
-- `Spiral\Filters\Attribute\Input\IsJsonExpected`: a boolean value indicating whether the client expects a
-  `application/json` response.
-- `Spiral\Filters\Attribute\Input\IsSecure`: a boolean value indicating whether the request was made over HTTPS.
-- `Spiral\Filters\Attribute\Input\Method`: the HTTP method of the request (e.g. GET, POST, etc.).
-- `Spiral\Filters\Attribute\Input\Path`: the current request path.
-- `Spiral\Filters\Attribute\Input\RemoteAddress`: the IP address of the client.
-- `Spiral\Filters\Attribute\Input\Route`: a value from the current route attributes.
-- `Spiral\Filters\Attribute\Input\Server`: a value from the request server data.
-- `Spiral\Filters\Attribute\Input\Uri`: the current page URI in the form of a `Psr\Http\Message\UriInterface` object.
-- `Spiral\Filters\Attribute\Input\BearerToken`: the value of the `Authorization` header to a class property.
-
+| Attribute                                     | Description                                                                                                         |
+|-----------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| Spiral\Filters\Attribute\Input\Post           | a value from the **POST** data.                                                                                     |
+| Spiral\Filters\Attribute\Input\Query          | a value from the query string                                                                                       |
+| Spiral\Filters\Attribute\Input\Input          | a value from either the POST data or the query string.                                                              |
+| Spiral\Filters\Attribute\Input\Data           | a value from any of the request data (POST, query string, etc.).                                                    |
+| Spiral\Filters\Attribute\Input\File           | an uploaded file. It will return `Psr\Http\Message\UploadedFileInterface` object or `null`.                         |
+| Spiral\Filters\Attribute\Input\Cookie         | a value from a cookie.                                                                                              |
+| Spiral\Filters\Attribute\Input\Header         | a value from the request headers.                                                                                   |
+| Spiral\Filters\Attribute\Input\IsAjax         | a boolean value indicating whether the request was made with the `X-Requested-With` header set to `xmlhttprequest`. |
+| Spiral\Filters\Attribute\Input\IsJsonExpected | a boolean value indicating whether the client expects a `application/json` response.                                |
+| Spiral\Filters\Attribute\Input\IsSecure       | a boolean value indicating whether the request was made over HTTPS.                                                 |
+| Spiral\Filters\Attribute\Input\Method         | the HTTP method of the request (e.g. GET, POST, etc.).                                                              |
+| Spiral\Filters\Attribute\Input\Path           | the current request path.                                                                                           |
+| Spiral\Filters\Attribute\Input\RemoteAddress  | the IP address of the client.                                                                                       |
+| Spiral\Filters\Attribute\Input\Route          | a value from the current route attributes.                                                                          |
+| Spiral\Filters\Attribute\Input\Server         | a value from the request server data.                                                                               |
+| Spiral\Filters\Attribute\Input\Uri            | the current page URI in the form of a `Psr\Http\Message\UriInterface` object.                                       |
+| Spiral\Filters\Attribute\Input\BearerToken    | the value of the `Authorization` header to a class property.                                                        |
 
 #### Route Parameters
 
@@ -380,8 +398,9 @@ $router->setRoute(
 );
 ```
 
-Via attributes:
+:::: tabs
 
+::: tab Attributes
 ```php
 namespace App\Filter;
 
@@ -394,6 +413,9 @@ class MyFilter extends Filter
     public string $routeId;
 }
 ```
+:::
+
+::: tab Array schema
 
 Via array mapping using `attribute:matches.{name}` notation:
 
@@ -417,6 +439,11 @@ class MyFilter extends Filter implements HasFilterDefinition
     }
 }
 ```
+:::
+
+::::
+
+
 
 ### Data sanitization
 
@@ -550,7 +577,6 @@ We can accept and validate the following data structure:
 > **Note**
 > Error messages will be correctly mounted into the original location. You can also use composite filters for more
 > complex use-cases.
-
 
 ```php
 namespace App\Controller;

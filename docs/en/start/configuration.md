@@ -166,7 +166,7 @@ final class HttpClient
 Each injectable config class in the Spiral Framework contains
 a [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php#L19) that defines the name of
 the corresponding config file. When the container resolves an injectable config object, it automatically loads all
-values from the config file and assigns them to the properties of the config object.
+values from the config file and assigns them to the `$config` property of the config object.
 
 > **Note**
 > When a config object loads its associated config file, it automatically merges it with the default settings defined in

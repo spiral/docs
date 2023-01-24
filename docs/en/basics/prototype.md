@@ -35,8 +35,8 @@ Once it's added, your IDE will immediately suggest available classes and Cycle R
 
 You can use this suggestion directly, without a need for any import:
 
-```php
-namespace App\Controller;
+```php app/src/Interface/Controller/HomeController.php
+namespace App\Interface\Controller;
 
 use Spiral\Prototype\Traits\PrototypeTrait;
 
@@ -67,21 +67,18 @@ php app.php prototype:inject -r
 
 The extension will modify your class into the given form:
 
-```php
-namespace App\Controller;
+```php app/src/Interface/Controller/HomeController.php
+namespace App\Interface\Controller;
 
 use App\Database\Repository\UserRepository;
 use Spiral\Views\ViewsInterface;
 
 class HomeController
 {
-    private ViewsInterface $views;
-    private UserRepository $users;
-
-    public function __construct(ViewsInterface $views, UserRepository $users)
-    {
-        $this->users = $users;
-        $this->views = $views;
+    public function __construct(
+        private readonly ViewsInterface $views, 
+        private readonly UserRepository $users
+    ) {
     }
 
     public function index(): string
@@ -108,21 +105,18 @@ For PHP 7.4 there are two additional flags available now:
 php app.php prototype:inject -r -t --no-phpdoc
 ```
 
-```php
-namespace App\Controller;
+```php app/src/Interface/Controller/HomeController.php
+namespace App\Interface\Controller;
 
 use App\Database\Repository\UserRepository;
 use Spiral\Views\ViewsInterface;
 
 class HomeController
 {
-    private ViewsInterface $views;
-    private UserRepository $users;
-
-    public function __construct(ViewsInterface $views, UserRepository $users)
-    {
-        $this->users = $users;
-        $this->views = $views;
+    public function __construct(
+        private readonly ViewsInterface $views, 
+        private readonly UserRepository $users
+    ) {
     }
 
     public function index(): string
@@ -149,6 +143,8 @@ You can register any number of prototyped properties using `Spiral\Prototype\Boo
 bootloader:
 
 ```php
+use Spiral\Prototype\Bootloader\PrototypeBootloader;
+
 public function boot(PrototypeBootloader $prototype): void
 {
     $prototype->bindProperty('myService', MyService::class);

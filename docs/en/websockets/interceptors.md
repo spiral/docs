@@ -15,10 +15,6 @@ They are typically used to add cross-cutting functionality such as logging, auth
 The following example shows how to create an interceptor that checks the user's authentication token.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Centrifuge\Interceptor;
 
 use RoadRunner\Centrifugo\Request\RequestInterface;
@@ -85,11 +81,7 @@ public function handle(RequestInterface $request): void
 The following example shows how to create an interceptor that handles errors.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\GRPC\Interceptor;
+namespace App\Centrifuge\Interceptor;
 
 use Spiral\Core\CoreInterceptorInterface;
 use Spiral\Core\CoreInterface;
@@ -139,11 +131,7 @@ public function handle(RequestInterface $request): void
 
 To use this interceptor, you will need to register them in the configuration file `app/config/centrifugo.php`.
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/centrifugo.php
 use RoadRunner\Centrifugo\Request\RequestType;
 use App\Centrifuge;
 

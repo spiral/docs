@@ -40,7 +40,8 @@ configuration file. The default configuration is located in the [ScaffolderBootl
 
 Some components can provide their own declarations to create elements using the Scaffolder. 
 Such components can register their custom declarations with the `ScaffolderBootloader`:
-```php
+
+```php app/src/Application/Bootloader/ScaffolderBootloader.php
 namespace App\Application\Bootloader;
 
 use Spiral\Scaffolder\Bootloader\ScaffolderBootloader as BaseScaffolderBootloader;
@@ -78,7 +79,7 @@ class ScaffolderBootloader extends Bootloader
 
 Some packages may provide their own Commands. For example, the `Cycle Bridge` package (if installed) provides the following Commands:
 
-| Command            | Description                          
+| Command            | Description                          |
 |--------------------|--------------------------------------|
 | create:migration   | Create Migration declaration         |
 | create:repository  | Create Entity Repository declaration | 

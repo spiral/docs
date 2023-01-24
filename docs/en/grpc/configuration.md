@@ -76,11 +76,7 @@ that generates PHP code for gRPC services.
 
 Create the config file `app/config/grpc.php` if you want to configure generate service classes:
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/grpc.php
 return [
     /**
      * The path where generated DTO (Data Transfer Object) files will be stored.
@@ -115,7 +111,7 @@ return [
 
 To enable the component in the RoadRunner application server, add the following configuration section:
 
-```yaml
+```yaml .rr.yaml
 version: "2.7"
 
 server:

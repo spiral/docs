@@ -38,8 +38,8 @@ The package `spiral/auth` provides standard interfaces without the relation to a
 
 To activate the component add the bootloader `Spiral\Bootloader\Auth\HttpAuthBootloader`:
 
-```php
-[
+```php app/src/Application/Kernel.php
+protected const LOAD = [
     // ...
     Framework\Auth\HttpAuthBootloader::class,
     // ...
@@ -55,7 +55,7 @@ You can set the default storage for your application by using the `AUTH_TOKEN_ST
 
 Or define by using `defaultStorage` key in the `app/config/auth.php`:
 
-```php
+```php app/config/auth.php
 return [
     'defaultStorage' => env('AUTH_TOKEN_STORAGE', 'session'),
     // ... storages
@@ -66,14 +66,15 @@ This allows you to specify which implementation of the `TokenStorageInterface` s
 by default.
 
 ```php
-$container->get(\Spiral\Auth\TokenStorageInterface::class); // Will return Session token storage by default
+$storage = $container->get(\Spiral\Auth\TokenStorageInterface::class); 
+// Will return a default Session token storage
 ```
 
 ### Session Token Storage
 
 To store tokens in PHP session make sure that `spiral/session` extension is installed
 
-```dotenv
+```dotenv .env
 AUTH_TOKEN_STORAGE=session
 ```
 
@@ -82,14 +83,14 @@ AUTH_TOKEN_STORAGE=session
 The framework can store the token in the database via Cycle ORM. If you want to use this type of token you need to
 install `spiral/cycle-bridge` package.
 
-```bash
+```terminal
 composer require spiral/cycle-bridge
 ```
 
 Activate `Spiral\Cycle\Bootloader\BridgeBootloader` for this purpose:
 
-```php
-[
+```php app/src/Application/Kernel.php
+protected const LOAD = [
     // ...
     Framework\Auth\HttpAuthBootloader::class,
     \Spiral\Cycle\Bootloader\BridgeBootloader::class,
@@ -97,7 +98,7 @@ Activate `Spiral\Cycle\Bootloader\BridgeBootloader` for this purpose:
 ]
 ```
 
-```dotenv
+```dotenv .env
 AUTH_TOKEN_STORAGE=database
 ```
 
@@ -171,13 +172,14 @@ final class JwtTokenStorage implements TokenStorageInterface
 
 The Spiral framework provides several ways to register a token storage.
 
-#### Through Bootloader
+:::: tabs
 
+::: tab Bootloader
 You will need to obtain an instance of `HttpAuthBootloader` and use its `addTokenStorage` method.
 This method takes two arguments: a name for the storage and a class that implements
 the `Spiral\Auth\TokenStorageInterface`.
 
-```php
+```php app/src/Application/Bootloader/AppBootloader.php
 use Spiral\Boot\Bootloader;
 use Spiral\Bootloader\Auth\HttpAuthBootloader;
 
@@ -189,12 +191,12 @@ final class AppBootloader extends Bootloader
     }
 }
 ```
+:::
 
-#### Through config file
-
+::: tab Configuration
 You can also register a token storage through the configuration file `app/config/auth.php`.
 
-```php
+```php app/config/auth.php
 use Spiral\Core\Container\Autowire;
 
 return [
@@ -210,13 +212,17 @@ return [
     ]
 ]
 ```
+:::
+
+::::
 
 ## Token Storage provider
 
 Token storage provider is a convenient way to retrieve a token storage by given name.
 
 ```php
-$container->get(\Spiral\Auth\TokenStorageProviderInterface::class)->getStorage('jwt');
+$container->get(\Spiral\Auth\TokenStorageProviderInterface::class)
+    ->getStorage('jwt');
 ```
 
 ## Usage with HTTP layer
@@ -236,7 +242,7 @@ the user based on the token.
 The [application bundle](https://github.com/spiral/app) provides `App\Application\Bootloader\RoutesBootloader`, where
 you can easily define middleware.
 
-```php
+```php app/src/Application/Bootloader/RoutesBootloader.php
 namespace App\Application\Bootloader;
 
 use Spiral\Auth\Middleware\AuthMiddleware;
@@ -266,7 +272,7 @@ final class RoutesBootloader extends BaseRoutesBootloader
 ```
 
 > **Note**
-> Read more about [middleware](../http/middleware.md).
+> Read more about middleware in the [HTTP — Middleware](../http/middleware.md) section.
 
 ### Token transport
 
@@ -295,7 +301,7 @@ You can set the default transport for your application by using the `AUTH_TOKEN_
 
 Or define by using `defaultTransport` key in the `app/config/auth.php`:
 
-```php
+```php app/config/auth.php
 return [
     'defaultTransport' => env('AUTH_TOKEN_TRANSPORT', 'cookie'),
     // ... storages
@@ -304,13 +310,14 @@ return [
 
 The Spiral framework provides several ways to register a token transport.
 
-#### Through Bootloader
+:::: tabs
 
+::: tab Bootloader
 You will need to obtain an instance of `HttpAuthBootloader` and use its `addTransport` method.
 This method takes two arguments: a name for the transport and a class that implements
 the `Spiral\Auth\HttpTransportInterface`.
 
-```php
+```php app/src/Application/Bootloader/AppBootloader.php
 use Spiral\Boot\Bootloader;
 use Spiral\Bootloader\Auth\HttpAuthBootloader;
 use Spiral\Auth\Transport\CookieTransport;
@@ -320,17 +327,24 @@ final class AppBootloader extends Bootloader
 {
     public function boot(HttpAuthBootloader $httpAuth): void 
     {
-        $httpAuth->addTransport('cookie', new CookieTransport(cookie: 'token', basePath: '/'));
-        $httpAuth->addTransport('header', new HeaderTransport(header: 'X-Auth-Token'));
+        $httpAuth->addTransport(
+          'cookie', 
+          new CookieTransport(cookie: 'token', basePath: '/')
+        );
+
+        $httpAuth->addTransport(
+          'header', 
+          new HeaderTransport(header: 'X-Auth-Token')
+        );
     }
 }
 ```
+:::
 
-#### Through config file
-
+::: tab Configuration
 You can also register a token transport through the configuration file `app/config/auth.php`.
 
-```php
+```php app/config/auth.php
 use Spiral\Auth\Transport\CookieTransport;
 use Spiral\Auth\Transport\HeaderTransport;
 
@@ -343,6 +357,10 @@ return [
     ]
 ]
 ```
+:::
+
+::::
+
 
 ## Actor Provider and Token Payload
 
@@ -422,8 +440,8 @@ public function index(EntityManagerInterface $entityManager)
 
 Register the actor provider to enable it, create and activate the Bootloader in your application:
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/UserBootloader.php
+namespace App\Application\Bootloader;
 
 use App\Database\Repository\UserRepository;
 use Spiral\Boot\Bootloader\Bootloader;
@@ -485,10 +503,10 @@ class User implements ActorInterface
 
 And activate the bootloader `Spiral\Bootloader\Auth\SecurityActorBootloader` to link two components together:
 
-```php
-[
+```php app/src/Application/Kernel.php
+protected const LOAD = [
     // ...
-    Framework\Auth\SecurityActorBootloader::class,
+    \Spiral\Bootloader\Auth\SecurityActorBootloader::class,
     // ...
 ]
 ```

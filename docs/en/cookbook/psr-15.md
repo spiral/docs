@@ -27,7 +27,7 @@ by [https://github.com/middlewares/fast-route](https://github.com/middlewares/fa
 
 Before you can use FastRoute, you need to install the required packages:
 
-```bash
+```terminal
 composer require middlewares/fast-route middlewares/request-handler
 ```
 
@@ -39,8 +39,8 @@ declare `Psr\Http\Server\RequestHandlerInterface` in `SINGLETONS` constant.
 
 Here is an example of a FastRoute bootloader:
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/FastRouteBootloader.php
+namespace App\Application\Bootloader;
 
 use FastRoute;
 use Middlewares;
@@ -98,8 +98,10 @@ to use FastRoute to handle HTTP requests.
 
 Congratulations, now you know how to use a custom implementation of the `Psr\Http\Server\RequestHandlerInterface`
 interface in the Spiral Framework! By using the FastRoute library or any
-other [PSR-15 compliant library]((https://packagist.org/?query=psr-15%20router), you can easily swap out the default
+other [PSR-15 compliant library](https://packagist.org/?query=psr-15%20router), you can easily swap out the default
 Spiral Framework router and use an alternative solution to handle HTTP requests. Whether you need to use a different 
 routing library, implement custom request handling logic, or use components from multiple sources, the Spiral 
 Framework's compliance with PSR-15 makes it easy to use a wide variety of request handler implementations in
-your applications. **So go ahead and start building the best application you can!**
+your applications. 
+
+**So go ahead and start building the best application you can!**

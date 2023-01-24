@@ -1,4 +1,4 @@
-# Advanced — Injectors
+# Advanced — Container injectors
 
 The Spiral Framework provides a way to control the creation process of any interface or abstract class children using an
 injection interface.

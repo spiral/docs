@@ -17,6 +17,14 @@ composer require spiral/queue
 
 Make sure to add `Spiral\Queue\Bootloader\QueueBootloader` to your application kernel.
 
+```php app/src/Application/Kernel.php
+protected const LOAD = [
+    // ...
+    \Spiral\Queue\Bootloader\QueueBootloader::class,
+    // ...
+];
+```
+
 ## Configuration
 
 The default queue configuration can be found in the `app/config/queue.php` file. This configuration file includes a set
@@ -24,11 +32,7 @@ of
 options for each queue driver as well as aliases, which allow you to specify a default queue driver for your application
 to use.
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/queue.php
 return [
     /** Default queue connection name */
     'default' => env('QUEUE_CONNECTION', 'sync'),
@@ -67,11 +71,7 @@ configuration file.
 Queue aliasing is a feature that allows your application and modules to access the queue system in a variety of ways, 
 using separate connections that are related to a single physical queue.
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/queue.php
 return [
     'aliases' => [
         'mailQueue' => 'roadrunner',

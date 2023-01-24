@@ -58,7 +58,7 @@ The `processors` parameter represented an `array` and contains the `full name of
 
 For example, a configuration file might look like this:
 
-```php
+```php app/config/events.php
 use App\Listener\RouteListener;
 use Spiral\Events\Config\EventListener;
 use Spiral\Events\Processor\AttributeProcessor;
@@ -226,10 +226,6 @@ the `Spiral\Core\CoreInterceptorInterface` interface.
 **Example**
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Broadcasting;
 
 use Spiral\Broadcasting\BroadcastInterface;
@@ -270,8 +266,9 @@ final class BroadcastEventInterceptor implements CoreInterceptorInterface
 And then you will need to register it in the `events.php` configuration file, which is located in the `app/config`
 directory.
 
-```php
+```php app/config/events.php
 return [
+    // ...
     'interceptors' => [
         \App\Broadcasting\BroadcastEventInterceptor::class
     ]
@@ -432,8 +429,7 @@ a fully qualified class name and a method name, adding all the necessary depende
 
 After that, we need to register the processor in the configuration file.
 
-```php
-// file app/config/events.php    
+```php app/config/events.php
 use App\Processor\MyCustomProcessor;
 
 return [

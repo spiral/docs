@@ -25,7 +25,7 @@ Here are some benefits of using gRPC compared to REST APIs:
 To declare our first service, create a proto file in the desired direction. By default, the GRPC build suggests creating
 proto files in the`/proto` directory. Create a file `proto/pinger.proto`:
 
-```proto
+```proto proto/pinger.proto
 syntax = "proto3";
 
 option php_namespace = "App\\GRPC\Pinger";
@@ -68,11 +68,7 @@ To compile the `.proto` file into PHP code, you will need to use the `protoc` co
 At first, you need to generate the service stubs. To do this, you need to add them to the `app/config/grpc.php`
 configuration file:
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/grpc.php
 return [
     /**
      * The path where generated DTO (Data Transfer Object) files will be stored.
@@ -128,10 +124,6 @@ class should extend the `app/src/GRPC/PingerInterface` class generated from the 
 `ping()` `method:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\GRPC\Pinger;
 
 use Spiral\RoadRunner\GRPC;
@@ -158,7 +150,7 @@ final class Pinger implements PingerInterface
 
 Make sure to update the proto path in `.rr.yaml`:
 
-```yaml
+```yaml .rr.yaml
 grpc:
   listen: tcp://0.0.0.0:9001
   proto:

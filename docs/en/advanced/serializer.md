@@ -32,7 +32,7 @@ configure an array of available serializers and specify the default serializer.
 
 For example, the configuration file might look like this:
 
-```php
+```php app/config/serializer.php
 use Spiral\Core\Container\Autowire;
 use Spiral\Serializer\Serializer\JsonSerializer;
 use Spiral\Serializer\Serializer\PhpSerializer; 
@@ -206,11 +206,10 @@ class SerializerBootloader extends Bootloader
 
 2. Using the config file:
 
-```php
+```php app/config/serializer.php
 use App\Serializer;
 
 return [
-    // file app/config/serializer.php
     'serializers' => [
         'my-serializer' => CustomSerializer::class,
         // other serializers

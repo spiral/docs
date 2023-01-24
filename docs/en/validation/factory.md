@@ -36,7 +36,7 @@ Most applications use a single validator implementation, but Spiral Framework al
 validators in your application if needed. In this case, you can define a default validator in the
 `app/config/validation.php` configuration file.
 
-```php
+```php app/config/validation.php
 return [
     'defaultValidator' => 'my-validator',
     // ...
@@ -46,13 +46,13 @@ return [
 In addition to setting the default validator in the configuration file, you can also set the default validator using the
 `Spiral\Validation\Bootloader\ValidationBootloader`.
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/AppBootloader.php
+namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Validation\Bootloader\ValidationBootloader;
 
-final class MyBootloader extends Bootloader
+final class AppBootloader extends Bootloader
 {
     public function boot(ValidationBootloader $validation): void
     {
@@ -67,7 +67,7 @@ In this section, we will show you how to use the validation component to validat
 
 Here is an example of how to validate data using the default validator:
 
-```php
+```php app/src/Interface/Controller/UserController.php
 use Spiral\Http\Request\InputManager;
 use Spiral\Validation\ValidatorInterface;
 
@@ -103,7 +103,7 @@ in the configuration file or using the `ValidationBootloader`.
 
 If you want to use a different validator, you can request it from the `ValidationProviderInterface`.
 
-```php
+```php app/src/Interface/Controller/UserController.php
 use Spiral\Http\Request\InputManager;
 use Spiral\Validation\ValidationProviderInterface;
 
@@ -186,8 +186,8 @@ final class MyValidator implements ValidatorInterface
 Now we can register the created validator. To do this, use the `register` method using  
 `Spiral\Validation\ValidationProvider` class.
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/ValidatorBootloader.php
+namespace App\Application\Bootloader;
 
 use App\Validation;
 use Spiral\Boot\Bootloader\Bootloader;

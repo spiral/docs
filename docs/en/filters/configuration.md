@@ -15,16 +15,12 @@ duplication and make it easier to manage your validation logic.
 ![Filters](https://user-images.githubusercontent.com/773481/211005150-ba8803ed-42c1-40eb-9cf0-7e45e15b0b73.png)
 *Illustration of the process of filtering and validating input data in an HTTP layer*
 
-<br />
-
 > **Note**
 > Read more about how to use filters for console commands [here](../cookbook/console-validation.md)
 
-<br />
+<hr>
 
 ## Installation
-<br />
-
 
 > **Note**
 > The component relies on [Validation](../validation/factory.md) component, make sure to read it first.
@@ -120,10 +116,6 @@ By default, filters do not perform validation. However, if you want to validate 
 the `FilterDefinition` class with `Spiral\Filters\Model\ShouldBeValidated` interface implementation:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Filter;
 
 use Spiral\Filters\Model\FilterDefinitionInterface;

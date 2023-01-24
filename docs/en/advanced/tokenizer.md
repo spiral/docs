@@ -41,8 +41,8 @@ class AppBootloader extends Bootloader
 }
 ```
 
-And here is an example of how to add an additional directory using the `app\config\tokenizer.php` config file:
-```php
+And here is an example of how to add an additional directory using the `app/config/tokenizer.php` config file:
+```php app/config/tokenizer.php
 return [
     'directories' => [
         directory('app'),
@@ -53,7 +53,7 @@ return [
 
 You can also specify directories to be excluded from the search using the exclude option:
 
-```php
+```php app/config/tokenizer.php
 return [
     'directories' => [
         //...
@@ -81,8 +81,7 @@ selectively search only the directories that are relevant to your current task.
 To use the scoped class locator, you will need to define your scopes in the `app\config\tokenizer.php` config file. Here
 is an example of how to define a scope named `scopeName` that searches the `app/Directory` directory:
 
-```php
-// file app/config/tokenizer.php
+```php app/config/tokenizer.php
 return [
     'scopes' => [
         'scopeName' => [

@@ -49,7 +49,7 @@ protected const LOAD = [
 
 To configure the communication between RoadRunner and Centrifugo, you will need to modify the `.rr.yaml` file.
 
-```yaml
+```yaml .rr.yaml
 version: '2.7'
 
 rpc:
@@ -74,7 +74,7 @@ specifying the communication settings between Centrifugo and RoadRunner.
 
 **Here is an example `config.json` file that shows how to configure the communication between servers**
 
-```json
+```json config.json
 {
   // ...
   "allowed_origins": [
@@ -126,7 +126,7 @@ To use multiple, you will need to specify the addresses of the servers in the `c
 configure one RoadRunner server to handle connection events and another to handle RPC calls, as shown in the following
 example configuration:
 
-```json
+```json config.json
 {
   // ...
   "proxy_connect_endpoint": "grpc://127.0.0.1:10001",
@@ -151,11 +151,7 @@ the Centrifugo server, as well as any interceptors that should be applied to the
 
 Here is an example of a `centrifugo.php` config file that shows how to specify services and interceptors:
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/centrifugo.php
 use RoadRunner\Centrifugo\Request\RequestType;
 
 return [

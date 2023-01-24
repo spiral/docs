@@ -56,19 +56,19 @@ final class LogInterceptor implements CoreInterceptorInterface
 
 To use this interceptor, you will need to register it in the configuration file `app/config/queue.php`.
 
-```php
+```php app/config/queue.php
 use App\Application\Job\Interceptor\LogInterceptor;
 
 return [    
-     'interceptors' => [
+    'interceptors' => [
         'push' => [
             LogInterceptor::class,
         ],
         'consume' => [
             //...
         ],
-     ],
-     // ...
+    ],
+    // ...
 ];
 ```
 
@@ -129,12 +129,12 @@ final class JobExceptionsHandlerInterceptor implements CoreInterceptorInterface
 
 To use this interceptor, you will need to register it in the configuration file `app/config/queue.php`.
 
-```php
+```php app/config/queue.php
 use App\Application\Job\Interceptor\JobExceptionsHandlerInterceptor;
 use Spiral\Core\Container\Autowire;
 
 return [    
-     'interceptors' => [
+    'interceptors' => [
         'consume' => [
             new Autowire(
                 JobExceptionsHandlerInterceptor::class, [
@@ -142,8 +142,8 @@ return [
             ]),
         ],
         //...
-     ],
-     // ...
+    ],
+    // ...
 ];
 ```
 
@@ -155,7 +155,7 @@ There are several ways to add a new interceptor.
 
 Add it to the configuration file `app/config/queue.php`.
 
-```php
+```php app/config/queue.php
 use App\CustomInterceptor;
 use Spiral\Core\Container\Autowire;
 
@@ -199,7 +199,7 @@ Call the method `addPushInterceptor` to add an interceptor for the `push` action
 method `addConsumeInterceptor` to add an interceptor for the `consume` action in 
 the `Spiral\Queue\Bootloader\QueueBootloader` class.
 
-```php
+```php app/src/Application/Bootloader/AppBootloader.php
 namespace App\Application\Bootloader;
 
 use App\Interceptor\CustomInterceptor;

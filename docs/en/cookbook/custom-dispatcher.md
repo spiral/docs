@@ -37,7 +37,7 @@ Before we begin, you'll need to have the following installed on your machine:
 
 Here is an example of how to configure the ticker plugin in `.rr.yaml`:
 
-```yaml
+```yaml .rr.yaml
 version: '2.7'
 
 server:
@@ -54,7 +54,7 @@ configure the worker pool. The `interval` field specifies the amount of time to 
 
 Let's create a configuration file `config.go` for our service:
 
-```go
+```go config.go
 package ticker
 
 import (
@@ -95,7 +95,7 @@ We have defined the configuration for our ticker plugin, let's move on to creati
 The plugin service is responsible for managing the workers and sending the ticks to them. To create the service, create
 a new file called `plugin.go` and add the following code to it:
 
-```go
+```go plugin.go
 package ticker
 
 import (
@@ -261,7 +261,7 @@ plugin.
 
 Create a new file called `plugins.toml` and add the following configuration:
 
-```toml
+```toml plugins.toml
 [velox]
 build_args = ['-trimpath', '-ldflags', '-s -X github.com/roadrunner-server/roadrunner/v2/internal/meta.version=v2.12.1.custom -X github.com/roadrunner-server/roadrunner/v2/internal/meta.buildTime=00:00:00']
 
@@ -286,7 +286,7 @@ mode = "development"
 
 Then, run the following command to build the RoadRunner binary:
 
-```bash
+```terminal
 vx build -c plugins.toml -o .
 ```
 
@@ -348,7 +348,7 @@ final class TickerDispatcher implements DispatcherInterface
 
 Create a Bootloader to register our dispatcher in the kernel:
 
-```php
+```php app/src/Application/Bootloader/TickerBootloader.php
 namespace App\Application\Bootloader;
 
 use App\Dispatcher\TickerDispatcher;

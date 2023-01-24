@@ -21,10 +21,6 @@ used to add cross-cutting functionality such as logging, authentication, or moni
 Here is an example of a simple interceptor that logs a request before and after processing:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\GRPC\Interceptor;
 
 use Spiral\Core\CoreInterceptorInterface;
@@ -62,10 +58,6 @@ Here is an example of a simple interceptor that handles exceptions thrown by the
 and convert them to a gRPC exception.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\GRPC\Interceptor;
 
 use Spiral\Core\CoreInterceptorInterface;
@@ -106,11 +98,7 @@ final class ExceptionHandlerInterceptor implements CoreInterceptorInterface
 Here is an example of a simple interceptor that receives trace context from the request.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
-namespace Spiral\Shared\GRPC\Interceptors;
+namespace App\GRPC\Interceptor;
 
 use Spiral\Core\CoreInterceptorInterface;
 use Spiral\Telemetry\TraceKind;
@@ -152,10 +140,6 @@ Here is an example of a simple interceptor that checks if the user is authentica
 determine which methods require authentication. An authentication token is passed in the request metadata.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\GRPC\Interceptor;
 
 use App\Attribute\Guarded;
@@ -211,10 +195,6 @@ public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 And example of Guarded attribute:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Attribute;
 
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
@@ -233,7 +213,7 @@ class Guarded
 
 To use this interceptor, you will need to register them in the configuration file `app/config/grpc.php`.
 
-```php
+```php app/config/grpc.php
 return [    
     'interceptors' => [
         \App\GRPC\Interceptor\LogInterceptor
@@ -256,11 +236,7 @@ If you want to use client interceptors, you will need to modify a client class f
 >
 > Read more about interceptors in [Domain Cores](../cookbook/domain-core.md) section.
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/src/Application/Bootloader/AppBootloader.php
 namespace App\Application\Bootloader;
 
 use App\Service\PingerClient;
@@ -298,10 +274,6 @@ final class AppBootloader extends Bootloader
 And then implement the `RequestCore` class:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Service;
 
 use Spiral\Core\CoreInterface;
@@ -328,10 +300,6 @@ final class RequestCore extends \Grpc\BaseStub implements CoreInterface
 And finally modify the `PingerClient` class:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Service;
 
 use App\GRPC\Pinger;
@@ -384,10 +352,6 @@ final class PingerClient implements Pinger\PingerInterface
 ### Handle Response Errors Interceptor
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Service\Interceptor;
 
 use Spiral\Core\CoreInterceptorInterface;
@@ -417,10 +381,6 @@ final class HandleResponseErrorsInterceptor implements CoreInterceptorInterface
 ### Passing telemetry trace ID to the context
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Service\Interceptor;
 
 use Psr\Container\ContainerInterface;
