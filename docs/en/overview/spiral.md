@@ -2,11 +2,11 @@
 
 ## Meet Spiral Framework
 
-The Spiral Framework is a robust and powerful framework built by [Spiral Scout](https://spiralscout.com/) RnD team,
-designed for the development and maintenance of massive enterprise applications. It is built on strict architecture
-design principles and utilizes components from Symfony. At its core, Spiral incorporates a classic MVC approach and
-features a [routing system](../http/routing.md) similar to Laravel and Symfony. The framework also
-supports [dependency injection](../framework/container.md) with autowiring and **real** singleton services.
+The Spiral Framework is a robust and powerful framework built by the R&D team at [Spiral Scout](https://spiralscout.com/) and
+designed for the development and maintenance of medium to large-sized enterprise applications. The framework has been in development 
+for over 12 years and is built on strict architecture design principles and utilizes components from Symfony. At it's core, Spiral 
+incorporates a classic MVC approach and features a [routing system](../http/routing.md) similar to Laravel and Symfony. The framework 
+also supports [dependency injection](../framework/container.md) with autowiring and **real** singleton services.
 
 > It is designed to be intuitive and easy to use, with a focus on developer experience similar to that of
 > Laravel and Symfony.
