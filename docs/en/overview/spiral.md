@@ -16,7 +16,7 @@ supports [dependency injection](../framework/container.md) with autowiring and *
 One of the key features of Spiral is its exceptional performance. The framework
 utilizes [RoadRunner](../start/server.md), an application server specifically designed for PHP, to warm up code
 only once at [bootload phase](../framework/lifecycle.md), and then communicates with it per individual request. This
-approach results in a significant performance boost, providing **10x faster performance out of the box**, compared to
+approach results in a significant performance boost, providing **2x faster performance out of the box**, compared to
 other PHP frameworks.
 
 ## Inspiration
@@ -46,7 +46,7 @@ Spiral utilizes all of the features of RoadRunner to provide a powerful and effi
 to [process and consume](../queue/configuration.md) messages from multiple queue providers. The queue orchestration
 happens inside the application server, while PHP is responsible for the low-level processing of messages, resulting in
 a highly concurrent and scalable event bus. This allows you to build systems that can automatically adapt to different
-load strategies, and even consume up to 100k events per second without much configuration hassle.
+load strategies, and even consume **up to 100k events per second** without much configuration hassle.
 
 ### Temporal workflows
 
