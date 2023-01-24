@@ -1,4 +1,4 @@
-# The Basics — Databases and ORM
+# The Basics — Database and ORM
 
 The spiral framework provides a component `spiral/cycle-bridge` to work with the ORM and database in your application.
 
