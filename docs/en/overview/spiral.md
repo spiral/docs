@@ -97,13 +97,10 @@ containerized environment.
 
 ## Debugging
 
-Spiral also provides official Open Tracing library which covers most of the framework's components, making it easy to
-debug and understand what's going on in your application. If you need to communicate between multiple applications,
-Spiral provides a powerful event-driven architecture using the queue component, and also supports faster access to
-external resources using GRPC package. GRPC is language-agnostic by default, making it easy to call Spiral from other
-languages.
+Spiral also provides official support of [Open Telemetry](../advanced/telemetry.md) which covers most of the framework's
+components, making it easy to debug and understand what's going on in your application.
 
-## Conclusion
+<hr>
 
 Spiral framework is well-suited for engineers of all levels. If you have used Symfony or Laravel before, you'll find a
 lot of similarities in Spiral and the rest of the infrastructure components are carefully integrated and easy to learn.
