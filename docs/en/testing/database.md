@@ -105,13 +105,13 @@ set properties directly.
 
 ## Using Seed Factory
 
-A factory can be created by calling the new method on the factory class:
+A factory can be created by calling the `new` method on the factory class:
 
 ```php
 $factory = UserFactory::new();
 ```
 
-This will create a new instance of the factory class and provides several useful methods for generating entities.
+This will create a new instance of the factory. It provides several useful methods for generating entities.
 
 You can also pass an array of definition to the new method of the factory class.
 
