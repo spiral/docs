@@ -5,8 +5,10 @@ The Spiral Framework offers a powerful tool for managing data in your applicatio
 you to easily seed test data into their CycleORM entities using seed classes. It provides the ability to create entities
 through the use of factories.
 
-> **Warning**
-> Important! Be sure to set up a test database in the test application. Never use a production database for testing!
+> **Danger**
+> It's important to always use a separate test database for running your tests, and never use a production database for
+> testing. Using a production database for testing can result in data loss or corruption, and can also cause unexpected 
+> behavior in the production system. Always create a separate test database and use it exclusively for testing.
 
 ## Installation
 
