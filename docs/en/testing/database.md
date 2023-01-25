@@ -6,8 +6,8 @@ you to easily seed test data into their CycleORM entities using seed classes. It
 through the use of factories.
 
 > **Danger**
-> It's important to always use a separate test database for running your tests, and never use a production database for
-> testing. Using a production database for testing can result in data loss or corruption, and can also cause unexpected
+> It's important to always use a separate test database for running your tests, and **never use a production database** 
+> for testing. Using a production database for testing can result in data loss or corruption, and can also cause unexpected
 > behavior in the production system. Always create a separate test database and use it exclusively for testing.
 
 ## Installation
