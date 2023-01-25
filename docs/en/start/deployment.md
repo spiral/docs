@@ -5,37 +5,82 @@ ensure that the application is properly configured and ready for production use.
 several strategies for deploying an application, including basic file transfer, using source control, build scripts,
 and Docker builds.
 
-Each strategy will include an example and step-by-step instructions to help you understand the process. It's important
-to note that the specific steps may vary depending on your setup and requirements, so it is recommended to test the
-deployment process on a development environment before deploying to a production environment.
+## Preparing the application
 
-Deploying requires several steps to be taken in order to ensure that the application is properly configured,
-functional and ready for production use. In this section, we will go over the typical steps:
+Deploying a Spiral Framework application on a production server requires several key configurations to ensure proper
+operation and security.
 
-1. **Uploading the application code:** The code for the application is transferred from the development environment to
-   the production server. This can be done using various methods such as Git.
+Here is a step-by-step guide on how to configure a Spiral application on a production server:
 
-2. **Installing dependencies:** The application's dependencies, such as external libraries and modules, need to be
-   installed. This is typically done through the Composer package manager.
+### Disable debug mode
 
-3. **Running database migrations:** If there have been any changes to the database schema, the necessary migrations need
-   to be run to update the production database.
+Make sure that the `DEBUG` variable is set to `false` in your application's environment configuration. This will prevent
+sensitive information from being displayed in case of an error.
 
-4. **Clearing (and optionally, warming up) the cache:** The application's cache should be cleared to ensure that any
-   stale data is removed.
+```dotenv .env
+DEBUG=false
+```
 
-5. **Testing the application:** The application should be tested to ensure that it is functioning correctly on the
-   production server.
+### Set the environment to production
 
-6. **Deploying the application:** The application is made live and made available to users. This may include adjusting
-   the server's settings, configuring a load balancer, or other tasks as necessary.
+Change the `APP_ENV` variable in your application's environment configuration to `production`. This will prevent
+accidental actions that should only be run on a development server.
 
-7. **Monitoring the application:** The application's performance and usage should be monitored to ensure that it is
-   running smoothly and to detect and troubleshoot any issues that may arise.
+```dotenv .env
+APP_ENV=production
+```
 
-Let's explore several deployment strategies that can be used to deploy an application. Each strategy has its own
-advantages and disadvantages and is suited to different types of projects and environments. By understanding these
-strategies and the steps involved in each, you can choose the best approach for your specific situation.
+### Set the verbosity level
+
+Set the `VERBOSITY_LEVEL` variable to a `basic` level to hide server errors from being displayed to the public.
+
+```dotenv .env
+VERBOSITY_LEVEL=basic
+```
+
+### Configure the logger
+
+Set the desired `MONOLOG_DEFAULT_CHANNEL` in the application's environment configuration. This will determine where the
+application's logs will be stored. Also set the `MONOLOG_DEFAULT_LEVEL` variable to `error` in your application's 
+environment configuration. This will prevent debug and info errors from being logged, helping to keep your logs clean 
+and easy to read.
+
+```dotenv .env
+MONOLOG_DEFAULT_CHANNEL=roadrunner
+MONOLOG_DEFAULT_LEVEL=error
+```
+
+### Cycle ORM
+
+If you are using the Cycle ORM, make sure that the `CYCLE_SCHEMA_CACHE` and `CYCLE_SCHEMA_WARMUP` variables are set to
+`true` in your application's environment.
+
+The `CYCLE_SCHEMA_CACHE` variable controls whether the ORM should cache the schema of the database tables. When set to
+`true`, the ORM will cache the schema, which can improve the performance of the application by reducing the number of
+database queries needed to retrieve the schema information.
+
+The `CYCLE_SCHEMA_WARMUP` variable controls whether the ORM should warm up the schema cache when the application starts.
+When set to `true`, the ORM will pre-populate the schema cache with the schema information, which can further improve 
+the performance of the application by reducing the time it takes to retrieve the schema information.
+
+```dotenv .env
+CYCLE_SCHEMA_CACHE=true
+CYCLE_SCHEMA_WARMUP=true
+```
+
+### Composer
+
+The following composer commands can be used to install vendor packages for a Spiral Framework application:
+
+```terminal
+composer install --optimize-autoloader --no-dev --no-scripts
+```
+
+This command installs the application's dependencies, generates the autoloader files for the application and optimizes
+them for performance.
+
+- `--no-dev` option is used to prevent any development dependencies from being installed ad
+- `--no-scripts` option is used to prevent any `post-install` scripts from being executed.
 
 ## Deployer
 
@@ -152,10 +197,9 @@ the production environment and test applications locally, which makes it easier 
 
 This method involves building a Docker image of the application, and then running the image on the production server.
 
-### Example
+### Dockerfile
 
-1. Create a new `Dockerfile`
-2. Add the following code to Dockerfile
+Here is an example of a `Dockerfile` that can be used to build a Docker image for a Spiral Framework application:
 
 ```dockerfile 
 # Build rr binary
@@ -198,8 +242,50 @@ EXPOSE 8080/tcp
 CMD ./rr serve -c .rr.yaml
 ```
 
-3. Run `docker build -t myapp .` to build the image
-4. Run `docker run -p 8080:8080 myapp` to start the container
+You can build the image by running the following command:
+
+```terminal
+docker build . -t my-application
+```
+
+After the image is built, you need to push it to a Docker registry or hub. You can also tag the image with a version
+number, such as `my-application:1.0`.
+
+```terminal
+docker push my-application:1.0
+```
+
+### Docker Compose
+
+Here is an example of a `docker-compose.yml` file that can be used to start the application:
+
+```yaml docker-compose.yaml
+version: '3'
+services:
+  app:
+    image: my-application:1.0
+    ports:
+      - "8080:8080"
+    environment:
+      - DEBUG=false
+      - APP_ENV=production
+      - ...
+...
+```
+
+### Starting and Stopping the Application
+
+You can start the application by running the following command:
+
+```terminal
+docker-compose up -d
+```
+
+and stop it by running
+
+```terminal
+docker-compose down
+```
 
 <hr>
 

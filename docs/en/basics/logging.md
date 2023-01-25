@@ -140,41 +140,54 @@ protected const LOAD = [
 
 ### RoadRunner handler
 
-The RoadRunner bridge package provides `Spiral\RoadRunnerBridge\Logger\Handler` class for sending logs to 
+The RoadRunner bridge package provides `Spiral\RoadRunnerBridge\Logger\Handler` handler for sending logs to 
 the [RoadRunner app logger](https://roadrunner.dev/docs/plugins-applogger).
 
-```php app/src/Application/Bootloader/LoggingBootloader.php
-namespace App\Application\Bootloader;
+You just need to add `Spiral\RoadRunnerBridge\Bootloader\LoggerBootloader` to the top of bootloaders list:
 
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Monolog\Bootloader\MonologBootloader;
-use Spiral\RoadRunnerBridge\Logger\Handler as RoadRunnerHandler;
-use Spiral\RoadRunnerBridge\Bootloader\LoggerBootloader;
-
-final class LoggingBootloader extends Bootloader
-{
-    protected const DEPENDENCIES = [
-        MonologBootloader::class,
-        LoggerBootloader::class, // <- this bootloader is required to use RoadRunnerHandler
-    ];
-    
-    public function boot(MonologBootloader $monolog, RoadRunnerHandler $handler): void
-    {
-        $monolog->addHandler('roadrunner', $handler);
-    }
-}
-```
-
-To make this handler as the default handler, you need to change the default channel in the `.env` file:
-
-```dotenv .env
-# ...
-MONOLOG_DEFAULT_CHANNEL=roadrunner
+```php app/src/Application/Kernel.php
+protected const LOAD = [
+    \Spiral\RoadRunnerBridge\Bootloader\LoggerBootloader::class,
+    // ...
+];
 ```
 
 > **Warning**
 > Make sure that you have the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package installed.
 > This package provides the necessary classes to integrate RoadRunner with Monolog.
+
+And change the default channel to `roadrunner`:
+
+:::: tabs
+
+::: tab Environment
+```dotenv .env
+MONOLOG_DEFAULT_CHANNEL=roadrunner
+```
+:::
+
+::: tab Config
+```php app/config/monolog.php
+return [
+    'default' => 'roadrunner',
+    // ...
+];
+```
+:::
+
+::::
+
+By default, the handler will format the log message using the following structure `%message% %context% %extra%\n`
+
+If you want to change the log message structure, you can use the `LOGGER_FORMAT` evn variable:
+
+```dotenv .env
+LOGGER_FORMAT=[%datetime%] %channel%.%level%: %message% %context% %extra%\n
+```
+
+> **Note**
+> Read more about the available placeholders in 
+> the [Monolog documentation](https://seldaek.github.io/monolog/doc/message-structure.html).
 
 ## Usage
 
@@ -190,7 +203,8 @@ final class UserService
 {
     public function __construct(
         private readonly LoggerInterface $logger
-    ) {}
+    ) {
+    }
 
     public function register(string $email, string $password): void
     {

@@ -80,7 +80,7 @@ return [
             'path' => directory('runtime') . 'cache',
         ],   
     ],
-]
+];
 ```
 
 ## Namespaces
