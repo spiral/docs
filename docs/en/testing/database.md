@@ -7,7 +7,7 @@ through the use of factories.
 
 > **Danger**
 > It's important to always use a separate test database for running your tests, and never use a production database for
-> testing. Using a production database for testing can result in data loss or corruption, and can also cause unexpected 
+> testing. Using a production database for testing can result in data loss or corruption, and can also cause unexpected
 > behavior in the production system. Always create a separate test database and use it exclusively for testing.
 
 ## Installation
@@ -31,8 +31,8 @@ protected const LOAD = [
 ];
 ```
 
-You also recommend adding the following to your `composer.json` file to automatically load the factory, seeder and other
-classes you create in your application.
+We also recommend you to add the following to your `composer.json` file. This allows the package to automatically
+discover and load the classes you create, so you don't have to manually include them in your code.
 
 ```json
 {
@@ -44,9 +44,6 @@ classes you create in your application.
   }
 }
 ```
-
-This allows the package to automatically discover and load the classes you create, so you don't have to manually include
-them in your code.
 
 After these steps, you have installed the package and registered it's bootloader, so you can now use Spiral's database
 seeder package in your application.
