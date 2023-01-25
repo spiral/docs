@@ -10,6 +10,10 @@ and Docker builds.
 Deploying a Spiral Framework application on a production server requires several key configurations to ensure proper
 operation and security.
 
+> **Warning**
+> Do not store `.env` file in your repository as it may contain sensitive information such as database credentials, 
+> API keys, and other secrets.
+
 Here is a step-by-step guide on how to configure a Spiral application on a production server:
 
 ### Disable debug mode
@@ -41,8 +45,8 @@ VERBOSITY_LEVEL=basic
 ### Configure the logger
 
 Set the desired `MONOLOG_DEFAULT_CHANNEL` in the application's environment configuration. This will determine where the
-application's logs will be stored. Also set the `MONOLOG_DEFAULT_LEVEL` variable to `error` in your application's 
-environment configuration. This will prevent debug and info errors from being logged, helping to keep your logs clean 
+application's logs will be stored. Also set the `MONOLOG_DEFAULT_LEVEL` variable to `error` in your application's
+environment configuration. This will prevent debug and info errors from being logged, helping to keep your logs clean
 and easy to read.
 
 ```dotenv .env
@@ -60,7 +64,7 @@ The `CYCLE_SCHEMA_CACHE` variable controls whether the ORM should cache the sche
 database queries needed to retrieve the schema information.
 
 The `CYCLE_SCHEMA_WARMUP` variable controls whether the ORM should warm up the schema cache when the application starts.
-When set to `true`, the ORM will pre-populate the schema cache with the schema information, which can further improve 
+When set to `true`, the ORM will pre-populate the schema cache with the schema information, which can further improve
 the performance of the application by reducing the time it takes to retrieve the schema information.
 
 ```dotenv .env
@@ -256,6 +260,9 @@ docker push my-application:1.0
 ```
 
 ### Docker Compose
+
+One of the advantages of using Docker is that you can manage environment variables for your application through the
+`docker-compose` file and external `.env `files, rather than having to create `.env` files inside the container.
 
 Here is an example of a `docker-compose.yml` file that can be used to start the application:
 
