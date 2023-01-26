@@ -119,7 +119,7 @@ specifying the communication settings between Centrifugo and RoadRunner.
 }
 ```
 
-> **Note**
+> **See more**
 > More information about Centrifugo server configuration you can read on the
 > official [documentation](https://centrifugal.dev/docs/server/configuration)
 

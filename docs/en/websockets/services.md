@@ -1,4 +1,4 @@
-# Websockets — Services
+# Websockets — Event handlers
 
 In a Spiral application, a service is a class that is responsible for processing incoming messages, performing
 actions based on the message content, and returning a response to the sender. There are several types of events that can
@@ -158,7 +158,7 @@ const centrifuge = new Centrifuge('http://127.0.0.18000/connection/websocket', {
 });
 ```
 
-> **Note**
+> **See more**
 > For more information on using JavaScript SDK and passing additional data to the server, refer to the
 > [documentation](https://github.com/centrifugal/centrifuge-js#data).
 
@@ -429,7 +429,7 @@ centrifuge.rpc("get:news/123", {"lang": "en"}).then(function (res) {
 });
 ```
 
-> **Note**
+> **See more**
 > For more information on using JavaScript SDK and RPC method, refer to the
 > [documentation](https://github.com/centrifugal/centrifuge-js#rpc-method).
 
