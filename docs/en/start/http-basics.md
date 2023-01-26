@@ -88,7 +88,6 @@ You should see your `current-date` route in the list:
 |[32m Name:        [39m|[32m Verbs: [39m|[32m Pattern: [39m|[32m Target:                                        [39m|[32m Group: [39m|
 +--------------+--------+----------+------------------------------------------------+--------+
 | current-date | [32mGET[39m    | /date    | App\Interface\Http\CurrentDateController->show | web    |
-| data-time    | [32mGET[39m    | date     | App\Interface\Http\CurrentDateController->show | web    |
 +--------------+--------+----------+------------------------------------------------+--------+
 ```
 
