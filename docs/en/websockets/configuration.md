@@ -60,9 +60,15 @@ server:
   relay: pipes
 
 centrifuge:
-  proxy_address: "tcp://0.0.0.0:10001" <==== RoadRunner Centrifuge plugin address
-  grpc_api_address: "centrifugo:10000" <==== Centrifuge server address
+  proxy_address: "tcp://0.0.0.0:10001"
+  grpc_api_address: "centrifugo:10000"
 ```
+
+Where `proxy_address` is the address of the RoadRunner Centrifuge plugin. It will be used by the Centrifugo server to
+communicate with RoadRunner.
+
+And `grpc_api_address` is the address of the Centrifugo GRPC server. It will be used by the RoadRunner Centrifuge plugin
+to communicate with the Centrifugo server.
 
 > **Note**
 > Read more about the configuration of the Centrifuge plugin [here](https://roadrunner.dev/docs/plugins-centrifuge).
