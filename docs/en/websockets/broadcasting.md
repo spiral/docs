@@ -163,7 +163,8 @@ class OrderService
 ### Centrifugo
 
 > **See more**
-> Read more about integration with Centrifugo Websocket server [here](./configuration.md). 
+> Read more about integration with Centrifugo Websocket server in
+> the [Websockets — Installation and Configuration](./configuration.md) section.
 
 After installation, you can activate driver using the `BROADCAST_CONNECTION` environment variable:
 
@@ -300,13 +301,15 @@ topics in the Spiral Framework's broadcasting component. You can register author
 the `app/config/broadcasting.php` file.
 
 ```php app/config/broadcasting.php
-'authorize' => [
-    'path' => env('BROADCAST_AUTHORIZE_PATH'),
-    'topics' => [ // <===============
-        'topic' => static fn (ServerRequestInterface $request): bool => $request->getHeader('SECRET')[0] == 'secret',
-        'order.{uuid}' => static fn (string $uuid, Actor $actor): bool => $actor->getId() === $id
+return [
+    'authorize' => [
+        'path' => env('BROADCAST_AUTHORIZE_PATH'),
+        'topics' => [
+            'topic' => static fn (ServerRequestInterface $request): bool => $request->getHeader('SECRET')[0] == 'secret',
+            'order.{uuid}' => static fn (string $uuid, Actor $actor): bool => $actor->getId() === $id
+        ],
     ],
-],
+];
 ```
 
 Many websocket servers use HTTP authorization, which requires the client to provide credentials in the form of an HTTP
@@ -314,20 +317,21 @@ header or query parameter. To handle HTTP authorization in the Spiral Framework'
 the `Spiral\Broadcasting\Middleware\AuthorizationMiddleware` middleware and specify an authorization endpoint in your
 application where the websocket server will send authorization requests.
 
-
 The `AuthorizationMiddleware` middleware is responsible for verifying the client's credentials and returning an
 appropriate response indicating whether the client is authorized to access the websocket server. To use the middleware,
-you will need to [register](../http/routing.md#middleware) it in your application and specify the authorization endpoint 
+you will need to [register](../http/routing.md#middleware) it in your application and specify the authorization endpoint
 in the `app/config/broadcasting.php` configuration file.
 
 ```php app/config/broadcasting.php
-'authorize' => [
-    'path' => '/pusher/user-auth', // <===============
-    'topics' => [
-        'topic' => static fn (ServerRequestInterface $request): bool => $request->getHeader('SECRET')[0] == 'secret',
-        'order.{uuid}' => static fn (string $uuid, Actor $actor): bool => $actor->getId() === $id
+return [
+    'authorize' => [
+        'path' => '/pusher/user-auth', // <===============
+        'topics' => [
+            'topic' => static fn (ServerRequestInterface $request): bool => $request->getHeader('SECRET')[0] == 'secret',
+            'order.{uuid}' => static fn (string $uuid, Actor $actor): bool => $actor->getId() === $id
+        ],
     ],
-],
+];
 ```
 
 or using the `BROADCAST_AUTHORIZE_PATH` environment variable.

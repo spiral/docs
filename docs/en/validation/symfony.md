@@ -6,7 +6,7 @@ provides integration with the [Symfony Validator](https://github.com/symfony/val
 powerful and feature-rich validation library.
 
 > **See more**
-> Read more about [Validation](factory.md) in the Spiral Framework.
+> Read more about validation in the [Validation](factory.md) section.
 
 ## Installation
 
@@ -58,7 +58,7 @@ a "Filter" object, which defines the required data that should be extracted from
 filter object's properties.
 
 > **See more**
-> Read more about the Spiral Framework Filters [here](../filters/filter.md).
+> Read more about filters in the [Filters — Filter object](../filters/filter.md) section.
 
 ### Filter with attributes
 

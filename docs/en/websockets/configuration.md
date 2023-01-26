@@ -1,6 +1,6 @@
 # Websockets — Installation and Configuration
 
-Our Spiral Framework used to have its own [WebSocket plugin](https://roadrunner.dev/docs/plugins-websockets/2.x) for
+RoadRunner used to have its own [WebSocket plugin](https://roadrunner.dev/docs/plugins-websockets/2.x) for
 sending messages to clients, but we found it was too limited. We wanted to create a better solution for handling
 real-time data transmission and decided to stop developing our own plugin. Instead, we looked for one of the best
 open-source tools out there and found [Centrifugo](https://centrifugal.dev/). We created a RoadRunner plugin
@@ -24,6 +24,9 @@ option.
 
 With this integration, you can send events to WebSocket clients as well as handle events from the clients on the server.
 
+The Spiral Framework has a full integration with the RoadRunner Centrifuge plugin, which facilitates communication
+between the Spiral Framework and the Centrifugo WebSocket server.
+
 **Here are events that can be received on the server:**
 
 - [**Connection requests:**](https://centrifugal.dev/docs/server/proxy#connect-proxy) When a client establishes a
@@ -39,9 +42,10 @@ With this integration, you can send events to WebSocket clients as well as handl
 
 ## Installation
 
-Register the Bootloader `Spiral\RoadRunnerBridge\Bootloader\CentrifugoBootloader` in your application.
+At first, you need to install the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package.
 
-After installing the package, you need to add the bootloader from the package to your application.
+Once the package is installed, you can add the `Spiral\RoadRunnerBridge\Bootloader\CentrifugoBootloader` to the list of
+bootloaders:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
@@ -50,10 +54,6 @@ protected const LOAD = [
     // ...
 ];
 ```
-
-> **Note**
-> Make sure that you have the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package installed.
-> This package provides the necessary classes to integrate Cache component with RoadRunner Centrifuge plugin.
 
 ## Configuration
 

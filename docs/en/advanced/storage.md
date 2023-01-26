@@ -683,8 +683,7 @@ or `toUriFrom($resolver, [...$arguments])` methods. For example, if you create a
 additionally specify the expiration time of this link.
 
 > **See more**
-> You can read more about possible additional arguments on the corresponding page 
-> of the [distribution documentation](../component/distribution.md).
+> You can read more about possible additional arguments on the corresponding page of the distribution section.
 
 ```php
 $uri = $file->toUri(new \DateInterval('PT30S'));

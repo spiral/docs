@@ -178,4 +178,4 @@ class LoggingBootloader extends Bootloader
 ```
 
 > **See more**
-> Read more about Logging in [The Basics — Logging](../basics/logging.md) section.
+> Read more about Logging in the [The Basics — Logging](../basics/logging.md) section.

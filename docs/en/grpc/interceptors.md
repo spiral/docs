@@ -4,7 +4,7 @@ Spiral Framework provides interceptors for gRPC services that allow you to inter
 at various points in the request lifecycle.
 
 > **See more**
-> Read more about interceptors in the [Interceptors](../framework/interceptors.md) section.
+> Read more about interceptors in the [Framework — Interceptors](../framework/interceptors.md) section.
 
 There are two types of interceptors:
 
@@ -233,7 +233,7 @@ add cross-cutting functionality such as logging, modifying header, handling resp
 If you want to use client interceptors, you will need to modify a client class from [client SDK](./client.md) section.
 
 > **See more**
-> Read more about interceptors in [Domain Cores](../cookbook/domain-core.md) section.
+> Read more about interceptors in еру [Framework — Interceptors](../framework/interceptors.md) section.
 
 ```php app/src/Application/Bootloader/AppBootloader.php
 namespace App\Application\Bootloader;

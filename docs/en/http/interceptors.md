@@ -9,7 +9,7 @@ resolving the controllers, handling the request and returning a response. It's a
 lifecycle of the application and keeping track of the current request and response.
 
 > **See more**
-> Read more about interceptors in the [Interceptors](../framework/interceptors.md) section.
+> Read more about interceptors in the [Framework — Interceptors](../framework/interceptors.md) section.
 
 ## Domain Core Builder
 
@@ -90,7 +90,7 @@ final class UserController
 ```
 
 > **See more**
-> Read more about Annotated routes in the [Routing](../http/annotated-routes.md) section.
+> Read more about Annotated routes in the [HTTP — Routing](../http/routing.md#routes-based-on-attributes) section.
 
 You must use named parameters if more than one entity is expected:
 

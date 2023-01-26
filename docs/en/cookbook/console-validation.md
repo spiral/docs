@@ -359,7 +359,7 @@ return [
 ```
 
 > **See more**
-> Read more about console interceptors [here](../console/interceptors.md).
+> Read more about console interceptors in the [Console — Interceptors](../console/interceptors.md) section.
 
 That's it. Now if you run the console command with invalid input data:
 

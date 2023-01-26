@@ -5,7 +5,7 @@ the [Laravel Validation bridge](https://github.com/spiral-packages/laravel-valid
 provides integration with the Laravel Validator, which is a validation component used in the Laravel framework.
 
 > **See more**
-> Read more about [Validation](factory.md) in the Spiral Framework.
+> Read more about validation in the [Validation](factory.md) section.
 
 ## Installation
 
@@ -57,7 +57,7 @@ a "Filter" object, which defines the required data that should be extracted from
 filter object's properties.
 
 > **See more**
-> Read more about the Spiral Framework Filters [here](../filters/filter.md).
+> Read more about filters in the [Filters — Filter object](../filters/filter.md) section.
 
 ### Filter with attributes
 

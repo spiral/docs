@@ -156,6 +156,7 @@ The `Spiral\Queue\Options` class allows you to specify additional context for a 
 `QueueInterface::push()` method.
 
 #### `withHeader(string $name, string|array $value)`
+
 This method allows you to set a header value for the job. Headers can be used to pass additional metadata about the job
 to the consumer server.
 
@@ -170,7 +171,8 @@ $queue->push(
 ```
 
 #### `withQueue(?string $queue)`
-This method allows you to specify the name of the queue to which the job should be pushed. If no queue is specified, 
+
+This method allows you to specify the name of the queue to which the job should be pushed. If no queue is specified,
 the job will be pushed to the default queue.
 
 ```php
@@ -185,7 +187,7 @@ $queue->push(
 
 #### `withDelay(?int $delay)`
 
-This method allows you to specify a delay in seconds before the job will be available for processing. If no delay is 
+This method allows you to specify a delay in seconds before the job will be available for processing. If no delay is
 specified, the job will be processed after a default delay period.
 
 ```php
@@ -240,7 +242,8 @@ return [
 There are several ways to change the serializer. You can globally change the default serializer for the application.
 
 > **See more**
-> You can read more about configuring the Serializer [here](../component/serializer.md).
+> You can read more about the Serializer configuration in the [Advanced — Serializer](../advanced/serializer.md)
+> section.
 
 Or you can set a specific serializer for the job type. A specific serializer is selected by
 the `Spiral\Serializer\SerializerRegistryInterface`.

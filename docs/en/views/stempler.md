@@ -482,7 +482,7 @@ pattern will be passed as query parameters:
 The result `/index.html?id=10`.
 
 > **See more**
-> Read more about routing and named routes [here](../http/routing.md).
+> Read more about routing and named routes in the [HTTP — Routing](../http/routing.md) section.
 
 ### Custom Directives
 

@@ -104,7 +104,7 @@ AUTH_TOKEN_STORAGE=database
 
 > **See more**
 > Read more about installation and configuration `spiral/cycle-bridge`
-> package [here](https://github.com/spiral/cycle-bridge).
+> package in the [The Basics — Database and ORM](../basics/orm.md) section.
 
 You must generate and run database migration or run `cycle:sync` in order to create the needed table:
 

@@ -30,7 +30,8 @@ final class StoreUser extends Filter
 ```
 
 > **See more**
-> Read more about user Role-Based Access Control [here](../security/rbac.md).
+> Read more about user Role-Based Access Control in the [Security — Role-Based Access Control](../security/rbac.md)
+> section.
 
 Here is an example of a simple interceptor that checks authorization:
 

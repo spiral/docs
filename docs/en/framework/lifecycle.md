@@ -31,5 +31,5 @@ example, they can load configs or routes from various sources like attributes or
 caching them. This can make it easier to modify and update the application as needed.
 
 > **See more**
-> Read more about Framework and application server symbiosis [here](../framework/design.md). Read about PSR-7 request
-> flow [here](/http/lifecycle.md).
+> Read more about Framework and application server symbiosis n the [Framework — Design Approach](../framework/design.md)
+> section. Read about PSR-7 request flow in the [HTTP — Request Lifecycle](../http/lifecycle.md) section.

@@ -198,13 +198,15 @@ In the `.env` file, you can configure the queue connection and pipeline to use f
 You can also configure the email queue in the `app/config/mailer.php` configuration file.
 
 > **See more**
-> Read more about queue connection configuration [here](../queue/configuration.md).
+> Read more about queue connection configuration in
+> the [Queue and Jobs — Installation and Configuration](../queue/configuration.md) section.
 
 ## Usage
 
 The component provides an ability to compose content-rich email templates using `Stempler` views:
 
 ```html
+
 <extends:sendit:builder subject="I'm afraid I can't do that"/>
 <use:bundle path="sendit:bundle"/>
 

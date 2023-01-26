@@ -5,7 +5,7 @@ the [spiral/validator](https://github.com/spiral/validator) package. This is a s
 that provides an array-based Domain Specific Language (DSL) to construct complex validation chains.
 
 > **See more**
-> Read more about [Validation](factory.md) in the Spiral Framework.
+> Read more about validation in the [Validation](factory.md) section.
 
 ## Installation and Configuration
 
@@ -133,7 +133,7 @@ a "Filter" object, which defines the required data that should be extracted from
 filter object's properties.
 
 > **See more**
-> Read more about the Spiral Framework Filters [here](../filters/filter.md).
+> Read more about filters in the [Filters — Filter object](../filters/filter.md) section.
 
 ### Filter with attributes
 

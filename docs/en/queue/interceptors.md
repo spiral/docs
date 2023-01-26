@@ -5,7 +5,7 @@ use of interceptors. An interceptor is a piece of code that is executed before o
 which allows developers to hook into the job processing pipeline to perform some action.
 
 > **See more**
-> Read more about interceptors in the [Interceptors](../framework/interceptors.md) section.
+> Read more about interceptors in the [Framework — Interceptors](../framework/interceptors.md) section.
 
 Interceptors can be useful for a variety of purposes, such as handling errors, adding additional context to the job, or
 performing some other action based on the job being processed.

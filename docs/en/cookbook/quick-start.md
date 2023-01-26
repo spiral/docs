@@ -139,7 +139,7 @@ class RoutesBootloader extends BaseRoutesBootloader
 ```
 
 > **See more**
-> Read more about Routing [here](../http/routing.md).
+> Read more about routing in the [HTTP — Routing](../http/routing.md) section.
 
 Remove all middlewares in method `middlewareGroups`:
 

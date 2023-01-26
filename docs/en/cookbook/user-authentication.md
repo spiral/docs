@@ -14,7 +14,7 @@ For example, the `Spiral\Auth\TokenStorageInterface` can be used to generate and
 while the `Spiral\Auth\HttpTransportInterface` can be used to send or receive tokens to clients.
 
 > **See more**
-> Read more about the interfaces in the [Authentication](../security/authentication.md) section.
+> Read more about the interfaces in the [Security — User Authentication](../security/authentication.md) section.
 
 Before you can implement user authentication in an application, you will need to add
 the `Spiral\Auth\Middleware\AuthMiddleware` to the middleware list. This middleware is responsible for checking the
@@ -22,7 +22,7 @@ incoming request for a valid authentication token and loading the user's authent
 storage if one is found.
 
 > **See more**
-> Read more about the middleware registration in the [Route](../http/routing.md#middleware) section.
+> Read more about the middleware registration in the [HTTP — Middleware](../http/middleware.md) section.
 
 When the `AuthMiddleware` loads an authentication token from the incoming request, it creates a new scope and binds an
 instance of the `Spiral\Auth\AuthContext` to the `Spiral\Auth\AuthContextInterface` in the scoped container. This
@@ -204,7 +204,8 @@ Next, you will need to implement a request filter that can handle login requests
 should validate the user's credentials and authenticate the user if they are valid.
 
 > **See more**
-> Read more about request filters [here](../filters/configuration.md).
+> Read more about request filters in the [Filters — Installation and Configuration](../filters/configuration.md)
+> section.
 
 Here is an example of a request filter that can be used to authenticate users:
 

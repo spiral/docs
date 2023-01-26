@@ -16,7 +16,8 @@ duplication and make it easier to manage your validation logic.
 *Illustration of the process of filtering and validating input data in an HTTP layer*
 
 > **See more**
-> Read more about how to use filters for console commands [here](../cookbook/console-validation.md)
+> Read more about how to use filters for console commands in
+> the [Cookbook — Console command input validation](../cookbook/console-validation.md) section.
 
 <hr>
 

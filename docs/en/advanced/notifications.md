@@ -101,7 +101,7 @@ The package supports a variety of notification channels, each with its own uniqu
 - **Push Channel**: allows you to send push notifications to mobile devices and web browsers.
 
 > **See more**
-> Read more about channel types in the official [Symfony documentation](https://symfony.com/doc/current/notifier.html)
+> Read more about channel types in the official [Symfony documentation](https://symfony.com/doc/current/notifier.html).
 
 In the configuration file, all the channels that can be used for sending notifications are registered in
 the `typeAliases`section. This section is an array where the **key** represents the type of the channel and
