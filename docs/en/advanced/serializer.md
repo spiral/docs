@@ -1,4 +1,4 @@
-# Advanced — Serializer
+# Component — Serializer
 
 The Spiral Framework helps you manage and organize your code. One aspect of this is the ability to serialize data, which
 involves converting it into a format that can be stored or transmitted, and then later deserialized, or converted back

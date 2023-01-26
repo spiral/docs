@@ -1,4 +1,4 @@
-# Component — Notifications
+# Advanced — Notifications
 
 The Spiral Framework has a pretty cool notifications system that lets you send all kinds of messages to your users
 through different channels. You can send emails, SMS messages, Slack messages, push notifications, and more all through

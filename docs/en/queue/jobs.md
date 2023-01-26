@@ -1,4 +1,4 @@
-# Queue and Jobs — Running Jobs
+# Queue — Running Jobs
 
 After installing the application server, you can use the built-in queue service to run tasks in your application. This
 service, which is included in both the Web and GRPC bundles, uses an "ephemeral" broker to manage these tasks. In other

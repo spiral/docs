@@ -1,7 +1,7 @@
-# Filters from Spiral Framework 2.x
+# Filters — Migration from Spiral Framework 2.x
 
 If you are migrating from Spiral Framework 2.x, and you want to continue using the old filters you can
-use the [spiral/filters-bridge](https://github.com/spiral/filters-bridge) package.
+use the [spiral/filters-bridge](https://github.com/spiral/filters-bridge) package in this case.
 
 The package `spiral/filters-bridge` provides support for request validation, composite validation, an error message
 mapping and locations, etc.

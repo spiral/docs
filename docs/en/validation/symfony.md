@@ -1,4 +1,4 @@
-# Symfony Validator
+# Validation — Symfony Validator
 
 The Spiral Framework provides a validation component that allows you to validate data using
 the [Symfony Validation bridge](https://github.com/spiral-packages/symfony-validator) package. This validation bridge

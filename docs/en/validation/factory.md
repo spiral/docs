@@ -1,4 +1,4 @@
-# Validation
+# Validation — Factory
 
 The validation component of the Spiral Framework allows you to validate data that is submitted by a user or received
 from an external source.

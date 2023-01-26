@@ -1,4 +1,4 @@
-# Queue and Jobs — Interceptors
+# Queue — Interceptors
 
 Spiral Framework provides a way for developers to customize the behavior of their job processing pipeline through the
 use of interceptors. An interceptor is a piece of code that is executed before or after a job is pushed or consumed, and

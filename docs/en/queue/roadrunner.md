@@ -1,4 +1,4 @@
-# Queue and Jobs — RoadRunner integration
+# Queue — RoadRunner integration
 
 Roadrunner queues provide a unified queueing API across a variety of different queue backends. You can read full 
 information about supported pipelines on the [official site](https://roadrunner.dev/docs/plugins-jobs).

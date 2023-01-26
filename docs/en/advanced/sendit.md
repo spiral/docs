@@ -1,4 +1,4 @@
-# Component — Mailer
+# Advanced — Mailer
 
 The Spiral Framework provides a simple email API powered by the symfony/mailer component.
 
@@ -199,7 +199,7 @@ You can also configure the email queue in the `app/config/mailer.php` configurat
 
 > **See more**
 > Read more about queue connection configuration in
-> the [Queue and Jobs — Installation and Configuration](../queue/configuration.md) section.
+> the [Queue — Installation and Configuration](../queue/configuration.md) section.
 
 ## Usage
 

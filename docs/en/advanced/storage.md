@@ -1,4 +1,4 @@
-# Storage and Cloud distribution
+# Component — Storage and Cloud distribution
 
 The Spiral Framework offers a comprehensive solution for file storage and distribution through its `spiral/storage` and
 `spiral/distribution` components. The `spiral/storage` component provides powerful storage abstraction utilizing the

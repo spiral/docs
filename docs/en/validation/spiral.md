@@ -1,4 +1,4 @@
-# Spiral Validator
+# Validation — Spiral Validator
 
 The Spiral Framework provides a validation component that allows you to validate data using
 the [spiral/validator](https://github.com/spiral/validator) package. This is a simple, lightweight validator

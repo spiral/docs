@@ -1,4 +1,4 @@
-# Laravel Validator
+# Validation — Laravel Validator
 
 The Spiral Framework provides a validation component that allows you to validate data using
 the [Laravel Validation bridge](https://github.com/spiral-packages/laravel-validator) package. This validation bridge
