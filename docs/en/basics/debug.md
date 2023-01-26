@@ -34,8 +34,11 @@ It is possible to debug the Spiral application like any other classic PHP applic
 
 ### IDE Configuration
 
-Ad first, you need to configure your IDE to work with xDebug. Read more about the IDE configuration in the
-official [documentation](https://roadrunner.dev/docs/php-debugging).
+Ad first, you need to configure your IDE to work with xDebug. 
+
+> **See more**
+> Read more about the IDE configuration in the 
+> official [documentation](https://roadrunner.dev/docs/php-debugging).
 
 ### On-Demand
 
@@ -194,7 +197,7 @@ interceptors.
 - TCP
 - [Events](../advanced/events.md#interceptors).
 
-> **Note**
+> **See more**
 > Read more about interceptors in the [Framework — Interceptors](../framework/interceptors.md) section.
 
 To use the profiler as an interceptor, you just need to register `Spiral\Profiler\ProfilerInterceptor` class.
@@ -224,7 +227,7 @@ class AppBootloader extends DomainBootloader
 Middleware will be useful if you want to profile all requests to your application. To use profiler as a middleware you
 need to add it to your router.
 
-> **Note**
+> **See more**
 > Read more about middleware in the [HTTP — Routing](../http/routing.md) section.
 
 ##### Global middleware

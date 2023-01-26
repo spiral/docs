@@ -220,7 +220,7 @@ The Events component provides an ability to intercept events. This is useful whe
 for example, send it via websockets. To do this, you need to create an interceptor class that implements
 the `Spiral\Core\CoreInterceptorInterface` interface.
 
-> **Note**
+> **See more**
 > Read more about interceptors in the [Interceptors](../framework/interceptors.md) section.
 
 **Example**
@@ -275,7 +275,7 @@ return [
 ];
 ```
 
-> **Note**
+> **See more**
 > Read more about interceptors in the [Interceptors](../cookbook/domain-core.md) section.
 
 ## Creating an Event dispatcher

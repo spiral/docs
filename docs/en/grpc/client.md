@@ -153,7 +153,7 @@ go get -u google.golang.org/grpc
 go get -u github.com/golang/protobuf/protoc-gen-go
 ```
 
-> **Note**
+> **See more**
 > Read more about how to create Golang GRPC clients and server [here](https://grpc.io/docs/tutorials/basic/go/).
 
 ### 2. Compile the `.proto` file
@@ -266,6 +266,6 @@ func main() {
 }
 ```
 
-> **Note**
+> **See more**
 > Read more about working with metadata in
 > Golang [here](https://github.com/grpc/grpc-go/blob/master/Documentation/grpc-metadata.md).

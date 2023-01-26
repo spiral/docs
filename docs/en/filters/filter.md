@@ -139,7 +139,7 @@ All the filter objects should implement `Spiral\Filters\Model\FilterInterface`. 
 that when you request a filter class from the container, it will be automatically created and request data will be
 mapped to each filter property.
 
-> **Note**
+> **See more**
 > Read more about injectors in the [Advanced — Container injectors](../advanced/injectors.md) section.
 
 ```php

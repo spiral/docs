@@ -8,7 +8,7 @@ The `Spiral\Boot\CoreInterface` is typically bound to the `Spiral\Core\Core` cla
 resolving the controllers, handling the request and returning a response. It's also responsible for managing the
 lifecycle of the application and keeping track of the current request and response.
 
-> **Note**
+> **See more**
 > Read more about interceptors in the [Interceptors](../framework/interceptors.md) section.
 
 ## Domain Core Builder
@@ -89,7 +89,7 @@ final class UserController
 }
 ```
 
-> **Note**
+> **See more**
 > Read more about Annotated routes in the [Routing](../http/annotated-routes.md) section.
 
 You must use named parameters if more than one entity is expected:

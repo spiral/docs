@@ -111,7 +111,7 @@ class UserRegistrationHandler
 }
 ```
 
-> **Note**
+> **See more**
 > Supported types: gauge, counter, summary, histogram. Read more about metrics types in
 > the [official Prometheus documentation](https://prometheus.io/docs/concepts/metric_types/).
 

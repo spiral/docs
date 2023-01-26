@@ -5,7 +5,7 @@ the [Symfony Validation bridge](https://github.com/spiral-packages/symfony-valid
 provides integration with the [Symfony Validator](https://github.com/symfony/validator) component, which is a more
 powerful and feature-rich validation library.
 
-> **Note**
+> **See more**
 > Read more about [Validation](factory.md) in the Spiral Framework.
 
 ## Installation
@@ -57,7 +57,7 @@ The `spiral/filters` component is a tool for validating HTTP request data in Spi
 a "Filter" object, which defines the required data that should be extracted from the request object and mapped into the
 filter object's properties.
 
-> **Note**
+> **See more**
 > Read more about the Spiral Framework Filters [here](../filters/filter.md).
 
 ### Filter with attributes

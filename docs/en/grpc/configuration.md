@@ -8,7 +8,7 @@ extremely efficient way of cross-service communication for distributed applicati
 instruments to generate client and server code-bases for many languages allowing developers to use the most optimal
 language for their task.
 
-> **Note**
+> **See more**
 > You can read more about protobuf [here](https://developers.google.com/protocol-buffers/docs/overview).
 
 ## Toolkit Installation

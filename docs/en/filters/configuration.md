@@ -15,7 +15,7 @@ duplication and make it easier to manage your validation logic.
 ![Filters](https://user-images.githubusercontent.com/773481/211005150-ba8803ed-42c1-40eb-9cf0-7e45e15b0b73.png)
 *Illustration of the process of filtering and validating input data in an HTTP layer*
 
-> **Note**
+> **See more**
 > Read more about how to use filters for console commands [here](../cookbook/console-validation.md)
 
 <hr>

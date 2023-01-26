@@ -207,7 +207,7 @@ final class ValidatorBootloader extends Bootloader
 }
 ```
 
-> **Note**
+> **See more**
 > Read more about Bootloaders [here](../framework/bootloaders.md).
 
 It's worth noting that this is just one example of how you might create a custom validator in the Spiral Framework.

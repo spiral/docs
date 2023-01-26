@@ -226,8 +226,11 @@ To deploy your application, run the following command:
 
 #### CI/CD
 
-Deployer can be used in CI/CD pipelines. Read more about it in [Deployer CI/CD](https://deployer.org/docs/7.x/ci-cd)
-section.
+Deployer can be used in CI/CD pipelines. 
+
+
+> **See more**
+> Read more about it in [Deployer CI/CD](https://deployer.org/docs/7.x/ci-cd) section.
 
 <hr>
 

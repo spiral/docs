@@ -62,8 +62,8 @@ uses only one worker and reloads it after every request.
 
 You can also create and use an alternative configuration file via `-c` flag of the `rr` application.
 
-> **Note**
-> Read more about Workers and Lifecycle [here](../start/workers.md).
+> **See more**
+> Read more about workers in the Official RoadRunner [documentation](https://roadrunner.dev/docs/app-server-cli/2.x/en).
 
 ### Lighter Up
 
@@ -138,7 +138,7 @@ class RoutesBootloader extends BaseRoutesBootloader
  }
 ```
 
-> **Note**
+> **See more**
 > Read more about Routing [here](../http/routing.md).
 
 Remove all middlewares in method `middlewareGroups`:
@@ -266,7 +266,7 @@ To check that the database connection was successful, run:
 php app.php db:list
 ```
 
-> **Note**
+> **See more**
 > Read more about Databases [here](../database/configuration.md).
 
 ### Connect Database Seeder

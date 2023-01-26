@@ -13,7 +13,7 @@ Emails are delivered via a "transport". Out of the box, you can deliver emails o
 
 To enable the component, you need to add the `Spiral\SendIt\Bootloader\MailerBootloader` class to the bootloaders list.
 
-> **Note**
+> **See more**
 > Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
 >
 
@@ -197,7 +197,7 @@ In the `.env` file, you can configure the queue connection and pipeline to use f
 
 You can also configure the email queue in the `app/config/mailer.php` configuration file.
 
-> **Note**
+> **See more**
 > Read more about queue connection configuration [here](../queue/configuration.md).
 
 ## Usage

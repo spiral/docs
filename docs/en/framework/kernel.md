@@ -224,7 +224,7 @@ The `Spiral\Boot\EnvironmentInterface` is used to access a list of environment v
 framework relies on system-level environment values. However, it is possible to redefine these values while initializing
 the kernel by passing a custom `Spiral\Boot\Environment` object to the `run` method.
 
-> **Note**
+> **See more**
 > Read more about application environments in the [Getting started — Configuration](../start/configuration.md) section.
 
 An example of this can be seen in the following code snippet:

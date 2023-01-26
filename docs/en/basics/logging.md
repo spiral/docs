@@ -185,7 +185,7 @@ If you want to change the log message structure, you can use the `LOGGER_FORMAT`
 LOGGER_FORMAT=[%datetime%] %channel%.%level%: %message% %context% %extra%\n
 ```
 
-> **Note**
+> **See more**
 > Read more about the available placeholders in 
 > the [Monolog documentation](https://seldaek.github.io/monolog/doc/message-structure.html).
 

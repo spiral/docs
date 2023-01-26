@@ -226,7 +226,7 @@ To persist entity changes, your application services and controllers will requir
 By default, the framework will automatically create a transaction on-demand from the container. Considering that
 transactions always clean after the operation `run`, you can request it as a constructor parameter.
 
-> **Note:**
+> **See more**
 > You can read more about transactions in
 > the [CycleORM documentation](https://cycle-orm.dev/docs/advanced-entity-manager).
 
@@ -342,7 +342,7 @@ return [
 ];
 ```
 
-> **Note**
+> **See more**
 > Read more about the configuration of the database in
 > the [Database - Installation and Configuration](https://cycle-orm.dev/docs/database-configuration) on the official
 > site.

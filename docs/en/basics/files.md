@@ -7,7 +7,7 @@ The framework provides a simple component `spiral/files` to work with the filesy
 Most of the Spiral components rely on the directory registry instead of hard-coded paths. The registry is represented
 using `Spiral\Boot\DirectoriesInterface`.
 
-> **Note**
+> **See more**
 > Read more about application directory structure in the [Getting started — Directory Structure](../start/structure.md)
 > section.
 
@@ -206,7 +206,7 @@ final class FileService
 }
 ```
 
-> **Note**
+> **See more**
 > Read more about prototyped properties in [The Basics — Prototyping](../basics/prototype.md) section.
 
 ### Create Directory

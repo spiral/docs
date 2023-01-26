@@ -30,6 +30,6 @@ Another cool thing is that it allows developers to be a bit more flexible with h
 example, they can load configs or routes from various sources like attributes or files without having to worry about
 caching them. This can make it easier to modify and update the application as needed.
 
-> **Note**
+> **See more**
 > Read more about Framework and application server symbiosis [here](../framework/design.md). Read about PSR-7 request
 > flow [here](/http/lifecycle.md).

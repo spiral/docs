@@ -82,7 +82,7 @@ communicate with RoadRunner.
 And `grpc_api_address` is the address of the Centrifugo GRPC server. It will be used by the RoadRunner Centrifuge plugin
 to communicate with the Centrifugo server.
 
-> **Note**
+> **See more**
 > Read more about the configuration of the Centrifuge plugin [here](https://roadrunner.dev/docs/plugins-centrifuge).
 
 ### Centrifugo server

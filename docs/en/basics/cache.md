@@ -138,7 +138,7 @@ kv:
 ...
 ```
 
-> **Note**
+> **See more**
 > Read more about the configuration of the RoadRunner KV plugin in
 > the [RoadRunner documentation](https://roadrunner.dev/docs/plugins-kv).
 
@@ -147,7 +147,7 @@ kv:
 The Spiral Framework's cache component allows you to work with the cache using two interfaces:
 `Psr\SimpleCache\CacheInterface` and `Spiral\Cache\CacheStorageProviderInterface`.
 
-> **Note**
+> **See more**
 > You can use the `cache` and `cacheManager` prototype properties. Read more about the
 > prototypes in the [The Basics — Prototyping](../basics/prototype.md) section.
 

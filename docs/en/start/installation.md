@@ -100,7 +100,7 @@ Use the following command to run RoadRunner server on **Windows**
 
 By default, the application will be available on `http://localhost:8080`.
 
-> **Note**
+> **See more**
 > Read more about application server in the [Getting started — Application Server](../start/server.md) section.
 
 <hr>

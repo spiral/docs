@@ -100,7 +100,7 @@ The package supports a variety of notification channels, each with its own uniqu
 - **Browser channel**: uses flash messages to send notifications to the user's browser.
 - **Push Channel**: allows you to send push notifications to mobile devices and web browsers.
 
-> **Note**
+> **See more**
 > Read more about channel types in the official [Symfony documentation](https://symfony.com/doc/current/notifier.html)
 
 In the configuration file, all the channels that can be used for sending notifications are registered in
@@ -213,7 +213,7 @@ final class User implements RecipientInterface, SmsRecipientInterface
 A notification class should extend the `Symfony\Component\Notifier\Notification\Notification` class, this class provides
 basic methods that a notification class should have.
 
-> **Note**
+> **See more**
 > Read more about notification class in
 > the [official documentation](https://symfony.com/doc/current/notifier.html#creating-sending-notifications).
 

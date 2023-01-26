@@ -358,7 +358,7 @@ return [
 ];
 ```
 
-> **Note**
+> **See more**
 > Read more about console interceptors [here](../console/interceptors.md).
 
 That's it. Now if you run the console command with invalid input data:

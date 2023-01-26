@@ -481,6 +481,7 @@ pattern will be passed as query parameters:
 
 The result `/index.html?id=10`.
 
+> **See more**
 > Read more about routing and named routes [here](../http/routing.md).
 
 ### Custom Directives
@@ -1274,7 +1275,7 @@ To use this partial on your page, first import it using the `<use:element path="
 </block:content>
 ```   
 
-> **Note**
+> **See more**
 > Read more about mass-importing partials below.
 
 #### Props
@@ -1951,7 +1952,7 @@ https://github.com/nikic/PHP-Parser.
 
 You can create magical (in both ways) workflows and helpers by implementing your Node Visitors.
 
-> **Note**
+> **See more**
 > You can read more about how traversing 
 > works [here](https://github.com/nikic/PHP-Parser/blob/master/doc/2_Usage_of_basic_components.markdown#node-traversation).
 

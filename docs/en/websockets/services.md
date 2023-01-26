@@ -141,7 +141,7 @@ class ConnectService implements ServiceInterface
 }
 ```
 
-> **Note**
+> **See more**
 > Read more about connection requests in
 > the [Centrifugo documentation](https://centrifugal.dev/docs/server/proxy#connect-request-fields).
 
@@ -249,7 +249,7 @@ return [
 ];
 ```
 
-> **Note**
+> **See more**
 > Read more about subscribe requests in
 > the [Centrifugo documentation](https://centrifugal.dev/docs/server/proxy#subscribe-request-fields).
 
@@ -284,7 +284,7 @@ class RefreshService implements ServiceInterface
 }
 ```
 
-> **Note**
+> **See more**
 > Read more about refresh connection requests in
 > the [Centrifugo documentation](https://centrifugal.dev/docs/server/proxy#refresh-request-fields).
 
@@ -330,7 +330,7 @@ final class RPCService implements ServiceInterface
 }
 ```
 
-> **Note**
+> **See more**
 > Read more about RPC requests in
 > the [Centrifugo documentation](https://centrifugal.dev/docs/server/proxy#rpc-request-fields).
 
@@ -467,6 +467,6 @@ final class PublishService implements ServiceInterface
 }
 ```
 
-> **Note**
+> **See more**
 > Read more about publish requests in
 > the [Centrifugo documentation](https://centrifugal.dev/docs/server/proxy#publish-request-fields).

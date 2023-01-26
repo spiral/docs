@@ -396,7 +396,7 @@ protected const LOAD = [
 
 Then you need to register the middleware `Spiral\Debug\StateCollector\HttpCollector` in the application.
 
-> Note
+> **See more**
 > Read more how to register middleware in the [HTTP — Routing](../http/routing.md#add-middleware) section.
 
 ##### Logs collector

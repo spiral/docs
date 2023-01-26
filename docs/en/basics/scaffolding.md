@@ -85,7 +85,7 @@ Some packages may provide their own Commands. For example, the `Cycle Bridge` pa
 | create:repository  | Create Entity Repository declaration | 
 | create:entity      | Create Entity declaration            | 
 
-> **Note**
+> **See more**
 > Read more about `Cycle Bridge` package and available Commands [here](https://spiral.dev/docs/packages-cycle-bridge).
 
 ### Bootloader

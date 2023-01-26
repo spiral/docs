@@ -162,8 +162,10 @@ class OrderService
 
 ### Centrifugo
 
-Read more about integration with Centrifugo Websocket server [here](./configuration.md). After installation, you can
-activate driver using the `BROADCAST_CONNECTION` environment variable:
+> **See more**
+> Read more about integration with Centrifugo Websocket server [here](./configuration.md). 
+
+After installation, you can activate driver using the `BROADCAST_CONNECTION` environment variable:
 
 ```dotenv .env
 # Broadcasting

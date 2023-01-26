@@ -239,7 +239,7 @@ return [
 
 There are several ways to change the serializer. You can globally change the default serializer for the application.
 
-> **Note**
+> **See more**
 > You can read more about configuring the Serializer [here](../component/serializer.md).
 
 Or you can set a specific serializer for the job type. A specific serializer is selected by

@@ -626,7 +626,7 @@ protected function index(Database $primary, Database $secondary): void
 
 Where `primary` and `secondary` are database names.
 
-> **Note**
+> **See more**
 > Read more about injectors in [Advanced — Injectors](../advanced/injectors.md) section.
 
 ## Singletons

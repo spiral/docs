@@ -29,7 +29,7 @@ Before we begin, you'll need to have the following installed on your machine:
 - [Velox](https://github.com/roadrunner-server/velox/releases)- the official RoadRunner builder tool. It allows you
   to build custom RoadRunner binaries from github and gitlab repositories.
 
-> **Note**
+> **See more**
 > Read more how to create a RoadRunner plugin [here](https://roadrunner.dev/docs/plugins-intro/) and how to build a
 > binary with custom plugins [here](https://roadrunner.dev/docs/app-server-build).
 
@@ -343,8 +343,8 @@ final class TickerDispatcher implements DispatcherInterface
 }
 ```
 
-> **Note**
-> Read more about the Dispatchers [here](../framework/dispatcher.md).
+> **See more**
+> Read more about the dispatchers in the [Framework — Dispatchers](../framework/dispatcher.md) section.
 
 Create a Bootloader to register our dispatcher in the kernel:
 

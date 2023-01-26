@@ -102,7 +102,7 @@ protected const LOAD = [
 AUTH_TOKEN_STORAGE=database
 ```
 
-> **Note**
+> **See more**
 > Read more about installation and configuration `spiral/cycle-bridge`
 > package [here](https://github.com/spiral/cycle-bridge).
 
@@ -271,7 +271,7 @@ final class RoutesBootloader extends BaseRoutesBootloader
 }
 ```
 
-> **Note**
+> **See more**
 > Read more about middleware in the [HTTP — Middleware](../http/middleware.md) section.
 
 ### Token transport

@@ -50,7 +50,7 @@ message PingResponse {
 This `.proto` file defines a service called **Pinger** with a single method, `ping`, which takes a `PingRequest` message
 as input and returns a `PingResponse` message.
 
-> **Note**
+> **See more**
 > Make sure to use the options `php_namespace` and `php_metadata_namespace` to properly configure PHP namespace. You can
 > read more about the GRPC service declaration [here](https://grpc.io/docs/guides/concepts/).
 
@@ -189,7 +189,7 @@ public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 }
 ```
 
-> **Note**
+> **See more**
 > Read more about auth practices [here](https://grpc.io/docs/guides/auth/).
 
 ### Response Headers
@@ -224,7 +224,7 @@ The `spiral/roadrunner-grpc` component provides a number of exceptions to indica
 | Spiral\RoadRunner\GRPC\Exception\\**UnauthenticatedException** | UNAUTHENTICATED(16) |
 | Spiral\RoadRunner\GRPC\Exception\\**UnimplementedException**   | UNIMPLEMENTED(12)   |
 
-> **Note**
+> **See more**
 > See all status codes in `Spiral\RoadRunner\GRPC\StatusCode`. Read more about GRPC error
 > codes [here](https://github.com/grpc/grpc/blob/master/doc/statuscodes.md).
 

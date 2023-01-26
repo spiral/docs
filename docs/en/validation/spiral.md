@@ -4,7 +4,7 @@ The Spiral Framework provides a validation component that allows you to validate
 the [spiral/validator](https://github.com/spiral/validator) package. This is a simple, lightweight validator
 that provides an array-based Domain Specific Language (DSL) to construct complex validation chains.
 
-> **Note**
+> **See more**
 > Read more about [Validation](factory.md) in the Spiral Framework.
 
 ## Installation and Configuration
@@ -132,7 +132,7 @@ The `spiral/filters` component is a tool for validating HTTP request data in Spi
 a "Filter" object, which defines the required data that should be extracted from the request object and mapped into the 
 filter object's properties.
 
-> **Note**
+> **See more**
 > Read more about the Spiral Framework Filters [here](../filters/filter.md).
 
 ### Filter with attributes

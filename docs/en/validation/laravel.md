@@ -4,7 +4,7 @@ The Spiral Framework provides a validation component that allows you to validate
 the [Laravel Validation bridge](https://github.com/spiral-packages/laravel-validator) package. This validation bridge
 provides integration with the Laravel Validator, which is a validation component used in the Laravel framework.
 
-> **Note**
+> **See more**
 > Read more about [Validation](factory.md) in the Spiral Framework.
 
 ## Installation
@@ -56,7 +56,7 @@ The `spiral/filters` component is a tool for validating HTTP request data in Spi
 a "Filter" object, which defines the required data that should be extracted from the request object and mapped into the
 filter object's properties.
 
-> **Note**
+> **See more**
 > Read more about the Spiral Framework Filters [here](../filters/filter.md).
 
 ### Filter with attributes

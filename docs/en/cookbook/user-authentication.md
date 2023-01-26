@@ -13,7 +13,7 @@ The Spiral Framework provides a number of interfaces and classes for implementin
 For example, the `Spiral\Auth\TokenStorageInterface` can be used to generate and store tokens for authenticated users,
 while the `Spiral\Auth\HttpTransportInterface` can be used to send or receive tokens to clients.
 
-> **Note:**
+> **See more**
 > Read more about the interfaces in the [Authentication](../security/authentication.md) section.
 
 Before you can implement user authentication in an application, you will need to add
@@ -21,7 +21,7 @@ the `Spiral\Auth\Middleware\AuthMiddleware` to the middleware list. This middlew
 incoming request for a valid authentication token and loading the user's authentication information from the token
 storage if one is found.
 
-> **Note:**
+> **See more**
 > Read more about the middleware registration in the [Route](../http/routing.md#middleware) section.
 
 When the `AuthMiddleware` loads an authentication token from the incoming request, it creates a new scope and binds an
@@ -203,7 +203,7 @@ credentials (e.g. username and password).
 Next, you will need to implement a request filter that can handle login requests from the login form. The request filter
 should validate the user's credentials and authenticate the user if they are valid.
 
-> **Note:**
+> **See more**
 > Read more about request filters [here](../filters/configuration.md).
 
 Here is an example of a request filter that can be used to authenticate users:

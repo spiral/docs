@@ -8,7 +8,7 @@ isolated and works independently, following a "share nothing" approach where res
 Using RoadRunner can significantly improve the speed and efficiency by eliminating the need for the application to go 
 through the bootstrapping process repeatedly. This can save on CPU and memory resources and reduce response time.
 
-> **Note**
+> **See more**
 > Read more about Framework and application server symbiosis
 > in the [Framework — Application Lifecycle](../framework/lifecycle.md) section.
 
@@ -130,7 +130,7 @@ http:
     debug: true
 ```
 
-> **Note**
+> **See more**
 > Read more about application server configuration in the official [documentation](https://roadrunner.dev/docs).
 
 ## Running the Server
@@ -161,7 +161,7 @@ Use the following command to start application server on **Windows**
 
 ::::
 
-> **Note**
+> **See more**
 > Read more about Server Commands in the [RoadRunner documentation](https://roadrunner.dev/docs/app-server-cli).
 
 ## RoadRunner bridge

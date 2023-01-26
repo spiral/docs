@@ -682,8 +682,9 @@ Some generators may accept additional options. Such arguments can be passed to t
 or `toUriFrom($resolver, [...$arguments])` methods. For example, if you create a link to the CloudFront, you can
 additionally specify the expiration time of this link.
 
-You can read more about possible additional arguments on the corresponding page
-of the [distribution documentation](../component/distribution.md).
+> **See more**
+> You can read more about possible additional arguments on the corresponding page 
+> of the [distribution documentation](../component/distribution.md).
 
 ```php
 $uri = $file->toUri(new \DateInterval('PT30S'));
