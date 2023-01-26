@@ -1,58 +1,83 @@
 # Filters — Composite Filters
 
-The component provides an ability to create nested filters and a nested array of filters. To demonstrate the
-composition, we will use a sample filter:
+The Spiral Framework allows for the creation of composite filters, which are filters that are composed of other filters.
 
-```php
+Let's imagine that we have a `AddressFilter` that represents a single address that can be used as a part of a profile
+with its own validation rules:
+
+> **Note**
+> In our examples we will use [Spiral Validator](../validation/spiral.md) for validation, but you can use any other
+> validation library.
+
+```php app/src/Request/AddressFilter.php
 namespace App\Request;
 
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class AddressFilter extends Filter
+class AddressFilter extends Filter implements HasFilterDefinition
 {
     #[Post]
     public string $city;
 
     #[Post]
     public string $address;
+
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition(validationRules: [
+            'city' => ['required', 'string'],
+            'address' => ['required', 'string'],
+        ]);
+    }
 }
+
 ```
 
-This Filter can accept the following data format:
+The Spiral Framework provides two types of nested filters:
 
-```json
-{
-  "city": "San Francisco",
-  "address": "Address"
-}
-```
+## Nested Filter
 
-## Child Filter
+The Spiral Framework allows you to create compound filters by nesting other filters inside them. This is done by
+declaring a property in the parent filter class and decorating it with the `Spiral\Filters\attribute\NestedFilter`
+attribute. The attribute takes a class parameter, which is set to the child filter class. This allows the parent filter
+to accept input data in a nested format, where the property decorated with this attribute contains the data for the
+child filter. This makes it easy to validate and filter the data in multiple levels and reuse the child filter in
+different parent filters.
 
-You can create compound filters by nesting other filters inside them. Simply declare the field with a child filter 
-and add the attribute `Spiral\Filters\Attribute\NestedFilter`:
-
-```php
+```php app/src/Request/ProfileFilter.php
 namespace App\Request;
 
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Attribute\NestedFilter;
 use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class ProfileFilter extends Filter
+class ProfileFilter extends Filter implements HasFilterDefinition
 {
     #[Post]
     public string $name;
 
     #[NestedFilter(class: AddressFilter::class)]
     public AddressFilter $address;
+
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition(validationRules: [
+            'name' => ['required', 'string'],
+        ]);
+    }
 }
 ```
 
 This Filter will accept the data in the format:
 
-```json
+```json Post data
 {
   "name": "Antony",
   "address": {
@@ -62,7 +87,8 @@ This Filter will accept the data in the format:
 }
 ```
 
-You can get access to the nested Filter using class properties:
+Once the request input data is passed through the filter, you can access the filtered data using the properties of the
+filter class.
 
 ```php
 public function index(ProfileFilter $profile): void
@@ -71,9 +97,11 @@ public function index(ProfileFilter $profile): void
 }
 ```
 
-Both the filters will be validated together. In case of an error in the `address` filter, the error will be mounted in a sub-array:
+When using nested filters, both the parent filter and the child filter(s) will be validated together. If there are any
+validation errors in the child filter, they will be mounted in a sub-array of the parent filter's errors. This allows
+you to easily identify which errors belong to which filter, and makes it easier to display the errors to the user.
 
-```json
+```json Validation errors
 {
   "name": "This field is required.",
   "address": {
@@ -84,33 +112,28 @@ Both the filters will be validated together. In case of an error in the `address
 
 ### Custom Prefix
 
-In some cases, you might need to use a data prefix different from the actual key assigned to the nested Filter, use the
-parameter `prefix` in the `NestedFilter`:
+The `NestedFilter` attribute allows you to specify a custom prefix for the data that is passed to the child filter. By
+default, the prefix is the same as the key assigned to the nested filter property, but in some cases, you may need to
+use a different prefix.
 
-```php
-namespace App\Request;
-
-use Spiral\Filters\Attribute\Input\Post;
-use Spiral\Filters\Attribute\NestedFilter;
-use Spiral\Filters\Model\Filter;
-
-class ProfileFilter extends Filter
+```php app/src/Request/ProfileFilter.php
+class ProfileFilter extends Filter implements HasFilterDefinition
 {
-    #[Post]
-    public string $name;
-
     #[NestedFilter(class: AddressFilter::class, prefix: 'addr')]
     public AddressFilter $address;
+    
+    // ...
 }
 ```
 
-This Filter can accept the following data format:
+The json data format that will work with this filter is:
 
-```json
+```json Post data
 {
-  "name": "This field is required.",
+  "name": "Antony",
   "addr": {
-    "city": "This field is required."
+    "city": "San Francisco",
+    "address": "Address"
   }
 }
 ```
@@ -118,29 +141,72 @@ This Filter can accept the following data format:
 > **Note**
 > You can skip the use of the `address` key internally, errors will be mounted accordingly.
 
+### Composite Filters
+
+You can use nested child filters as part of a larger composite Filter. Use the prefix `.` (root) to do that:
+
+```php app/src/Request/MultipleAddressesFilter.php
+class ProfileFilter extends Filter implements HasFilterDefinition
+{
+    #[NestedFilter(class: AddressFilter::class, prefix: '.')]
+    public AddressFilter $address;
+    
+    // ...
+}
+```
+
+The `AddressFilter` will receive data from the top-level, meaning you can send a request like that:
+
+```json Post data
+{
+  "name": "Antony",
+  "city": "San Francisco",
+  "address": "Address"
+}
+```
+
 ## Array of Filters
 
-You can populate an array of filters at the same time. Use an array property type and add  theattribute 
-`Spiral\Filters\Attribute\NestedArray` with a Filter class for each element as the parameter `class` and data input:
+You can use the `Spiral\Filters\attribute\NestedArray` attribute to populate an array of filters at the same time. In
+order to use this attribute, you need to declare an array property in your filter class and decorate it with the
+`NestedArray` attribute, specifying the class of the filter for each element in the array as the class parameter.
 
-```php
+The `input` parameter in the attribute is used to specify the input source that contains the array of filters.
+
+> **Note**
+> List of available input sources can be found in
+> the [Filters — Filter object](../filters/filter.md#available-attributes) section.
+
+```php app/src/Request/MultipleAddressesFilter.php
+namespace App\Request;
+
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Attribute\NestedArray;
 use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+use Spiral\Validator\FilterDefinition;
 
-class MultipleAddressesFilter extends Filter
+final class MultipleAddressesFilter extends Filter implements HasFilterDefinition
 {
     #[Post]
     public string $name;
 
-    #[NestedArray(class: AddressFilter::class, input: new Post('addresses'))]
+    #[NestedArray(class: AddressFilter::class, input: new Post]
     public array $addresses;
+
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition(validationRules: [
+            'name' => ['required', 'string'],
+        ]);
+    }
 }
 ```
 
-Such Filter can accept the following data format:
+This Filter will accept the data in the format:
 
-```json
+```json Post data
 {
   "key": "value",
   "addresses": [
@@ -156,39 +222,33 @@ Such Filter can accept the following data format:
 }
 ```
 
-You can access array filters via the array accessor:
+Once you have applied the filter, you can access the individual filters in the array using array notation.
 
 ```php
-public function index(MultipleAddressesFilter $ma)
+public function index(MultipleAddressesFilter $filter)
 {
-    dump($ma->addresses[0]->city); // San Francisco
-    dump($ma->addresses[1]->city); // Minsk
+    dump($filter->addresses[0]->city); // San Francisco
+    dump($filter->addresses[1]->city); // Minsk
 }
 ```
 
 > **Note**
-> The errors will be mounted accordingly.
+> If there are any validation errors in the nested filters, they will be mounted according to the structure of the
+> nested filters.
 
 ### Custom Prefix
 
-You can create an array of filters based on a data prefix different from the key name in the Filter, use the
-parameter `prefix` in the `NestedArray`:
+Yes, you can pass the custom prefix as a parameter to the constructor of the input source class, when defining the
+`NestedArray` attribute. This way, the filter will look for input data using the custom prefix instead of the default 
+key name.
 
-```php
-namespace App\Request;
-
-use Spiral\Filters\Attribute\Input\Input;
-use Spiral\Filters\Attribute\Input\Post;
-use Spiral\Filters\Attribute\NestedArray;
-use Spiral\Filters\Model\Filter;
-
+```php app/src/Request/MultipleAddressesFilter.php
 class MultipleAddressesFilter extends Filter
 {
-    #[Post]
-    public string $name;
-
-    #[NestedArray(class: AddressFilter::class, input: new Input('addresses'), prefix: 'addr')]
+    #[NestedArray(class: AddressFilter::class, input: new Post('addr'))]
     public array $addresses;
+    
+    // ...
 }
 ```
 
@@ -207,46 +267,5 @@ This Filter supports the following data format:
       "address": "Address #2"
     }
   ]
-}
-```
-
-You can still access the nested array filters using the `addresses` property:
-
-```php
-public function index(MultipleAddressesFilter $ma): void
-{
-    dump($ma->addresses[0]->city); // San Francisco
-    dump($ma->addresses[1]->city); // Minsk
-}
-```
-
-## Composite Filters
-
-You can use nested child filters as part of a larger composite Filter. Use the prefix `.` (root) to do that:
-
-```php
-namespace App\Request;
-
-use Spiral\Filters\Attribute\Input\Post;
-use Spiral\Filters\Attribute\NestedFilter;
-use Spiral\Filters\Model\Filter;
-
-class ProfileFilter extends Filter
-{
-    #[Post]
-    public string $name;
-
-    #[NestedFilter(class: AddressFilter::class, prefix: '.')]
-    public AddressFilter $address;
-}
-```
-
-The `AddressFilter` will receive data from the top-level, meaning you can send a request like that:
-
-```json
-{
-  "name": "Antony",
-  "city": "San Francisco",
-  "address": "Address"
 }
 ```
