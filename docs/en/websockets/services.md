@@ -389,8 +389,6 @@ final class RPCService implements ServiceInterface
             throw new \InvalidArgumentException('Method must be in format "method:uri"');
         }
 
-        [$controller, $action] = \explode('.', $request->method, 2);
-        
         // Example of method string: get:users/1 , post:news/store, delete:news/1
         // split received method string to HTTP method and uri  
         [$method, $uri] = \explode(':', $request->method, 2);
