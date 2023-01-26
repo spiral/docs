@@ -1,14 +1,30 @@
 # Websockets — Installation and Configuration
 
-One of the key features of the Spiral Framework is its integration with
-the [Centrifugo WebSocket server](https://centrifugal.dev/). This integration is facilitated by the
-RoadRunner [centrifuge plugin](https://roadrunner.dev/docs/plugins-centrifuge), which uses the
-Centrifugo [Server GRPC API](https://centrifugal.dev/docs/server/server_api#grpc-api) to establish communication between
-RoadRunner and the Centrifugo web server.
+Our Spiral Framework used to have its own [WebSocket plugin](https://roadrunner.dev/docs/plugins-websockets/2.x) for
+sending messages to clients, but we found it was too limited. We wanted to create a better solution for handling
+real-time data transmission and decided to stop developing our own plugin. Instead, we looked for one of the best
+open-source tools out there and found [Centrifugo](https://centrifugal.dev/). We created a RoadRunner plugin
+called [Centrifuge](https://roadrunner.dev/docs/plugins-centrifuge) that integrates with Centrifugo server
+using [GRPC API](https://centrifugal.dev/docs/server/server_api#grpc-api) and it's a much more powerful and flexible
+option.
 
-With this integration, you can send events to WebSocket clients as well as receive events from the Centrifugo server.
+**Here are some of the benefits of using Centrifugo:**
 
-Here are events that can be received as part of this integration:
+- **Real-time data transmission:** The integration provides efficient management of real-time data transmission, making
+  it an ideal solution for applications that require real-time updates and notifications.
+- **Scalability:** The Centrifugo toolset is designed to be highly scalable, allowing for the easy expansion of your
+  application as it grows.
+- **Flexibility:** Centrifugo provides a powerful and flexible toolset that can be easily customized to meet the
+  specific needs of your application.
+- **Large community:** Centrifugo has a large and active community that is constantly working to improve the tool, which
+  means you'll have access to a wealth of knowledge and resources.
+- **Complete Javascript SDK:** Centrifugo provides a
+  comprehensive [Javascript SDK](https://github.com/centrifugal/centrifuge-js), making it easy for developers to
+  interact with the server and build client-side functionality.
+
+With this integration, you can send events to WebSocket clients as well as handle events from the clients on the server.
+
+**Here are events that can be received on the server:**
 
 - [**Connection requests:**](https://centrifugal.dev/docs/server/proxy#connect-proxy) When a client establishes a
   WebSocket connection to the Centrifugo server, a connection request event is sent to RoadRunner.
@@ -20,9 +36,6 @@ Here are events that can be received as part of this integration:
   channel, Centrifugo sends a subscribe request event to RoadRunner.
 - [**Publish calls:**](https://centrifugal.dev/docs/server/proxy#publish-proxy) This request happens **BEFORE** a
   message is published to a channel, so your backend can validate whether a client can publish data to a channel.
-
-Spiral Framework and Centrifugo provide a powerful and flexible toolset for developers looking to build scalable,
-high-quality applications that require efficient management of real-time data transmission.
 
 ## Installation
 
@@ -41,7 +54,6 @@ protected const LOAD = [
 > **Note**
 > Make sure that you have the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package installed.
 > This package provides the necessary classes to integrate Cache component with RoadRunner Centrifuge plugin.
-
 
 ## Configuration
 
@@ -185,7 +197,7 @@ return [
 ];
 ```
 
-> **Note**
+> **See more**
 > For more information on event handlers (**services**) and how to use them in a Spiral application, you can refer to
 > the documentation section on [Event Handlers](./services.md). This page provides additional details and examples to
 > help you get started with event handling.

@@ -195,7 +195,7 @@ final class SubscribeService implements ServiceInterface
     public function handle(RequestInterface $request): void
     {
         try {
-            if (!$this->authorizeTopic($request->channel, $request->user)) {
+            if (!$this->authorizeTopic($request)) {
                 $request->disconnect('403', 'Channel is not allowed.');
                 return;
             }
@@ -216,7 +216,11 @@ final class SubscribeService implements ServiceInterface
             return false;
         }
 
-        return $this->invoke($request, $callback, $parameters + ['topic' => $topic, 'userId' => $request->user]);
+        return $this->invoke(
+            $request, 
+            $callback, 
+            $parameters + ['topic' => $request->channel, 'userId' => $request->user]
+        );
     }
 
     private function invoke(Subscribe $request, callable $callback, array $parameters = []): bool
@@ -235,12 +239,14 @@ You can register channel authorization rules in the `app/config/broadcasting.php
 
 ```php app/config/broadcasting.php
 use RoadRunner\Centrifugo\Request\Subscribe;
-'authorize' => [
-    'topics' => [
-        'topic' => static fn (Subscribe $request): bool => $request->getHeader('SECRET')[0] == 'secret',
-        'user.{uuid}' => static fn (string $uuid, string $userId): bool => $userId === $uuid
+return [
+    'authorize' => [
+        'topics' => [
+            'topic' => static fn (Subscribe $request): bool => $request->getHeader('SECRET')[0] == 'secret',
+            'user.{uuid}' => static fn (string $uuid, string $userId): bool => $userId === $uuid
+        ],
     ],
-],
+];
 ```
 
 > **Note**
