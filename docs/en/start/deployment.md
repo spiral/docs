@@ -11,7 +11,7 @@ Deploying a Spiral Framework application on a production server requires several
 operation and security.
 
 > **Warning**
-> Do not store `.env` file in your repository as it may contain sensitive information such as database credentials, 
+> Do not store `.env` file in your repository as it may contain sensitive information such as database credentials,
 > API keys, and other secrets.
 
 Here is a step-by-step guide on how to configure a Spiral application on a production server:
@@ -85,6 +85,43 @@ them for performance.
 
 - `--no-dev` option is used to prevent any development dependencies from being installed ad
 - `--no-scripts` option is used to prevent any `post-install` scripts from being executed.
+
+
+## Nginx
+
+If you want to use the Spiral Framework with RoadRunner and have Nginx server in front of it, you will need
+to configure Nginx to act as a reverse proxy.
+
+Here is an example of how to set up Nginx as a reverse proxy.
+
+```nginx /etc/nginx/sites-enabled/roadrunner.conf
+server {
+    listen 80;
+
+    server_name _;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+    }
+}
+```
+
+It listens on port `80` and directs all incoming requests to the IP address `127.0.0.1` on port `8080`, where
+RoadRunner is running.
+
+You can put this configuration in the `/etc/nginx/sites-available/` directory and link it to `/etc/nginx/sites-enabled/`
+directory.
+
+Here is an example of a configuration that uses a RoadRunner HTTP server:
+
+```yaml .rr.yaml
+http:
+  address: 127.0.0.1:8080
+```
+
+> **Warning:**
+> Do not use `address: 0.0.0.0:8080` in the RoadRunner configuration. This will prevent direct access to the RoadRunner
+> HTTP server and only allow access through the Nginx reverse proxy.
 
 ## Deployer
 
