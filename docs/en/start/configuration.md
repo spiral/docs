@@ -14,7 +14,7 @@ you want to, you can also use environment variables to change the main parameter
 ## Environment Variables
 
 Using environment variables is a great way to separate the configuration of your application from the code itself. This
-makes it easy to store sensitive information like database credentials, API keys, and other configs that you don't want 
+makes it easy to store sensitive information like database credentials, API keys, and other configs that you don't want
 to hardcode into your application.
 
 The Spiral Framework integrates with [Dotenv](https://github.com/vlucas/phpdotenv) through the
@@ -70,7 +70,7 @@ MAILER_FROM="My site <no-reply@site.com>"
 </details>
 
 > **Warning**
-> A variable that is defined in the `$_SERVER` or `$_ENV` superglobal will take precedence over the value 
+> A variable that is defined in the `$_SERVER` or `$_ENV` superglobal will take precedence over the value
 > of the same variable that is defined in the `.env` file.
 
 The values from the `.env` the file will be copied to your application environment and available
@@ -187,9 +187,115 @@ final class HttpConfig extends InjectableConfig
 > **Note**
 > See the reference for each component configuration in the related documentation section.
 
-<br><br>
+### Determining application environment
 
-**That's it! You've successfully configured your awesome application.**
+The current application environment is determined via the `APP_ENV` variable. You may access this value using the
+`Spiral\Boot\Environment\AppEnvironment` injectable enum class.
+
+> **See more**
+> Read more about injectable enums in the [Advanced — Container injectors](../advanced/injectors.md#enum-injectors) 
+> section.
+
+When you request the `AppEnvironment` from the container it will automatically inject an Enum with the correct value.
+
+```php
+use Spiral\Boot\Environment\AppEnvironment;
+use Psr\Http\Server\MiddlewareInterface;
+
+final class ErrorHandlerMiddleware implements MiddlewareInterface
+{
+    public function __construct(
+        private readonly AppEnvironment $env
+    ) {
+    }
+
+    public function process(
+        ServerRequestInterface $request, 
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        try {
+            return $handler->handle($request);
+        } catch (Throwable $e) {
+            if ($this->env->isProduction()) {
+                // ...
+            }
+            
+            // ...
+        }
+    }
+}
+```
+
+### Determining debug mode
+
+The current debug mode is determined via the `DEBUG` variable. You may access this value using the
+`Spiral\Boot\Environment\DebugMode` injectable enum class.
+
+```php
+use Spiral\Boot\Environment\DebugMode;
+use Psr\Http\Server\MiddlewareInterface;
+
+final class ErrorHandlerMiddleware implements MiddlewareInterface
+{
+    public function __construct(
+        private readonly DebugMode $debug
+    ) {
+    }
+
+    public function process(
+        ServerRequestInterface $request, 
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        try {
+            return $handler->handle($request);
+        } catch (Throwable $e) {
+            if ($this->debug->isEnabled()) {
+                // ...
+            }
+            
+            // ...
+        }
+    }
+}
+```
+
+### Determining verbosity level
+
+The current verbosity level is determined via the `VERBOSITY_LEVEL` variable. You may access this value using the
+`Spiral\Exceptions\Verbosity` injectable enum class.
+
+
+```php
+use Spiral\Exceptions\Verbosity;
+use Psr\Http\Server\MiddlewareInterface;
+
+final class ErrorHandlerMiddleware implements MiddlewareInterface
+{
+    public function __construct(
+        private readonly Verbosity $verbosity
+    ) {
+    }
+
+    public function process(
+        ServerRequestInterface $request, 
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        try {
+            return $handler->handle($request);
+        } catch (Throwable $e) {
+            if ($this->verbosity === Verbosity::BASIC)
+                // ...
+            }
+            
+            if ($this->verbosity === Verbosity::VERBOSE)
+                // ...
+            }
+            
+            // ...
+        }
+    }
+}
+```
 
 <hr>
 
@@ -198,4 +304,5 @@ final class HttpConfig extends InjectableConfig
 Now, dive deeper into the fundamentals by reading some articles:
 
 * [Config objects](../framework/config.md)
+* [Advanced — Container injectors](../advanced/injectors.md)
 * [Kernel and Environment](../framework/kernel.md)
