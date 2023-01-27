@@ -20,6 +20,7 @@ Here is an example of how this directive should be used:
 
 ```php
 <?php
+
 declare(strict_types=1);
 
 namespace App;
