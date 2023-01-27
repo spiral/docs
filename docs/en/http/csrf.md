@@ -1,37 +1,127 @@
 # HTTP — CSRF protection
 
-The default Web bundle includes CSRF protection middleware. To install it in alternative bundles:
+The Spiral Framework provides built-in support for CSRF (Cross-Site Request Forgery) protection, making it easy for
+developers to implement this important security measure in their web applications and ensure that any actions taken on
+the website are intended by the user and not the result of a malicious attack.
 
-To activate the extension, add `Spiral\Bootloader\Http\CsrfBootloader` to the list of App bootloaders:
+Spiral uses cookies to store the CSRF token and does not rely on server-side sessions. This approach is considered to
+be more efficient and simple, as it reduces the need for server-side storage and allows for faster performance.
+
+## Vulnerability explanation
+
+Let's imagine your application has a page to change the user's password and user can send a `POST` request to this page
+with a new password. If application does not properly validate the authenticity of the user, an attacker may be able to
+change the of user's password by tricking application into thinking the request is coming from the actual user. This can
+be done via a malicious page.
+
+**Here is an example of a malicious page:**
+
+```html Malicious page
+<form action="https://your-application.com/user/password" method="POST">
+    <input name="password" type="password" value="secret">
+</form>
+
+<script>
+    document.forms[0].submit();
+</script>
+```
+
+Without CSRF protection, the user's password will be changed when a user visits a page with malicious code.
+
+To prevent this vulnerability, it's important to implement proper CSRF protection in your application. One way to do
+this is by inspecting every incoming `POST`, `PUT`, `PATCH`, or `DELETE` request for a CSRF token value that the
+malicious website is unable to access. The token often referred to as a CSRF token, can be generated on the server and
+included as a hidden field in forms.
+
+```html
+<form action="https://your-application.com/user/password" method="POST">
+    <input type="hidden" name="csrf-token" value="{csrfToken}"/>
+    <input name="password" type="password">
+    // ...
+    <button type="submit">Change password</button>
+</form>
+```
+
+When the user submits a form, the server can then compare the value of the CSRF token included in the request to the
+value stored in user cookie. If the values do not match, the server can reject the request and prevent the malicious
+action from being performed.
+
+## Configuration
+
+The default `spiral/app` includes CSRF protection middleware.
+
+To install it in alternative application:
+
+Add `Spiral\Bootloader\Http\CsrfBootloader` to the list of bootloaders:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     //...
-    Spiral\Bootloader\Http\CsrfBootloader::class,
+    \Spiral\Bootloader\Http\CsrfBootloader::class,
 ]
 ```
 
-The extension will activate `Spiral\Csrf\Middleware\CsrfMiddleware` to issue a unique token for every user.
+After the bootloader is added you need to enable `Spiral\Csrf\Middleware\CsrfMiddleware` middleware to issue a unique
+token for every user.
+
+To enable the middleware, add it to middleware group you want to protect:
+
+```php app/src/Application/Bootloader/RoutesBootloader.php
+namespace App\Application\Bootloader;
+
+use Spiral\Cookies\Middleware\CookiesMiddleware;
+use Spiral\Csrf\Middleware\CsrfMiddleware;
+
+final class RoutesBootloader extends BaseRoutesBootloader
+{
+    protected function middlewareGroups(): array
+    {
+        return [
+            'web' => [
+                CookiesMiddleware::class,
+                CsrfMiddleware::class,
+                // ...
+            ],
+            // ...
+        ];
+    }
+
+    // ...
+}
+```
+
+> **See more**
+> Read more about global middleware in the [HTTP — Middleware](middleware.md#global-middleware) section.
+
+After the middleware is added, you may configure some options via `app/config/csrf.php`.
+
+Here is the default configuration:
+
+```php app/config/csrf.php
+return [
+    'cookie'   => 'csrf-token',
+    'length'   => 16,
+    'lifetime' => 86400,
+    'secure'   => true,
+    'sameSite' => null,
+];
+```
 
 ## Enable Firewall
 
-The extension provides two middlewares which activate protection on your routes or globally. To protect all the
-requests except for `GET`, `HEAD`, `OPTIONS `, use `Spiral\Csrf\Middleware\CsrfFirewall`:
+The component provides two middlewares which activate protection on your routes. 
 
-```php
+To protect all the requests except for `GET`, `HEAD`, `OPTIONS `, use `Spiral\Csrf\Middleware\CsrfFirewall`:
+
+```php app/src/Application/Bootloader/RoutesBootloader.php
 use Spiral\Csrf\Middleware\CsrfFirewall;
 
-// ...
-
-public function boot(RouterInterface $router): void
-{
-    $route = new Route('/', new Target\Action(HomeController::class, 'index'));
-
-    $router->setRoute(
-        'index',
-        $route->withMiddleware(CsrfFirewall::class)
-    );
-}
+'web' => [
+    CookiesMiddleware::class,
+    CsrfMiddleware::class,
+    CsrfFirewall::class,
+    // ...
+],
 ```
 
 > **Note**
@@ -39,9 +129,13 @@ public function boot(RouterInterface $router): void
 
 ## Usage
 
-Once the protection is activated, you must sign every request with the token available via PSR-7 attribute `csrfToken`.
+Once the protection firewall is activated, you must sign desired forms with the token available via PSR-7 
+attribute `csrfToken`.
 
-To receive this token in the controller or view:
+> **Note**
+> `csrfToken` attribute is generated by `Spiral\Csrf\Middleware\CsrfMiddleware` middleware on every request.
+
+To receive this token from the request in the controller or view use `getAttribute` method:
 
 ```php
 public function index(ServerRequestInterface $request): void
@@ -58,39 +152,72 @@ use Psr\Http\Message\ServerRequestInterface;
 
 // ...
 
-public function index(ServerRequestInterface $request): string
+public function changePasswordForm(ServerRequestInterface $request): string
 {
-    $form = '
-        <form method="post">
-          <input type="hidden" name="csrf-token" value="{csrfToken}"/>
-          <input type="text" name="value"/>
-          <input type="submit"/>
-        </form>
-    ';
+    $form = <<<FORM
+<form action="https://your-application.com/user/password" method="POST">
+    <input type="hidden" name="csrf-token" value="{csrfToken}"/>
+    <input name="password" type="password">
+    // ...
+    <button type="submit">Change password</button>
+</form>
+FORM;
 
-    $form = \str_replace(
+    return \str_replace(
         '{csrfToken}',
         $request->getAttribute('csrfToken'),
         $form
     );
-
-    return $form;
 }
 ```
 
-## Activate Globally
+You can also use view global variables to define `csrf-token` globally for all view templates.
 
-To activate CSRF protection globally, register `Spiral\Csrf\Middleware\CsrfFirewall`
-or `Spiral\Csrf\Middleware\StrictCsrfFirewall` via `Spiral\Bootloader\Http\HttpBootloader`:
+Here is an example how to do it via middleware:
 
 ```php
-use Spiral\Csrf\Middleware\CsrfFirewall;
-use Spiral\Bootloader\Http\HttpBootloader;
+use Psr\Http\Server\MiddlewareInterface;
+use Spiral\Views\GlobalVariablesInterface ;
 
-// ...
-
-public function boot(HttpBootloader $http): void
+class ViewCsrfTokenMiddleware implements MiddlewareInterface
 {
-    $http->addMiddleware(CsrfFirewall::class);
+    public function __construct(
+        private readonly GlobalVariablesInterface $globalVariables
+    ) {}
+    
+    public function process(
+        ServerRequestInterface $request, 
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        $this->globalVariables->set('csrfToken', $request->getAttribute('csrfToken'));
+        
+        return $handler->handle($request)->withAddedHeader('My-Header', 'my-value');
+    }
 }
+```
+
+> **See more**
+> Read more about global variables in the [Views — Basics](../views/basics.md#global-variables) section.
+
+Don't forget to add the middleware to the middleware list.
+
+```php app/src/Application/Bootloader/RoutesBootloader.php
+'web' => [
+    CookiesMiddleware::class,
+    CsrfMiddleware::class,
+    ViewCsrfTokenMiddleware::class,
+    CsrfFirewall::class,
+    // ...
+],
+```
+
+After that, you can use the `csrfToken` variable in your views:
+
+```html app/views/user/password.dark.php
+<form action="https://your-application.com/user/password" method="POST">
+    <input type="hidden" name="csrf-token" value="{csrfToken}"/>
+    <input name="password" type="password">
+    // ...
+    <button type="submit">Change password</button>
+</form>
 ```
