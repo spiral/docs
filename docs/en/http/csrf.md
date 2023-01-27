@@ -107,6 +107,10 @@ return [
 ];
 ```
 
+> **Warning**
+> In you change `cookie` option, you must also add it to the whitelist cookie list.
+> Read more how to do it in the [HTTP — Cookies](cookies.md#configuration) section.
+
 ## Enable Firewall
 
 The component provides two middlewares which activate protection on your routes. 
