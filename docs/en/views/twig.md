@@ -49,9 +49,12 @@ Hello, {{ name }}!
 You can use this view without an extension in your controllers:
 
 ```php
-public function index(): string
+use Spiral\Views\ViewsInterface;
+
+// ...
+public function index(ViewsInterface $views): string
 {
-    return $this->views->render('filename', ['name' => 'User']);
+    return $views->render('filename', ['name' => 'User']);
 }
 ```
 
