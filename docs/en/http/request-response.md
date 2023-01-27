@@ -26,7 +26,7 @@ class HomeController implements SingletonInterface
 }
 ```
 
-> **Note**
+> **Warning**
 > You are **not allowed** to use `Psr\Http\Message\ServerRequestInterface` as a constructor injection in 
 > singletons.
 
@@ -80,7 +80,7 @@ class HomeController
 }
 ```
 
-> **Note**
+> **Warning**
 > It is recommended to avoid direct access to `Psr\Http\Message\ServerRequestInterface` 
 > and `Spiral\Http\Request\InputManager` unless necessary, use **Request Filters** instead.
 
@@ -120,7 +120,7 @@ dump($input->query->fetch(['name', 'nameB'], true, null);
 dump($input->query('name'));
 ```
 
-> **Note**
+> **Warning**
 > In the situation when Input bag has a key with `null` value 
 > `new \Spiral\Http\Request\InputBag(['name' => null]);`, the method `$input->query->has('name')` will return `true` but `isset($input->query['name])` will return `false`.
  
@@ -353,7 +353,7 @@ public function index(InputInterface $inputSource, InputManager $inputManager): 
 
 This approach is used to map the incoming data into Request Filter.
 
-> **Note**
+> **Warning**
 > You must activate `Spiral\Bootloader\Security\FiltersBootloader` in order to access `Spiral\Filters\InputInterface`.
 
 ## Generate Response
