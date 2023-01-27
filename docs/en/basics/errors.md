@@ -267,6 +267,8 @@ Unable to route `http://127.0.0.1`. in vendor/spiral/framework/src/Router/src/Ro
 The Yii Error Handler is a bridge package for Spiral Framework that provides integration with the Yii framework's error
 handlers.
 
+![screenshot](https://user-images.githubusercontent.com/773481/215085868-a7228f6c-1be0-460d-b910-85fa2cd1195b.png)
+
 #### Installation
 
 To install the component:
