@@ -360,10 +360,6 @@ dump((string) $file);
 The output:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace MyNamespace;
 
 use Countable;

@@ -79,11 +79,7 @@ class AppBootloader extends Bootloader
 
 And an entry point `app.php` of our application will look like this:
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app.php
 use App\Application\Kernel;
 
 \mb_internal_encoding('UTF-8');

@@ -11,7 +11,7 @@ To install the extension:
 composer require spiral/nyholm-bridge
 ```
 
-Activate the extension by adding two bootloaders:
+Activate the component by adding two bootloaders:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [

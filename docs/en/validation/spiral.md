@@ -30,10 +30,6 @@ The configuration file for this component should be located at `app/config/valid
 required validation checkers, conditions and aliases required for your application.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 use Spiral\Validator;
 
 return [
@@ -301,11 +297,7 @@ final class FileChecker extends AbstractChecker
 
 Register it in `app/config/validator.php` config file:
 
-```php
-<?php
-
-declare(strict_types=1);
-
+```php app/config/validator.php
 use Spiral\Validator;
 
 return [

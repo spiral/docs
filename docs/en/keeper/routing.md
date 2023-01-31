@@ -14,10 +14,6 @@ as a fallback.
 New route should be declared after the `parent::boot()` call. Controllers must be declared before the route declaration:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 use Spiral\Boot\BootloadManager;
 use Spiral\Keeper\Bootloader;
 use Spiral\Router\RouterInterface;
@@ -79,10 +75,6 @@ used together.
 Example:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 use Spiral\Keeper\Annotation\Action;
 use Spiral\Keeper\Annotation\Controller;
 use Spiral\Views\ViewsInterface;

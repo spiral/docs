@@ -17,10 +17,6 @@ Keeper contains the next bootloaders:
 If needed, all the rest of keeper bootloaders should be registered in `LOAD` const.
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 use App\Bootloader\Keeper;
 use Spiral\DataGrid\Interceptor\GridInterceptor;
 use Spiral\Domain\CycleInterceptor;

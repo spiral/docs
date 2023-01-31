@@ -1,7 +1,7 @@
 # Views — Twig templating
 
-The framework provides deep integration with the [Twig Template](https://twig.symfony.com/) engine including access to IoC
-scopes, i18n integration, and caching.
+The framework provides deep integration with the [Twig Template](https://twig.symfony.com/) engine including access to 
+IoC scopes, i18n integration, and caching.
 
 ## Installation and Configuration
 
@@ -11,7 +11,7 @@ To install Twig bridge component, run the following command:
 composer require spiral/twig-bridge
 ```
 
-The extension can be enabled using `Spiral\Twig\Bootloader\TwigBootloader`.
+Activate the component by adding `Spiral\Twig\Bootloader\TwigBootloader` bootloader to your `Kernel`:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
@@ -68,31 +68,34 @@ Hello, {{ name }}!
 
 ## Debug
 
-In twig you can use the `dump` function to display information about a variable, including its type and value. Its useful for debugging purposes in your templates.
+In Twig you can use the `dump` function to display information about a variable, including its type and value. It's 
+useful for debugging purposes in your templates.
 
 To enable the function create a new Bootloader: `TwigDebugBootloader`:
 
-```php
+```php app/src/Application/Bootloader/TwigDebugBootloader.php
+namespace App\Application\Bootloader;
+
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Twig\Bootloader\TwigBootloader;
 use Twig\Extension\DebugExtension;
 
-class TwigDebugBootloader extends Bootloader
+final class TwigDebugBootloader extends Bootloader
 {
     public function boot(TwigBootloader $twig)
-        {
-            $twig->addExtension(new DebugExtension());
-            $twig->setOption('debug', true);
-        }
+    {
+        $twig->addExtension(new DebugExtension());
+        $twig->setOption('debug', true);
+    }
 }
 ```
 
-make sure your created `Bootloader` is loaded in your `App.php`:
+Activate the component by adding `TwigDebugBootloader` bootloader to your `Kernel`:
 
-```php
+```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
-    TwigDebugBootloader::class
+    \App\Application\Bootloader\TwigDebugBootloader::class,
     // ...
 ]
 ```
@@ -104,16 +107,16 @@ Afterwards you can use the `{{ dump() }}` function in your template.
     {{ dump(cats) }}
 </pr>
 ```
+
 `cats` in this case is the variable we would like to debug.
 
-> **Note**
-> You can assign more variables by passing them as arguments:
+You can assign more variables by passing them as arguments:
 
 ```twig
-    {{ dump(cats, dogs, birds) }}
+{{ dump(cats, dogs, birds) }}
 ```
 
-If we dont pass any value to the function, all variables from the current context will be dumped.
+If we don't pass any value to the function, all variables from the current context will be dumped.
 
-> **Note**
-> For more informations, visit the official [twig documentation](https://twig.symfony.com/doc/3.x/functions/dump.html)
+> **See more**
+> For more information, visit the official [twig documentation](https://twig.symfony.com/doc/3.x/functions/dump.html).

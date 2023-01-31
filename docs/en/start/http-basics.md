@@ -13,8 +13,6 @@ to the client.
 Here's an example of a simple controller that returns the current date and time:
 
 ```php app/src/Interface/Http/CurrentDateController.php
-declare(strict_types=1);
-
 namespace App\Interface\Http;
 
 final class CurrentDateController 

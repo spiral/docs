@@ -53,10 +53,6 @@ You can also configure the component via the `app/config/mailer.php` file.
 Here is an example of the configuration file:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 return [
     /**
      * -------------------------------------------------------------------------
