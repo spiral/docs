@@ -115,7 +115,6 @@ It will be rendered differently depending on the type of the value:
 In case of a string value `['name' => 'John']`, the value will be automatically quoted:
 
 ```html
-
 <script>
     const value = "John";
 </script>
@@ -128,7 +127,6 @@ In case of a string value `['name' => 'John']`, the value will be automatically 
 In case of a number value `['name' => 123]`:
 
 ```html
-
 <script>
     const value = 123;
 </script>
@@ -141,7 +139,6 @@ In case of a number value `['name' => 123]`:
 In case of null value `['name' => null]`:
 
 ```html
-
 <script>
     const value = null;
 </script>
@@ -154,7 +151,6 @@ In case of null value `['name' => null]`:
 In case of an array `['name' => ['John']]` value:
 
 ```html
-
 <script>
     const value = ["John"];
 </script>
@@ -167,7 +163,6 @@ In case of an array `['name' => ['John']]` value:
 In case of an associative array `['name' => ['first' => 'John', 'last' => 'Doe']]` value:
 
 ```html
-
 <script>
     const value = {"first": "John", "last": "Doe"};
 </script>
@@ -212,7 +207,6 @@ And an output:
 With disabled escaping HTML content will be outputted as is, without any automatic escaping.
 
 ```html
-
 <div>Hello world</div>
 ```
 
@@ -803,13 +797,13 @@ Firts, let's create a standard HTML template for our page:
 ```html app/views/home.dark.php
 <!DOCTYPE html>
 <html>
-<head>
-    <title>This is homepage.</title>
-    <link rel="stylesheet" href="/styles/welcome.css"/>
-</head>
-<body>
-Page content
-</body>
+    <head>
+        <title>This is homepage.</title>
+        <link rel="stylesheet" href="/styles/welcome.css"/>
+    </head>
+    <body>
+        Page content
+    </body>
 </html>
 ```
 
@@ -824,14 +818,14 @@ Create a layout:
 
 ```html app/views/layout/base.dark.php
 <!DOCTYPE html>
-<html>
-<head>
-    <title>This is homepage.</title>
-    <link rel="stylesheet" href="/styles/welcome.css"/>
-</head>
-<body>
-Page content
-</body>
+    <html>
+    <head>
+        <title>This is homepage.</title>
+        <link rel="stylesheet" href="/styles/welcome.css"/>
+    </head>
+    <body>
+        Page content
+    </body>
 </html>
 ```
 

@@ -46,48 +46,6 @@ return [
 ];
 ```
 
-## Auto-Configuration
-
-You can alter some of the component settings using the bootloader `Spiral\Bootloaders\Views\ViewsBootloader`.
-
-### View Namespace
-
-To assign a new directory to view namespace:
-
-```php app/src/Application/Bootloader/AppBootloader.php
-namespace App\Application\Bootloader;
-
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Views\Bootloader\ViewsBootloader;
-
-class AppBootloader extends Bootloader
-{
-    public function boot(ViewsBootloader $views): void
-    {
-        $views->addDirectory('default', directory('root') . 'views');
-    }
-}
-```
-
-### View Engine
-
-To register a new view engine, make sure to implement `Spiral\Views\EngineInterface`:
-
-```php app/src/Application/Bootloader/AppBootloader.php
-namespace App\Application\Bootloader;
-
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Views\Bootloader\ViewsBootloader;
-
-class AppBootloader extends Bootloader
-{
-    public function boot(ViewsBootloader $views): void
-    {
-        $views->addEngine(MyEngine::class);
-    }
-}
-```
-
 ## Caching
 
 By default, view caching is turned off if the env variable `DEBUG` is set to true. The cache files are stored in
