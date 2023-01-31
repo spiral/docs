@@ -65,3 +65,55 @@ Hello, {{ name }}!
 
 {{ get("Spiral\\Http\\Request\\InputManager").attribute('csrfToken') }}
 ```
+
+## Debug
+
+In twig you can use the `dump` function to display information about a variable, including its type and value. Its useful for debugging purposes in your templates.
+
+To enable the function create a new Bootloader: `TwigDebugBootloader`:
+
+```php
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Twig\Bootloader\TwigBootloader;
+use Twig\Extension\DebugExtension;
+
+class TwigDebugBootloader extends Bootloader
+{
+    public function boot(TwigBootloader $twig)
+        {
+            $twig->addExtension(new DebugExtension());
+            $twig->setOption('debug', true);
+        }
+}
+```
+
+make sure your created `Bootloader` is loaded in your `App.php`:
+
+```php
+protected const LOAD = [
+    // ...
+    TwigDebugBootloader::class
+    // ...
+]
+```
+
+Afterwards you can use the `{{ dump() }}` function in your template.
+
+```twig
+<pre>
+    {{ dump(cats) }}
+</pr>
+```
+`cats` in this case is the variable we would like to debug.
+
+> **Note**
+> You can assign more variables by passing them as arguments:
+
+```twig
+    {{ dump(cats, dogs, birds) }}
+```
+
+If we dont pass any value to the function, all variables from the current context will be dumped.
+
+> **Note**
+> For more informations, visit the official [twig documentation](https://twig.symfony.com/doc/3.x/functions/dump.html)
