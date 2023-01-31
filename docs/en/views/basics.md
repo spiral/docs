@@ -3,19 +3,25 @@
 The Spiral Framework provides a `spiral/views` component that serves as an abstraction layer for handling views. It
 provides a set of interfaces for registering template engines and using them to render templates.
 
-## ViewInterface
+## Views
 
-It provides methods for obtaining a view instance associated with a given path, compiling a cache version of a view,
-resetting the view cache, and rendering a template.
+The `Spiral\Views\ViewsInterface` interface provides methods for rendering a template, compiling a cache version of a
+view, resetting the view cache, and obtaining a view instance associated with a given path.
 
 > **Note**
-> The component is available via the prototyped property `views`. Read more about prototype trait in
+> The component is also available via the prototyped property `views`. Read more about prototype trait in
 > the [The Basics — Prototyping](../basics/prototype.md) section.
 
 ### Rendering
 
-To render a view in the controller or other service, simply invoke the `render` method. The view name does not need to 
+To render a view in the controller or other service, simply invoke the `render` method. The view name does not need to
 include an extension or namespace (default to be used).
+
+:::: tabs
+
+::: tab ViewsInterface
+
+You can use Dependency Injection to inject the `Spiral\Views\ViewsInterface` interface into your controller.
 
 ```php app/src/Interface/Controller/HomeController.php
 namespace App\Interface\Controller;
@@ -35,6 +41,32 @@ class HomeController
     }
 }
 ```
+
+:::
+
+::: tab Prototype
+
+You can use the prototype trait to access the `views` property to speed up development.
+
+```php app/src/Interface/Controller/HomeController.php
+namespace App\Interface\Controller;
+
+use Spiral\Prototype\Traits\PrototypeTrait;
+
+class HomeController
+{
+    use PrototypeTrait;
+    
+    public function index(): string
+    {
+        return $this->views->render('home');
+    }
+}
+```
+
+:::
+
+::::
 
 To render the view with the passed data, use the second array argument:
 
@@ -69,7 +101,7 @@ public function index(): string
 
 ### Compiling a Cache
 
-The `compile` method can be used to compile one of multiple cache versions of a view. This method takes a view path as 
+The `compile` method can be used to compile one of multiple cache versions of a view. This method takes a view path as
 an argument and compiles the cache version of the view.
 
 ```php app/src/Interface/Cli/Command/CompileViewsCommand.php
@@ -99,7 +131,7 @@ class WarmupViewsCommand extends Command
 
 ### Resetting the View Cache
 
-The `reset` method can be used to reset the cache of a view. This method takes a view path as an argument and resets 
+The `reset` method can be used to reset the cache of a view. This method takes a view path as an argument and resets
 the cache for the view.
 
 ```php
@@ -108,7 +140,7 @@ use Spiral\Views\ViewsInterface;
 $views->reset('home');
 ```
 
-## LoaderInterface
+## View source loader
 
 The` Spiral\Views\LoaderInterface` is responsible for loading the source of a view. A view loader can be used to check
 if a view exists, load its source, and list all available views.
@@ -199,8 +231,8 @@ You can create your own loader by implementing the `Spiral\Views\LoaderInterface
 
 Here is an example of a loader that loads views from a database.
 
-> **Warning**
-> This is just an example, it is not tested and should not be used as is.
+> **Danger**
+> This is just an example that shows how to implement a custom loader. It is not tested and should not be used.
 
 ```php app/src/Application/Loader/DatabaseLoader.php
 namespace App\Application\Loader;
@@ -360,7 +392,7 @@ You can use `Spiral\Views\GlobalVariablesInterface`.
 namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Views\GlobalVariablesInterface ;
+use Spiral\Views\GlobalVariablesInterface;
 use Spiral\Boot\EnvironmentInterface;
 
 class AppBootloader extends Bootloader 
@@ -394,6 +426,11 @@ After that, you can use the variables in any view template including inherited t
 </body>
 </html>
 ```
+
+> **See more**
+> For example, you can use global variables to pass CSRF token to the views.
+> See [HTTP — CSRF protection](../http/csrf.md#registering-a-view-global-variable) for more details.
+
 
 ## Namespaces
 

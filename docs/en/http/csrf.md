@@ -177,6 +177,8 @@ FORM;
 
 You can also use view global variables to define `csrf-token` globally for all view templates.
 
+### Registering a view global variable
+
 Here is an example how to do it via middleware:
 
 ```php
