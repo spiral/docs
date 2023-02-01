@@ -54,9 +54,6 @@ as input and returns a `PingResponse` message.
 > Make sure to use the options `php_namespace` and `php_metadata_namespace` to properly configure PHP namespace. You can
 > read more about the GRPC service declaration [here](https://grpc.io/docs/guides/concepts/).
 
-At the moment you can only create Unidirectional APIs, use [Golang services](../grpc/golang.md) to handle
-[streaming and batch processing](../grpc/streaming.md).
-
 ## Generate the service
 
 To compile the `.proto` file into PHP code, you will need to use the `protoc` compiler and the `protoc-gen-php-grpc`.

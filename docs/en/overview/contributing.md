@@ -81,8 +81,10 @@ present it that way. It will help your pull request to get accepted faster.
 
 ## Support Questions
 
-If you have any questions or need advice or suggestions, feel free to join our [Discord](https://discord.gg/TFeEmCs)
+If you have any questions or need advice or suggestions, feel free to join our [Discord](https://discord.gg/V6EK4he)
 channel for support from the framework maintainers and community members.
+
+<a href="https://discord.gg/V6EK4he"><img src="https://img.shields.io/badge/discord-chat-magenta.svg"></a>
 
 ## Issues
 

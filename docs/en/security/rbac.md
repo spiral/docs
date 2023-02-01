@@ -453,10 +453,10 @@ class SampleRule extends Rule implements SingletonInterface
 }
 ```
 
-## @Guarded Attribute
+## Guarded Attribute
 
 You can use `Guarded` attribute to automatically check the access to the controller methods using 
-the [domain cores](../cookbook/domain-core.md).
+the [Interceptors](../framework/interceptors.md).
 
 ```php
 namespace App\Controller;

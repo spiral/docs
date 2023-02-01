@@ -243,7 +243,7 @@ $http = $this->fakeHttp();
 $http->flushCookies();
 ```
 
-### Session / Authentication
+### Session/Authentication
 
 The Spiral Framework has some cool tools to help you interact with the session while testing your HTTP requests. One of
 those tools is the `withSession()` method. It allows you to set the session data to a specific array before sending a

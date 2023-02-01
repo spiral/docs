@@ -34,9 +34,9 @@ A demo project featuring a usage of all the components is available [here](https
 
 Most notable components are:
 
-- [Forms](../keeper/components/forms.md)
-- [Autocomplete](../keeper/components/autocomplete.md)
-- [DatePicker](../keeper/components/datepicker.md)
-- [DataGrids](../keeper/components/datagrid.md)
+- [Forms](../keeper/components.md#forms)
+- [Autocomplete](../keeper/components.md#forms-autocomplete)
+- [DatePicker](../keeper/components.md#forms-datepicker)
+- [DataGrids](../keeper/components.md#datagrids)
 
 

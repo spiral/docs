@@ -9,7 +9,7 @@ web applications.
 In this example, we will be sending "ticks" to the kernel every second. 
 
 > **Attention**
-> Make sure to read about an [application server](../framework/application-server.md) first. This article expects that
+> Make sure to read about an [application server](../start/server.md) first. This article expects that
 > you are proficient in writing Golang code.
 
 ## RoadRunner Service plugin

@@ -290,8 +290,7 @@ $getter = $reader->firstConstantMetadata($reflection, PreCondition::class);
 
 > **Note**
 > For details on using doctrine annotations, please see
->
-the [doctrine documentation](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html#create-an-annotation-class).
+> the [doctrine documentation](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html#create-an-annotation-class).
 
 You should use "hybrid" syntax to create metadata classes that will work on any version of PHP.
 
@@ -372,9 +371,8 @@ In this case, the annotation class itself might look like this:
 
 In this case, when declaring a metadata class, the attribute/annotation properties will be filled.
 
-> See
->
-also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
+> **Note**
+> See also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
 
 ```php
 /** @Annotation */
@@ -390,9 +388,8 @@ class CustomMetadataClass
 In the case of a constructor declaration, all data when using the metadata class will be passed to this constructor as
 an array.
 
-> See
->
-also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
+> **Note**
+> See also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
 
 ```php
 /** @Annotation */
@@ -409,7 +406,7 @@ class CustomMetadataClass
 #### Named Arguments (Interface Marker)
 
 If you want to use named constructor parameters (see
-also [https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments)),
+also [PHP Manual — Named Arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments)),
 then you have to add an interface `Spiral\Attributes\NamedArgumentConstructorAttribute` to the metadata class that will
 mark the required metadata class as one that takes named arguments.
 
