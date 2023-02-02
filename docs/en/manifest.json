@@ -194,7 +194,7 @@
     "links": {
       "views/configuration": "Installation and Configuration",
       "views/basics": "Basics",
-      "views/templates": "Plain PHP templating",
+      "views/plain": "Plain PHP",
       "views/twig": "Twig templating",
       "views/stempler": "Stempler templating"
     }
