@@ -226,7 +226,7 @@ To deploy your application, run the following command:
 
 #### CI/CD
 
-Deployer can be used in CI/CD pipelines. 
+Deployer can be used in CI/CD pipelines.
 
 
 > **See more**
@@ -246,42 +246,26 @@ This method involves building a Docker image of the application, and then runnin
 Here is an example of a `Dockerfile` that can be used to build a Docker image for a Spiral Framework application:
 
 ```dockerfile 
-# Build rr binary
-FROM spiralscout/roadrunner:latest as rr
+# This example will work with application root directory as docker context
+FROM php:8.2-cli-alpine3.17 as backend
 
-# Clone the project
-FROM alpine/git as git
-
-ARG REPOSITORY=https://github.com/xxx/my-app
-ARG BRANCH=master
-RUN git clone -b $BRANCH $REPOSITORY /app
-
-WORKDIR /app/bin
-
-# Configure PHP project
-FROM php:8.1.3-cli-alpine3.15 as backend
-
-RUN apk add --no-cache \
-        curl libcurl wget libzip-dev libmcrypt-dev libxslt-dev libxml2-dev icu-dev zip
-
-RUN docker-php-ext-install \
-        opcache zip xsl dom exif intl pcntl bcmath sockets
-
-COPY --from=rr /usr/bin/rr /app
-
-ARG APP_VERSION=v1.0
-ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN  --mount=type=bind,from=mlocati/php-extension-installer:1.5,source=/usr/bin/install-php-extensions,target=/usr/local/bin/install-php-extensions \
+      install-php-extensions opcache zip xsl dom exif intl pcntl bcmath sockets && \
+     apk del --no-cache  ${PHPIZE_DEPS} ${BUILD_DEPENDS}
 
 WORKDIR /app
 
-RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
+COPY --from=composer:2.3 /usr/bin/composer /usr/bin/composer
+COPY ./composer.* .
+RUN composer config --no-plugins allow-plugins.spiral/composer-publish-plugin false && \
+    composer install --optimize-autoloader --no-dev
 
-RUN composer config --no-plugins allow-plugins.spiral/composer-publish-plugin false
-RUN composer install --optimize-autoloader --no-dev
-
-RUN docker-php-source delete && apk del ${BUILD_DEPENDS}
+COPY --from=spiralscout/roadrunner:latest /usr/bin/rr /app
 
 EXPOSE 8080/tcp
+
+COPY ./ .
 
 CMD ./rr serve -c .rr.yaml
 ```
@@ -289,13 +273,20 @@ CMD ./rr serve -c .rr.yaml
 You can build the image by running the following command:
 
 ```terminal
-docker build . -t my-application
+docker build . -t my-application:latest
 ```
 
-After the image is built, you need to push it to a Docker registry or hub. You can also tag the image with a version
-number, such as `my-application:1.0`.
+After the image is built, you need to push it to a Docker registry or hub.
 
 ```terminal
+docker push my-application:latest
+```
+
+You can also tag the image with a version number, such as `my-application:1.0`.
+
+```terminal
+docker build . -t my-application:latest -t my-application:1.0
+docker push my-application:latest
 docker push my-application:1.0
 ```
 
