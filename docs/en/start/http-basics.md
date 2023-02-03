@@ -1,11 +1,11 @@
 # Getting started — First HTTP controller
 
-If you're using the Spiral Framework for a PHP project and you're ready to set up your first controller, here are the
+If you're using the Spiral for a PHP project and you're ready to set up your first controller, here are the
 basic steps you'll need to follow:
 
 ## Create a controller
 
-First things first, you'll need to create a controller. In the Spiral Framework, a controller is a class that defines
+First things first, you'll need to create a controller. In Spiral, a controller is a class that defines
 the behavior of your application for a specific set of routes. It's responsible for handling
 incoming [PSR-7](https://www.php-fig.org/psr/psr-7/) compatible requests, processing data, and then returning a response
 to the client.
@@ -32,8 +32,8 @@ The next step is to associate a route with your controller.
 
 ::: tab Using Attributes
 
-Spiral Framework makes it easy to define your application's
-routes by using PHP attributes. All you have to do is add the `#[Route]` attribute to the controller's method like so:
+Spiral makes it easy to define your application's routes by using PHP attributes. All you have to do is add the
+`#[Route]` attribute to the controller's method like so:
 
 ```php app/src/Interface/Http/CurrentDateController.php
 use Spiral\Router\Annotation\Route;
@@ -51,7 +51,7 @@ public function show(): string
 
 ::: tab Using RoutingConfigurator
 
-Spiral Framework offers a convenient and organized way for developers to define their application's routes using the
+Spiral offers a convenient and organized way for developers to define their application's routes using the
 `defineRoutes` method of the `App\Application\Bootloader\RoutesBootloader` class.
 
 Here is an example of how to define a route that will handle our controller:
@@ -102,7 +102,7 @@ browser: http://127.0.0.1/date
 
 <br><br>
 
-**That's it! You've successfully set up your first controller in the Spiral Framework.**
+**That's it! You've successfully set up your first controller in Spiral.**
 
 <hr>
 

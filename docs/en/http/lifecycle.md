@@ -11,8 +11,8 @@ Unlike most of the PHP frameworks, the HTTP requests begin outside of the applic
 
 ## PSR
 
-The Spiral Framework is based on a set of standards that make it compatible with other frameworks, routers, middleware,
-etc. You can read more about PSR standards used here:
+Spiral is based on a set of standards that make it compatible with other frameworks, routers, middleware, etc. You can 
+read more about PSR standards used here:
 
 - [PSR-7: HTTP message interfaces](https://www.php-fig.org/psr/psr-7/)
 - [PSR-15: HTTP Server Request Handlers](https://www.php-fig.org/psr/psr-15/)

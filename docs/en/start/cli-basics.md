@@ -1,14 +1,14 @@
 # Getting started — First CLI command
 
-The Spiral Framework provides convenient way to create console applications. It has the built-in support for console
+Spiral provides convenient way to create console applications. It has the built-in support for console
 commands, which allows you to create command-line interfaces (CLIs) for your application. With console commands, you can
 automate tasks, perform maintenance, and interact with your application in a way that is not possible with a standard
 web interface.
 
-Managing and using console commands in the Spiral Framework is very easy. The framework provides a convenient interface
+Managing and using console commands in Spiral is very easy. The framework provides a convenient interface
 for working with console commands by leveraging the power of the `symfony/console` package.
 
-Here are the basic steps to creating a console command in the Spiral Framework:
+Here are the basic steps to creating a console command in Spiral:
 
 ## Creating a command
 
@@ -31,7 +31,7 @@ final class CurrentDateCommand extends Command
 }
 ```
 
-The Spiral Framework is configured by default to automatically discover commands located in the `app/src` directory
+Spiral is configured by default to automatically discover commands located in the `app/src` directory
 using the [static analysis component](../advanced/tokenizer.md). This means that you don't have to manually register
 your commands or create a separate configuration file for them.
 
@@ -66,7 +66,7 @@ This will display the command's signature, description, and any available argume
 
 <br>
 
-**That's it! You've successfully set up your first console command in the Spiral Framework.**
+**That's it! You've successfully set up your first console command in Spiral.**
 
 <hr>
 

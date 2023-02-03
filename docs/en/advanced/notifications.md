@@ -1,7 +1,7 @@
 # Advanced — Notifications
 
-The Spiral Framework has a pretty cool notifications system that lets you send all kinds of messages to your users
-through different channels. You can send emails, SMS messages, Slack messages, push notifications, and more all through
+Spiral has a pretty cool notifications system that lets you send all kinds of messages to your users through 
+different channels. You can send emails, SMS messages, Slack messages, push notifications, and more all through
 the [spiral-packages/notifications](https://github.com/spiral-packages/notifications) package. It's powered by a
 component called the Symfony Notifier, and it's super easy to use.
 

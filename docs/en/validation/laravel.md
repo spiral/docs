@@ -1,6 +1,6 @@
 # Validation — Laravel Validator
 
-The Spiral Framework provides a validation component that allows you to validate data using
+Spiral provides a validation component that allows you to validate data using
 the [Laravel Validation bridge](https://github.com/spiral-packages/laravel-validator) package. This validation bridge
 provides integration with the Laravel Validator, which is a validation component used in the Laravel framework.
 
@@ -52,7 +52,7 @@ class UserController
 
 ## Filters
 
-The `spiral/filters` component is a tool for validating HTTP request data in Spiral Framework. It allows you to create
+The `spiral/filters` component is a tool for validating HTTP request data in Spiral. It allows you to create
 a "Filter" object, which defines the required data that should be extracted from the request object and mapped into the
 filter object's properties.
 

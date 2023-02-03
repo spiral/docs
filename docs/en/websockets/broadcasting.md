@@ -20,9 +20,9 @@ protected const LOAD = [
 
 ## Configuration
 
-The configuration for broadcasting in the Spiral Framework is stored in the `app/config/broadcasting.php` file. The
-framework includes several built-in broadcast drivers, including a `log` driver for local development and debugging,
-and a `null` driver for disabling broadcasting during testing.
+The configuration for broadcasting in Spiral is stored in the `app/config/broadcasting.php` file. The framework includes
+several built-in broadcast drivers, including a `log` driver for local development and debugging, and a `null` driver
+for disabling broadcasting during testing.
 
 The default driver can be changed using the `BROADCAST_CONNECTION` environment variable:
 
@@ -57,7 +57,7 @@ return [
 
 ## Usage
 
-The Spiral Framework provides the `Spiral\Broadcasting\BroadcastInterface` interface for sending events to the default
+Spiral provides the `Spiral\Broadcasting\BroadcastInterface` interface for sending events to the default
 connection using the `publish method`.
 
 ```php
@@ -85,7 +85,7 @@ class OrderService
 ```
 
 In some cases, you may want to send an event to a specific broadcasting driver rather than the default connection. The
-Spiral Framework provides the `Spiral\Broadcasting\BroadcastManagerInterface` for this purpose. It allows you to obtain
+Spiral provides the `Spiral\Broadcasting\BroadcastManagerInterface` for this purpose. It allows you to obtain
 a connection instance for a specific driver and use it to publish events.
 
 ```php
@@ -297,7 +297,7 @@ final class PusherBroadcaster extends AbstractBroadcast implements \Spiral\Broad
 ```
 
 The `Spiral\Broadcasting\TopicRegistryInterface` is a central place for registering authorization rules for specific
-topics in the Spiral Framework's broadcasting component. You can register authorization rules using
+topics in broadcasting component. You can register authorization rules using
 the `app/config/broadcasting.php` file.
 
 ```php app/config/broadcasting.php
@@ -313,7 +313,7 @@ return [
 ```
 
 Many websocket servers use HTTP authorization, which requires the client to provide credentials in the form of an HTTP
-header or query parameter. To handle HTTP authorization in the Spiral Framework's broadcasting component, you can use
+header or query parameter. To handle HTTP authorization in broadcasting component, you can use
 the `Spiral\Broadcasting\Middleware\AuthorizationMiddleware` middleware and specify an authorization endpoint in your
 application where the websocket server will send authorization requests.
 

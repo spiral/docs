@@ -1,6 +1,6 @@
 # Cookbook — User authentication based on JWT token storage
 
-The Spiral Framework is designed to be flexible and allow developers to use a variety of authentication storage
+Spiral is designed to be flexible and allow developers to use a variety of authentication storage
 mechanisms. In addition to traditional session-based authentication and database-based authentication, the framework
 also allows to use authentication methods like [JSON Web Tokens (JWT)](https://jwt.io/).
 
@@ -9,7 +9,7 @@ token that can be easily transmitted between the client and the server. This can
 where the client and server are distributed across different environments or networks, as it allows for secure and
 efficient communication without the need for additional infrastructure or dependencies.
 
-The Spiral Framework provides a number of interfaces and classes for implementing user authentication in an application.
+Spiral provides a number of interfaces and classes for implementing user authentication in an application.
 For example, the `Spiral\Auth\TokenStorageInterface` can be used to generate and store tokens for authenticated users,
 while the `Spiral\Auth\HttpTransportInterface` can be used to send or receive tokens to clients.
 
@@ -313,7 +313,7 @@ the `AuthContext` or default transport if none is defined.
 The `AuthMiddleware` is responsible for checking incoming requests for an authentication token and, if one is found,
 loading the user's authentication information from the token storage.
 
-This means that if an authenticated user makes a request to your Spiral Framework application, the `AuthMiddleware` will
+This means that if an authenticated user makes a request to your Spiral application, the `AuthMiddleware` will
 automatically load the user's token and use it to authenticate the user. The user's authentication information will then
 be available to your controllers and other components via the `AuthContextInterface`.
 

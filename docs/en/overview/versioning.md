@@ -1,6 +1,6 @@
 # Overview — Versioning
 
-All the Spiral Framework components follow https://semver.org/ with BC allowed for security releases.
+All Spiral components follow https://semver.org/ with BC allowed for security releases.
 
 ## Current Version
 

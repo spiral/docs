@@ -25,7 +25,7 @@ in the application. We'll describe below how to add them.
 
 After that, let's install `PSR-14` implementation of a compatible `EventDispatcher`. We provide a
 `spiral-packages/league-event` package that integrates a PSR-14 compatible `league/event` package into
-an application based on the Spiral Framework.
+an application based on Spiral.
 
 ```terminal
 composer require spiral-packages/league-event
@@ -278,9 +278,8 @@ return [
 ## Creating an Event dispatcher
 
 As an implementation of Event dispatcher, we considered the package
-[The League Event bridge for Spiral Framework](https://github.com/spiral-packages/league-event).
-This package provides a bridge between the Spiral Framework and
-the [The League Event](https://event.thephpleague.com/3.0/) package.
+[The League Event bridge for Spiral](https://github.com/spiral-packages/league-event).
+This package provides a bridge between Spiral and [The League Event](https://event.thephpleague.com/3.0/) package.
 
 You can create your own implementation using `PSR-14` event dispatcher.
 

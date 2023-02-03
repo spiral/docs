@@ -1,6 +1,6 @@
 # The Basics — Database and ORM
 
-To utilize the ORM and database functionality in your application, the Spiral Framework offers
+To utilize the ORM and database functionality in your application, Spiral offers
 the [spiral/cycle-bridge](https://github.com/spiral/cycle-bridge) component.
 
 ## Installation
@@ -81,7 +81,7 @@ It supports a variety of popular relational databases such as MySQL, MariaDB, Po
 
 ### Configuration
 
-The configuration for spiral framework's ORM services is located in your application's `app/config/cycle.php`
+The configuration for Spiral framework's ORM services is located in your application's `app/config/cycle.php`
 
 ```php app/config/cycle.php
 use Cycle\ORM\SchemaInterface;
@@ -222,7 +222,7 @@ class UserService
 }
 ```
 
-When you request a repository from the container, the Spiral Framework will automatically request the repository from
+When you request a repository from the container, Spiral will automatically request the repository from
 the ORM and associate it with the correct Entity.
 
 ### Transactions
@@ -489,7 +489,7 @@ php app.php help cycle...
 
 ### Configuration
 
-The configuration for spiral framework's database services is located in your application's `app/config/database.php`
+The configuration for Spiral database services is located in your application's `app/config/database.php`
 configuration file. In this file, you may define all of your database connections, as well as specify which connection
 should be used by default. Most of the configuration options within this file are driven by the values of your
 application's environment variables.

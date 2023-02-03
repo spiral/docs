@@ -1,9 +1,9 @@
 # Advanced — Container injectors
 
-The Spiral Framework provides a way to control the creation process of any interface or abstract class children using an
-injection interface.
+Spiral provides a way to control the creation process of any interface or abstract class children using an injection
+interface.
 
-**There are several benefits to using the Spiral Framework's injection interface:**
+**There are several benefits of using it:**
 
 - **Flexibility:** The injection interface allows for the creation of a specific class based on a specific context,
   providing a high degree of flexibility in the instantiation of classes.
@@ -103,12 +103,13 @@ interface based on the context that was passed to the injector's `createInjectio
 Class inheritance is possible with the injector.
 
 > **Note**
-> Currently, the injector only supports classes (not interfaces) that extend a base class, but future releases of the
-> Spiral Framework will also support interface inheritance.
+> Currently, the injector only supports classes (not interfaces) that extend a base class, but future Spiral releases
+> will also support interface inheritance.
 
 ```php
 abstract class RedisCacheInterface implements CacheInterface
 {
+
 }
 ```
 

@@ -1,8 +1,8 @@
 # HTTP — CSRF protection
 
-The Spiral Framework provides built-in support for CSRF (Cross-Site Request Forgery) protection, making it easy for
-developers to implement this important security measure in their web applications and ensure that any actions taken on
-the website are intended by the user and not the result of a malicious attack.
+Spiral provides built-in support for CSRF (Cross-Site Request Forgery) protection, making it easy for developers to 
+implement this important security measure in their web applications and ensure that any actions taken on the website are 
+intended by the user and not the result of a malicious attack.
 
 Spiral uses cookies to store the CSRF token and does not rely on server-side sessions. This approach is considered to
 be more efficient and simple, as it reduces the need for server-side storage and allows for faster performance.

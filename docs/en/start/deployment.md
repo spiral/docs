@@ -1,13 +1,13 @@
 # Getting started — Deployment
 
-Deploying a Spiral Framework application can be a complex task, as it requires various steps to be performed in order to
+Deploying a Spiral application can be a complex task, as it requires various steps to be performed in order to
 ensure that the application is properly configured and ready for production use. In this guide, we will go over
 several strategies for deploying an application, including basic file transfer, using source control, build scripts,
 and Docker builds.
 
 ## Preparing the application
 
-Deploying a Spiral Framework application on a production server requires several key configurations to ensure proper
+Deploying a Spiral application on a production server requires several key configurations to ensure proper
 operation and security.
 
 > **Warning**
@@ -74,7 +74,7 @@ CYCLE_SCHEMA_WARMUP=true
 
 ### Composer
 
-The following composer commands can be used to install vendor packages for a Spiral Framework application:
+The following composer commands can be used to install vendor packages for a Spiral application:
 
 ```terminal
 composer install --optimize-autoloader --no-dev --no-scripts
@@ -89,8 +89,8 @@ them for performance.
 
 ## Nginx
 
-If you want to use the Spiral Framework with RoadRunner and have Nginx server in front of it, you will need
-to configure Nginx to act as a reverse proxy.
+If you want to use Spiral with RoadRunner and have Nginx server in front of it, you will need to configure Nginx to act 
+as a reverse proxy.
 
 Here is an example of how to set up Nginx as a reverse proxy.
 
@@ -131,8 +131,8 @@ be integrated with other tools like load balancers and monitoring systems. This 
 efficient and less prone to errors, and makes it easier to keep track of which version of the code is currently on the
 production server, making it hard to rollback in case of errors.
 
-Deployer is a popular deployment tool that can be used to automate the deployment process for a Spiral Framework
-application. One of the advantages of using Deployer is that it can provide "zero downtime" deployment.
+Deployer is a popular deployment tool that can be used to automate the deployment process for a Spiral application. One 
+of the advantages of using Deployer is that it can provide "zero downtime" deployment.
 
 Zero downtime deployment is a technique that allows you to update your application without interrupting the service to
 your users. This is achieved by deploying the new version of the application alongside the old version, and then
@@ -243,7 +243,7 @@ This method involves building a Docker image of the application, and then runnin
 
 ### Dockerfile
 
-Here is an example of a `Dockerfile` that can be used to build a Docker image for a Spiral Framework application:
+Here is an example of a `Dockerfile` that can be used to build a Docker image for a Spiral application:
 
 ```dockerfile 
 # This example will work with application root directory as docker context
@@ -352,7 +352,7 @@ repository.
 
 ## File Transfer
 
-One of the simplest ways to deploy a Spiral Framework application is through basic file transfer. This can be done using
+One of the simplest ways to deploy a Spiral application is through basic file transfer. This can be done using
 FTP, or SCP. The process involves uploading the application files from your local machine to the production server.
 
 ### Example

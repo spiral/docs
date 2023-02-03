@@ -1,6 +1,6 @@
 # Testing — Events Tests
 
-The Spiral Framework has a convenient way to test the [spiral/event](../advanced/events.md) component. When testing code
+Spiral has a convenient way to test the [spiral/event](../advanced/events.md) component. When testing code
 that dispatches events, you may want to prevent the event's listeners from actually executing. You can use the
 `fakeEventDispatcher` method to do this.
 

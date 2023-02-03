@@ -1,10 +1,7 @@
 # Framework — Dispatchers
 
-The Spiral Framework is a high-performance PHP web application framework that is designed to be scalable, extensible,
-and easy to use. It is built on top of the RoadRunner server, which is a high-performance PHP application server that is
-optimized for modern PHP applications. One of the key features of the Spiral Framework is its support for multiple
-kernel dispatchers, which are responsible for routing incoming requests to the appropriate handler based on the current
-environment.
+One of the key features of Spiral is its support for multiple kernel dispatchers, which are responsible for routing 
+incoming requests to the appropriate handler based on the current environment.
 
 Let's imagine that we have two dispatchers: `console` and `http`.
 
@@ -114,7 +111,7 @@ If no dispatcher returns `true`, the framework will throw an exception.
 
 ## Available Dispatchers
 
-The Spiral Framework comes with several built-in dispatchers:
+Spiral comes with several built-in dispatchers:
 
 - [Console dispatcher](https://github.com/spiral/framework/blob/master/src/Framework/Console/ConsoleDispatcher.php):
   responsible for handling console commands within your application. This is useful if you want to create custom
@@ -144,6 +141,5 @@ The Spiral Framework comes with several built-in dispatchers:
 > **Note**
 > Read how to create custom dispatcher [here](../cookbook/custom-dispatcher.md)
 
-The Spiral Framework kernel dispatchers provide a flexible and powerful way to route incoming requests to the
-appropriate handler. They are an essential component of the Spiral Framework and are an important part of its overall
-design.
+Spiral kernel dispatchers provide a flexible and powerful way to route incoming requests to the appropriate handler. 
+They are an essential component and are an important part of its overall design.

@@ -1,6 +1,6 @@
 # Framework — Config Objects
 
-The Spiral framework uses config objects to separate the bootload and runtime phases of an application, and to provide
+Spiral uses config objects to separate the bootload and runtime phases of an application, and to provide
 an easily accessible source of configuration.
 
 The main benefit of using config objects is that they allow for easy modification of configuration during the bootload
@@ -22,8 +22,8 @@ the configuration and allows for more predictable behavior of the application.
 
 ## Configuration Provider
 
-The Spiral framework provides a `Spiral\Config\ConfiguratorInterface` which allows for easy access to configuration
-values stored in config files. It provides methods to retrieve and check the existence of config values.
+Spiral provides a `Spiral\Config\ConfiguratorInterface` which allows for easy access to configuration values stored in 
+config files. It provides methods to retrieve and check the existence of config values.
 
 To demonstrate that, we can create a config file `app/config/github.php`:
 

@@ -1,6 +1,6 @@
 # Filters — Composite Filters
 
-The Spiral Framework allows for the creation of composite filters, which are filters that are composed of other filters.
+Spiral allows for the creation of composite filters, which are filters that are composed of other filters.
 
 Let's imagine that we have a `AddressFilter` that represents a single address that can be used as a part of a profile
 with its own validation rules:
@@ -37,16 +37,15 @@ class AddressFilter extends Filter implements HasFilterDefinition
 
 ```
 
-The Spiral Framework provides two types of nested filters:
+Spiral provides two types of nested filters:
 
 ## Nested Filter
 
-The Spiral Framework allows you to create compound filters by nesting other filters inside them. This is done by
-declaring a property in the parent filter class and decorating it with the `Spiral\Filters\attribute\NestedFilter`
-attribute. The attribute takes a class parameter, which is set to the child filter class. This allows the parent filter
-to accept input data in a nested format, where the property decorated with this attribute contains the data for the
-child filter. This makes it easy to validate and filter the data in multiple levels and reuse the child filter in
-different parent filters.
+Spiral allows you to create compound filters by nesting other filters inside them. This is done by declaring a property 
+in the parent filter class and decorating it with the `Spiral\Filters\attribute\NestedFilter` attribute. The attribute 
+takes a class parameter, which is set to the child filter class. This allows the parent filter to accept input data in 
+a nested format, where the property decorated with this attribute contains the data for the child filter. This makes it 
+easy to validate and filter the data in multiple levels and reuse the child filter in different parent filters.
 
 ```php app/src/Request/ProfileFilter.php
 namespace App\Request;

@@ -1,10 +1,10 @@
 # Getting started — Configuration
 
-The Spiral Framework makes it super easy to set up your application with config files. All the config files live in the
+Spiral makes it super easy to set up your application with config files. All the config files live in the
 `app/config` directory, and they let you configure things like connection to a database, set up cache storage, manage
 queues, etc.
 
-You don't even have to create any config files yourself, because the Spiral Framework comes with a default setup. But if
+You don't even have to create any config files yourself, because Spiral comes with a default setup. But if
 you want to, you can also use environment variables to change the main parameters of your application.
 
 > **Note**
@@ -17,7 +17,7 @@ Using environment variables is a great way to separate the configuration of your
 makes it easy to store sensitive information like database credentials, API keys, and other configs that you don't want
 to hardcode into your application.
 
-The Spiral Framework integrates with [Dotenv](https://github.com/vlucas/phpdotenv) through the
+Spiral integrates with [Dotenv](https://github.com/vlucas/phpdotenv) through the
 `Spiral\DotEnv\Bootloader\DotenvBootloader` class. This bootloader is responsible for loading the environment variables
 from the `.env` file and making them available to the application.
 
@@ -146,7 +146,7 @@ return [
 
 ### Config objects
 
-In the Spiral Framework, all config objects are injectable, which makes it easy to use them in your application.
+In Spiral, all config objects are injectable, which makes it easy to use them in your application.
 
 ```php
 use Spiral\Http\Config\HttpConfig;
@@ -163,7 +163,7 @@ final class HttpClient
 }
 ```
 
-Each injectable config class in the Spiral Framework contains
+Each injectable config class in Spiral contains
 a [CONFIG constant](https://github.com/spiral/http/blob/master/src/Config/HttpConfig.php#L19) that defines the name of
 the corresponding config file. When the container resolves an injectable config object, it automatically loads all
 values from the config file and assigns them to the `$config` property of the config object.

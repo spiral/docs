@@ -496,7 +496,7 @@ The generated view will then look like this:
 
 ### Framework specific directives
 
-The Spiral Framework provides a number of framework-specific directives to be used in templates, including:
+Spiral provides a number of framework-specific directives to be used in templates, including:
 
 #### Container
 

@@ -1,6 +1,6 @@
 # Advanced — Application Telemetry
 
-The Spiral framework is a powerful tool for building microservices. One of its key features is the `spiral/telemetry`
+Spiral is a powerful tool for building microservices. One of its key features is the `spiral/telemetry`
 component, which enables you to collect and send application metrics to a telemetry server or logs. This component
 provides a flexible and robust solution for gathering performance data and monitoring your microservices.
 
@@ -288,13 +288,12 @@ public function handle(ServerRequestInterface $request): ResponseInterface
 ## Example Application
 
 There is a good example [**Demo ticket booking system**](https://github.com/spiral/ticket-booking) application built
-on the Spiral Framework, which is a high-performance PHP framework that follows the principles of microservices and
-allows developers to create reusable, independent, and easy-to-maintain components.
+on the Spiral Framework, that follows the principles of microservices and allows developers to create reusable, 
+independent, and easy-to-maintain components.
 
 In this demo application, you can find an example of using OpenTelemetry.
 
-Overall, our demo ticket booking system is a great example of how Spiral Framework and other tools can be used to build
-a modern and efficient application. We hope you have a blast using it and learning more about the capabilities of
-Spiral Framework and the other tools we've used.
+Overall, it is a great example of how Spiral and other tools can be used to build a modern and efficient application. 
+We hope you have a blast using it and learning more about the capabilities of Spiral and the other tools we've used.
 
 **Happy (fake) ticket shopping!**

@@ -1,12 +1,12 @@
 # Framework — Application Lifecycle
 
-The Spiral Framework can be used with a traditional Nginx/PHP-FPM setup, where Nginx acts as the web server and PHP-FPM
+Spiral can be used with a traditional Nginx/PHP-FPM setup, where Nginx acts as the web server and PHP-FPM
 processes incoming requests and initializes the application. However, this can be resource-intensive as it requires CPU
 and memory resources to complete with every incoming request.
 
 ![Nginx HTTP bootstraping](https://user-images.githubusercontent.com/773481/211190445-06c17d86-58d6-43d8-995f-36cf448714ae.jpg)
 
-To improve the performance of the Spiral Framework, an alternative solution is to use application
+To improve the performance of Spiral application, an alternative solution is to use application
 server [RoadRunner](https://roadrunner.dev/).
 
 RoadRunner is a high-performance application server designed to handle a wide range of request types, including HTTP,

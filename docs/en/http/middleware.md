@@ -1,7 +1,6 @@
 # HTTP — Middleware
 
-The Spiral Framework is a modern, high-performance PHP web application framework that uses
-[PSR-15 compatible](https://www.php-fig.org/psr/psr-15/) HTTP middleware.
+Spiral uses [PSR-15 compatible](https://www.php-fig.org/psr/psr-15/) HTTP middleware.
 
 Middleware is responsible for handling functionality that is related to the request and response, such as
 authentication, caching, or logging. It can modify the request and response before they are passed on to the router, but
@@ -35,8 +34,7 @@ class MyMiddleware implements MiddlewareInterface
 > Check https://github.com/middlewares/psr15-middlewares to find many publicly maintained middlewares.
 
 
-The Spiral Framework provides several ways to set middleware, allowing developers to choose the approach that best fits
-their needs.
+Spiral provides several ways to set middleware, allowing developers to choose the approach that best fits their needs.
 
 ### Global Middleware
 
@@ -230,7 +228,7 @@ public function boot(RouterInterface $router): void
 
 ## Combine with IoC scopes
 
-The Spiral Framework allows developers to combine middleware with the [IoC scope](../framework/scopes.md) to create a
+Spiral Framework allows developers to combine middleware with the [IoC scope](../framework/scopes.md) to create a 
 request-specific application context.
 
 This allows developers to set up a context for the current request, which can be accessed by other parts of the

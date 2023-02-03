@@ -24,8 +24,8 @@ option.
 
 With this integration, you can send events to WebSocket clients as well as handle events from the clients on the server.
 
-The Spiral Framework has a full integration with the RoadRunner Centrifuge plugin, which facilitates communication
-between the Spiral Framework and the Centrifugo WebSocket server.
+Spiral has a full integration with the RoadRunner Centrifuge plugin, which facilitates communication
+between Spiral application and the Centrifugo WebSocket server.
 
 **Here are events that can be received on the server:**
 
@@ -161,7 +161,7 @@ You can use this approach to distribute the workload among multiple RoadRunner s
 > to ensure that the servers are properly coordinated to ensure smooth operation. However, the benefits of increased
 > scalability and reliability can be well worth the effort.
 
-### Spiral Framework application
+### Spiral application
 
 To use the Centrifuge in your application, you will need to create a `centrifugo.php` file in
 the `app/config` directory. In this file, you can specify **services** that will handle incoming events from
@@ -215,7 +215,7 @@ need to open any additional ports on your server to support real-time communicat
 ## Example Application
 
 There is a good example [Demo ticket booking system](https://github.com/spiral/ticket-booking) application built on the
-Spiral Framework, which is a high-performance PHP framework that follows the principles of microservices and allows
+Spiral, which is a high-performance PHP framework that follows the principles of microservices and allows
 developers to create reusable, independent, and easy-to-maintain components.
 
 It demonstrates how to use RoadRunner's Centrifuge plugin to enable real-time communication between the Centrifugo

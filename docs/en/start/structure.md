@@ -1,8 +1,8 @@
 # Getting started — Directory Structure
 
-The Spiral Framework does not impose any directory structure for your application, so you have the flexibility to
-organize your files and directories. However, it provides a recommended structure that can be used as
-a starting point. This structure can also be easily modified.
+Spiral does not impose any directory structure for your application, so you have the flexibility to organize your files 
+and directories. However, it provides a recommended structure that can be used as a starting point. This structure can 
+also be easily modified.
 
 ## Directories
 

@@ -1,20 +1,20 @@
 # Component — Serializer
 
-The Spiral Framework helps you manage and organize your code. One aspect of this is the ability to serialize data, which
+Spiral helps you manage and organize your code. One aspect of this is the ability to serialize data, which
 involves converting it into a format that can be stored or transmitted, and then later deserialized, or converted back
 into its original form. This is useful in a variety of situations, such as when transferring data over a network or
 storing it in a database.
 
-The Spiral Framework includes some basic serialization tools by default, but these may not always be sufficient for more
+Spiral includes some basic serialization tools by default, but these may not always be sufficient for more
 complex use cases. In such cases, the framework makes it easy to integrate additional serialization tools or to develop
-custom solutions for serializing data within your application. This allows yiut to choose the best approach for your
-specific needs, while still taking advantage of the other features and benefits provided by the Spiral Framework.
+custom solutions for serializing data within your application. This allows you to choose the best approach for your
+specific needs.
 
 The component is available by default in the [application bundle](https://github.com/spiral/app).
 
 ## Installation
 
-To enable the serializer component in your Spiral Framework application, you need to add
+To enable the serializer component in your Spiral application, you need to add
 `Spiral\Serializer\Bootloader\SerializerBootloader` to the bootloaders list.
 
 ```php app/src/Application/Kernel.php
@@ -150,8 +150,8 @@ class MyService
 
 ### Serializer class
 
-To create a custom serializer in the Spiral Framework, you will need to implement the
-`Spiral\Serializer\SerializerInterface`. This interface defines two methods that your serializer class must implement:
+To create a custom serializer in Spiral, you will need to implement the `Spiral\Serializer\SerializerInterface`. This 
+interface defines two methods that your serializer class must implement:
 `serialize(...)` and `unserialize(...)`.
 
 Here is an example of a custom serializer class that implements the `SerializerInterface`:
@@ -184,9 +184,11 @@ into which the payload should be deserialized. This method should return the des
 
 ### Registering a new Serializer
 
-There are two ways to register a custom serializer in the Spiral Framework:
+There are two ways to register a custom serializer:
 
-1. Using the `Spiral\Serializer\SerializerRegistryInterface`:
+:::: tabs
+::: tab Registry
+Using the `Spiral\Serializer\SerializerRegistryInterface`:
 
 ```php
 namespace App\Application\Bootloader;
@@ -203,8 +205,10 @@ class SerializerBootloader extends Bootloader
     }
 }
 ```
+:::
 
-2. Using the config file:
+::: tab Config
+Using the config file:
 
 ```php app/config/serializer.php
 use App\Serializer;
@@ -216,3 +220,5 @@ return [
     ],
 ];
 ```
+:::
+::::

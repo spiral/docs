@@ -1,6 +1,6 @@
 # Advanced — Mailer
 
-The Spiral Framework provides a simple email API powered by the symfony/mailer component.
+Spiral provides a simple email API powered by the symfony/mailer component.
 
 > **Note**
 > The component is available by default in the [application bundle](https://github.com/spiral/app).
@@ -114,8 +114,8 @@ the `symfony/mailer` component to send emails, and it supports several built-in 
 
 ### Custom mailer transport
 
-In addition to the built-in transports supported by the `symfony/mailer` component, the Spiral Framework also allows you
-to use custom transports.
+In addition to the built-in transports supported by the `symfony/mailer` component, Spiral also allows you to use custom
+transports.
 
 To use a custom transport, you will need to create a class that implements the
 `Symfony\Component\Mailer\Transport\TransportInterface` which is a part of `symfony/mailer` component. This class should
@@ -186,7 +186,7 @@ the overall performance of your application. One way to mitigate this issue is t
 
 </details>
 
-The Spiral Framework provides an easy way to set up a queue connection and pipeline for sending emails.
+Spiral provides an easy way to set up a queue connection and pipeline for sending emails.
 
 In the `.env` file, you can configure the queue connection and pipeline to use for sending emails by setting the
 `MAILER_QUEUE_CONNECTION` and `MAILER_QUEUE` variables.

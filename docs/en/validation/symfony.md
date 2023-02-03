@@ -1,6 +1,6 @@
 # Validation — Symfony Validator
 
-The Spiral Framework provides a validation component that allows you to validate data using
+Spiral provides a validation component that allows you to validate data using
 the [Symfony Validation bridge](https://github.com/spiral-packages/symfony-validator) package. This validation bridge
 provides integration with the [Symfony Validator](https://github.com/symfony/validator) component, which is a more
 powerful and feature-rich validation library.
@@ -53,7 +53,7 @@ class UserController
 
 ## Filters
 
-The `spiral/filters` component is a tool for validating HTTP request data in Spiral Framework. It allows you to create
+The `spiral/filters` component is a tool for validating HTTP request data in Spiral. It allows you to create
 a "Filter" object, which defines the required data that should be extracted from the request object and mapped into the
 filter object's properties.
 

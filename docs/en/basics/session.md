@@ -133,7 +133,7 @@ file system in the `runtime/session` directory. If your application will be load
 you should choose a centralized store that all servers can access, such as Redis.
 
 The session `handler` configuration option defines where session data will be stored for each request.
-Spiral Framework ships with several drivers out of the box:
+Spiral ships with several drivers out of the box:
 
 ### **FileHandler** configuration
 
@@ -184,8 +184,8 @@ return [
 
 ### Custom Session Handler
 
-If none of the existing session drivers fit your application's needs, Spiral Framework makes it possible to write your
-own session handler. Your custom session driver should implement PHP's
+If none of the existing session drivers fit your application's needs, Spiral makes it possible to write your own session
+handler. Your custom session driver should implement PHP's
 built-in [`SessionHandlerInterface`](https://www.php.net/manual/en/class.sessionhandlerinterface.php).
 
 ```php app/config/session.php

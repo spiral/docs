@@ -1,6 +1,6 @@
 # Testing — Storage Tests
 
-The Spiral Framework provides is a convenient way to test the [spiral/storage](../advanced/storage.md) component.
+Spiral provides is a convenient way to test the [spiral/storage](../advanced/storage.md) component.
 
 The `fakeStorage` method allows you to create a fake storage that mimics the behavior of a real storage, but doesn't
 actually send any files to the cloud. This way, you can test file uploads without worrying about accidentally sending

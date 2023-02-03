@@ -3,8 +3,8 @@
 When testing code that sends out jobs, you typically want to make sure a specific job was sent out, but you don't
 actually want the job to run. This is because the job's execution can be tested in a separate test.
 
-The Spiral Framework has a handy way to test the job sending [spiral/queue](../queue/configuration.md) component. You
-can use the `fakeQueue` method to prevent jobs from being sent to the actual queue.
+Spiral has a handy way to test the job sending [spiral/queue](../queue/configuration.md) component. You can use 
+the `fakeQueue` method to prevent jobs from being sent to the actual queue.
 
 The `fakeQueue` method allows you to replace the default queue connection provider in the application container with a
 fake one, specifically the `Spiral\Testing\Queue\FakeQueueManager` class. This fake queue connection provider creates

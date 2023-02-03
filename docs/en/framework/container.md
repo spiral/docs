@@ -1,9 +1,9 @@
 # Framework — Container and DI
 
-The Spiral framework includes a set of tools that makes it easier to manage dependencies and create objects in your
-code. One of the main tools is the container, which helps you handle class dependencies and automatically "injects" them
-into the class. This means that instead of creating objects and setting up dependencies manually, the container takes
-care of it for you.
+Spiral includes a set of tools that makes it easier to manage dependencies and create objects in your code. One of the 
+main tools is the container, which helps you handle class dependencies and automatically "injects" them into the class. 
+This means that instead of creating objects and setting up dependencies manually, the container takes care of it for 
+you.
 
 
 > **Note**
@@ -538,9 +538,9 @@ passed in as parameters or if they need to be resolved by the container.
 
 ## Auto Wiring
 
-Spiral Framework attempts to hide container implementation and configuration from your domain layer by providing
-rich auto-wiring functionality. Though auto-wiring rules are straightforward, it's essential to learn them to avoid
-framework misbehavior.
+Spiral attempts to hide container implementation and configuration from your domain layer by providing rich auto-wiring 
+functionality. Though auto-wiring rules are straightforward, it's essential to learn them to avoid framework 
+misbehavior.
 
 ### Automatic Dependency Resolution
 

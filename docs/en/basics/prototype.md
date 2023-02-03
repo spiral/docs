@@ -1,6 +1,6 @@
 # The Basics — Prototyping
 
-Spiral Framework comes with a development extension that speeds up the development of application services, controllers,
+Spiral comes with a development extension that speeds up the development of application services, controllers,
 middleware, and other classes via AST modification (a.k.a. it writes code for you). The extension includes IDE friendly
 tooltips for most common framework components and Cycle Repositories.
 

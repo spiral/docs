@@ -1,7 +1,7 @@
 # Views — Basics
 
-The Spiral Framework provides a `spiral/views` component that serves as an abstraction layer for handling views. It
-provides a set of interfaces for registering template engines and using them to render templates.
+Spiral provides a `spiral/views` component that serves as an abstraction layer for handling views. It provides a set of 
+interfaces for registering template engines and using them to render templates.
 
 ## Views
 

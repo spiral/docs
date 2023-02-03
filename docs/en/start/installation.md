@@ -1,6 +1,6 @@
 # Getting started — Installation
 
-The Spiral Framework provides a convenient application installer that allows developers to easily install and configure
+Spiral provides a convenient application installer that allows developers to easily install and configure
 the framework and any desired packages through a command line interface. This helps streamline the process of getting
 started with Spiral and simplifies the setup of the development environment.
 

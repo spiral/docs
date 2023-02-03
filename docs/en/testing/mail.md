@@ -1,6 +1,6 @@
 # Testing — Mailer Tests
 
-The Spiral Framework has a convenient way to test the [spiral/sendit](../component/sendit.md) component. One useful
+Spiral has a convenient way to test the [spiral/sendit](../component/sendit.md) component. One useful
 feature is the ability to use a fake mailer to prevent actual emails from being sent. This is useful because sending
 emails is typically not related to the code you are testing.
 

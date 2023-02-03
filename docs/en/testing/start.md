@@ -1,6 +1,6 @@
 # Testing — Getting Started
 
-Spiral framework is designed with a strong emphasis on testing. It comes with built-in support
+Spiral is designed with a strong emphasis on testing. It comes with built-in support
 for [PHPUnit](https://phpunit.de/), and includes a pre-configured `phpunit.xml` file for your application.
 
 The default directory structure of a Spiral application includes a `tests` directory, which contains two
@@ -13,8 +13,8 @@ On the other hand, **Feature** tests are intended to test a larger portion of co
 multiple objects, or even a full HTTP request to a JSON endpoint. These tests provide more comprehensive coverage of
 your application and give you greater confidence that it is functioning as intended.
 
-The Spiral framework provides the `spiral/testing` package to help developers with the testing of their application.
-This package offers a variety of helper methods that can simplify the process of writing tests for Spiral applications.
+Spiral provides the `spiral/testing` package to help developers with the testing of their application. This package 
+offers a variety of helper methods that can simplify the process of writing tests for Spiral applications.
 
 ## Configuration
 

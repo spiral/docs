@@ -1,7 +1,7 @@
 # The Basics — Errors handling
 
 During the development process, it is common for errors and exceptions to arise. Debugging these exceptions can be a
-challenging and time-consuming task, but it is a critical aspect of the development process. The Spiral Framework offers
+challenging and time-consuming task, but it is a critical aspect of the development process. Spiral offers
 a range of tools and techniques for debugging exceptions and identifying the underlying cause of issues.
 
 ## Exception rendering
@@ -94,7 +94,7 @@ protected const LOAD = [
 ];
 ```
 
-The Spiral Framework uses formats to determine which renderer should be used to handle a given exception. The format can
+Spiral uses formats to determine which renderer should be used to handle a given exception. The format can
 be based on the environment, such as `cli` for console applications or `http` for HTTP requests. This allows for
 different renderers to be registered and used depending on the context in which the exception was encountered.
 
@@ -264,7 +264,7 @@ Unable to route `http://127.0.0.1`. in vendor/spiral/framework/src/Router/src/Ro
 
 ### Yii Error Renderer
 
-The Yii Error Handler is a bridge package for Spiral Framework that provides integration with the Yii framework's error
+The Yii Error Handler is a bridge package for Spiral that provides integration with the Yii framework's error
 handlers.
 
 ![screenshot](https://user-images.githubusercontent.com/773481/215085868-a7228f6c-1be0-460d-b910-85fa2cd1195b.png)
@@ -302,7 +302,7 @@ The bridge provides several built-in renderers for displaying errors:
 
 ## Exception reporting
 
-In addition to renderers, the Spiral Framework also allows for the registration of reporters, which can be used to store
+In addition to renderers, Spiral also allows for the registration of reporters, which can be used to store
 information about exceptions in a file or send it to an external service like [Sentry](https://sentry.io).
 
 Reporters can be registered with the `ExceptionHandler` class in a similar way to renderers, by using the addReporter
@@ -326,7 +326,7 @@ final class ExceptionHandlerBootloader extends Bootloader
 
 ### Available Reporters
 
-The Spiral Framework comes with two built-in reporters that are available out of the box,
+Spiral comes with two built-in reporters that are available out of the box,
 the `Spiral\Exceptions\Reporter\LoggerReporter` and the `Spiral\Exceptions\Reporter\FileReporter`.
 
 #### LoggerReporter
@@ -341,7 +341,7 @@ known as `snapshot`.
 
 ### Sentry Reporter
 
-The Sentry Reporter is a bridge package for Spiral Framework that provides integration with the Sentry error reporting.
+The Sentry Reporter is a bridge package for Spiral that provides integration with the Sentry error reporting.
 
 #### Installation
 

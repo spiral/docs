@@ -1,8 +1,7 @@
 # Console — Getting started
 
-The Spiral Framework's Console component makes it easy to create and manage console commands within your application. By
-leveraging the power of the symfony/console package, the Console component provides a convenient interface for working
-with console commands.
+Console component makes it easy to create and manage console commands within your application. By leveraging the power 
+of the symfony/console package, the Console component provides a convenient interface for working with console commands.
 
 All of the provided application skeletons include the Console component by default. To enable the component in
 alternative builds, make sure to require composer package `spiral/console` and modify the application bootloader:

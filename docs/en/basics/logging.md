@@ -1,9 +1,8 @@
 # The Basics — Logging
 
-The Spiral Framework offers `spiral/logger` component that is compliant with
-the [PSR-3](https://www.php-fig.org/psr/psr-3/) standard. This component can be utilized to log various types of
-information, such as errors, warnings, and debugging messages, which can assist in identifying and resolving issues
-within the application.
+Spiral offers `spiral/logger` component that is compliant with the [PSR-3](https://www.php-fig.org/psr/psr-3/) standard.
+This component can be utilized to log various types of information, such as errors, warnings, and debugging messages, 
+which can assist in identifying and resolving issues within the application.
 
 By default, the framework does not provide its own implementation, however, the `spiral/monolog-bridge` component is
 available, which fully integrates with the [Seldaek/monolog](https://github.com/Seldaek/monolog) package and offers
@@ -243,7 +242,7 @@ final class UserService
 
 ### Logger trait
 
-The Spiral Framework provides a convenient way to quickly assign a Logger to any class through the use of the
+Spiral provides a convenient way to quickly assign a Logger to any class through the use of the
 `Spiral\Logger\Traits\LoggerTrait` trait. By simply including this trait in a class you can easily access a Logger
 instance and log messages.
 

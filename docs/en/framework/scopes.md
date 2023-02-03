@@ -4,9 +4,9 @@ An essential aspect of developing long-living applications is proper context man
 you are no longer allowed to treat user requests as a global singleton object and store references to its instance in 
 your services.
 
-Practically it means that you must explicitly request context while processing user input. Spiral framework simplifies
-such requests by using a global IoC container as a context carrier which allows you to call request specific instances
-as global objects via context bounded scopes.
+Practically it means that you must explicitly request context while processing user input. Spiral simplifies such 
+requests by using a global IoC container as a context carrier which allows you to call request specific instances as 
+global objects via context bounded scopes.
 
 ## Explanation
 

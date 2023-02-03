@@ -1,6 +1,6 @@
 # Queue — Getting started
 
-The Spiral Framework provides support for background PHP processing and a queue system for both the Web and GRPC
+Spiral provides support for background PHP processing and a queue system for both the Web and GRPC
 bundles. This feature is available out of the box and allows you to work with a variety of message brokers including:
 
 - [Kafka](https://roadrunner.dev/docs/plugins-jobs#kafka-driver),

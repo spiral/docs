@@ -1,6 +1,6 @@
 # Testing — HTTP Tests
 
-The Spiral Framework's testing package has a really handy way to test your application controllers. You can use the
+Spiral testing package has a really handy way to test your application controllers. You can use the
 `Spiral\Testing\Http\FakeHttp` class to send requests to your controllers and check the responses.
 
 Like, in the example below we can see a test for a `HomeController`. We created a `FakeHttp` instance and used it to
@@ -245,7 +245,7 @@ $http->flushCookies();
 
 ### Session/Authentication
 
-The Spiral Framework has some cool tools to help you interact with the session while testing your HTTP requests. One of
+Spiral has some cool tools to help you interact with the session while testing your HTTP requests. One of
 those tools is the `withSession()` method. It allows you to set the session data to a specific array before sending a
 request to your application. This can be really handy when you need to load the session with some specific data for your
 test.
@@ -261,8 +261,8 @@ $http->withSession(
 )->get('/users');
 ```
 
-The session is often used to maintain state for the currently authenticated user. This is why the Spiral Framework
-provides a `withActor` method that makes it easy to authenticate a given user as the current user during testing.
+The session is often used to maintain state for the currently authenticated user. This is why Spiral provides 
+a `withActor` method that makes it easy to authenticate a given user as the current user during testing.
 
 This method allows you to quickly and easily set the authenticated user for a test, by passing an instance of a user
 object to the method.

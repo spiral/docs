@@ -1,8 +1,8 @@
 # Cookbook — Long Start
 
-The Spiral Framework contains a lot of components built to operate seamlessly with each other. In this article, we will
-show you how to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations
-(optional) and domain interceptors.
+Spiral contains a lot of components built to operate seamlessly with each other. In this article, we will show you how 
+to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations (optional) and 
+domain interceptors.
 
 > **Note**
 > The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more

@@ -3,8 +3,7 @@
 It is possible to invoke application kernel using a custom data source, for example, **Kafka**, **state-machine**
 events, or attach to user-defined interrupt. In this section, we will try to demonstrate how to write a RoadRunner
 service plugin and a kernel dispatcher to consume data from this service. It is a good starting point for anyone who is
-interested in building custom plugins for RoadRunner or in using the Spiral Framework to build scalable and extensible
-web applications.
+interested in building custom plugins for RoadRunner or using Spiral to build scalable and extensible web applications.
 
 In this example, we will be sending "ticks" to the kernel every second. 
 
@@ -251,8 +250,7 @@ func (p *Plugin) Weight() uint {
 ```
 
 When RoadRunner starts PHP workers, it can pass a value for the `RR_MODE` variable to indicate which plugin should be
-used. The Spiral Framework can then use the value of this variable to choose the appropriate dispatcher for the current
-environment.
+used. Spiral can then use the value of this variable to choose the appropriate dispatcher for the current environment.
 
 ### Build the RoadRunner Binary with Velox
 

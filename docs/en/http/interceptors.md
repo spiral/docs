@@ -1,7 +1,7 @@
 # HTTP — Interceptors
 
-Spiral Framework provides interceptors for HTTP requests that allow you to intercept and modify requests and responses
-at various points in the request lifecycle.
+Spiral provides interceptors for HTTP requests that allow you to intercept and modify requests and responses at various 
+points in the request lifecycle.
 
 The `Spiral\Boot\CoreInterface` is typically bound to the `Spiral\Core\Core` class in the container, by default. The
 `Core` class is responsible for handling controllers and it's the entry point of the application. It's responsible for

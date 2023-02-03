@@ -119,7 +119,7 @@ Keep in mind that you can also create your own custom implementations of the `To
 implementations do not meet your needs. This allows you to use any storage mechanism that you choose for storing
 authentication tokens in your application.
 
-To create a custom storage in the Spiral Framework, you will need to create a class that implements
+To create a custom storage in Spiral, you will need to create a class that implements
 the `Spiral\Auth\TokenStorageInterface` interface.
 
 Here is a simple example of a custom token storage implementation:
@@ -170,7 +170,7 @@ final class JwtTokenStorage implements TokenStorageInterface
 > **Note**
 > Full example of custom token storage can be found [here](../cookbook/user-authentication.md).
 
-The Spiral framework provides several ways to register a token storage.
+Spiral provides several ways to register a token storage.
 
 :::: tabs
 
@@ -276,7 +276,7 @@ final class RoutesBootloader extends BaseRoutesBootloader
 
 ### Token transport
 
-In the Spiral framework, the `Spiral\Auth\HttpTransportInterface` is used to read and write authentication tokens in
+In Spiral, the `Spiral\Auth\HttpTransportInterface` is used to read and write authentication tokens in
 HTTP requests and responses using the PSR-7 interfaces.
 
 This interface defines three methods:
@@ -308,7 +308,7 @@ return [
 ]
 ```
 
-The Spiral framework provides several ways to register a token transport.
+Spiral provides several ways to register a token transport.
 
 :::: tabs
 
@@ -515,7 +515,7 @@ protected const LOAD = [
 
 You can protect some of your route targets by attaching the firewall middleware to prevent unauthorized access.
 
-Spiral Framework provides the following firewall middlewares:
+Spiral provides the following firewall middlewares:
 
 #### Firewall which will overwrite the target url
 

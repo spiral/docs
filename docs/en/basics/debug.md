@@ -1,6 +1,6 @@
 # The Basics — Debugging
 
-The Spiral Framework does not have built-in tools for dumping variables, but it is possible to use third-party packages.
+Spiral does not have built-in tools for dumping variables, but it is possible to use third-party packages.
 
 ## Symfony VarDumper
 
@@ -139,7 +139,7 @@ That's it. Now you open http://127.0.0.1:8000 url in your browser and collect du
 
 XHProf is a tool that helps you figure out how your PHP code is running and where it might be slow. It keeps track of
 how many times different parts of your code get called, and how long they take. It also can help you figure out how much
-memory your code is using. The Spiral framework has a [spiral/profiler](https://github.com/spiral/profiler) package that
+memory your code is using. Spiral has a [spiral/profiler](https://github.com/spiral/profiler) package that
 makes it easy to use XHProf in your PHP application. It provides a simple and convenient way to use the XHProf profiler
 during the development or profiling period, so you can quickly identify and optimize performance bottlenecks in your
 code.

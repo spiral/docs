@@ -43,8 +43,8 @@ sudo pecl install protobuf-3.10.0
 ## Package Installation
 
 The `spiral/roadrunner-bridge` package allows you to use RoadRunner
-[gRPC plugin](https://roadrunner.dev/docs/app-server-grpc) with the Spiral Framework. This package provides
-tools to generate proto files, client code, and a bootloader for your application.
+[gRPC plugin](https://roadrunner.dev/docs/app-server-grpc) with Spiral. This package provides tools to generate proto 
+files, client code, and a bootloader for your application.
 
 At first, you need to install the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package.
 
@@ -131,14 +131,13 @@ grpc:
 ## Example Application
 
 There is a good example [**Demo ticket booking system**](https://github.com/spiral/ticket-booking) application built 
-on the Spiral Framework, which is a high-performance PHP framework that follows the principles of microservices and 
-allows developers to create reusable, independent, and easy-to-maintain components.
+on Spiral, that follows the principles of microservices and allows developers to create reusable, independent, and 
+easy-to-maintain components.
 
 In this demo application, you can find an example of using RoadRunner's gRPC plugin to create and consume gRPC services.
 
-Overall, our demo ticket booking system is a great example of how Spiral Framework and other tools can be used to build 
-a modern and efficient application. We hope you have a blast using it and learning more about the capabilities of 
-Spiral Framework and the other tools we've used. 
+Overall, our demo ticket booking system is a great example of how Spiral and other tools can be used to build 
+a modern and efficient application. We hope you have a blast using it and learning more about the capabilities. 
 
 **Happy (fake) ticket shopping!**
 

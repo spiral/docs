@@ -6,8 +6,8 @@ filtered data.
 
 ## Validators
 
-There are three validator bridges available for use with the Spiral Framework filers. You can use any of these
-validator bridges in your application, depending on your needs and preferences.
+There are three validator bridges available for use with Spiral filers. You can use any of these validator bridges in 
+your application, depending on your needs and preferences.
 
 ### [Spiral Validator](../validation/spiral.md)
 
@@ -628,7 +628,7 @@ class MyFilter extends Filter implements HasFilterDefinition
 
 When some of the filter rule has an error, `Spiral\Filters\Exception\ValidationException` exception will be thrown.
 
-Spiral Framework will automatically catch this exception via the `Spiral\Filter\ValidationHandlerMiddleware` middleware
+Spiral will automatically catch this exception via the `Spiral\Filter\ValidationHandlerMiddleware` middleware
 and return a response with the error message via `Spiral\Filters\ErrorsRendererInterface`.
 
 You just need to register middleware:

@@ -1,9 +1,7 @@
 # Advanced — Task Scheduling
 
 The [spiral-packages/scheduler](https://github.com/spiral-packages/scheduler) package provides a simple API for running
-cron job tasks by a schedule. It can be easily integrated with a project based on the Spiral Framework.
-
-This package is a great tool for scheduling repetitive tasks in your project based on the Spiral framework.
+cron job tasks by a schedule. It can be easily integrated with a project based on Spiral.
 
 ## Installation
 
@@ -41,8 +39,7 @@ You can use any supervisor to keep the process running in the background mode, s
 
 ## Usage
 
-To use the Scheduler package in your Spiral framework project, you can create a new bootloader called
-`SchedulerBootloader` in your application.
+To use the Scheduler package in your project, you can create a new `SchedulerBootloader` bootloader.
 
 > **Warning**
 > Don't forget to register `SchedulerBootloader` in your application!

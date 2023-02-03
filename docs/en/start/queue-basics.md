@@ -1,8 +1,8 @@
 # Getting started — First background job
 
-In this guide, we'll go over how to create and run a background job using the Spiral Framework and the RoadRunner
-application server. This will allow you to perform tasks asynchronously, so that your application can continue to
-perform other tasks while the background job is running.
+In this guide, we'll go over how to create and run a background job using Spiral and the RoadRunner application server. 
+This will allow you to perform tasks asynchronously, so that your application can continue to perform other tasks while 
+the background job is running.
 
 Here are the basic steps you'll need to follow:
 
@@ -124,8 +124,8 @@ Job [32m3332e595-9774-434c-908c-3c419f80c967[39m pushed
 When the job is pushed to the queue, it will be sent to RoadRunner. Then, RoadRunner will send it to a consumer to
 handle.
 
-That's it! You've now created your first background job using the Spiral Framework and RoadRunner. With this setup, you
-can easily add more jobs and perform tasks asynchronously to keep your application running smoothly.
+That's it! You've now created your first background job using Spiral and RoadRunner. With this setup, you can easily add 
+more jobs and perform tasks asynchronously to keep your application running smoothly.
 
 <hr>
 

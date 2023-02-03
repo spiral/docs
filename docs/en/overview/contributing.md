@@ -1,6 +1,6 @@
 # Overview — Contribution Guide
 
-Are you interested in helping out with the Spiral Framework? It's an open-source project that needs the help of
+Are you interested in helping out with Spiral? It's an open-source project that needs the help of
 developers like you to keep it running and make it even better. There are lots of ways you can get involved.
 
 ## Pull Requests
@@ -50,9 +50,9 @@ guidelines for how code should be formatted and structured, so that it's consist
 
 ### Include tests
 
-Important thing to keep in mind when submitting code to the Spiral Framework is to include tests. This helps make sure
-that the code you're submitting is working the way it should, and that it doesn't cause any new problems and, it makes
-it easier for maintainers to verify that your code is correct.
+Important thing to keep in mind when submitting code to Spiral is to include tests. This helps make sure that the code 
+you're submitting is working the way it should, and that it doesn't cause any new problems and, it makes it easier for 
+maintainers to verify that your code is correct.
 
 #### Run tests
 
@@ -63,8 +63,8 @@ it easier for maintainers to verify that your code is correct.
 ### Use Psalm
 
 Before you submit any code, you have to use [Psalm](https://psalm.dev/) to check for any mistakes or problems. This
-makes sure that your code is correct and follows the best ways of doing things. The Spiral Framework uses Psalm's error
-level, **"4"** when checking code. It's an easy step to make sure your contribution is up to the standard.
+makes sure that your code is correct and follows the best ways of doing things. Spiral uses Psalm's error level, **"4"** 
+when checking code. It's an easy step to make sure your contribution is up to the standard.
 
 #### Run Psalm
 
@@ -74,7 +74,7 @@ level, **"4"** when checking code. It's an easy step to make sure your contribut
 
 ### Keep it simple
 
-One more thing to keep in mind when contributing to the Spiral Framework is to try and keep your code as simple and
+One more thing to keep in mind when contributing to Spiral is to try and keep your code as simple and
 straightforward as possible. The maintainers prefer solutions that are easy to understand and implement over ones that
 are overly complex. So, when making a pull request, try to think of the simplest way to solve the problem at hand and
 present it that way. It will help your pull request to get accepted faster.
@@ -88,17 +88,17 @@ channel for support from the framework maintainers and community members.
 
 ## Issues
 
-If you come across any issues or security vulnerabilities while using the Spiral Framework, please report them. The
+If you come across any issues or security vulnerabilities while using Spiral, please report them. The
 maintainers take these matters very seriously and will do their best to address them as soon as possible. You can report
-issues or vulnerabilities by opening an [issue](https://github.com/spiral/framework/issues) in the Spiral Framework's ]
+issues or vulnerabilities by opening an [issue](https://github.com/spiral/framework/issues) in `spiral/framework`
 GitHub repository.
 
 ## Commercial Support
 
-It's important to note that the Spiral Framework and all related components are maintained
+It's important to note that Spiral and all related components are maintained
 by [Spiral Scout](https://spiralscout.com/).
 
-If you would like to support the development of the Spiral Framework, you can become
+If you would like to support the development of Spiral, you can become
 a [sponsor](https://github.com/sponsors/roadrunner-server).
 
 Additionally, if you need commercial support, you can contact the Spiral Scout team
@@ -107,4 +107,4 @@ may have.
 
 ## Licensing
 
-Spiral Framework and its components will remain under [MIT license](/license.md) indefinitely.
+Spiral and its components will remain under [MIT license](/license.md) indefinitely.

@@ -1,9 +1,8 @@
 # Framework — Kernel and Environment
 
-The Spiral framework utilizes a kernel object that contains a set of application-specific services. Unlike Symfony, The
-Spiral only requires one kernel for all dispatching methods, such as HTTP, Queue, GRPC Console, etc. The kernel
-automatically selects the appropriate dispatching method based on the
-connected [Dispatcher](../framework/dispatcher.md).
+Spiral utilizes a kernel object that contains a set of application-specific services. Unlike Symfony, Spiral only 
+requires one kernel for all dispatching methods, such as HTTP, Queue, GRPC Console, etc. The kernel automatically 
+selects the appropriate dispatching method based on the connected [Dispatcher](../framework/dispatcher.md).
 
 > **Note**
 > The base kernel implementation is located in `spiral/boot` repository.
@@ -214,7 +213,7 @@ $app->appBooted(function () {
 
 ## Environment
 
-The Spiral Framework integrates with [Dotenv](https://github.com/vlucas/phpdotenv) through the
+Spiral integrates with [Dotenv](https://github.com/vlucas/phpdotenv) through the
 `Spiral\DotEnv\Bootloader\DotenvBootloader` class. This bootloader is responsible for loading the environment variables
 from the `.env` file and making them available to the application.
 
@@ -263,11 +262,11 @@ $app->run(new Environment(['DOTENV_PATH' => __DIR__ . '/.env.production']));
 
 ### Overwriting variables
 
-By default, the Spiral Framework does not overwrite previously set environment variables when loading new ones from the
-`.env` file. However, this behavior can be changed by setting the `overwrite` parameter to `true` when initializing the
+By default, Spiral does not overwrite previously set environment variables when loading new ones from the `.env` file. 
+However, this behavior can be changed by setting the `overwrite` parameter to `true` when initializing the
 `Environment` class.
 
-```php
+```php app.php
 use Spiral\Boot\Environment;
 
 $app = App\Application\Kernel::create(...);

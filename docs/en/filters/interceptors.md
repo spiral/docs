@@ -1,8 +1,8 @@
 # Filters — Interceptors
 
-Spiral Framework provides a way for developers to customize the behavior of their filters through the use of
-interceptors. An interceptor is a piece of code that is executed after a filter created, and
-which allows developers to hook into the filter handling pipeline to perform some action.
+Spiral provides a way for developers to customize the behavior of their filters through the use of interceptors. An 
+interceptor is a piece of code that is executed after a filter created, and which allows developers to hook into the 
+filter handling pipeline to perform some action.
 
 Interceptors can be useful for a variety of purposes, such as handling errors or adding additional context to the
 filter.

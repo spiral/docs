@@ -14,8 +14,8 @@ Use Temporal when you have to manage complex data flows or ensure reliable trans
 business domains. it provides timers, retry mechanisms and much more.
 
 ## Installation
-
-The Spiral framework offers seamless integration with the Temporal workflow engine. By installing the
+ 
+Spiral offers seamless integration with the Temporal workflow engine. By installing the
 `spiral/temporal-bridge` package, you can easily use Temporal within your application.
 
 Install the `spiral/temporal-bridge` package by running the following composer command:

@@ -1,6 +1,6 @@
 # Testing — Database
 
-The Spiral Framework offers a powerful tool for managing data in your application through the use of the
+Spiral offers a powerful tool for managing data in your application through the use of the
 [spiral-packages/database-seeder](https://github.com/spiral-packages/database-seeder) package. This package allows
 you to easily seed test data into their CycleORM entities using seed classes. It provides the ability to create entities
 through the use of factories.

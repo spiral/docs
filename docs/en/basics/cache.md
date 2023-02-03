@@ -9,9 +9,9 @@ reduce the load on the slower source.
 The Spiral Framework's `spiral/cache` component allows for efficient storage and retrieval of data. It is compliant
 with the [PSR-16 standard](https://www.php-fig.org/psr/psr-16/).
 
-In the Spiral Framework, the RoadRunner is used as the underlying technology for the cache data layer, which provides
-several benefits. RoadRunner is written in Go, a language known for its performance and efficiency, and is designed to
-handle high-performance and concurrent workloads. Additionally, the
+In Spiral, RoadRunner is used as the underlying technology for the cache data layer, which provides several benefits. 
+RoadRunner is written in Go, a language known for its performance and efficiency, and is designed to handle 
+high-performance and concurrent workloads. Additionally, the 
 RoadRunner [Key-Value plugin](https://roadrunner.dev/docs/plugins-kv/) provides a wide range of storage options,
 including popular solutions such as Redis Server or Memcached, as well as options that do not require a separate server,
 such as BoltDB. By using RoadRunner, the framework can take advantage of its performance and efficiency to handle
@@ -144,7 +144,7 @@ kv:
 
 ## Usage
 
-The Spiral Framework's cache component allows you to work with the cache using two interfaces:
+Spiral's cache component allows you to work with the cache using two interfaces:
 `Psr\SimpleCache\CacheInterface` and `Spiral\Cache\CacheStorageProviderInterface`.
 
 > **See more**

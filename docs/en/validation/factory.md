@@ -1,7 +1,7 @@
 # Validation — Getting started
 
-The validation component of the Spiral Framework allows you to validate data that is submitted by a user or received
-from an external source.
+The validation component of Spiral allows you to validate data that is submitted by a user or received from an external 
+source.
 
 The component does not contain any validator implementation out of the box. Instead, it provides a set of interfaces and
 abstract classes that define the expected behavior of a validator.
@@ -21,7 +21,7 @@ protected const LOAD = [
 
 ## Configuration
 
-There are three validator bridges available for use with the Spiral Framework validation component:
+There are three validator bridges available for use with Spiral validation component:
 
 - [Spiral Validator](./spiral.md) - This is the default validator bridge. It is a simple,
   lightweight validator that can handle basic validation tasks.
@@ -32,9 +32,9 @@ There are three validator bridges available for use with the Spiral Framework va
 
 You can use any of these validator bridges in your application, depending on your needs and preferences.
 
-Most applications use a single validator implementation, but Spiral Framework allows you to use multiple
-validators in your application if needed. In this case, you can define a default validator in the
-`app/config/validation.php` configuration file.
+Most applications use a single validator implementation, but Spiral allows you to use multiple validators in your 
+application if needed. In this case, you can define a default validator in the `app/config/validation.php` configuration
+file.
 
 ```php app/config/validation.php
 return [
@@ -152,8 +152,8 @@ final class MyValidation implements ValidationInterface
 
 You will also need to create a validator object that implements `ValidatorInterface` and is responsible for performing
 the actual validation. This can be a standalone class or a class that extends one of the validator classes provided by
-the Spiral Framework or another library. The validator should implement the logic for checking the data against the
-validation rules and returning a boolean value indicating whether the data is valid or not.
+Spiral or another library. The validator should implement the logic for checking the data against the validation rules 
+and returning a boolean value indicating whether the data is valid or not.
 
 ```php
 namespace App\Validator;
@@ -210,6 +210,6 @@ final class ValidatorBootloader extends Bootloader
 > **See more**
 > Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
 
-It's worth noting that this is just one example of how you might create a custom validator in the Spiral Framework.
+It's worth noting that this is just one example of how you might create a custom validator in Spiral.
 There are many other approaches and techniques you can use to customize and extend the validation process, depending on
 your specific needs and requirements.

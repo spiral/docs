@@ -1,6 +1,6 @@
 # Component — Storage and Cloud distribution
 
-The Spiral Framework offers a comprehensive solution for file storage and distribution through its `spiral/storage` and
+Spiral offers a comprehensive solution for file storage and distribution through its `spiral/storage` and
 `spiral/distribution` components. The `spiral/storage` component provides powerful storage abstraction utilizing the
 capabilities of the Flysystem PHP package, offering convenient drivers for working with both local file systems and
 Amazon S3. The `spiral/distribution` component, which is integrated with the`spiral/storage` component, is responsible
@@ -812,7 +812,7 @@ $manager->add('local', new StaticResolver(new Uri('https://static.example.com'))
 
 Once you've configured your component, you can start using it.
 
-If you are using the Spiral Framework, the manager is already configured. You can get it from
+If you are using a Spiral application, the manager is already configured. You can get it from
 [the container](../framework/container.md) or
 via [dependency injection](../framework/container.md#dependency-injection).
 

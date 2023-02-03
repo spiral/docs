@@ -2,8 +2,8 @@
 
 ## Installation
 
-By default, the router component is installed in Spiral Framework, but if you want to use it in your custom build, use
-composer to install the router component.
+By default, the router component is installed in Spiral, but if you want to use it in your custom build, use composer to
+install the router component.
 
 ```terminal
 composer require spiral/router
@@ -24,7 +24,7 @@ protected const LOAD = [
 
 ::: tab Routing configurator
 
-Spiral Framework offers a convenient and organized way for developers to defin routes using the`defineRoutes` method of
+Spiral offers a convenient and organized way for developers to defin routes using the`defineRoutes` method of
 the `App\Application\Bootloader\RoutesBootloader` class. This method provides
 a `Spiral\Router\Loader\Configurator\RoutingConfigurator` instance , which offers a range of methods for defining and 
 configuring routes.
@@ -171,8 +171,8 @@ Using these properties, you can define the details of your route in a concise an
 ### Route name
 
 It's generally a good idea to specify a name for your routes, as it can make it easier to reference them elsewhere in
-your application. However, if you don't specify a name, the Spiral Framework will generate one for you automatically,
-which can be convenient if you don't need to reference the route by name.
+your application. However, if you don't specify a name, Spiral will generate one for you automatically, which can be 
+convenient if you don't need to reference the route by name.
 
 The framework will generate a default name for you based on the route pattern and the HTTP method(s) that it matches. 
 

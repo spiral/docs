@@ -36,5 +36,4 @@ protected const LOAD = [
 ```
 
 There is no difference between using the `spiral/filters` component and the `spiral/filters-bridge` package, so you can use
-[documentation](https://spiral.dev/docs/filters-configuration/2.14/en#create-filter) for the previous Spiral Framework 
-version.
+[documentation](https://spiral.dev/docs/filters-configuration/2.14/en#create-filter) for the previous Spiral version.

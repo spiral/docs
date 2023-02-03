@@ -4,14 +4,14 @@ As a professional, you know the importance of keeping track of key metrics for y
 With [Prometheus](https://prometheus.io/), an open-source monitoring system, you can collect and store time series data
 such as application metrics, and use its powerful query language to analyze and visualize that data.
 
-But why stop there? The Spiral framework has a really convenient feature that lets you send your application metrics to
+But why stop there? Spiral has a really convenient feature that lets you send your application metrics to
 Prometheus with minimal setup. This means you can use a tool like [Grafana](https://grafana.com/) to see all your
 metrics in real-time, saving you the time and effort of building your own dashboard from scratch.
 
 ![Grafana dashboard](https://user-images.githubusercontent.com/773481/205066017-ecddefc4-1d07-4428-b3ad-af49baadad0a.png)
 
-The Spiral framework and [RoadRunner](https://roadrunner.dev/docs/plugins-metrics) plugin provide the ability to send
-application metrics to Prometheus.
+Spiral and [RoadRunner](https://roadrunner.dev/docs/plugins-metrics) plugin provide the ability to send application
+metrics to Prometheus.
 
 > **Note**
 > Here you can find out more about [Prometheus metrics](https://prometheus.io/docs/concepts/data_model/).
@@ -56,11 +56,13 @@ metrics:
 
 ### Application metrics declaration
 
-There are two ways to declare application-specific metrics in the Spiral framework:
+There are two ways to declare application-specific metrics in Spiral application:
 
-1. Using the `.rr.yaml` file:
+:::: tabs 
+::: tab RoadRunner
+Using the `.rr.yaml` file:
 
-```yaml
+```yaml .rr.yaml
 metrics:
   address: 127.0.0.1:2112
 
@@ -69,10 +71,12 @@ metrics:
       type: counter
       help: "Total registered users counter."
 ```
+:::
 
-2. Declare metrics in PHP code
+::: tab PHP
+Declare metrics in PHP code
 
-```php
+```php app/src/Application/Bootloader/MetricsBootloader.php
 use Spiral\RoadRunner\Metrics\MetricsInterface;
 use Spiral\RoadRunner\Metrics\Collector;
 
@@ -89,6 +93,9 @@ class MetricsBootloader extends Bootloader
     }
 }
 ```
+:::
+
+::::
 
 To populate a metric from the application, use `Spiral\RoadRunner\Metrics\MetricsInterface`:
 
@@ -129,7 +136,12 @@ useful for filtering, grouping, and aggregating the data.
 - **Simplified querying**: You can use labels to filter and aggregate your metric data, making it easier to extract
   meaningful insights from the data.
 
-```yaml
+
+:::: tabs
+::: tab RoadRunner
+Using the `.rr.yaml` file:
+
+```yaml .rr.yaml
 metrics:
   address: 127.0.0.1:2112
 
@@ -139,10 +151,12 @@ metrics:
       help: "Total registered users counter."
       labels: [ "type" ]
 ```
+:::
 
-or declare metrics in PHP code
+::: tab PHP
+Declare metrics in PHP code
 
-```php
+```php app/src/Application/Bootloader/MetricsBootloader.php
 use Spiral\RoadRunner\Metrics\MetricsInterface;
 use Spiral\RoadRunner\Metrics\Collector;
 
@@ -159,6 +173,9 @@ class MetricsBootloader extends Bootloader
     }
 }
 ```
+:::
+
+::::
 
 In the example, the `registered_users` metric is declared with a label called `type`. When adding data to the
 metric, you can specify the value for the type label, such as `customer`, `admin`, etc. This allows you to differentiate
@@ -190,13 +207,13 @@ class UserRegistrationHandler
 ## Example Application
 
 There is a good example [**Demo ticket booking system**](https://github.com/spiral/ticket-booking) application built
-on the Spiral Framework, which is a high-performance PHP framework that follows the principles of microservices and
-allows developers to create reusable, independent, and easy-to-maintain components.
+on Spiral Framework, that follows the principles of microservices and allows developers to create reusable,
+independent, and easy-to-maintain components.
 
 In this demo application, you can find an example of using RoadRunner's metrics plugin.
 
-Overall, our demo ticket booking system is a great example of how Spiral Framework and other tools can be used to build
+Overall, our demo ticket booking system is a great example of how Spiral and other tools can be used to build
 a modern and efficient application. We hope you have a blast using it and learning more about the capabilities of
-Spiral Framework and the other tools we've used.
+our framework and the other tools we've used.
 
 **Happy (fake) ticket shopping!**

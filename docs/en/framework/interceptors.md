@@ -1,7 +1,7 @@
 # Framework — Interceptors
 
-One of the key features of the Spiral Framework is its support for interceptors, which can be used to add functionality
-to the application without modifying the core code of the application. This can help to keep your codebase more modular
+One of the key features of Spiral is its support for interceptors, which can be used to add functionality to the 
+application without modifying the core code of the application. This can help to keep your codebase more modular
 and maintainable.
 
 **Here is some benefits of using interceptors:**

@@ -1,8 +1,8 @@
-# Overview — About Spiral Framework
+# Overview — About Spiral
 
-## Meet Spiral Framework
+## Meet Spiral
 
-The Spiral Framework is a robust and powerful framework built by the R&D team at [Spiral Scout](https://spiralscout.com/) and
+Spiral is a robust and powerful framework built by the R&D team at [Spiral Scout](https://spiralscout.com/) and
 designed for the development and maintenance of medium to large-sized enterprise applications. The framework has been in development 
 for over 12 years and is built on strict architecture design principles and utilizes components from Symfony. At it's core, Spiral 
 incorporates a classic MVC approach and features a [routing system](../http/routing.md) similar to Laravel and Symfony. The framework 
@@ -63,7 +63,7 @@ layer can also work without any broker, providing a flexible caching solution th
 
 ### GRPC
 
-Spiral framework provides an easy integration with [GRPC](../grpc/configuration.md), allowing developers to take
+Spiral provides an easy integration with [GRPC](../grpc/configuration.md), allowing developers to take
 advantage of these performance benefits and data schema management in their application.
 
 One of the key advantages of GRPC is its efficiency and low latency. Because it uses a binary protocol, it is much
@@ -102,7 +102,7 @@ components, making it easy to debug and understand what's going on in your appli
 
 <hr>
 
-Spiral framework is well-suited for engineers of all levels. If you have used Symfony or Laravel before, you'll find a
+Spiral is well-suited for engineers of all levels. If you have used Symfony or Laravel before, you'll find a
 lot of similarities in Spiral and the rest of the infrastructure components are carefully integrated and easy to learn.
 
 Overall, Spiral is a framework that makes building powerful and efficient enterprise applications a breeze. It focuses

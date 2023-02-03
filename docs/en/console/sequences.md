@@ -1,8 +1,7 @@
 # Console — Sequences
 
-The Spiral Framework provides a way to group together and execute a series of console commands or closures in a specific
-order. These groups of commands and closures are called "sequences", and there are two types: `configure` and
-`update` sequences.
+Spiral provides a way to group together and execute a series of console commands or closures in a specific order. These 
+groups of commands and closures are called "sequences", and there are two types: `configure` and `update` sequences.
 
 Using console sequences can be a convenient way to automate common tasks or operations in your application, and can help
 to ensure that they are performed consistently and in the correct order.
@@ -77,13 +76,13 @@ class AppBootloader extends Bootloader
 
 ## Custom sequences
 
-In addition to these predefined sequences, the Spiral Framework also allows you to create custom sequences. Custom
-console sequences are groups of console commands or closures that are intended to be run in a specific order, and are
-created and managed by the user.
+In addition to these predefined sequences, Spiral also allows you to create custom sequences. Custom console sequences 
+are groups of console commands or closures that are intended to be run in a specific order, and are created and managed 
+by the user.
 
 Here is an example of an update sequence:
 
-```php
+```php app/src/Application/Bootloader/AppBootloader.php
 use Symfony\Component\Console\Output\OutputInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Boot\Bootloader\Bootloader;

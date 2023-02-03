@@ -1,6 +1,6 @@
 # Validation — Spiral Validator
 
-The Spiral Framework provides a validation component that allows you to validate data using
+Spiral provides a validation component that allows you to validate data using
 the [spiral/validator](https://github.com/spiral/validator) package. This is a simple, lightweight validator
 that provides an array-based Domain Specific Language (DSL) to construct complex validation chains.
 
@@ -101,8 +101,8 @@ return [
 ## Usage
 
 When the validation component is enabled in your application, it will register itself with
-the `\Spiral\Validator\FilterDefinition` class as validation name and be available for use with the Spiral Framework
-validation component.
+the `\Spiral\Validator\FilterDefinition` class as validation name and be available for use with Spiral validation 
+component.
 
 You can use the `Spiral\Validator\ValidatorInterface` interface to access the validator and perform validation tasks.
 Alternatively, you can use the `Spiral\Validation\ValidationProviderInterface` interface to access the validator by its
@@ -124,7 +124,7 @@ class UserController
 
 ## Filters
 
-The `spiral/filters` component is a tool for validating HTTP request data in Spiral Framework. It allows you to create 
+The `spiral/filters` component is a tool for validating HTTP request data in Spiral. It allows you to create 
 a "Filter" object, which defines the required data that should be extracted from the request object and mapped into the 
 filter object's properties.
 

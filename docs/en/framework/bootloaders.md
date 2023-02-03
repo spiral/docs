@@ -1,9 +1,8 @@
 # Framework — Bootloaders
 
-The Spiral Framework is a PHP application development framework that utilizes bootloader classes during the
-bootstrapping process to handle application configuration. One key feature is that bootloaders
-are executed only once during the loading of the application, meaning that adding additional code to them will not
-negatively impact runtime performance.
+Spiral utilizes bootloader classes during the bootstrapping process to handle application configuration. One key feature
+is that bootloaders are executed only once during the loading of the application, meaning that adding additional code 
+to them will not negatively impact runtime performance.
 
 During the bootstrapping process, the bootloader classes can be used to configure various aspects of the application.
 
@@ -43,12 +42,12 @@ Currently, your Bootloader doesn't do anything. A little later, we will add some
 
 Every Bootloader must be activated in your application kernel.
 
-In the Spiral Framework, bootloaders can be registered using the constants `Kernel::SYSTEM`, `Kernel::LOAD`, and
+In Spiral, bootloaders can be registered using the constants `Kernel::SYSTEM`, `Kernel::LOAD`, and
 `Kernel::APP`. These constants allow developers to define which bootloaders should be executed during different stages
 of the application's initialization process. The benefit of this approach is that it allows for a clear separation of
 concerns and makes it easy to understand which bootloaders are responsible for performing specific tasks.
 
-Additionally, the Spiral Framework provides methods such as `defineBootloaders`, `defineAppBootloaders`, and
+Additionally, Spiral provides methods such as `defineBootloaders`, `defineAppBootloaders`, and
 `defineSystemBootloaders` which allow for more complex logic and registration of objects, anonymous classes or other
 advanced use cases. This gives developers more flexibility and control over the initialization process of the
 application.
@@ -378,7 +377,7 @@ class MyBootloader extends Bootloader
 }
 ```
 
-The Spiral Framework will automatically resolve and initialize the dependent bootloader before the depending bootloader
+Spiral will automatically resolve and initialize the dependent bootloader before the depending bootloader
 is initialized.
 
 Both of these approaches allow you to define dependent bootloaders in a declarative way, which can make it easier to

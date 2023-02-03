@@ -1,6 +1,6 @@
 # Getting started — Long running
 
-The Spiral Framework designed to facilitate the development of long-running applications while ensuring efficient memory
+Spiral designed to facilitate the development of long-running applications while ensuring efficient memory
 management and the prevention of memory leaks. This is achieved through the utilization of
 advanced [memory management techniques](../framework/scopes.md). Additionally, it is paired with RoadRunner, further
 enhancing the overall performance and scalability of the application.
@@ -178,8 +178,8 @@ Use the following command to start application server on **Windows**
 ## RoadRunner bridge
 
 The [spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package provides full integration between
-the Spiral framework and the RoadRunner. This package allows developers to use RoadRunner's various plugins,
-including `http`, `grpc`, `jobs`, `tcp`, `kv`, `centrifugo`, `logger`, and `metrics`, with the Spiral framework.
+Spiral and RoadRunner. This package allows developers to use RoadRunner's various plugins,
+including `http`, `grpc`, `jobs`, `tcp`, `kv`, `centrifugo`, `logger`, and `metrics`.
 
 > **Note**
 > The component is available by default in the [application bundle](https://github.com/spiral/app).
