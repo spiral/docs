@@ -1,4 +1,4 @@
-# Websockets — Installation and Configuration
+# Websockets — Getting started
 
 RoadRunner used to have its own [WebSocket plugin](https://roadrunner.dev/docs/plugins-websockets/2.x) for
 sending messages to clients, but we found it was too limited. We wanted to create a better solution for handling

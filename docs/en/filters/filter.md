@@ -456,6 +456,7 @@ Here is an example of how you can use the attribute:
 ```php
 namespace App\Filter;
 
+use Spiral\Filters\Attribute\Setter;
 use Spiral\Filters\Attribute\Input\Query;
 use Spiral\Filters\Model\Filter;
 

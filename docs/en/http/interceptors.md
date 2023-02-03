@@ -20,7 +20,7 @@ measures, in a single place, rather than having to add them to each controller.
 The bootloader also provides an ability to configure the order in which the interceptors are executed, allowing
 developers to control the flow of the application.
 
-```php app/src/Application/Bootloader/DomainBootloader.php
+```php app/src/Application/Bootloader/AppBootloader.php
 namespace App\Application\Bootloader;
 
 use App\Interceptor\CustomInterceptor;

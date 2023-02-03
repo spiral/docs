@@ -1,4 +1,4 @@
-# Temporal — Installation and Configuration
+# Temporal — Getting started
 
 [Temporal](https://temporal.io/) is an open-source workflow engine that manage and execute reliable, durable and
 fault-tolerant workflows in a distributed manner. But the only way to use it in PHP is

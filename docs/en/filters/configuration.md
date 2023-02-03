@@ -1,4 +1,4 @@
-# Filters — Installation and Configuration
+# Filters — Getting started
 
 The `spiral/filters` is a powerful component for filtering and validating input data. It allows you to define a set of
 rules for each input field, and then use those rules to ensure that the input data is in the correct format and meets

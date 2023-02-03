@@ -1,4 +1,4 @@
-# GRPC — Installation and Configuration
+# GRPC — Getting started
 
 Using REST APIs for communication between microservices has been a common approach for many years. However, REST APIs
 have some limitations and challenges that can impact the performance, scalability, and reliability of your system.

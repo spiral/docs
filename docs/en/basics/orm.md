@@ -1,20 +1,19 @@
 # The Basics — Database and ORM
 
-The spiral framework provides a component `spiral/cycle-bridge` to work with the ORM and database in your application.
+To utilize the ORM and database functionality in your application, the Spiral Framework offers
+the [spiral/cycle-bridge](https://github.com/spiral/cycle-bridge) component.
 
 ## Installation
 
-The package is included in `spiral/app` skeleton and will be suggested to install when you create a new project, but if
-you want to install it in your existing project, you can do it with composer.
-
-Run the following command to install the package:
+This component is automatically included in the `spiral/app` and can also be installed into existing projects through
+the use of Composer by executing the following command:
 
 ```terminal
 composer require spiral/cycle-bridge
 ```
 
-After package install you need to add bootloader `Spiral\Cycle\Bootloader\BridgeBootloader` from the package in your
-application.
+After successful installation of the package, it is necessary to add the `Spiral\Cycle\Bootloader\BridgeBootloader`
+bootloader to the Kernel:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
@@ -22,8 +21,10 @@ protected const LOAD = [
 ];
 ```
 
-You can exclude `Spiral\Cycle\Bootloader\BridgeBootloader` bootloader and select only needed bootloaders by writing them
-separately.
+Alternatively, for more granular control, the `BridgeBootloader` can be excluded and selected the only needed
+bootloaders.
+
+The relevant code for this in Kernel would look like this:
 
 ```php app/src/Application/Kernel.php
 use Spiral\Cycle\Bootloader as CycleBridge;
@@ -45,10 +46,10 @@ protected const LOAD = [
     CycleBridge\CommandBootloader::class,
 
     // Validation (Optional)
-    CycleBridge\ValidationBootloader::class,
+    // CycleBridge\ValidationBootloader::class,
 
     // DataGrid (Optional)
-    CycleBridge\DataGridBootloader::class,
+    // CycleBridge\DataGridBootloader::class,
 
     // Database Token Storage (Optional)
     CycleBridge\AuthTokensBootloader::class,
@@ -60,6 +61,12 @@ protected const LOAD = [
     CycleBridge\PrototypeBootloader::class,
 ];
 ```
+
+### DisconnectsBootloader
+
+The bootloader serves the purpose of automatically closing the database connection after every request in long-running
+applications. This is an optional bootloader and can be included or excluded as per the requirements of the specific
+application.
 
 ## Cycle ORM
 
@@ -142,13 +149,13 @@ return [
 ];
 ```
 
-### ORM
+### ORM instance
 
 You can access the ORM instance from the container by using the `Cycle\ORM\ORMInterface` interface.
 
 ### Repositories
 
-Let's imagine that we have a `User` entity 
+Let's imagine that we have a `User` entity
 
 ```php
 use Cycle\Annotated\Annotation as Cycle;
@@ -196,9 +203,8 @@ class UserService
 }
 ```
 
-Yu can also request a repository from the container. The framework uses [IoC injections](../advanced/injectors.md) to 
+Yu can also request a repository from the container. The framework uses [IoC injections](../advanced/injectors.md) to
 inject repositories into your code that implement `Cycle\ORM\RepositoryInterface`.
-
 
 ```php
 class UserService
@@ -257,6 +263,185 @@ class UserService
 > **Note:**
 > Make sure that the `persist/delete` and run methods are always called within the same method scope while using
 > service-specific transactions.
+
+### Entity validation
+
+The Cycle bridge provides a CycleBridge\ValidationBootloader bootloader that registers additional checkers for
+the [spiral/validator](../validation/spiral.md) package. This bootloader includes two additional validation rules, which
+enhance the functionality of the validator and allow for more efficient and effective data validation within the
+application.
+
+#### exists
+
+Check if an entity with a given role and primary key exists.
+
+By default, a rule will check if an entity exists by the primary key.
+
+```php
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Attribute\Setter;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+
+final class StoreUser extends Filter implements HasFilterDefinition
+{
+    #[Post]
+    #[Setter(filter: 'intval')]
+    public int $id;
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'username' => [
+                [
+                    'entity::exists', 
+                    \App\Entity\User::class // Entity role
+                ] 
+            ]       
+        ]);
+    }
+}
+```
+
+You can also specify the field name and the value, which will be used to check if the entity exists.
+
+```php
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+
+final class UpdateUser extends Filter implements HasFilterDefinition
+{
+    #[Post]
+    public string $username;
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'username' => [
+                [
+                    'entity::exists', 
+                    \App\Entity\User::class, // Entity role
+                    'username', // Field name
+                ], 
+            ],       
+        ]);
+    }
+}
+```
+
+#### unique
+
+Check if an entity with a given role is unique.
+
+```php
+use Spiral\Filters\Attribute\Input\Post;
+use Spiral\Filters\Attribute\Setter;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Model\FilterDefinitionInterface;
+use Spiral\Filters\Model\HasFilterDefinition;
+
+final class StoreUser extends Filter implements HasFilterDefinition
+{
+    #[Post]
+    public string $username;
+    
+    public function filterDefinition(): FilterDefinitionInterface
+    {
+        return new FilterDefinition([
+            'username' => [
+                [
+                    'entity::unique', 
+                    \App\Entity\User::class, // Entity role
+                    'username', // Field name
+                ] 
+            ]       
+        ]);
+    }
+}
+```
+
+### Interceptors
+
+#### Cycle Entity Resolution
+
+The Cycle ORM integration provides a `Spiral\Cycle\Interceptor\CycleInterceptor` interceptor that allows you to
+automatically resolve entities in controller methods by their primary key.
+
+> **Note:**
+> Read more about using interceptors in the [HTTP — Interceptors](../http/interceptors.md) section.
+
+To activate interceptor:
+
+```php app/src/Application/Bootloader/AppBootloader.php
+namespace App\Application\Bootloader;
+
+use Spiral\Cycle\Interceptor\CycleInterceptor;
+use Spiral\Bootloader\DomainBootloader;
+use Spiral\Core\CoreInterface;
+
+class AppBootloader extends DomainBootloader
+{
+    protected const SINGLETONS = [
+        CoreInterface::class => [self::class, 'domainCore']
+    ];
+
+    protected const INTERCEPTORS = [
+        CycleInterceptor::class,
+        // ...
+    ];
+}
+```
+
+After that you can use a cycle entity injection in your controller methods:
+
+```php app/src/Interface/Controller/HomeController.php
+namespace App\Interface\Controller;
+
+use App\Entity\User;
+use Spiral\Router\Annotation\Route;
+
+final class HomeController
+{
+    #[Route('/users/<user>')]
+    public function index(User $user)
+    {
+        dump($user);
+    }
+}
+```
+
+> **Note:**
+> If an entity can't be found the 404 exception will be thrown.
+
+### Long-Running
+
+Cycle ORM aims to make the usage of the library in daemonized applications, such as PHP workers running under RoadRunner
+or Swoole, simpler. The ORM provides multiple options to avoid memory leaks, which can also be applied to batch
+operations. This helps ensure the stability and efficiency of the application when executing long-running processes.
+
+The package will automatically clean the heap after each request. If you need to clean the heap manually, you can use
+the following methods:
+
+```php
+use Cycle\ORM\ORMInterface;
+
+class UserService
+{
+    public function __construct(
+        private readonly ORMInterface $orm
+    ) {
+    }
+    
+    public function create(string $name, string $email): User
+    {
+        // Create a new user
+        
+        $this->orm->getHeap()->clean();
+    }
+}
+```
 
 ### Console Commands
 
