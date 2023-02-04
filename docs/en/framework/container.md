@@ -5,10 +5,6 @@ main tools is the container, which helps you handle class dependencies and autom
 This means that instead of creating objects and setting up dependencies manually, the container takes care of it for 
 you.
 
-
-> **Note**
-> Container implementation is fully compatible with .
-
 ## PSR-11 Container
 
 The Spiral container also follows a set of [PSR-11 Container](https://github.com/php-fig/container) standards, which
