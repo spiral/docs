@@ -62,24 +62,74 @@ protected const LOAD = [
 ];
 ```
 
-### DisconnectsBootloader
+#### Disconnects bootloader
 
 The bootloader serves the purpose of automatically closing the database connection after every request in long-running
 applications. This is an optional bootloader and can be included or excluded as per the requirements of the specific
 application.
 
-## Cycle ORM
+## Configuration
 
-CycleORM is a powerful and flexible Object-Relational Mapping (ORM) tool for PHP that allows developers to interact with
-databases in an object-oriented way. It provides a range of features that make it easy to work with data including a
-flexible configuration options, a powerful query builder and support for dynamic mapping of schemas.
+### Database
 
-It supports a variety of popular relational databases such as MySQL, MariaDB, PostgresSQL, SQLServer, and SQLite.
+The configuration for database services is located in `app/config/database.php` configuration file. In this file, you
+may define all of your database connections, as well as specify which connection should be used by default. Most of the
+configuration options within this file are driven by the values of your
+application's environment variables.
 
-> **Note**
-> Full documentation is available on the official site [CycleORM](https://cycle-orm.dev/docs).
+Here is an example configuration file that defines a database connection:
 
-### Configuration
+```php app/config/database.php
+use Cycle\Database\Config;
+
+return [
+    'logger' => [
+        'default' => env('DB_LOGGER_DEFAULT'),
+        'drivers' => [
+            // 'runtime' => 'stdout'
+        ],
+    ],
+
+    'default' => env('DB_DEFAULT', 'default'),
+
+    /**
+     * The Spiral/Database module provides support to manage multiple databases
+     * in one application, use read/write connections and logically separate
+     * multiple databases within one connection using prefixes.
+     *
+     * To register a new database simply add a new one into
+     * "databases" section below.
+     */
+    'databases' => [
+        'default' => [
+            'driver' => 'runtime',
+        ],
+    ],
+
+    /**
+     * Each database instance must have an associated connection object.
+     * Connections used to provide low-level functionality and wrap different
+     * database drivers. To register a new connection you have to specify
+     * the driver class and its connection options.
+     */
+    'drivers' => [
+        'runtime' => new Config\SQLiteDriverConfig(
+            connection: new Config\SQLite\FileConnectionConfig(
+                database: env('DB_DATABASE', directory('root') . 'runtime/app.db')
+            ),
+            queryCache: true,
+        ),
+        // ...
+    ],
+];
+```
+
+> **See more**
+> Read more about the configuration of the database in
+> the [Database - Installation and Configuration](https://cycle-orm.dev/docs/database-configuration) on the official
+> site.
+
+### ORM
 
 The configuration for Spiral framework's ORM services is located in your application's `app/config/cycle.php`
 
@@ -148,6 +198,17 @@ return [
     'warmup' => false,
 ];
 ```
+
+## Cycle ORM
+
+CycleORM is a powerful and flexible Object-Relational Mapping (ORM) tool for PHP that allows developers to interact with
+databases in an object-oriented way. It provides a range of features that make it easy to work with data including a
+flexible configuration options, a powerful query builder and support for dynamic mapping of schemas.
+
+It supports a variety of popular relational databases such as MySQL, MariaDB, PostgresSQL, SQLServer, and SQLite.
+
+> **Note**
+> Full documentation is available on the official site [CycleORM](https://cycle-orm.dev/docs).
 
 ### ORM instance
 
@@ -362,6 +423,44 @@ final class StoreUser extends Filter implements HasFilterDefinition
 }
 ```
 
+### Entity behaviors
+
+If you want to use [cycle/entity-behavior](https://cycle-orm.dev/docs/entity-behaviors-install/) package in your 
+application, you need to install it first:
+
+```bash
+composer require cycle/entity-behavior
+```
+
+After that, you need to bind `Cycle\ORM\Transaction\CommandGeneratorInterface` 
+with `\Cycle\ORM\Entity\Behavior\EventDrivenCommandGenerator` in the application container:
+
+```php app/src/Application/Bootloader/EntityBehaviorBootloader.php
+namespace App\Application\Bootloader;
+
+use Cycle\ORM\Transaction\CommandGeneratorInterface;
+use Cycle\ORM\Entity\Behavior\EventDrivenCommandGenerator;
+use Spiral\Boot\Bootloader\Bootloader;
+
+final class EntityBehaviorBootloader extends Bootloader
+{
+    protected const BINDINGS = [
+        CommandGeneratorInterface::class => \Cycle\ORM\Entity\Behavior\EventDrivenCommandGenerator::class,
+    ];
+}
+```
+
+And finally, you need to register the `App\Application\Bootloader\EntityBehaviorBootloader` in the application kernel:
+
+```php app/src/Application/Kernel.php
+protected const LOAD = [
+    \App\Application\Bootloader\EntityBehaviorBootloader::class,
+    ...
+],
+```
+
+That's it! Now you can use entity behaviors in your application.
+
 ### Interceptors
 
 #### Cycle Entity Resolution
@@ -455,16 +554,6 @@ php app.php help cycle...
 > Make sure to enable `Spiral\Cycle\Bootloader\CommandBootloader` after the cycle bootloaders to activate helper
 > commands.
 
-#### Migrations
-
-| Command            | Description                                                                                       |
-|--------------------|---------------------------------------------------------------------------------------------------|
-| `migrate`          | Performs one or all the outstanding migrations.<br/>`--one` Execute only one (first) migration.   |
-| `migrate:replay`   | Replays (down, up) one or multiple migrations.<br/>`--all` Replays all the migrations.            |
-| `migrate:rollback` | Rolls back  (default) or multiple migrations.<br/>`--all` Rolls back all the executed migrations. |
-| `migrate:init`     | Initiates the migrations component (create a migrations table).                                   |
-| `migrate:status`   | Gets a list of all available migrations and their statuses.                                       |
-
 #### Database
 
 | Command            | Description                                                                                                               |
@@ -486,51 +575,6 @@ php app.php help cycle...
 <hr>
 
 ## Database
-
-### Configuration
-
-The configuration for Spiral database services is located in your application's `app/config/database.php`
-configuration file. In this file, you may define all of your database connections, as well as specify which connection
-should be used by default. Most of the configuration options within this file are driven by the values of your
-application's environment variables.
-
-Here is an example configuration file that defines a database connection:
-
-```php app/config/database.php
-use Cycle\Database\Config;
-
-return [
-    /**
-     * Database logger configuration
-     */
-    'logger' => [
-        'default' => null, // Default log channel for all drivers (The lowest priority)
-    ],
-
-    'default' => env('DB_DEFAULT', 'default'),
-
-    'databases' => [
-        'default' => [
-            'driver' => 'runtime',
-        ],
-    ],
-
-    'drivers' => [
-        'runtime' => new Config\SQLiteDriverConfig(
-            connection: new Config\SQLite\FileConnectionConfig(
-                database: env('DB_DATABASE', directory('root') . 'runtime/app.db')
-            ),
-            queryCache: true,
-        ),
-        // ...
-    ],
-];
-```
-
-> **See more**
-> Read more about the configuration of the database in
-> the [Database - Installation and Configuration](https://cycle-orm.dev/docs/database-configuration) on the official
-> site.
 
 ### Access database
 
@@ -624,6 +668,137 @@ dump(
 > **Note**
 > Read how to use query builders [here](https://cycle-orm.dev/docs/database-query-builders).
 
+### Logging
+
+Spiral provides the capability to log database queries through the use of the `spiral/logger` component.
+This component uses Monolog as its default logging driver.
+
+> **See more**
+> Read more about the logger in the [The Basics — Logging](../basics/logging.md) section.
+
+The database logging drivers can be configured in the `logger` section of `app/config/database.php` configuration file.
+
+```php app/config/database.php
+return [
+    'logger' => [
+        'default' => null,
+        'drivers' => [],
+    ],
+
+    // ...
+];
+```
+
+If no logger driver is defined, the channel with the current database driver name will be used. If the SQLite driver is
+used to execute queries, the monolog channel name will automatically be set
+to `Cycle\Database\Driver\SQLite\SQLiteDriver`.
+
+In this case, you can configure a monolog handler for the channel `Cycle\Database\Driver\SQLite\SQLiteDriver` in order
+to log all the database queries.
+
+This can be done by adding the following code in the `app/config/monolog.php` file:
+
+```php app/config/monolog.php
+return [
+    'handlers' => [
+        // ...
+
+        \Cycle\Database\Driver\SQLite\SQLiteDriver::class => [
+            [
+                'class' => 'log.rotate',
+                'options' => [
+                    'filename' => directory('runtime') . 'logs/db.log',
+                    'level' => Logger::DEBUG,
+                ],
+            ],
+        ],
+    ],
+    
+    // ...
+];
+```
+
+The `drivers` section of the `logger` is used to specify which database driver should use the log channel specified
+by the key.
+
+Let's consider the following database configuration:
+
+```php app/config/database.php
+return [
+    'logger' => [
+        'drivers' => [
+            'runtime' => 'console'
+        ],
+    ],
+    
+    'databases' => [
+        'default' => [
+            'driver' => 'runtime',
+        ],
+    ],
+    
+    'drivers' => [
+        'runtime' => new Config\SQLiteDriverConfig(...),
+        // ...
+    ],
+];
+```
+
+We can use the logger configuration array to map the `runtime` database driver to the `console` log channel.
+
+And the following monolog config:
+
+```php app/config/monolog.php
+return [
+    'handlers' => [
+        //...
+        'console' => [
+            \Monolog\Handler\ErrorLogHandler::class,
+        ],
+    ],
+];
+```
+
+With these configurations, every time you use the `runtime` database driver, its logs will be sent to
+the `console` channel.
+
+You can also point a specific database driver to a specific log channel. For example, you can have a separate log
+channel for your SQLite database and another for your MySQL database. This way, you can monitor each database's logs
+individually and troubleshoot any issues specific to each database. This helps you identify and fix issues quickly,
+without having to sift through a large, complex log file.
+
+```php app/config/database.php
+return [
+    'logger' => [
+        'drivers' => [
+            \Cycle\Database\Driver\MySQL\MySQLDriver::class => 'db_logs',
+            \Cycle\Database\Driver\SQLite\SQLiteDriver::class => 'console'
+        ],
+    ],
+];
+```
+
+In this case every time when you will use `SQLiteDriver` database driver it will send logs to the `console` log channel.
+
+You can also set the `default` key to a specific log channel. This will be used as the default log channel for all
+queries
+executed by the database drivers that are not specified in the `drivers` section.
+
+```php app/config/database.php
+return [
+    'logger' => [
+        'default' => 'console',
+    ],
+];
+```
+
+By setting a default log channel, it ensures that even if no specific log channel has been defined for a particular
+database driver, there is still a channel available for logging.
+
+For example, if a developer sets the default log channel as `console`, any database driver without a specific log 
+channel assigned to it will have its logs directed to the `console` channel. This provides a fallback for situations 
+where a log channel has not been defined, ensuring that all logs are captured.
+
 ### Console Commands
 
 The default Web and GRPC bundles include a set of console commands to view the database schema.
@@ -691,3 +866,38 @@ Foreign Keys of default.posts:
 | posts_user_id_fk | user_id | users          | id              | CASCADE    | CASCADE    |
 +------------------+---------+----------------+-----------------+------------+------------+
 ```
+
+<hr>
+
+## Migrations
+
+You can create config file `app/config/migration.php` if you want to configure Cycle ORM Migrations:
+
+```php app/config/migration.php
+return [
+    /**
+     * Directory to store migration files
+     */
+    'directory' => directory('app').'migrations/',
+
+    /**
+     * Table name to store information about migrations status (per database)
+     */
+    'table' => 'migrations',
+
+    /**
+     * When set to true no confirmation will be requested on migration run.
+     */
+    'safe' => env('APP_ENV') === 'production',
+];
+```
+
+### Console Commands
+
+| Command            | Description                                                                                       |
+|--------------------|---------------------------------------------------------------------------------------------------|
+| `migrate`          | Performs one or all the outstanding migrations.<br/>`--one` Execute only one (first) migration.   |
+| `migrate:replay`   | Replays (down, up) one or multiple migrations.<br/>`--all` Replays all the migrations.            |
+| `migrate:rollback` | Rolls back  (default) or multiple migrations.<br/>`--all` Rolls back all the executed migrations. |
+| `migrate:init`     | Initiates the migrations component (create a migrations table).                                   |
+| `migrate:status`   | Gets a list of all available migrations and their statuses.                                       |
