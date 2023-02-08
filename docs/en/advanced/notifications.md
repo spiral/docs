@@ -312,14 +312,14 @@ interface.
 
 ```php
 use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Notifications\NotificationTransportResolver;
+use Spiral\Notifications\NotificationTransportRegistryInterface;
 use Spacetab\SmsaeroNotifier\SmsaeroTransportFactory;
 
 class MyBootloader extends Bootloader
 {
     public function boot(NotificationTransportRegistryInterface $registry): void
     {
-        $resolver->registerTransport(new SmsaeroTransportFactory());
+        $registry->registerTransport(new SmsaeroTransportFactory());
     }
 }
 ```
