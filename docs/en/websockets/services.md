@@ -65,8 +65,8 @@ request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\
 
 Here is an example of a service that accepts all connection requests:
 
-```php app/src/Interfaces/Centrifuge/ConnectService.php
-namespace App\Interfaces\Centrifuge;
+```php app/src/Endpoint/Centrifugo/ConnectService.php
+namespace App\Endpoint\Centrifugo;
 
 use RoadRunner\Centrifugo\Request\Connect;
 use RoadRunner\Centrifugo\Payload\ConnectResponse;
@@ -97,8 +97,8 @@ can be used for a variety of purposes, such as client authentication.
 
 Here is an example of a service that accepts only authenticated connection requests:
 
-```php app/src/Interfaces/Centrifuge/ConnectService.php
-namespace App\Interfaces\Centrifuge;
+```php app/src/Endpoint/Centrifugo/ConnectService.php
+namespace App\Endpoint\Centrifugo;
 
 use RoadRunner\Centrifugo\Request\Connect;
 use RoadRunner\Centrifugo\Payload\ConnectResponse;
@@ -171,8 +171,8 @@ request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\
 In this example, we will create a service that will allow users to subscribe to channels only if they are authenticated
 with rules provided by the `Spiral\Broadcasting\TopicRegistryInterface` interface.
 
-```php app/src/Interfaces/Centrifuge/SubscribeService.php
-namespace App\Interfaces\Centrifuge;
+```php app/src/Endpoint/Centrifugo/SubscribeService.php
+namespace App\Endpoint\Centrifugo;
 
 use RoadRunner\Centrifugo\Payload\SubscribeResponse;
 use RoadRunner\Centrifugo\Request\Subscribe;
@@ -260,8 +260,8 @@ request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\
 
 Here is an example of a service:
 
-```php app/src/Interfaces/Centrifuge/RefreshService.php
-namespace App\Interfaces\Centrifuge;
+```php app/src/Endpoint/Centrifugo/RefreshService.php
+namespace App\Endpoint\Centrifugo;
 
 use RoadRunner\Centrifugo\Request\Refresh;
 use RoadRunner\Centrifugo\Payload\RefreshResponse;
@@ -297,8 +297,8 @@ request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\
 
 Here is an example of a service that receives a `ping` RPC call and responds with `pong`:
 
-```php app/src/Interfaces/Centrifuge/RPCService.php
-namespace App\Interfaces\Centrifuge;
+```php app/src/Endpoint/Centrifugo/RPCService.php
+namespace App\Endpoint\Centrifugo;
 
 use RoadRunner\Centrifugo\Payload\RPCResponse;
 use RoadRunner\Centrifugo\Request\RequestInterface;
@@ -338,8 +338,8 @@ final class RPCService implements ServiceInterface
 
 Here is an example of how to proxy RPC methods to the HTTP layer and return the result to the Centrifugo server:
 
-```php app/src/Interfaces/Centrifuge/RPCService.php
-namespace App\Interfaces\Centrifuge;
+```php app/src/Endpoint/Centrifugo/RPCService.php
+namespace App\Endpoint\Centrifugo;
 
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -438,9 +438,8 @@ centrifuge.rpc("get:news/123", {"lang": "en"}).then(function (res) {
 This service receives a `RoadRunner\Centrifugo\Request\Publish` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\PublishResponse` object.
 
-```php app/src/Interfaces/Centrifuge/PublishService.php
-namespace App\Interfaces\Centrifuge;
-
+```php app/src/Endpoint/Centrifugo/PublishService.php
+namespace App\Endpoint\Centrifugo;
 
 use RoadRunner\Centrifugo\Payload\PublishResponse;
 use RoadRunner\Centrifugo\Request;

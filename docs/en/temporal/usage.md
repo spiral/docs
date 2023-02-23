@@ -12,8 +12,8 @@ request or a message on a message queue) or they can be scheduled to run at spec
 
 Here is an example of a simple Temporal workflow interface:
 
-```php app/src/Workflow/MonthlySubscription/MonthlySubscriptionInterface.php
-namespace App\Workflow\MonthlySubscription;
+```php app/src/Endpoint/Temporal/Workflow/MonthlySubscription/MonthlySubscriptionInterface.php
+namespace App\Endpoint\Temporal\Workflow\MonthlySubscription;
 
 use Temporal\Workflow\WorkflowInterface;
 use Temporal\Workflow\WorkflowMethod;
@@ -30,9 +30,7 @@ The workflow interface defines the workflow's public API.
 
 And here is an example of a workflow implementation:
 
-```php
-namespace App\Workflow\MonthlySubscription;
-
+```php app/src/Endpoint/Temporal/Workflow/MonthlySubscription/SubscriptionWorkflow.php
 use Carbon\CarbonInterval;
 use Temporal\Activity\ActivityOptions;
 use Temporal\Exception\Failure\CanceledFailure;

@@ -85,8 +85,8 @@ Finally, you can inject the client class into your code and use it to call the P
 
 Here is an example of how you can use the `PingerClient`:
 
-```php app/src/Command/PingServiceCommand.php
-namespace App\Command;
+```php app/src/Endpoint/Console/PingServiceCommand.php
+namespace App\Endpoint\Console;
 
 use App\GRPC\Pinger\PingerInterface;
 use App\GRPC\Pinger\PingRequest;

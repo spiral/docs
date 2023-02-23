@@ -43,8 +43,8 @@ queries.
 To achieve this, you can create a `DatabaseQueryCore` class that implements the `Spiral\Core\CoreInterface`. This class
 would be responsible for running the database query and returning the query result.
 
-```php app/src/Application/Database/DatabaseQueryCore.php
-namespace App\Application\Database;
+```php app/src/Integration/Database/DatabaseQueryCore.php
+namespace App\Integration\Database;
 
 use Spiral\Core\CoreInterface;
 use Cycle\Database\DatabaseManager;
@@ -113,8 +113,8 @@ as before or after a controller action is invoked.
 For example, we could create an `SlowQueryDetectorInterceptor` class that implements the `CoreInterceptorInterface` and
 logs slow queries.
 
-```php app/src/Interceptor/SlowQueryDetectorInterceptor.php
-namespace App\Interceptor;
+```php app/src/Integration/Database/Interceptor/SlowQueryDetectorInterceptor.php
+namespace App\Integration\Database\Interceptor;
 
 use Psr\Log\LoggerInterface;
 use Spiral\Core\CoreInterceptorInterface;
@@ -181,8 +181,8 @@ slow queries.
 We can also add multiple interceptors to the `InterceptableCore` class. For example, we could create another one
 interceptor that handles Database exceptions and in some cases treies to reconnect to the database.
 
-```php app/src/Interceptor/DatabaseConnectionInterceptor.php
-namespace App\Interceptor;
+```php app/src/Integration/Database/Interceptor/DatabaseConnectionInterceptor.php
+namespace App\Integration\Database\Interceptor;
 
 use Spiral\Core\CoreInterceptorInterface;
 use Spiral\Core\CoreInterface;

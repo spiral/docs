@@ -9,8 +9,8 @@ with its own validation rules:
 > In our examples we will use [Spiral Validator](../validation/spiral.md) for validation, but you can use any other
 > validation library.
 
-```php app/src/Request/AddressFilter.php
-namespace App\Request;
+```php app/src/Endpoint/Web/Filter/AddressFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Model\Filter;
@@ -47,8 +47,8 @@ takes a class parameter, which is set to the child filter class. This allows the
 a nested format, where the property decorated with this attribute contains the data for the child filter. This makes it 
 easy to validate and filter the data in multiple levels and reuse the child filter in different parent filters.
 
-```php app/src/Request/ProfileFilter.php
-namespace App\Request;
+```php app/src/Endpoint/Web/Filter/ProfileFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Attribute\NestedFilter;
@@ -115,7 +115,7 @@ The `NestedFilter` attribute allows you to specify a custom prefix for the data 
 default, the prefix is the same as the key assigned to the nested filter property, but in some cases, you may need to
 use a different prefix.
 
-```php app/src/Request/ProfileFilter.php
+```php app/src/Endpoint/Web/Filter/ProfileFilter.php
 class ProfileFilter extends Filter implements HasFilterDefinition
 {
     #[NestedFilter(class: AddressFilter::class, prefix: 'addr')]
@@ -144,8 +144,8 @@ The json data format that will work with this filter is:
 
 You can use nested child filters as part of a larger composite Filter. Use the prefix `.` (root) to do that:
 
-```php app/src/Request/MultipleAddressesFilter.php
-class ProfileFilter extends Filter implements HasFilterDefinition
+```php app/src/Endpoint/Web/Filter/MultipleAddressesFilter.php
+class MultipleAddressesFilter extends Filter implements HasFilterDefinition
 {
     #[NestedFilter(class: AddressFilter::class, prefix: '.')]
     public AddressFilter $address;
@@ -176,9 +176,7 @@ The `input` parameter in the attribute is used to specify the input source that 
 > List of available input sources can be found in
 > the [Filters — Filter object](../filters/filter.md#available-attributes) section.
 
-```php app/src/Request/MultipleAddressesFilter.php
-namespace App\Request;
-
+```php app/src/Endpoint/Web/Filter/MultipleAddressesFilter.php
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Attribute\NestedArray;
 use Spiral\Filters\Model\Filter;
@@ -241,7 +239,7 @@ Yes, you can pass the custom prefix as a parameter to the constructor of the inp
 `NestedArray` attribute. This way, the filter will look for input data using the custom prefix instead of the default 
 key name.
 
-```php app/src/Request/MultipleAddressesFilter.php
+```php app/src/Endpoint/Web/Filter/MultipleAddressesFilter.php
 class MultipleAddressesFilter extends Filter
 {
     #[NestedArray(class: AddressFilter::class, input: new Post('addr'))]

@@ -28,20 +28,21 @@ The `getClasses` method will then return an array of `ReflectionClass` objects r
 By default, the tokenizer component will only search for classes in the `app` directory. However, you can add additional
 directories to be searched using the `Spiral\Bootloader\TokenizerBootloader`.
 
-```php
+```php app/src/Application/Bootloader/AppBootloader.php
 use Spiral\Bootloader\TokenizerBootloader;
 use Spiral\Boot\DirectoriesInterface;
 
 class AppBootloader extends Bootloader
 {
-    public function boot(DirectoriesInterface $directories, TokenizerBootloader $tokenizer): void
+    public function init(DirectoriesInterface $directories, TokenizerBootloader $tokenizer): void
     {
         $tokenizer->addDirectory($directories->get('vendor') . 'spiral/validator/src');
     }
 }
 ```
 
-And here is an example of how to add an additional directory using the `app/config/tokenizer.php` config file:
+And here is an example of how to add a directory using the `app/config/tokenizer.php` config file:
+
 ```php app/config/tokenizer.php
 return [
     'directories' => [
@@ -213,7 +214,7 @@ class AppBootloader extends Bootloader
 
 > **Warning**
 > To ensure that your listeners are called correctly, make sure to register them in bootloaders from within the `LOAD`
-> section of the application Kernel. Listeners will not be called if you register them  within the `APP` kernel section.
+> section of the application Kernel. Listeners will not be called if you register them within the `APP` kernel section.
 
 Overall, the Tokenizer Listeners are a useful way to improve performance when using the `ClassesInterface` to search
 for classes in a large codebase. By registering listeners and allowing the tokenizer component to scan the directories

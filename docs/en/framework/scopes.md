@@ -61,7 +61,7 @@ for any normal dependency, but you **must not store** it between scopes.
 As mentioned above, you are not allowed to store any reference to the scoped instance, the following code is invalid and
 will cause the controller to lock on first scope value:
 
-```php app/src/Interface/Controller/HomeController.php
+```php app/src/Endpoint/Web/HomeController.php
 class HomeController implements SingletonInterface
 {
     public function __construct(
@@ -97,7 +97,7 @@ final class UserScope
 
 You can use this manager in any of your services, including singletons.
 
-```php app/src/Interface/Controller/HomeController.php
+```php app/src/Endpoint/Web/HomeController.php
 class HomeController implements SingletonInterface
 {
     public function __construct(

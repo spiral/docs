@@ -33,8 +33,8 @@ In our example, we will use the `PrototypeTrait` to simplify getting the `ViewsI
 > **See more**
 > Read more about prototype trait in the [The Basics — Prototyping](../basics/prototype.md) section.
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Prototype\Traits\PrototypeTrait;
 
@@ -56,8 +56,8 @@ class HomeController
 ::: tab ViewInterface
 You can also access the `Spiral\Views\ViewsInterface` instance directly from the container.
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Views\ViewsInterface;
 
@@ -184,7 +184,7 @@ This can be useful when you want to output HTML content or other types of conten
 
 Here is an example:
 
-```php app/src/Interface/Controller/HomeController.php
+```php app/src/Endpoint/Web/HomeController.php
 public function index(): string
 {
     return $this->views->render('welcome', [
@@ -573,8 +573,8 @@ To create a custom directive, follow these steps:
 Create a class that extends `Spiral\Stempler\Directive\AbstractDirective` and implements the render method with the
 desired functionality.
 
-```php app/src/Application/Stempler/DatetimeDirective.php
-namespace App\Application\Stempler;
+```php app/src/Integration/Stempler/DatetimeDirective.php
+namespace App\Integration\Stempler;
 
 use Spiral\Stempler\Directive\AbstractDirective;
 use Spiral\Stempler\Node\Dynamic\Directive;
@@ -599,7 +599,7 @@ Register the custom directive using the `StemplerBootloader::addDirective()` met
 ```php app/src/Application/Bootloader/CustomDirectiveBootloader.php
 namespace App\Application\Bootloader;
 
-use App\Application\Stempler\DatetimeDirective;
+use App\Integration\Stempler\DatetimeDirective;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Stempler\Bootloader\StemplerBootloader;
 
@@ -643,7 +643,7 @@ directive, making it more flexible and reusable.
 
 Here is an example of using the `body` property:
 
-```php app/src/Application/Stempler/DatetimeDirective.php
+```php app/src/Integration/Stempler/DatetimeDirective.php
 public function renderDateTime(Directive $directive): string
 {
     return \sprintf('<?php echo date(%s ?? "Y-m-d H:i:s"); ?>', $directive->body);
@@ -717,7 +717,7 @@ This directive will generate the following PHP code:
 
 To access specific values passed to the directive separated by a comma:
 
-```php app/src/Application/Stempler/DatetimeDirective.php
+```php app/src/Integration/Stempler/DatetimeDirective.php
 public function renderDateTime(Directive $directive): string
 {
     return \sprintf(

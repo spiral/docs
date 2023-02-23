@@ -139,8 +139,8 @@ That's it! Now you can use the component.
 The `Spiral\Router\Annotation\Route` attribute allows you to define a route in your controller method by specifying
 various properties:
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Router\Annotation\Route;
 
@@ -302,7 +302,7 @@ You can assign routes to the group by specifying the group's name in the group a
 > **Warning**
 > Make sure to register a bootloader after `AnnotatedRoutesBootloader`.
 
-```php app/src/Interface/Controller/HomeController.php
+```php app/src/Endpoint/Web/HomeController.php
 #[Route(route: '/', name: 'index', methods: 'GET', group: 'api')]  
 public function index(): ResponseInterface
 {
@@ -1006,8 +1006,8 @@ this parameter as `AbstractTarget::RESTFUL` to automatically prefix all the meth
 
 For example, we can use the following controller:
 
-```php app/Interface/Controller/UserController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/UserController.php
+namespace App\Endpoint\Web;
 
 class UserController
 {
@@ -1049,8 +1049,8 @@ routes. Such an approach will allow you to define your controller style.
 
 For example, we can route different HTTP verbs to the following controller(s):
 
-```php
-namespace App\Controller;
+```php app/src/Endpoint/Web/UserController.php
+namespace App\Endpoint\Web;
 
 class UserController
 {
@@ -1084,8 +1084,8 @@ $resource = new Route('/v1/<controller>', new Group([
 
 We can register it with different HTTP verbs and action values:
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/RoutesBootloader.php
+namespace App\Application\Bootloader;
 
 use App\Controller\UserController;
 use Spiral\Boot\Bootloader\Bootloader;
@@ -1134,7 +1134,7 @@ $router->setRoute(
 
 Use method `uri` of `RouterInterface` to generate a URL:
 
-```php
+```php app/src/Endpoint/Web/UserController.php
 use Spiral\Router\RouterInterface;
 
 // ...
@@ -1149,7 +1149,7 @@ public function index(RouterInterface $router)
 
 Additional parameters will mount as a query string:
 
-```php
+```php app/src/Endpoint/Web/UserController.php
 use Spiral\Router\RouterInterface;
 
 // ...
@@ -1167,7 +1167,7 @@ public function index(RouterInterface $router)
 
 The `uri` method will return the instance `Psr\Http\Message\UriInterface`:
 
-```php
+```php app/src/Endpoint/Web/UserController.php
 use Spiral\Router\RouterInterface;
 
 // ...
@@ -1185,7 +1185,7 @@ public function index(RouterInterface $router)
 
 Note that all of the parameters passed into the URL pattern will be slugified:
 
-```php
+```php app/src/Endpoint/Web/UserController.php
 use Spiral\Router\RouterInterface;
 
 // ...

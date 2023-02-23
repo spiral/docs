@@ -10,8 +10,8 @@ Here are the basic steps you'll need to follow:
 
 First, let's create a new job by creating a new class `PingSiteJob`:
 
-```php app/src/Interface/Jobs/PingSiteJob.php
-namespace App\Interface\Jobs;
+```php app/src/Endpoint/Job/PingSiteJob.php
+namespace App\Endpoint\Job;
 
 use Spiral\Queue\JobHandler;
 
@@ -73,10 +73,10 @@ this pipeline, it will be added to the in-memory queue and RoadRunner will send 
 
 Now that our job and RoadRunner are configured, we can create a console command to push a job to the queue.
 
-```php app/src/Interface/Console/PingSiteCommand.php
-namespace App\Interface\Console;
+```php app/src/Endpoint/Console/PingSiteCommand.php
+namespace App\Endpoint\Console;
 
-use App\Interface\Jobs\PingSiteJob;
+use App\Endpoint\Job\PingSiteJob;
 use Spiral\Console\Command;
 use Spiral\Queue\QueueInterface;
 

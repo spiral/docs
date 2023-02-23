@@ -72,8 +72,8 @@ name of the method or function that requested the injectable class).
 
 Here is an example of how to use the injector:
 
-```php app/src/Interface/Controller/BlogController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/BlogController.php
+namespace App\Endpoint\Web;
 
 use Psr\SimpleCache\CacheInterface;
 
@@ -138,7 +138,7 @@ public function createInjection(\ReflectionClass $class, string $context = null)
 
 The `spiral/boot` component provides a convenient way for resolving enum classes using the
 `Spiral\Boot\Injector\InjectableEnumInterface` interface. When the container requests an Enum, it will call a specified
-method to determine the current value of the Enum and inject any required dependencies. 
+method to determine the current value of the Enum and inject any required dependencies.
 
 **There are several benefits to using Enum injections:**
 
@@ -208,7 +208,7 @@ container will be injected into it.
 
 The Container will automatically inject an Enum with the correct value.
 
-```php app/src/Interface/Console/MigrateCommand.php
+```php app/src/Endpoint/Console/MigrateCommand.php
 final class MigrateCommand extends Command 
 {
      const NAME = '...';
@@ -218,7 +218,8 @@ final class MigrateCommand extends Command
            if ($appEnv->isProduction()) {
                  // Deny
            }
-           // ...
+           
+           // Perform migration
      }
 }
 ```
