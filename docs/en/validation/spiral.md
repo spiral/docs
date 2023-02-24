@@ -668,8 +668,8 @@ class MyFilter extends Filter implements HasFilterDefinition
 | longer         | length:*int*         | Checks if an array has a size bigger than or equal to the given value.  |
 | range          | min:*int*, max:*int* | Checks if an array has a size between the given min and max.            |
 | expectedValues | *array*              | Checks if an array values are included in the given list of values.     |
-| listArray      | -                    | Checks if an array is list.                                             |
-| assocArray     | -                    | Checks if an array is associative.                                      |
+| isList         | -                    | Checks if an array is list.                                             |
+| isAssoc        | -                    | Checks if an array is associative.                                      |
 
 **Examples:**
 
@@ -706,7 +706,7 @@ class MyRequest extends Filter implements HasFilterDefinition
                 ['array::expectedValues', ['good', 'bad', 'ugly', 'long_hair', 'young', 'old', 'strong']]
             ],
             'settings' => [  // <====== Request ['setting1' => 'value', 'setting2' => 'value']
-                ['array::assocArray'],
+                ['array::isAssoc'],
             ]
         ]);
     }
