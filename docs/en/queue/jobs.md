@@ -12,8 +12,8 @@ needs to do its work) should be serialized (converted into a format that can be 
 itself should be run. Use `Spiral\Queue\JobHandler` to simplify your abstraction and perform dependency injection in
 your handler method `invoke`:
 
-```php
-namespace App\Jobs;
+```php app/src/Endpoint/Job/SampleJob.php
+namespace App\Endpoint\Job;
 
 use Spiral\Queue\JobHandler;
 
@@ -29,8 +29,8 @@ final class SampleJob extends JobHandler
 You can freely use the method injection in your handler. When the job handler is called, the dependency injection
 container will automatically provide the specified dependencies to the method.
 
-```php
-namespace App\Jobs;
+```php app/src/Endpoint/Job/SampleJob.php
+namespace App\Endpoint\Job;
 
 use Spiral\Queue\JobHandler;
 
@@ -48,11 +48,15 @@ class SampleJob extends JobHandler
 
 ## Dispatch Job
 
-You can dispatch your job via `Spiral\Queue\QueueInterface` or via the prototype property `queue`. The method `push` of
-`QueueInterface` accepts a job name, the payload in the array form, and additional options.
+### Pushing to the default queue
+
+You can dispatch your job via `Spiral\Queue\QueueInterface` or via the prototype property `queue`. When you request
+the `Spiral\Queue\QueueInterface` from the container, you will receive an instance of the default queue connection.
+
+The method `push` of `QueueInterface` accepts a job name, the payload in the array form, and additional options.
 
 ```php
-use App\Jobs\SampleJob;
+use App\Endpoint\Job\SampleJob;
 use Spiral\Queue\QueueInterface;
 
 public function createJob(QueueInterface $queue): void
@@ -62,7 +66,30 @@ public function createJob(QueueInterface $queue): void
 ``` 
 
 You can use your handler name as the job name. It will be automatically converted into `-` identifier, for example,
-`App\Jobs\SampleJob` will be presented as `app-jobs-sampleJob`.
+`App\Endpoint\Job\SampleJob` will be presented as `app-jobs-sampleJob`.
+
+### Pushing to a specific queue
+
+If you need to push a job using a specific queue connection, you can
+use `Spiral\Queue\QueueConnectionProviderInterface`.
+
+```php
+use App\Endpoint\Job\SampleJob;
+use Spiral\Queue\QueueConnectionProviderInterface;
+
+final class MyService
+{
+    public function __construct(
+        private readonly QueueConnectionProviderInterface $provider
+    ) {
+    }
+
+    public function createJob(): void
+    {
+        $this->provider->getConnection('sync')->push(SampleJob::class);
+    }
+}
+```
 
 ## Passing Parameters
 
@@ -71,7 +98,7 @@ provided in an array form. No objects are supported (see how to bypass it below)
 written in other languages.
 
 ```php
-use App\Jobs\SampleJob;
+use App\Endpoint\Job\SampleJob;
 use Spiral\Queue\QueueInterface;
 
 public function createJob(QueueInterface $queue): void
@@ -82,7 +109,9 @@ public function createJob(QueueInterface $queue): void
 
 You can receive the passed payload in the handler using the parameter `payload` of the `invoke` method:
 
-```php
+```php app/src/Endpoint/Job/SampleJob.php
+namespace App\Endpoint\Job;
+
 use Spiral\Queue\JobHandler;
 
 class SampleJob extends JobHandler
@@ -97,7 +126,9 @@ class SampleJob extends JobHandler
 In addition to that, the default `Spiral\Queue\JobHandler` implementation will pass all values of the payload as method
 arguments:
 
-```php
+```php app/src/Endpoint/Job/SampleJob.php
+namespace App\Endpoint\Job;
+
 use Spiral\Queue\JobHandler;
 
 class SampleJob extends JobHandler
@@ -130,7 +161,7 @@ You can do it via the `app/config/queue.php` config:
 return [
     'registry' => [
         'handlers' => [
-            'sample::job' => App\Jobs\SampleJob::class
+            'sample::job' => App\Endpoint\Job\SampleJob::class
         ],
     ],
 ];
@@ -145,7 +176,7 @@ class MyBootloader extends Bootloader
 {
     public function boot(\Spiral\Queue\QueueRegistry $registry): void
     {
-        $registry->setHandler('sample::job', \App\Jobs\SampleJob::class);
+        $registry->setHandler('sample::job', \App\Endpoint\Job\SampleJob::class);
     }
 }
 ```
@@ -211,10 +242,9 @@ queue and deserialize when it is retrieved from the queue and passed to a job ha
 
 ### Configure default serializer
 
-The default serializer for the queue component can be specified via the `queue.php` configuration file located in
-the `app/config` directory. It can be specified as a class name, a class instance, or an autowire instance. This
-allows the developer to easily customize the serialization strategy for the queue and choose the approach that best fits
-their needs.
+The default serializer for the queue component can be specified via the `queue.php` configuration file. It can be 
+specified as a class name, a class instance, or an autowire instance. This allows the developer to easily customize the 
+serialization strategy for the queue and choose the approach that best fits their needs.
 
 **Example:**
 
@@ -270,7 +300,6 @@ A serializer can be a `key string` under which the serializer is registered in t
 a `fully-qualified class name`, a `serializer instance`, an `Autowire instance`.
 
 > **Note*
->
 > The serializer class must implement the `Spiral\Serializer\SerializerInterface` interface.
 
 Or, register a serializer using the `setSerializer` method of the `Spiral\Queue\QueueRegistry` class.
@@ -302,7 +331,9 @@ need to create your own implementation for `Spiral\Queue\Failed\FailedJobHandler
 
 ### Custom handler example
 
-```php
+```php app/src/Infrastructure/Queue/DatabaseFailedJobsHandler.php
+namespace App\Infrastructure\Queue;
+
 use Spiral\Queue\Failed\FailedJobHandlerInterface;
 use Cycle\Database\DatabaseInterface;
 use Spiral\Queue\SerializerInterface;
@@ -345,7 +376,7 @@ use Spiral\RoadRunnerBridge\Queue\Failed\FailedJobHandlerInterface;
 final class QueueFailedJobsBootloader extends Bootloader
 {
     protected const SINGLETONS = [
-        FailedJobHandlerInterface::class => \App\Jobs\DatabaseFailedJobsHandler::class,
+        FailedJobHandlerInterface::class => \App\Infrastructure\Queue\DatabaseFailedJobsHandler::class,
     ];
 }
 ```
@@ -355,7 +386,7 @@ And register this bootloader after `QueueFailedJobsBootloader` in your applicati
 ```php  app/src/Application/Kernel.php
 protected const APP = [
     // ...
-    \App\Bootloader\QueueFailedJobsBootloader::class,
+    \App\Application\Bootloader\QueueFailedJobsBootloader::class,
 ];
 ```
 

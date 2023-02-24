@@ -1,7 +1,7 @@
 # The Basics — Logging
 
 Spiral offers `spiral/logger` component that is compliant with the [PSR-3](https://www.php-fig.org/psr/psr-3/) standard.
-This component can be utilized to log various types of information, such as errors, warnings, and debugging messages, 
+This component can be utilized to log various types of information, such as errors, warnings, and debugging messages,
 which can assist in identifying and resolving issues within the application.
 
 By default, the framework does not provide its own implementation, however, the `spiral/monolog-bridge` component is
@@ -21,6 +21,7 @@ Here is an example of a config file:
 
 ```php app/config/monolog.php
 use Monolog\Handler\ErrorLogHandler;
+use Monolog\Handler\SyslogHandler;
 use Monolog\Logger;
 use Monolog\Processor\PsrLogMessageProcessor;
 
@@ -99,8 +100,7 @@ return [
 ```
 
 > **Note**
-> Use `MONOLOG_DEFAULT_CHANNEL` env variable to specify the default Monolog logger that should be used in your
-> application.
+> Use `MONOLOG_DEFAULT_CHANNEL` env variable to specify the default handler that should be used in your application.
 
 ## Register handler
 
@@ -139,7 +139,7 @@ protected const LOAD = [
 
 ### RoadRunner handler
 
-The RoadRunner bridge package provides `Spiral\RoadRunnerBridge\Logger\Handler` handler for sending logs to 
+The RoadRunner bridge package provides `Spiral\RoadRunnerBridge\Logger\Handler` handler for sending logs to
 the [RoadRunner app logger](https://roadrunner.dev/docs/plugins-applogger).
 
 You just need to add `Spiral\RoadRunnerBridge\Bootloader\LoggerBootloader` to the top of bootloaders list:
@@ -160,18 +160,22 @@ And change the default channel to `roadrunner`:
 :::: tabs
 
 ::: tab Environment
+
 ```dotenv .env
 MONOLOG_DEFAULT_CHANNEL=roadrunner
 ```
+
 :::
 
 ::: tab Config
+
 ```php app/config/monolog.php
 return [
     'default' => 'roadrunner',
     // ...
 ];
 ```
+
 :::
 
 ::::
@@ -185,7 +189,7 @@ LOGGER_FORMAT=[%datetime%] %channel%.%level%: %message% %context% %extra%\n
 ```
 
 > **See more**
-> Read more about the available placeholders in 
+> Read more about the available placeholders in
 > the [Monolog documentation](https://seldaek.github.io/monolog/doc/message-structure.html).
 
 ## Usage
