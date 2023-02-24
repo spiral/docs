@@ -12,7 +12,7 @@ ensures compatibility with other libraries.
 
 In your code, you can access the container by asking for the `Psr\Container\ContainerInterface`.
 
-```php app/src/Interface/Controller/UserController.php
+```php app/src/Endpoint/Web/UserController.php
 final class UserController
 {
     public function __construct(
@@ -41,7 +41,7 @@ For example, in the `UserController` class, the `UserRepository` dependency is i
 method. This means that the container will automatically create and deliver the UserRepository object when the method is
 called.
 
-```php app/src/Interface/Controller/UserController.php
+```php app/src/Endpoint/Web/UserController.php
 use Psr\Container\ContainerInterface;
 
 final class UserController
@@ -66,7 +66,7 @@ For example, in the `UserController` class, the `UserRepository` dependency is i
 This means that the container will automatically create and deliver the UserRepository object when the method is
 called.
 
-```php app/src/Interface/Controller/UserController.php
+```php app/src/Endpoint/Web/UserController.php
 final class UserController
 {
     public function show(UserRepository $users, string $id): void

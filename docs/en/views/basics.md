@@ -23,8 +23,8 @@ include an extension or namespace (default to be used).
 
 You can use Dependency Injection to inject the `Spiral\Views\ViewsInterface` interface into your controller.
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Views\ViewsInterface;
 
@@ -48,8 +48,8 @@ class HomeController
 
 You can use the prototype trait to access the `views` property to speed up development.
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Prototype\Traits\PrototypeTrait;
 
@@ -70,7 +70,7 @@ class HomeController
 
 To render the view with the passed data, use the second array argument:
 
-```php app/src/Interface/Controller/HomeController.php
+```php app/src/Endpoint/Web/HomeController.php
 public function index(): string
 {
     return $this->views->render('home', [
@@ -84,7 +84,7 @@ public function index(): string
 In some cases it might be more performant to cache the view in a stateless component. To obtain an instance of a view,
 you can use the `get` method.
 
-```php
+```php app/src/Endpoint/Web/HomeController.php
 use Spiral\Views\ViewsInterface;
 
 public function index(): string
@@ -104,8 +104,8 @@ public function index(): string
 The `compile` method can be used to compile one of multiple cache versions of a view. This method takes a view path as
 an argument and compiles the cache version of the view.
 
-```php app/src/Interface/Cli/Command/CompileViewsCommand.php
-namespace App\Api\Cli\Command;
+```php app/src/Endpoint/Console/CompileViewsCommand.php
+namespace App\Endpoint\Console;
 
 use Spiral\Console\Command;
 use Spiral\Views\LoaderInterface;
@@ -234,8 +234,8 @@ Here is an example of a loader that loads views from a database.
 > **Danger**
 > This is just an example that shows how to implement a custom loader. It is not tested and should not be used.
 
-```php app/src/Application/Loader/DatabaseLoader.php
-namespace App\Application\Loader;
+```php app/src/Integration/Database/DatabaseLoader.php
+namespace App\Integration\Database;
 
 use Spiral\Views\LoaderInterface;
 use Spiral\Views\Loader\PathParser;
@@ -347,7 +347,7 @@ To use this loader, you need to replace a default one in the container.
 namespace App\Application\Bootloader;
 
 use Spiral\Views\LoaderInterface;
-use App\Application\Loader\DatabaseLoader;
+use App\Integration\Database\DatabaseLoader;
 
 class AppBootloader extends Bootloader 
 {
@@ -493,7 +493,7 @@ The following is a brief explanation of `EngineInterface` methods:
 The `withLoader` method is used to set and configure the views loader for the engine. This is the place where you can
 define the extension of the view files that will be used by the engine.
 
-```php
+```php app/src/Integration/Views/BladeEngine.php
 use Spiral\Views\EngineInterface;
 use Spiral\Views\LoaderInterface;
 
@@ -521,7 +521,7 @@ final class BladeEngine implements EngineInterface
 The `compile` and `reset` methods compiles (and resets cache) for the given view path in a provided context. This
 methods will be called each time the view needs to be recompiled.
 
-```php
+```php app/src/Integration/Views/BladeEngine.php
 use Spiral\Views\ContextInterface;
 use Illuminate\View\Compilers\CompilerEngine;
 
@@ -548,7 +548,7 @@ public function reset(string $path, ContextInterface $context): void
 
 The `get` method returns an instance of the view class associated with the view path.
 
-```php
+```php app/src/Integration/Views/BladeEngine.php
 use Spiral\Views\ViewInterface;
 use Illuminate\View\Engines\CompilerEngine;
 
@@ -562,7 +562,7 @@ public function get(string $path, ContextInterface $context): ViewInterface
 }
 ```
 
-```php
+```php app/src/Integration/Views/BladeView.php
 use Spiral\Views\ViewInterface;
 use Illuminate\View\Engines\CompilerEngine;
 

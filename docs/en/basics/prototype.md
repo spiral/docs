@@ -35,8 +35,8 @@ Once it's added, your IDE will immediately suggest available classes and Cycle R
 
 You can use this suggestion directly, without a need for any import:
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Prototype\Traits\PrototypeTrait;
 
@@ -67,8 +67,8 @@ php app.php prototype:inject -r
 
 The extension will modify your class into the given form:
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use App\Database\Repository\UserRepository;
 use Spiral\Views\ViewsInterface;
@@ -105,8 +105,8 @@ For PHP 7.4 there are two additional flags available now:
 php app.php prototype:inject -r -t --no-phpdoc
 ```
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use App\Database\Repository\UserRepository;
 use Spiral\Views\ViewsInterface;
@@ -160,15 +160,15 @@ public function boot(PrototypeBootloader $prototype): void
 Alternatively, you can use attributes to register prototype classes and services. Use
 attribute `Spiral\Prototype\Annotation\Prototyped` in the class you want to inject:
 
-```php
-namespace App\Service;
+```php app/src/Domain/User/Service/UserService.php
+namespace App\Domain\User\Service;
 
 use Spiral\Prototype\Annotation\Prototyped;
 
-#[Prototyped(property: 'myService')]
-class MyService
+#[Prototyped(property: 'userService')]
+final class UserService
 {
-
+    // ...
 }
 ```
 

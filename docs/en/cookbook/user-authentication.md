@@ -245,8 +245,8 @@ credentials.
 
 Here is an example of a login method that can be used to authenticate users:
 
-```php app/src/Interface/Controller/LoginController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/LoginController.php
+namespace App\Endpoint\Web;
 
 use App\Filters\LoginRequest;
 use App\Repository\UserRepository;
@@ -287,7 +287,7 @@ class LoginController
 If the credentials are valid, the method should create a token that can be used to authenticate the user for subsequent
 requests. This method should use the `AuthContextInterface` to generate a token with a payload (e.g. `userID => id`).
 
-```php app/src/Interface/Controller/LoginController.php
+```php app/src/Endpoint/Web/LoginController.php
 public function login(LoginRequest $request)
 {
     // ... see above
@@ -345,7 +345,7 @@ public function index()
 
 To log user out call the method close of auth context or `AuthContextInterface`:
 
-```php app/src/Interface/Controller/LoginController.php
+```php app/src/Endpoint/Web/LoginController.php
 public function logout(): void
 {
     $this->auth->close();

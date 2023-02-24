@@ -14,8 +14,8 @@ Here are the basic steps to creating a console command in Spiral:
 
 Here's an example of a basic console command that outputs current date to the console:
 
-```php app/src/App/Interface/Console/CurrentDateCommand.php
-namespace App\Interface\Console;
+```php app/src/App/Endpoint/Console/CurrentDateCommand.php
+namespace App\Endpoint\Console;
 
 use Spiral\Console\Command;
 

@@ -495,8 +495,8 @@ class AppBootloader extends DomainBootloader
 
 After that you can use a cycle entity injection in your controller methods:
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use App\Entity\User;
 use Spiral\Router\Annotation\Route;
@@ -523,7 +523,7 @@ operations. This helps ensure the stability and efficiency of the application wh
 The package will automatically clean the heap after each request. If you need to clean the heap manually, you can use
 the following methods:
 
-```php
+```php app/src/Domain/User/Service/UserService.php
 use Cycle\ORM\ORMInterface;
 
 class UserService
@@ -582,10 +582,10 @@ You can access your databases in controllers and services in several ways:
 
 #### Using Database provider
 
-```php
+```php app/src/Domain/User/Service/UserService.php
 use Cycle\Database\DatabaseProviderInterface;
 
-final class SomeService 
+final class UserService 
 {
     public function __construct(
         private readonly DatabaseProviderInterface $dbal
@@ -630,8 +630,8 @@ public function store(
 
 Access `Cycle\Database\DatabaseProviderInterface` and default database instance using `PrototypeTrait`:
 
-```php
-final class SomeService 
+```php app/src/Domain/User/Service/UserService.php
+final class UserService 
 {
     use PrototypeTrait;
     

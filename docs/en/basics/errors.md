@@ -29,8 +29,8 @@ class that implements the `Spiral\Exceptions\ExceptionRendererInterface` to rend
 
 Here is an example of integration with the package:
 
-```php app/src/Application/ErrorHandler/HtmlRenderer.php
-namespace App\Application\ErrorHandler;
+```php app/src/Application/Exception/Renderer/HtmlRenderer.php
+namespace App\Application\Exception\Renderer;
 
 use Spiral\Exceptions\ExceptionRendererInterface;
 use Spiral\Exceptions\Verbosity;
@@ -73,7 +73,7 @@ namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Exceptions\ExceptionHandler;
-use App\Application\ErrorHandler\HtmlRenderer;
+use App\Application\Exception\Renderer\HtmlRenderer;
 
 final class ExceptionHandlerBootloader extends Bootloader
 {
@@ -106,8 +106,8 @@ more detailed and visually appealing renderer could be used.
 In some cases, it may be useful to render exceptions as a `JSON` string, especially when working with APIs or other
 services that expect responses in this format.
 
-```php app/src/Application/ErrorHandler/JsonRenderer.php
-namespace App\Application\ErrorHandler;
+```php app/src/Application/Exception/Renderer/JsonRenderer.php
+namespace App\Application\Exception\Renderer;
 use Spiral\Exceptions\ExceptionRendererInterface;
 
 final class JsonRenderer implements ExceptionRendererInterface
@@ -156,8 +156,8 @@ exceptions and render them using this renderer only when a specific header such 
 in the request. This allows for a more granular control over how exceptions are handled and displayed to the client,
 depending on their desired format.
 
-```php app/src/Application/Http/Middleware/ErrorHandlerMiddleware.php
-namespace App\Application\Http\Middleware;
+```php app/src/Endpoint/Web/Middleware/ErrorHandlerMiddleware.php
+namespace App\Endpoint\Web\Middleware;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -313,13 +313,13 @@ namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Exceptions\ExceptionHandler;
-use App\Application\ErrorHandler\HtmlRenderer;
+use App\Application\Exception\Reporter\CustomReporter;
 
 final class ExceptionHandlerBootloader extends Bootloader
 {
     public function init(ExceptionHandler $handler): void
     {
-        $handler->addReporter(new HtmlRenderer());
+        $handler->addReporter(new CustomReporter());
     }
 }
 ```

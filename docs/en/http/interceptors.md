@@ -73,10 +73,10 @@ class AppBootloader extends DomainBootloader
 You can use any cycle entity injection in your `UserController` methods, the `<id>` parameter will be used as the
 primary key. If an entity can't be found, the 404 exception will be thrown.
 
-```php app/src/Interface/Controller/UserController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/UserController.php
+namespace App\Endpoint\Web;
 
-use App\Database\User;
+use App\Domain\Blog\Entity\User;
 use Spiral\Router\Annotation\Route;
 
 final class UserController
@@ -94,11 +94,11 @@ final class UserController
 
 You must use named parameters if more than one entity is expected:
 
-```php app/src/Interface/Controller/BlogController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/BlogController.php
+namespace App\Endpoint\Web;
 
-use App\Database\Blog;
-use App\Database\Author;
+use App\Domain\Blog\Entity\Blog;
+use App\Domain\Blog\Entity\Author;
 use Spiral\Router\Annotation\Route;
 
 final class BlogController
@@ -151,8 +151,8 @@ class AppBootloader extends DomainBootloader
 
 You can use attributes to configure what permissions to apply for the controller action:
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Domain\Annotation\Guarded;
 
@@ -174,7 +174,7 @@ class HomeController
 
 To specify a fallback action when the permission is not checked, use `else` attribute of `Guarded`:
 
-```php app/src/Interface/Controller/HomeController.php
+```php app/src/Endpoint/Web/HomeController.php
 #[Guarded(permission: 'home.about', else: 'notFound')]
 public function about(): string
 {
@@ -189,9 +189,7 @@ Use the attribute `Spiral\Domain\Annotation\GuardNamespace` to specify controlle
 from every action. You can also skip the permission definition in `Guarded` when a namespace is specified (security
 component will use `namespace.methodName` as a permission name).
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
-
+```php app/src/Endpoint/Web/HomeController.php
 use Spiral\Domain\Annotation\Guarded;
 use Spiral\Domain\Annotation\GuardNamespace;
 
@@ -291,11 +289,9 @@ You can automatically apply datagrid specifications to an iterable output using 
 and `GridInterceptor`.
 This interceptor is called after the endpoint invocation because it uses the output.
 
-```php app/src/Interface/Controller/UsersController.php
-namespace App\Interface\Controller;
-
-use App\Repository\UserRepository;
-use App\View\Keeper\UserGrid;
+```php app/src/Endpoint/Web/UsersController.php
+use App\Domain\User\Repository\UserRepository;
+use App\Intergarion\Keeper\View\UserGrid;
 use Spiral\DataGrid\Annotation\DataGrid;
 use Spiral\Router\Annotation\Route;
 
@@ -313,8 +309,8 @@ class UsersController
 > **Note**
 > `grid` property should refer to a `GridSchema` class with specifications declared in the constructor.
 
-```php app/src/Interface/View/UserGrid.php
-namespace App\Application\View;
+```php app/src/Intergarion/ViewKeeper/Keeper/UserGrid.php
+namespace App\Intergarion\Keeper\View;
 
 use Spiral\DataGrid\GridSchema;
 use Spiral\DataGrid\Specification\Filter;
@@ -337,7 +333,7 @@ class UserGrid extends GridSchema
 Optionally, you can specify `view` property to point to a callable presenter for every record.
 Without specifying it `GridInterceptor` will call `__invoke` in the declared grid.
 
-```php app/src/Interface/View/UserGrid.php
+```php app/src/Intergarion/ViewKeeper/Keeper/UserGrid.php
 namespace App\Application\View;
 
 use Spiral\DataGrid\GridSchema;
@@ -362,7 +358,7 @@ class UserGrid extends GridSchema
 You can specify grid defaults (such as default sorting, filtering, pagination) via `defaults` property or
 using `getDefaults()` method in your grid:
 
-```php app/src/Interface/Controller/UsersController.php
+```php app/src/Endpoint/Web/UsersController.php
 #[DataGrid(
     grid: UserGrid::class,
     defaults: [
@@ -394,7 +390,7 @@ By default, grid output will look like this:
 
 You can rename `data` property or pass the exact `status` code `options` or `getOptions()` method in the grid:
 
-```php app/src/Interface/Controller/UsersController.php
+```php app/src/Endpoint/Web/UsersController.php
 #[DataGrid(grid: UserGrid::class, options: ['status' => 201, 'property' => 'users'])]
 ```
 
@@ -411,7 +407,7 @@ You can rename `data` property or pass the exact `status` code `options` or `get
 schema. `GridFactory` is used by default, but if you need more complicated logic, such as using a custom counter or
 specifications utilization, you can declare your own factory in the annotation:
 
-```php app/src/Interface/Controller/UsersController.php
+```php app/src/Endpoint/Web/UsersController.php
 #[DataGrid(grid: UserGrid::class, factory: InheritedFactory::class)]
 ```
 
@@ -567,7 +563,7 @@ You can use the same approach to cast values to value objects.
 
 For example, if controller action expects `Ramsey\Uuid\Uuid` object
 
-```php
+```php app/src/Endpoint/Web/UsersController.php
 use Ramsey\Uuid\UuidInterface;
 
 class UserController 

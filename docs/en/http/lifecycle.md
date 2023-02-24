@@ -44,8 +44,8 @@ response which will be sent back to the user through all the middleware layers.
 It is possible to invoke http core within the application. It can be useful for testing purposes or if you want to run
 Spiral from inside other frameworks. Obtain the instance of `Spiral\Http\Http` to do that:
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Nyholm\Psr7\Uri;
 use Psr\Http\Message\ServerRequestInterface;

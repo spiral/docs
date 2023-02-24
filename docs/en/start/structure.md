@@ -12,13 +12,13 @@ application directories will be calculated based on `root` using the following p
 | Directory | Value                  |
 |-----------|------------------------|
 | root      | **set by user**        |
-| vendor    | **root**/vendor        |
-| runtime   | **root**/runtime       |
-| cache     | **root**/runtime/cache |
-| public    | **root**/public        |
 | app       | **root**/app           |
 | config    | **app**/config         |
 | resources | **app**/resources      |
+| runtime   | **root**/runtime       |
+| cache     | **root**/runtime/cache |
+| public    | **root**/public        |
+| vendor    | **root**/vendor        |
 
 Some components will declare their own directories such as:
 
@@ -97,6 +97,87 @@ to any desired namespace in `composer.json`:
   }
 }
 ```
+
+## Application Structure
+
+The structure we provided below is a common structure used in many PHP applications, and it can serve as a starting
+point for your projects. By following this structure, you can organize your code in a logical and maintainable
+way, making it easier to build and scale your applications over time. Of course, you may need to make adjustments to fit
+the specific needs of your project, but this structure provides a solid foundation for most applications.
+
+```
+- Endpoint
+    - Web
+        - ...
+        - Filter
+            - ...
+        - Middleware
+            - ...
+        - Interceptor
+            - ...
+        - DataGrid
+            - ...
+        - routes.php
+    - Console
+        - Interceptor
+            - ...
+        - ...
+    - RPC
+        - Interceptor
+            - ...
+        - ...
+    - Temporal
+        - Workflow
+            - ...
+        - Activity
+            - ...
+    - Centrifugo
+        - Interceptor
+        - ...
+- Application
+    - Bootloader
+        - ...
+    - Exception
+        - SomeException.php
+        - Renderer
+            - ViewRenderer.php
+    - Kernel.php
+- Domain
+    - User
+        - Entity
+            - User.php
+        - Service
+            - StoreUserService.php
+        - Repository
+            - UserRepositoryInterface.php
+        - Exception
+            - UserNotFoundException.php
+- Infrastructure
+    - Persistence
+        - CycleUserRepository.php
+    - CycleORM
+        - Typecaster
+            - UuidTypecast.php
+    - Interceptor
+        - LogInterceptor.php
+```
+
+#### Here's a brief explanation of the directories and files in this structure:
+
+- **Endpoint**: This directory contains the entry points for your application, including HTTP endpoints (in the Web
+  subdirectory), command-line interfaces (in the Console subdirectory), and gRPC services (in the RPC subdirectory).
+
+- **Application**: This directory contains the core of your application, including the Kernel class that boots your
+  application, the Bootloader classes that register services with the container, and the Exception directory that
+  contains exception handling logic.
+
+- **Domain**: This directory contains your domain logic, organized by subdomains. For example, an Entity for the User
+  model, a Service for storing new users, a Repository for fetching users from the database, and an Exception for
+  handling user-related errors.
+
+- **Infrastructure**: This directory contains the infrastructure code for your application, including the Persistence
+  directory for database-related code, the CycleORM directory for ORM-related code, and the Interceptor directory for
+  global interceptors.
 
 <hr>
 

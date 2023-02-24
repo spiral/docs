@@ -22,7 +22,7 @@ the configuration and allows for more predictable behavior of the application.
 
 ## Configuration Provider
 
-Spiral provides a `Spiral\Config\ConfiguratorInterface` which allows for easy access to configuration values stored in 
+Spiral provides a `Spiral\Config\ConfiguratorInterface` which allows for easy access to configuration values stored in
 config files. It provides methods to retrieve and check the existence of config values.
 
 To demonstrate that, we can create a config file `app/config/github.php`:
@@ -243,7 +243,7 @@ namespace App\Application\Bootloader;
 use App\Config\GithubConfig;
 use Spiral\Boot\Bootloader\Bootloader;
 
-class SomeBootloader extends Bootloader
+final class SomeBootloader extends Bootloader
 {
     public function boot(GithubBootloader $github, GithubConfig $config): void
     {
@@ -256,6 +256,7 @@ class SomeBootloader extends Bootloader
 You will receive this exception `Spiral\Config\Exception\ConfigDeliveredException`: *Unable to patch config `github`,
 config object has already been delivered.*
 
-It's recommended to set default values and change configs in the `init` method. And request a configuration file only in
-the `boot` method. The `init` method is called before `boot`. This will ensure that when the `boot` method is called,
-the configs will be in the correct state.
+> **Warning**
+> It's recommended to set default values and change configs in the `init` method. And request a configuration file only
+> in the `boot` method. The `init` method is called before `boot`. This will ensure that when the `boot` method is
+> called, the configs will be in the correct state.

@@ -46,7 +46,7 @@ You can activate a global middleware in the `RoutesBootloader`:
 ```php app/src/Application/Bootloader/RoutesBootloader.php
 namespace App\Application\Bootloader;
 
-use App\Middleware\LocaleSelector;
+use App\Endpoint\Web\Middleware\LocaleSelector;
 use Spiral\Auth\Middleware\AuthTransportMiddleware;
 use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
 use Spiral\Cookies\Middleware\CookiesMiddleware;

@@ -108,8 +108,8 @@ class ExceptionHandlerBootloader extends Bootloader
 There are several exceptions you can throw from your controllers and middleware to cause HTTP level error page. For
 example, we can trigger `404 Not Found` using `NotFoundException`:
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Core\Container\SingletonInterface;
 use Spiral\Http\Exception\ClientException\NotFoundException;
@@ -143,8 +143,8 @@ By default, the middleware will use `Spiral\Http\ErrorHandler\PlainRenderer` - a
 attached. If you want to use a custom error page renderer, you can implement
 the `Spiral\Http\ErrorHandler\RendererInterface`:
 
-```php app/src/Application/Service/ErrorHandler/ViewRenderer.php
-namespace App\Application\Service\ErrorHandler;
+```php app/src/Application/Exception/Renderer/ViewRenderer.php
+namespace App\Application\Exception\Renderer;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -208,7 +208,7 @@ And bind it to the container:
 
 ```php app/src/Application/Bootloader/ExceptionHandlerBootloader.php
 use Spiral\Http\ErrorHandler\RendererInterface;
-use App\ErrorHandler\ViewRenderer;
+use App\Application\Exception\Renderer\ViewRenderer;
 
 class ExceptionHandlerBootloader extends Bootloader
 {

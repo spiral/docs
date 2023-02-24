@@ -7,7 +7,7 @@ bootloader `Spiral\Bootloader\Http\SessionBootloader` into your app.
 
 A user session can be accessed using context specific object `Spiral\Session\SessionInterface`:
 
-```php app/src/Interface/Controller/HomeController.php
+```php app/src/Endpoint/Web/HomeController.php
 use Spiral\Session\SessionInterface;
 
 // ...
@@ -29,7 +29,7 @@ which provides classing `set`, `get`, `delete` or any different functionality. U
 these
 purposes:
 
-```php app/src/Interface/Controller/HomeController.php
+```php app/src/Endpoint/Web/HomeController.php
 public function index(SessionInterface $session): void
 {
     $cart = $session->getSection('cart');
@@ -46,9 +46,7 @@ To simplify the usage of a session in singleton services and controllers, use `S
 component is also available via prototype property `session`. The component can be used within singleton services and
 always point to an active session context:
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
-
+```php app/src/Endpoint/Web/HomeController.php
 use Spiral\Prototype\Traits\PrototypeTrait;
 
 class HomeController

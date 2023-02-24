@@ -313,8 +313,8 @@ extension [here](../http/annotated-routes.md). Add the bootloader to `LOAD` to a
 
 We can use this attribute in our controller as follows:
 
-```php app/src/Interface/Controller/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Router\Annotation\Route;
 
@@ -366,7 +366,6 @@ Here is the example:
 ```php app/src/Application/Bootloader/AppBootloader.php
 namespace App\Application\Bootloader;
 
-use App\Interceptor\ValidationInterceptor;
 use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
 use Spiral\Cycle\Interceptor\CycleInterceptor;
@@ -459,8 +458,8 @@ php app.php create:entity comment -f id:primary -f message:string
 
 Post:
 
-```php app/src/Database/Post.php
-namespace App\Database;
+```php app/src/Domain/Blog/Entity/Post.php
+namespace App\Domain\Blog\Entity;
 
 use App\Repository\PostRepository;
 use Cycle\Annotated\Annotation\Column;
@@ -482,10 +481,8 @@ class Post
 
 We can move the definition of the `$title` and `$content` properties to the `__construct` method:
 
-```php app/src/Database/Post.php
-namespace App\Database;
-
-use App\Repository\PostRepository;
+```php app/src/Domain/Blog/Entity/Post.php
+use App\Domain\Blog\Repository\PostRepository;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 
@@ -508,10 +505,8 @@ class Post
 
 User:
 
-```php app/src/Database/User.php
-namespace App\Database;
-
-use App\Repository\UserRepository;
+```php app/src/Domain/Blog/Entity/User.php
+use App\Domain\Blog\Repository\UserRepository;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 
@@ -528,10 +523,8 @@ class User
 
 We can move the definition of the `$name` property to the `__construct` method:
 
-```php app/src/Database/User.php
-namespace App\Database;
-
-use App\Repository\UserRepository;
+```php app/src/Domain/Blog/Entity/User.php
+use App\Domain\Blog\Repository\UserRepository;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 
@@ -551,9 +544,7 @@ class User
 
 Comment:
 
-```php app/src/Database/Comment.php
-namespace App\Database;
-
+```php app/src/Domain/Blog/Entity/Comment.php
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 
@@ -570,9 +561,7 @@ class Comment
 
 We can move the definition of the `$message` property to the `__construct` method:
 
-```php app/src/Database/Comment.php
-namespace App\Database;
-
+```php app/src/Domain/Blog/Entity/Comment.php
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 
@@ -596,7 +585,7 @@ as users and posts properties during development:
 :::: tabs
 
 ::: tab PostRepository
-```php app/src/Repository/PostRepository.php
+```php app/src/Domain/Blog/Repository/PostRepository.php
 use Spiral\Prototype\Annotation\Prototyped;
 
 #[Prototyped(property: 'posts')]
@@ -607,7 +596,7 @@ class PostRepository extends Repository
 :::
 
 ::: tab UserRepository
-```php app/src/Repository/UserRepository.php
+```php app/src/Domain/Blog/Repository/UserRepository.php
 use Spiral\Prototype\Annotation\Prototyped;
 
 #[Prototyped(property: 'users')]
@@ -654,10 +643,8 @@ Post and Comment relations with type BelongsTo and add relation HasMany between 
 
 Post:
 
-```php app/src/Database/Post.php
-namespace App\Database;
-
-use App\Repository\PostRepository;
+```php app/src/Domain/Blog/Entity/Post.php
+use App\Domain\Blog\Repository\PostRepository;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Cycle\Annotated\Annotation\Relation;
@@ -694,9 +681,7 @@ class Post
 
 Comment:
 
-```php app/src/Database/Comment.php
-namespace App\Database;
-
+```php app/src/Domain/Blog/Entity/Comment.php
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Cycle\Annotated\Annotation\Relation;
@@ -772,9 +757,9 @@ required methods:
 ```php app/database/Factory/CommentFactory.php
 namespace Database\Factory;
 
-use App\Database\Comment;
-use App\Database\Post;
-use App\Database\User;
+use App\Domain\Blog\Entity\Comment;
+use App\Domain\Blog\Entity\Post;
+use App\Domain\Blog\Entity\User;
 use Faker\Generator;
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
 
@@ -837,8 +822,8 @@ Let's create `PostFactory` class:
 ```php app/database/Factory/PostFactory.php
 namespace Database\Factory;
 
-use App\Database\Post;
-use App\Database\User;
+use App\Domain\Blog\Entity\Post;
+use App\Domain\Blog\Entity\User;
 use Faker\Generator;
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
 
@@ -891,7 +876,7 @@ Let's create `UserFactory` class:
 ```php app/database/Factory/UserFactory.php
 namespace Database\Factory;
 
-use App\Database\User;
+use App\Domain\Blog\Entity\User;
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
 
 class UserFactory extends AbstractFactory
@@ -970,7 +955,7 @@ php app.php db:seed
 ## Controller
 
 Create a set of REST endpoints to retrieve the post data via API. We can start with a simple
-controller, `App\Controller\PostController`. Create it using scaffolder:
+controller, `App\Endpoint\Web\PostController`. Create it using scaffolder:
 
 ```terminal
 php app.php create:controller post -a test -a get -p 
@@ -981,8 +966,8 @@ php app.php create:controller post -a test -a get -p
 
 The generated code:
 
-```php app/src/Interface/Controller/PostController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/PostController.php
+namespace App\Endpoint\Web;
 
 use Psr\Http\Message\ResponseInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;
@@ -1065,10 +1050,8 @@ public function test(string $id): ResponseInterface
 To get post details, use `PostRepository`, request such dependency in the constructor, `get` method, or use prototype
 shortcut `posts`. You can access `id` via route parameter:
 
-```php app/src/Interface/Controller/PostController.php
-namespace App\Interface\Controller;
-
-use App\Database\Post;
+```php app/src/Endpoint/Web/PostController.php
+use App\Domain\Blog\Entity\Post;
 use Spiral\Http\Exception\ClientException\NotFoundException;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\Router\Annotation\Route;
@@ -1104,10 +1087,8 @@ class PostController
 You can replace direct repository access and use `Post` as method injection via connected `CycleInterceptor` (make sure
 that `AppBootloader` is connected):
 
-```php app/src/Interface/Controller/PostController.php
-namespace App\Interface\Controller;
-
-use App\Database\Post;
+```php app/src/Endpoint/Web/PostController.php
+use App\Domain\Blog\Entity\Post;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\Router\Annotation\Route;
 
@@ -1141,10 +1122,10 @@ class PostController
 You can use any existing serialization solution (like `jms/serializer`) or write your own. Create a prototyped view
 object to map post data into JSON format with comments:
 
-```php app/src/View/PostView.php
-namespace App\View;
+```php app/src/Endpoint/Web/View/PostView.php
+namespace App\Endpoint\Web\View;
 
-use App\Database\Post;
+use App\Domain\Blog\Entity\Post;
 use Psr\Http\Message\ResponseInterface;
 use Spiral\Core\Container\SingletonInterface;
 use Spiral\Prototype\Annotation\Prototyped;
@@ -1182,10 +1163,8 @@ class PostView implements SingletonInterface
 
 Modify the controller as follows:
 
-```php app/src/Interface/Controller/PostController.php
-namespace App\Interface\Controller;
-
-use App\Database\Post;
+```php app/src/Endpoint/Web/PostController.php
+use App\Domain\Blog\Entity\Post;
 use Psr\Http\Message\ResponseInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\Router\Annotation\Route;
@@ -1211,9 +1190,7 @@ Use direct repository access to load multiple posts. To start, let's load all th
 
 Create `findAllWithAuthors` method in `PostRepository`:
 
-```php app/src/Repository/PostRepository.php
-namespace App\Repository;
-
+```php app/src/Domain/Blog/Repository/PostRepository.php
 use Cycle\ORM\Select;
 use Cycle\ORM\Select\Repository;
 
@@ -1228,7 +1205,7 @@ class PostRepository extends Repository
 
 Create method `list` in `PostController`:
 
-```php app/src/Interface/Controller/PostController.php
+```php app/src/Endpoint/Web/PostController.php
 #[Route(route: '/api/post', name: 'post.list', methods: 'GET')]
 public function list(): array
 {
@@ -1257,9 +1234,7 @@ application.
 
 To use data grids, we have to specify our data schema first, create `App\View\PostGrid` class:
 
-```php app/src/View/PostGrid.php
-namespace App\View;
-
+```php app/src/Endpoint/Web/View/PostGrid.php
 use Spiral\DataGrid\GridSchema;
 use Spiral\DataGrid\Specification\Filter\Equals;
 use Spiral\DataGrid\Specification\Pagination\PagePaginator;
@@ -1288,7 +1263,7 @@ class PostGrid extends GridSchema
 
 Connect the bootloader to your method using `Spiral\DataGrid\GridFactory`:
 
-```php app/src/Interface/Controller/PostController.php
+```php app/src/Endpoint/Web/PostController.php
 #[Route(route: '/api/post', name: 'post.list', methods: 'GET')] 
 public function list(GridFactory $grids): array
 {
@@ -1347,9 +1322,7 @@ Add the bootloader to `LOAD` section to activate the component:
 
 Create `CommentFilter`:
 
-```php app/src/Filter/CommentFilter.php
-namespace App\Filter;
-
+```php app/src/Endpoint/Web/Filter/CommentFilter.php
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Model\Filter;
 use Spiral\Filters\Model\FilterDefinitionInterface;
@@ -1372,14 +1345,12 @@ class CommentFilter extends Filter implements HasFilterDefinition
 
 ### Service
 
-Create `App\Service\CommentService`:
+Create `App\Domain\Blog\Service\CommentService`:
 
-```php app/src/Service/CommentService.php
-namespace App\Service;
-
-use App\Database\Comment;
-use App\Database\Post;
-use App\Database\User;
+```php app/src/Domain/Blog/Service/CommentService.php
+use App\Domain\Blog\Entity\Comment;
+use App\Domain\Blog\Entity\Post;
+use App\Domain\Blog\Entity\User;
 use Cycle\ORM\EntityManagerInterface;
 use Spiral\Prototype\Annotation\Prototyped;
 
@@ -1409,7 +1380,7 @@ Declare controller method and request filter instance. If a filter class
 implements `Spiral\Filters\Model\HasFilterDefinition` interface, the Filters component will guarantee that the filter is
 valid. Create `comment` endpoint to post a message to the given post:
 
-```php app/src/Interface/Controller/PostController.php
+```php app/src/Endpoint/Web/PostController.php
 #[Route(route: '/api/post/<post:\d+>/comment', name: 'post.comment', methods: 'POST')]
 public function comment(Post $post, CommentFilter $commentFilter): array
 {
@@ -1468,7 +1439,7 @@ curl -X POST -H 'content-type: application/json' --data '{"message": "first comm
 To render post information into HTML form, use [views](../views/configuration.md)
 and [Stempler](../stempler/configuration.md) component. Pass a post list to the view using Grid object.
 
-```php app/src/Interface/Controller/PostController.php
+```php app/src/Endpoint/Web/PostController.php
 #[Route(route: '/posts', name: 'post.all', methods: 'GET')] 
 public function all(GridFactory $grids): string
 {
@@ -1521,7 +1492,7 @@ Create a view file `app/views/posts.dark.php` and extend parent layout.
 To view the post and all of its comments, create a new controller method in `PostController`. Load the post manually via
 repository to preload all author and comment information.
 
-```php app/src/Interface/Controller/PostController.php
+```php app/src/Endpoint/Web/PostController.php
 use Spiral\Http\Exception\ClientException\NotFoundException;
 // ...
 
@@ -1539,7 +1510,7 @@ public function view(string $id): string
 
 This is where the repository method is:
 
-```php  app/src/Database/PostRepository.php
+```php app/src/Domain/Blog/Repository/PostRepository.php
 public function findOneWithComments(string $id): ?Post
 {
     return $this

@@ -11,8 +11,8 @@ this section, we will cover the use of requests/responses in the MVC setup.
 The fastest way to get access to the user request is to create `Psr\Http\Message\ServerRequestInterface` method
 injection.
 
-```php app/Interface/Controllers/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Spiral\Core\Container\SingletonInterface;
@@ -39,8 +39,8 @@ Alternatively, you can use context-manager `Spiral\Http\Request\InputManager`, w
 services/controllers, and always point to the current user request. This object provides several user-friendly methods
 to read the incoming data.
 
-```php app/Interface/Controllers/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Core\Container\SingletonInterface;
 use Spiral\Http\Request\InputManager;
@@ -63,8 +63,8 @@ class HomeController implements SingletonInterface
 
 You can also access `Spiral\Http\Request\InputManager` via `Spiral\Prototype\Traits\PrototypeTrait`.
 
-```php app/Interface/Controllers/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Prototype\Traits\PrototypeTrait;
 
@@ -267,7 +267,7 @@ dump($input->bag('data')->all());
 
 With `Spiral\Bootloader\Http\HttpBootloader` you can add your own input bag.
 
-For example, we need to receive uploaded files as a Symfony\Bridge\PsrHttpMessage\Factory\UploadedFile object.
+For example, we need to receive uploaded files as a `Symfony\Bridge\PsrHttpMessage\Factory\UploadedFile` object.
 Let's create an input bag class.
 
 ```php
@@ -337,7 +337,7 @@ interface InputInterface
 You can invoke `Spiral\Http\Request\InputManager` methods via short notation of `Spiral\Filters\InputInterface`. Both 
 approaches will produce the same set of data.
 
-```php app/Interface/Controllers/HomeController.php
+```php app/src/Endpoint/Web/HomeController.php
 use Spiral\Filters\InputInterface;
 use Spiral\Http\Request\InputManager;
 
@@ -361,8 +361,8 @@ This approach is used to map the incoming data into Request Filter.
 You can return the instance `Psr\Http\Message\ResponseInterface` from your controller, and it will be sent directly to
 the user.
 
-```php app/Interface/Controllers/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -382,8 +382,8 @@ class HomeController
 The PSR-15 handler enabled by default provides you with an ability to generate the response automatically based on the returned
 string or the content of output buffer:
 
-```php app/Interface/Controllers/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 class HomeController
 {
@@ -396,8 +396,8 @@ class HomeController
 
 Identical to:
 
-```php app/Interface/Controllers/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 class HomeController
 {
@@ -416,8 +416,8 @@ class HomeController
 
 The default PSR-15 also supports array and `JsonSerializable` responses which will convert into JSON:
 
-```php app/Interface/Controllers/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 class HomeController
 {
@@ -435,8 +435,8 @@ class HomeController
 
 The proper way to abstract from manual response creation is to use `Psr\Http\Message\ResponseFactoryInterface`:
 
-```php app/Interface/Controllers/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -458,8 +458,8 @@ class HomeController
 To generate more complex responses, use `ResponseFactoryInterface` wrapper `Spiral\Http\ResponseWrapper` which adds
 a number of methods for simpler response generation:
 
-```php app/Interface/Controllers/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Psr\Http\Message\ResponseInterface;
 use Spiral\Http\ResponseWrapper;
@@ -478,8 +478,8 @@ class HomeController
 
 You can also access the wrapper via `PrototypeTrait` and property `response`:
 
-```php app/Interface/Controllers/HomeController.php
-namespace App\Interface\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Psr\Http\Message\ResponseInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;

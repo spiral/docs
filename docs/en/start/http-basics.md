@@ -12,8 +12,8 @@ to the client.
 
 Here's an example of a simple controller that returns the current date and time:
 
-```php app/src/Interface/Http/CurrentDateController.php
-namespace App\Interface\Http;
+```php app/src/Endpoint/Web/CurrentDateController.php
+namespace App\Endpoint\Web;
 
 final class CurrentDateController 
 {
@@ -35,7 +35,7 @@ The next step is to associate a route with your controller.
 Spiral makes it easy to define your application's routes by using PHP attributes. All you have to do is add the
 `#[Route]` attribute to the controller's method like so:
 
-```php app/src/Interface/Http/CurrentDateController.php
+```php app/src/Endpoint/Web/CurrentDateController.php
 use Spiral\Router\Annotation\Route;
 
 // ...
@@ -85,7 +85,7 @@ You should see your `current-date` route in the list:
 +--------------+--------+----------+------------------------------------------------+--------+
 |[32m Name:        [39m|[32m Verbs: [39m|[32m Pattern: [39m|[32m Target:                                        [39m|[32m Group: [39m|
 +--------------+--------+----------+------------------------------------------------+--------+
-| current-date | [32mGET[39m    | /date    | App\Interface\Http\CurrentDateController->show | web    |
+| current-date | [32mGET[39m    | /date    | App\Endpoint\Web\CurrentDateController->show | web    |
 +--------------+--------+----------+------------------------------------------------+--------+
 ```
 
