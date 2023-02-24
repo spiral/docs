@@ -91,7 +91,7 @@ Use the following command to run RoadRunner server on **Linux**
 Use the following command to run RoadRunner server on **Windows**
 
 ```terminal
-./rr.exe serve
+.\rr.exe serve
 ```
 
 :::
