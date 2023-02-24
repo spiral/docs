@@ -122,9 +122,10 @@ You can register handlers for your job classes to associate which handler should
 
 ## Custom driver
 
-If available driver does not meet your needs, you can create your own queue driver.
+If the available queue driver does not meet your specific needs, you can create your own custom driver by implementing
+the `Spiral\Queue\QueueInterface` interface.
 
-To do this, you need to implement the `Spiral\Queue\QueueInterface` interface.
+Here is an example implementation of a fake queue driver:
 
 ```php app/src/Infrastructure/Queue/RedisQueue.php
 namespace App\Infrastructure\Queue;
@@ -156,18 +157,21 @@ final class RedisQueue imlements QueueInterface
 }
 ```
 
-That's all. Now you can use your driver:
+Once you have defined your custom driver, you can register it in the configuration file:
 
 ```php app/config/queue.php
 'connections' => [
     'mail' => [
-        // Job will be handled immediately without queueing
         'driver' => \App\Infrastructure\Queue\RedisQueue::class,
         'server' => 'redis://localhost:6379',
         'queueName' => 'mail',
     ],
 ],
 ```
+
+So when you use the `mail` connection in your application, Spiral IoC container will create an instance of the
+`RedisQueue` class and pass the `redis://localhost:6379` and `mail` values for the `$server` and `$queueName`
+parameters, respectively.
 
 You can also register your driver as an alias in the `driverAliases` section of the queue configuration file.
 

@@ -211,7 +211,7 @@ to the roadrunner driver. In this case you can use options that implement `Spira
 > **Note**
 > This feature is available since `spiral/roadrunner-bridge` version `2.5.0`.
 
-For example, if you want to pass additional options to Kafka broker, you can use `Spiral\RoadRunner\Jobs\KafkaOptions` 
+For example, if you want to pass additional options to Kafka broker, you can use `Spiral\RoadRunner\Jobs\KafkaOptions`
 class.
 
 ```php
@@ -229,3 +229,54 @@ public function createJob(QueueInterface $queue): void
 }
 ```
 
+## Custom driver
+
+In some cases, you may need to create a custom driver for a specific queue broker.
+
+For example, you may want to create a driver for specific queue broker.
+
+```php app/src/Infrastructure/Queue/KafkaQueue.php
+namespace App\Infrastructure\Queue;
+
+use Spiral\Queue\OptionsInterface;
+use Spiral\Queue\QueueInterface;
+use Spiral\RoadRunner\Jobs\JobsInterface;
+use Spiral\RoadRunner\Jobs\Queue\KafkaCreateInfo;
+use Spiral\RoadRunner\Jobs\KafkaOptions;
+
+final class KafkaQueue imlements QueueInterface
+{
+    private readonly QueueInterface $queue;
+    
+    public function __construct(JobsInterface $jobs, string $name, string $topic) 
+    {
+        $this->queue = $jobs->create(
+            new KafkaCreateInfo(
+                name: $name, 
+                topic: $topic
+            ), 
+            new KafkaOptions($topic)
+        );
+    }
+
+    public function push(string $name, array $payload = [], OptionsInterface|KafkaOptions $options = null): string
+    {
+        return $this->queue->push($name, $payload, $options)->getId();
+    }
+}
+```
+
+That's all. Now you can use your driver:
+
+```php app/config/queue.php
+'connections' => [
+    'mail' => [
+        'driver' => \App\Infrastructure\Queue\KafkaQueue::class,
+        'name' => 'mail',
+        'topic' => 'mail',
+    ],
+],
+```
+
+> **See more**
+> Read more about creating custom drivers in the [Queue — Getting started](./configuration.md) section.
