@@ -56,7 +56,7 @@ return [
 > the documentation section on [Interceptors](./interceptors.md). This page provides additional details and examples to
 > help you get started with Interceptors.
 
-### Connection request
+## Connection request
 
 This service receives a `RoadRunner\Centrifugo\Request\Connect` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\ConnectResponse` object.
@@ -162,7 +162,7 @@ const centrifuge = new Centrifuge('http://127.0.0.18000/connection/websocket', {
 > For more information on using JavaScript SDK and passing additional data to the server, refer to the
 > [documentation](https://github.com/centrifugal/centrifuge-js#data).
 
-### Subscribe request
+## Subscribe request
 
 This service receives a `RoadRunner\Centrifugo\Request\Subscribe` object and performs some action based on the
 connection
@@ -253,7 +253,7 @@ return [
 > Read more about subscribe requests in
 > the [Centrifugo documentation](https://centrifugal.dev/docs/server/proxy#subscribe-request-fields).
 
-### Refresh connection request
+## Refresh connection request
 
 This service receives a `RoadRunner\Centrifugo\Request\Refresh` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\RefreshResponse` object.
@@ -288,7 +288,7 @@ class RefreshService implements ServiceInterface
 > Read more about refresh connection requests in
 > the [Centrifugo documentation](https://centrifugal.dev/docs/server/proxy#refresh-request-fields).
 
-### RPC call request
+## RPC call request
 
 This service receives a `RoadRunner\Centrifugo\Request\RPC` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\RPCResponse` object.
@@ -433,7 +433,7 @@ centrifuge.rpc("get:news/123", {"lang": "en"}).then(function (res) {
 > For more information on using JavaScript SDK and RPC method, refer to the
 > [documentation](https://github.com/centrifugal/centrifuge-js#rpc-method).
 
-### Publish request
+## Publish request
 
 This service receives a `RoadRunner\Centrifugo\Request\Publish` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\PublishResponse` object.
