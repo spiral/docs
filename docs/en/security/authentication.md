@@ -27,21 +27,12 @@ fly. The framework includes multiple token implementations out of the box for a 
 
 ## Installation and Configuration
 
-To install authorization extension for Web bundle:
-
-```terminal
-composer require spiral/auth spiral/auth-http
-```
-
-The package `spiral/auth` provides standard interfaces without the relation to any specific dispatching method, while
-`spiral/auth-http` includes HTTP Middleware, Token transport (Cookie, Header), and Firewall components.
-
 To activate the component add the bootloader `Spiral\Bootloader\Auth\HttpAuthBootloader`:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
-    Framework\Auth\HttpAuthBootloader::class,
+    \Spiral\Bootloader\Auth\HttpAuthBootloader::class,
     // ...
 ]
 ```
@@ -72,7 +63,7 @@ $storage = $container->get(\Spiral\Auth\TokenStorageInterface::class);
 
 ### Session Token Storage
 
-To store tokens in PHP session make sure that `spiral/session` extension is installed
+To store tokens in PHP session use `session` value for `AUTH_TOKEN_STORAGE` environment variable.
 
 ```dotenv .env
 AUTH_TOKEN_STORAGE=session
@@ -87,31 +78,35 @@ install `spiral/cycle-bridge` package.
 composer require spiral/cycle-bridge
 ```
 
-Activate `Spiral\Cycle\Bootloader\BridgeBootloader` for this purpose:
+> **See more**
+> Read more about installation and configuration `spiral/cycle-bridge` in 
+> the [The Basics — Database and ORM](../basics/orm.md) section.
+
+Then you need to activate `Spiral\Cycle\Bootloader\AuthTokensBootloader`:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
-    Framework\Auth\HttpAuthBootloader::class,
-    \Spiral\Cycle\Bootloader\BridgeBootloader::class,
+    \Spiral\Bootloader\Auth\HttpAuthBootloader::class,
+    \Spiral\Cycle\Bootloader\AuthTokensBootloader::class,
     // ...
 ]
 ```
 
+To store tokens in Cycle ORM use `cycle` value for `AUTH_TOKEN_STORAGE` environment variable.
+
 ```dotenv .env
-AUTH_TOKEN_STORAGE=database
+AUTH_TOKEN_STORAGE=cycle
 ```
 
-> **See more**
-> Read more about installation and configuration `spiral/cycle-bridge`
-> package in the [The Basics — Database and ORM](../basics/orm.md) section.
-
-You must generate and run database migration or run `cycle:sync` in order to create the needed table:
+You must generate and run database migration:
 
 ```terminal
 php app.php migrate:init
 php app.php cycle:migrate -v -r
 ```
+
+Or run `cycle:sync` in order to create the needed table.
 
 ### Custom Token Storage
 
