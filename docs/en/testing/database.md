@@ -56,7 +56,7 @@ class.
 Here is an example of a seed factory that defines a `User` entity:
 
 ```php
-namespace Database\Seeder;
+namespace Database\Factory;
 
 use App\Entity\User;
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
@@ -108,6 +108,8 @@ set properties directly.
 A factory can be created by calling the `new` method on the factory class:
 
 ```php
+use Database\Factory\UserFactory;
+
 $factory = UserFactory::new();
 ```
 
@@ -116,7 +118,9 @@ This will create a new instance of the factory. It provides several useful metho
 You can also pass an array of definition to the new method of the factory class.
 
 ```php
-$factory = UserFactory::new(['admin' => true])->createOne();
+use Database\Factory\UserFactory;
+
+$factory = UserFactory::new(['admin' => true]);
 ```
 
 This is a useful feature when you have a common set of definitions that you want to use across multiple factories or
