@@ -39,7 +39,7 @@ discover and load the classes you create, so you don't have to manually include 
   // ...
   "autoload-dev": {
     "psr-4": {
-      "Database\\": "app/Database/"
+      "Database\\": "app/database/"
     }
   }
 }
