@@ -1,27 +1,36 @@
 # Real-time chat application
 
-Real-time apps are the future. Socket servers usually were not that easy to setup, but Spiral Framework with RoadRunner
-and Centrifugo changes the game.
+Real-time chat applications have become increasingly popular in recent years, and implementing WebSocket servers to
+enable bidirectional communication has become essential for building such applications. However, creating this kind of
+can be a challenging task.
 
-Spiral contains a lot of components built to operate seamlessly with each other. In this article, we will show you how
-to create a simple real-time chat application with Centrifugo, RoadRunner, ORM.
+Fortunately, there are new frameworks and tools available that make it easier to set up WebSocket servers. In this
+tutorial, we will demonstrate how to create a real-time chat application using the Spiral Framework, RoadRunner, and
+Centrifugo with authentication and bidirectional communication.
+
+Spiral Framework offers an array of seamlessly integrated components, which makes it an ideal choice for building
+complex applications. In this tutorial, we will guide you on creating a simple real-time chat application using
+Spiral Framework, Centrifugo, RoadRunner, and ORM.
 
 > **Note**
-> The components and approaches will be covered at basic levels only. Read the corresponding sections to gain more
-> information. You can find the demo repository [here](https://github.com/spiral/simple-chat).
+> This tutorial covers the basics of the components and approaches used in creating the chat application. For more
+> detailed information, we suggest referring to the relevant sections. Additionally, a demo repository is available
+> at [here](https://github.com/spiral/simple-chat).
 
 ## Installation
 
 ### Spiral application
 
-Use composer to install the default `spiral/app` bundle with most of the components out of the box:
+To get started with building your real-time chat application, you can easily install the default `spiral/app` bundle
+with most of the required components by running the following command:
 
 ```terminal
 composer create-project spiral/app realtime-chat
 ```
 
-You need to choose the following options with Spiral installer:
-
+During the installation process, you will be prompted to select various options with the Spiral installer, such as the
+application preset, whether to use Cycle ORM, which collections to use, which validator component to use, and so on. For
+this tutorial, we recommend choosing the options shown above:
 
 ```terminal
 ✔ Which application preset do you want to install? > Web
@@ -42,7 +51,8 @@ You need to choose the following options with Spiral installer:
 ✔ Do you need the Sentry? > No
 ```
 
-If everything is installed correctly, you can open your application immediately by starting the server:
+Once the installation is complete, you can start the server and open your application immediately by running the
+following command:
 
 ```terminal
 cd realtime-chat
@@ -50,15 +60,13 @@ cd realtime-chat
 ./rr serve
 ```
 
-By default, the application is available on http://127.0.0.1:8080. The build does not contain any pages because we
-selected the "without default structure" option.
+Your application will be available on http://127.0.0.1:8080 by default.
 
 ### Centrifugo
 
-Centrifugo is a real-time messaging server. It is a part of the [Centrifugo](https://centrifugal.dev/) project.
-
-We prepared a simple bash script to install Centrifugo on your machine. It will download the latest version of the
-Centrifugo binary and install it to the `bin` directory of your application.
+Centrifugo is a powerful real-time messaging server. To install it, we have prepared a simple bash script that downloads
+the latest version of the Centrifugo binary and installs it in the `bin` directory of your application. You can run the
+script using the following command:
 
 ```bash
 wget --timeout=10 https://github.com/centrifugal/centrifugo/releases/download/v4.1.2/centrifugo_4.1.2_linux_amd64.tar.gz
@@ -69,8 +77,8 @@ mv centrifugo bin/
 chmod +x ./bin/centrifugo
 ```
 
-And now we need to configure centrifugo server. Let's create `centrifugo.json` config file at the root directory of our
-project:
+After installing Centrifugo, the next step is to create a `centrifugo.json` configuration file at the root directory of
+your project, which will contain the necessary configuration details:
 
 ```json centrifugo.json
 {
@@ -90,7 +98,9 @@ project:
 }
 ```
 
-And configure RoadRunner to work with Centrifugo:
+To enable communication between Centrifugo and RoadRunner, you need to configure RoadRunner in the `.rr.yaml` file by
+specifying the details of the gRPC server and its connection to Centrifugo. This allows RoadRunner to handle Centrifugo
+events and send them to your application, and vice versa.
 
 ```yaml .rr.yaml
 #...
@@ -111,23 +121,22 @@ centrifuge:
     num_workers: 5
 ```
 
-It this config we are telling RoadRunner to run Centrifugo server as a separate service and to connect to it via
-gRPC. RoadRunner will also start a gRPC server that will be used by our application to communicate with Centrifugo.
-
-That's it. Now RoadRunner will be able to handle Centrifugo events and send them to our application and also our
-application will be able to send events to Centrifugo. And we have bidirectional communication between them.
+With these configurations in place, your application will be able to send events to Centrifugo, and Centrifugo will be
+able to send events to your application, enabling bidirectional communication between them.
 
 ## Configuration
 
-Spiral applications are configured using config files located in `app/config`, you can use the hardcoded values for the
-configuration, or get the values using available functions `env` and [`directory`](../start/structure.md).
+The configuration of Spiral applications is accomplished through configuration files located in the `app/config`
+directory. You can use the predefined values in these files, or you can obtain the values programmatically using the
+`env` and `directory` functions.
 
-The application dependencies defined in `composer.json` and activated in `app/src/Application/Kernel.php` as
-Bootloaders. The default build includes quite a lot of pre-configured components.
+The application dependencies are defined in the `composer.json` file, and they are activated as bootloaders in the
+`app/src/Application/Kernel.php` file.
 
 ### Bootloaders
 
-Let's add required Bootloaders and remove some of the default ones to make our application more lightweight:
+To optimize our application and make it more lightweight, we need to add the required bootloaders and remove some of the
+default ones. Let's make some changes in the `app/src/Application/Kernel.php` file:
 
 ```diff app/src/Application/Kernel.php
 // ... 
@@ -192,8 +201,9 @@ class RoutesBootloader extends BaseRoutesBootloader
 > **See more**
 > Read more about routing in the [HTTP — Routing](../http/routing.md) section.
 
-Remove `api` middleware group in method `middlewareGroups`, we will not use REST API in this example and add
-`Spiral\Filter\ValidationHandlerMiddleware` for validation errors handling:
+Since we won't be using the REST API in this example, let's remove the `api` middleware group and add the
+`Spiral\Filter\ValidationHandlerMiddleware` for handling validation errors. In
+the `app/src/Application/Bootloader/RoutesBootloader.php` file, update the `middlewareGroups` method as follows:
 
 ```diff app/src/Application/Bootloader/RoutesBootloader.php
 class RoutesBootloader extends BaseRoutesBootloader
@@ -217,16 +227,13 @@ class RoutesBootloader extends BaseRoutesBootloader
 ```
 
 > **Note**
-> Don't forget to remove unused imports!
-
-Delete the following files and directories as no longer required:
-
-- `app/locale`
+> As a reminder, when making changes to the code, it's important to remove any unused imports. These can clutter up the
+> code and make it harder to read and maintain.
 
 ### Broadcasting
 
-Let's add broadcasting support to our application. All we need to do is to configure the `broadcasting.php`
-config file:
+To enable broadcasting functionality in the application, it is necessary to configure the `broadcasting.php`
+configuration file. This configuration will allow the application to transmit events to the Centrifugo server.
 
 ```php app/config/broadcasting.php
 return [
@@ -238,22 +245,23 @@ return [
 ];
 ```
 
-And set the `BROADCAST_CONNECTION` environment variable to our new connection:
+Additionally, it is necessary to set the `BROADCAST_CONNECTION` environment variable to the newly created connection:
 
 ```dotenv .env
 # Broadcast
 BROADCAST_CONNECTION=centrifugo
 ```
 
-Now our application will be able to broadcast events to Centrifugo server.
+Following these steps will enable the application to broadcast events to the Centrifugo server.
 
 > **Note**
-> `centrifugo` driver is provided by `spiral/roadrunner-bridge` package.
+> The `centrifugo` driver is provided by the `spiral/roadrunner-bridge` package.
 
 ### Database Connection
 
-Our application needs a database to operate. By default, the database configuration is located
-in `app/config/database.php` file. For our application, we will use PostgreSQL database.
+In order for our application to function properly, a database connection must be established. The database configuration
+file can be found in the `app/config/database.php` file. For this particular application, we will be utilizing a
+PostgreSQL database.
 
 ```diff app/config/database.php
 use Cycle\Database\Config;
@@ -302,53 +310,59 @@ DB_PASSWORD=secret
 DB_PORT=5432
 ```
 
-To check that the database connection was successful, run:
+To verify that the database connection has been successfully established, the following command should be executed:
 
 ```terminal
 php app.php db:list
 ```
 
 > **See more**
-> Read more about Databases [here](../database/configuration.md).
+> For further information regarding database configuration, please refer to
+> the [database configuration](../database/configuration.md) documentation.
 
 ### Connect Database Seeder
 
-We will need some sample data for the application.
-Let's install [Database Seeder](../testing/database.md).
+We will need some sample data for the application. Let's install [Database Seeder](../testing/database.md).
 
 ```terminal
 composer require spiral-packages/database-seeder --dev
 ``` 
 
-Add the bootloader `Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader` to `LOAD` section to activate the
-package:
+To activate the package, the `Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader` bootloader must be added to
+the `LOAD` section:
 
 ```diff app/src/Application/Kernel.php
          PrototypeBootloader::class,
 +        \Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader::class,
 ```
 
+Once these steps have been completed, the Database Seeder package will be enabled and can be utilized to provide sample
+data for the application.
+
 ## Scaffold Database
 
-The framework can configure the database schema using a set of migration files. To configure migrations in your
-application, run:
+The framework provides the ability to configure the database schema using a collection of migration files. To initiate
+the migration configuration process within your application, execute the following command:
 
 ```terminal
 php app.php migrate:init
 ```
 
-You can now observe the migration table structure by using:
+After executing the previous command, you can observe the structure of the migration table by utilizing the following
+commands:
 
 ```terminal
 php app.php db:list
 php app.php db:table migrations
 ```
 
-You can write the migration manually, or let Cycle ORM generate it for you.
+Once the migration configuration has been initialized, you may manually write the migration files or allow Cycle ORM to
+generate them for you.
 
 ### Define ORM Entities
 
-Let's create `Thread`, `Message` and `User` entities and their repositories using the Scaffolder extension:
+Let's create `Thread`, `Message` and `User` entities and their repositories using 
+the [scaffolder](../basics/scaffolding.md) component:
 
 ```terminal
 php app.php create:entity thread -f id:primary -f name:string -e
@@ -357,9 +371,12 @@ php app.php create:entity user -f id:primary -f username:string -f password:stri
 ```
 
 > **Note**
-> Observe the classes generated in `app/src/Database` and `app/src/Repository`.
+> Upon successful execution of the previous commands, the generated classes may be located within 
+> the `app/src/Database` and `app/src/Repository` directories.
 
 ### Thread Entity
+
+After the `Thread` entity has been created, it looks like this:
 
 ```php app/src/Database/Thread.php
 namespace App\Database;
@@ -380,7 +397,7 @@ class Thread
 
 Let's bring it in order:
 
-```php
+```php app/src/Database/Thread.php
 namespace App\Database;
 
 use App\Repository\ThreadRepository;
@@ -413,6 +430,9 @@ class Thread implements \JsonSerializable
     }
 }
 ```
+
+The generated `Message` and `User` entities and its repositories may be similarly modified to ensure that their 
+properties and functionality aligns with the application requirements.
 
 ### Message Entity
 
@@ -538,8 +558,7 @@ final class UserRepository extends Repository
 ```
 
 > **Note**
-> Read more about Cycle [here](../basics/orm.md). Configure auto-timestamps
-> using [custom mapper](https://cycle-orm.dev/docs/advanced-timestamp).
+> Read more about Cycle [here](../basics/orm.md).
 
 Run the configure command to collect all available prototype classes:
 
@@ -549,27 +568,32 @@ php app.php configure
 
 ### Generate Migration
 
-To generate the database schema, run:
+To generate the database schema, use the following command:
 
 ```terminal
 php app.php cycle:migrate -v
 ```
 
-The generated migration is located in `app/migrations/`. Execute it using:
+The generated migration can be found in the `app/migrations/` directory. You can execute the migration using the 
+following command:
 
 ```terminal
 php app.php migrate -vv
 ```
 
-You can now observe the generated tables using `db:list` command.
+You can use the `db:list` command to observe the generated tables.
+
+```terminal
+php app.php db:list
+```
 
 ## Factories and seeders
 
-To generate test data, we need factories that will describe the rules for generating an entity. And seeders that will 
-fill the database.
+To generate test data, we need factories that describe the rules for generating an entity and seeders that fill the 
+database. To maintain separation from the application code, these factories and seeders should be stored in a separate 
+folder named `app/database`.
 
-We will store them separately from the application code, in the `app/database` folder.
-Let's add a separate `Database` namespace to Composer autoload:
+Let's add a separate `Database` namespace to Composer autoload, you can update the `composer.json` file as follows:
 
 ```diff composer.json
 --- a/composer.json
@@ -583,20 +607,25 @@ Let's add a separate `Database` namespace to Composer autoload:
 },
 ```
 
+After updating the `composer.json` file, run the following command to update the autoloader:
+
 ```terminal
 composer dump-autoload
 ```
 
 ### UserFactory
 
-Let's create `UserFactory` class, extend it from `Spiral\DatabaseSeeder\Factory\AbstractFactory` and implement
-required methods:
+The next step is to create the `UserFactory` class, which will be responsible for generating user entities. To achieve 
+this, extend the `AbstractFactory` class provided by `Spiral\DatabaseSeeder\Factory`, and implement the required 
+methods. 
+
+To create it, run the following command:
 
 ```teriminal
 php app.php create:factory UserFactory
 ```
 
-And modify it:
+Once it's created, modify the contents of the `app/database/Factory/UserFactory.php` file to look like the following:
 
 ```php app/database/Factory/UserFactory.php
 namespace Database\Factory;
@@ -631,11 +660,15 @@ final class UserFactory extends AbstractFactory
 
 ### ThreadFactory
 
+To generate test data for threads, create a `ThreadFactory` class. 
+
+To create it, run the following command:
+
 ```teriminal
 php app.php create:factory ThreadFactory
 ```
 
-And modify it:
+Once it's created, modify the contents of the `app/database/Factory/ThreadFactory.php` file to look like the following:
 
 ```php app/database/Factory/ThreadFactory.php
 namespace Database\Factory;
@@ -668,11 +701,15 @@ final class ThreadFactory extends AbstractFactory
 
 ### MessageFactory
 
+To generate test data for messages, create a `MessageFactory` class.
+
+To create it, run the following command:
+
 ```teriminal
 php app.php create:factory MessageFactory
 ```
 
-And modify it:
+Once it's created, modify the contents of the `app/database/Factory/MessageFactory.php` file to look like the following:
 
 ```php app/database/Factory/MessageFactory.php
 namespace Database\Factory;
@@ -680,7 +717,7 @@ namespace Database\Factory;
 use App\Database\Message;
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
 
-class MessageFactory extends AbstractFactory
+final class MessageFactory extends AbstractFactory
 {
     public function makeEntity(array $definition): object
     {
@@ -707,15 +744,18 @@ class MessageFactory extends AbstractFactory
 }
 ```
 
-After we have created factories, we can create seeders that will use them to fill the database.
+To fill the database with test data, create seeders that use the previously created factories. 
 
 ### UserTableSeeder
+
+To create a `UserTableSeeder` class, run the following command:
 
 ```teriminal
 php app.php create:seeder UserTableSeeder
 ```
 
-And modify it:
+Once the `UserTableSeeder` class is created, modify the contents of the `app/database/Seeder/UserTableSeeder.php` file 
+to look like the following:
 
 ```php app/database/Seeder/UserTableSeeder.php
 namespace Database\Seeder;
@@ -733,13 +773,19 @@ final class UserTableSeeder extends AbstractSeeder
 }
 ```
 
-We will create only 2 users: `john` and `bill`, if you need more, you can do it in the same way.
+> **Note**
+> We will create only 2 users: `john` and `bill`, if you need more, you can do it in the same way.
 
 ### ThreadTableSeeder
+
+To create a `ThreadTableSeeder` class, run the following command:
 
 ```teriminal
 php app.php create:seeder ThreadTableSeeder
 ```
+
+Once the `ThreadTableSeeder` class is created, modify the contents of the `app/database/Seeder/ThreadTableSeeder.php` 
+file to look like the following:
 
 ```php app/database/Seeder/ThreadTableSeeder.php
 namespace Database\Seeder;
@@ -756,7 +802,8 @@ final class ThreadTableSeeder extends AbstractSeeder
 }
 ```
 
-We will create only 1 thread. It's enough for our example.
+> **Note**
+> We will create only 1 thread. It's enough for our example.
 
 Now let's execute a console command that will populate the database with test records:
 
@@ -768,7 +815,9 @@ php app.php db:seed
 
 ### Login controller
 
-At first, we need to create a controller that will authenticate users in our chat. Create it using scaffolder:
+At first, we need to create a controller that will authenticate users in our chat. 
+
+Let's create it using scaffolder:
 
 ```terminal
 php app.php create:controller login -a loginForm -a login -p 
@@ -811,7 +860,7 @@ Here is a code for the login form.
 ```php app/src/Endpoint/Web/LoginController.php
 use Psr\Http\Message\ServerRequestInterface;
 
-class LoginController
+final class LoginController
 {
     // ...
     
@@ -832,6 +881,7 @@ the `Spiral\Csrf\Middleware\CsrfMiddleware` middleware and stored in request att
 Let's create a view template `app/views/login.dark.php` for the login form:
 
 ```html app/views/login.dark.php
+
 <html>
 <head>
     <title>Login</title>
@@ -916,7 +966,7 @@ and `InvalidCredentialsException` exception that will be thrown if the user cred
 ```php app/src/Application/Exception/InvalidCredentialsException.php
 namespace App\Application\Exception;
 
-class InvalidCredentialsException extends \Exception
+final class InvalidCredentialsException extends \Exception
 {
 
 }
@@ -928,7 +978,7 @@ Now we can implement the login action:
 use App\Application\Exception\InvalidCredentialsException;
 use App\Entrypoint\Web\Filter\LoginRequest;
 
-class LoginController
+final class LoginController
 {
     // ...
     
@@ -952,7 +1002,7 @@ class LoginController
 > **Note**
 > It would be a good idea to verify the user password in a special service. But for our example, it's enough.
 
-When we authenticate the user, we create a new authentication token with a payload that contains the user data.
+After the user is authenticated, we create a new authentication token with a payload that contains the user data.
 
 ```php
 [
@@ -963,13 +1013,16 @@ When we authenticate the user, we create a new authentication token with a paylo
 
 > **Note**
 > You can store any data in the token payload. Basically, a token should contain all the data that you need to identify
-> the user.
+> the user. In most cases, `id` or `username` is enough.
 
 #### Handle invalid credentials exception
 
 Now we need to handle the `InvalidCredentialsException` exception and display an error message on the login form.
 
 In our application we will store errors in the session.
+
+> **Warning**
+> Session is not the best place to store errors for sharing between requests. But for our example, it's enough.
 
 Let's create a new service that will store errors in the session:
 
@@ -978,15 +1031,16 @@ namespace App\Entrypoint\Web;
 
 use Spiral\Prototype\Annotation\Prototyped;
 use Spiral\Prototype\Traits\PrototypeTrait;
+use Spiral\Session\SessionSectionInterface;
 
 #[Prototyped(property: 'errors')]
 final class SessionErrors
 {
     use PrototypeTrait;
-
+    
     public function clear(): void
     {
-        $this->session->getSection('errors')->clear();
+        $this->session()->clear();
     }
 
     /**
@@ -994,7 +1048,12 @@ final class SessionErrors
      */
     public function getErrors(): array
     {
-        return $this->session->getSection('errors')->getAll();
+        $errors = $this->session()->getAll();
+        
+        // clear errors after reading
+        $this->clear();
+
+        return $errors;
     }
 
     /**
@@ -1003,7 +1062,12 @@ final class SessionErrors
      */
     public function addError(string $key, string $error): void
     {
-        $this->session->getSection('errors')->set($key, $error);
+        $this->session()->set($key, $error);
+    }
+    
+    private function session(): SessionSectionInterface
+    {
+        return $this->session->getSection('errors');
     }
 }
 ```
@@ -1016,9 +1080,6 @@ php app.php prototype:dump
 
 Ok, now we can use our service as a prototype using `Spiral\Prototype\Traits\PrototypeTrait` with the property
 name `errors`.
-
-> **Note**
-> Session is not the best place to store errors for sharing between requests. But for our example, it's enough.
 
 Let's create a new middleware that will handle the exception:
 
@@ -1040,10 +1101,13 @@ final class HandleInvalidCredentialsMiddleware implements MiddlewareInterface
     {
         try {
             $response = $handler->handle($request);
+            
+            // Flush errors after successful request
             $this->errors->clear();
 
             return $response;
         } catch (InvalidCredentialsException $e) {
+            // Add error to the session and redirect to the login form
             $this->errors->addError('username', $e->getMessage());
 
             return $this->response->redirect('/login');
@@ -1052,7 +1116,7 @@ final class HandleInvalidCredentialsMiddleware implements MiddlewareInterface
 }
 ```
 
-And register it in the `RoutesBootloader`:
+And register the middleware in the `RoutesBootloader`:
 
 ```diff app/src/Application/Bootloader/RoutesBootloader.php
 final class RoutesBootloader extends BaseRoutesBootloader
@@ -1074,7 +1138,7 @@ final class RoutesBootloader extends BaseRoutesBootloader
 To display errors on the login form we need to get them from the `SessionErrors` service and pass to the view:
 
 ```diff app/src/Endpoint/Web/LoginController.php
-class LoginController
+final class LoginController
 {
     // ...
     
@@ -1237,7 +1301,7 @@ final class AuthBootloader extends Bootloader
 }
 ```
 
-And add `AuthBootloader` to the `Kernel`:
+To activate the bootloader we need to register it in the `Kernel`:
 
 ```diff app/src/Application/Kernel.php
 // ORM
@@ -1245,7 +1309,7 @@ CycleBridge\AuthTokensBootloader::class,
 +\App\Application\Bootloader\AuthBootloader::class,
 ```
 
-That's it. Now we can get the authenticated user by a token from the `ActorProviderInterface`.
+That's it. Now we can get the authenticated user (`Actor`) by a token from the `ActorProviderInterface`.
 
 To handle the `connect` event, we need to create a `ConnectService` class:
 
@@ -1275,6 +1339,7 @@ final class ConnectService implements ServiceInterface
         try {
             // Authenticate user with a given token from the connection request
             $authToken = $request->getData()['authToken'] ?? null;
+            
             if ($authToken && $user = $this->getActor($authToken)) {
                 $userId = $user->getId();
             } else {
@@ -1304,6 +1369,10 @@ final class ConnectService implements ServiceInterface
     }
 }
 ```
+
+As you can notice in the example above, we use `channels` field to automatically subscribe the user to the
+desired channels after connecting to the server. And we don't need to subscribe the user to the channel manually
+on the client side.
 
 > **Note**
 > When we respond to the request, we also pass the user's data to the `data` field to be able to use it in the
@@ -1412,11 +1481,11 @@ final class RPCService implements ServiceInterface
 }
 ```
 
-All the requests to the `rpc` event will contain authentication token in the `authToken` field. But we will authenticate
-incoming requests through the interceptor. Use interceptors is a good practice because it allows you to reuse the same
-authentication logic in different events.
+All the requests to the `rpc` event will contain authentication token in the `authToken` field. Let's try to use
+another approach to authenticate the user. We will use an interceptor to authenticate the user. Use interceptors is a 
+good practice because it allows you to reuse the same authentication logic for different events.
 
-Let's create an interceptor that will authenticate the user based on the `authToken` field:
+Let's create the interceptor that will authenticate the user based on the `authToken` field:
 
 ```php app/src/Endpoint/Centrifugo/Interceptor/AuthInterceptor.php
 namespace App\Endpoint\Centrifugo\Interceptor;
@@ -1497,7 +1566,7 @@ return [
 ```
 
 > **Note**
-> You can also use wildcard `*` to register the same interceptor for multiple events.
+> You can also use key `*` as wildcard to register the same interceptor for multiple events.
 
 And modify the `ConnectService` to make it cleaner:
 
@@ -1559,15 +1628,15 @@ final class ConnectService implements ServiceInterface
 
 ## VueJs application
 
-We will use Vue.js to create a chat application. So let's create a Vue.js application:
+We will use Vue.js to create a chat application. So let's create a new one.
 
-### Intallation
+### Installation
 
 ```terminal
 npm init vue@latest
 ```
 
-And answer the questions that will be asked. You can see the answers that I used in the example below:
+You can see the answers that I used in the example below:
 
 ```terminal
 ✔ Project name: … frontend
@@ -1585,10 +1654,10 @@ Done.
 ```
 
 > **See more**
-> You can see more information about the Vue.js in
+> You can find out more information about the Vue.js in
 > the [Official documentation](https://vuejs.org/guide/quick-start.html#try-vue-online).
 
-We need also to install the `centrifugo` package:
+We need also to install the `centrifugo` package from npm:
 
 ```terminal
 cd frontend
@@ -1597,7 +1666,7 @@ npm install centrifuge -s
 
 ### Configuration
 
-let's open `vite.config.js` and modify it:
+Let's open `vite.config.js` and modify it:
 
 ```js frontend/vite.config.js
 import {fileURLToPath, URL} from 'node:url';
@@ -1643,20 +1712,25 @@ const app = createApp(App)
 
 app.use({
     install(app, options) {
-        app.config.globalProperties.authToken = document.getElementsByName('x-bearer')[0].getAttribute('content')
+        // Get the auth token from x-bearer meta tag
+        const authToken = document.getElementsByName('x-bearer')[0].getAttribute('content')
+        
+        // Register the auth token as a global property
+        app.config.globalProperties.authToken = authToken
 
+        // Create a new Centrifuge instance
         const centrifuge = new Centrifuge('ws://127.0.0.1:8081/connection/websocket', {
-            data: {
-                authToken: app.config.globalProperties.authToken
-            }
+            data: {authToken}
         });
 
+        // Store the user data in the global property when the client is connected
         centrifuge.on('connected', (ctx) => {
             app.config.globalProperties.user = ctx.data.user
         })
 
         centrifuge.connect();
 
+        // Register the centrifuge instance as a global property
         app.config.globalProperties.centrifuge = centrifuge
     }
 })
@@ -1765,14 +1839,15 @@ The `MessageForm` component will be used to send messages to the server. Let's c
 ```
 
 The component will send a message to the server
-via [centrifuge.rpc](https://github.com/centrifugal/centrifuge-js#rpc-method) with the `thread:publish` method. As you
-we need to pass the `authToken` to authenticate the user on the server side.
+via [centrifuge.rpc](https://github.com/centrifugal/centrifuge-js#rpc-method) with the `thread:publish` method. As we 
+need to pass the `authToken` to authenticate the user on the server side.
 
 #### Messages
 
 The `Messages` component will be used to display all messages from the thread:
 
 ```html frontend/src/components/Messages.vue
+
 <template>
     <div id="messages"
          ref="messages"
@@ -1799,15 +1874,16 @@ The `Messages` component will be used to display all messages from the thread:
             thread: Number
         },
         mounted() {
+            // Get all messages for the thread from the server
             this.centrifuge.rpc('thread:history', {
                 id: this.thread,
                 authToken: this.authToken
             }).then(ctx => {
                 this.messages = ctx.data.messages;
-
                 delay(10).then(() => this.scrollToBottom());
             })
 
+            // Listen for new messages from the server
             this.centrifuge.on('publication', ctx => {
                 if (
                         ctx.channel !== 'chat' ||
@@ -1848,11 +1924,11 @@ with a delay to give Vue time to update the DOM.
 
 #### App
 
-The `App` component is the root component of our application.
+The `App` component is the root component of our frontend application.
 
 ```html frontend/src/App.vue
 <script setup>
-    import Messages from "./components/Messages.vue";
+import Messages from "./components/Messages.vue";
 </script>
 
 <template>
@@ -1864,9 +1940,9 @@ The `App` component is the root component of our application.
 
 It's super simple. It just renders the `Messages` component.
 
-> **Note:**
+> **Note**
 > For our example we will use only one thread with id `1`. We won't implement the ability to create new threads or
-> switch between them.
+> switch between them. But you can easily do it by yourself.
 
 ### Build the frontend
 
@@ -1888,7 +1964,7 @@ Ok, now we have the backend and the frontend. Let's run the application:
 ```
 
 Open the application in your browser: http://127.0.0.1:8080 and use `bill` or `john` as a username and `secret` as a
-password to login. After authentication you will be redirected to the chat page where you can send messages to the
+password to login. After authentication, you will be redirected to the chat page where you can send messages to the
 server.
 
 <hr>
