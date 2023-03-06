@@ -12,66 +12,88 @@ They are typically used to add cross-cutting functionality such as logging, auth
 
 ### Authentication interceptor
 
-The following example shows how to create an interceptor that checks the user's authentication token.
+The following example shows how to create an interceptor that checks the user's authentication token and provides the 
+user's identity to the service. Where `authToken` is the name of the field in the request data that contains the 
+authentication token.
 
-```php
-namespace App\Centrifuge\Interceptor;
+```php app/src/Entrypoint/Centrifugo/Interceptor/AuthenticatorInterceptor.php
+namespace App\Entrypoint\Centrifugo\Interceptor;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use RoadRunner\Centrifugo\Request\RequestInterface;
-use Spiral\Auth\TokenStorageInterface;
+use Spiral\Auth\ActorProviderInterface;
+use Spiral\Auth\AuthContext;
+use Spiral\Auth\AuthContextInterface;
 use Spiral\Core\CoreInterceptorInterface;
 use Spiral\Core\CoreInterface;
+use Spiral\Core\ScopeInterface;
+use Spiral\Prototype\Traits\PrototypeTrait;
 
-final class AuthInterceptor implements CoreInterceptorInterface
+final class AuthenticatorInterceptor implements CoreInterceptorInterface
 {
+    use PrototypeTrait;
+
     public function __construct(
-        private readonly TokenStorageInterface $tokenStorage,
+        private readonly ScopeInterface $scope,
+        private readonly ActorProviderInterface $actorProvider,
+        private readonly ?EventDispatcherInterface $eventDispatcher = null,
     ) {
     }
 
     public function process(string $controller, string $action, array $parameters, CoreInterface $core): mixed
     {
-        \assert($parameters['request'] instanceof RequestInterface);
+        $request = $parameters['request'];
+        \assert($request instanceof RequestInterface);
 
-        $userId = null;
-        
-        $authToken = $parameters['request']->getData()['authToken'] ?? null;
-        if ($authToken && $token = $this->tokenStorage->load($authToken)) {
-            $userId = $token->getPayload()['userID'] ?? null
-        }
-        
-        if(!$userId) {
-            $parameters['request']->disconnect('403', 'Connection is not allowed.');
-            return;
+        $authToken = $request->getData()['authToken'] ?? null;
+
+        if (!$authToken || !$token = $this->authTokens->load($authToken)) {
+            $request->error(403, 'Unauthorized');
+            return null;
         }
 
-        // Adds the user id to the request as an attribute.
-        $parameters['request'] = $parameters['request']->withAttribute(
-            'user_id',
-            $token->getPayload()['userID'] ?? null
-        );
-            
-        return $core->callAction($controller, $action, $parameters);
+        $auth = new AuthContext($this->actorProvider, $this->eventDispatcher);
+        $auth->start($token);
+
+        return $this->scope->runScope([
+            AuthContextInterface::class => $auth,
+        ], fn () => $core->callAction($controller, $action, $parameters));
     }
 }
 ```
 
 And example of how to use it in a service:
 
-```php
-/**
- * @param Connect $request
- */
-public function handle(RequestInterface $request): void
+```php app/src/Entrypoint/Centrifugo/ConnectService.php
+namespace App\Endpoint\Centrifugo;
+
+use App\Database\User;
+use RoadRunner\Centrifugo\Payload\ConnectResponse;
+use RoadRunner\Centrifugo\Request\Connect;
+use RoadRunner\Centrifugo\Request\RequestInterface;
+use Spiral\Prototype\Traits\PrototypeTrait;
+use Spiral\RoadRunnerBridge\Centrifugo\ServiceInterface;
+
+final class ConnectService implements ServiceInterface
 {
-    try {
-        $request->respond(
-            new ConnectResponse(
-                user: (string) $request->getAttribute('user_id'),
-            )
-        );
-    } catch (\Throwable $e) {
-        $request->error($e->getCode(), $e->getMessage());
+    use PrototypeTrait;
+
+    /** @param Connect $request */
+    public function handle(RequestInterface $request): void
+    {
+        try {
+            $user = $this->auth->getActor();
+
+            $request->respond(
+                new ConnectResponse(
+                    user: (string)$user->getId(),
+                    data: ['user' => $user->jsonSerialize()],
+                    channels: ['chat'],
+                ),
+            );
+        } catch (\Throwable $e) {
+            $request->error($e->getCode(), $e->getMessage());
+        }
     }
 }
 ```
@@ -80,8 +102,8 @@ public function handle(RequestInterface $request): void
 
 The following example shows how to create an interceptor that handles errors.
 
-```php
-namespace App\Centrifuge\Interceptor;
+```php app/src/Entrypoint/Centrifugo/Interceptor/ExceptionHandlerInterceptor.php
+namespace App\Entrypoint\Centrifugo\Interceptor;
 
 use Spiral\Core\CoreInterceptorInterface;
 use Spiral\Core\CoreInterface;
@@ -113,16 +135,19 @@ final class ExceptionHandlerInterceptor implements CoreInterceptorInterface
 
 After that, you don't need to code into try/catch blocks in your services:
 
-```php
+```php app/src/Entrypoint/Centrifugo/ConnectService.php
+namespace App\Endpoint\Centrifugo;
 /**
  * @param Connect $request
  */
 public function handle(RequestInterface $request): void
 {
+    if (!$this->auth->isAuthenticated()) {
+        thorw new \Exception('Unauthorized', 403);
+    }
+    
     $request->respond(
-        new ConnectResponse(
-            user: (string) $request->getAttribute('user_id'),
-        )
+        ...
     );
 }
 ```
