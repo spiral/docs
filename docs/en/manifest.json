@@ -207,7 +207,8 @@
       "cookbook/custom-dispatcher": "Custom Dispatcher",
       "cookbook/user-authentication": "Authentication based on JWT",
       "cookbook/console-validation": "Console command validation",
-      "cookbook/psr-15": "Custom HTTP request handler"
+      "cookbook/psr-15": "Custom HTTP request handler",
+      "cookbook/simple-chat": "Realtime chat application"
     }
   },
   {
