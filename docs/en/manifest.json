@@ -144,6 +144,7 @@
       "websockets/configuration": "Getting started",
       "websockets/services": "Event handlers",
       "websockets/broadcasting": "Broadcasting",
+      "websockets/api": "Centrifugo API",
       "websockets/interceptors": "Interceptors"
     }
   },
