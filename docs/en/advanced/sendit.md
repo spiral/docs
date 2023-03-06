@@ -250,6 +250,26 @@ $message->setDelay(new \DateInterval('PT60S'));
 $message->setDelay(100);
 ```
 
+## Custom mail transport
+
+In some cases, you may need to use custom mail that are not provided by the `symfony/mailer` component, In this
+case, you can register a custom transport by using the `Spiral\SendIt\TransportRegistryInterface`
+interface.
+
+```php
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\SendIt\TransportRegistryInterface;
+use Symfony\Component\Mailer\Transport\c;
+
+class AppBootloader extends Bootloader 
+{
+    public function boot(TransportRegistryInterface $registry): void
+    {
+        $registry->registerTransport(new SendmailTransportFactory(...));
+    }
+}
+```
+
 ## Events
 
 | Event                              | Description                                          |
