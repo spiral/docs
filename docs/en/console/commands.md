@@ -23,7 +23,7 @@ use Spiral\Console\Command;
 
 final class MyCommand extends Command
 {
-    const NAME        = 'my:command';
+    const NAME = 'my:command';
     const DESCRIPTION = 'This is my command';
 
     protected function perform(): int
@@ -41,6 +41,163 @@ To invoke your command, run the following command in the console:
 ```terminal
 php app.php my:command 
 ```
+
+## Attributes
+
+Since 3.6 release Spiral offers the ability to define console commands using PHP attributes. This allows for a more
+intuitive and streamlined approach to defining commands with clear separation of concerns.
+
+Here's an example of defining a console command using attributes:
+
+```php
+namespace App\Api\Cli\Command;
+
+use Spiral\Console\Attribute\Argument;
+use Spiral\Console\Attribute\AsCommand;
+use Spiral\Console\Attribute\Option;
+use Spiral\Console\Attribute\Question;
+use Spiral\Console\Command;
+use Symfony\Component\Console\Input\InputOption;
+
+#[AsCommand(
+    name: 'app:create:user', 
+    description: 'Creates a user with the given data')
+]
+final class CreateUser extends Command
+{
+    #[Argument]
+    private string $email;
+
+    #[Argument(description: 'User password')]
+    private string $password;
+
+    #[Argument(name: 'username', description: 'The user name')]
+    private string $userName;
+
+    #[Option(shortcut: 'a', name: 'admin', description: 'Set the user as admin')]
+    private bool $isAdmin = false;
+
+    public function __invoke(): int
+    {
+        $user = new User(
+            email: $this->email,
+            password: $this->password,
+        );
+        
+        $user->setIsAdmin($this->isAdmin);
+        
+        // Save user to database...
+
+        return self::SUCCESS;
+    }
+}
+```
+
+To define the name and description of a console command, you can use either the `Spiral\Console\Attribute\AsCommand`
+or `Symfony\Component\Console\Attribute\AsCommand` attribute.
+
+### Arguments
+
+You can mark a class property as an argument for a console command using
+the `Spiral\Console\Attribute\Argument` attribute.
+
+```php
+#[Argument]
+private string $email;
+```
+
+`Argument` attribute without any additional parameters, indicating that it will use the property name as the argument
+name and will not include a description.
+
+```php
+#[Argument(description: 'User password')]
+private string $password;
+```
+
+Use a description parameter to provide a brief description of the argument.
+
+```php
+#[Argument(name: 'username', description: 'The user name')]
+private string $username;
+```
+
+The name parameter allows you to specify a custom argument name that is different from the property name.
+
+> **Note**
+> Any property marked with the Argument attribute must have a scalar typehint, such as `string`, to indicate the
+> type of value that the argument should accept.
+
+If you want to set a default value for an argument, you can specify the default value as the property's default value:
+
+```php
+#[Argument]
+private string $username = 'guest';
+```
+
+In this case if no value is provided for the argument during the command invocation, the default value will be used.
+
+In some cases, you may want to make an argument optional in a console command. To do this, you can use a nullable
+typehint for the property that represents the argument and specify the default value as `null`.
+
+```php
+#[Argument]
+private ?string $username = null;
+```
+
+### Options
+
+To mark a class property as an option for a console command, you can use the `Spiral\Console\Attribute\Option`
+attribute:
+
+```php
+#[Option(name: 'admin', description: 'Set the user as admin')]
+private bool $isAdmin = false;
+````
+
+You can also specify a shortcut for the option using the shortcut parameter:
+
+```php
+#[Option(shortcut: 'a', ...)]
+private bool $isAdmin = false;
+```
+
+By default, the `Option` attribute does not accept input for the option (e.g. `--admin`). If you want to allow the user
+to provide a value for the option, you can set the `mode` parameter to `InputOption::VALUE_REQUIRED` or `InputOption::
+VALUE_OPTIONAL`, depending on whether the option is required or optional, respectively.
+
+### Questions
+
+By default, when you invoke a console command without passing required arguments, the application will prompt you to
+provide a value for each missing argument. However, you can customize the prompt message for each argument using the
+`Spiral\Console\Attribute\Question` attribute.
+
+It can be used both as a property attribute and as a class attribute.
+
+```php
+#[Option(
+    mode: \Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED, 
+    ...
+)]
+private bool $isAdmin = false;
+```
+
+When used as a class attribute, you need to define the corresponding `argument` name for each property that requires a
+custom prompt.
+
+```php
+#[Question(question: 'Provide user email', argument: 'email')]
+final class CreateUserCommand extends Command
+{
+    #[Argument]
+    private string $email;
+
+    // ...
+}
+```
+
+By setting a custom prompt for each argument, you can provide more specific and relevant information to the user, which
+can make the interaction more intuitive and streamlined. It is a good practice to use prompts that are clear, concise,
+and easy to understand.
 
 ## Signature
 
@@ -139,8 +296,8 @@ To get user's data via arguments and/or options, you can make use of `$this->arg
 `$this->option("optName")`.
 
 > **Note**
-> In addition [here](/cookbook/console-validation.md) you can find information how to use `spiral/filters` component 
-> for console commands. 
+> In addition [here](/cookbook/console-validation.md) you can find information how to use `spiral/filters` component
+> for console commands.
 
 ## Helper Methods
 
@@ -281,7 +438,7 @@ The `Spiral\Console\Confirmation\ApplicationInProduction` class provided by the 
 ask the user for confirmation before running a command if the application is running in production mode. This can help
 prevent accidental or unintended changes to the production environment.
 
-To use it, you can inject an instance of it into your command's `perform()` method. Then, you can use 
+To use it, you can inject an instance of it into your command's `perform()` method. Then, you can use
 the `confirmToProceed()` method to ask the user for confirmation before proceeding with the command.
 
 ```php
