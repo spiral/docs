@@ -6,7 +6,7 @@ filtered data.
 
 ## Validators
 
-There are three validator bridges available for use with Spiral filers. You can use any of these validator bridges in 
+There are three validator bridges available for use with Spiral filers. You can use any of these validator bridges in
 your application, depending on your needs and preferences.
 
 ### [Spiral Validator](../validation/spiral.md)
@@ -262,6 +262,7 @@ public function index(MyFilter $filter): void
     dump($filter->getData());
 }
 ```
+
 \
 :::
 
@@ -289,7 +290,7 @@ parameter. The following sources are available:
 ## Attributes
 
 To use request filter attributes, you can use one of the available attributes to specify where the data for the property
-should be sourced from. For example, you could use the `Spiral\Filters\Attribute\Input\Query` attribute to map a query 
+should be sourced from. For example, you could use the `Spiral\Filters\Attribute\Input\Query` attribute to map a query
 string parameter to a class property, like this:
 
 ```php
@@ -401,6 +402,7 @@ $router->setRoute(
 :::: tabs
 
 ::: tab Attributes
+
 ```php
 namespace App\Filter;
 
@@ -413,6 +415,7 @@ class MyFilter extends Filter
     public string $routeId;
 }
 ```
+
 :::
 
 ::: tab Array schema
@@ -439,45 +442,10 @@ class MyFilter extends Filter implements HasFilterDefinition
     }
 }
 ```
+
 :::
 
 ::::
-
-
-
-### Data sanitization
-
-The `Spiral\Filters\Attribute\Setter` attribute allows you to apply a filter function to the incoming value
-before it is set on the class property. This can be useful if you want to perform some kind of transformation or
-manipulation on the value before it is stored in the class.
-
-Here is an example of how you can use the attribute:
-
-```php
-namespace App\Filter;
-
-use Spiral\Filters\Attribute\Setter;
-use Spiral\Filters\Attribute\Input\Query;
-use Spiral\Filters\Model\Filter;
-
-class MyFilter extends Filter
-{
-    #[Query]
-    #[Setter(filter: 'trim')]
-    public string $login;
-
-    #[Query]
-    #[Setter(filter: 'intval')]
-    public int $age;
-
-    #[Query]
-    #[Setter(filter: [self::class, 'sanitizeContent'])]
-    public string $description = '';
-}
-```
-
-> **Note**
-> You can use any default PHP functions like `intval`, `strval` etc.
 
 ### Creating a custom attribute
 
@@ -592,6 +560,66 @@ class HomeController
     }
 }
 ```
+
+## Data sanitization
+
+The `Spiral\Filters\Attribute\Setter` attribute allows you to apply a filter function to the incoming value
+before it is set on the class property. This can be useful if you want to perform some kind of transformation or
+manipulation on the value before it is stored in the class.
+
+To use this attribute, simply specify it alongside other filter attributes within the class definition.
+
+For example:
+
+```php
+namespace App\Filter;
+
+use Spiral\Filters\Attribute\Setter;
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Model\Filter;
+
+class UserProfileFilter extends Filter
+{
+    #[Post]
+    #[Setter(filter: 'trim')]
+    public string $login;
+
+    #[Post]
+    #[Setter(filter: 'intval')]
+    public int $age;
+
+    #[Post]
+    #[Setter(filter: [self::class, 'sanitizeContent'])]
+    public string $bio = '';
+    
+    protected static function sanitizeContent(string $content): string
+    {
+        return \strip_tags($content);
+    }
+}
+```
+
+> **Note**
+> Default PHP functions, such as `intval` and `strval`, can be used with this attribute. This makes it easy to apply
+> common data manipulation functions to incoming values.
+
+You can specify multiple `Setter` attributes for a single class property, allowing you to apply a series of filter
+functions to an incoming value before it is set.
+
+Here is an example of how to use multiple setter attributes:
+
+```php
+#[Post]
+#[Setter(filter: 'strval')]
+#[Setter('ltrim', '-')]
+#[Setter('rtrim', ' ')]
+#[Setter('htmlspecialchars')]
+public string $name;
+```
+
+> **Note**
+> the order in which the filter functions are applied matters. In the example above, `strval` is applied first, followed
+> by `ltrim`, `rtrim`, and finally `htmlspecialchars`.
 
 ## Validation
 
