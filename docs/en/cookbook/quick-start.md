@@ -1,7 +1,7 @@
 # Cookbook — Long Start
 
-Spiral contains a lot of components built to operate seamlessly with each other. In this article, we will show you how 
-to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations (optional) and 
+Spiral contains a lot of components built to operate seamlessly with each other. In this article, we will show you how
+to create a demo blog application with REST API, ORM, Migrations, request validation, custom annotations (optional) and
 domain interceptors.
 
 > **Note**
@@ -10,25 +10,49 @@ domain interceptors.
 
 ## Installation
 
-Use composer to install the default `spiral/app` bundle with most of the components out of the box:
+To get started with building your simple application, you can easily install the default `spiral/app` bundle with most
+of the required components by running the following command:
 
 ```terminal
 composer create-project spiral/app spiral-demo
-
-cd spiral-demo
 ```
 
-If everything is installed correctly, you can open your application immediately by starting the server:
+During the installation process, you will be prompted to select various options with the Spiral installer, such as the
+application preset, whether to use Cycle ORM, which collections to use, which validator component to use, and so on. For
+this tutorial, we recommend choosing the options shown above:
 
 ```terminal
+✔ Which application preset do you want to install? > Web
+✔ Create a default application structure and demo data? > Yes
+✔ Would you like to use SAPI? > No
+✔ Do you need Cycle ORM? > Yes
+✔ Which Collections do you want to use with Cycle ORM? > Doctrine Collections
+✔ Which validator component do you want to use? > Spiral Validator
+✔ Do you want to use Queue component? > No
+✔ Do you want to use Cache component? > No
+✔ Do you want to use Mailer Component? > No
+✔ Do you want to use Storage component? > No
+✔ Which template engine do you want to use? > Stempler
+✔ Do you want to use the Event Dispatcher? > No
+✔ Do you need a cron jobs scheduler? > No
+✔ Do you need the Temporal? > No
+✔ Do you need the RoadRunner Metrics? > No
+✔ Do you need the Sentry? > No
+```
+
+Once the installation is complete, you can start the server and open your application immediately by running the
+following command:
+
+```terminal
+cd spiral-demo
+
 ./rr serve
 ```
 
-You've just started an [application server](../framework/application-server.md). The same server can be used on
-production, making your development environment similar to the final setup. Out of the box, the server includes
-instruments to write portable applications with HTTP/2, [GRPC](../grpc/configuration.md),
-[Queue](../queue/configuration.md), [WebSockets](../broadcast/configuration.md), etc. and does not require external
-brokers to operate.
+You've just started [RoadRunner](../start/server.md) server. The same server can be used on production, making your 
+development environment similar to the final setup. Out of the box, the server includes instruments to write portable
+applications with HTTP/2, [GRPC](../grpc/configuration.md), [Queue](../queue/configuration.md),
+[WebSockets](../websockets/configuration.md), etc. and does not require external brokers to operate.
 
 By default, the application is available on `http://127.0.0.1:8080`. The build includes multiple pre-defined pages you
 can play with.
@@ -42,6 +66,7 @@ can play with.
 
 Spiral applications are configured using config files located in `app/config`, you can use the hardcoded values for the
 configuration, or get the values using available functions `env` and [`directory`](../start/structure.md).
+
 The `spiral/app` bundle uses [DotEnv](../extension/dotenv.md) extension which will load ENV variables from the`.env`
 file.
 
@@ -56,11 +81,18 @@ Bootloaders. The default build includes quite a lot of pre-configured components
 To simplify the tweaking of the application, restart the application server in developer mode. In this mode, the server
 uses only one worker and reloads it after every request.
 
-```terminal
-./rr serve -o "http.pool.max_jobs=1" -o "http.pool.num_workers=1" -o "http.pool.debug=true" -o "http.address=127.0.0.1:8181"
+```yaml .rr.yaml
+http:
+  ...
+  pool:
+    debug: true
 ```
 
 You can also create and use an alternative configuration file via `-c` flag of the `rr` application.
+
+```terminal
+./rr serve -c .rr.dev.yaml
+```
 
 > **See more**
 > Read more about workers in the Official RoadRunner [documentation](https://roadrunner.dev/docs/app-server-cli/2.x/en).
@@ -88,7 +120,10 @@ Spiral\Bootloader\Http\PaginationBootloader::class,
 Spiral\Bootloader\Views\TranslatedCacheBootloader::class,
 ```
 
-Remove `App\Application\Middleware\LocaleSelector` from method `globalMiddleware` in
+> **Note**
+> Read more about Bootloaders [here](../framework/bootloaders.md).
+
+Remove `App\Endpoint\Web\Middleware\LocaleSelector` from method `globalMiddleware` in
 the `App\Application\Bootloader\RoutesBootloader`:
 
 ```diff app/scr/Application/Bootloader/RoutesBootloader.php
@@ -117,60 +152,42 @@ Remove method `defineRoutes`. We will add routes using attributes:
 ```diff app/scr/Application/Bootloader/RoutesBootloader.php
 class RoutesBootloader extends BaseRoutesBootloader
 {
-    // ...
+     ...
     
 -    protected function defineRoutes(RoutingConfigurator $routes): void
 -    {
--        $routes->import($this->dirs->get('app') . '/routes/web.php')->group('web');
--
--        $routes->default('/[<controller>[/<action>]]')
--            ->namespaced('App\\Controller')
--            ->defaults([
--                'controller' => 'home',
--                'action' => 'index',
--            ])
--            ->middleware([
--                // SomeMiddleware::class,
--            ]);
+-        ...
 -    }
-    
-    // ...
  }
 ```
 
 > **See more**
 > Read more about routing in the [HTTP — Routing](../http/routing.md) section.
 
-Remove all middlewares in method `middlewareGroups`:
+Remove all middleware groups from the method `middlewareGroups`:
 
 ```diff app/scr/Application/Bootloader/RoutesBootloader.php
 class RoutesBootloader extends BaseRoutesBootloader
 {
-    // ...
+    ...
     
     protected function middlewareGroups(): array
     {
         return [
 -            'web' => [
--                CookiesMiddleware::class,
--                SessionMiddleware::class,
--                CsrfMiddleware::class,
--                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'cookie'])
+-                ...
 -            ],
 -            'api' => [
--                // new Autowire(AuthTransportMiddleware::class, ['transportName' => 'header'])
+-                ...
 -            ],
         ];
     }
-    
-    // ...
  }
 ```
 
-Remove unused imports and `__constructor`:
+Remove unused imports:
 
 ```diff app/scr/Application/Bootloader/RoutesBootloader.php
-- use Spiral\Boot\DirectoriesInterface;
 - use Spiral\Cookies\Middleware\CookiesMiddleware;
 - use Spiral\Csrf\Middleware\CsrfMiddleware;
 - use Spiral\Router\Loader\Configurator\RoutingConfigurator;
@@ -178,20 +195,14 @@ Remove unused imports and `__constructor`:
 
 final class RoutesBootloader extends BaseRoutesBootloader
 {
--    public function __construct(
--        private readonly DirectoriesInterface $dirs
--    ) {
--    }
-    
-    // ...
- }
+     ...
+}
 ```
 
 Delete the following files and directories as no longer required:
 
 - `app/locale`
 - `app/routes`
-- `app/src/Middleware`
 
 > **Note**
 > Note that the application won't work at the moment as we removed the dependency required to
@@ -212,8 +223,10 @@ return [
         'default' => ['driver' => 'default'],
     ],
     'drivers' => [
-        'default' => new Config\SQLiteDriverConfig(
-            connection: new Config\SQLite\MemoryConnectionConfig(),
+        'runtime' => new Config\SQLiteDriverConfig(
+            connection: new Config\SQLite\FileConnectionConfig(
+                database: directory('runtime') . '/db.sqlite'
+            ),
             queryCache: true
         ),
         // ...
@@ -267,7 +280,7 @@ php app.php db:list
 ```
 
 > **See more**
-> Read more about Databases [here](../database/configuration.md).
+> Read more about Databases [here](../basics/orm.md).
 
 ### Connect Database Seeder
 
@@ -292,24 +305,7 @@ package:
  }
 ```
 
-> **Note**
-> Read more about Bootloaders [here](../framework/bootloaders.md).
-
 ### Creating Routes
-
-In order to simplify the route definition, we can use `spiral/annotated-routes` extension. Read more about the
-extension [here](../http/annotated-routes.md). Add the bootloader to `LOAD` to activate the component:
-
-```diff app/src/Application/Kernel.php
---- a/app/src/Application/Kernel.php
-+++ b/app/src/Application/Kernel.php
-@@ -85,5 +85,6 @@ class App extends Kernel
-
-         SapiBootloader::class,
-+        AnnotatedRoutesBootloader::class,
-     ];
- }
-```
 
 We can use this attribute in our controller as follows:
 
@@ -318,7 +314,7 @@ namespace App\Endpoint\Web;
 
 use Spiral\Router\Annotation\Route;
 
-class HomeController
+final class HomeController
 {
     #[Route(route: '/', name: 'index', methods: 'GET')]
     public function index(): string
@@ -333,6 +329,9 @@ class HomeController
     }
 }
 ```
+
+> **See more**
+> Read more about the extension [here](../http/routing.md).
 
 Run CLI command to check the list of available routes:
 
@@ -370,7 +369,7 @@ use Spiral\Bootloader\DomainBootloader;
 use Spiral\Core\CoreInterface;
 use Spiral\Cycle\Interceptor\CycleInterceptor;
 use Spiral\Domain\GuardInterceptor;
-use Spiral\FilterValidationHandlerMiddleware;
+use Spiral\Filter\ValidationHandlerMiddleware;
 
 class AppBootloader extends DomainBootloader
 {
@@ -403,7 +402,7 @@ Add the bootloader to `APP`:
 ```
 
 > **Note**  
-> Read more about Domain Cores [here](../cookbook/domain-core.md).
+> Read more about Http interceptors [here](../http/interceptors.md).
 
 ## Scaffold Database
 
@@ -433,7 +432,7 @@ The demo application comes with [Cycle ORM](https://cycle-orm.dev). By default, 
 your entities.
 
 Enable the Cycle Bridge `Spiral\Cycle\Bootloader\ScaffolderBootloader` bootloader to use commands that create
-entities and repositories. Add the bootloader to `APP`:
+entities and repositories. Add the bootloader to `LOAD`:
 
 ```diff app/src/Application/Kernel.php
 --- a/app/src/Application/Kernel.php
@@ -477,7 +476,7 @@ class Post
     #[Column(type: 'text')]
     public string $content;
 }
- ```
+```
 
 We can move the definition of the `$title` and `$content` properties to the `__construct` method:
 
@@ -585,6 +584,7 @@ as users and posts properties during development:
 :::: tabs
 
 ::: tab PostRepository
+
 ```php app/src/Domain/Blog/Repository/PostRepository.php
 use Spiral\Prototype\Annotation\Prototyped;
 
@@ -593,9 +593,11 @@ class PostRepository extends Repository
 {
 }
 ```
+
 :::
 
 ::: tab UserRepository
+
 ```php app/src/Domain/Blog/Repository/UserRepository.php
 use Spiral\Prototype\Annotation\Prototyped;
 
@@ -604,6 +606,7 @@ class UserRepository extends Repository
 {
 }
 ```
+
 :::
 
 ::::
@@ -611,8 +614,7 @@ class UserRepository extends Repository
 You can change the default directory mapping, headers, and others using [Scaffolder config](../basics/scaffolding.md).
 
 > **Note**
-> Read more about Cycle [here](../cycle/configuration.md). Configure auto-timestamps
-> using [custom mapper](https://cycle-orm.dev/docs/advanced-timestamp).
+> Read more about Cycle [here](../basics/orm.md).
 
 Run the configure command to collect all available prototype classes:
 
@@ -973,7 +975,7 @@ use Psr\Http\Message\ResponseInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\Router\Annotation\Route;
 
-class PostController
+final class PostController
 {
     use PrototypeTrait;
 
@@ -999,7 +1001,7 @@ You can return various types of data from your controller methods. These are val
 - JsonSerializable object
 
 > **Note**
-> Use custom [domain core](../cookbook/domain-core.md) to perform domain-specific response transformations. You can also
+> Use custom [domain core](../http/interceptors.md) to perform domain-specific response transformations. You can also
 > use the `$this->response` helper to write the data into PSR-7 response object.
 
 For demo purposes, return `array`, the `status` key will be treated as response status.
@@ -1056,7 +1058,7 @@ use Spiral\Http\Exception\ClientException\NotFoundException;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\Router\Annotation\Route;
 
-class PostController
+final class PostController
 {
     use PrototypeTrait;
 
@@ -1092,7 +1094,7 @@ use App\Domain\Blog\Entity\Post;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\Router\Annotation\Route;
 
-class PostController
+final class PostController
 {
     use PrototypeTrait;
 
@@ -1132,7 +1134,7 @@ use Spiral\Prototype\Annotation\Prototyped;
 use Spiral\Prototype\Traits\PrototypeTrait;
 
 #[Prototyped(property: 'postView')]
-class PostView implements SingletonInterface
+final class PostView implements SingletonInterface
 {
     use PrototypeTrait;
 
@@ -1169,7 +1171,7 @@ use Psr\Http\Message\ResponseInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\Router\Annotation\Route;
 
-class PostController
+final class PostController
 {
     use PrototypeTrait;
 
@@ -1194,7 +1196,7 @@ Create `findAllWithAuthors` method in `PostRepository`:
 use Cycle\ORM\Select;
 use Cycle\ORM\Select\Repository;
 
-class PostRepository extends Repository
+final class PostRepository extends Repository
 {
     public function findAllWithAuthor(): Select
     {
@@ -1243,7 +1245,7 @@ use Spiral\DataGrid\Specification\Value\IntValue;
 use Spiral\Prototype\Annotation\Prototyped;
 
 #[Prototyped(property: 'postGrid')] 
-class PostGrid extends GridSchema
+final class PostGrid extends GridSchema
 {
     public function __construct()
     {
@@ -1301,12 +1303,6 @@ To validate the request, we will use the [spiral/validator](https://github.com/s
 > **Note**
 > Read more about request validation [here](../filters/configuration.md).
 
-To install the package:
-
-```terminal
-composer require spiral/validator
-```
-
 Add the bootloader to `LOAD` section to activate the component:
 
 ```diff app/src/Application/Kernel.php
@@ -1329,7 +1325,7 @@ use Spiral\Filters\Model\FilterDefinitionInterface;
 use Spiral\Filters\Model\HasFilterDefinition;
 use Spiral\Validator\FilterDefinition;
 
-class CommentFilter extends Filter implements HasFilterDefinition
+final class CommentFilter extends Filter implements HasFilterDefinition
 {
     #[Post]
     public readonly string $message;
@@ -1355,7 +1351,7 @@ use Cycle\ORM\EntityManagerInterface;
 use Spiral\Prototype\Annotation\Prototyped;
 
 #[Prototyped(property: 'commentService')]
-class CommentService
+final class CommentService
 {
     public function __construct(
         private EntityManagerInterface $entityManager
