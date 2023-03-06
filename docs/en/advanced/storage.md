@@ -3,7 +3,7 @@
 Spiral offers a comprehensive solution for file storage and distribution through its `spiral/storage` and
 `spiral/distribution` components. The `spiral/storage` component provides powerful storage abstraction utilizing the
 capabilities of the Flysystem PHP package, offering convenient drivers for working with both local file systems and
-Amazon S3. The `spiral/distribution` component, which is integrated with the`spiral/storage` component, is responsible
+Amazon S3. The `spiral/distribution` component, which is integrated with the `spiral/storage` component, is responsible
 for generating public HTTP links for resources stored through the storage component.
 
 ## Storage
@@ -40,8 +40,8 @@ protected const LOAD = [
 ### Configuration
 
 A storage configuration file, by default, is located at `app/config/storage.php`. This file allows for the configuration
-of servers and specific storages, also known as "`buckets`". The "`servers`" section is where you can configure the
-servers that your application will use, while the "`buckets`" section allows you to specify which storages will be used
+of servers and specific storages, also known as `buckets`. The `servers` section is where you can configure the
+servers that your application will use, while the `buckets` section allows you to specify which storages will be used
 by your servers.
 
 For example, the simplest configuration with one server and two storages might look like this:
@@ -159,7 +159,7 @@ the possible configuration sections.
 ```php app/config/storage.php
 return [
     'servers' => [
-        'local' => [
+        'profiles' => [
             //
             // Server type name. For a local server, this value must be
             // a string value "local".
@@ -170,7 +170,7 @@ return [
             // The required path to the local directory where your files will
             // be stored.
             //
-            'directory'  => '/example/directory',
+            'directory'  => '/app/storage/user-profiles',
 
             //
             // Visibility mapping. Here you can set the default visibility for
@@ -192,26 +192,46 @@ return [
         'bucket' => [
             //
             // Relation to an existing local server. Note that all further
-            // bucket options are applicable only for this (i.e. local) server
+            // bucket options are applicable only for this (i.e. profiles) server
             // type.
             //
-            'server' => 'local',
+            'server' => 'profiles',
 
             //
             // For buckets that use local servers, you can add a directory
             // prefix. In this case, the real physical path to the file will
-            // look like: "/example/directory/prefix", where
+            // look like: "/app/storage/user-profiles/avatars", where
             // the "/example/directory" string is the physical directory
-            // specified in the server, and "prefix" - prefix for file
+            // specified in the server, and "avatars" - prefix for file
             // directories specified in the bucket.
             //
-            'prefix' => 'prefix',
+            'prefix' => 'avatars',
         ]
     ]
 ];
 ```
 
 </details>
+
+The RoadRunner plugin offers the [Fileserver plugin](https://roadrunner.dev/docs/plugins-fileserver), which facilitates 
+the serving of files from various local storages through the utilization of URL prefixes. This feature enables 
+fine-grained control over the visibility and access of specific files and directories.
+
+For instance, you may map the URL prefix http://127.0.0.1:10101/avatars to the `/app/storage/user-profiles/avatars` 
+directory to provide public access to static assets.
+
+Here is an example of the configuration for the Fileserver plugin:
+
+```yaml .rr.yaml
+fileserver:
+  address: 127.0.0.1:10101
+  calculate_etag: true
+  weak: false
+  stream_request_body: true
+  serve:
+    - prefix: "/avatars"
+      root: "/app/storage/user-profiles/avatars"
+```
 
 #### S3 Server
 
