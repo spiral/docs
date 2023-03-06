@@ -212,6 +212,43 @@ Using the JavaScript SDK, you can establish a WebSocket connection between the c
 communication between RoadRunner and the client will be routed through the Centrifugo server. This means that you don't
 need to open any additional ports on your server to support real-time communication between the client and the server.
 
+## Nginx proxy
+
+To enable WebSocket connections with Centrifugo server using Nginx proxy, you need to configure the proxy accordingly.
+
+This can be done by including the following configuration in the Nginx configuration file:
+
+```
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+    listen 8000;
+
+    server_name _;
+
+    # Centrifugo WebSocket endpoint
+    location /connection {
+        proxy_pass http://127.0.0.1:8000/connection;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $host;
+    }
+    
+    # RoadRunner HTTP endpoint
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+    }
+}
+```
+
+> **See more**
+> More information about Nginx proxy configuration you can read 
+> on the [official documentation](https://centrifugal.dev/docs/server/load_balancing).
+
 ## Example Application
 
 There is a good example [Demo ticket booking system](https://github.com/spiral/ticket-booking) application built on the
