@@ -264,7 +264,7 @@ class UserService
 }
 ```
 
-Yu can also request a repository from the container. The framework uses [IoC injections](../advanced/injectors.md) to
+You can also request a repository from the container. The framework uses [IoC injections](../advanced/injectors.md) to
 inject repositories into your code that implement `Cycle\ORM\RepositoryInterface`.
 
 ```php
