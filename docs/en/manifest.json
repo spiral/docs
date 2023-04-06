@@ -181,9 +181,7 @@
     "links": {
       "grpc/configuration": "Installation and Configuration",
       "grpc/service": "Service Code",
-      "grpc/client": "Client SDK",
-      "grpc/golang": "Golang Services",
-      "grpc/streaming": "Data Streaming"
+      "grpc/client": "Client SDK"
     }
   },
   {
