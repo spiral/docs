@@ -38,8 +38,7 @@ service Calculator {
 > Make sure to use options `php_namespace` and `php_metadata_namespace` to properly configure PHP namespace. You can
 > read more about GRPC service declaration [here](https://grpc.io/docs/guides/concepts/).
 
-At the moment you can only create Unidirectional APIs, use [Golang services](/grpc/golang.md) to handle
-[streaming and batch processing](/grpc/streaming.md).
+At the moment you can only create Unidirectional APIs.
 
 ## Generate the service
 
