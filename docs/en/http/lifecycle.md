@@ -22,7 +22,7 @@ etc. You can read more about PSR standards used here:
 
 The user request comes to the RoadRunner application server. The server will pass it through the number of middleware
 layers, some of which used to enable web-socket broadcasting, serve static files
-or [implement domain-specific logic](/http/golang.md).
+or implement domain-specific logic.
 
 Once all of the middleware processing is complete, the `net/http` request will be converted into `PSR-7` format and
 passed to the first available PHP worker.
