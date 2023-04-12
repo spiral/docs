@@ -62,8 +62,6 @@ protected const LOAD = [
 To configure the communication between RoadRunner and Centrifugo, you will need to modify the `.rr.yaml` file.
 
 ```yaml .rr.yaml
-version: '2.7'
-
 rpc:
   listen: tcp://0.0.0.0:6001
 
