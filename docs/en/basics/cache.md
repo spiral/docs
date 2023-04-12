@@ -123,8 +123,6 @@ affecting the rest of the code.
 And the configuration file for the RoadRunner KV plugin:
 
 ```yaml .rr.yaml
-version: '2.7'
-
 kv:
   local:
     driver: memory
