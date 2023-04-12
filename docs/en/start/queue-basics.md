@@ -31,8 +31,6 @@ final class PingSiteJob extends JobHandler
 Make sure that the jobs plugin is enabled in the RoadRunner config file `.rr.yaml`:
 
 ```yaml .rr.yaml
-version: '2.7'
-
 rpc:
   listen: 'tcp://127.0.0.1:6001'
 

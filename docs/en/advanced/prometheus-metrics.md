@@ -37,8 +37,6 @@ The metrics service does not require configuration in the application. However, 
 in `.rr.yaml`:
 
 ```yaml
-version: '2.7'
-
 rpc:
   listen: tcp://127.0.0.1:6001
 

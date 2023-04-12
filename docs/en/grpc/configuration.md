@@ -112,8 +112,6 @@ return [
 To enable the component in the RoadRunner application server, add the following configuration section:
 
 ```yaml .rr.yaml
-version: "2.7"
-
 server:
   command: "php app.php"
 
