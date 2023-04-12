@@ -49,8 +49,6 @@ to declare dynamic pipelines, you should consider using the second way.
 Here's a simple example:
 
 ```yaml .rr.yaml
-version: "2.7"
-
 amqp:
   addr: amqp://guest:guest@localhost:5672
 

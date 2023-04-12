@@ -37,8 +37,6 @@ Before we begin, you'll need to have the following installed on your machine:
 Here is an example of how to configure the ticker plugin in `.rr.yaml`:
 
 ```yaml .rr.yaml
-version: '2.7'
-
 server:
   command: php app.php
 

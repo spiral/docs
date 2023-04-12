@@ -111,8 +111,6 @@ Go to the [latest RoadRunner release](https://github.com/roadrunner-server/roadr
 You can configure the number of workers, memory limits, and other plugins using `.rr.yaml` file:
 
 ```yaml .rr.yaml
-version: '2.7'
-
 rpc:
   listen: tcp://127.0.0.1:6001
 
@@ -236,8 +234,6 @@ changes and reload workers. The reload component can be configured by modifying 
 file.
 
 ```yaml .rr.yaml
-version: "2.7"
-
 reload:
   # sync interval
   interval: 1s
