@@ -600,8 +600,7 @@ class UserProfileFilter extends Filter
 ```
 
 > **Note**
-> Default PHP functions, such as `intval` and `strval`, can be used with this attribute. This makes it easy to apply
-> common data manipulation functions to incoming values.
+> Default PHP functions, such as `intval` and `strval`, can be used with this attribute. This makes it easy to apply common data manipulation functions to incoming values.
 
 You can specify multiple `Setter` attributes for a single class property, allowing you to apply a series of filter
 functions to an incoming value before it is set.
