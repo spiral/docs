@@ -127,17 +127,16 @@ final class SomeLocator
 
 ## Class Listeners
 
-The Tokenizer Class Listeners is a way to use the `Spiral\Tokenizer\ClassesInterface` interface in a more efficient
+The Tokenizer class listeners are a way to use the `Spiral\Tokenizer\ClassesInterface` interface in a more efficient
 manner, particularly when working with large codebases.
 
 Normally, when you use the `ClassesInterface` to search for classes, the tokenizer component will scan the specified
 directories every time the `getClasses` method is called. This can be slow, particularly if you have many components
 that make repeated calls to the method.
 
-To improve performance, it allows you to register listeners that will be notified when a class is found by
-the `ClassesInterface`. This means that the tokenizer component will only need to scan the directories
-once, during application bootstrapping. After the initial scan, the tokenizer will iterate over all the found classes
-and send information about each class to all registered listeners.
+To improve performance, the component allows you to register listeners that will be notified when a class is found by
+the `ClassesInterface`. This means that directories will only be scanned once, during application bootstrapping. After
+the initial scan, the listeners will iterate over all the found classes.
 
 ### Usage
 
@@ -194,6 +193,95 @@ class RouteAttributeListener implements TokenizationListenerInterface
 }
 ```
 
+### Caching listener targets
+
+To improve the performance of your application, you can use the `Spiral\Tokenizer\Attribute\TargetAttribute`
+and `Spiral\Tokenizer\Attribute\TargetClass` attributes to filter the classes and attributes that are processed by
+listeners. This allows you o improve the performance of your code by filtering the classes and attributes that are
+processed by listeners.
+
+When you use the attributes to filter the classes that are processed by listeners, the component caches the filtered
+classes in the `runtime/cache/listeners` directory after the first bootstrapping of your application.
+
+Caching the filtered classes provides several benefits to your application. It greatly reduces the amount of
+time required to process your codebase, since the class locator can load the filtered classes from cache rather than
+re-scanning your codebase every time your application starts up. This can help to improve the performance of your
+application and reduce the time required for application bootstrapping.
+
+By default, caching of the filtered classes is disabled. If you want to enable caching, you can set
+the `TOKENIZER_CACHE_TARGETS` environment variable to `true`.
+
+```dotenv .env
+TOKENIZER_CACHE_TARGETS=true
+```
+
+#### TargetAttribute
+
+It allows you to filter classes based on their attributes. When you specify a target attribute, the class locator will
+only process classes that have that attribute. This can be useful if you have a listener that only needs to analyze a
+specific type of class, such as a controller class that has a specific routing attribute.
+
+**Here's an example of how to use it:**
+
+```php
+use Spiral\Tokenizer\Attribute\TargetAttribute;
+
+#[TargetAttribute(Route::class, useAnnotations: true)]
+final class RouteLocatorListener implements TokenizationListenerInterface
+{
+    // ...
+}
+```
+
+In this example, the `RouteAttributeListener` will only process classes that have the `Route` attribute. This means
+that if the class locator finds a class without this attribute, it won't call the `listen` method of this listener.
+
+You can add multiple attributes to your listener class:
+
+```php
+use Spiral\Tokenizer\Attribute\TargetAttribute;
+use Spiral\Tokenizer\TokenizationListenerInterface;
+
+#[TargetAttribute(Route::class)]
+#[TargetAttribute(SymfonyRoute::class)]
+class RouteLocatorListener implements TokenizationListenerInterface
+{
+    public function listen(\ReflectionClass $class): void
+    {
+        // Do something with classes that have Route or SymfonyRoute attributes
+    }
+}
+```
+
+You can also pass a second parameter `useAnnotations: true` to the attribute to specify that the Tokenizer should look
+for the target attribute in the class annotations as well. For example:
+
+#### TargetClass
+
+It works similarly to `TargetAttribute`, but instead of filtering classes based on their attributes, it filters them
+based on their type. This is useful if you have a listener that only needs to analyze a specific type of class, such
+as controller, classes that implement a specific interface or extend a specific class.
+
+**Here's an example of how to use**
+
+```php
+use Spiral\Tokenizer\Attribute\TargetClass;
+
+#[TargetClass(SymfonyCommand::class)]
+final class CommandLocatorListener implements TokenizationListenerInterface
+{
+    // ...
+}
+```
+
+In this example, the listener will process all classes that extend the `SymfonyCommand`. This means that if the class
+locator finds a class that extends it, it will call the `listen` method of this listener.
+
+> **Note**
+> You can add multiple attributes to your listener class.
+
+### Listener Registration
+
 To register your listener, you will need to use the `Spiral\Tokenizer\TokenizerListenerRegistryInterface`.
 
 Here is an example of how to register a listener:
@@ -215,8 +303,3 @@ class AppBootloader extends Bootloader
 > **Warning**
 > To ensure that your listeners are called correctly, make sure to register them in bootloaders from within the `LOAD`
 > section of the application Kernel. Listeners will not be called if you register them within the `APP` kernel section.
-
-Overall, the Tokenizer Listeners are a useful way to improve performance when using the `ClassesInterface` to search
-for classes in a large codebase. By registering listeners and allowing the tokenizer component to scan the directories
-only once, you can reduce the number of times the directories are scanned and improve the overall performance of your
-application.
