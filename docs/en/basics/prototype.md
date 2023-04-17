@@ -198,14 +198,14 @@ There are a number of component shortcuts available for you to use:
 | logger       | Psr\Log\LoggerInterface                                                                      |
 | logs         | Spiral\Logger\LogsInterface                                                                  |
 | memory       | Spiral\Boot\MemoryInterface                                                                  |
-| orm          | Cycle\ORM\ORMInterface (If `spiral/cycle-bridge` package should be installed)                |
+| orm          | Cycle\ORM\ORMInterface (`spiral/cycle-bridge` package should be installed)                   |
 | paginators   | Spiral\Pagination\PaginationProviderInterface                                                |
 | queue        | Spiral\Queue\QueueInterface                                                                  |
 | queueManager | Spiral\Queue\QueueConnectionProviderInterface                                                |
 | request      | Spiral\Http\Request\InputManager                                                             |
 | response     | Spiral\Http\ResponseWrapper                                                                  |
 | router       | Spiral\Router\RouterInterface                                                                |
-| server       | Spiral\Goridge\RPC (If `spiral/roadrunner-bridge` package should be installed)               |
+| server       | Spiral\Goridge\RPC (`spiral/roadrunner-bridge` package should be installed)                  |
 | snapshots    | Spiral\Snapshots\SnapshotterInterface                                                        |
 | storage      | Spiral\Storage\StorageInterface                                                              |
 | validator    | Spiral\Validation\ValidationInterface                                                        |

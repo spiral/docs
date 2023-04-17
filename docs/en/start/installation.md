@@ -12,7 +12,7 @@ including:
 - [Validators](../validation/factory.md)
 - [Event Dispatcher](../advanced/events.md)
 - [RoadRunner Bridge](../start/server.md)
-- Temporal Bridge
+- [Temporal Bridge](../temporal/configuration.md)
 - [Cron jobs scheduler](../advanced/scheduler.md)
 - [Sentry bridge](../basics/errors.md)
 - [Stempler](../views/stempler.md) or [Twig](../views/twig.md) template engine

@@ -15,6 +15,10 @@ brokers such as:
 To enable the integration with RoadRunner, Spiral provides built-in support through
 the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package.
 
+> **Warning**
+> Actual version of the `spiral/roadrunner-bridge` package is `3.0`. If you are using older version of the package,
+> some of the features described in this document may not be available.
+
 ## Installation
 
 To get started, you need to install [Roadrunner bridge](../start/server.md#roadrunner-bridge) package. Once installed,
@@ -38,15 +42,14 @@ RoadRunner provides two ways to declare pipelines:
 - Using a `.rr.yaml` configuration file to declare pipelines and brokers.
 - Declaring pipelines on the fly in your application's `app/config/queue.php`.
 
-> **Warning**
-> Remember that you should always configure broker connection in `.rr.yaml` file.
-
 ### Declaring pipelines in `.rr.yaml`
 
-This is the most common way to declare pipelines. But in this way, you can only declare static pipelines. If you need
-to declare dynamic pipelines, you should consider using the second way.
+This is the most common way to declare pipelines. But in this way, you can only declare static pipelines.
 
-Here's a simple example:
+> **Note**
+> If you need to declare dynamic pipelines, you should consider using the second way.
+
+**Here's a simple example:**
 
 ```yaml .rr.yaml
 amqp:
@@ -74,7 +77,7 @@ return [
     'connections' => [
         'roadrunner' => [
             'driver' => 'roadrunner',
-            'default' => 'in-memory', // Pipeline name from .rr.yaml
+            'pipeline' => 'in-memory', // Pipeline name from .rr.yaml
         ],
     ],
 ];
@@ -97,7 +100,7 @@ You can create dynamic pipelines to distribute workload across multiple queue br
 multiple workers. This can be useful in large-scale applications where job processing needs to be distributed across
 multiple servers or instances.
 
-Here's a simple example:
+**Here's a simple example:**
 
 ```php app/config/queue.php
 use Spiral\RoadRunner\Jobs\Queue\MemoryCreateInfo;
@@ -106,49 +109,50 @@ use Spiral\RoadRunner\Jobs\Queue\AMQPCreateInfo;
 return [
     'default' => env('QUEUE_CONNECTION', 'rr-amqp'),
 
+    'pipelines' => [
+         'high-priority' => [
+             'connector' => new AMQPCreateInfo(
+                  name: 'high-priority',
+                  priority: 1,
+                  queue: 'default',
+             ),
+             'consume' => true, // Consume jobs for this pipeline on startup
+         ],
+         'low-priority' => [
+             'connector' => new AMQPCreateInfo(
+                  name: 'low-priority',
+                  priority: 100,
+                  queue: 'default',
+             ),
+             'consume' => false, // Do not consume jobs for this pipeline on startup
+         ],
+         'in-memory' => [
+            'connector' => new MemoryCreateInfo(name: 'local'),
+            'consume' => true, 
+         ]
+    ],
+            
     'connections' => [
         // ...
         'rr-amqp' => [
             'driver' => 'roadrunner',
-            'default' => 'low-priority', // Default pipeline
-            'pipelines' => [
-                 'high-priority' => [
-                     'connector' => new AMQPCreateInfo(
-                        name: 'high-priority',
-                        priority: 1,
-                        queue: 'default',
-                     ),
-                     'consume' => true, // Consume jobs for this pipeline on startup
-                 ],
-                 'low-priority' => [
-                     'connector' => new AMQPCreateInfo(
-                        name: 'low-priority',
-                        priority: 100,
-                        queue: 'default',
-                     ),
-                     'consume' => false, // Do not consume jobs for this pipeline on startup
-                 ],
-            ],
+            'pipeline' => 'low-priority',
         ],
         'rr-memory' => [
             'driver' => 'roadrunner',
-            'default' => 'in-memory',
-            'pipelines' => [
-                'in-memory' => [
-                    'connector' => new MemoryCreateInfo(name: 'local'),
-                    'consume' => true, 
-                ]
-            ],
+            'pipeline' => 'in-memory',
         ],
     ],
 ];
 ```
 
+> **Warning**
+> All the pipelines defined with `'consume' => true` will be initialized during application bootstrapping. This means
+> that all the jobs pushed to these pipelines will be consumed immediately. All the pipelines with `'consume' => false` 
+> will be initialized only when you push a job to them.
+
 In some cases, you may need to create a pipeline with custom default options or in cases where the options are
 mandatory. For example, you may want to create a pipeline for Kafka broker, which requires additional options to be set.
-
-> **Note**
-> This feature is available since `spiral/roadrunner-bridge` version `2.5.0`.
 
 ```php app/config/queue.php
 use Spiral\RoadRunner\Jobs\Queue\KafkaCreateInfo;
@@ -171,15 +175,7 @@ pipeline defined in your `app/config/queue.php` configuration file.
 ```php
 'rr-amqp' => [
     'driver' => 'roadrunner',
-    'default' => 'low-priority', // Default pipeline
-    'pipelines' => [
-         'high-priority' => [
-             // ...
-         ],
-         'low-priority' => [
-             // ...
-         ],
-    ],
+    'pipeline' => 'low-priority',
 ],
 ```
 
@@ -205,9 +201,6 @@ public function createJob(QueueInterface $queue): void
 
 Spiral queue component provides `Spiral\Queue\Options` class, but in some cases you may need to use options specific
 to the roadrunner driver. In this case you can use options that implement `Spiral\RoadRunner\Jobs\OptionsInterface`.
-
-> **Note**
-> This feature is available since `spiral/roadrunner-bridge` version `2.5.0`.
 
 For example, if you want to pass additional options to Kafka broker, you can use `Spiral\RoadRunner\Jobs\KafkaOptions`
 class.

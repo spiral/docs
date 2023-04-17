@@ -201,7 +201,6 @@ protected const LOAD = [
     RoadRunnerBridge\QueueBootloader::class, // Optional, if it needs to work with jobs plugin
     RoadRunnerBridge\CacheBootloader::class, // Optional, if it needs to work with KV plugin
     RoadRunnerBridge\GRPCBootloader::class, // Optional, if it needs to work with GRPC plugin
-    RoadRunnerBridge\BroadcastingBootloader::class, // Optional, if it needs to work with broadcasting plugin
     RoadRunnerBridge\CommandBootloader::class,
     RoadRunnerBridge\TcpBootloader::class, // Optional, if it needs to work with TCP plugin
     RoadRunnerBridge\MetricsBootloader::class, // Optional, if it needs to work with metrics plugin

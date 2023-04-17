@@ -44,7 +44,7 @@ class SampleJob extends JobHandler
 ```
 
 > **Note**
-> You can define handlers as singletons for better performance.
+> Define handlers as singletons for better performance.
 
 ## Dispatch Job
 
@@ -53,7 +53,7 @@ class SampleJob extends JobHandler
 You can dispatch your job via `Spiral\Queue\QueueInterface` or via the prototype property `queue`. When you request
 the `Spiral\Queue\QueueInterface` from the container, you will receive an instance of the default queue connection.
 
-The method `push` of `QueueInterface` accepts a job name, the payload in the array form, and additional options.
+The method `push` of `QueueInterface` accepts a job name, the payload, and additional options.
 
 ```php
 use App\Endpoint\Job\SampleJob;
@@ -93,9 +93,9 @@ final class MyService
 
 ## Passing Parameters
 
-Job handlers can accept any number of job parameters via the second argument of `QueueInterface->push()`. The parameters
-provided in an array form. No objects are supported (see how to bypass it below) to ensure compatibility with consumers
-written in other languages.
+The second argument of the `QueueInterface->push()` method can accept any type of variable, such as **arrays**, *
+*objects**, **strings**, etc. However, it's important to note that the default serializer used by the framework
+is `json`.
 
 ```php
 use App\Endpoint\Job\SampleJob;
@@ -103,11 +103,21 @@ use Spiral\Queue\QueueInterface;
 
 public function createJob(QueueInterface $queue): void
 {
+    // Array payload
     $queue->push(SampleJob::class, ['value' => 123]);
+    
+    // Object payload
+    $queue->push(SampleJob::class, new User(id: 123, name: 'John'));
+    
+    // Some strig payload
+    $queue->push(SampleJob::class, 'some string');
 }
 ```
 
 You can receive the passed payload in the handler using the parameter `payload` of the `invoke` method:
+
+> **Warning**
+> The `payload` parameter should have the same type as the payload you passed to the `push` method.
 
 ```php app/src/Endpoint/Job/SampleJob.php
 namespace App\Endpoint\Job;
@@ -123,19 +133,88 @@ class SampleJob extends JobHandler
 }
 ```
 
-In addition to that, the default `Spiral\Queue\JobHandler` implementation will pass all values of the payload as method
-arguments:
+## Job Payload serialization
 
-```php app/src/Endpoint/Job/SampleJob.php
-namespace App\Endpoint\Job;
+The queue component supports the use of a serializer for converting objects to and from a serialized form suitable for
+storage in a queue. This allows you to easily enqueue and dequeue complex objects without having to manually serialize
+and deserialize them.
 
-use Spiral\Queue\JobHandler;
+> **See more**
+> The [Serializer component](../advanced/serializer.md) is used to serialize the job payload when it is added to the 
+> queue and deserialize when it is retrieved from the queue and passed to a job handler for processing.
 
-class SampleJob extends JobHandler
+### Configure default serializer
+
+The default serializer for the queue component can be specified via the `queue.php` configuration file. 
+
+**Example:**
+
+```php app/config/queue.php
+use Spiral\Core\Container\Autowire;
+use Spiral\Serializer\Serializer\JsonSerializer;
+use Spiral\Serializer\Serializer\PhpSerializer;
+
+return [
+    // via serializer name
+    'defaultSerializer' => 'json',
+
+    // via class name
+    'defaultSerializer' => JsonSerializer::class,
+    
+    // via instance
+    'defaultSerializer' => new JsonSerializer(),
+    
+    // via Autowire
+    'defaultSerializer' => new Autowire(PhpSerializer::class)
+];
+```
+
+> **Note**
+> This allows you to easily customize the serialization strategy for the queue and choose the approach that best fits 
+> your needs. Read more about available serializers in the [Component — Serializer](../advanced/serializer.md).
+
+### Changing serializer
+
+There are several ways to change the serializer. You can globally change the default serializer for the application.
+Or you can set a specific serializer for the job type. A specific serializer is selected by
+the `Spiral\Serializer\SerializerRegistryInterface`.
+
+You can configure the serializer for a specific job type in the `app/config/queue.php` configuration file.
+
+```php app/config/queue.php
+use Spiral\Core\Container\Autowire;
+
+return [
+    'registry' => [
+        'serializers' => [
+            'ping.job' => 'json',
+            TestJob::class => 'serializer',
+            OtherJob::class => CustomSerializer::class,
+            FooJob::class => new CustomSerializer(),
+            BarJob::class => new Autowire(CustomSerializer::class),
+        ]
+    ],
+];
+```
+
+Or, register a serializer using the `setSerializer` method of the `Spiral\Queue\QueueRegistry` class.
+
+```php app/src/ApplicationBootloader/AppBootloader.php
+namespace App\Application\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Core\Container\Autowire;
+use Spiral\Queue\QueueRegistry;
+
+class AppBootloader extends Bootloader
 {
-    public function invoke(string $value): void
+    public function boot(QueueRegistry $registry): void
     {
-        dump($value);
+        $registry->setSerializer('ping.job', 'json');
+        $registry->setSerializer(TestJob::class, 'serializer');
+        $registry->setSerializer(OtherJob::class, CustomSerializer::class);
+        $registry->setSerializer(FooJob::class, new CustomSerializer());
+        $registry->setSerializer(BarJob::class, new Autowire(CustomSerializer::class));
     }
 }
 ```
@@ -229,99 +308,6 @@ $queue->push(
     ['value' => 123], 
     $options->withDelay(3600) // job will be available for processing in 1 hour
 );
-```
-
-## Job Payload serialization
-
-The queue component supports the use of a serializer for converting objects to and from a serialized form suitable for
-storage in a queue. This allows you to easily enqueue and dequeue complex objects without having to manually serialize
-and deserialize them.
-
-The [Serializer component](../component/serializer.md) is used to serialize the job payload when it is added to the
-queue and deserialize when it is retrieved from the queue and passed to a job handler for processing.
-
-### Configure default serializer
-
-The default serializer for the queue component can be specified via the `queue.php` configuration file. It can be 
-specified as a class name, a class instance, or an autowire instance. This allows the developer to easily customize the 
-serialization strategy for the queue and choose the approach that best fits their needs.
-
-**Example:**
-
-```php app/config/queue.php
-use Spiral\Core\Container\Autowire;
-use Spiral\Serializer\Serializer\JsonSerializer;
-use Spiral\Serializer\Serializer\PhpSerializer;
-
-return [
-    // ...
-
-    // via class name
-    'defaultSerializer' => JsonSerializer::class,
-    
-    // via instance
-    'defaultSerializer' => new JsonSerializer(),
-    
-    // via Autowire
-    'defaultSerializer' => new Autowire(PhpSerializer::class)
-];
-```
-
-### Changing serializer
-
-There are several ways to change the serializer. You can globally change the default serializer for the application.
-
-> **See more**
-> You can read more about the Serializer configuration in the [Advanced — Serializer](../advanced/serializer.md)
-> section.
-
-Or you can set a specific serializer for the job type. A specific serializer is selected by
-the `Spiral\Serializer\SerializerRegistryInterface`.
-
-You can configure the serializer for a specific job type in the `app/config/queue.php` configuration file.
-
-```php app/config/queue.php
-use Spiral\Core\Container\Autowire;
-
-return [
-    'registry' => [
-        'serializers' => [
-            ObjectJob::class => 'json',
-            TestJob::class => 'serializer',
-            OtherJob::class => CustomSerializer::class,
-            FooJob::class => new CustomSerializer(),
-            BarJob::class => new Autowire(CustomSerializer::class),
-        ]
-    ],
-];
-```
-
-A serializer can be a `key string` under which the serializer is registered in the `Serializer` component,
-a `fully-qualified class name`, a `serializer instance`, an `Autowire instance`.
-
-> **Note*
-> The serializer class must implement the `Spiral\Serializer\SerializerInterface` interface.
-
-Or, register a serializer using the `setSerializer` method of the `Spiral\Queue\QueueRegistry` class.
-
-```php app/src/ApplicationBootloader/AppBootloader.php
-namespace App\Application\Bootloader;
-
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Core\Container\Autowire;
-use Spiral\Queue\QueueRegistry;
-
-class AppBootloader extends Bootloader
-{
-    public function boot(QueueRegistry $registry): void
-    {
-        $registry->setSerializer(ObjectJob::class, 'json');
-        $registry->setSerializer(TestJob::class, 'serializer');
-        $registry->setSerializer(OtherJob::class, CustomSerializer::class);
-        $registry->setSerializer(FooJob::class, new CustomSerializer());
-        $registry->setSerializer(BarJob::class, new Autowire(CustomSerializer::class));
-    }
-}
 ```
 
 ## Handle failed jobs
