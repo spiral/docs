@@ -26,26 +26,6 @@ final class SampleJob extends JobHandler
 }
 ```
 
-You can freely use the method injection in your handler. When the job handler is called, the dependency injection
-container will automatically provide the specified dependencies to the method.
-
-```php app/src/Endpoint/Job/SampleJob.php
-namespace App\Endpoint\Job;
-
-use Spiral\Queue\JobHandler;
-
-class SampleJob extends JobHandler
-{
-    public function invoke(MyService $service): void
-    {
-        // Do something with service
-    }
-}
-```
-
-> **Note**
-> Define handlers as singletons for better performance.
-
 ## Dispatch Job
 
 ### Pushing to the default queue
@@ -114,10 +94,10 @@ public function createJob(QueueInterface $queue): void
 }
 ```
 
-You can receive the passed payload in the handler using the parameter `payload` of the `invoke` method:
+## Handling Jobs
 
-> **Warning**
-> The `payload` parameter should have the same type as the payload you passed to the `push` method.
+When the job is dispatched, the queue service will automatically find the handler for the job and execute it.
+The `invoke` method is responsible for handling the queued tasks that are received by the job handler.
 
 ```php app/src/Endpoint/Job/SampleJob.php
 namespace App\Endpoint\Job;
@@ -126,12 +106,76 @@ use Spiral\Queue\JobHandler;
 
 class SampleJob extends JobHandler
 {
-    public function invoke(array $payload): void
+    public function invoke(string $id, array $payload): void
     {
-        dump($payload);
+        // Do something with service
     }
 }
 ```
+
+The method accepts a number of arguments, which are described below:
+
+#### Payload
+
+The `$payload` argument contains the data that was added to the queue when the task was queued. This can be
+of any type, such as an `array`, `object`, `string`, etc. 
+
+> **Warning**
+> The `payload` parameter should have the same type as the payload you passed to the `push` method.
+
+#### Task ID
+
+The `$id` argument is an optional string that contains the unique identifier for the job. This can be used to track the
+job's progress within the application.
+
+#### Task Headers
+
+The `$headers` argument is an optional array of additional headers or context that can be
+added when the task is pushed to the queue. This can be useful for providing additional information about the task or
+for passing context data to the invoke method.
+
+**Some examples of context data that can be added to the headers include:**
+
+- **Retry Attempts:** The number of times the task has been retried. This can be useful for determining whether the task
+  has failed multiple times and needs to be handled differently.
+
+- **Priority:** The priority level of the task. This can be useful for ensuring that important tasks are handled first,
+  or for prioritizing tasks based on their importance.
+
+- **Timestamp:** The timestamp when the task was added to the queue. This can be useful for tracking the progress of the
+  task or for logging purposes.
+
+ - **User ID:** The ID of the user who initiated the task. This can be useful for tracking the actions of individual 
+users or for enforcing user-specific policies.
+
+#### Dependency Injection
+
+You can freely use the method injection in your handler's `invoke` method. When the job handler is called, the
+dependency injection container will automatically provide the specified dependencies to the method.
+
+```php app/src/Endpoint/Job/SampleJob.php
+namespace App\Endpoint\Job;
+
+use Spiral\Queue\JobHandler;
+use Psr\Log\LoggerInterface;
+
+class SampleJob extends JobHandler
+{
+    public function invoke(LoggerInterface $logger, array $payload): void
+    {
+        $logger->debug('Job processing...', ['id' => $id]);
+        
+        // Do something with service
+        
+        $logger->debug('Job processed', ['id' => $id]);
+    }
+}
+```
+
+> **Note**
+> Define handlers as singletons for better performance.
+
+It's important to note that the `invoke` method must always have a `void` return type, as it does not return any value.
 
 ## Job Payload serialization
 
@@ -140,12 +184,12 @@ storage in a queue. This allows you to easily enqueue and dequeue complex object
 and deserialize them.
 
 > **See more**
-> The [Serializer component](../advanced/serializer.md) is used to serialize the job payload when it is added to the 
+> The [Serializer component](../advanced/serializer.md) is used to serialize the job payload when it is added to the
 > queue and deserialize when it is retrieved from the queue and passed to a job handler for processing.
 
 ### Configure default serializer
 
-The default serializer for the queue component can be specified via the `queue.php` configuration file. 
+The default serializer for the queue component can be specified via the `queue.php` configuration file.
 
 **Example:**
 
@@ -170,7 +214,7 @@ return [
 ```
 
 > **Note**
-> This allows you to easily customize the serialization strategy for the queue and choose the approach that best fits 
+> This allows you to easily customize the serialization strategy for the queue and choose the approach that best fits
 > your needs. Read more about available serializers in the [Component — Serializer](../advanced/serializer.md).
 
 ### Changing serializer
