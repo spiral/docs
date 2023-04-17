@@ -21,6 +21,9 @@ caching more efficiently, which can ultimately improve the overall performance o
 
 To enable the component, you just need to add `Spiral\Cache\Bootloader\CacheBootloader` to the bootloader's list:
 
+> **Warning**
+> Make sure that you have the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package installed.
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -31,8 +34,9 @@ protected const LOAD = [
 ```
 
 > **Note**
-> Make sure that you have the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package installed.
-> This package provides the necessary classes to integrate Cache component with RoadRunner KV plugin.
+> The `spiral/roadrunner-bridge` package allows you to use RoadRunner
+> [kv plugin](https://roadrunner.dev/docs/plugins-kv/) with Spiral. This package provides RPC api for KV
+> and a bootloader for your application.
 
 ## Configuration
 

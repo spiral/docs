@@ -20,6 +20,11 @@ metrics to Prometheus.
 
 At first, you need to install the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package.
 
+> **Note**
+> The `spiral/roadrunner-bridge` package allows you to use RoadRunner 
+> [metrics plugin](https://roadrunner.dev/docs/lab-metrics) with Spiral. This package provides RPC api for metrics
+> and a bootloader for your application.
+
 Once the package is installed, you can add the `Spiral\RoadRunnerBridge\Bootloader\MetricsBootloader` to the list of
 bootloaders:
 
@@ -56,7 +61,7 @@ metrics:
 
 There are two ways to declare application-specific metrics in Spiral application:
 
-:::: tabs 
+:::: tabs
 ::: tab RoadRunner
 Using the `.rr.yaml` file:
 
@@ -69,6 +74,7 @@ metrics:
       type: counter
       help: "Total registered users counter."
 ```
+
 :::
 
 ::: tab PHP
@@ -91,6 +97,7 @@ class MetricsBootloader extends Bootloader
     }
 }
 ```
+
 :::
 
 ::::
@@ -134,7 +141,6 @@ useful for filtering, grouping, and aggregating the data.
 - **Simplified querying**: You can use labels to filter and aggregate your metric data, making it easier to extract
   meaningful insights from the data.
 
-
 :::: tabs
 ::: tab RoadRunner
 Using the `.rr.yaml` file:
@@ -149,6 +155,7 @@ metrics:
       help: "Total registered users counter."
       labels: [ "type" ]
 ```
+
 :::
 
 ::: tab PHP
@@ -171,6 +178,7 @@ class MetricsBootloader extends Bootloader
     }
 }
 ```
+
 :::
 
 ::::
