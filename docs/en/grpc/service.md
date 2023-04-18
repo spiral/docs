@@ -28,8 +28,8 @@ proto files in the`/proto` directory. Create a file `proto/pinger.proto`:
 ```proto proto/pinger.proto
 syntax = "proto3";
 
-option php_namespace = "App\\GRPC\Pinger";
-option php_metadata_namespace = "App\\GRPC\\GPBMetadata";
+option php_namespace = "GRPC\Pinger";
+option php_metadata_namespace = "GRPC\\GPBMetadata";
 
 package pinger;
 
@@ -70,12 +70,7 @@ return [
     /**
      * The path where generated DTO (Data Transfer Object) files will be stored.
      */
-    'generatedPath' => directory('app') . '/GRPC',
-
-    /**
-     * The base namespace for the generated proto files.
-     */
-    'namespace' => '\App\GRPC',
+    'generatedPath' => directory('root') . '/generated',
 
     /**
      * The root dir for all proto files, where imports will be searched.
@@ -106,24 +101,43 @@ You should see the following output:
 
 ```bash
 Compiling `proto/pinger.proto`:
-• app/src/GRPC/Pinger/PingerInterface.php
-• app/src/GRPC/Pinger/PingRequest.php
-• app/src/GRPC/Pinger/PingResponse.php
-• app/src/GRPC/GPBMetadata/Pinger.php
+• generated/GRPC/Pinger/PingerInterface.php
+• generated/GRPC/Pinger/PingRequest.php
+• generated/GRPC/Pinger/PingResponse.php
+• generated/GRPC/GPBMetadata/Pinger.php
 ```
 
-The code will be generated in the `app/src/App/GRPC/Pinger` and `app/src/App/GRPC/GPBMetadata` directories.
+The code will be generated in the `generated/GRPC/Pinger` and `generated/GRPC/GPBMetadata` directories.
+
+And the last step is to register `GRPC` namespace in the `composer.json` file:
+
+```json composer.json
+{
+    ...
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/src",
+            "GRPC\\": "generated/GRPC"
+        }
+    }
+}
+```
+
+and run `composer dump-autoload` to update the autoloader.
 
 ## Implement Service
 
 Next, you will need to create a PHP class that implements the **Pinger** service defined in the `.proto` file. This 
-class should extend the `app/src/GRPC/PingerInterface` class generated from the `.proto` file and implement the 
+class should extend the `GRPC/PingerInterface` class generated from the `.proto` file and implement the 
 `ping()` `method:
 
-```php
-namespace App\GRPC\Pinger;
+```php app/src/Endpoint/GRPC/Pinger.php
+namespace App\Endpoint\GRPC;
 
 use Spiral\RoadRunner\GRPC;
+use GRPC\Pinger\PingerInterface;
+use GRPC\Pinger\PingRequest;
+use GRPC\Pinger\PingResponse;
 
 final class Pinger implements PingerInterface
 {
@@ -170,6 +184,8 @@ can read:
 
 ```php
 use Spiral\RoadRunner\GRPC;
+use GRPC\Pinger\PingRequest;
+use GRPC\Pinger\PingResponse;
 
 public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 {
@@ -195,6 +211,8 @@ You can add any custom metadata to the response using Context-specific response 
 
 ```php
 use Spiral\RoadRunner\GRPC;
+use GRPC\Pinger\PingRequest;
+use GRPC\Pinger\PingResponse;
 
 public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 {
@@ -229,6 +247,8 @@ The `spiral/roadrunner-grpc` component provides a number of exceptions to indica
 
 ```php
 use Spiral\RoadRunner\GRPC;
+use GRPC\Pinger\PingRequest;
+use GRPC\Pinger\PingResponse;
 
 public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 {

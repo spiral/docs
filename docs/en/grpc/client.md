@@ -1,7 +1,7 @@
 # GRPC — Client SDK
 
 In the previous part of this [article](./service.md), we showed you how to create a gRPC service `Pinger` in PHP with
-Spiral Framework and `spiral/roadrunner-bridge`. In this part, we will show you how to create a client service
+Spiral and `spiral/roadrunner-bridge` package. In this part, we will show you how to create a client service
 `Monitor` for communication with `Pinger` service.
 
 ## PHP client
@@ -20,13 +20,13 @@ To create the client SDK, we will use the PHP classes generated from the `.proto
 
 ### 2. Create a client class
 
-We will create a class that implements the `app/src/GRPC/PingerInterface` interface and provides a simple interface for
+We will create a class that implements the `generated/GRPC/PingerInterface` interface and provides a simple interface for
 calling the service's methods.
 
 ```php
 namespace App\Service;
 
-use App\GRPC\Pinger;
+use GRPC\Pinger;
 use Spiral\Core\CoreInterface;
 use Spiral\RoadRunner\GRPC;
 
@@ -56,7 +56,7 @@ Application bootloader:
 namespace App\Application\Bootloader;
 
 use App\Service\PingerClient;
-use App\GRPC\Pinger\PingerInterface;
+use GRPC\Pinger\PingerInterface;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Boot\EnvironmentInterface;
 
@@ -88,8 +88,8 @@ Here is an example of how you can use the `PingerClient`:
 ```php app/src/Endpoint/Console/PingServiceCommand.php
 namespace App\Endpoint\Console;
 
-use App\GRPC\Pinger\PingerInterface;
-use App\GRPC\Pinger\PingRequest;
+use GRPC\Pinger\PingerInterface;
+use GRPC\Pinger\PingRequest;
 use Spiral\Console\Command;
 use Spiral\RoadRunner\GRPC\Context;
 use Spiral\RoadRunner\GRPC\Exception\GRPCException;

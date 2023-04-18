@@ -21,7 +21,7 @@ used to add cross-cutting functionality such as logging, authentication, or moni
 Here is an example of a simple interceptor that logs a request before and after processing:
 
 ```php
-namespace App\GRPC\Interceptor;
+namespace App\Endpoint\GRPC\Interceptor;
 
 use Spiral\Core\CoreInterceptorInterface;
 use Spiral\Core\CoreInterface;
@@ -58,7 +58,7 @@ Here is an example of a simple interceptor that handles exceptions thrown by the
 and convert them to a gRPC exception.
 
 ```php
-namespace App\GRPC\Interceptor;
+namespace App\Endpoint\GRPC\Interceptor;
 
 use Spiral\Core\CoreInterceptorInterface;
 use Spiral\Core\CoreInterface;
@@ -98,7 +98,7 @@ final class ExceptionHandlerInterceptor implements CoreInterceptorInterface
 Here is an example of a simple interceptor that receives trace context from the request.
 
 ```php
-namespace App\GRPC\Interceptor;
+namespace App\Endpoint\GRPC\Interceptor;
 
 use Spiral\Core\CoreInterceptorInterface;
 use Spiral\Telemetry\TraceKind;
@@ -140,7 +140,7 @@ Here is an example of a simple interceptor that checks if the user is authentica
 determine which methods require authentication. An authentication token is passed in the request metadata.
 
 ```php
-namespace App\GRPC\Interceptor;
+namespace App\Endpoint\GRPC\Interceptor;
 
 use App\Attribute\Guarded;
 use Spiral\Attributes\ReaderInterface;
@@ -216,9 +216,9 @@ To use this interceptor, you will need to register them in the configuration fil
 ```php app/config/grpc.php
 return [    
     'interceptors' => [
-        \App\GRPC\Interceptor\LogInterceptor
-        \App\GRPC\Interceptor\ExceptionHandlerInterceptor::class,
-        \App\GRPC\Interceptor\GuardedInterceptor::class,
+        \App\Endpoint\GRPC\Interceptor\LogInterceptor::class,
+        \App\Endpoint\GRPC\Interceptor\ExceptionHandlerInterceptor::class,
+        \App\Endpoint\GRPC\Interceptor\GuardedInterceptor::class,
     ]
 ];
 ```
@@ -240,7 +240,7 @@ namespace App\Application\Bootloader;
 
 use App\Service\PingerClient;
 use App\Service\RequestCore;
-use App\GRPC\Pinger\PingerInterface;
+use GRPC\Pinger\PingerInterface;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Boot\EnvironmentInterface;
 use Spiral\Core\InterceptableCore;
