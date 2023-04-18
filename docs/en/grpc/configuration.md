@@ -81,12 +81,7 @@ return [
     /**
      * The path where generated DTO (Data Transfer Object) files will be stored.
      */
-    'generatedPath' => directory('app') . '/GRPC',
-
-    /**
-     * The base namespace for the generated proto files.
-     */
-    'namespace' => '\App\GRPC',
+    'generatedPath' => directory('root') . '/GRPC',
 
     /**
      * The root dir for all proto files, where imports will be searched.
@@ -102,7 +97,7 @@ return [
      * An array of paths to proto files that should be compiled into PHP by the grpc:generate console command.
      */
     'services' => [
-        // directory('root').'proto/calculator.proto',
+        //directory('root').'proto/calculator.proto',
     ],
 ];
 ```
