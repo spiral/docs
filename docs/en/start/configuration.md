@@ -76,6 +76,31 @@ MAILER_FROM="My site <no-reply@site.com>"
 The values from the `.env` the file will be copied to your application environment and available
 via `Spiral\Boot\EnvironmentInterface` or the `env` function.
 
+### Available Variables
+
+| Variable                    | Description                                                                                  |
+|-----------------------------|----------------------------------------------------------------------------------------------|
+| `APP_ENV`                   | The current application environment. (`prod`, `stage`, `testing`, `local`). Default: `local` |
+| `DEBUG`                     | Debug mode. Default: `false`                                                                 |
+| `TOKENIZER_CACHE_TARGETS`   | Cache targets for tokenizer. (Bool) Default: `false`                                         |
+| `ENCRYPTER_KEY`             | Encryption key.                                                                              |
+| `VERBOSITY_LEVEL`           | Verbosity level. (`basic`, `verbose`, `debug`). Default: `verbose`                           |
+| `MONOLOG_DEFAULT_CHANNEL`   | Default channel name from `app/config/monolog.php`. Default: 'default'                       |
+| `QUEUE_CONNECTION`          | Queue connection name from `app/config/queue.php`. Default: `sync`                           |
+| `BROADCAST_CONNECTION`      | Broadcast connection. (`log`, `null`, `centrifugo`). Default: `null`                         |
+| `CACHE_STORAGE`             | Cache storage from `app/config/cache.php`                                                    |
+| `TELEMETRY_DRIVER`          | Telemetry driver. (`null`, `log`, `otel`). Default: `null`                                   |
+| `LOCALE`                    | Default locale.. Default: `en`                                                               |
+| `DEFAULT_SERIALIZER_FORMAT` | Default serializer format. (`json`, `serializer`) Default: `json`                            |
+| `AUTH_TOKEN_TRANSPORT`      | Authorization token transport. (`cookie`, `header`). Default: `cookie`                       |
+| `AUTH_TOKEN_STORAGE`        | Authorization token storage. (`session`, `cycle`). Default: `session`                        |
+| `SESSION_LIFETIME`          | Session lifetime. Default: `86400`                                                           |
+| `SESSION_COOKIE`            | Session cookie name. Default: `sid`                                                          |
+| `VIEW_CACHE`                | View cache. Default: `DEBUG !== true`                                                        |
+| `MAILER_DSN`                | Mailer DSN.                                                                                  |
+| `MAILER_FROM`               | Mailer from. Default: `Spiral <sendit@local.host>`                                           |
+| `MAILER_QUEUE_CONNECTION`   | Mailer queue connection. Default: a value from `QUEUE_CONNECTION` variable                   |
+
 ### Accessing Environment Variables
 
 You can access environment variables using `Spiral\Boot\EnvironmentInterface`
@@ -193,7 +218,7 @@ The current application environment is determined via the `APP_ENV` variable. Yo
 `Spiral\Boot\Environment\AppEnvironment` injectable enum class.
 
 > **See more**
-> Read more about injectable enums in the [Advanced — Container injectors](../advanced/injectors.md#enum-injectors) 
+> Read more about injectable enums in the [Advanced — Container injectors](../advanced/injectors.md#enum-injectors)
 > section.
 
 When you request the `AppEnvironment` from the container it will automatically inject an Enum with the correct value.
@@ -263,7 +288,6 @@ final class ErrorHandlerMiddleware implements MiddlewareInterface
 
 The current verbosity level is determined via the `VERBOSITY_LEVEL` variable. You may access this value using the
 `Spiral\Exceptions\Verbosity` injectable enum class.
-
 
 ```php
 use Spiral\Exceptions\Verbosity;
