@@ -37,8 +37,13 @@ are interacting.
 To install the `spiral/otel-bridge` package, you can use the following command:
 
 ```terminal
-composer require spiral/otel-bridge
+composer require spiral/otel-bridge open-telemetry/exporter-otlp
 ```
+
+> **Note**
+> In our example, we are using the `open-telemetry/exporter-otlp` package to send traces to the OpenTelemetry collector.
+> If you want to use a different exporter, you can check
+> [Exporters section](https://opentelemetry.io/docs/instrumentation/php/exporters/) in the OpenTelemetry documentation.
 
 After installing the package, you need to register the bootloader in your application's kernel:
 
@@ -65,6 +70,10 @@ OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318
 OTEL_PHP_TRACES_PROCESSOR=simple
 ```
+
+> **See more**
+> You can find more information about the configuration options in 
+> the [OpenTelemetry documentation](https://opentelemetry.io/docs/concepts/sdk-configuration/general-sdk-configuration/).
 
 To run the [OpenTelemetry collector](https://opentelemetry.io/docs/collector/) server and
 the [Zipkin](https://zipkin.io/) tracing system, you can use the example `docker-compose.yaml` file provided:
@@ -259,8 +268,8 @@ requests and identifying issues.
 ### Create trace from context
 
 When you have the trace context from another application and you want to create a trace based on it, you can use the
-`Spiral\Telemetry\TracerFactoryInterface`. This interface provides a createTracer method, which takes an array of 
-context key-value pairs and returns an instance of `Spiral\Telemetry\TracerInterface`. This instance can be used to 
+`Spiral\Telemetry\TracerFactoryInterface`. This interface provides a createTracer method, which takes an array of
+context key-value pairs and returns an instance of `Spiral\Telemetry\TracerInterface`. This instance can be used to
 create new spans and link them to the trace that the context belongs to.
 
 ```php
@@ -288,12 +297,12 @@ public function handle(ServerRequestInterface $request): ResponseInterface
 ## Example Application
 
 There is a good example [**Demo ticket booking system**](https://github.com/spiral/ticket-booking) application built
-on the Spiral Framework, that follows the principles of microservices and allows developers to create reusable, 
+on the Spiral Framework, that follows the principles of microservices and allows developers to create reusable,
 independent, and easy-to-maintain components.
 
 In this demo application, you can find an example of using OpenTelemetry.
 
-Overall, it is a great example of how Spiral and other tools can be used to build a modern and efficient application. 
+Overall, it is a great example of how Spiral and other tools can be used to build a modern and efficient application.
 We hope you have a blast using it and learning more about the capabilities of Spiral and the other tools we've used.
 
 **Happy (fake) ticket shopping!**
