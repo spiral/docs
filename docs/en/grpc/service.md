@@ -28,7 +28,7 @@ proto files in the`/proto` directory. Create a file `proto/pinger.proto`:
 ```proto proto/pinger.proto
 syntax = "proto3";
 
-option php_namespace = "GRPC\Pinger";
+option php_namespace = "GRPC\\Pinger";
 option php_metadata_namespace = "GRPC\\GPBMetadata";
 
 package pinger;
@@ -80,7 +80,7 @@ return [
     /**
      * The path to the protoc-gen-php-grpc library.
      */
-    'binaryPath' => directory('root').'/bin/protoc-gen-php-grpc',
+    'binaryPath' => directory('root').'protoc-gen-php-grpc',
 
     /**
      * An array of paths to proto files that should be compiled into PHP by the grpc:generate console command.
@@ -117,7 +117,7 @@ And the last step is to register `GRPC` namespace in the `composer.json` file:
     "autoload": {
         "psr-4": {
             "App\\": "app/src",
-            "GRPC\\": "generated/GRPC"
+            "GRPC\\": "generated"
         }
     }
 }
