@@ -77,6 +77,15 @@ final class AppBootloader extends Bootloader
 }
 ```
 
+And add the bootloader to the list of bootloaders:
+
+```php app/src/Application/Kernel.php
+protected const LOAD = [
+    // ...
+    \App\Application\Bootloader\AppBootloader::class,
+];
+```
+
 Now the client class is registered as a singleton in the container.
 
 ### 4. Client usage
@@ -88,42 +97,47 @@ Here is an example of how you can use the `PingerClient`:
 ```php app/src/Endpoint/Console/PingServiceCommand.php
 namespace App\Endpoint\Console;
 
+use Spiral\Console\Attribute\Argument;
+use Spiral\Console\Attribute\AsCommand;
+use Spiral\Console\Attribute\Question;
 use GRPC\Pinger\PingerInterface;
-use GRPC\Pinger\PingRequest;
 use Spiral\Console\Command;
+use GRPC\Pinger\PingRequest;
 use Spiral\RoadRunner\GRPC\Context;
 use Spiral\RoadRunner\GRPC\Exception\GRPCException;
 
-final class PingServiceCommand extends Command
+#[AsCommand(name: 'ping')]
+final class PingCommand extends Command
 {
-    protected const SIGNATURE = 'ping {url : Url to ping}';
-    protected const DESCRIPTION = 'Ping service';
+    #[Argument(description: 'URL to ping')]
+    #[Question(question: 'Provide URL to ping')]
+    private string $url;
 
     public function __invoke(
-        PingServiceInterface $client
+        PingerInterface $client
     ): int {
         try {
-        
+
+            $this->writeln(\sprintf('Sending ping request [%s]...', $this->url));
+
             $response = $client->ping(
-                new Context(),
-                new PingRequest(['url' => $this->argument('url')])
+                new Context([]),
+                new PingRequest(['url' => $this->url])
             );
 
             $this->writeln(\sprintf(
                 'Response: code - %d',
-                $response->getStatus()
+                $response->getStatusCode()
             ));
 
-            $this->writeln($response->getContent());
-            
         } catch (GRPCException $e) {
-        
+
             $this->writeln(\sprintf(
                 'Error: code - %d, message - %s',
                 $e->getCode(),
                 $e->getMessage()
             ));
-            
+
         }
 
         return self::SUCCESS;
