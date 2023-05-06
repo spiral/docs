@@ -377,10 +377,20 @@ To asks for confirmation:
 $status = $this->confirm('Are you sure?', default: false);
 ```
 
-To asks a question:
+To ask a question:
 
 ```php
 $status = $this->ask('Are you sure?', default: 'no');
+```
+
+To ask a multiple choice question:
+```php
+$name = $this->choiceQuestion(
+    'Which of the following is package manager?',
+    ['composer', 'django', 'phoenix', 'maven', 'symfony'],
+    default: 2,
+    allowMultipleSelections: true
+);
 ```
 
 To prompt the user for input but hide the answer from the console:
