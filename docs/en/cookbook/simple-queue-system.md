@@ -402,8 +402,7 @@ Let's define a default serializer in the `app/config/queue.php` file:
 
 ```php app/config/queue.php
 return [
-    ...
-    
+    // ...
     'defaultSerializer' => 'json',
 ];
 ```
@@ -436,8 +435,7 @@ And define default serializer in the `app/config/queue.php` file:
 
 ```php app/config/queue.php
 return [
-    ...
-    
+    // ...
     'defaultSerializer' => 'symfony-json',
 ];
 ```
@@ -609,8 +607,7 @@ Let's define a default serializer in the `app/config/queue.php` file:
 
 ```php app/config/queue.php
 return [
-    ...
-    
+    // ...
     'defaultSerializer' => 'json',
 ];
 ```
@@ -663,8 +660,7 @@ Let's define a default serializer in the `app/config/queue.php` file:
 
 ```php app/config/queue.php
 return [
-    ...
-    
+    // ...
     'defaultSerializer' => 'symfony-json',
 ];
 ```
@@ -718,8 +714,7 @@ Let's connect our job handler with the task name in the `app/config/queue.php` f
 
 ```php app/config/queue.php
 return [
-    ...
-
+    // ...
     'registry' => [
         'handlers' => [
             'ping' => App\Endpoint\Job\PingJob::class
@@ -747,6 +742,86 @@ And push a job into a queue from producer application:
 php app.php ping
 ```
 
-- Retry policy
-- Interceptors
-- 
+#### Retry policy
+
+Let's imagine that we have a job that should be retried if it fails. For example, we have a job that sends a request to
+a remote server. If the server is not available, we should retry this job after some time.
+
+In this case we can use job headers and queue interceptors to implement retry policy.
+
+> **Note**
+> Read more about queue interceptors in the [Queue — Interceptors](../queue/interceptors.md) section.
+
+Let's create an interceptor that will catch all the exceptions in a job handler and try to retry it after some time:
+
+```php app/src/Endpoint/Job/Interceptor/RetryPolicyInterceptor.php
+namespace App\Endpoint\Job\Interceptor;
+
+use Carbon\Carbon;
+use Psr\Log\LoggerInterface;
+use Spiral\Core\CoreInterceptorInterface;
+use Spiral\Core\CoreInterface;
+use Spiral\Exceptions\ExceptionReporterInterface;
+use Spiral\Queue\Exception\FailException;
+use Spiral\Queue\Exception\RetryException;
+use Spiral\Queue\Options;
+
+final class RetryPolicyInterceptor implements CoreInterceptorInterface
+{
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly ExceptionReporterInterface $reporter,
+        private readonly int $maxAttempts = 3,
+        private readonly int $delayInSeconds = 5,
+    ) {
+    }
+
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core): mixed
+    {
+        try {
+        
+            // Try to execute a job handler
+            return $core->callAction($controller, $action, $parameters);
+            
+        } catch (\Throwable $e) {
+        
+            // Report an exception
+            $this->reporter->report($e);
+            
+            $headers = $parameters['headers'] ?? [];
+            
+            // Get attempts count from headers or if it the first attempt, use max attempts count
+            $attempts = (int)($headers['attempts'] ?? $this->maxAttempts);
+            
+            // If attempts are over, throw a FailException
+            if ($attempts === 0) {
+                $this->logger->warning('Job handling failed: ['.$e->getMessage().']');
+                
+                throw new FailException($e->getMessage(), $e->getCode(), $e);
+            }
+
+            throw new RetryException(
+                reason: $e->getMessage(),
+                options: (new Options())->withDelay($this->delay)->withHeader('attempts', (string)($attempts - 1))
+            );
+        }
+    }
+}
+```
+
+Now we need to register our interceptor in the `app/config/queue.php` file:
+
+```php app/config/queue.php
+use App\Endpoint\Job\Interceptor\RetryPolicyInterceptor;
+
+return [    
+    // ...
+    'interceptors' => [
+        'consume' => [
+            RetryPolicyInterceptor::class,
+        ],
+    ],
+];
+```
+
+Now if our job handler fails, it will be retried after 5 seconds. After 3 attempts, the job will be marked as failed.
