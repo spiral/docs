@@ -1,16 +1,31 @@
 # Queue — Running Jobs
 
-After installing the application server, you can use the built-in queue service to run tasks in your application. This
-service, which is included in both the Web and GRPC bundles, uses an "ephemeral" broker to manage these tasks. In other
-words, it's a way to manage and execute jobs in your application, using a temporary system to handle the tasks.
+Job handlers are an essential part of Spiral, providing a structured approach to executing jobs efficiently and managing
+their payloads. Job handlers are classes responsible for performing specific tasks or actions within the system.
 
 ## Create Handler
 
-To run a job in this system, you need to create a special "handler" class that knows how to execute the job. This
-handler must implement the `Spiral\Queue\HandlerInterface` interface, which defines how the job's payload (the data it
-needs to do its work) should be serialized (converted into a format that can be stored or transmitted) and how the job
-itself should be run. Use `Spiral\Queue\JobHandler` to simplify your abstraction and perform dependency injection in
-your handler method `invoke`:
+To create a job handler, you need to implement the `Spiral\Jobs\HandlerInterface` interface. This interface defines the
+required methods for handling jobs, executing the job, and handling any potential errors that may occur during the
+process. Spiral also provides a convenient abstract class called `Spiral\Queue\JobHandler` that you can extend to
+simplify the implementation of your job handlers.
+
+To create a job handler effortlessly, use can the scaffolding command:
+
+```terminal
+php app.php create:jobHandler Sample
+```
+
+> **Note**
+> Read more about scaffolding in the [Basics — Scaffolding](../basics/scaffolding.md#job-handler) section.
+
+After executing this command, the following output will confirm the successful creation:
+
+```output
+Declaration of '[32mSampleJob[39m' has been successfully written into '[33mapp/src/Endpoint/Job/SampleJob.php[39m'.
+```
+
+Now you can find the `SampleJob` class in the `app/src/Endpoint/Job` directory.
 
 ```php app/src/Endpoint/Job/SampleJob.php
 namespace App\Endpoint\Job;
@@ -19,12 +34,14 @@ use Spiral\Queue\JobHandler;
 
 final class SampleJob extends JobHandler
 {
-    public function invoke(): void
+    public function invoke(string $id, array $payload, array $headers): void
     {
-        // do something
+        // Do something with service
     }
 }
 ```
+
+Currently, a new job handler doesn't perform any actions.
 
 ## Dispatch Job
 
@@ -118,7 +135,7 @@ The method accepts a number of arguments, which are described below:
 #### Payload
 
 The `$payload` argument contains the data that was added to the queue when the task was queued. This can be
-of any type, such as an `array`, `object`, `string`, etc. 
+of any type, such as an `array`, `object`, `string`, etc.
 
 > **Warning**
 > The `payload` parameter should have the same type as the payload you passed to the `push` method.
@@ -145,8 +162,8 @@ for passing context data to the invoke method.
 - **Timestamp:** The timestamp when the task was added to the queue. This can be useful for tracking the progress of the
   task or for logging purposes.
 
- - **User ID:** The ID of the user who initiated the task. This can be useful for tracking the actions of individual 
-users or for enforcing user-specific policies.
+- **User ID:** The ID of the user who initiated the task. This can be useful for tracking the actions of individual
+  users or for enforcing user-specific policies.
 
 #### Dependency Injection
 

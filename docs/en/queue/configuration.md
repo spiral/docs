@@ -3,12 +3,6 @@
 Spiral provides support for background PHP processing and a queue system. This feature is available out of the box and
 allows you to work with a variety of message brokers.
 
-To install the necessary extensions in an alternative bundle, you can use the following command:
-
-```terminal
-composer require spiral/queue
-```
-
 Make sure to add `Spiral\Queue\Bootloader\QueueBootloader` to your application kernel.
 
 ```php app/src/Application/Kernel.php
