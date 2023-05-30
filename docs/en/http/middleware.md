@@ -16,7 +16,9 @@ internal state, including the router.
 The `Psr\Http\Server\MiddlewareInterface` is a standard interface provided by PSR-15 for creating middleware in PHP. To
 create your own middleware, you need to implement this interface and define the methods it requires.
 
-```php
+```php app/src/Endpoint/Web/Middleware/MyMiddleware.php
+namespace App\Endpoint\Web\Middleware;
+
 use Psr\Http\Server\MiddlewareInterface;
 
 class MyMiddleware implements MiddlewareInterface
@@ -56,6 +58,7 @@ use Spiral\Debug\StateCollector\HttpCollector;
 use Spiral\Http\Middleware\ErrorHandlerMiddleware;
 use Spiral\Http\Middleware\JsonPayloadMiddleware;
 use Spiral\Session\Middleware\SessionMiddleware;
+use App\Endpoint\Web\Middleware\MyMiddleware;
 
 final class RoutesBootloader extends BaseRoutesBootloader
 {
@@ -83,6 +86,7 @@ namespace App\Application\Bootloader;
 use Spiral\Bootloader\Http\HttpBootloader;
 use Spiral\Core\Container\Autowire;
 use Psr\Container\ContainerInterface;
+use App\Endpoint\Web\Middleware\MyMiddleware;
 
 class AppBootloader extends Bootloader
 {
@@ -107,6 +111,9 @@ Middleware object will be instantiated on demand.
 Or you can configure middleware in the config file `app/config/http.php`:
 
 ```php app/config/http.php
+use App\Endpoint\Web\Middleware\MyMiddleware;
+use Spiral\Core\Container\Autowire;
+
 return [
     // ...
     'middleware' => [
@@ -142,6 +149,7 @@ use Spiral\Debug\StateCollector\HttpCollector;
 use Spiral\Http\Middleware\ErrorHandlerMiddleware;
 use Spiral\Http\Middleware\JsonPayloadMiddleware;
 use Spiral\Session\Middleware\SessionMiddleware;
+use App\Endpoint\Web\Middleware\MyMiddleware;
 
 final class RoutesBootloader extends BaseRoutesBootloader
 {
@@ -183,6 +191,7 @@ namespace App\Application\Bootloader;
 
 use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
 use Spiral\Router\Loader\Configurator\RoutingConfigurator;
+use App\Endpoint\Web\Middleware\MyMiddleware;
 
 final class RoutesBootloader extends BaseRoutesBootloader
 {
@@ -199,6 +208,28 @@ final class RoutesBootloader extends BaseRoutesBootloader
 
 :::
 
+::: tab Route attributes
+
+To add a middleware using route attribute `Spiral\Router\Annotation\Route` use `middleware` property:
+
+```php app/src/Application/Controller/HomeController.php
+namespace App\Endpoint\Web;
+
+use Spiral\Router\Annotation\Route;
+use App\Endpoint\Web\Middleware\MyMiddleware;
+
+class HomeController
+{
+    #[Route(route: '/', name: 'index', methods: 'GET', middleware: [MyMiddleware::class])] 
+    public function index(): string
+    {
+        // ...
+    }
+}
+```
+
+:::
+
 ::: tab Router
 
 To add a middleware to the route object, use `withMiddleware` method. Make sure to use a newly created route instance,
@@ -206,10 +237,10 @@ here's an example:
 
 ```php app/src/Application/Bootloader/AppBootloader.php
 use App\Controller\HomeController;
-use App\MyMiddleware;
 use Spiral\Router\Route;
 use Spiral\Router\RouterInterface;
 use Spiral\Router\Target\Action;
+use App\Endpoint\Web\Middleware\MyMiddleware;
 
 // ...
 
@@ -251,7 +282,9 @@ class UserContext
 By using the `Spiral\Core\ScopeInterface` in your middleware, you can set an application scope that is specific
 to the current request.
 
-```php
+```php app/src/Endpoint/Web/Middleware/MyMiddleware.php
+namespace App\Endpoint\Web\Middleware;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -298,7 +331,9 @@ public function index(UserContext $ctx): void
 You can use already existing requests scope to carry user values. Create a bootloader providing access method for the
 context specific value:
 
-```php
+```php app/src/Endpoint/Web/Middleware/MyMiddleware.php
+namespace App\Endpoint\Web\Middleware;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -317,7 +352,9 @@ class MyMiddleware implements MiddlewareInterface
 
 To gain access to this value from container:
 
-```php
+```php app/src/Application/Bootloader/UserContextBootloader.php
+namespace App\Application\Bootloader;
+
 use Psr\Http\Message\ServerRequestInterface;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Core\Exception\ScopeException;
