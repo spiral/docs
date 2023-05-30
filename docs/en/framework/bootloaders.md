@@ -171,7 +171,6 @@ This is also a good time to add initialization callbacks and configure container
 accessing the app config.
 
 ```php app/src/Application/Bootloader/GithubClientBootloader.php
-
 namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;

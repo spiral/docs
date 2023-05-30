@@ -13,8 +13,8 @@ your application, depending on your needs and preferences.
 
 This is the default validator bridge. It is a simple, lightweight validator that can handle basic validation tasks.
 
-```php
-namespace App\Filters;
+```php app/src/Endpoint/Web/Filter/CreatePostFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Model\FilterInterface;
 use Spiral\Filters\Model\HasFilterDefinition;
@@ -58,8 +58,8 @@ class CreatePostFilter implements FilterInterface, HasFilterDefinition
 This validator bridge provides integration with the Symfony Validator component, which is a more powerful and
 feature-rich validation library.
 
-```php
-namespace App\Filters;
+```php app/src/Endpoint/Web/Filter/CreatePostFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Psr\Http\Message\UploadedFileInterface;
 use Spiral\Filters\Attribute\Input\Post;
@@ -96,8 +96,8 @@ final class CreatePostFilter extends AttributesFilter
 This validator bridge provides integration with the Laravel Validator, which is a validation component used in the
 Laravel framework.
 
-```php
-namespace App\Filters;
+```php app/src/Endpoint/Web/Filter/CreatePostFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Model\Filter;
@@ -142,8 +142,8 @@ mapped to each filter property.
 > **See more**
 > Read more about injectors in the [Advanced — Container injectors](../advanced/injectors.md) section.
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Model\FilterInterface;
 use Spiral\Filters\Attribute\Input\Post;
@@ -162,8 +162,10 @@ Now we can use the filter in our application. There are three ways to do it:
 ::: tab DI
 Simply request the filter as a dependency for example, in some controller method:
 
-```php
-use App\Filter\MyFilter;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
+
+use App\Endpoint\Web\Filter\MyFilter;
 
 class HomeController
 {
@@ -209,7 +211,9 @@ There are two ways to define the filter schema:
 
 ::: tab Attributes
 
-```php
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
+
 use Spiral\Filters\Attribute\Input\Post;
 
 class MyFilter implements FilterInterface
@@ -235,8 +239,8 @@ public function index(MyFilter $filter): void
 In this case the filter should implement `Spiral\Filters\Model\HasFilterDefinition` and extend
 the`Spiral\Filters\Model\Filter` abstract class to have access to the mapped data from the request.
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Model\Filter;
 use Spiral\Filters\Model\FilterDefinitionInterface;
@@ -293,8 +297,8 @@ To use request filter attributes, you can use one of the available attributes to
 should be sourced from. For example, you could use the `Spiral\Filters\Attribute\Input\Query` attribute to map a query
 string parameter to a class property, like this:
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Query;
 use Spiral\Filters\Model\Filter;
@@ -314,8 +318,8 @@ will use the name of the class property as the key.
 
 For example:
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Query;
 use Spiral\Filters\Model\Filter;
@@ -333,8 +337,8 @@ property.
 You can use multiple attributes in a single filter class to map different parts of the request data to different class
 properties.
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Cookie;
 use Spiral\Filters\Attribute\Input\Post;
@@ -403,8 +407,8 @@ $router->setRoute(
 
 ::: tab Attributes
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Route;
 use Spiral\Filters\Model\Filter;
@@ -422,8 +426,8 @@ class MyFilter extends Filter
 
 Via array mapping using `attribute:matches.{name}` notation:
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Model\Filter;
 use Spiral\Filters\Model\FilterDefinitionInterface;
@@ -491,8 +495,8 @@ final class Base64DecodedQuery extends AbstractInput
 
 After that, we can use our attribute in the Filter:
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use App\Validation\Attribute\Base64DecodedQuery;
 use Spiral\Filters\Model\Filter;
@@ -510,8 +514,8 @@ The data **origin** can be specified using the dot notation pointing to some nes
 
 Via attributes:
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Model\Filter;
@@ -547,10 +551,10 @@ We can accept and validate the following data structure:
 > Error messages will be correctly mounted into the original location. You can also use composite filters for more
 > complex use-cases.
 
-```php
-namespace App\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
-use App\Filter\MyFilter;
+use App\Endpoint\Web\Filter\MyFilter;
 
 class HomeController
 {
@@ -571,8 +575,8 @@ To use this attribute, simply specify it alongside other filter attributes withi
 
 For example:
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/UserProfileFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Setter;
 use Spiral\Filters\Attribute\Input\Query;
@@ -628,8 +632,8 @@ The validation rules can be defined using the same approach as in [Validator](..
 > FilterDefinition class should implement `Spiral\Filters\Model\ShouldBeValidated` if a filter object should be
 > validated.
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Model\Filter;
@@ -660,8 +664,8 @@ and return a response with the error message via `Spiral\Filters\ErrorsRendererI
 
 You just need to register middleware:
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/RoutesBootloader.php
+namespace App\Application\Bootloader;
 
 use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
 use Spiral\Filter\ValidationHandlerMiddleware;
@@ -681,7 +685,7 @@ final class RoutesBootloader extends BaseRoutesBootloader
 By default, the middleware uses `Spiral\Filter\JsonErrorsRenderer` for rendering filter errors. You can change the
 renderer by binding your own implementation of `Spiral\Filters\ErrorsRendererInterface` to the container.
 
-```php
+```php app/src/Filter/CustomJsonErrorsRenderer.php
 namespace App\Filter;
 
 use Psr\Http\Message\ResponseInterface;
@@ -706,8 +710,8 @@ final class CustomJsonErrorsRenderer implements ErrorsRendererInterface
 }
 ```
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/RoutesBootloader.php
+namespace App\Application\Bootloader;
 
 use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
 use Spiral\Filters\ErrorsRendererInterface;
@@ -728,8 +732,8 @@ final class RoutesBootloader extends BaseRoutesBootloader
 
 You can specify a custom error message to any of the rules in the same way as in the validator component.
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Model\Filter;
@@ -756,8 +760,8 @@ class MyFilter extends Filter implements HasFilterDefinition
 If you plan to localize the error message later, wrap the text in `[[]]` to automatically index and replace the
 translation:
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Model\Filter;
@@ -789,8 +793,8 @@ Once the Filter is configured you can access its fields (filtered data).
 
 To get a filtered data, use filter properties or the method `getData` (if it extends `Spiral\Filters\Model\Filter`):
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/MyFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Post;
 use Spiral\Filters\Model\Filter;

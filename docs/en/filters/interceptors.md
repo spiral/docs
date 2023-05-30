@@ -13,7 +13,9 @@ To use interceptors you will need to implement the `Spiral\Core\CoreInterceptorI
 
 Let's imagine that we need to check user authorization to access some filter. We can do it with interceptor:
 
-```php
+```php app/src/Endpoint/Web/Filter/StoreUser.php
+namespace App\Endpoint\Web\Filter;
+
 use Spiral\Domain\Annotation\Guarded;
 
 #[Guarded(permission: 'user.store')]
