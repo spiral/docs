@@ -1,43 +1,78 @@
 # The Basics — Debugging
 
-Spiral does not have built-in tools for dumping variables, but it is possible to use third-party packages.
+Spiral does not come with built-in tools for variable dumping, but fear not! There are third-party packages available to
+help us out.
+
+## Spiral Dumper
+
+With the `spiral/dumper` package, developers can effortlessly inspect and analyze variable values during the development
+process. This package is an invaluable asset for debugging and troubleshooting in both web and CLI applications.
+
+The component acts as a wrapper over
+the [symfony/var-dumper](https://symfony.com/doc/current/components/var_dumper.html) library. It allows you to send
+dumps directly to the browser within HTTP workers or to the STDERR output in other environments.
+
+### Installation
+
+By default, the `spiral/dumper` package is already included in the `spiral/app` skeleton. However, if you're using a
+different skeleton, you can easily install the package using the following command:
+
+```terminal
+composer require spiral/dumper
+```
+
+### Usage
+
+To dump variables, simply utilize the helper function `dump()` provided by the package.
+
+```php
+dump($variable);
+```
 
 ## Symfony VarDumper
 
-The [symfony/var-dumper](https://symfony.com/doc/current/components/var_dumper.html) package provides a simple server
-that can collect all the dumped data. You can start the server using the command and it will listen for data sent to 
-it by the `dump()` function.
+Alternatively, you can opt for the [symfony/var-dumper](https://symfony.com/doc/current/components/var_dumper.html)
+package as a debugging solution. This package offers a straightforward server that collects all the dumped data. You can
+start the server using a command, and it will listen for data sent by the `dump()` function.
+
+### Installation
+
+To install the package, execute the following command:
+
+```terminal
+composer require symfony/var-dumper
+```
+
+### Usage
+
+To start the server, run the following command:
 
 ```terminal
 ./vendor/bin/var-dump-server
 ```
 
-> **Note**
-> `spiral/app` comes with `symfony/var-dumper` package and provides a helper function `dumprr()` that you can use for
-> dumping variables.
-
-
-To use this feature, you also need to define the environment variable `VAR_DUMPER_FORMAT` to be server in your `.env`
-file.
+To use this feature, you also need to define the `VAR_DUMPER_FORMAT` environment variable in your `.env` file
+as follows:
 
 ```dotenv .env
 VAR_DUMPER_FORMAT=server
 ```
 
-This will tell the package to send the dumped data to the server instead of displaying it in the output.
+By doing this, you instruct the package to send the dumped data to the server instead of displaying it in the output.
 
 <hr />
 
 ## XDebug
 
-It is possible to debug the Spiral application like any other classic PHP applications using the xDebug extension.
+Debugging the Spiral application is as feasible as debugging any other classic PHP application when utilizing the xDebug
+extension.
 
 ### IDE Configuration
 
-Ad first, you need to configure your IDE to work with xDebug. 
+Ad first, you need to configure your IDE to work with xDebug.
 
 > **See more**
-> Read more about the IDE configuration in the 
+> Read more about the IDE configuration in the
 > official [documentation](https://roadrunner.dev/docs/php-debugging).
 
 ### On-Demand
@@ -146,20 +181,20 @@ code.
 
 ### Installation
 
-At first, you need to Install Xhprof extension. One of the way to install it is to use PECL package.
+To begin, you need to install the Xhprof extension. One way to do this is by using the PECL package.
 
 ```terminal
 pear channel-update pear.php.net
 pecl install xhprof
 ```
 
-Then you need to install the profiler package
+Next, install the profiler package:
 
 ```terminal
 composer require --dev spiral/profiler:^3.0
 ```
 
-After package install you need to add bootloader from the package in your application.
+Once the package is installed, add the bootloader from the package to your application.
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
