@@ -55,8 +55,8 @@ any request's attribute using a **source** and **origin** pair with dot-notation
 
 For example:
 
-```php
-namespace App\Controller;
+```php app/src/Endpoint/Web/HomeController.php
+namespace App\Endpoint\Web;
 
 use Spiral\Filters\InputInterface;
 
@@ -80,32 +80,44 @@ Input binding is the primary way of delivering data from request into the filter
 ## Create Filter
 
 The implementation of the filter object might vary from package to package. The default implementation is provided via
-the abstract class `Spiral\Filters\Model\Filter`. To create a custom filter to validate a simple query value with
-key `username`:
+the abstract class `Spiral\Filters\Model\Filter`. 
 
-```php
-namespace App\Filter;
+To create a custom filter to validate a simple query value with key `username`, use the scaffolding command:
+
+```terminal
+php app.php create:filter UserFilter -p username:query
+```
+
+> **Note**
+> Read more about scaffolding in the [Basics — Scaffolding](../basics/scaffolding.md#request-filter) section.
+
+After executing this command, the following output will confirm the successful creation:
+
+```output
+Declaration of '[32mUserFilter[39m' has been successfully written into '[33mapp/src/Endpoint/Web/Filter/UserFilter.php[39m'.
+```
+
+```php app/src/Endpoint/Web/Filter/UserFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Query;
 use Spiral\Filters\Model\Filter;
 
 final class UserFilter extends Filter
 {
-    #[Query]
+    #[Query(key: 'username')]
     public string $username;
 }
 ```
 
 You can request the Filter as a method injection (it will be automatically bound to the current HTTP request input):
 
-```php
-namespace App\Controller;
-
-use App\Filter\UserFilter;
+```php app/src/Endpoint/Web/UserController.php
+namespace App\Endpoint\Web;
 
 class UserController
 {
-    public function show(UserFilter $filter): void
+    public function show(Filter\UserFilter $filter): void
     {     
         dump($filter->username);
     }
@@ -116,7 +128,7 @@ By default, filters do not perform validation. However, if you want to validate 
 `HasFilterDefinition` interface and define a set of validation rules for the filter properties using
 the `FilterDefinition` class with `Spiral\Filters\Model\ShouldBeValidated` interface implementation:
 
-```php
+```php app/src/Filter/MyFilterDefinition.php
 namespace App\Filter;
 
 use Spiral\Filters\Model\FilterDefinitionInterface;
@@ -145,8 +157,8 @@ final class MyFilterDefinition implements FilterDefinitionInterface, ShouldBeVal
 Here is an example of registering a filter definition and binding with a validator that will be used to validate filters
 with the `MyFilterDefinition` definition:
 
-```php
-namespace App\Bootloader;
+```php app/src/Application/Bootloader/ValidatorBootloader.php
+namespace App\Application\Bootloader;
 
 use App\Validation;
 use Spiral\Boot\Bootloader\Bootloader;
@@ -171,8 +183,8 @@ final class ValidatorBootloader extends Bootloader
 
 And now you can use the filter definition in your filter:
 
-```php
-namespace App\Filter;
+```php app/src/Endpoint/Web/Filter/UserFilter.php
+namespace App\Endpoint\Web\Filter;
 
 use Spiral\Filters\Attribute\Input\Query;
 use Spiral\Filters\Model\Filter;

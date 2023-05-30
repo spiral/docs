@@ -1,43 +1,67 @@
 # Getting started — First CLI command
 
-Spiral provides convenient way to create console applications. It has the built-in support for console
-commands, which allows you to create command-line interfaces (CLIs) for your application. With console commands, you can
-automate tasks, perform maintenance, and interact with your application in a way that is not possible with a standard
-web interface.
+Spiral offers a convenient approach to creating console applications. It comes with built-in support for console
+commands, enabling you to develop command-line interfaces (CLIs) for your application. Console commands empower you to
+automate tasks, perform maintenance operations, and interact with your application in ways beyond the limitations of a
+standard web interface.
 
-Managing and using console commands in Spiral is very easy. The framework provides a convenient interface
-for working with console commands by leveraging the power of the `symfony/console` package.
+Working with console commands in Spiral is incredibly straightforward. The framework provides a user-friendly interface
+that leverages the power of the `symfony/console` package.
 
-Here are the basic steps to creating a console command in Spiral:
+Let's walk through the basic steps of creating a console command.
 
 ## Creating a command
 
-Here's an example of a basic console command that outputs current date to the console:
+To create your first command effortlessly, use the scaffolding command:
+
+```terminal
+php app.php create:command CurrentDate
+```
+
+> **Note**
+> Read more about scaffolding in the [Basics — Scaffolding](../basics/scaffolding.md#console-command) section.
+
+After executing this command, the following output will confirm the successful creation:
+
+```output
+Declaration of '[32mCurrentDateCommand[39m' has been successfully written into '[33mapp/src/Endpoint/Console/CurrentDateCommand.php[39m'.
+```
+
+Now, let's inject some logic into our freshly created command.
+
+Here's an example of a console command that outputs current date to the console:
 
 ```php app/src/App/Endpoint/Console/CurrentDateCommand.php
 namespace App\Endpoint\Console;
 
+use Spiral\Console\Attribute\Argument;
+use Spiral\Console\Attribute\AsCommand;
+use Spiral\Console\Attribute\Option;
+use Spiral\Console\Attribute\Question;
 use Spiral\Console\Command;
 
+#[AsCommand(name: 'current:date')]
 final class CurrentDateCommand extends Command
 {
-    protected const SIGNATURE = 'current:date {format=Y-m-d : Date format}';
-    protected const DESCRIPTION = 'Get current date';
+    #[Argument(description: 'Date format')]
+    public string $format = 'Y-m-d';
 
-    public function __invoke(): void
+    public function __invoke(): int
     {
-        $this->writeln(\date($this->argument('format')));
+        $this->writeln(\date($this->format));
+
+        return self::SUCCESS;
     }
 }
 ```
 
-Spiral is configured by default to automatically discover commands located in the `app/src` directory
-using the [static analysis component](../advanced/tokenizer.md). This means that you don't have to manually register
-your commands or create a separate configuration file for them.
+By default, Spiral is configured to automatically discover commands located in the `app/src` directory through the
+[static analysis component](../advanced/tokenizer.md). This means you don't have to manually register your commands or
+create a separate configuration file for them.
 
 ## Running the command
 
-To get help information for your command, you can run the followed command in your terminal.
+To retrieve help information for your command, execute the following command in your terminal:
 
 ```terminal
 php app.php help current:date
@@ -66,7 +90,7 @@ This will display the command's signature, description, and any available argume
 
 <br>
 
-**That's it! You've successfully set up your first console command in Spiral.**
+**That's it! You have successfully set up your first console command in Spiral.**
 
 <hr>
 
@@ -78,3 +102,4 @@ Now, dive deeper into the fundamentals by reading some articles:
 * [Create command](../console/commands.md)
 * [Interceptors](../console/interceptors.md)
 * [Command input validation](../cookbook/console-validation.md)
+* [Scaffolding](../basics/scaffolding.md)

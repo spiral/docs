@@ -16,30 +16,48 @@ it easier to build your command.
 > Which option you choose will depend on your needs and preferences. Both approaches are valid and can be used to create
 > functional console commands.
 
-Here is an example of a simple console command created by extending `Spiral\Console\Command`:
 
-```php
+To create your first command effortlessly, use the scaffolding command:
+
+```terminal
+php app.php create:command My
+```
+
+> **Note**
+> Read more about scaffolding in the [Basics — Scaffolding](../basics/scaffolding.md#console-command) section.
+
+After executing this command, the following output will confirm the successful creation:
+
+```output
+Declaration of '[32mMyCommand[39m' has been successfully written into '[33mapp/src/Endpoint/Console/MyCommand.php[39m'.
+```
+
+```php app/src/App/Endpoint/Console/MyCommand.php
+namespace App\Endpoint\Console;
+
+use Spiral\Console\Attribute\Argument;
+use Spiral\Console\Attribute\AsCommand;
+use Spiral\Console\Attribute\Option;
+use Spiral\Console\Attribute\Question;
 use Spiral\Console\Command;
 
+#[AsCommand(name: 'my')]
 final class MyCommand extends Command
 {
-    const NAME = 'my:command';
-    const DESCRIPTION = 'This is my command';
-
-    protected function perform(): int
+    public function __invoke(): int
     {
-        // do something special...
+        // Put your command logic here
+        $this->info('Command logic is not implemented yet');
+
         return self::SUCCESS;
     }
 }
 ```
 
-Use constants `NAME` and `DESCRIPTION` to give a name to your Command.
-
 To invoke your command, run the following command in the console:
 
 ```terminal
-php app.php my:command 
+php app.php my
 ```
 
 ## Attributes

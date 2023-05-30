@@ -1,7 +1,7 @@
 # Getting started — First HTTP controller
 
-If you're using the Spiral for a PHP project and you're ready to set up your first controller, here are the
-basic steps you'll need to follow:
+If you're using the Spiral for a PHP project and ready to dive into setting up your first controller, here are 
+the basic steps to follow:
 
 ## Create a controller
 
@@ -10,7 +10,24 @@ the behavior of your application for a specific set of routes. It's responsible 
 incoming [PSR-7](https://www.php-fig.org/psr/psr-7/) compatible requests, processing data, and then returning a response
 to the client.
 
-Here's an example of a simple controller that returns the current date and time:
+To create your first controller effortlessly, use the scaffolding command:
+
+```terminal
+php app.php create:controller CurrentDate
+```
+
+> **Note**
+> Read more about scaffolding in the [Basics — Scaffolding](../basics/scaffolding.md#http-controller) section.
+
+After executing this command, the following output will confirm the successful creation:
+
+```output
+Declaration of '[32mCurrentDateController[39m' has been successfully written into '[33mapp/src/Endpoint/Web/CurrentDateController.php[39m'.
+```
+
+Now, let's inject some logic into our freshly created controller.
+
+Here's an example of a controller that returns the current date and time:
 
 ```php app/src/Endpoint/Web/CurrentDateController.php
 namespace App\Endpoint\Web;
@@ -24,7 +41,7 @@ final class CurrentDateController
 }
 ```
 
-The next step is to associate a route with your controller.
+The next step involves associating a route with your controller.
 
 ## Create a route
 
@@ -32,8 +49,8 @@ The next step is to associate a route with your controller.
 
 ::: tab Using Attributes
 
-Spiral makes it easy to define your application's routes by using PHP attributes. All you have to do is add the
-`#[Route]` attribute to the controller's method like so:
+Spiral simplifies route definition in your application by utilizing PHP attributes. You just need to add 
+the `#[Route]` attribute to the controller's method, as shown below:
 
 ```php app/src/Endpoint/Web/CurrentDateController.php
 use Spiral\Router\Annotation\Route;
@@ -51,10 +68,10 @@ public function show(): string
 
 ::: tab Using RoutingConfigurator
 
-Spiral offers a convenient and organized way for developers to define their application's routes using the
-`defineRoutes` method of the `App\Application\Bootloader\RoutesBootloader` class.
+For developers seeking a convenient and organized approach to defining application routes, Spiral offers 
+the `defineRoutes` method in the `App\Application\Bootloader\RoutesBootloader` class.
 
-Here is an example of how to define a route that will handle our controller:
+Here's an example of how to define a route that will be handled by our controller:
 
 ```php app/src/Application/Bootloader/RoutesBootloader.php
 final class RoutesBootloader extends BaseRoutesBootloader
@@ -73,13 +90,13 @@ final class RoutesBootloader extends BaseRoutesBootloader
 
 ::::
 
-To see the list of routes, use the `php app.php route:list` command in your terminal.
+To view the list of routes, use the following command:
 
 ```terminal
 php app.php route:list
 ```
 
-You should see your `current-date` route in the list:
+You should observe your `current-date` route within the displayed list:
 
 ```output
 +--------------+--------+----------+------------------------------------------------+--------+
@@ -91,7 +108,7 @@ You should see your `current-date` route in the list:
 
 ## Test your controller
 
-Once you have your controller set up, you'll need to test it by running the RoadRunner server with the command
+Once your controller is all set, it's time to test it out by running the RoadRunner server using the command:
 
 ```terminal
 ./rr serve
@@ -115,3 +132,4 @@ Now, dive deeper into the fundamentals by reading some articles:
 * [Middleware](../http/middleware.md)
 * [Error Pages](../http/errors.md)
 * [Custom HTTP handler](../cookbook/psr-15.md)
+* [Scaffolding](../basics/scaffolding.md)
