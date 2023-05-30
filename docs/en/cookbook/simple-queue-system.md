@@ -1,260 +1,11 @@
-# Queue System
+# Configuring RoadRunner Queue Pipelines
 
-## Introduction
+Job queues have become an indispensable component in modern PHP applications, handling complex, resource-intensive tasks
+and delivering substantial enhancements to application performance.
 
-In the modern era of web development, the way we handle asynchronous tasks and manage heavy loads has become a
-game-changer. Job queues have emerged as an indispensable part of PHP applications, tackling various challenges and
-increasing overall efficiency. They enable us to efficiently process complex tasks without requiring immediate return
-data. As PHP applications continue to grow in complexity and scale, the need for a robust, high-performance queue
-service (QoS) has become increasingly evident. The right QoS can drastically enhance the efficiency and performance of
-PHP applications. This article aims to shed light on why QoS is essential in today's PHP development landscape and how
-employing QoS implemented in high-performance languages can significantly improve your PHP application's performance.
-
-**Here are some example of task:**
-
-1. Sending bulk emails
-2. Processing complex tasks that don't require immediate feedback
-3. Handling resource-intensive operations in the background
-4. Managing scheduled tasks
-5. Handling delayed executions and asynchronous processing
-6. Balancing system load
-
-## PHP QoS
-
-PHP, with its simplicity and wide usage, has been a go-to language for developers for decades.
-
-**Its strong points include:**
-
-- Rich frameworks and continuous enhancement processes
-- Unique community packages
-- Simple deployment methods and tool assistance
-- Extensive community support
-
-However, PHP may not be the ideal choice for implementing infrastructure tools like queue services. This is primarily
-due to its single-threaded nature which limits its ability to handle multiple tasks simultaneously.
-
-**Other reasons include:**
-
-1. **Not Optimized for Infrastructure Tools:** PHP was initially designed for web development, and its core strength
-   lies in handling HTTP requests and generating HTML content. Implementing infrastructure tools like queue services,
-   which require long-running processes and efficient resource management, is not PHP's primary focus.
-
-2. **Interpreted Language:** PHP is an interpreted language, which means the PHP interpreter reads and executes code
-   line by line. While this feature makes PHP easy to use and deploy, it can slow down execution speed, particularly for
-   CPU-intensive tasks, which are common in queue services.
-
-3. **Non-Optimized Code:** PHP’s flexibility allows developers to write code in different ways to achieve the same
-   result. However, this can often lead to non-optimized code, which can affect performance, especially in a queue
-   service where performance is critical.
-
-4. **Blocked I/O Operations:** PHP, by default, follows a synchronous or blocking I/O model. This means that when a PHP
-   application initiates an I/O operation (like reading from a file or querying a database), the execution thread is
-   blocked or put on hold until the operation completes. This blocking nature can significantly hamper the performance
-   and scalability of a queue service, which often needs to handle multiple I/O operations concurrently. Languages that
-   support non-blocking or asynchronous I/O operations, like Go, are better suited for implementing high-performance
-   queue services.
-
-In PHP, communication with a queue broker is usually handled through sockets. However, PHP's handling of sockets is less
-efficient compared to other languages like Go. In a queue service, efficient socket communication is key for tasks like
-pushing and pulling messages from the queue, acknowledging the processing of messages, and monitoring the health of the
-queue. The overhead of managing socket connections in PHP can lead to bottlenecks, affecting the overall performance and
-reliability of the queue service. This issue is amplified in distributed systems where there is a high volume of socket
-communication between different services. Languages that offer efficient, low-level control over network operations,
-like Go, can handle socket communications more efficiently, resulting in a more performant and reliable queue service.
-
-## Golang QoS
-
-In contrast, Go, developed by Google, is designed to build simple, reliable, and speedy software. It comes with built-in
-concurrency mechanisms that make it easier to write programs that achieve more in less time and are less prone to
-crashing.
-
-**Go particularly excels in developing:**
-
-- Cloud-native applications
-- Distributed networked services
-- Fast and elegant command-line interfaces (CLIs)
-- DevOps and SRE support tools
-- Web development tools
-- Stand-alone utilities
-
-Given these strengths, Go has emerged as an excellent choice for implementing services like queue systems.
-
-## RoadRunner
-
-The Spiral Framework, in conjunction with the RoadRunner server, is a prime example of harnessing Go's power for PHP
-applications. It leverages RoadRunner's QoS (jobs plugin), a high-performance queue service written in Go. This
-combination offers a compelling alternative to PHP packages traditionally used to implement queue services.
-
-One of the distinct advantages of the RoadRunner jobs plugin is its ease of configuration. You don't need to mess around
-with configuring queue brokers like AMQP or Redis on the PHP side, or bother with adding any extra PHP extensions.
-RoadRunner sorts all that out on its own. So, you get to focus on writing your app, while RoadRunner handles the heavy
-lifting.
-
-### Consuming and Producing Jobs
-
-RoadRunner supports both single-instance and distributed setups for handling queue pipelines.
-
-#### Single RoadRunner Instance
-
-When working with a single RoadRunner instance, you can push and consume tasks using the same instance. This approach is
-suitable for small projects where you don't need a distributed queue but only want to handle local jobs in the
-background.
-
-> **Note**
-> RoadRunner provides an `memory` queue driver that can handle a large number of tasks in seconds.
-
-**Here is an example configuration:**
-
-```yaml .rr.yaml
-version: "3"
-
-rpc:
-  listen: tcp://127.0.0.1:6001
-
-server:
-  command: php consumer.php
-  relay: pipes
-
-jobs:
-  consume: [ "local" ]
-  pipelines:
-    local:
-      driver: memory
-      config:
-        priority: 10
-        prefetch: 10
-```
-
-**In this configuration:**
-
-- `jobs.consume` defines the pipelines that the RoadRunner instance will consume. In this case, it is consuming
-  the `local` pipeline.
-
-#### Multiple RoadRunner Instances
-
-If you need a distributed setup using a queue broker like **RabbitMQ**, you can configure multiple RoadRunner
-instances to handle the job processing. In this setup, one or more instances will act as producers, pushing jobs into a
-queue, while other instances will act as consumers, consuming tasks from the queue.
-
-**Here is an example configuration of producer:**
-
-```yaml .rr.yaml
-version: "3"
-
-rpc:
-  listen: tcp://127.0.0.1:6001
-
-server:
-  command: php consumer.php
-  relay: pipes
-
-amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
-
-jobs:
-  consume: [ ]
-  pipelines:
-    email:
-      driver: amqp
-      queue: email
-      ...
-    default:
-      driver: amqp
-      queue: default
-      ...
-```
-
-**In this configuration:**
-
-- `amqp.addr` specifies the address of the RabbitMQ broker to connect to.
-- `jobs.consume` is an empty array, indicating that the RoadRunner instances will act as producers and only push tasks
-  into the queue.
-- `pipelines.email` and `pipelines.default` define two pipelines that will use the AMQP queue driver. Each pipeline is
-  associated with a specific queue name (`email` and `default` in this case).
-
-To configure a RoadRunner instance as a consumer, you need to define the pipelines it will consume. The `jobs.consume`
-section specifies the pipelines that the consumer instance will process.
-
-In a distributed setup, you can have multiple consumer instances connected to a queue broker. Each consumer instance
-can be configured to consume tasks from one or more pipelines. This allows for parallel and scalable job processing.
-
-**To configure multiple consumer instances:**
-
-```yaml .rr.yaml
-jobs:
-  consume: [ "email" ]
-  pipelines:
-    email:
-      driver: amqp
-      queue: email
-      ...
-```
-
-In this configuration, the consumer instances are set to consume tasks from the `email` pipeline.
-
-You can have multiple consumer instances consuming tasks from different pipelines or a combination of shared and
-dedicated pipelines, depending on your application's requirements.
-
-One of the benefits of using multiple consumer instances is the ability to scale the job processing capacity
-horizontally. By adding more consumer instances, you can increase the number of tasks processed simultaneously and
-achieve higher throughput.
-
-To scale consumer instances, you can replicate the consumer configuration for each new instance and ensure they connect
-to the same queue broker and consume the desired pipelines. RoadRunner's design allows for seamless integration of
-additional consumers without compromising the stability or performance of the job processing system.
-
-### Monitoring
-
-RoadRunner goes beyond just job processing and provides valuable metrics specifically designed for monitoring purposes.
-It integrates seamlessly with Prometheus. By leveraging metrics plugin, you can collect detailed metrics about job
-processing, worker performance, and resource utilization.
-
-Additionally, RoadRunner provides a pre-configured Grafana dashboard that allows you to visualize the collected metrics
-in a user-friendly and customizable way. With Grafana, you can create rich visualizations, set up alerts based on
-defined thresholds, and gain valuable insights into the performance and health of your job processing system.
-
-## Task payload
-
-The payload's size significantly impacts the efficiency of communication between the application and the QoS. Large
-payloads can cause various problems, including:
-
-- **Increased Network Latency:** Larger payloads take longer to transmit over the network, increasing latency and
-  slowing down the overall application performance.
-- **Higher Memory Usage:** Larger payloads consume more memory, both in the queue service and in the PHP application.
-  This increased memory usage can affect the performance of other parts of the application.
-- **Increased CPU Usage:** Processing larger payloads can consume more CPU cycles, affecting the application's
-  performance and scalability.
-- **Reduced Throughput:** The larger the payload, the fewer the number of messages that can be processed per unit of
-  time, reducing the overall throughput of the queue service.
-
-Given these drawbacks, it's important to minimize the payload size when communicating between the PHP application and
-the queue service. One effective way to do this is by using a compact serialization format like Protocol Buffers (
-protobuf). In comparison to other serialization formats, protobuf offers smaller payload sizes which result in improved
-performance and efficiency.
-
-| Data Type                               | Size in Bytes |
-|-----------------------------------------|---------------|
-| **JSON array**                          | 430           |
-| **Ig Binary array**                     | 348           |
-| **Ig Binary object**                    | 482           |
-| **Native serializer array**             | 635           |
-| **Native serializer object**            | 848           |
-| **Protobuf object**                     | 193           |
-| **SerializableClosure array**           | 961           |
-| **SerializableClosure object**          | 1174          |
-| **SerializableClosure array w/secret**  | 1111          |
-| **SerializableClosure object w/secret** | 1325          |
-
-Spiral Framework enhances this aspect by offering the flexibility to use any serializer you want, allowing for efficient
-serialization and deserialization of payloads. This feature, combined with Spiral's ability to efficiently handle socket
-communication and manage queue services, makes it an attractive choice for PHP developers looking to optimize their
-applications.
-
-## Spiral Framework queue component
-
-Spiral Framework offers an array of seamlessly integrated components, which makes it an ideal choice for building
-complex applications. In this tutorial, we will guide you on creating a simple application using Spiral Framework and
-RoadRunner.
+One solution that harnesses the power of Go for PHP applications is RoadRunner, in conjunction with the Spiral
+Framework. This tutorial, will guide you through configuring queue pipelines for RoadRunner in Spiral applications,
+offering a high-performing, robust queue service solution.
 
 > **Note**
 > This tutorial covers the basics of the components and approaches. For more detailed information, we suggest referring
@@ -265,7 +16,7 @@ Our application will consist of two types of applications:
 1. **Producer** - will push jobs into a queue
 2. **Consumer** - will receive queued tasks and handle them
 
-### Producer
+## Producer
 
 To get started with building **producer** application, you can easily install the default `spiral/app` bundle with most
 of the required components by running the following command:
@@ -323,10 +74,14 @@ Let's check if everything work fine using the following command:
 ./rr serve
 ```
 
-#### Configuration
+### Configuration
 
 The configuration of Spiral applications is accomplished through configuration files located in the `app/config`
 directory.
+
+:::: tabs
+
+::: tab PHP
 
 Let's define our first pipeline in the `app/config/queue.php` file:
 
@@ -361,10 +116,56 @@ return [
 > You can read more about roadrunner queue configuration in the [Queue — RoadRunner integration](../queue/roadrunner.md)
 > section.
 
+:::
+
+::: tab YAML
+
+Let's define our first pipeline in the `.rr.yaml` file:
+
+```yaml
+amqp:
+  addr: amqp://guest:guest@127.0.0.1:5672
+
+jobs:
+  consume: [ ]
+  pipelines:
+    default:
+      driver: amqp
+      priority: 100
+      queue: default
+```
+
+And select defined pipeline in the `app/config/queue.php` file:
+
+```php app/config/queue.php
+use Spiral\RoadRunner\Jobs\Queue\AMQPCreateInfo;
+
+return [
+    'default' => env('QUEUE_CONNECTION', 'roadrunner'),
+
+    'pipelines' => [],
+    
+    'connections' => [
+        'roadrunner' => [
+            'driver' => 'roadrunner',
+            'pipeline' => 'default',
+        ],
+    ],
+];
+```
+
+> **Note**
+> You can read more about roadrunner queue configuration in the [Queue — RoadRunner integration](../queue/roadrunner.md)
+> section.
+
+:::
+
+::::
+
 When you run the `./rr serve` command, RoadRunner will create a pipeline with the name `default` and will use the
 `roadrunner` connection to push jobs into the queue by default.
 
-#### Pushing jobs
+### Pushing jobs
 
 Let's add some logic to it:
 
@@ -500,7 +301,7 @@ and then run our command:
 php app.php ping
 ```
 
-### Consumer
+## Consumer
 
 To get started with building **consumer** application, you can easily install the default `spiral/app` bundle with most
 of the required components by running the following command:
@@ -536,7 +337,11 @@ jobs:
 > `amqp` section should be the same as in the producer application. **Consumer and Producer should use the same AMQP
 > server.**
 
-#### Configuration
+### Configuration
+
+:::: tabs
+
+::: tab PHP
 
 Let's define our pipeline in the `app/config/queue.php` file:
 
@@ -553,7 +358,7 @@ return [
                   priority: 100,
                   queue: 'default',
              ),
-             'consume' => true, // <===== Enable consuming
+             'consume' => true, // <===== Enables consuming
          ],
     ],
     
@@ -570,7 +375,34 @@ return [
 > The only difference between consumer and producer configuration is that consumer should have `consume` option set to
 > `true`. In this case, RoadRunner will automatically consume jobs from the AMQP server.
 
-#### Job
+:::
+
+::: tab YAML
+
+Let's define our pipeline in the `.rr.yaml` file:
+
+```yaml
+amqp:
+  addr: amqp://guest:guest@127.0.0.1:5672
+
+jobs:
+  consume: [ default ]  # <===== Enables consuming
+  pipelines:
+    default:
+      driver: amqp
+      priority: 100
+      queue: default
+```
+
+> **Note**
+> The only difference between consumer and producer configuration is that consumer should have `jobs.consume` option
+> contains `default` pipeline name. In this case, RoadRunner will automatically consume jobs from the AMQP server.
+
+:::
+
+::::
+
+### Job
 
 When a job is going to be consumed, it will be passed to the job handler class that has all the logic to handle it.
 
@@ -742,7 +574,7 @@ And push a job into a queue from producer application:
 php app.php ping
 ```
 
-#### Retry policy
+### Retry policy
 
 Let's imagine that we have a job that should be retried if it fails. For example, we have a job that sends a request to
 a remote server. If the server is not available, we should retry this job after some time.
@@ -825,3 +657,87 @@ return [
 ```
 
 Now if our job handler fails, it will be retried after 5 seconds. After 3 attempts, the job will be marked as failed.
+
+## Want more? Unlock the Power of Advanced Workflow Orchestration
+
+Spiral Framework provides an integration with [Temporal](https://temporal.io/), a powerful workflow orchestration tool
+that allows you to build complex workflows. Now, if you’re familiar with queue services like RoadRunner, you’re in for a
+treat because Temporal IO takes workflow management to a whole new level. It’s like having superpowers for handling
+complex workflows in a simple and elegant manner.
+
+In the world of PHP development, we often find ourselves juggling various tasks and processes that need to be executed
+in a specific order. That’s where Temporal shines. It allows us to write expressive and powerful workflows in a way
+that’s easy to understand and maintain.
+
+### Let’s dive into an example that showcases the beauty of Temporal
+
+Imagine you have a task of handling user subscriptions on a monthly basis. With Temporal, it becomes a straightforward
+process. Here’s a simple example to illustrate it:
+
+```php
+<?php
+/**
+ * This file is part of Temporal package.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+declare(strict_types=1);
+
+namespace Temporal\Samples\Subscription;
+
+use Carbon\CarbonInterval;
+use Temporal\Activity\ActivityOptions;
+use Temporal\Exception\Failure\CanceledFailure;
+use Temporal\Workflow;
+
+/**
+ * Demonstrates a long-running process to represent a user subscription workflow.
+ */
+class SubscriptionWorkflow implements SubscriptionWorkflowInterface
+{
+    private $account;
+
+    // Workflow logic goes here...
+
+    public function subscribe(string $userID)
+    {
+        yield $this->account->sendWelcomeEmail($userID);
+
+        try {
+            $trialPeriod = true;
+            while (true) {
+                // Lower the period duration to observe workflow behavior
+                yield Workflow::timer(CarbonInterval::days(30));
+
+                if ($trialPeriod) {
+                    yield $this->account->sendEndOfTrialEmail($userID);
+                    $trialPeriod = false;
+                    continue;
+                }
+
+                yield $this->account->chargeMonthlyFee($userID);
+                yield $this->account->sendMonthlyChargeEmail($userID);
+            }
+        } catch (CanceledFailure $e) {
+            yield Workflow::asyncDetached(
+                function () use ($userID) {
+                    yield $this->account->processSubscriptionCancellation($userID);
+                    yield $this->account->sendSorryToSeeYouGoEmail($userID);
+                }
+            );
+        }
+    }
+}
+```
+
+In this example, the `subscribe` method represents the workflow logic for managing monthly subscriptions. The magic lies
+in the `Workflow::timer` function, which allows you to schedule a specific duration for each iteration of the loop.
+
+By setting the timer to `CarbonInterval::months(1)`, you can ensure that the subscription tasks are executed every 
+month. Temporal takes care of the scheduling and coordination, freeing you from the hassle of managing it manually.
+
+Moreover, Temporal provides built-in fault tolerance and scalability. If an exception occurs, such as 
+a `CanceledFailure` indicating a subscription cancellation, you can handle it gracefully within the workflow.
+
+With Temporal, managing complex periodic workflows like monthly subscriptions becomes a breeze.
