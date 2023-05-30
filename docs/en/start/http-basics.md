@@ -129,3 +129,4 @@ Now, dive deeper into the fundamentals by reading some articles:
 * [Middleware](../http/middleware.md)
 * [Error Pages](../http/errors.md)
 * [Custom HTTP handler](../cookbook/psr-15.md)
+* [Scaffolding](../basics/scaffolding.md)

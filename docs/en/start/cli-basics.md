@@ -40,7 +40,7 @@ use Spiral\Console\Command;
 #[AsCommand(name: 'current:date')]
 final class CurrentDateCommand extends Command
 {
-    #[Argument(name: 'format', description: 'Date to format')]
+    #[Argument(description: 'Date format')]
     public string $format = 'Y-m-d';
 
     public function __invoke(): int
@@ -99,3 +99,4 @@ Now, dive deeper into the fundamentals by reading some articles:
 * [Create command](../console/commands.md)
 * [Interceptors](../console/interceptors.md)
 * [Command input validation](../cookbook/console-validation.md)
+* [Scaffolding](../basics/scaffolding.md)
