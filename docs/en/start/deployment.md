@@ -86,10 +86,11 @@ them for performance.
 - `--no-dev` option is used to prevent any development dependencies from being installed ad
 - `--no-scripts` option is used to prevent any `post-install` scripts from being executed.
 
-
 ## Nginx
 
-If you want to use Spiral with RoadRunner and have Nginx server in front of it, you will need to configure Nginx to act 
+### Proxy to RoadRunner
+
+If you want to use Spiral with RoadRunner and have Nginx server in front of it, you will need to configure Nginx to act
 as a reverse proxy.
 
 Here is an example of how to set up Nginx as a reverse proxy.
@@ -106,11 +107,11 @@ server {
 }
 ```
 
-It listens on port `80` and directs all incoming requests to the IP address `127.0.0.1` on port `8080`, where
+This configuration instructs Nginx to listen on port `80` and forward all incoming requests to `127.0.0.1:8080`, where
 RoadRunner is running.
 
-You can put this configuration in the `/etc/nginx/sites-available/` directory and link it to `/etc/nginx/sites-enabled/`
-directory.
+You can place this configuration file in the `/etc/nginx/sites-available/` directory and then create a symbolic link to
+it in the `/etc/nginx/sites-enabled/` directory.
 
 Here is an example of a configuration that uses a RoadRunner HTTP server:
 
@@ -120,8 +121,69 @@ http:
 ```
 
 > **Warning:**
-> Do not use `address: 0.0.0.0:8080` in the RoadRunner configuration. This will prevent direct access to the RoadRunner
-> HTTP server and only allow access through the Nginx reverse proxy.
+> Avoid using address: `0.0.0.0:8080` in the RoadRunner configuration as it would block direct access to the
+> RoadRunner HTTP server, allowing access only through the Nginx reverse proxy.
+
+### PHP-FPM
+
+To use Spiral with PHP-FPM, you'll need to follow these steps:
+
+1. Install the `spiral/sapi-bridge` package, which provides a dispatcher that PHP-FPM will use to handle requests.
+
+Use the following command to install the package:
+
+```terminal
+composer require spiral/sapi-bridge
+```
+
+Once the package is installed, you'll need to register the `Spiral\Sapi\Bootloader\SapiBootloader` bootloader in your
+application's list of bootloaders.
+
+```php app/src/Application/Kernel.php
+protected const LOAD = [
+    // ...
+    \Spiral\Sapi\Bootloader\SapiBootloader::class,
+];
+```
+
+2. Configure Nginx to use PHP-FPM.
+
+Here's an example of how you can set up Nginx to work with PHP-FPM:
+
+```nginx /etc/nginx/sites-enabled/spiral.conf
+server {
+    listen 80;
+    listen [::]:80;
+    server_name example.com;
+    root /srv/example.com/public;
+ 
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+ 
+    index app.php;
+ 
+    charset utf-8;
+ 
+    location / {
+        try_files $uri $uri/ /app.php?$query_string;
+    }
+ 
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+ 
+    error_page 404 /app.php;
+ 
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+ 
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+```
 
 ## Deployer
 
@@ -131,7 +193,7 @@ be integrated with other tools like load balancers and monitoring systems. This 
 efficient and less prone to errors, and makes it easier to keep track of which version of the code is currently on the
 production server, making it hard to rollback in case of errors.
 
-Deployer is a popular deployment tool that can be used to automate the deployment process for a Spiral application. One 
+Deployer is a popular deployment tool that can be used to automate the deployment process for a Spiral application. One
 of the advantages of using Deployer is that it can provide "zero downtime" deployment.
 
 Zero downtime deployment is a technique that allows you to update your application without interrupting the service to
