@@ -14,6 +14,9 @@ To create your first job effortlessly, use the scaffolding command:
 php app.php create:jobHandler PingSite
 ```
 
+> **Note**
+> Read more about scaffolding in the [Basics — Scaffolding](../basics/scaffolding.md#job-handler) section.
+
 After executing this command, the following output will confirm the successful creation:
 
 ```output

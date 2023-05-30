@@ -1,56 +1,65 @@
 # Framework — Bootloaders
 
-Spiral utilizes bootloader classes during the bootstrapping process to handle application configuration. One key feature
-is that bootloaders are executed only once during the loading of the application, meaning that adding additional code 
-to them will not negatively impact runtime performance.
+Spiral uses bootloader classes during the bootstrapping process to handle application configuration. One of the key
+features is that bootloaders are executed only once during the application bootstrapping, ensuring that adding
+additional code to them does not negatively impact runtime performance.
 
-During the bootstrapping process, the bootloader classes can be used to configure various aspects of the application.
+Bootloader classes play a crucial role in configuring various aspects of the application.
 
-**Some examples include:**
+**Here are some examples:**
 
-- **Container Configuration**: The bootloaders can be used to configure the dependency injection container, such as
-  registering services and binding interfaces to implementations.
-- **Application Configuration**: The bootloaders can be used to set up various application-level settings, such as the
-  environment, debug mode, and error handling.
-- **Database Configuration**: The bootloaders can be used to set up and configure the application's database connection,
-  such as specifying the database driver, connection details, and any necessary migrations.
+- **Container Configuration**: Bootloaders can be utilized to configure the dependency injection container. This
+  includes tasks such as registering services and binding interfaces to their respective implementations.
+- **Application Configuration**: Bootloaders are responsible for setting up various application-level settings,
+  including the environment, debug mode, and error handling.
+- **Database Configuration**: Bootloaders are involved in setting up and configuring the application's database
+  connection. This includes specifying the database driver, connection details, and any necessary migrations.
 - **Routing Configuration**: The bootloaders can be used to set up the application's routing rules, such as defining
   which controllers should handle which URLs.
-- **Services Initialization**: The bootloaders can be used to initialize any services required by the application, such
-  as caching, logging, and event systems.
+- **Services Initialization**: Bootloaders take care of initializing any services required by the application, such as
+  caching, logging, and event systems.
 
 ![Application Control Phases](https://user-images.githubusercontent.com/773481/180768689-c711e6f0-3523-4330-a496-f78088504b29.png)
 
 ## Simple Bootloader
 
-You can create a simple bootloader by extending `Spiral\Boot\Bootloader\Bootloader` class:
+To create a simple bootloader effortlessly, use the scaffolding command:
 
-```php app/src/Application/Bootloader/GithubClientBootloader.php
-namespace App\Application\Bootloader;
-
-use Spiral\Boot\Bootloader\Bootloader;
-
-final class GithubClientBootloader extends Bootloader 
-{
-    // ...
-}
+```terminal
+php app.php create:bootloader GithubClient
 ```
 
-Currently, your Bootloader doesn't do anything. A little later, we will add some functionality to it.
+> **Note**
+> Read more about scaffolding in the [Basics — Scaffolding](../basics/scaffolding.md#bootloader) section.
+
+After executing this command, the following output will confirm the successful creation:
+
+```output
+Declaration of '[32mGithubClientBootloader[39m' has been successfully written into '[33mapp/src/Application/Bootloader/GithubClientBootloader.php[39m'.
+```
+
+Now you can find the `GithubClientBootloader` class in the `app/src/Application/Bootloader` directory.
+
+Currently, a new Bootloader doesn't perform any actions. A little later, we will add some functionality to it.
 
 ## Registering bootloader
 
-Every Bootloader must be activated in your application kernel.
+Every bootloader must be activated in your application kernel `app/src/Application/Kernel.php`.
 
-In Spiral, bootloaders can be registered using the constants `Kernel::SYSTEM`, `Kernel::LOAD`, and
-`Kernel::APP`. These constants allow developers to define which bootloaders should be executed during different stages
-of the application's initialization process. The benefit of this approach is that it allows for a clear separation of
-concerns and makes it easy to understand which bootloaders are responsible for performing specific tasks.
+In Spiral, you can register bootloaders in your kernel using two different approaches: constants and methods.
 
-Additionally, Spiral provides methods such as `defineBootloaders`, `defineAppBootloaders`, and
-`defineSystemBootloaders` which allow for more complex logic and registration of objects, anonymous classes or other
-advanced use cases. This gives developers more flexibility and control over the initialization process of the
-application.
+1. **Constants:** The kernel provides constants such as `Kernel::SYSTEM`, `Kernel::LOAD`, and `Kernel::APP`. These
+   constants allow you to specify which bootloaders should be executed at different stages of the application's
+   initialization process. By using these constants, you can achieve a clear separation of concerns and easily
+   understand which bootloaders handle specific tasks.
+2. **Methods:** The kernel also offers methods like `defineBootloaders`, `defineAppBootloaders`,
+   and `defineSystemBootloaders`. These methods allow for more complex logic and registration of objects, anonymous
+   classes, or other advanced use cases. With these methods, you have greater flexibility and control over the
+   initialization process of your application.
+
+> **Warning**
+> You cannot use both methods and constants simultaneously. If you choose to use the method approach, the registration
+> through constants will not take effect.
 
 :::: tabs
 
@@ -411,3 +420,12 @@ class AppBootloader extends Bootloader
     }
 }
 ```
+
+<hr>
+
+## What's Next?
+
+Now, dive deeper into the fundamentals by reading some articles:
+
+* [HTTP — Interceptors](../http/interceptors.md)
+* [Scaffolding](../basics/scaffolding.md)

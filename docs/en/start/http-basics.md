@@ -16,6 +16,9 @@ To create your first controller effortlessly, use the scaffolding command:
 php app.php create:controller CurrentDate
 ```
 
+> **Note**
+> Read more about scaffolding in the [Basics — Scaffolding](../basics/scaffolding.md#http-controller) section.
+
 After executing this command, the following output will confirm the successful creation:
 
 ```output

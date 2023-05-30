@@ -18,6 +18,9 @@ To create your first command effortlessly, use the scaffolding command:
 php app.php create:command CurrentDate
 ```
 
+> **Note**
+> Read more about scaffolding in the [Basics — Scaffolding](../basics/scaffolding.md#console-command) section.
+
 After executing this command, the following output will confirm the successful creation:
 
 ```output
