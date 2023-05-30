@@ -917,7 +917,7 @@ When utilizing multiple workers in a web application, it is important to conside
 such as databases is managed. SQLite, while a reliable and lightweight database solution, poses limitations when it
 comes to concurrent access by multiple workers.
 
-### File Locking
+### File-based Database Locking
 
 Firstly, SQLite databases are file-based, meaning they are stored as a single file on disk. This design choice can
 create issues when multiple workers attempt to access the same SQLite database simultaneously. SQLite utilizes
@@ -925,7 +925,7 @@ file-level locks to maintain data integrity, allowing only one writer to modify 
 a result, if multiple workers attempt to write to the database concurrently, they will experience contention and
 potential locking issues, leading to reduced performance and potential data corruption.
 
-### Shared Memory
+### Inability to Share In-Memory Databases
 
 Additionally, SQLite does not provide a built-in mechanism to share an in-memory database between multiple processes or
 workers. In-memory databases are often used for performance optimization, as they eliminate disk I/O operations.
