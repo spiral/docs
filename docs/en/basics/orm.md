@@ -113,16 +113,25 @@ return [
      * the driver class and its connection options.
      */
     'drivers' => [
-        'runtime' => new Config\SQLiteDriverConfig(
-            connection: new Config\SQLite\FileConnectionConfig(
-                database: env('DB_DATABASE', directory('root') . 'runtime/app.db')
+        'runtime' => new Config\MySQLDriverConfig(
+            connection: new Config\MySQL\TcpConnectionConfig(
+                database: 'homestead',
+                host: '127.0.0.1',
+                port: 3307,
+                user: 'root',
+                password: 'secret',
             ),
-            queryCache: true,
+            queryCache: true
         ),
         // ...
     ],
 ];
 ```
+
+> **Warning**
+> Please note that using SQLite as the database backend with multiple workers can present significant challenges and 
+> limitations. It is important to be aware of these limitations to ensure proper functionality and performance of your 
+> application. Rad more about this in the [SQLite limitations](./#sqlite-limitations) section.
 
 > **See more**
 > Read more about the configuration of the database in
@@ -425,14 +434,14 @@ final class StoreUser extends Filter implements HasFilterDefinition
 
 ### Entity behaviors
 
-If you want to use [cycle/entity-behavior](https://cycle-orm.dev/docs/entity-behaviors-install/) package in your 
+If you want to use [cycle/entity-behavior](https://cycle-orm.dev/docs/entity-behaviors-install/) package in your
 application, you need to install it first:
 
 ```bash
 composer require cycle/entity-behavior
 ```
 
-After that, you need to bind `Cycle\ORM\Transaction\CommandGeneratorInterface` 
+After that, you need to bind `Cycle\ORM\Transaction\CommandGeneratorInterface`
 with `\Cycle\ORM\Entity\Behavior\EventDrivenCommandGenerator` in the application container:
 
 ```php app/src/Application/Bootloader/EntityBehaviorBootloader.php
@@ -795,8 +804,8 @@ return [
 By setting a default log channel, it ensures that even if no specific log channel has been defined for a particular
 database driver, there is still a channel available for logging.
 
-For example, if a developer sets the default log channel as `console`, any database driver without a specific log 
-channel assigned to it will have its logs directed to the `console` channel. This provides a fallback for situations 
+For example, if a developer sets the default log channel as `console`, any database driver without a specific log
+channel assigned to it will have its logs directed to the `console` channel. This provides a fallback for situations
 where a log channel has not been defined, ensuring that all logs are captured.
 
 ### Console Commands
@@ -901,3 +910,30 @@ return [
 | `migrate:rollback` | Rolls back  (default) or multiple migrations.<br/>`--all` Rolls back all the executed migrations. |
 | `migrate:init`     | Initiates the migrations component (create a migrations table).                                   |
 | `migrate:status`   | Gets a list of all available migrations and their statuses.                                       |
+
+## SQLite limitations
+
+When utilizing multiple workers in a web application, it is important to consider how concurrent access to resources
+such as databases is managed. SQLite, while a reliable and lightweight database solution, poses limitations when it
+comes to concurrent access by multiple workers.
+
+### File-based Database Locking
+
+Firstly, SQLite databases are file-based, meaning they are stored as a single file on disk. This design choice can
+create issues when multiple workers attempt to access the same SQLite database simultaneously. SQLite utilizes
+file-level locks to maintain data integrity, allowing only one writer to modify the database file at any given time. As
+a result, if multiple workers attempt to write to the database concurrently, they will experience contention and
+potential locking issues, leading to reduced performance and potential data corruption.
+
+### Inability to Share In-Memory Databases
+
+Additionally, SQLite does not provide a built-in mechanism to share an in-memory database between multiple processes or
+workers. In-memory databases are often used for performance optimization, as they eliminate disk I/O operations.
+However, because SQLite cannot share an in-memory database between processes, each worker would have its own separate
+copy of the database in memory. This means that any updates made by one worker would not be visible to the other
+workers, leading to inconsistencies and incorrect results.
+
+Considering these limitations, when using Spiral Framework or any other framework that employs multiple workers, it is
+advisable to explore alternative database solutions that better support concurrent access. Popular options include
+client-server databases like MySQL or PostgreSQL, which are designed to handle concurrent connections and provide better
+scalability in multi-worker environments.
