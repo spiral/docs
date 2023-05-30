@@ -13,7 +13,7 @@ On the other hand, **Feature** tests are intended to test a larger portion of co
 multiple objects, or even a full HTTP request to a JSON endpoint. These tests provide more comprehensive coverage of
 your application and give you greater confidence that it is functioning as intended.
 
-Spiral provides the `spiral/testing` package to help developers with the testing of their application. This package 
+Spiral provides the `spiral/testing` package to help developers with the testing of their application. This package
 offers a variety of helper methods that can simplify the process of writing tests for Spiral applications.
 
 ## Configuration
@@ -109,7 +109,6 @@ final class SomeTest extends TestCase
 ```
 
 ----
-
 
 ### Interaction with Container
 
@@ -215,7 +214,6 @@ final class ProfileActionTest extends TestCase
 
 ----
 
-
 ### Interaction with Config
 
 Let's imagine that we have the following config:
@@ -259,7 +257,6 @@ $config = $this->getConfig('http');
 
 ----
 
-
 ### Interaction with Directories
 
 #### Check if directory alias exists
@@ -299,7 +296,6 @@ $this->cleanUpRuntimeDirectory();
 
 ----
 
-
 ### Interaction with Console
 
 #### Check if a command is registered
@@ -329,7 +325,6 @@ $this->assertConsoleCommandOutputContainsStrings(
 
 ----
 
-
 ### Interaction with Bootloaders
 
 The `Tests\TestCase` class also includes a feature that allows you to interact with bootloaders.
@@ -347,7 +342,6 @@ $this->assertBootloaderMissed(\MyPackage\Bootloaders\PackageBootloader::class);
 ```
 
 ----
-
 
 ### Interaction with Dispatcher
 
@@ -400,6 +394,97 @@ $dispatchers = $this->getRegisteredDispatchers();
 
 ----
 
+### Interaction with Scaffolder
+
+We can provide the ability to test scaffolder commands.
+
+#### Assert generated code is same as expected
+
+```php
+$this->assertScaffolderCommandSame(
+    'create:command',
+    [
+        'name' => 'TestCommand',
+    ],
+    expected: <<<'PHP'
+    <?php
+    
+    declare(strict_types=1);
+    
+    namespace Spiral\Testing\Command;
+    
+    use Spiral\Console\Attribute\Argument;
+    use Spiral\Console\Attribute\AsCommand;
+    use Spiral\Console\Attribute\Option;
+    use Spiral\Console\Attribute\Question;
+    use Spiral\Console\Command;
+    
+    #[AsCommand(name: 'test:command')]
+    final class TestCommand extends Command
+    {
+        public function __invoke(): int
+        {
+            // Put your command logic here
+            $this->info('Command logic is not implemented yet');
+    
+            return self::SUCCESS;
+        }
+    }
+    
+    PHP,
+    expectedFilename: 'app/src/Command/TestCommand.php',
+    expectedOutputStrings: [
+        "Declaration of 'TestCommand' has been successfully written into 'app/src/Command/TestCommand.php",
+    ],
+);
+```
+
+#### Assert that generated code contains the given string
+
+```php
+$this->assertScaffolderCommandContains(
+    'create:command',
+    [
+        'name' => 'TestCommand',
+        '--namespace' => 'App\Command',
+    ],
+    expectedStrings: [
+        'namespace App\Command;',
+    ],
+    expectedFilename: 'app/src/TestCommand.php',
+);
+```
+
+#### Assert exception is thrown
+
+```php
+$this->expectException(RuntimeException::class);
+$this->expectExceptionMessage('Not enough arguments (missing: "name").');
+
+$this->assertScaffolderCommandSame(
+    'create:command',
+    [],
+    '',
+);
+```
+
+#### Assert run command with additional options
+
+```php
+$this->assertScaffolderCommandContains(
+    'create:command',
+    [
+        'name' => 'TestCommand',
+        '-o' => 'foo',
+    ],
+    expectedStrings: [
+        "#[Option(description: 'Argument description')]",
+        'private bool $foo;'
+    ],
+);
+```
+
+----
 
 ## Running Tests
 
@@ -417,7 +502,6 @@ Enjoy testing!
 <hr>
 
 ## What's next?
-
 
 Now, dive deeper into the fundamentals by reading some articles:
 
