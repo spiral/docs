@@ -22,9 +22,9 @@ After executing this command, the following output will confirm the successful c
 Declaration of '[32mCurrentDateController[39m' has been successfully written into '[33mapp/src/Endpoint/Web/CurrentDateController.php[39m'.
 ```
 
-Now, let's inject some logic into our freshly minted controller.
+Now, let's inject some logic into our freshly created controller.
 
-Here's an example of a straightforward controller that returns the current date and time:
+Here's an example of a controller that returns the current date and time:
 
 ```php app/src/Endpoint/Web/CurrentDateController.php
 namespace App\Endpoint\Web;
