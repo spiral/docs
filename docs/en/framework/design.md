@@ -10,34 +10,29 @@ The KISS principle states that software should be designed to be as simple as po
 parts. This makes the code easier to understand, test, and maintain. The SOLID principles, on the other hand, are a set
 of five principles of object-oriented design that are intended to make software more maintainable and scalable.
 
-### 1. Avoid cross dependencies when possible
+### Avoid cross dependencies when possible
 
 One of the core components of Spiral is the use of dependency injection, which helps to avoid cross-dependencies between 
 components and promotes loose coupling. This makes it easy to replace one component with another, without affecting the 
 rest of the system.
 
-### 2. Prioritize composition over inheritance
+### Prioritize composition over inheritance
 
 Another important aspect of Spiral is its focus on composition over inheritance. This approach emphasizes the use of 
 object composition to create new objects, rather than relying on class inheritance. This allows for greater flexibility 
 and makes it easier to change the behavior of an object at runtime.
 
-### 3. Prefer smaller but richer interfaces
+### Prefer smaller but richer interfaces
 
 Spiral also prioritizes smaller, richer interfaces. This means that interfaces should be kept as simple as
 possible, with a minimal number of methods. This makes it easier to implement the interface and increases the chances
 that a class implementing the interface has the correct behavior.
 
-### 4. Avoid magic
+### Avoid magic
 
 Spiral also encourages developers to avoid "magic" in their code. This means that the code should be as
 explicit as possible and avoid using hidden side effects or other tricky constructs. The aim is to make the code as easy
 to understand as possible.
-
-### 5. Java code style
-
-Finally, Spiral follows the Java code style which is considered as a high-quality standard. This means
-that the code should be consistently formatted and follow established conventions and best practices.
 
 ## Hybrid Runtime
 
