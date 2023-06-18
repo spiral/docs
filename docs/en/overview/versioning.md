@@ -12,4 +12,4 @@ found [here](https://github.com/spiral/framework/releases)
 | 0.*        | ≥ 5.0 | Nov 2013     | Dec 2017                   |
 | 1.*        | ≥ 7.2 | Apr 2017     | Dec 2019                   |
 | 2.*        | ≥ 7.4 | May 2019     | Dec 2022                   |
-| <b>3.*</b> | ≥ 8.1 | Sep 2022     | **Sep 2023**               |
+| <b>3.*</b> | ≥ 8.1 | Sep 2022     | -                          |
