@@ -94,6 +94,8 @@ The `Tests\TestCase` class includes a feature that allows you to set up environm
 can be useful if you need to test specific behavior based on environment variables.
 
 ```php
+use Tests\TestCase;
+
 final class SomeTest extends TestCase
 {
     public const ENV = [
@@ -101,6 +103,23 @@ final class SomeTest extends TestCase
         // ...
     ];
 
+    public function testSomeFeature(): void
+    {
+        //
+    }
+}
+```
+
+You can also define ENV variables using PHP attributes. This allows for more granular control over the test environment.
+
+```php
+use Tests\TestCase;
+use Spiral\Testing\Attribute\Env;
+
+final class SomeTest extends TestCase
+{
+    #[Env('DEBUG', false)]
+    #[Env('APP_ENV', 'production')]
     public function testSomeFeature(): void
     {
         //
@@ -227,6 +246,25 @@ return [
     'middleware' => [],
 ];
 ```
+
+#### Define config values
+
+In some cases you need to define config values for specific tests. You can do it using PHP attributes.
+
+```php
+use Tests\TestCase;
+use Spiral\Testing\Attribute\Config;
+
+final class SomeTest extends TestCase
+{
+    #[Config('http.basePath', '/custom')]
+    #[Config('http.headers.Content-Type', 'text/plain')]
+    public function testSomeFeature(): void
+    {
+        //
+    }
+}
+````
 
 #### Check if config matches the given value
 
