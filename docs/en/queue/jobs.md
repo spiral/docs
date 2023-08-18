@@ -1,4 +1,4 @@
-# Queue — Running Jobs
+# Queue — Job Handlers
 
 Job handlers are an essential part of Spiral, providing a structured approach to executing jobs efficiently and managing
 their payloads. Job handlers are classes responsible for performing specific tasks or actions within the system.
