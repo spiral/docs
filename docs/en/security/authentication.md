@@ -37,29 +37,83 @@ protected const LOAD = [
 ]
 ```
 
-## Token Storage
+## Auth Token Storage
 
-The `Spiral\Auth\TokenStorageInterface` is an interface that defines a set of methods for storing, retrieving and
-deleting authentication tokens.
+The `Spiral\Auth\TokenStorageInterface` is an interface in the Spiral Framework that defines a standardized set of
+methods for handling the storage, retrieval, and deletion of authentication tokens. It acts as an abstraction layer over
+the actual storage mechanism, which can be a `session`, `cache`, `database`, etc.
 
-You can set the default storage for your application by using the `AUTH_TOKEN_STORAGE` environment variable.
+### Configuration
 
-Or define by using `defaultStorage` key in the `app/config/auth.php`:
+You can specify the default storage mechanism for authentication tokens through the `AUTH_TOKEN_STORAGE` environment
+variable in your `.env` file.
+
+**For example:**
+
+```.env
+AUTH_TOKEN_STORAGE=session
+```
+
+Alternatively, set the default storage mechanism in the `app/config/auth.php` configuration file, like so:
 
 ```php app/config/auth.php
 return [
     'defaultStorage' => env('AUTH_TOKEN_STORAGE', 'session'),
-    // ... storages
+    // ... other storage options
 ]
 ```
 
 This allows you to specify which implementation of the `TokenStorageInterface` should be retrieved from the container
 by default.
 
+### Accessing the Default Token Storage
+
+To retrieve the default token storage instance from the application’s service container, use the following code:
+
 ```php
 $storage = $container->get(\Spiral\Auth\TokenStorageInterface::class); 
 // Will return a default Session token storage
 ```
+
+### Token Storage provider
+
+Token storage provider is a service that allows you to retrieve a specific token storage instance by its name. For
+instance, to obtain a JWT (JSON Web Token) storage instance, you can do the following:
+
+```php
+$container->get(\Spiral\Auth\TokenStorageProviderInterface::class)
+    ->getStorage('jwt');
+```
+
+### Token Storage Scope
+
+The `Spiral\Auth\TokenStorageScope` is designed to act as a context-aware service that provides a straightforward way
+to access the proper token storage for each incoming request. Unlike global services or controllers, which are
+singletons and persist across multiple requests, it ensures you are working with the right token storage
+instance tied to the current request.
+
+```php
+use Spiral\Auth\TokenStorageScope;
+
+final readonly class UserController {
+    public function __construct(
+        private \Spiral\Auth\TokenStorageScope $tokenStorage,
+    ) {}
+    
+    public function currentUser() 
+    {
+        $this->tokenStorage->load('some-id');
+      
+        $this->tokenStorage->create(['id' => 'some-id']);
+          
+        $this->tokenStorage->delete($token);
+    }
+}
+```
+
+For each incoming request to your application, it will guide you to the specific instance of token
+storage that is designated for that particular request. This ensures that you are always working with the correct,
+request-specific token storage.
 
 ### Session Token Storage
 
@@ -79,7 +133,7 @@ composer require spiral/cycle-bridge
 ```
 
 > **See more**
-> Read more about installation and configuration `spiral/cycle-bridge` in 
+> Read more about installation and configuration `spiral/cycle-bridge` in
 > the [The Basics — Database and ORM](../basics/orm.md) section.
 
 Then you need to activate `Spiral\Cycle\Bootloader\AuthTokensBootloader`:
@@ -186,6 +240,7 @@ final class AppBootloader extends Bootloader
     }
 }
 ```
+
 :::
 
 ::: tab Configuration
@@ -207,18 +262,10 @@ return [
     ]
 ]
 ```
+
 :::
 
 ::::
-
-## Token Storage provider
-
-Token storage provider is a convenient way to retrieve a token storage by given name.
-
-```php
-$container->get(\Spiral\Auth\TokenStorageProviderInterface::class)
-    ->getStorage('jwt');
-```
 
 ## Usage with HTTP layer
 
@@ -334,6 +381,7 @@ final class AppBootloader extends Bootloader
     }
 }
 ```
+
 :::
 
 ::: tab Configuration
@@ -352,10 +400,10 @@ return [
     ]
 ]
 ```
+
 :::
 
 ::::
-
 
 ## Actor Provider and Token Payload
 
