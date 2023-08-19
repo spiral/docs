@@ -29,7 +29,7 @@ $container->runScoped(
 );
 ```
 
-The first argument of the `runScope` method is an array of values that should be bound to the container within the
+The second argument of the `runScope` method is an array of values that should be bound to the container within the
 callback's scope.
 
 The callback function receives the container as its argument and can use the container to retrieve the values that were
