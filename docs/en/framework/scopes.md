@@ -36,7 +36,7 @@ The callback function receives the container as its argument and can use the con
 bound to it within the callback's scope. This can be useful for creating a temporary scope within which certain values
 are available.
 
-In this example, the `runScope` method is creating a temporary scope within which the `UserContext` class is bound to
+In this example, the `runScoped` method is creating a temporary scope within which the `UserContext` class is bound to
 the `$user` variable. The callback function can then use the container to retrieve the `UserContext` object instance,
 which is available within the callback's scope.
 
