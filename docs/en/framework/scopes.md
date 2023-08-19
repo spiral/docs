@@ -198,7 +198,7 @@ required bindings.
 
 ### Accessing Scoped Values
 
-You can access the values set in the scope directly from the container or via method injection in your services or
+You can access the values set in the scope directly from the container or via dependency injection in your services or
 controllers. However, this should only be done within the IoC scope.
 
 **Here's an example**
