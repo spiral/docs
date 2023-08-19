@@ -188,8 +188,7 @@ These restrictions ensure proper usage and prevent conflicts within the scope hi
    as the top-level scope and provides the foundation for all other scopes. It's the starting point for dependency
    resolution and can have its own set of default bindings.
 
-4. **Parallel Named Scopes:** Parallel named scopes are allowed within the hierarchy. This means that you can create
-   multiple named scopes at the same level, as long as their names are unique.
+4. **Parallel Named Scopes:** Parallel named scopes are allowed.
 
 ### Resolving Rules
 
