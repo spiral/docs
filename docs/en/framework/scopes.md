@@ -181,7 +181,7 @@ These restrictions ensure proper usage and prevent conflicts within the scope hi
    distinct and meaningful name to avoid any ambiguity.
 
 2. **Default Bindings for Named Scopes:** Named scopes can have default bindings associated with them. It's important to
-   note that default bindings do not affect already created container instances, except for the root container. Default
+   note that changing of default bindings does not affect already created container instances with the same scope name, except for the root container. Default
    bindings provide a convenient way to set up common dependencies for a particular named scope.
 
 3. **Root Scope Name:** The most parent scope in the hierarchy is named the root scope by default. The root scope serves
