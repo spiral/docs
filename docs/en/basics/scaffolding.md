@@ -7,15 +7,11 @@ application code for various classes, using a set of console commands:
 - console commands,
 - application configs,
 - HTTP controllers, middleware, request filters,
-- and queue job handlers.
+- queue job handlers.
+
+and more...
 
 ## Installation
-
-To get started, simply run the following command in your terminal:
-
-```terminal
-composer require spiral/scaffolder
-```
 
 To enable the component, you just need to add the `Spiral\Scaffolder\Bootloader\ScaffolderBootloader` class to the
 bootloader list:
@@ -111,7 +107,34 @@ return [
 > This approach is particularly helpful in larger applications where many different declaration types may be used. By
 > customizing only what's necessary, the configuration process can be simplified and errors can be minimized.
 
-### Adding custom declarations via ScaffolderBootloader
+### Changing directory for generated classes
+
+By default, the scaffolder will generate classes in the `app/src` directory. In some cases, you may want to change the
+directory where the scaffolder generates classes.
+
+You can accomplish this by using the `directory` option.
+
+```php app/config/scaffolder.php
+return [
+    'directory' => directpry('app') . '/Generated' // <=============
+];
+```
+
+You can also change the directory for specific declarations. For example, you may want to generate console commands in
+the `app/src/Endpoint/Console` directory. To accomplish this, you can use the `directory` option:
+
+```php app/config/scaffolder.php
+return [
+    'declarations' => [
+        Declaration\CommandDeclaration::TYPE => [
+            // ...
+            'directory' => directpry('app') . '/Endpoint/Console' // <=============
+        ],
+    ],
+];
+```
+
+## Adding custom declarations via ScaffolderBootloader
 
 It's possible to register custom declarations. You can accomplish this by registering your custom declarations with the
 `ScaffolderBootloader`:
