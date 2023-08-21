@@ -13,7 +13,7 @@ request specific instances, scoped to a particular context, as if they were glob
 When processing a user request, the relevant data for that request is placed in a scoped area of the IoC container. This
 data is only available for a limited time while processing that request.
 
-You can use the `Spiral\Core\ScopeInterface->runScope` method to achieve this. The default Spiral
+You can use the `Spiral\Core\ContainerScopeInterface->runScoped` method to achieve this. The default Spiral
 container, `Spiral\Core\Container`, implements this interface.
 
 **Here is an example**
