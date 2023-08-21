@@ -29,13 +29,6 @@ $container->runScoped(
 );
 ```
 
-The second argument of the `runScope` method is an array of values that should be bound to the container within the
-callback's scope.
-
-The callback function receives the container as its argument and can use the container to retrieve the values that were
-bound to it within the callback's scope. This can be useful for creating a temporary scope within which certain values
-are available.
-
 In this example, the `runScoped` method is creating a temporary scope within which the `UserContext` class is bound to
 the `$user` variable. The callback function can then use the container to retrieve the `UserContext` object instance,
 which is available within the callback's scope.
@@ -78,8 +71,7 @@ separate, isolated scope. Any dependencies or bindings specified in the `$bindin
 that specific scope.
 
 When `$autowire` is set to `true`, the IoC container will automatically resolve and inject all dependencies that the
-given
-$closure requires based on their type-hints.
+given `$closure` requires based on their type-hints.
 
 **Here's an example**
 
@@ -176,25 +168,20 @@ specific scopes.
 
 These restrictions ensure proper usage and prevent conflicts within the scope hierarchy. Here are the key restrictions:
 
-1. **Named Scope Uniqueness:** Named scopes within the same hierarchy must have unique names. This means that you cannot
-   have multiple scopes with the same name at the same level of the scope hierarchy. Each named scope should have a
-   distinct and meaningful name to avoid any ambiguity.
+1. **Parallel Named Scopes:** Parallel named scopes are allowed.
 
 2. **Default Bindings for Named Scopes:** Named scopes can have default bindings associated with them. It's important to
-   note that changing of default bindings does not affect already created container instances with the same scope name, except for the root container. Default
-   bindings provide a convenient way to set up common dependencies for a particular named scope.
+   note that changing of default bindings does not affect already created container instances with the same scope name,
+   except for the root container. Default bindings provide a convenient way to set up common dependencies for a
+   particular named scope.
 
 3. **Root Scope Name:** The most parent scope in the hierarchy is named the root scope by default. The root scope serves
    as the top-level scope and provides the foundation for all other scopes. It's the starting point for dependency
    resolution and can have its own set of default bindings.
 
-4. **Parallel Named Scopes:** Parallel named scopes are allowed.
-
 ### Resolving Rules
 
-When a nested scope does not have its own bindings, it will now resolve dependencies from the parent scope. This allows
-for more flexible dependency resolution, with dependencies being resolved in the closest parent scope that has the
-required bindings.
+When a nested scope does not have its own bindings, it will now resolve dependencies from the parent scope. 
 
 ### Accessing Scoped Values
 
