@@ -366,8 +366,8 @@ container `$container->get('time')`, it will return the same value across multip
 
 ### DeferredFactory
 
-The `Spiral\Core\Config\DeferredFactory` binding enables you to bind deferred factories to the container using array
-callables.
+The `Spiral\Core\Config\DeferredFactory` binding enables you to bind deferred factory to the container using a
+special array callable.
 
 ```php
 use Spiral\Core\Config\DeferredFactory;
