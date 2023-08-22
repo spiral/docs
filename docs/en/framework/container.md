@@ -437,9 +437,8 @@ $container->bind(LoggerAwareInterface::class, new Inflector(
 ));
 ```
 
-By configuring the Inflector binding, you can apply modifications or injections to objects of a specific type
-automatically whenever they are requested from the container. In this case, any object
-implementing `LoggerAwareInterface` will have its logger set based on the specified configuration.
+In this case, any object implementing `LoggerAwareInterface`
+will have its logger set based on the specified configuration.
 
 The Inflector binding is a powerful tool for applying common modifications or injections consistently across objects in
 your application. It simplifies the process of configuring and customizing objects retrieved from the container.
