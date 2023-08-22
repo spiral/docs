@@ -379,8 +379,8 @@ $container->bind('some-binding', new DeferredFactory(
 
 In the example above, we bind the key some-binding to a `DeferredFactory` instance. The factory property is set
 to `[MyClass::class, 'handle']`. When the some-binding key is requested from the
-container `$container->get('some-binding')`, the `DeferredFactory` will create an instance of `MyClass` and then invoke
-the handle method on that instance.
+container `$container->get('some-binding')`, the `DeferredFactory` will resolve an instance of `MyClass` and then invoke
+the handle method on that instance to produce the required value.
 
 Additionally, binding can be configured as a singleton:
 
