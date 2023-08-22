@@ -422,7 +422,7 @@ application. It provides persistence and prevents the creation of multiple insta
 
 ### Inflector
 
-An inflector allows you to manipulate an object before returning it from the container. This is particularly useful for
+An inflector allows you to manipulate an object after creating it in the container. This is particularly useful for
 applying common modifications or injections to objects of a specific type.
 
 ```php
