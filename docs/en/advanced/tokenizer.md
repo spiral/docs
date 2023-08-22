@@ -1,20 +1,26 @@
 # Component — Static analysis
 
-The tokenizer component is a tool for discovering and analyzing code in specified directories. The most used
-functionality of locating class declarations is provided by `Spiral\Tokenizer\ClassesInterface`.
+Tokenizer is your go-to tool to quickly find and explore code within specified directories. Its main role is to help you
+identify class declarations. Good news:
 
 > **Note**
-> The tokenizer component is pre-installed with all framework bundles.
+> Tokenizer comes with the framework, so you won't have to fuss about setting it up.
 
-## Class Locator
+## Locators
 
-To use the tokenizer component, you will need to use the `Spiral\Tokenizer\ClassesInterface` interface. This interface
-provides a getClasses method which allows you to search for classes by name, interface, or trait.
+Locators are like your code's searchlight. They help you find specific pieces of code.
 
-Here is an example of how to use this method to search for classes that implement the
-`\Psr\Http\Server\MiddlewareInterface` interface:
+### Classes Locator
+
+If you're aiming to locate classes, turn to `Spiral\Tokenizer\ClassesInterface`. Using this, you can search for classes
+based on their name, the interfaces they use, or the traits they incorporate.
+
+Here's a quick example. Let's say you want to locate all classes that use the `\Psr\Http\Server\MiddlewareInterface`
+interface:
 
 ```php
+use Spiral\Tokenizer\ClassesInterfac;
+
 public function findClasses(ClassesInterface $classes): void
 {
     foreach ($classes->getClasses(\Psr\Http\Server\MiddlewareInterface::class) as $middleware) {
@@ -25,8 +31,48 @@ public function findClasses(ClassesInterface $classes): void
 
 The `getClasses` method will then return an array of `ReflectionClass` objects representing the classes found.
 
-By default, the tokenizer component will only search for classes in the `app` directory. However, you can add additional
-directories to be searched using the `Spiral\Bootloader\TokenizerBootloader`.
+### Enums Locator
+
+In case you're on the lookout for enumerations, the `Spiral\Tokenizer\EnumsInterface` is what you need. It comes with
+a `getEnums` method to help you on your hunt:
+
+```php
+use Spiral\Tokenizer\EnumsInterface;
+
+public function findEnums(EnumsInterface $enums): void
+{
+    foreach ($enums->getEnums() as $enum) {
+        dump($enum->getFileName());
+    }
+}
+```
+
+### Interfaces Locator
+
+If you wish to find specific interfaces, the `Spiral\Tokenizer\InterfacesInterface` has got you covered. Use
+its `getInterfaces` method like so:
+
+```php
+use Spiral\Tokenizer\InterfacesInterface;
+
+public function findEnums(InterfacesInterface $interfaces): void
+{
+    foreach ($interfaces->getInterfaces() as $interface) {
+        dump($interface->getFileName());
+    }
+}
+```
+
+### Customizing search directories
+
+Tokenizer, by default, conducts its search within the app directory. However, you might often want it to consider other
+directories as well. Fortunately, customizing this is straightforward using the `Spiral\Bootloader\TokenizerBootloader`.
+
+:::: tabs
+
+::: tab Bootloader
+
+Here's how you can specify additional directories:
 
 ```php app/src/Application/Bootloader/AppBootloader.php
 use Spiral\Bootloader\TokenizerBootloader;
@@ -41,7 +87,11 @@ class AppBootloader extends Bootloader
 }
 ```
 
-And here is an example of how to add a directory using the `app/config/tokenizer.php` config file:
+:::
+
+::: tab Config
+
+Alternatively, you can add directories directly in the `app/config/tokenizer.php` configuration file:
 
 ```php app/config/tokenizer.php
 return [
@@ -52,7 +102,13 @@ return [
 ];
 ```
 
-You can also specify directories to be excluded from the search using the exclude option:
+:::
+
+::::
+
+### Excluding specific directories
+
+You might also want to exclude specific directories from Tokenizer's search. Here's how:
 
 ```php app/config/tokenizer.php
 return [
@@ -69,9 +125,13 @@ return [
 ```
 
 > **Note**
-> The class lookup is not a fast process, only add necessary directories.
+> Remember, expanding the directories for class search can slow down the process. It's recommended to only add
+> directories that are essential for your needs.
 
-## Scoped Class Locator
+### Scoped Class Locator
+
+When dealing with vast directories, Tokenizer can slow down a bit. However, you can amp up its speed by using the scoped
+class locator. This tool lets you divide and conquer by setting up specific search zones, which we call `scopes`.
 
 If you need to search for classes in a large number of directories, the tokenizer component may suffer from poor
 performance. In this case, you can use the scoped class locator to improve performance.
@@ -79,8 +139,17 @@ performance. In this case, you can use the scoped class locator to improve perfo
 With the scoped class locator, you can define directories to be searched within named scopes. This allows you to
 selectively search only the directories that are relevant to your current task.
 
-To use the scoped class locator, you will need to define your scopes in the `app\config\tokenizer.php` config file. Here
-is an example of how to define a scope named `scopeName` that searches the `app/Directory` directory:
+#### Setting up Scopes
+
+To use the scoped class locator, you will need to define your scopes:
+
+:::: tabs
+
+::: tab Config
+
+Scopes can be defined in the `app\config\tokenizer.php` config file.
+
+Here is an example of how to define a scope named `scopeName` that searches the `app/Directory` directory:
 
 ```php app/config/tokenizer.php
 return [
@@ -98,10 +167,41 @@ return [
 ```
 
 > **Note**
-> With the `exclude` parameter, we can exclude some directories from the search.
+> The `exclude` parameter is there for a reason. If there are parts of the directory you know you won't need, just tell
+> Tokenizer to skip them. It'll make things even faster!
 
-The `Spiral\Tokenizer\ScopedClassesInterface` interface provides a `getScopedClasses` method that allows you to search
-for classes within a specific scope.
+:::
+
+::: tab Bootloader
+
+Scopes can be defined using the `Spiral\Bootloader\TokenizerBootloader` bootloader:
+
+```php app/src/Application/Bootloader/AppBootloader.php
+use Spiral\Bootloader\TokenizerBootloader;
+use Spiral\Boot\DirectoriesInterface;
+
+class AppBootloader extends Bootloader
+{
+    public function init(DirectoriesInterface $directories, TokenizerBootloader $tokenizer): void
+    {
+        $tokenizer->addScopedDirectory('scopeName', $directories->get('app') . 'Directory');
+    }
+}
+```
+
+:::
+
+::::
+
+Once you've got your scopes ready, you can then instruct Tokenizer to only search within a chosen scope. It's like
+telling it which department to go to!
+
+:::: tabs
+
+::: tab Classes
+
+The `Spiral\Tokenizer\ScopedClassesInterface` lets you do this with its `getScopedClasses` method. Simply hand it the
+name of the scope, and it'll return all the classes it finds in that zone.
 
 To use the method, you will need to pass in the name of the `scope` as an argument. The method will then return an
 array of `ReflectionClass` objects representing the classes found within that scope.
@@ -125,18 +225,106 @@ final class SomeLocator
 }
 ```
 
-## Class Listeners
+:::
 
-The Tokenizer class listeners are a way to use the `Spiral\Tokenizer\ClassesInterface` interface in a more efficient
-manner, particularly when working with large codebases.
+::: tab Enums
+Just like with classes, you can set up specific scopes for searching enums. Once you have your scopes configured in
+the `app\config\tokenizer.php` file, you can utilize the `Spiral\Tokenizer\ScopedEnumsInterface`.
 
-Normally, when you use the `ClassesInterface` to search for classes, the tokenizer component will scan the specified
-directories every time the `getClasses` method is called. This can be slow, particularly if you have many components
-that make repeated calls to the method.
+Here's an example of how you can search for enums in a specific scope:
 
-To improve performance, the component allows you to register listeners that will be notified when a class is found by
-the `ClassesInterface`. This means that directories will only be scanned once, during application bootstrapping. After
-the initial scan, the listeners will iterate over all the found classes.
+```php
+use Spiral\Tokenizer\ScopedEnumsInterface;
+
+final class EnumSearcher
+{
+    public function __construct(
+        private readonly ScopedEnumsInterface $locator
+    ) {
+    }
+
+    public function pinpointEnums(): array
+    {
+        $foundEnums = [];
+
+        foreach ($this->locator->getScopedEnums('scopeName') as $enum) {
+            $foundEnums[] = $enum;
+            // or any other operations you want...
+        }
+
+        return $foundEnums;
+    }
+}
+```
+
+:::
+
+::: tab Interfaces
+Similar to the above, once your scopes are good to go in the config file,
+the `Spiral\Tokenizer\ScopedInterfacesInterface` will help you search for interfaces within those specified zones.
+
+Here's how to scout for interfaces in a designated scope:
+
+```php
+use Spiral\Tokenizer\ScopedInterfacesInterface;
+
+final class InterfaceSearcher
+{
+    public function __construct(
+        private readonly ScopedInterfacesInterface $locator
+    ) {
+    }
+
+    public function findInterfaces(): array
+    {
+        $identifiedInterfaces = [];
+
+        foreach ($this->locator->getScopedInterfaces('scopeName') as $interface) {
+            $identifiedInterfaces[] = $interface;
+            // or add your desired actions...
+        }
+
+        return $identifiedInterfaces;
+    }
+}
+```
+
+:::
+
+::::
+
+## Efficient scanning with class listeners
+
+For big codebases, regular scans using Tokenizer's locators can slow things down, especially when you're routinely
+searching for classes, enums, or interfaces. Class listeners provide a smarter approach, allowing you to listen in on
+and react to class discoveries without repeatedly scanning directories.
+
+### Why use class listeners?
+
+Think about having to search through a really big library every time you want a book. It's a lot of work. Now, think
+about someone telling you whenever a new book arrives in the library. That's similar to how class listeners work.
+Instead of searching the library every time, you get a heads-up when a new book (class) arrives. This is especially
+useful during application bootstrapping, where the initial scanning takes place, after which listeners are kept in the
+loop.
+
+### Configuring listeners
+
+By default, listeners focus on classes, but you can easily configure them to cast their net wider to encompass enums and
+interfaces too. To do this, you will need to add the following configuration to the `app\config\tokenizer.php` file:
+
+```php app/config/tokenizer.php
+return [
+    'load' => [
+        'classes' => true, // Search for classes
+        'enums' => true, // Search for enums
+        'interfaces' => true, // Search for interfaces
+    ],
+];
+```
+
+> **Note**
+> Remember, you don't have to enable all three. Tailor it to suit your project's needs. The more you enable, the slower
+> the process will be.
 
 ### Usage
 
@@ -144,24 +332,28 @@ To use this feature, you will need to include `Spiral\Tokenizer\Bootloader\Token
 bootloader in your project at the top of bootloader's list:
 
 ```php app/src/Application/Kernel.php
-protected const LOAD = [
+protected const SYSTEM = [
     \Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader::class,
     // ...
 ];
 ```
 
-Now you can create a listener class that implements the `Spiral\Tokenizer\TokenizationListenerInterface` interface.
-This interface requires you to implement a `listen` method, which will be called for each class that is found by
-the `ClassesInterface`.
+### Crafting a listener
 
-In addition `TokenizationListenerInterface` also includes a `finalize` method. This method is called after all classes
-have been iterated, and can be used to perform any final processing on the classes that have been found during
-listening.
+The next step is to create a listener class. This class should implement
+the `Spiral\Tokenizer\TokenizationListenerInterface`, which mandates two methods:
+
+- `listen(\ReflectionClass $class)`: This method is called every time a class is discovered. You can add logic to
+  process or store information from this class.
+- `finalize()`: Think of this as the closing act. Once all classes are scanned and processed, this method is invoked.
+  It's a perfect spot for wrapping things up or finalizing operations based on the discovered classes.
+
+**Here's an example of a listener:**
 
 ```php
 use Spiral\Attributes\ReaderInterface;
 
-class RouteAttributeListener implements TokenizationListenerInterface
+final class RouteAttributeListener implements TokenizationListenerInterface
 {
     private array $attributes = [];
 
@@ -192,6 +384,9 @@ class RouteAttributeListener implements TokenizationListenerInterface
     }
 }
 ```
+
+This listener, for instance, listens for classes with specific routing attributes and adds them to a router when the
+scan is complete.
 
 ### Caching listener targets
 
