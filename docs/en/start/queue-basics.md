@@ -111,7 +111,7 @@ final class PingSiteCommand extends Command
     #[Argument(description: 'Site to ping')]
     public string $site;
 
-    public function __invoke(): int
+    public function __invoke(QueueInterface $queue): int
     {
         $id = $queue->push(PingSiteJob::class, [
             'site' => $this->site,
