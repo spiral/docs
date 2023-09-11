@@ -1,11 +1,31 @@
 # Filters — Getting started
 
-The `spiral/filters` is a powerful component for filtering and validating input data. It allows you to define a set of
-rules for each input field, and then use those rules to ensure that the input data is in the correct format and meets
-any other requirements you have set. You can use filters to validate data from HTTP requests, gRPC requests, console
-commands, and other sources.
+The `spiral/filters` is a powerful component for filtering and optional validating input data. It allows you to define a
+set of rules for each input field, and then use those rules to ensure that the input data is in the correct format and 
+meets any other requirements you have set. You can use filters to validate data from various sources like HTTP requests, 
+gRPC requests, console commands, and others.
 
-One of the benefits of using filters is that it helps to centralize your input validation logic in a single place. This
+**Here is a simple example of a filter:**
+
+```php app/src/Endpoint/Web/Filter/UserFilter.php
+namespace App\Endpoint\Web\Filter;
+
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Model\Filter;
+
+final class UserFilter extends Filter
+{
+    #[Query(key: 'username')]
+    public string $username;
+}
+```
+
+This example shows a simple filter that can be requested in a controller action and will automatically map data from the
+HTTP request to the filter properties. Optionally, you can define a set of validation rules for each property to ensure
+that the input data is in the correct format.
+
+One of the benefits of using filters is that at it helps to centralize your input validation logic in a single place.
+This
 can make it easier to maintain your code, as you don't need to duplicate validation logic in multiple places throughout
 your application.
 
@@ -24,7 +44,8 @@ duplication and make it easier to manage your validation logic.
 ## Installation
 
 > **Note**
-> The component relies on [Validation](../validation/factory.md) component, make sure to read it first.
+> The component relies on [Validation](../validation/factory.md) component, make sure to read it first if you want to
+> use validation features.
 
 The component does not require any configuration and can be activated using the
 bootloader `Spiral\Bootloader\Security\FiltersBootloader`:
@@ -80,7 +101,7 @@ Input binding is the primary way of delivering data from request into the filter
 ## Create Filter
 
 The implementation of the filter object might vary from package to package. The default implementation is provided via
-the abstract class `Spiral\Filters\Model\Filter`. 
+the abstract class `Spiral\Filters\Model\Filter`.
 
 To create a custom filter to validate a simple query value with key `username`, use the scaffolding command:
 
@@ -110,6 +131,10 @@ final class UserFilter extends Filter
 }
 ```
 
+> **Warning**
+> Be careful when using typed properties in your filter. Filter does not perform any type casting and will throw an
+> exception if the input data does not match the property type.
+
 You can request the Filter as a method injection (it will be automatically bound to the current HTTP request input):
 
 ```php app/src/Endpoint/Web/UserController.php
@@ -123,6 +148,119 @@ class UserController
     }
 }
 ```
+
+## Input casting
+
+For more advanced scenarios, where data needs to be transformed into custom types, filter input casters come into play.
+
+### Understanding the Caster
+
+Before diving into the application of casters, it's essential to comprehend the `Spiral\Filters\Model\Mapper\CasterInterface`.
+
+```php Spiral\Filters\Model\Mapper\CasterInterface
+use Spiral\Filters\Model\FilterInterface;
+
+interface CasterInterface
+{
+
+    public function supports(\ReflectionNamedType $type): bool;
+
+    public function setValue(FilterInterface $filter, \ReflectionProperty $property, mixed $value): void;
+}
+```
+
+This interface has two pivotal methods:
+
+- **supports:** Takes in a `$type` and lets you decide whether this value is castable with this caster or not.
+- **setValue:** Transforms the incoming value to your desired type.
+
+### Available Casters
+
+The component provides a set of casters out of the box:
+
+#### UuidCaster
+
+Transforms strings into `Ramsey\Uuid\Uuid` objects.
+
+```php
+namespace App\Endpoint\Web\Filter;
+
+use Ramsey\Uuid\UuidInterface;
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Model\Filter;
+
+final class UserFilter extends Filter
+{
+    #[Query]
+    public UuidInterface $uuid;
+}
+```
+
+#### EnumCaster
+
+Enables casting of strings into enums, promoting type safety.
+
+```php
+namespace App\Endpoint\Web\Filter;
+
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Model\Filter;
+
+final class UserFilter extends Filter
+{
+    #[Query]
+    public RoleEnum $role;
+}
+```
+
+### Custom Casters
+
+**Here is an example of a simple caster:**
+
+Consider a scenario where you're handling a UUID string and intend to convert this into a UUID object.
+
+```php app/src/Filter/Caster/UuidCaster.php
+use Spiral\Filters\Model\FilterInterface;
+use Spiral\Filters\Model\Mapper\CasterInterface;
+use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
+
+final class UuidCaster implements CasterInterface
+{
+    public function supports(\ReflectionNamedType $type): bool
+    {
+        return $type->getName() === UuidInterface::class;
+    }
+
+    public function setValue(FilterInterface $filter, \ReflectionProperty $property, mixed $value): void
+    {
+        $property->setValue($filter, Uuid::fromString($value));
+    }
+}
+```
+
+> **Note**
+> Uuid caster is already provided by the component.
+
+To make your custom caster operational, you need to register it within the application's bootloader.
+
+```php app/src/Application/Bootloader/AppBootloader.php
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Filters\Model\Mapper\CasterRegistryInterface;
+
+class AppBootloader extends Bootloader
+{
+    public function boot(CasterRegistryInterface $casterRegistry)
+    {
+        $casterRegistry->register(new UuidCaster());
+    }
+}
+```
+
+After registering the caster, whenever you define filters with properties that match the caster's supported types, 
+Spiral will automatically employ the registered caster to transform the data.
+
+## Validation
 
 By default, filters do not perform validation. However, if you want to validate a filter, you can implement the
 `HasFilterDefinition` interface and define a set of validation rules for the filter properties using
