@@ -1,8 +1,12 @@
 # Component — Data Grids
 
 Leveraging the power of Spiral, the `spiral/data-grid` component provides developers with a streamlined solution to
-generate Cycle and DBAL select queries automatically, based on user specifications. If you're keen on building RESTful
-APIs with simplified data fetching capabilities, this is the tool for you.
+generate Cycle and DBAL select queries automatically, based on user specifications.
+
+> **Warning:**
+> Spiral does not provide Cycle ORM out of the box. To use this component, you need to install `spiral/cycle-bridge`
+> component. You can find more information about Cycle ORM Bridge in
+> the [The Basics — Database and ORM](../basics/orm.md) section
 
 ### When should you consider the Data Grid Component?
 
@@ -40,7 +44,7 @@ APIs with simplified data fetching capabilities, this is the tool for you.
 To install the component:
 
 ```terminal
-composer require spiral/data-grid-bridge
+composer require spiral/data-grid-bridge spiral/cycle-bridge
 ```
 
 Activate the bootloader `Spiral\DataGrid\Bootloader\GridBootloader` in your application after Cycle bootloaders:
@@ -53,13 +57,32 @@ protected const LOAD = [
 ];
 ```
 
+## Quick Start
+
+After installation, set up the writers for your data sources in the `app/config/dataGrid.php` config.
+
+**Here's a basic setup for Cycle ORM Bridge:**
+
+```php app/config/dataGrid.php
+return [
+    'writers' => [
+        \Spiral\Cycle\DataGrid\Writer\QueryWriter::class,
+        \Spiral\Cycle\DataGrid\Writer\PostgresQueryWriter::class,
+        \Spiral\Cycle\DataGrid\Writer\BetweenWriter::class,
+    ],
+];
+```
+
+> **Note**
+> As you can see, we can register multiple writers for different specifications.
+
 ## Usage
 
 Data grid component provides two base abstractions - **Grid Factory** and **Grid Schema**.
 
 ### Grid Schema
 
-The Grid Schema serves as a blueprint for configuring a data selector based on user input.
+Think of the Grid Schema as a set of rules for how to get data based on what the user asks for.
 
 **Here is a simple example of a grid schema:**
 
@@ -89,29 +112,33 @@ For a more elegant approach, consider extending `GridSchema` and initializing al
 **Here's an example:**
 
 ```php
-use Spiral\DataGrid; 
-class UserSchema extends DataGrid\GridSchema
+use Spiral\DataGrid\GridSchema; 
+use Spiral\DataGrid\Specification\Pagination\PagePaginator;
+use Spiral\DataGrid\Specification\Sorter\Sorter;
+use Spiral\DataGrid\Specification\Filter\Like;
+use Spiral\DataGrid\Specification\Value\StringValue;
+
+class UserSchema extends GridSchema
 {
     public function __construct()
     {
         // User pagination: limit results to 10 per page
-        $this->setPaginator(new DataGrid\Specification\Pagination\PagePaginator(10));
+        $this->setPaginator(new PagePaginator(10));
         
         // Sorting option: by id
-        $this->addSorter('id', new DataGrid\Specification\Sorter\Sorter('id'));
+        $this->addSorter('id', new Sorter('id'));
         
         // Filter option: find by name matching user input
-        $this->addFilter('name', new DataGrid\Specification\Filter\Like('name', new DataGrid\Specification\Value\StringValue()));
+        $this->addFilter('name', new Like('name', new StringValue()));
     }
 }
 ```
 
 ### Grid Factory
 
-To bring your grid schema to life, secure an instance of a supported data source. By default, this includes the Cycle
-Select object and the Database Select Query object.
+This is where you connect your grid schema to real data.
 
-Here's how to create a grid using the Cycle ORM Repository:
+**Here's a simple example with the Cycle ORM Repository:**
 
 ```php
 use Spiral\DataGrid\GridSchema;
@@ -129,7 +156,7 @@ $result = $factory->create($users->select(), $schema);
 print_r(iterator_to_array($result));  
 ```
 
-Need default specifications? Use the following:
+You can also set default specifications:
 
 ```php
 /** @var Spiral\DataGrid\GridFactory $factory */
@@ -150,7 +177,7 @@ How to apply the specifications:
 > **Note**
 > These params are defined in the `GridFactory`, you can overwrite them.
 
-Let's combine all together:
+Combining everything, a sample controller might look like:
 
 ```php app/src/Endpoint/Web/Controller/UserController.php
 use Spiral\DataGrid\GridInterface;
@@ -166,7 +193,12 @@ class UserController
         
         $values = [];
 
-        foreach ([GridInterface::FILTERS, GridInterface::SORTERS] as $key) {
+        foreach ([
+            GridInterface::FILTERS, 
+            GridInterface::SORTERS, 
+            GridInterface::COUNT, 
+            GridInterface::PAGINATOR
+        ] as $key) {
              $values[$key] = $result->getOption($key);
         }
         
@@ -180,6 +212,132 @@ class UserController
 }
 ```
 
+## Diverse Input Sources
+
+By default, the Grid Factory obtains data from `Spiral\DataGrid\InputInterface` which is closely bound
+to `Spiral\Http\Request\InputManager`. This fetches data directly from an HTTP request.
+
+However, the beauty of the data grid component lies in its malleability. It's not strictly tied to HTTP requests.
+Whether it's console command arguments, gRPC requests, or any other data source, the sky is the limit. Simply implement
+the `InputInterface` with your desired data source and integrate DataGrids as per your application's requirements.
+
+## Grid writers
+
+In Data Grid, we have **Schemas** to outline how data should be managed and **Factories** to define where this data
+comes from. On top of these, we also have **Writers**.
+
+Their job? To change the data based on user inputs.
+
+**Think of them like this:**
+
+If you have data in a book and you use a pencil (the writer) to add, modify, or erase content, then that pencil is the
+grid writer. Spiral has writers for Cycle ORM. But the cool part is that you can make your own pencil for other systems
+like DoctrineCollections.
+
+### How to Create Your Own Writer
+
+Want to make your own pencil (or writer)? Follow these steps:
+
+1. Use the `Spiral\DataGrid\WriterInterface` as your guide.
+
+**Here's an example:**
+
+```php app/src/Application/Schema/DoctrineCollectionWriter.php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Application\Schema;
+
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Expr\Comparison;
+use Spiral\DataGrid\Compiler;
+use Spiral\DataGrid\Specification\Filter\Equals;
+use Spiral\DataGrid\Specification\Filter\Like;
+use Spiral\DataGrid\Specification\Sorter\AbstractSorter;
+use Spiral\DataGrid\SpecificationInterface;
+use Spiral\DataGrid\WriterInterface;
+
+final class DoctrineCollectionWriter implements WriterInterface
+{
+    public function write(mixed $source, SpecificationInterface $specification, Compiler $compiler): mixed
+    {
+        // If the data isn't in a collection, just return it as is.
+        if (!$source instanceof Collection) {
+            return $source;
+        }
+
+        // Prepare a set of rules to change the data.
+        $criteria = null;
+
+        // If the change is about sorting.
+        if ($specification instanceof AbstractSorter) {
+            $orders = [];
+            foreach ($specification->getExpressions() as $field) {
+                $orders[$field] = ($specification->getValue() === AbstractSorter::ASC)
+                    ? Criteria::ASC
+                    : Criteria::DESC;
+            }
+
+            if ($orders !== []) {
+                $criteria = (new Criteria())->orderBy($orders);
+            }
+        // If the change is about matching exact values.
+        } elseif ($specification instanceof Equals) {
+            $expr = new Comparison($specification->getExpression(), Comparison::EQ, $specification->getValue());
+            $criteria = (new Criteria())->where($expr);
+        // If the change is about checking if data contains certain text.
+        } elseif ($specification instanceof Like) {
+            $criteria = new Criteria(
+                Criteria::expr()->contains($specification->getExpression(), $specification->getValue())
+            );
+        } else {
+            // ... and so on.
+            return null;
+        }
+
+        // Apply the changes if there are any.
+        if ($criteria !== null) {
+            $source = $source->matching($criteria)->getValues();
+        }
+
+        return $source;
+    }
+}
+```
+
+If a writer returns `null`, the compiler will think that the writer doesn't know how to handle the specification and
+in case if all the writers return `null`, the compiler will throw an
+exception `Spiral\DataGrid\Exception\CompilerException`. Essentially, it's the system's way of saying, "Hey, something
+isn't right here. None of the writers did their job."
+
+**Why It's Important**
+Imagine you're trying to update a record in a database. You've given the system a set of rules on how to make this
+update. You'd expect one of two outcomes: either the record is successfully updated or there's a problem with the update
+parameters.
+
+The `CompilerException` serves as a feedback mechanism. Instead of silently failing and leaving developers scratching
+their heads, Spiral explicitly alerts them that none of the writers made any changes. This feedback can be invaluable
+for debugging and ensuring data integrity.
+
+2. Register your writer in the `app/config/dataGrid.php` config.
+
+We need to register the writer in the `writers` section. The order of writers is important, as the compiler will use
+them in the same order as they are registered.
+
+```php app/config/dataGrid.php
+return [
+    'writers' => [
+    \App\Application\Schema\DoctrineCollectionWriter::class,
+    ],
+];
+```
+
+That's it! Now you can try to pass a Doctrine Collection to the grid factory and see how it works.
+
+## Counting items
+
 If you need to count items using a complex function, you can pass a callable function via `withCounter` method:
 
 ```php
@@ -191,15 +349,6 @@ $factory = $factory->withCounter(static function ($select): int {
 
 > **Note**
 > This is a simple example, but this function might be very helpful in case of complex SQL requests with joins.
-
-## Diverse Input Sources
-
-By default, the Grid Factory obtains data from `Spiral\DataGrid\InputInterface` which is closely bound
-to `Spiral\Http\Request\InputManager`. This fetches data directly from an HTTP request.
-
-However, the beauty of the data grid component lies in its malleability. It's not strictly tied to HTTP requests.
-Whether it's console command arguments, gRPC requests, or any other data source, the sky is the limit. Simply implement
-the `InputInterface` with your desired data source and integrate DataGrids as per your application's requirements.
 
 ## Pagination specifications
 
