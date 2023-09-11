@@ -6,16 +6,27 @@ source, such as a database. By implementing a caching layer, the application can
 cache instead of recalculating it or fetching it from the slower source, which can improve the overall response time and
 reduce the load on the slower source.
 
-The Spiral Framework's `spiral/cache` component allows for efficient storage and retrieval of data. It is compliant
-with the [PSR-16 standard](https://www.php-fig.org/psr/psr-16/).
+The `spiral/cache` component in Spiral provides a streamlined method for storing and retrieving data. This component 
+aligns with the [PSR-16 standard](https://www.php-fig.org/psr/psr-16/) standard, making it a versatile choice for 
+developers familiar with PHP standards.
 
-In Spiral, RoadRunner is used as the underlying technology for the cache data layer, which provides several benefits. 
-RoadRunner is written in Go, a language known for its performance and efficiency, and is designed to handle 
-high-performance and concurrent workloads. Additionally, the 
-RoadRunner [Key-Value plugin](https://roadrunner.dev/docs/plugins-kv/) provides a wide range of storage options,
-including popular solutions such as Redis Server or Memcached, as well as options that do not require a separate server,
-such as BoltDB. By using RoadRunner, the framework can take advantage of its performance and efficiency to handle
-caching more efficiently, which can ultimately improve the overall performance of the application.
+## RoadRunner: The Game-Changer for Caching
+
+When we speak of Spiral's caching prowess, RoadRunner sits at its core. Here's what you should know about RoadRunner:
+
+- **Written in Go:** RoadRunner is all about speed and efficiency. Go is revered for its blistering performance metrics, 
+  making it a natural choice for high-octane operations.
+
+- **Tailored for High Concurrency:** It doesn't just perform; it performs in parallel. Designed to shoulder 
+  high-performance tasks, it can manage concurrent operations without a hiccup.
+
+- **Diverse Storage Choices through the Key-Value Plugin:** With RoadRunner's [Key-Value plugin](https://roadrunner.dev/docs/plugins-kv/), you're spoilt for 
+  choice. Opt for household names like Redis Server and Memcached or go the server-less route with choices like 
+  in-memory storage.
+
+- **No PHP Extensions Required:** One of the standout features of using RoadRunner is the elimination of any PHP 
+  extensions for Redis or Memcache. Instead, you communicate directly with RoadRunner using RPC.
+
 
 ## Installation
 
@@ -40,10 +51,10 @@ protected const LOAD = [
 
 ## Configuration
 
-The configuration file should be located at `app/config/cache.php`. It allows for configuring different storage options
-and setting the default storage.
+To get started, place your configuration file at `app/config/cache.php`. This file acts as your go-to place for 
+configuring storage options and setting your default storage.
 
-For example, the configuration file might look like this:
+Here's a sample of what your `cache.php` configuration might look like:
 
 ```php app/config/cache.php
 use Spiral\Cache\Storage\ArrayStorage;
@@ -67,7 +78,11 @@ return [
      * Aliases, if you want to use domain specific storages.
      */
     'aliases' => [
-        'user-data' => 'rr-redis'
+        'user-data' => 'rr-redis',
+        'blog-data' => [
+            'storage' => 'rr-redis',
+            'prefix' => 'blog_'
+        ],
     ],
     
     /**
@@ -110,19 +125,41 @@ return [
 ];
 ```
 
-The `aliases` option allows you to give domain-specific names to storages that are defined in the `storages` section. 
-This makes it easier to manage and maintain the cache data for different parts of the application.
+### Working with Aliases
 
-For example, you can have a storage called `rr-redis` in the `storages` section, and then define an alias
-called `user-data` in the aliases section, which refers to the `rr-redis` storage. This way, you can use the `user-data`
-alias throughout your application to refer to the `rr-redis` storage.
+Aliases are your shortcut to referencing cache storages. They simplify the code and make it more readable.
 
-The `aliases` section also allows you to request cache storage `Spiral\Cache\CacheStorageProviderInterface` by alias
-name, which will be resolved to the actual storage instance. This allows you to reference the cache storage by a more
-meaningful name throughout your application, rather than using the internal storage name. If you need to change the
-storage in the future, you just need to update the aliases section of the configuration file, and it will affect all the
-instances where the alias is used in the application, making it easy to maintain and change the cache storage without
-affecting the rest of the code.
+For example, you have a storage named `rr-redis` and you'd prefer to reference it as `user-data` in your application. 
+The `aliases` section helps you do just that!
+
+What's more, you can fetch cache storage using the S`piral\Cache\CacheStorageProviderInterface` by the alias name. It 
+then smartly maps to the actual storage, making your code neater and more manageable.
+
+### Prefixing Cache Keys:
+
+Prefixes play a pivotal role when working with cache aliases. They ensure that your cache keys remain unique, 
+safeguarding against any accidental overlaps or clashes. By attaching a `prefix` to an alias, each cache key under that 
+alias automatically inherits this prefix. This results in a structured, organized, and clash-free cache system.
+
+Incorporating prefixes into your cache.php is straightforward:
+
+```php app/config/cache.php
+return [
+    // ...
+
+    'aliases' => [
+        'user-data' => [
+            'storage' => 'rr-redis',
+            'prefix' => 'user_'
+        ],
+    ],
+];
+```
+
+In the example above, any cache key under the `user-data` alias will automatically be prefixed with `user_`. So, a cache
+key like `profile` would be stored as `user_profile`.
+
+### RoadRunner KV Plugin configuration
 
 And the configuration file for the RoadRunner KV plugin:
 
