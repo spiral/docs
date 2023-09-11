@@ -20,9 +20,9 @@ When we speak of Spiral's caching prowess, RoadRunner sits at its core. Here's w
 - **Tailored for High Concurrency:** It doesn't just perform; it performs in parallel. Designed to shoulder 
   high-performance tasks, it can manage concurrent operations without a hiccup.
 
-- **Diverse Storage Choices through the Key-Value Plugin:** With RoadRunner's [Key-Value plugin](https://roadrunner.dev/docs/plugins-kv/), you're spoilt for 
-  choice. Opt for household names like Redis Server and Memcached or go the server-less route with choices like 
-  in-memory storage.
+- **Diverse Storage Choices through the Key-Value Plugin:** With RoadRunner's 
+  [Key-Value plugin](https://roadrunner.dev/docs/plugins-kv/), you're spoilt for choice. Opt for household names like 
+  Redis Server and Memcached or go the server-less route with choices like in-memory storage.
 
 - **No PHP Extensions Required:** One of the standout features of using RoadRunner is the elimination of any PHP 
   extensions for Redis or Memcache. Instead, you communicate directly with RoadRunner using RPC.
@@ -132,7 +132,7 @@ Aliases are your shortcut to referencing cache storages. They simplify the code 
 For example, you have a storage named `rr-redis` and you'd prefer to reference it as `user-data` in your application. 
 The `aliases` section helps you do just that!
 
-What's more, you can fetch cache storage using the S`piral\Cache\CacheStorageProviderInterface` by the alias name. It 
+What's more, you can fetch cache storage using the `Spiral\Cache\CacheStorageProviderInterface` by the alias name. It 
 then smartly maps to the actual storage, making your code neater and more manageable.
 
 ### Prefixing Cache Keys:
