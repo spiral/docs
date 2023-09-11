@@ -1,21 +1,53 @@
 # Component — Data Grids
 
-Use the component `spiral/data-grid` and `spiral/data-grid-bridge` to generate Cycle and DBAL select queries automatically,
-based on specifications provided by the end-user.
+Leveraging the power of Spiral, the `spiral/data-grid` component provides developers with a streamlined solution to
+generate Cycle and DBAL select queries automatically, based on user specifications.
+
+> **Warning:**
+> Spiral does not provide Cycle ORM out of the box. To use this component, you need to install `spiral/cycle-bridge`
+> component. You can find more information about Cycle ORM Bridge in
+> the [The Basics — Database and ORM](../basics/orm.md) section
+
+### When should you consider the Data Grid Component?
+
+1. **RESTful API Development:** Imagine having the power to construct dynamic APIs that can filter, sort, and manage
+   relational data based on user requests, all without writing tedious and repetitive query code.
+
+2. **Data Visualization Platforms:** If your application needs to render vast datasets in tabular formats, with
+   capabilities like sorting by columns, filtering records, and paginating results, the Data Grid Component is your
+   ticket to achieving this with minimal effort.
+
+3. **Content Management Systems (CMS):** For platforms that frequently fetch and display data based on user roles,
+   preferences, or search criteria, this component can drive efficiency, making data retrieval swift and
+   straightforward.
+
+4. **E-Commerce Platforms:** Think of scenarios where users filter products by categories, sort by price, or paginate
+   through thousands of items. The Data Grid Component can make these operations fluid and user-friendly.
+
+**By leveraging the Data Grid Component, developers can achieve a clear boundary between application layers:**
+
+- **Automated Query Handling:** Instead of cluttering your interface layer with detailed query instructions, define
+  user-driven specifications (like filtering or sorting) and let the component automatically construct the necessary
+  domain-specific queries.
+
+- **Unified Data Representation:** Once the domain layer fetches or processes the data, the component can standardize
+  how this data is presented, regardless of its source or complexity.
+
+- **Decoupled Input Sources:** The component's versatility in handling multiple input sources ensures that the domain
+  layer remains agnostic to the origin of requests, whether it's HTTP, console, or gRPC.
+
+- **Extendable Grid Schemas:** Design grid schemas in line with your domain structures and let the interface layer adapt
+  them dynamically based on user input, maintaining a distinct boundary between data structure and presentation logic.
 
 ## Installation
 
 To install the component:
 
 ```terminal
-composer require spiral/data-grid-bridge
+composer require spiral/data-grid-bridge spiral/cycle-bridge
 ```
 
-> **Note**
-> that the spiral/framework >= 2.7 already includes this component.
-
-Activate the bootloader `Spiral\DataGrid\Bootloader\GridBootloader` in your application after the Database and Cycle
-bootloaders:
+Activate the bootloader `Spiral\DataGrid\Bootloader\GridBootloader` in your application after Cycle bootloaders:
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
@@ -25,65 +57,106 @@ protected const LOAD = [
 ];
 ```
 
-## Usage
+## Quick Start
 
-To use the data grid, you will need two base abstractions - grid factory and grid schema.
+After installation, set up the writers for your data sources in the `app/config/dataGrid.php` config.
 
-### Grid Schema
+**Here's a basic setup for Cycle ORM Bridge:**
 
-Grid Schema is an object which describes how a data selector should be configured based on user input. Use
-`Spiral\DataGrid\GridSchema`:
-
-```php
-use Spiral\DataGrid; 
-use Spiral\DataGrid\Specification\Filter\Like;
-use Spiral\DataGrid\Specification\Pagination\PagePaginator;
-use Spiral\DataGrid\Specification\Sorter\Sorter;
-use Spiral\DataGrid\Specification\Value\StringValue;
-
-$schema = new DataGrid\GridSchema();
-
-// allow user to paginate the result set with 10 results per page
-$schema->setPaginator(new PagePaginator(10));
-
-// allow use to sort by name
-$schema->addSorter('id', new Sorter('id'));
-
-// find by matching name, the value supplied by user
-$schema->addFilter('name', new Like('name', new StringValue()));
+```php app/config/dataGrid.php
+return [
+    'writers' => [
+        \Spiral\Cycle\DataGrid\Writer\QueryWriter::class,
+        \Spiral\Cycle\DataGrid\Writer\PostgresQueryWriter::class,
+        \Spiral\Cycle\DataGrid\Writer\BetweenWriter::class,
+    ],
+];
 ```
 
 > **Note**
-> You can extend the GridSchema and initiate all the specifications in the constructor.
+> As you can see, we can register multiple writers for different specifications.
 
-### Grid Factory
+## Usage
 
-To use the defined grid schema, you will have to obtain an instance of a supported data source. By default, the Cycle
-Select and Database Select Query are supported.
+Data grid component provides two base abstractions - **Grid Factory** and **Grid Schema**.
+
+### Grid Schema
+
+Think of the Grid Schema as a set of rules for how to get data based on what the user asks for.
+
+**Here is a simple example of a grid schema:**
 
 ```php
-use Spiral\DataGrid\GridFactory;
-use Spiral\DataGrid\GridSchema;
+use Spiral\DataGrid\GridSchema; 
 use Spiral\DataGrid\Specification\Filter\Like;
 use Spiral\DataGrid\Specification\Pagination\PagePaginator;
 use Spiral\DataGrid\Specification\Sorter\Sorter;
 use Spiral\DataGrid\Specification\Value\StringValue;
 
 $schema = new GridSchema();
+
+// User pagination: limit results to 10 per page
 $schema->setPaginator(new PagePaginator(10));
+
+// Sorting option: by id
 $schema->addSorter('id', new Sorter('id'));
+
+// Filter option: find by name matching user input
 $schema->addFilter('name', new Like('name', new StringValue()));
-
-/**
- * @var App\Database\UserRepository $users 
- * @var GridFactory $factory
- */
-$result = $factory->create($users->select(), $schema);
-
-print_r(iterator_to_array($result));
 ```
 
-If you want any of the specifications to be applied by default, you can pass them in the following way:
+Grid Schema gives developers the power to curate available filters and sorters for querying data sources.
+
+For a more elegant approach, consider extending `GridSchema` and initializing all specifications within the constructor.
+
+**Here's an example:**
+
+```php
+use Spiral\DataGrid\GridSchema; 
+use Spiral\DataGrid\Specification\Pagination\PagePaginator;
+use Spiral\DataGrid\Specification\Sorter\Sorter;
+use Spiral\DataGrid\Specification\Filter\Like;
+use Spiral\DataGrid\Specification\Value\StringValue;
+
+class UserSchema extends GridSchema
+{
+    public function __construct()
+    {
+        // User pagination: limit results to 10 per page
+        $this->setPaginator(new PagePaginator(10));
+        
+        // Sorting option: by id
+        $this->addSorter('id', new Sorter('id'));
+        
+        // Filter option: find by name matching user input
+        $this->addFilter('name', new Like('name', new StringValue()));
+    }
+}
+```
+
+### Grid Factory
+
+This is where you connect your grid schema to real data.
+
+**Here's a simple example with the Cycle ORM Repository:**
+
+```php
+use Spiral\DataGrid\GridSchema;
+use Spiral\DataGrid\GridFactoryInterface;
+
+$schema = new UserSchema();
+
+$factory = $container->get(GridFactoryInterface::class);
+$users = $container->get(\App\Database\UserRepository::class);
+  
+/** @var Spiral\DataGrid\GridInterface $result */
+$result = $factory->create($users->select(), $schema);  
+
+// Fetch the refined data
+print_r(iterator_to_array($result));  
+```
+
+You can also set default specifications:
 
 ```php
 /** @var Spiral\DataGrid\GridFactory $factory */
@@ -96,13 +169,175 @@ $factory = $factory->withDefaults([
 
 How to apply the specifications:
 
-- to select users from the second page open page with POST or QUERY data like: `?paginate[page]=2`
+- to select users from the second page open page with `POST` or `QUERY` data like: `?paginate[page]=2`
 - to activate the `like` filter: `?filter[name]=antony`
-- to sort by id in ASC or DESC: `?sort[id]=desc`
+- to sort by id in `ASC` or `DESC`: `?sort[id]=desc`
 - to get count of total values: `?fetchCount=1`
 
 > **Note**
 > These params are defined in the `GridFactory`, you can overwrite them.
+
+Combining everything, a sample controller might look like:
+
+```php app/src/Endpoint/Web/Controller/UserController.php
+use Spiral\DataGrid\GridInterface;
+use Spiral\DataGrid\GridFactoryInterface;
+
+class UserController
+{
+    #[Route('/users')]
+    public function index(UserSchema $schema, GridFactoryInterface $factory): array
+    {
+        /** @var GridInterface $result */
+        $result = $factory->create($users->select(), $schema);
+        
+        $values = [];
+
+        foreach ([
+            GridInterface::FILTERS, 
+            GridInterface::SORTERS, 
+            GridInterface::COUNT, 
+            GridInterface::PAGINATOR
+        ] as $key) {
+             $values[$key] = $result->getOption($key);
+        }
+        
+        return [
+            'users' => iterator_to_array($result),
+            'grid' => [
+                'values' => $values,
+            ],
+        ];
+    }
+}
+```
+
+## Diverse Input Sources
+
+By default, the Grid Factory obtains data from `Spiral\DataGrid\InputInterface` which is closely bound
+to `Spiral\Http\Request\InputManager`. This fetches data directly from an HTTP request.
+
+However, the beauty of the data grid component lies in its malleability. It's not strictly tied to HTTP requests.
+Whether it's console command arguments, gRPC requests, or any other data source, the sky is the limit. Simply implement
+the `InputInterface` with your desired data source and integrate DataGrids as per your application's requirements.
+
+## Grid writers
+
+In Data Grid, we have **Schemas** to outline how data should be managed and **Factories** to define where this data
+comes from. On top of these, we also have **Writers**.
+
+Their job? To change the data based on user inputs.
+
+**Think of them like this:**
+
+If you have data in a book and you use a pencil (the writer) to add, modify, or erase content, then that pencil is the
+grid writer. Spiral has writers for Cycle ORM. But the cool part is that you can make your own pencil for other systems
+like Doctrine Collections.
+
+### How to Create Your Own Writer
+
+Want to make your own pencil (or writer)? Follow these steps:
+
+1. Use the `Spiral\DataGrid\WriterInterface` as your guide.
+
+**Here's an example:**
+
+```php app/src/Application/Schema/DoctrineCollectionWriter.php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Application\Schema;
+
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Expr\Comparison;
+use Spiral\DataGrid\Compiler;
+use Spiral\DataGrid\Specification\Filter\Equals;
+use Spiral\DataGrid\Specification\Filter\Like;
+use Spiral\DataGrid\Specification\Sorter\AbstractSorter;
+use Spiral\DataGrid\SpecificationInterface;
+use Spiral\DataGrid\WriterInterface;
+
+final class DoctrineCollectionWriter implements WriterInterface
+{
+    public function write(mixed $source, SpecificationInterface $specification, Compiler $compiler): mixed
+    {
+        // If the data isn't in a collection, just return it as is.
+        if (!$source instanceof Collection) {
+            return $source;
+        }
+
+        // Prepare a set of rules to change the data.
+        $criteria = null;
+
+        // If the change is about sorting.
+        if ($specification instanceof AbstractSorter) {
+            $orders = [];
+            foreach ($specification->getExpressions() as $field) {
+                $orders[$field] = ($specification->getValue() === AbstractSorter::ASC)
+                    ? Criteria::ASC
+                    : Criteria::DESC;
+            }
+
+            if ($orders !== []) {
+                $criteria = (new Criteria())->orderBy($orders);
+            }
+        // If the change is about matching exact values.
+        } elseif ($specification instanceof Equals) {
+            $expr = new Comparison($specification->getExpression(), Comparison::EQ, $specification->getValue());
+            $criteria = (new Criteria())->where($expr);
+        // If the change is about checking if data contains certain text.
+        } elseif ($specification instanceof Like) {
+            $criteria = new Criteria(
+                Criteria::expr()->contains($specification->getExpression(), $specification->getValue())
+            );
+        } else {
+            // ... and so on.
+            return null;
+        }
+
+        // Apply the changes if there are any.
+        if ($criteria !== null) {
+            $source = $source->matching($criteria)->getValues();
+        }
+
+        return $source;
+    }
+}
+```
+
+If a writer returns `null`, the compiler will think that the writer doesn't know how to handle the specification and
+in case if all the writers return `null`, the compiler will throw an
+exception `Spiral\DataGrid\Exception\CompilerException`. Essentially, it's the system's way of saying, "Hey, something
+isn't right here. None of the writers did their job."
+
+**Why It's Important**
+
+Imagine you're trying to update a record in a database. You've given the system a set of rules on how to make this
+update. You'd expect one of two outcomes: either the record is successfully updated or there's a problem with the update
+parameters.
+
+The `CompilerException` serves as a feedback mechanism. Instead of silently failing and leaving developers scratching
+their heads, Spiral explicitly alerts them that none of the writers made any changes. This feedback can be invaluable
+for debugging and ensuring data integrity.
+
+2. Register your writer in the `app/config/dataGrid.php` config.
+
+We need to register the writer in the `writers` section. The order of writers is important, as the compiler will use
+them in the same order as they are registered.
+
+```php app/config/dataGrid.php
+return [
+    'writers' => [
+    \App\Application\Schema\DoctrineCollectionWriter::class,
+    ],
+];
+```
+
+That's it! Now you can try to pass a Doctrine Collection to the grid factory and see how it works.
+
+## Counting items
 
 If you need to count items using a complex function, you can pass a callable function via `withCounter` method:
 
@@ -146,12 +381,12 @@ $paginator->withValue(['limit' => 100]); // will apply
 $paginator->withValue(['limit' => 100, 'page' => 2]);
 ```
 
-Under the hood, this paginator converts `limit` and `page` into the `Limit` and `Offset` specification. You are free to 
+Under the hood, this paginator converts `limit` and `page` into the `Limit` and `Offset` specification. You are free to
 write your own paginator, such as a cursor-based one (for example: `lastID`+`limit`).
 
 ## Sorter specifications
 
-Sorters are specifications that carry a sorting direction. For sorters that can apply direction, you can pass one of the 
+Sorters are specifications that carry a sorting direction. For sorters that can apply direction, you can pass one of the
 next values:
 
 - `1`, `'1'`, `'asc'`, `SORT_ASC` for ascending order
@@ -178,7 +413,7 @@ $descSorter = new Sorter\DescSorter('first_name', 'last_name');
 
 ### Directional sorter
 
-This sorter contains 2 independent sorters, each for ascending and descending order. By receiving the order via 
+This sorter contains 2 independent sorters, each for ascending and descending order. By receiving the order via
 `withValue`, we will get one of the sorters:
 
 ```php
@@ -239,7 +474,8 @@ $descSorter = $sorter->withDirection('desc');
 
 ## Filter specifications
 
-Filters are specifications that carry values. Values can be passed directly via the constructor. In this case, the filter 
+Filters are specifications that carry values. Values can be passed directly via the constructor. In this case, the
+filter
 value is fixed and will be applied as it is.
 
 ```php
@@ -252,7 +488,8 @@ $filter = new Filter\Equals('name', 'Antony');
 $filter = $filter->withValue('John');   
 ```
 
-If you pass the `ValueInterface` to the constructor, you can use `withValue()` method. Then, it will be checked if the incoming value matches the `ValueInterface` type and will be converted.
+If you pass the `ValueInterface` to the constructor, you can use `withValue()` method. Then, it will be checked if the
+incoming value matches the `ValueInterface` type and will be converted.
 
 ```php
 use Spiral\DataGrid\Specification\Filter;
@@ -280,8 +517,9 @@ The next specifications are available for grids now:
 * [select](#filter-specifications-select)
 * [between](#filter-specifications-between)
 
-> **Note** 
-> There are more interesting things in the [filter values](#filter-values) and [value accessors](#value-accessors) sections below.
+> **Note**
+> There are more interesting things in the [filter values](#filter-values) and [value accessors](#value-accessors)
+> sections below.
 
 ### All
 
@@ -445,7 +683,7 @@ $notInArray = new Filter\NotInArray('price', new Value\NumericValue());
 $notInArray = $notInArray->withValue(['2', '5']);
 ```
 
-Third param allows auto-wrapping the `ValueInterface` with `ArrayValue` (enabled by default). In case you have a 
+Third param allows auto-wrapping the `ValueInterface` with `ArrayValue` (enabled by default). In case you have a
 non-trivial value (or wrapped with an accessor value), pass `false` as 3rd argument to control the filter wrapping:
 
 ```php
@@ -583,8 +821,9 @@ $filter = $select->withValue('four');
 
 This filter represents the SQL `between` operation, but can be presented as two `gt/gte` and `lt/lte` filters.
 
-You have an ability to define whether the boundary values should be included or not. If the boundary values aren't 
-included, this filter will be converted into `gt`+`lt` filters, otherwise when getting filters via `getFilters()` method, 
+You have an ability to define whether the boundary values should be included or not. If the boundary values aren't
+included, this filter will be converted into `gt`+`lt` filters, otherwise when getting filters via `getFilters()`
+method,
 you can specify either usage of the original `between` operator or `gte`+`lte` filters.
 
 > **Note**
@@ -665,7 +904,7 @@ $notIncludingBetween->getFilters(true);
 ## Mixed Specifications
 
 `Spiral\DataGrid\Specification\Filter\SortedFilter` and `Spiral\DataGrid\Specification\Sorter\FilteredSorter` are
-special sequence specifications that allow using both filters and sorters under a single name. 
+special sequence specifications that allow using both filters and sorters under a single name.
 
 Usage:
 
@@ -695,8 +934,8 @@ $schema->addFilter(
 
 ## Filter values
 
-We use filter values to convert the input type and its validation. Please don't use `convert()` method without 
-validating the input via `accepts()` method. They can tell you if the input is acceptable and converts it to a desired 
+We use filter values to convert the input type and its validation. Please don't use `convert()` method without
+validating the input via `accepts()` method. They can tell you if the input is acceptable and converts it to a desired
 type. Next values are available for grids for now:
 
 * [any](#filter-values-any)
@@ -804,8 +1043,8 @@ $value->convert('-1 year'); // DateTimeImmutable object
 
 ### Datetime Format
 
-This value expects a string representing a datetime formatted according to the given format. A datetime is converted 
-into a `\DateTimeImmutable`, a datetime will be additionally formatted using the output format if the 2nd argument is 
+This value expects a string representing a datetime formatted according to the given format. A datetime is converted
+into a `\DateTimeImmutable`, a datetime will be additionally formatted using the output format if the 2nd argument is
 passed:
 
 ```php
@@ -824,7 +1063,7 @@ $value->convert('2020-01-21'); // January 21st, 20
 
 ### Enum
 
-This value expects an input to be a part of a given enum array and converts it according to the base value type. All 
+This value expects an input to be a part of a given enum array and converts it according to the base value type. All
 enum values are also converted:
 
 ```php
@@ -948,7 +1187,7 @@ $valid->accepts('00000000-0000-0000-0000-000000000000'); // true
 
 ### Range
 
-This value expects an input to be the inside of a given range and converts it according to the base value type. Range 
+This value expects an input to be the inside of a given range and converts it according to the base value type. Range
 boundary values are also converted. You can also specify if the input can be equal to the boundary values or not:
 
 ```php
@@ -982,7 +1221,7 @@ $notEmpty->accepts(0); // false
 ## Value accessors
 
 Accessors act like values from the section above but have another purpose - you can use them to perform not-type
-transformations, for example, using strings, you may want to trim the value or convert it to uppercase. They can be 
+transformations, for example, using strings, you may want to trim the value or convert it to uppercase. They can be
 applied only if the value is applicable by a given `ValueInterface`. Examples below:
 
 ```php
