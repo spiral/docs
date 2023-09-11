@@ -51,15 +51,15 @@ class HomeController
 
 Here is a brief description of each of the properties:
 
-| Property   | Type         | Description                                                                                                                                                  |
-|------------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| route      | string       | The route pattern, which defines the URL pattern that the route will match. [Router](/http/routing.md). **Required**                                         |
-| name       | string       | Route name. **Optional**                                                                                                                                     |
-| methods    | array/string | The HTTP methods that the route will match (e.g. `GET`, `POST`, `PUT`, etc.). Defaults to all methods.                                                       |
-| defaults   | array        | An array of default values for route parameters.                                                                                                             |
-| group      | string       | A route group that the route will belong to. Defaults to `default`.                                                                                          |
-| middleware | array        | Route specific middleware class names.                                                                                                                       |
-| priority   | int          | Position in a routes list. Higher priority routes are sorted before lower ones. Helps to solve the cases when one request matches two routes. Defaults to 0. |
+| Property   | Type         | Description                                                                                                                                                 |
+|------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| route      | string       | The route pattern, which defines the URL pattern that the route will match. [Router](/http/routing.md). **Required**                                        |
+| name       | string       | Route name. **Optional**                                                                                                                                    |
+| methods    | array/string | The HTTP methods that the route will match (e.g. `GET`, `POST`, `PUT`, etc.). Defaults to all methods.                                                      |
+| defaults   | array        | An array of default values for route parameters.                                                                                                            |
+| group      | string       | A route group that the route will belong to. Defaults to `default`.                                                                                         |
+| middleware | array        | Route specific middleware class names.                                                                                                                      |
+| priority   | int          | Position in a routes list. The lower the number, the more important the route. Helps to solve the cases when one request matches two routes. Defaults to 0. |
 
 Using these properties, you can define the details of your route in a concise and organized way.
 
