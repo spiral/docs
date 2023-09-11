@@ -232,7 +232,7 @@ Their job? To change the data based on user inputs.
 
 If you have data in a book and you use a pencil (the writer) to add, modify, or erase content, then that pencil is the
 grid writer. Spiral has writers for Cycle ORM. But the cool part is that you can make your own pencil for other systems
-like DoctrineCollections.
+like Doctrine Collections.
 
 ### How to Create Your Own Writer
 
@@ -313,6 +313,7 @@ exception `Spiral\DataGrid\Exception\CompilerException`. Essentially, it's the s
 isn't right here. None of the writers did their job."
 
 **Why It's Important**
+
 Imagine you're trying to update a record in a database. You've given the system a set of rules on how to make this
 update. You'd expect one of two outcomes: either the record is successfully updated or there's a problem with the update
 parameters.
