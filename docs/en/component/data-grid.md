@@ -59,19 +59,18 @@ Data grid component provides two base abstractions - **Grid Factory** and **Grid
 
 ### Grid Schema
 
-The Grid Schema serves as a blueprint for configuring a data selector based on user input. Here's how to harness the
-power of `Spiral\DataGrid\GridSchema`.
+The Grid Schema serves as a blueprint for configuring a data selector based on user input.
 
 **Here is a simple example of a grid schema:**
 
 ```php
-use Spiral\DataGrid; 
+use Spiral\DataGrid\GridSchema; 
 use Spiral\DataGrid\Specification\Filter\Like;
 use Spiral\DataGrid\Specification\Pagination\PagePaginator;
 use Spiral\DataGrid\Specification\Sorter\Sorter;
 use Spiral\DataGrid\Specification\Value\StringValue;
 
-$schema = new DataGrid\GridSchema();
+$schema = new GridSchema();
 
 // User pagination: limit results to 10 per page
 $schema->setPaginator(new PagePaginator(10));
