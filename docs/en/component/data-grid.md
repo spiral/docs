@@ -8,7 +8,7 @@ generate Cycle and DBAL select queries automatically, based on user specificatio
 > component. You can find more information about Cycle ORM Bridge in
 > the [The Basics — Database and ORM](../basics/orm.md) section
 
-### When should you consider the Data Grid Component?
+#### When should you consider the Data Grid Component?
 
 1. **RESTful API Development:** Imagine having the power to construct dynamic APIs that can filter, sort, and manage
    relational data based on user requests, all without writing tedious and repetitive query code.
@@ -78,11 +78,11 @@ return [
 
 ## Usage
 
-Data grid component provides two base abstractions - **Grid Factory** and **Grid Schema**.
+The component provides two base abstractions - **Grid Factory** and **Grid Schema**.
 
 ### Grid Schema
 
-Think of the Grid Schema as a set of rules for how to get data based on what the user asks for.
+Think of the Schema as a set of rules for how to get data based on what the user asks for.
 
 **Here is a simple example of a grid schema:**
 
@@ -105,11 +105,10 @@ $schema->addSorter('id', new Sorter('id'));
 $schema->addFilter('name', new Like('name', new StringValue()));
 ```
 
-Grid Schema gives developers the power to curate available filters and sorters for querying data sources.
+In short, with Schema, developers can customize filters and sorting options when fetching data.
 
-For a more elegant approach, consider extending `GridSchema` and initializing all specifications within the constructor.
-
-**Here's an example:**
+For a cleaner setup, you can extend the `GridSchema` and set everything inside its constructor, like in the example
+below:
 
 ```php
 use Spiral\DataGrid\GridSchema; 
@@ -136,9 +135,8 @@ class UserSchema extends GridSchema
 
 ### Grid Factory
 
-This is where you connect your grid schema to real data.
-
-**Here's a simple example with the Cycle ORM Repository:**
+Grid Factory is the link between your grid schema and the actual data you want to retrieve. The following code example
+demonstrates how to connect the schema to data using the Cycle ORM Repository:
 
 ```php
 use Spiral\DataGrid\GridSchema;
@@ -167,6 +165,10 @@ $factory = $factory->withDefaults([
 ]);
 ```
 
+> **Note**
+> Because the `withDefaults` method is immutable, calling it doesn't alter the original Grid Factory. Instead, it gives
+> you a new instance with the specified defaults.
+
 How to apply the specifications:
 
 - to select users from the second page open page with `POST` or `QUERY` data like: `?paginate[page]=2`
@@ -174,19 +176,17 @@ How to apply the specifications:
 - to sort by id in `ASC` or `DESC`: `?sort[id]=desc`
 - to get count of total values: `?fetchCount=1`
 
-> **Note**
-> These params are defined in the `GridFactory`, you can overwrite them.
-
-Combining everything, a sample controller might look like:
+Finally, the last code example shows what a sample controller might look like when putting everything together:
 
 ```php app/src/Endpoint/Web/Controller/UserController.php
 use Spiral\DataGrid\GridInterface;
 use Spiral\DataGrid\GridFactoryInterface;
+use App\Database\UserRepository;
 
 class UserController
 {
     #[Route('/users')]
-    public function index(UserSchema $schema, GridFactoryInterface $factory): array
+    public function index(UserSchema $schema, GridFactoryInterface $factory, UserRepository $users): array
     {
         /** @var GridInterface $result */
         $result = $factory->create($users->select(), $schema);
@@ -212,14 +212,52 @@ class UserController
 }
 ```
 
-## Diverse Input Sources
+## Input Sources
 
-By default, the Grid Factory obtains data from `Spiral\DataGrid\InputInterface` which is closely bound
-to `Spiral\Http\Request\InputManager`. This fetches data directly from an HTTP request.
+The Grid Factory gets its data from `Spiral\DataGrid\InputInterface`. By default, it takes this data from an HTTP
+request through `Spiral\Http\Request\InputManager`.
 
-However, the beauty of the data grid component lies in its malleability. It's not strictly tied to HTTP requests.
-Whether it's console command arguments, gRPC requests, or any other data source, the sky is the limit. Simply implement
-the `InputInterface` with your desired data source and integrate DataGrids as per your application's requirements.
+However, what's great about the component is its flexibility. It doesn't only work with HTTP requests. You can make it
+work with things like command prompts, gRPC requests, or other sources. Just use the `InputInterface` for your chosen
+data source and set up the DataGrids for your app's needs.
+
+**There are two main methods to switch out where the data comes from:**
+
+1. Local Changes with `GridFactory::withInput`: Ideal for temporary changes like during testing.
+   Here's an example using an array as an input:
+
+```php
+use Spiral\DataGrid\Input\ArrayInput;
+
+/** @var Spiral\DataGrid\GridFactory $factory */
+$factory = $factory->withInput(new ArrayInput([
+    'name' => 'antony',
+    'id' => 'desc'
+]));
+
+/** @var Spiral\DataGrid\GridInterface $result */
+$result = $factory->create($users->select(), $schema);  
+```
+
+> **Note**
+> Because the `withInput` method is immutable, calling it doesn't alter the original Grid Factory. Instead, it gives
+> you a new instance with the specified input.
+
+2. **Setting a Global Input Source via the Container:** Here, you're changing the input source for the entire
+   application.
+
+To illustrate, this is how you'd modify the Grid Factory to obtain input from the console:
+
+```php app/src/Application/Bootloader/AppBootloader.php
+use Spiral\Boot\Bootloader\Bootloader;
+
+class AppBootloader extends Bootloader
+{
+    protected const SINGLETONS = [
+        \Spiral\DataGrid\InputInterface::class => ConsoleInput::class,
+    ];
+}
+```
 
 ## Grid writers
 
@@ -330,7 +368,7 @@ them in the same order as they are registered.
 ```php app/config/dataGrid.php
 return [
     'writers' => [
-    \App\Application\Schema\DoctrineCollectionWriter::class,
+        \App\Application\Schema\DoctrineCollectionWriter::class,
     ],
 ];
 ```
