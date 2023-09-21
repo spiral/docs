@@ -21,7 +21,7 @@ the GRPC project, you will need several instruments.
 To compile `.proto` files into the target language, you will have to install the `protoc` compiler.
 
 > **Note**
-> You can download the latest `protoc` binaries from[https://github.com/protocolbuffers/protobuf/releases.
+> You can download the latest `protoc` binaries from [here](https://github.com/protocolbuffers/protobuf/releases).
 
 ### Install Protobuf extension (optional)
 
