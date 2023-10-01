@@ -251,7 +251,7 @@ final class GithubClientBootloader extends Bootloader
     
     public function boot(BinderInterface $binder): void 
     {
-        $container->bindSingleton(ClinetInterface::class, function (GithubConfig $config) {
+        $binder->bindSingleton(ClinetInterface::class, function (GithubConfig $config) {
             return new Clinet(
                 $config->getAccessToken(),
                 $config->getSecret(),
