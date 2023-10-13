@@ -4,43 +4,43 @@ During the development process, it is common for errors and exceptions to arise.
 challenging and time-consuming task, but it is a critical aspect of the development process. Spiral offers
 a range of tools and techniques for debugging exceptions and identifying the underlying cause of issues.
 
+This documentation will guide you through the features available in Spiral for exception handling, rendering, and
+customizations.
+
+## The Exception Handler
+
+Spiral offers a robust mechanism for handling exceptions using the `Spiral\Exceptions\ExceptionHandler`.
+
 ## Exception rendering
 
-By default, the framework uses the `Spiral\Exceptions\Renderer\PlainRenderer` for rendering exceptions. In some cases,
-for example when `DEBUG=true` you may prefer to render a beautiful error page, with code highlighting, such
-as [filp/whoops](https://github.com/filp/whoops)
-or [yiisoft/error-handler](https://github.com/spiral-packages/yii-error-handler-bridge).
+Spiral uses formats to determine which renderer should be used to handle a given exception. The format can
+be based on the environment, such as `cli` for console applications or `http` for HTTP requests. This allows for
+different renderers to be registered and used depending on the context in which the exception was encountered.
 
-### Available Renderers
+### How it works
 
-The `Spiral\Exceptions\Renderer\ConsoleRenderer`, `Spiral\Exceptions\Renderer\JsonRenderer`,
-and `Spiral\Exceptions\Renderer\PlainRenderer` are available out of the box.
+Sometimes, you might want to show errors in a special way, like in JSON for an API. Here's how you can do that:
 
-| Renderer        | Formats                               |
-|-----------------|---------------------------------------|
-| ConsoleRenderer | console, cli                          |
-| JsonRenderer    | application/json, json                |
-| PlainRenderer   | text/plain, text, plain, cli, console |
+1. **Make a Renderer**
 
-### Custom Renderer
+Here's an example of how to implement a JSON renderer:
 
-For example, to integrate with the `yiisoft/error-handler` package, a developer would create a custom `HtmlRenderer`
-class that implements the `Spiral\Exceptions\ExceptionRendererInterface` to render the exception.
+```php app/src/Application/Exception/Renderer/JsonRenderer.php
+<?php
 
-Here is an example of integration with the package:
-
-```php app/src/Application/Exception/Renderer/HtmlRenderer.php
-namespace App\Application\Exception\Renderer;
+namespace Spiral\YiiErrorHandler;
 
 use Spiral\Exceptions\ExceptionRendererInterface;
 use Spiral\Exceptions\Verbosity;
-use Yiisoft\ErrorHandler\Renderer\HtmlRenderer as YiiHtmlRenderer;
+use Yiisoft\ErrorHandler\Renderer\JsonRenderer as YiiJsonRenderer;
 use Yiisoft\ErrorHandler\ThrowableRendererInterface;
 
-final class HtmlRenderer implements ExceptionRendererInterface
+final class JsonRenderer implements ExceptionRendererInterface
 {
+    public const FORMATS = ['application/json', 'json'];
+
     public function __construct(
-        private readonly YiiHtmlRenderer $renderer
+        private readonly ?ThrowableRendererInterface $renderer = new YiiJsonRenderer()
     ) {
     }
 
@@ -58,28 +58,30 @@ final class HtmlRenderer implements ExceptionRendererInterface
 
     public function canRender(string $format): bool
     {
-        return \in_array($format, ['html', 'application/html', 'text/html'], true);
+        return \in_array($format, self::FORMATS, true);
     }
 }
 ```
 
-This custom renderer can then be registered with the `Spiral\Exceptions\ExceptionHandler` class via a bootloader.
-
 > **Note**
-> When you register a new renderer, it will be add at the top of renderers list.
+> `Spiral\YiiErrorHandler\JsonRenderer` is a part of `spiral-packages/yii-error-handler-bridge` package.
 
-```php app/src/Application/Bootloader/ExceptionHandlerBootloader.php
+2. **Register Your Renderer**
+
+Register the custom renderer using a bootloader
+
+```php
 namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Exceptions\ExceptionHandler;
-use App\Application\Exception\Renderer\HtmlRenderer;
+use Spiral\YiiErrorHandler\JsonRenderer;
 
 final class ExceptionHandlerBootloader extends Bootloader
 {
     public function init(ExceptionHandler $handler): void
     {
-        $handler->addRenderer(new HtmlRenderer());
+        $handler->addRenderer(new JsonRenderer());
     }
 }
 ```
@@ -94,69 +96,14 @@ protected const LOAD = [
 ];
 ```
 
-Spiral uses formats to determine which renderer should be used to handle a given exception. The format can
-be based on the environment, such as `cli` for console applications or `http` for HTTP requests. This allows for
-different renderers to be registered and used depending on the context in which the exception was encountered.
-
-For example, in a console application, it may be more appropriate to use a `Spiral\Exceptions\Renderer\ConsoleRenderer`
-that is specifically designed to handle exceptions in a command-line environment. This renderer could include features
-such as colorizing the stack trace, to make it more readable and easier to understand, while in a web application, a
-more detailed and visually appealing renderer could be used.
-
-In some cases, it may be useful to render exceptions as a `JSON` string, especially when working with APIs or other
-services that expect responses in this format.
-
-```php app/src/Application/Exception/Renderer/JsonRenderer.php
-namespace App\Application\Exception\Renderer;
-use Spiral\Exceptions\ExceptionRendererInterface;
-
-final class JsonRenderer implements ExceptionRendererInterface
-{
-    public function render(
-        \Throwable $exception,
-        ?Verbosity $verbosity = Verbosity::BASIC,
-        string $format = null,
-    ): string {
-
-        return \json_encode([
-            'error'      => \sprintf(
-                '[%s] %s as %s:%s',
-                $exception::class,
-                $exception->getMessage(),
-                $exception->getFile(),
-                $exception->getLine()
-            ),
-            'stacktrace' => \iterator_to_array($this->renderTrace($exception->getTrace())),
-        ]);
-    }
-
-    private function renderTrace(array $trace): array
-    {
-        // ...
-    }
-    
-    public function canRender(string $format): bool
-    {
-        return \in_array($format, ['application/json', 'json'], true);
-    }
-}
-```
-
-And register it:
-
-```php app/src/Application/Bootloader/ExceptionHandlerBootloader.php
-public function init(ExceptionHandler $handler): void
-{
-    $handler->addRenderer(new JsonRenderer());
-}
-```
+3. **Use Your Renderer**
 
 To use this renderer for handling exceptions in a web application, we can create a new middleware that will catch all
 exceptions and render them using this renderer only when a specific header such as `Accept=application/json` is present
 in the request. This allows for a more granular control over how exceptions are handled and displayed to the client,
 depending on their desired format.
 
-```php app/src/Endpoint/Web/Middleware/ErrorHandlerMiddleware.php
+```php
 namespace App\Endpoint\Web\Middleware;
 
 use Psr\Http\Server\MiddlewareInterface;
@@ -185,18 +132,12 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
         } catch (\Throwable $e) {
             $code = 500;
         }
-
-
-        if ($request->getHeaderLine('Accept') !== 'application/json') {
-            throw $e;
-        }
-
         
         $response = $this->responseFactory->createResponse($code);
         $response->getBody()->write(
             (string) $this->renderer->render(
                 exception: $e,
-                format: 'application/json'
+                format: $request->getHeaderLine('Accept') ?? 'application/json'
             )
         );
 
@@ -207,6 +148,56 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
 
 As you can see, different renderers can be used for different environments, such as a console renderer for command-line
 applications, or a JSON renderer for API responses. Additionally, different renderers can be used for different formats.
+
+### Existing Renderers
+
+Here are some renderers Spiral already gives you:
+
+| Renderer                                     | Formats                                         |
+|----------------------------------------------|-------------------------------------------------|
+| `Spiral\Exceptions\Renderer\ConsoleRenderer` | `console`, `cli`                                |
+| `Spiral\Exceptions\Renderer\JsonRenderer`    | `application/json`, `json`                      | 
+| `Spiral\Exceptions\Renderer\PlainRenderer`   | `text/plain`, `text`, `plain`, `cli`, `console` |
+
+In some cases, for example when `DEBUG=true` you may prefer to render a beautiful error page, with code highlighting,
+such as [filp/whoops](https://github.com/filp/whoops)
+or [yiisoft/error-handler](https://github.com/spiral-packages/yii-error-handler-bridge).
+
+### Yii Error Renderer
+
+The Yii Error Handler is a bridge package for Spiral that provides integration with the Yii framework's error
+handlers.
+
+![screenshot](https://user-images.githubusercontent.com/773481/215085868-a7228f6c-1be0-460d-b910-85fa2cd1195b.png)
+
+#### Installation
+
+To install the component:
+
+```terminal
+composer require spiral-packages/yii-error-handler-bridge
+```
+
+After package install you need to register bootloader from the package:
+
+```php app/src/Application/Kernel.php
+protected const LOAD = [
+    // ...
+    \Spiral\YiiErrorHandler\Bootloader\YiiErrorHandlerBootloader::class,
+    // ...
+];
+```
+
+The `YiiErrorHandlerBootloader` will register all available renderers during initialization. If you wish to register
+specific renderers.
+
+#### Built-in renderers
+
+The bridge provides several built-in renderers for displaying errors:
+
+- `HtmlRenderer`: Renders error pages as HTML.
+- `JsonRenderer`: Renders error pages as JSON. This can be useful for handling errors in API requests.
+- `PlainTextRenderer`: Renders error pages as plain text.
 
 ### Verbosity Levels
 
@@ -262,42 +253,6 @@ Unable to route `http://127.0.0.1`. in vendor/spiral/framework/src/Router/src/Ro
  2. ...
 ```
 
-### Yii Error Renderer
-
-The Yii Error Handler is a bridge package for Spiral that provides integration with the Yii framework's error
-handlers.
-
-![screenshot](https://user-images.githubusercontent.com/773481/215085868-a7228f6c-1be0-460d-b910-85fa2cd1195b.png)
-
-#### Installation
-
-To install the component:
-
-```terminal
-composer require spiral-packages/yii-error-handler-bridge
-```
-
-After package install you need to register bootloader from the package:
-
-```php app/src/Application/Kernel.php
-protected const LOAD = [
-    // ...
-    \Spiral\YiiErrorHandler\Bootloader\YiiErrorHandlerBootloader::class,
-    // ...
-];
-```
-
-The `YiiErrorHandlerBootloader` will register all available renderers during initialization. If you wish to register
-specific renderers.
-
-#### Built-in renderers
-
-The bridge provides several built-in renderers for displaying errors:
-
-- `HtmlRenderer`: Renders error pages as HTML.
-- `JsonRenderer`: Renders error pages as JSON. This can be useful for handling errors in API requests.
-- `PlainTextRenderer`: Renders error pages as plain text.
-
 <hr />
 
 ## Exception reporting
@@ -339,26 +294,21 @@ application. This can be useful for tracking and analyzing errors over time.
 The `FileReporter` is also enabled by default, it allows you to save detailed information about an exception to a file
 known as `snapshot`.
 
-### Sentry Reporter
+## Sentry
 
-The Sentry Reporter is a bridge package for Spiral that provides integration with the Sentry error reporting.
+Spiral offers a Sentry bridge package that facilitates effortless integration with the [Sentry](https://sentry.io/)
+service. This document will guide you through the process of integrating and customizing this tool within your Spiral
+application.
 
-#### Installation
+### Installation
 
-To install the component:
+1. Install the Sentry bridge component:
 
 ```terminal
 composer require spiral/sentry-bridge
 ```
 
-After installing the package, you need to add the bootloader from the package to your application.
-
-There are two bootloaders available:
-
-##### Sentry as a reporter
-
-SentryReporterBootloader registers `Spiral\Sentry\SentryReporter` in the `ExceptionHandler`. The Reporter sends the
-exception to Sentry.
+2. Once installed, register `Spiral\Sentry\Bootloader\SentryReporterBootloader` bootloader from the package into your
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
@@ -368,13 +318,30 @@ protected const LOAD = [
 ];
 ```
 
-#### Sending additional data
+It will register `Spiral\Sentry\SentryReporter` in the `Spiral\Exceptions\ExceptionHandler`.
 
-To expose current application logs, PSR-7 request state, etc., you can enable additional debug extensions.
+3. Configure the Sentry DSN in the `.env` file:
 
-##### Http collector
+```dotenv .env
+SENTRY_DSN=...
+```
 
-Use an HTTP collector to send data about the current HTTP request to Sentry.
+### Providing Additional Data
+
+To expose current application logs, such as application logs or PSR-7 request state, enable the debug information
+collectors. These collectors gather relevant data about the current application's state.
+
+When an exception occurs, Sentry reporter will request `Spiral\Debug\StateInterface` class from the IoC container and
+during creation the object will be filled with information from the registered collectors.
+
+> **Warning**
+> Be careful when requesting `Spiral\Debug\StateInterface` from the container. The object will be created on every
+> request from the container and you cannot populate it outside collectors. If you need to add additional information
+> to the `Spiral\Debug\StateInterface` object, you can use collectors.
+
+#### Http collector
+
+Use the HTTP collector to send data about the current HTTP request to Sentry.
 
 It will send the following information about the current request:
 
@@ -401,7 +368,7 @@ Then you need to register the middleware `Spiral\Debug\StateCollector\HttpCollec
 > **See more**
 > Read more how to register middleware in the [HTTP — Routing](../http/routing.md#add-middleware) section.
 
-##### Logs collector
+#### Logs collector
 
 Use the Logs collector to send all received logs to Sentry.
 
@@ -417,15 +384,45 @@ protected const LOAD = [
 ];
 ```
 
-##### Custom data collector
+#### Creating Custom Collectors
 
-You can use the `Spiral\Debug\StateInterface` class to send custom data to Sentry.
+For specialized data collection, you can create custom collectors. Collector should
+implement `Spiral\Debug\StateCollectorInterface` interface.
 
-You can request a State object from the container.
+For example, consider an SQL Collector:
 
-```php
-$state = $container->get(\Spiral\Debug\StateInterface::class);
+```php app/src/Application/Debug/Collector/SqlCollector.php
+namespace App\Application\Debug\Collector;
+
+use Spiral\Logger\Event\LogEvent;
+use Spiral\Debug\StateCollectorInterface;
+
+final class SqlCollector implements StateCollectorInterface
+{
+    public function __construct(
+        private readonly Database $db
+    ) {
+    }
+
+    public function collect(\Spiral\Debug\StateInterface $state): void
+    {
+       foreach($this->db->getQueries() as $query) {
+            $state->addLogEvent(new LogEvent(
+                time: $query->getTime(),
+                channel: 'sql',
+                level: 'info',
+                message: $query->getQuery(),
+                context: $query->getParameters()
+            ));
+       }
+    }
+}
 ```
+
+> **Warning**
+> The above example uses a non-existent Database class, which means you'll need to implement this yourself.
+
+Here are some useful methods of the `Spiral\Debug\StateInterface` object:
 
 **Add a tag**
 
@@ -456,6 +453,26 @@ $state->addLogEvent(new \Spiral\Logger\Event\LogEvent(
     message: 'Something went wrong',
     context: ['foo' => 'bar']
 ));
+```
+
+### Custom collector registration
+
+You can register your collector in a bootloader.
+
+```php app/src/Application/Bootloader/AppBootloader.php
+namespace App\Application\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Bootloader\DebugBootloader;
+use App\Application\Exception\Reporter\CustomReporter;
+
+final class AppBootloader extends Bootloader
+{
+    public function init(DebugBootloader $debug, SqlCollector $sqlCollector): void
+    {
+        $debug->addStateCollector($sqlCollector);
+    }
+}
 ```
 
 ## Extending the error handler
