@@ -63,6 +63,10 @@ public function findEnums(InterfacesInterface $interfaces): void
 }
 ```
 
+> **Warning**
+> Tokenizer will ignore all the files that have `inlcude` or `require` statements. This is because it's not safe to
+> require such reflections. Please don't use them in your code.
+
 ### Customizing search directories
 
 Tokenizer, by default, conducts its search within the app directory. However, you might often want it to consider other

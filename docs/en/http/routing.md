@@ -17,6 +17,15 @@ read. It can also help to improve the separation of concerns in your application
 developers to discover and understand the available routes. So if you're looking for a more organized and maintainable
 way to set up your routes, attribute-based routing might be worth considering!
 
+> **Note**
+> We use Tokenizer component for [static analysis](../advanced/tokenizer.md) identify route attributes. To specify the
+> directories where controllers should be searched for, refer to the Tokenizer documentation's section
+> on [customizing search directories.](../advanced/tokenizer.md#customizing-search-directories).
+
+> **Warning**
+> Be cautious because Tokenizer will ignore any files that contain `include` or `require` statements in your 
+> controllers.
+
 Just activate the bootloader `Spiral\Router\Bootloader\AnnotatedRoutesBootloader` in your application:
 
 ```php app/src/Application/Kernel.php
@@ -366,7 +375,6 @@ $routes->default('/<path:.*>')
 
 > **Note**
 > You can use not only callable, but also any other route targets: controller, action, namespaced, etc.
-
 
 ## Route group configurator
 
