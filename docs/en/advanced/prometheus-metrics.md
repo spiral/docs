@@ -1,17 +1,15 @@
 # Advanced — Application Metrics
 
 As a professional, you know the importance of keeping track of key metrics for your application.
-With [Prometheus](https://prometheus.io/), an open-source monitoring system, you can collect and store time series data
-such as application metrics, and use its powerful query language to analyze and visualize that data.
-
-But why stop there? Spiral has a really convenient feature that lets you send your application metrics to
-Prometheus with minimal setup. This means you can use a tool like [Grafana](https://grafana.com/) to see all your
-metrics in real-time, saving you the time and effort of building your own dashboard from scratch.
+With [Prometheus](https://prometheus.io/), you can collect and store time series data such as application metrics, and
+use its powerful
+query language to analyze and visualize that data in real-time using a tool like [Grafana](https://grafana.com/) saving
+you the time and effort of building your own dashboard from scratch.
 
 ![Grafana dashboard](https://user-images.githubusercontent.com/773481/205066017-ecddefc4-1d07-4428-b3ad-af49baadad0a.png)
 
-Spiral and [RoadRunner](https://roadrunner.dev/docs/plugins-metrics) plugin provide the ability to send application
-metrics to Prometheus.
+Spiral and [RoadRunner metrics](https://roadrunner.dev/docs/plugins-metrics) plugin provide the ability to collect
+application metrics and expose them to Prometheus.
 
 > **Note**
 > Here you can find out more about [Prometheus metrics](https://prometheus.io/docs/concepts/data_model/).
@@ -21,7 +19,7 @@ metrics to Prometheus.
 At first, you need to install the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package.
 
 > **Note**
-> The `spiral/roadrunner-bridge` package allows you to use RoadRunner 
+> The `spiral/roadrunner-bridge` package allows you to use RoadRunner
 > [metrics plugin](https://roadrunner.dev/docs/lab-metrics) with Spiral. This package provides RPC api for metrics
 > and a bootloader for your application.
 
