@@ -502,3 +502,52 @@ class AppBootloader extends Bootloader
 > **Warning**
 > To ensure that your listeners are called correctly, make sure to register them in bootloaders from within the `LOAD`
 > section of the application Kernel. Listeners will not be called if you register them within the `APP` kernel section.
+
+## Console commands
+
+### Info
+
+Want to know how the tokenizer is set up? Use the `tokenizer:info` command.
+
+**Just run the following command:**
+
+```terminal
+php app.php tokenizer:info
+```
+
+#### What You'll See
+
+1. **Included directories:** Shows which folders the tokenizer looks in.
+2. **Excluded directories:** Folders the tokenizer ignores.
+3. **Loaders:** Tells you what kind of PHP things (like classes or interfaces) the tokenizer is looking for. It'll also
+   show how to turn these on or off.
+4. **Tokenizer cache:** Shows if there's a shortcut (cache) used to speed things up. You can turn this on or off too.
+
+#### Example output
+
+```terminal
+Included directories:
++------------------------------------+-------+
+| Directory                          | Scope |
++------------------------------------+-------+
+| /vendor/intruforce/grpc-shared/src |       |
+| app/                               |       |
++------------------------------------+-------+
+
+Excluded directories:
++-----------+-------+
+| Directory | Scope |
++-----------+-------+
+
+Loaders:
++------------+------------------------------------------------------------------------------+
+| Loader     | Status                                                                       |
++------------+------------------------------------------------------------------------------+
+| Classes    | enabled                                                                      |
+| Enums      | disabled. To enable, add "TOKENIZER_LOAD_ENUMS=true" to your .env file.      |
+| Interfaces | disabled. To enable, add "TOKENIZER_LOAD_INTERFACES=true" to your .env file. |
++------------+------------------------------------------------------------------------------+
+
+Tokenizer cache: disabled
+To enable cache, add "TOKENIZER_CACHE_TARGETS=true" to your .env file.
+```
