@@ -60,7 +60,11 @@ namespace Database\Factory;
 
 use App\Entity\User;
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
+use Spiral\DatabaseSeeder\Factory\FactoryInterface;
 
+/**
+ * @implements FactoryInterface<User>
+ */
 final class UserFactory extends AbstractFactory
 {
     public function entity(): string
@@ -87,6 +91,12 @@ final class UserFactory extends AbstractFactory
     }
 }
 ```
+
+> **Note**
+> Since **v2.4.0** you can define the return type for a factory `@implements FactoryInterface<...>` annotation as in
+> the example above. With this annotation in place, your IDE will now provide suggestive autocomplete options, making
+> the code interaction more intuitive and error-prone.
+> ![image](https://github.com/spiral-packages/database-seeder/assets/773481/2da1fcf3-9214-4188-8993-1b4eaa65ac98)
 
 The `entity` method should return the fully qualified class name of the target entity that the factory is responsible
 for creating. In some cases, the factory may use the class name returned by the `entity` method to create a new instance
