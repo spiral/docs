@@ -257,11 +257,51 @@ Unable to route `http://127.0.0.1`. in vendor/spiral/framework/src/Router/src/Ro
 
 ## Exception reporting
 
-In addition to renderers, Spiral also allows for the registration of reporters, which can be used to store
-information about exceptions in a file or send it to an external service like [Sentry](https://sentry.io).
+In Spiral, you can use reporters to keep track of problems, like errors, in your application. Reporters can do two main
+things:
 
-Reporters can be registered with the `ExceptionHandler` class in a similar way to renderers, by using the addReporter
-method and providing an instance of a class that implements the `Spiral\Exceptions\ExceptionReporterInterface`.
+- They can save information about these problems in a file. This way, you can look at the file later to figure out what
+  went wrong.
+- They can also send reports about these problems to other services, like [Sentry](https://sentry.io). These services
+  can provide even more details about the issues in your application.
+
+Imagine you have a website, and sometimes things don't work as they should. This can happen because of errors in your
+code, like when a file is missing or there's a problem with the database. Reporters help you handle these errors
+effectively.
+
+### How Reporters Work
+
+#### 1. Implementing `ExceptionReporterInterface` or using a built-in reporters:
+
+You'll create a class (like `CustomReporter` in the example) that implements
+the `Spiral\Exceptions\ExceptionReporterInterface`. Think of this class as a reporter agent that knows what to do when
+an exception occurs.
+
+> **Note**
+> Read more about available reporters in the [Available Reporters](#available-reporters) section below.
+
+```php app/src/Application/Exception/Reporter/CustomReporter.php
+namespace App\Application\Exception\Reporter;
+
+final class CustomReporter implements ExceptionReporterInterface
+{
+    public function __construct(
+        private readonly LoggerInterface $logger,
+    ) {}
+
+    public function report(\Throwable $exception): void
+    {
+        // Store exception information in a file or send it to an external service
+        $this->logger->error($exception->getMessage(), ['exception' => $exception]);
+    }
+}
+```
+
+#### 2. Registration of Reporters:
+
+To use reporters, you first need to register them with the `ExceptionHandler` class in a similar way to renderers, by
+using the `addReporter` method and providing an instance of a class that implements
+the `Spiral\Exceptions\ExceptionReporterInterface`.
 
 ```php app/src/Application/Bootloader/ExceptionHandlerBootloader.php
 namespace App\Application\Bootloader;
@@ -278,6 +318,44 @@ final class ExceptionHandlerBootloader extends Bootloader
     }
 }
 ```
+
+#### 3. Using Reporters in Your Code:
+
+Now, in your application code, you can make use of these reporters whenever you expect an exception might occur.
+
+For instance, in the `PingSiteJob` example, if something goes wrong while trying to ping a website (like the website
+being down), an exception is caught and reported using the reporter.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Job;
+
+use Spiral\Exceptions\ExceptionReporterInterface;
+
+final class PingSiteJob
+{
+    public function __construct(
+        private PingClient $client,
+        private ExceptionReporterInterface $reporter,
+    ) {
+    }
+
+    public function handle(string $url): void
+    {
+        try {
+            $this->client->ping($url);
+        } catch (\Throwble $e) {
+            $this->reporter->report($e);
+        }
+    }
+}
+```
+
+> **Note**
+> Reporter will send exception through all registered reporters.
 
 ### Available Reporters
 
