@@ -240,7 +240,24 @@ There are several ways to change the serializer. You can globally change the def
 Or you can set a specific serializer for the job type. A specific serializer is selected by
 the `Spiral\Serializer\SerializerRegistryInterface`.
 
-You can configure the serializer for a specific job type in the `app/config/queue.php` configuration file.
+You can configure the serializer for a specific job type using `Spiral\Queue\Attribute\Serializer` attribute:
+
+```php
+use Spiral\Queue\Attribute\Serializer;
+use Spiral\Queue\JobHandler;
+
+#[Serializer('json')]
+final class Ping extends JobHandler
+{
+    public function invoke(array $payload): void
+    {
+        // ...
+    }
+}
+```
+
+
+or using `app/config/queue.php` configuration file.
 
 ```php app/config/queue.php
 use Spiral\Core\Container\Autowire;
@@ -295,7 +312,23 @@ public function createJob(QueueInterface $queue): void
 
 you need to tell the queue how to handle a job with the name `sample::job`.
 
-You can do it via the `app/config/queue.php` config:
+You can do it via attribute `Spiral\Queue\Attribute\JobHandler`:
+
+```php
+use Spiral\Queue\Attribute\JobHandler as Handler;
+use Spiral\Queue\JobHandler;
+
+#[Handler('sample::job')]
+final class Ping extends JobHandler
+{
+    public function invoke(array $payload): void
+    {
+        // ...
+    }
+}
+```
+
+or via the `app/config/queue.php` config:
 
 ```php app/config/queue.php
 return [
