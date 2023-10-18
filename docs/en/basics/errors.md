@@ -360,17 +360,45 @@ final class PingSiteJob
 ### Available Reporters
 
 Spiral comes with two built-in reporters that are available out of the box,
-the `Spiral\Exceptions\Reporter\LoggerReporter` and the `Spiral\Exceptions\Reporter\FileReporter`.
+the `Spiral\Exceptions\Reporter\LoggerReporter`, the `Spiral\Exceptions\Reporter\FileReporter`
+and `Spiral\Exceptions\Reporter\StorageReporter`.
 
-#### LoggerReporter
+#### Logger Reporter
 
-The `LoggerReporter` is enabled by default and allows you to log exceptions using a logger registered in the
-application. This can be useful for tracking and analyzing errors over time.
+The `Spiral\Exceptions\Reporter\LoggerReporter` is enabled by default and allows you to log exceptions using a logger
+registered in the application. This can be useful for tracking and analyzing errors over time.
 
-#### FileReporter
+#### File Reporter
 
-The `FileReporter` is also enabled by default, it allows you to save detailed information about an exception to a file
-known as `snapshot`.
+The `Spiral\Exceptions\Reporter\FileReporter` is also enabled by default, it allows you to save detailed information
+about an exception to a file known as `snapshot` in `runtime/snapshots` directory.
+
+#### Cloud Storage Reporter
+
+Have you ever faced challenges in storing your app's exception snapshots when working with stateless applications? We've
+got some good news. We've made it super easy for you.
+
+By integrating with the `spiral/storage` component, we're giving your stateless apps the power to save exception
+snapshots straight into cloud storages, like **S3**.
+
+**Why is this awesome for you?**
+
+1. **Simplified Storage:** No more juggling with complex storage solutions. Save snapshots directly to S3 with ease.
+2. **Tailored for Stateless Apps:** Designed specifically for stateless applications, making your deployments smoother
+   and hassle-free.
+3. **Reliability:** With S3's proven track record, know your snapshots are stored safely and can be accessed whenever
+   you need.
+
+The `Spiral\Exceptions\Reporter\StorageReporter` is also enabled by default, it allows you to save detailed information
+about an exception to a file known as `snapshot` in `runtime/snapshots` directory.
+
+**To use this reporter, you need:**
+
+1. Set up the `spiral/storage` component. Read more about it in
+   the [Component — Storage and Cloud distribution](../advanced/storage.md) section.
+2. Register the `Spiral\Bootloader\StorageSnapshotsBootloader`
+3. Specify the desired bucket using the `SNAPSHOTS_BUCKET` environment variable where you want to store your snapshots.
+4. Register `Spiral\Exceptions\Reporter\StorageReporter` in the `Spiral\Exceptions\ExceptionHandler` class.
 
 ## Sentry
 
