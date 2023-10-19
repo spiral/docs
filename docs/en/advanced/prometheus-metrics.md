@@ -208,6 +208,91 @@ class UserRegistrationHandler
 }
 ```
 
+## Decorators
+
+### Retries to send metrics
+
+Sometimes, you might face issues sending metrics to the RoadRunner metrics plugin. The connection might drop or the
+plugin could be temporarily down. For such scenarios, you can make use of a retry decorator. It allows you to specify
+how many times and how frequently you'd like to retry.
+
+Here is an example of how to use the retry decorator:
+
+```php
+$factory = new \Spiral\RoadRunner\Metrics\MetricsFactory();
+$rpc = $container->get(\Spiral\Goridge\RPC\RPCInterface::class);
+
+$metrics = $factory->create($rpc, new \Spiral\RoadRunner\Metrics\MetricsOptions(
+    retryAttempts: 3,
+    retrySleepMicroseconds: 50,
+));
+```
+
+### Suppressing exceptions
+
+Sometimes, you might not want errors to stop your application when sending metrics. For instance, if you're processing
+payments, a metric error shouldn't disrupt the transaction. You can suppress these errors.
+
+Here is an example of how to suppress exceptions:
+
+```php
+$factory = new \Spiral\RoadRunner\Metrics\MetricsFactory();
+$rpc = $container->get(\Spiral\Goridge\RPC\RPCInterface::class);
+
+$metrics = $factory->create(
+    $rpc,
+    new \Spiral\RoadRunner\Metrics\MetricsOptions(
+        suppressExceptions: true,
+    ),
+));
+```
+
+Alternatively, use the `Spiral\RoadRunner\Metrics\SuppressExceptionsMetrics` decorator:
+
+```php
+$metrics = new \Spiral\RoadRunner\Metrics\SuppressExceptionsMetrics(
+    $container->get(\Spiral\RoadRunner\Metrics\MetricsInterface::class),
+));
+```
+
+### Registering decorators in container
+
+Instead of defining decorators directly in your application code, it's cleaner to set them up in the container. 
+
+Here's a simple guide:
+
+```php app/src/Application/Bootloader/MetricsBootloader.php
+use Spiral\RoadRunner\Metrics\MetricsInterface;
+use Spiral\RoadRunner\Metrics\Collector;
+use Spiral\Goridge\RPC\RPCInterface;
+
+class MetricsBootloader extends Bootloader
+{
+    const SINGLETONS = [
+        MetricsInterface::class => [self::class, 'createMetrics'],
+    ];
+    
+    private function createMetrics(RPCInterface $rpc): MetricsInterface
+    {
+        $factory = new \Spiral\RoadRunner\Metrics\MetricsFactory();
+        
+        return $factory->create(
+            $rpc,
+            new \Spiral\RoadRunner\Metrics\MetricsOptions(
+                suppressExceptions: true,
+                retryAttempts: 3,
+                retrySleepMicroseconds: 50,
+            ),
+        ));
+    }
+}
+```
+
+> **Note**
+> Don't forget to register `MetricsBootloader` in application kernel.
+
+---
+
 ## Example Application
 
 There is a good example [**Demo ticket booking system**](https://github.com/spiral/ticket-booking) application built
