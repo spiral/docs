@@ -470,6 +470,119 @@ protected const APP = [
 ];
 ```
 
+## Retrying Failed Jobs
+
+In distributed systems, sometimes jobs fail due to temporary glitches like network errors. Spiral ensures these jobs
+aren't lost by automatically retrying them.
+
+### How it works
+
+1. **Interceptor's Role:** An interceptor oversees the job execution. If a job fails, it updates the ob's retry count,
+   and signals a `Spiral\Queue\Exception\RetryException`. This way, the job is marked for a retry with the updated
+   details.
+
+2. **Consumer's Role:** When a consumer comes across a `RetryException`, it knows the job should be put back to the
+   queue to be retried with the new settings provided in the exception.
+
+### Configuration
+
+To get this mechanism up and running, make a few tweaks in the `app/config/queue.php` configuration file. By default,
+interceptor is turned on. But, if you've changed the `interceptors` section in your config, remember to include
+the `Spiral\Queue\Interceptor\Consume\RetryPolicyInterceptor` as shown:
+
+```php app/config/queue.php
+use Spiral\Queue\Interceptor\Consume\RetryPolicyInterceptor;
+
+return [    
+    'interceptors' => [
+        'push' => [
+            // ...
+        ],
+        'consume' => [
+            RetryPolicyInterceptor::class
+        ],
+    ],
+    // ...
+];
+```
+
+> **See more**
+> Read more about interceptors in the [Queue — Interceptors](./interceptors.md) section.
+
+### Usage
+
+There are two primary methods to use this retry system:
+
+#### `Spiral\Queue\Attribute\RetryPolicy` attribute
+
+You can use `Spiral\Queue\Attribute\RetryPolicy` attribute to specify the retry policy for the job like in the example
+below:
+
+```php app/src/Endpoint/Job/PingJob.php
+use Spiral\Queue\Attribute\RetryPolicy;
+use Spiral\Queue\JobHandler;
+
+#[RetryPolicy(maxAttempts: 3, delay: 5, multiplier: 2)]
+final class PingJob extends JobHandler
+{
+    public function invoke(array $payload): void
+    {
+        // ...
+    }
+}
+```
+
+In this case if job will fail, it will be automatically re-enqueued with the retry policy specified in the attribute.
+
+#### Using a Custom Exception
+
+You can implement `Spiral\Queue\Exception\RetryableExceptionInterface` interface in your exception class and throw it
+from your job handler like in the example below:
+
+```php app/src/Exception/Job/RetryableException.php
+use Spiral\Queue\Exception\RetryableExceptionInterface;
+use Spiral\Queue\RetryPolicy;
+
+class RetryableException extends \Exception implements RetryableExceptionInterface
+{
+    public function isRetryable(): bool
+    {
+        return true;
+    }
+
+    public function getRetryPolicy(): ?RetryPolicyInterface
+    {
+        return new RetryPolicy(
+            maxAttempts: 3,
+            delay: 5,
+            multiplier: 2
+        );
+    }
+}
+```
+
+And then throw it from your job handler:
+
+```php app/src/Endpoint/Job/PingJob.php
+use Spiral\Queue\JobHandler;
+
+final class PingJob extends JobHandler
+{
+    public function invoke(array $payload): void
+    {
+        // ...
+        
+        throw new RetryableException('Something went wrong');
+    }
+}
+```
+
+If this job encounters the custom exception, it'll know to retry based on the conditions you've set.
+
+As you can see Spiral offers a robust retry mechanism, easily configurable and adaptable to specific needs. By utilizing
+either the built-in RetryPolicy attribute or crafting a custom exception, you can efficiently dictate how jobs should be
+retried.
+
 ## Events
 
 | Event                            | Description                                                   |
