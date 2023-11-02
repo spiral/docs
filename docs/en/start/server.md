@@ -228,32 +228,8 @@ http:
     debug: true
 ```
 
-Another option for development is the Auto-Reloading feature of RoadRunner, which can automatically detect PHP file
-changes and reload workers. The reload component can be configured by modifying the reload section in the `.rr.yaml`
-file.
-
-```yaml .rr.yaml
-reload:
-  # sync interval
-  interval: 1s
-  # global patterns to sync
-  patterns: [ ".php" ]
-  # list of included for sync services
-  services:
-    http:
-      # recursive search for file patterns to add
-      recursive: true
-      # ignored folders
-      ignore: [ "vendor" ]
-      # service specific file pattens to sync
-      patterns: [ ".php", ".go", ".md" ]
-      # directories to sync. If recursive is set to true,
-      # recursive sync will be applied only to the directories in `dirs` section
-      dirs: [ "." ]
-```
-
 > **Warning**
-> It's important to note that the reload component can affect the performance of the application server, so it's best to
+> It's important to note that this feature can affect the performance of the application server, so it's best to
 > use it in development mode only.
 
 ### Memory Leaks
