@@ -1,16 +1,12 @@
 # The Basics — Prototyping
 
-Spiral comes with a development extension that speeds up the development of application services, controllers,
-middleware, and other classes via AST modification (a.k.a. it writes code for you). The extension includes IDE friendly
-tooltips for most common framework components and Cycle Repositories.
+Prototyping is a development phase where you sketch out your application structure, quickly iterating over the basic 
+design of your classes and their interactions. The Spiral offers a powerful extension that enhances this prototyping 
+process, that speeds up the development of application services, controllers, middleware, and other classes via AST 
+modification (a.k.a. it writes code for you). The extension includes IDE friendly tooltips for most common framework 
+components and Cycle Repositories.
 
 ## Installation
-
-To install the extension:
-
-```terminal
-composer require spiral/prototype
-```
 
 Make sure to add `Spiral\Prototype\Bootloader\PrototypeBootloader` to your App class:
 
@@ -21,19 +17,19 @@ protected const APP = [
 ];
 ```
 
-> **Note**
-> that the extension will invoke `TokenizerConfig`, make sure to add it at the end of the bootload chain.
-
-Now you can run `php app.php configure` to generate IDE tooltips.
+Now you can run `php app.php configure` to generate IDE autocomplete helpers for your application.
 
 ## Usage of Prototype Properties
 
-To use the prototyping abilities of the framework, add `Spiral\Prototype\Traits\PrototypeTrait` to any of your classes.
-Once it's added, your IDE will immediately suggest available classes and Cycle Repositories to you:
+### Prototyping
+
+To start using the prototyping powers, you add `Spiral\Prototype\Traits\PrototypeTrait` trait to any class you want to 
+prototype. This trait is like a magical helper that helps your IDE to find and use other parts of your app without 
+needing to set up a lot of details.
 
 ![IDE Tooltips](https://user-images.githubusercontent.com/796136/67619538-8f0c8c80-f805-11e9-9cd8-0597133bf33a.gif)
 
-You can use this suggestion directly, without a need for any import:
+**Here's a more detailed look at how to add it to a controller class:**
 
 ```php app/src/Endpoint/Web/HomeController.php
 namespace App\Endpoint\Web;
@@ -53,19 +49,31 @@ class HomeController
 }
 ```
 
-> **Note**
-> that the code will work via magic `__get` on the object.
+When you include this trait in your class, your IDE will start suggesting which services or components you can use. For
+instance, if your application has a user management system, typing `$this->users` might prompt your IDE to suggest 
+methods from your user service or repository.
 
-Once the prototyping phase is complete, you can remove the trait and inject dependencies via:
+This is great for quickly testing out ideas because you don’t have to set up all the formal connections (like dependency
+injection) between parts of your app.
+
+### Prototyping to Real Code
+
+Magic properties are convenient, but they are not the best for performance and clarity in the long term. So, once you're
+satisfied with how things work, you can tell Spiral to replace the magic with actual code.
+
+Just run the following command:
 
 ```terminal
 php app.php prototype:inject -r
 ```
 
-> **Note**
-> Use `-r` flag to remove `PrototypeTrait`.
+This tells Spiral: *"Go through my classes, look for these magic properties, and turn them into real, solid code."* It \
+will automatically add the necessary code for dependency injection, making your app ready for real-world use.
 
-The extension will modify your class into the given form:
+> **Note**
+> Use `-r` flag to remove `PrototypeTrait` from the class.
+
+**Here's how the code will look after the command is run:**
 
 ```php app/src/Endpoint/Web/HomeController.php
 namespace App\Endpoint\Web;
@@ -90,52 +98,47 @@ class HomeController
 }
 ```
 
-> **Note**
-> that the formatting around the injected lines will be affected.
+### Discovering classes with prototyping
 
-For PHP 7.4 there are two additional flags available now:
-
-- `typedProperties (t)` will inject properties with a type
-- `no-phpdoc` will omit PHP doc block for typed properties
-
-> **Note**
-> that these flags work only if the latest `nikic/php-parser` version with PHP 7.4 support is installed.
+In some cases, you might want to find all the classes that use prototyped properties. To view all the classes just run
+the following command:
 
 ```terminal
-php app.php prototype:inject -r -t --no-phpdoc
+php app.php prototype:usage
 ```
 
-```php app/src/Endpoint/Web/HomeController.php
-namespace App\Endpoint\Web;
-
-use App\Database\Repository\UserRepository;
-use Spiral\Views\ViewsInterface;
-
-class HomeController
-{
-    public function __construct(
-        private readonly ViewsInterface $views, 
-        private readonly UserRepository $users
-    ) {
-    }
-
-    public function index(): string
-    {
-        return $this->views->render('profile', [
-            'user' => $this->users->findByName('Antony')
-        ]);
-    }
-}
-```
-
-To view all the classes which use prototyped properties without modifying them:
+It will output a list of classes like in the example below:
 
 ```terminal
-php app.php prototype:list
++--------------------------------------------------------------------+----------------------+--------------------------------------------------------------+
+| Class:                                                             | Property:            | Target:                                                      |
++--------------------------------------------------------------------+----------------------+--------------------------------------------------------------+
+| App\Endpoint\Web\Controller\User\SetupPasswordAction               | userService          | App\Service\UserServiceInterface                             |
+|                                                                    | response             | Spiral\Http\ResponseWrapper                                  |
+|                                                                    | views                | Spiral\Views\ViewsInterface                                  |
+| App\Endpoint\Web\Controller\User\SetupPasswordFormAction           | users                | App\Repository\UserRepositoryInterface                       |
+|                                                                    | response             | Spiral\Http\ResponseWrapper                                  |
+|                                                                    | views                | Spiral\Views\ViewsInterface                                  |
+|                                                                    | request              | Spiral\Http\Request\InputManager                             |
+|                                                                    | sessionErrors        | App\Application\HTTP\SessionErrorsInterface                  |
+| App\Endpoint\Web\Controller\Auth\LoginFormAction                   | response             | Spiral\Http\ResponseWrapper                                  |
+|                                                                    | views                | Spiral\Views\ViewsInterface                                  |
+|                                                                    | request              | Spiral\Http\Request\InputManager                             |
+|                                                                    | sessionErrors        | App\Application\HTTP\SessionErrorsInterface                  |
++--------------------------------------------------------------------+----------------------+--------------------------------------------------------------+
 ```
 
 > **Note**
 > that you can remove the `spiral/prototype` extension after all the injects are complete.
+
+### Reviewing Changes
+
+After the previous step, it’s a good idea to review the changes to ensure everything got set up the way you expected. 
+The prototyping tool is smart, but it's always good to double-check. You might need to make adjustments or 
+optimizations to the code.
+
+Once you're happy with the setup, you can keep building your app with the solid foundation that the prototyping tool 
+helped you create.
 
 ## Custom Properties
 
@@ -174,7 +177,19 @@ final class UserService
 
 Make sure to run `php app.php update` or `php app.php prototype:dump` to auto-locate your service.
 
+> **Warning**
+> To use attributes with interfaces, you need to enable search of interfaces. To do so, read the
+> [Configuring listeners](../advanced/tokenizer.md#configuring-listeners) section.
+
 ## Available Shortcuts
+
+To view all the registered shortcuts in your application, run:
+
+```terminal
+php app.php prototype:list
+```
+
+### Available Shortcuts
 
 There are a number of component shortcuts available for you to use:
 
