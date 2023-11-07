@@ -584,13 +584,15 @@ class MyFilter extends Filter implements HasFilterDefinition
 > **Note**
 > prefix `mixed::`
 
-| Rule       | Parameters                            | Description                                               |
-|------------|---------------------------------------|-----------------------------------------------------------|
-| cardNumber | ---                                   | Checks the credit card passed by Luhn algorithm.          |
-| match      | field:*string*, strict:*bool* - false | Checks if the value matches the value from another field. |
+| Rule       | Parameters                            | Description                                                                                         |
+|------------|---------------------------------------|-----------------------------------------------------------------------------------------------------|
+| cardNumber | ---                                   | Checks the credit card passed by Luhn algorithm.                                                    |
+| match      | field:*string*, strict:*bool* - false | Checks if the value matches the value from another field.                                           |
+| accepted   | ---                                   | Checks if the value accepted (contains one of the following values `'yes', true, 1, '1','on'`)      |
+| declined   | ---                                   | Checks if the value not accepted (contains one of the following values `'no', false, 0, '0','off'`) |
 
 > **Note**
-> All of the rules of this checker are available without prefix.
+> `cardNumber` and `match` rules of this checker are available without prefix.
 
 ### Address
 
