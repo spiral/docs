@@ -102,6 +102,23 @@ return [
 > **Note**
 > Use `MONOLOG_DEFAULT_CHANNEL` env variable to specify the default handler that should be used in your application.
 
+### Log format
+
+By default, the handler will format the log message using the following
+structure `[%datetime%] %level_name%: %message% %context%\n`.
+
+If you want to change the log message structure, you can set up the `MONOLOG_FORMAT` evn variable like in the example
+below:
+
+```dotenv .env
+MONOLOG_FORMAT=[%datetime%] %level_name%: %message% %context%\n
+```
+
+> **See more**
+> Read more about the available placeholders in
+> the [Monolog documentation](https://seldaek.github.io/monolog/doc/message-structure.html).
+
+
 ## Register handler
 
 In addition to configuring the logging component through a config file or bootloader, you can also register handlers via
@@ -179,18 +196,6 @@ return [
 :::
 
 ::::
-
-By default, the handler will format the log message using the following structure `%message% %context% %extra%\n`
-
-If you want to change the log message structure, you can use the `LOGGER_FORMAT` evn variable:
-
-```dotenv .env
-LOGGER_FORMAT=[%datetime%] %channel%.%level%: %message% %context% %extra%\n
-```
-
-> **See more**
-> Read more about the available placeholders in
-> the [Monolog documentation](https://seldaek.github.io/monolog/doc/message-structure.html).
 
 ## Usage
 
