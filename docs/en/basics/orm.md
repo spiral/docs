@@ -129,8 +129,8 @@ return [
 ```
 
 > **Warning**
-> Please note that using SQLite as the database backend with multiple workers can present significant challenges and 
-> limitations. It is important to be aware of these limitations to ensure proper functionality and performance of your 
+> Please note that using SQLite as the database backend with multiple workers can present significant challenges and
+> limitations. It is important to be aware of these limitations to ensure proper functionality and performance of your
 > application. Rad more about this in the [SQLite limitations](./#sqlite-limitations) section.
 
 > **See more**
@@ -880,9 +880,118 @@ Foreign Keys of default.posts:
 
 ## Migrations
 
-You can create config file `app/config/migration.php` if you want to configure Cycle ORM Migrations:
+When you're working with Cycle ORM and need to adapt your database to changes in your application's entities, the 
+`cycle/migrations` package provides a convenient way to generate and manage your migrations. This process compares 
+your current database schema with your entity changes and creates the necessary migration files.
+
+### Generating Migrations
+
+After you've made changes to your entities or created new ones, you'll need to generate migration files that reflect \
+those changes. To do this, run the following command in your console:
+
+```terminal
+php app.php cycle:migrate
+```
+
+The new migration files will be created in the app/migrations directory.
+
+> **Warning**
+> Before executing the above command, make sure to apply any existing migrations by running `php app.php migrate`. This
+> ensures your database schema is up-to-date.
+
+### Applying Migrations
+
+After you generate migration files, they need to be applied to your database to make the actual changes. 
+
+```terminal
+php app.php migrate
+```
+
+This command applies the latest generated migrations. When you run it, Cycle ORM updates your database schema according
+to the changes described in your migration files.
+
+**Cycle ORM provides several commands to manage migrations at different stages and for different purposes:**
+
+#### Replay
+
+```terminal
+php app.php migrate:replay
+```
+
+This command is useful for re-running migrations. It first rolls back (or "downs") migrations, then runs them again 
+(or "ups"). It can be handy when you want to quickly test changes made in your migrations.
+
+**Options:**
+
+- `--all`: This option will replay all migrations, not just the last one.
+
+#### Rollback
+
+```terminal
+php app.php migrate:rollback
+```
+
+If you need to undo migrations, this is the command you'll use. It reverses the changes made by the migrations. By 
+default, it rolls back the last migration.
+
+**Options:**
+
+- `--all`: This option will rollback all migrations, not just the last one.
+
+#### Status
+
+```terminal
+php app.php migrate:status
+```
+
+Want to see what's been done and what's pending? This command shows you a list of all migrations along with their 
+statuses—whether they've been applied or not.
+
+**Here's an example of the output:**
+
+```output
++-----------------------------------------------------------+---------------------+---------------------+
+| Migration                                                 | Created at          | Executed at         |
++-----------------------------------------------------------+---------------------+---------------------+
+| 0_default_create_auth_tokens                              | 2023-09-25 16:45:13 | 2023-10-04 10:46:11 |
+| 0_default_create_user_role_create_user_roles_create_users | 2023-09-26 21:22:16 | 2023-10-04 10:46:11 |
+| 0_default_change_user_roles_add_read_only                 | 2023-09-27 13:53:19 | 2023-10-04 10:46:11 |
++-----------------------------------------------------------+---------------------+---------------------+
+```
+
+#### Init
+
+```terminal
+php app.php migrate:init
+```
+
+Before you can start using migrations, the migrations component needs a place to record which migrations have been run. 
+This command sets up that tracking by creating a migrations table in your database.
+
+> **Note**
+> This command is run automatically when you first run `php app.php migrate`.
+
+
+### Configuration
+
+If you want to customize how Cycle ORM handles migrations, you can create a configuration file 
+at `app/config/migration.php.` This file allows you to set various options, such as the location of migration files or 
+the name of the migrations table in the database.
+
+**Here's what you can set in the configuration file:**
+
+- **Directory**: Choose where to save the migration files.
+- **Table**: Name the table that keeps track of migration statuses.
+- **Strategy**: Determine how migration files are generated.
+- **Name Generator**: Specify how migration filenames are created.
+- **Safe**: Skip confirmation requests during migration runs in production environments.
+
+**Here is an example of config file**
 
 ```php app/config/migration.php
+use Cycle\Schema\Generator\Migrations\Strategy\SingleFileStrategy;
+use Cycle\Schema\Generator\Migrations\NameBasedOnChangesGenerator;
+
 return [
     /**
      * Directory to store migration files
@@ -893,6 +1002,16 @@ return [
      * Table name to store information about migrations status (per database)
      */
     'table' => 'migrations',
+    
+    /**
+     * Migration file generator strategy
+     */
+    'strategy' => SingleFileStrategy::class,
+    
+    /**
+     * Migration file name generator
+     */
+    'nameGenerator' => NameBasedOnChangesGenerator::class,
 
     /**
      * When set to true no confirmation will be requested on migration run.
@@ -901,15 +1020,130 @@ return [
 ];
 ```
 
-### Console Commands
+### Migration File Strategies
 
-| Command            | Description                                                                                       |
-|--------------------|---------------------------------------------------------------------------------------------------|
-| `migrate`          | Performs one or all the outstanding migrations.<br/>`--one` Execute only one (first) migration.   |
-| `migrate:replay`   | Replays (down, up) one or multiple migrations.<br/>`--all` Replays all the migrations.            |
-| `migrate:rollback` | Rolls back  (default) or multiple migrations.<br/>`--all` Rolls back all the executed migrations. |
-| `migrate:init`     | Initiates the migrations component (create a migrations table).                                   |
-| `migrate:status`   | Gets a list of all available migrations and their statuses.                                       |
+With version **2.6.0** of `spiral/cycle-bridge`, you can choose how the migration files are generated:
+
+#### 1. Single File Strategy
+
+This strategy combines all changes into a single migration file each time you run the command. This is useful if you 
+prefer to group all changes in one place.
+
+```php
+<?php  
+  
+declare(strict_types=1);  
+  
+namespace Migration;  
+  
+use Cycle\Migrations\Migration;  
+  
+class OrmDefaultA42b7e366d78543ca8c5a4b60d305083 extends Migration  
+{  
+    protected const DATABASE = 'default';  
+  
+    public function up(): void  
+    {  
+        $this->table('user_roles')  
+	        ->addColumn('created_at', 'datetime', ['nullable' => false, 'default' => 'CURRENT_TIMESTAMP'])  
+	        // ...
+	        ->setPrimaryKeys(['uuid'])  
+	        ->create();  
+        
+        $this->table('users')  
+	        ->addColumn('created_at', 'datetime', ['nullable' => false, 'default' => 'CURRENT_TIMESTAMP'])  
+	        //...
+	        ->setPrimaryKeys(['uuid'])  
+	        ->create();
+    }  
+  
+    public function down(): void  
+    {  
+        $this->table('users')->drop();  
+        $this->table('user_roles')->drop();
+    }
+}
+```
+
+#### 2. Multiple Files Strategy
+
+With this approach, changes are separated into different files based on the table name. This means if you have changes 
+for different tables, each table's changes go into its own file.
+
+```php
+<?php  
+  
+declare(strict_types=1);  
+  
+namespace Migration;  
+  
+use Cycle\Migrations\Migration;  
+  
+class OrmDefaultA42b7e366d78543ca8c5a4b60d305083 extends Migration  
+{  
+    protected const DATABASE = 'default';  
+  
+    public function up(): void  
+    {  
+        $this->table('user_roles')  
+	        ->addColumn('created_at', 'datetime', ['nullable' => false, 'default' => 'CURRENT_TIMESTAMP'])  
+	        // ...
+	        ->setPrimaryKeys(['uuid'])  
+	        ->create(); 
+    }  
+  
+    public function down(): void  
+    {  
+        $this->table('user_roles')->drop();  
+    }
+}
+
+```
+
+```php
+<?php  
+  
+declare(strict_types=1);  
+  
+namespace Migration;  
+  
+use Cycle\Migrations\Migration;  
+  
+class OrmDefaultA42b7e366d78543ca8c5a4b60d305043 extends Migration  
+{  
+    protected const DATABASE = 'default';  
+  
+    public function up(): void  
+    {  
+        $this->table('users')  
+	        ->addColumn('created_at', 'datetime', ['nullable' => false, 'default' => 'CURRENT_TIMESTAMP'])  
+	        //...
+	        ->setPrimaryKeys(['uuid'])  
+	        ->create();
+    }  
+  
+    public function down(): void  
+    {  
+        $this->table('users')->drop();
+    }
+}
+```
+
+#### 3. Custom strategy
+
+You also have the option to create a custom migration strategy by implementing 
+the `Cycle\Schema\Generator\Migrations\Strategy\GeneratorStrategyInterface`.
+
+### Migration Filename Generation
+
+With version **2.6.0** of `spiral/cycle-bridge`, you can choose configure the default naming strategy for migration 
+files.
+
+By default, Spiral uses `Cycle\Schema\Generator\Migrations\NameBasedOnChangesGenerator` that takes into account all the 
+changes in the migration file to create a unique name. But you can create a custom filename generation strategy by 
+implementing the `Cycle\Schema\Generator\Migrations\NameGeneratorInterface`.
+
+---
 
 ## SQLite limitations
 
