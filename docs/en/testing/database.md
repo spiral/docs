@@ -1,18 +1,36 @@
-# Testing — Database
+# Testing — Database Seeder
 
-Spiral offers a powerful tool for managing data in your application through the use of the
-[spiral-packages/database-seeder](https://github.com/spiral-packages/database-seeder) package. This package allows
-you to easily seed test data into their CycleORM entities using seed classes. It provides the ability to create entities
-through the use of factories.
+When you build apps that use databases, it's really important to make sure your database works right. This means
+checking if it stores, changes, and gives back data the way it's supposed to. But sometimes, testing databases can be
+tricky and a bit boring. You might have to write a lot of complicated commands and be very careful about how data is
+added or removed.
 
-> **Danger**
-> It's important to always use a separate test database for running your tests, and **never use a production database** 
-> for testing. Using a production database for testing can result in data loss or corruption, and can also cause unexpected
-> behavior in the production system. Always create a separate test database and use it exclusively for testing.
+This is where Spiral's database testing tools come in handy. They make this job much easier and faster. Spiral has a
+special set of tools in a package
+called [spiral-packages/database-seeder](https://github.com/spiral-packages/database-seeder). It's designed to help you
+test databases without too much hassle.
+
+## What Database Seeder tools offer
+
+1. **Easy Testing:** With Spiral, you don't need to deal with complex commands. The tools are simple to use, which means
+   your tests are easier to write and understand.
+
+2. **Different Ways to Reset Your Database:** After you test something, you need to make your database clean again for
+   the next test. Spiral has different ways to do this, like the Transaction, Migration, Refresh, and SqlFile methods.
+   Each one has its own way of working, so you can choose what fits best for your test.
+
+3. **Seeders and Factories:** These are like shortcuts to fill your database with test data. This data looks like the
+   real data you would use in your app. You can quickly set up the data you need for testing with these tools.
+
+4. **Checking Your Database:** After you do something in your database, you want to make sure it worked right. Spiral's
+   tools let you check if the data is there or not, and if your database structure is correct.
+
+Spiral's database testing tools are great for any developer, no matter how much experience you have. They help make sure
+your database is doing what it should, which is really important for your app to work well.
 
 ## Installation
 
-To install the database seeder package, run the following command:
+To install the package, run the following command:
 
 ```terminal
 composer require spiral-packages/database-seeder --dev
@@ -31,13 +49,13 @@ protected const LOAD = [
 ];
 ```
 
-We also recommend you to add the following to your `composer.json` file. This allows the package to automatically
-discover and load the classes you create, so you don't have to manually include them in your code.
+We also recommend you to add the following to your `composer.json` file. This allows you to separate your factories,
+seeders from the rest of your application code.
 
 ```json
 {
   // ...
-  "autoload-dev": {
+  "autoload": {
     "psr-4": {
       "Database\\": "app/database/"
     }
@@ -45,10 +63,186 @@ discover and load the classes you create, so you don't have to manually include 
 }
 ```
 
-After these steps, you have installed the package and registered it's bootloader, so you can now use Spiral's database
-seeder package in your application.
+After these steps, you have installed the package and registered required bootloader, so you can now use the package in
+your application.
 
-## Defining Seed Factory
+## Setting up database testing environment
+
+### Environment variables
+
+When running unit tests in a Spiral environment, a crucial step to improve efficiency is the proper configuration of
+environment variables. Specifically, setting `CYCLE_SCHEMA_CACHE` and `TOKENIZER_CACHE_TARGETS` to `true` in
+your `phpunit.xml` file can significantly enhance the speed of your tests. These settings prevent unnecessary repeated
+operations, such as directory scanning and rebuilding of the Cycle ORM cache for each test run.
+
+To apply these optimizations, modify your phpunit.xml file accordingly. Here’s an example of how you might set it up:
+
+```xml phpunit.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+    <php>
+        <env name="CYCLE_SCHEMA_CACHE" value="true"/>
+        <env name="TOKENIZER_CACHE_TARGETS" value="true"/>
+        <!-- ... other configurations ... -->
+    </php>
+</phpunit>
+```
+
+When you're testing your database, one key step is setting up your environment correctly. This means getting your
+database ready for each test and then putting things back the way they were afterward. There are several strategies to
+help you do this in Spiral. Let's look at different ways to set up and reset
+your database for testing, using simple test cases as examples.
+
+### 1. Transaction Strategy
+
+It sets up your database for testing when you run your first test. Then, for each test, it does everything inside a
+transaction – a kind of protected space. After the test is done, it undoes everything (rolls back) that happened in the
+transaction. Imagine you're testing adding a new user to your database. The Transaction Strategy would add this user
+inside a transaction and then, after the test, remove any trace of this new user, as if they were never added.
+
+This is the fastest way and is great for most tests. It's especially good when you have lots of tests that don't change
+the database structure but just add, change, or remove data.
+
+**Here is an example of a test case that uses it:**
+
+```php
+declare(strict_types=1);
+
+namespace Tests;
+
+use Spiral\DatabaseSeeder\Database\Traits\{
+    DatabaseAsserts, Helper, ShowQueries, Transactions
+};
+
+abstract class DatabaseTestCase extends TestCase
+{
+    use Transactions,
+        Helper,
+        DatabaseAsserts,
+        ShowQueries;
+}
+```
+
+Let's examine each trait used:
+
+- `Transactions` trait: It manages the wrapping of each test case in a database transaction. When a test begins, it
+  starts a transaction. Once the test is completed, whether it passes or fails, the transaction is rolled back. This
+  ensures that each test is isolated and the database is left unchanged after the test, making the tests independent of
+  each other. It also handles running database migrations before the tests, setting up the necessary database schema.
+- `Helper` trait: It provides a set of helper methods for interacting with the database. It includes utility functions
+  that simplify various database operations, making it easier to perform common tasks in your tests without writing
+  repetitive code.
+- `DatabaseAsserts` trait: It offers a range of assertions you can use to validate the state of your database,
+  such as checking if a record exists, verifying the count of records, etc. It's crucial for ensuring that your database
+  operations produce the expected results.
+- `ShowQueries` trait: This is particularly useful for debugging. When you enable this trait, it logs all the SQL
+  queries executed during the test to the terminal. This can help you understand what's happening in your database
+  during tests and troubleshoot any issues that arise.
+
+### 2. Migration Strategy
+
+This method sets up your database using migrations (steps to prepare your database) before each test. After the test, it
+rollbacks these migrations. t's slower than the Transaction Strategy but useful if you need to test changes in the
+database structure itself.
+
+**Example:** If you're testing creating a new table in your database, the Migration Strategy would create this table for
+the test and then remove it afterward.
+
+**Here is an example of a test case that uses it:**
+
+```php
+declare(strict_types=1);
+
+namespace Tests;
+
+use Spiral\DatabaseSeeder\Database\Traits\{
+    DatabaseAsserts, DatabaseMigrations, Helper, ShowQueries
+};
+
+abstract class DatabaseTestCase extends TestCase
+{
+    use DatabaseMigrations,
+        Helper,
+        DatabaseAsserts,
+        ShowQueries;
+}
+```
+
+- `DatabaseMigrations` trait: It manages the running of database migrations before each test and rolling them back
+  afterward. This ensures that each test is isolated and the database is left unchanged after the test, making the tests
+  independent of each other. It also handles running database migrations before the tests, setting up the necessary
+  database schema.
+
+### 3. Refresh Strategy
+
+This strategy cleans your database after each test using `Spiral\DatabaseSeeder\Database\Cleaner`. It's useful if your
+database already has the structure you need, and you're just testing data changes. It's slower than the Transaction
+Strategy.
+
+**Here is an example of a test case that uses it:**
+
+```php
+declare(strict_types=1);
+
+namespace Tests;
+
+use Spiral\DatabaseSeeder\Database\Traits\{
+    DatabaseAsserts, Helper, RefreshDatabase, ShowQueries
+};
+
+abstract class DatabaseTestCase extends TestCase
+{
+    use RefreshDatabase,
+        Helper,
+        DatabaseAsserts,
+        ShowQueries;
+}
+```
+
+- `RefreshDatabase` trait: It manages the cleaning of the database tables (except `migrations` table) after each test.
+
+### 4. SqlFile Strategy
+
+This approach uses an SQL file to set up your database with the necessary structure and data for testing. It's handy
+when you have a complex setup that can be easily loaded from a file, but it's slower than the Transaction Strategy.
+
+**Example:** If you need a specific setup with many tables and data, the SqlFile Strategy lets you load all this from a
+pre-prepared SQL file.
+
+**Here is an example of a test case that uses it:**
+
+```php
+declare(strict_types=1);
+
+namespace Tests;
+
+use Spiral\DatabaseSeeder\Database\Traits\{
+    DatabaseAsserts, Helper, DatabaseFromSQL, ShowQueries
+};
+
+abstract class DatabaseTestCase extends TestCase
+{
+    use DatabaseFromSQL,
+        Helper,
+        DatabaseAsserts,
+        ShowQueries;
+   
+   protected function getPrepareSQLFilePath(): string
+   {
+       return __DIR__ . '/database/prepare.sql';
+   }
+
+    protected function getDropSQLFilePath(): string
+    {
+        return __DIR__ . '/database/prepare.sql';
+    }
+}
+```
+
+As you can see, there are lots of ways to set up and reset your database for testing. You can choose the one that fits
+your needs best. After you set up your database, you can start defining your factories and seeders.
+
+## Defining entity factories
 
 To define a seed factory, you should create a class that extends the `Spiral\DatabaseSeeder\Factory\AbstractFactory`
 class.
@@ -113,7 +307,7 @@ range of fake data generation methods such as names, addresses, phone numbers, e
 generating the definition array that will be passed to the makeEntity method to construct the entity object or used to
 set properties directly.
 
-## Using Seed Factory
+## Using entity factory
 
 A factory can be created by calling the `new` method on the factory class:
 
@@ -250,6 +444,31 @@ Factories can be used in your feature test cases to create entities in the datab
 useful in situations where you want to create a specific set of test data for a feature test, or when you want to test
 the behavior of your application with a specific set of data.
 
+Here is an example of using a factory in a feature test case:
+
+```php
+final class UserServiceTest extends DatabaseTestCase
+{
+    // ...
+
+    public function testDeleteUser(): void
+    {
+        $user = UserFactory::new()
+            ->fromCity('New York')
+            ->createOne();
+
+        $this->userService->delete(
+            uuid: $user->uuid,
+        );
+
+        $this->assertEntity(User::class)->where([
+            'uuid' => (string)$user->uuid,
+            'deleted_at' => ['!=' => null],
+        ])->assertExists();
+    }
+}
+```
+
 ## Seeding
 
 The package provides the ability to seed the database with test data. To do this, developers can create a Seeder class
@@ -260,7 +479,9 @@ method which returns a generator with entities to store in the database.
 namespace Database\Seeder;
 
 use Spiral\DatabaseSeeder\Seeder\AbstractSeeder;
+use Spiral\DatabaseSeeder\Attribute\Seeder;
 
+#[Seeder]
 final class UserTableSeeder extends AbstractSeeder
 {
     public function run(): \Generator
@@ -280,100 +501,208 @@ final class UserTableSeeder extends AbstractSeeder
 }
 ```
 
-Seeders are primarily used to fill the database with test data for your stage server, providing
-a consistent set of data for the developers and stakeholders to test and use.
+> **Note**
+> Don't forget to add the `#[Seeder]` attribute to your seeder class. This attribute is used to register the seeder
+> class with the package. If you don't add this attribute, the seeder class will not be registered and the seeder will
+> not be executed.
 
-Seeders are especially useful when testing complex applications that have many different entities and relationships
+Seeders are primarily used to fill the database with test data for your stage server, providing a consistent set of data
+for the developers and stakeholders to test and use.
+
+They are especially useful when testing complex applications that have many different entities and relationships
 between them. By using seeders to populate the database with test data, you can ensure that your tests are run against a
 consistent and well-defined set of data, which can help to make your tests more reliable and less prone to flakiness.
 
 ### Running seeders
 
-Use the `db:seed` command to run the seeders.
+Use the following command to run the seeders:
 
 ```terminal
 php app.php db:seed
 ```
 
-This will execute all of the seeder classes that are registered with the command and insert the test data into the
-database.
+This will execute all of the seeder classes that are registered and insert the test data into the database.
 
-## Testing
+## Assertions
 
-The package provides several additional features for easier testing of applications with databases. To use these
-features, your application's tests must be written using the `spiral/testing` package.
+The package provides several additional assertion methods with `Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts`
+trait. These methods can be used to test the state of the database after performing some operation.
 
-An example of how to use the base test class in your test cases is shown below:
+### Entity assertions
 
-```php
-namespace Tests\Feature;
+The `assertEntity` method can be used to assert the state of an entity in the database. It takes the entity class name
+and provides methods for testing database entities:
 
-abstract class DatabaseTestCase extends \Spiral\DatabaseSeeder\TestCase
-{
-}
-```
+#### `assertExists()`
 
-### Refresh database
-
-The `RefreshDatabase` trait is one of the provided traits that allows you to easily set up and tear down a test database
-for your application's tests.
-
-When you use this trait in your test cases, it creates the database structure on the first run and wraps the test
-execution into a transaction. After the test runs, the transaction is rollbacked, but the database structure is saved
-for use in the next test.
-
-For example, you can use this trait in your test cases as shown below:
+Checks if the entity exists in the database.
 
 ```php
-namespace Tests\Feature;
-
-use Spiral\DatabaseSeeder\Database\Traits\RefreshDatabase;
-
-abstract class DatabaseTestCase extends \Spiral\DatabaseSeeder\TestCase
-{
-    use RefreshDatabase;
-}
+$this->assertEntity(User::class)->where([
+    'uuid' => (string)$user->uuid,
+    'deleted_at' => ['!=' => null],
+])->assertExists();
 ```
 
-### Database migrations
+#### `assertMissing()`
 
-The `DatabaseMigrations` trait is another provided trait that allows you to easily set up and tear down a test database
-for your application's tests.
-
-When you use this trait in your test cases, it creates the database structure, performs a test, and completely rollbacks
-the state of the database. This means that any changes made to the database during the test will be discarded.
-
-For example, you can use this trait in your test cases as shown below:
+Checks that the entity is not in the database.
 
 ```php
-namespace Tests\Feature;
-
-use Spiral\DatabaseSeeder\Database\Traits\DatabaseMigrations;
-
-abstract class DatabaseTestCase extends \Spiral\DatabaseSeeder\TestCase
-{
-    use DatabaseMigrations;
-}
+$this->assertEntity(User::class)->where([
+    'uuid' => (string)$user->uuid,
+])->assertMissing();
 ```
 
-### Assertions
+#### `assertCount(int $total)`
 
-The `\Spiral\DatabaseSeeder\TestCase` class provides several additional assertion methods that allow you to check data
-in the database during tests.
+Checks that there is a specified number of entity items in the database.
 
-**Here are the methods and their functionality:**
+```php
+$this->assertEntity(User::class)->where([
+    'uuid' => (string)$user->uuid,
+])->assertCount(1);
+```
 
-- `assertTableExists($table)`: This method checks if the table with the given name exists in the database.
-- `assertTableIsNotExists($table)`: This method checks if the table with the given name does not exist in the database.
-- `assertTableCount($table, $count)`: This method checks if the table with the given name has a certain number of
-  records.
-- `assertTableHas($table, $condition)`: This method checks if there is a record in the table with the given name that
-  matches a certain condition.
-- `assertEntitiesCount($entity, $count)`: This method checks if the given entity has a certain number of records. It's
-  the same as assertTableCount but checks by entity, not by table name.
-- `assertTableHasEntity($entity, $condition)`: This method checks if there is a record in the table associated with the
-  given entity that matches a certain condition. It's the same as assertTableHas but checks by entity, not by table
-  name.
+#### `assertEmpty()`
+
+Checks that there are no entity items in the database.
+
+```php
+$this->assertEntity(User::class)->assertEmpty();
+```
+
+#### `where(array $where)`
+
+Allows you to specify the conditions for the entity in the database.
+
+```php
+$this->assertEntity(User::class)->where([
+    'uuid' => (string)$user->uuid,
+])->...;
+```
+
+#### `count()`
+
+Returns the number of entity items in the database.
+
+```php
+$total = $this->assertEntity(User::class)->where([
+    'deleted_at' => ['!=' => null],
+])->count();
+```
+
+#### `select(\Closure $closure)`
+
+Allows you to make complex queries to the database.
+
+```php
+$this->assertEntity(User::class)->select(function(\Cycle\ORM\Select $select) {
+    $select->where('deleted_at', '!=', null);
+})->...;
+```
+
+#### `withoutScope`
+
+Allows you to disable the global scope for the entity.
+
+```php
+$this->assertEntity(User::class)->withoutScope()->...;
+```
+
+#### `withScope(ScopeInterface $scope)`
+
+Allows you to enable the global scope for the entity.
+
+```php
+$this->withScope(new SoftDeletedScope())->...;
+```
+
+### Table assertions
+
+#### `select(\Closure $closure)`
+
+Allows you to make complex queries to the database.
+
+```php
+$this->assertTable('users')->select(function(\Cycle\Database\Query\SelectQuery $query) {
+    $query->where('deleted_at', '!=', null);
+})->...;
+```
+
+#### `where(array $where)`
+
+Allows you to specify the conditions for the table in the database.
+
+```php
+$this->assertTable('users')->where([
+    'id' => 5,
+])->assertCount(1);
+```
+
+#### `assertRecordExists()`
+
+Allows you to check if record exists in the database.
+
+```php
+$this->assertTable('users')->where([
+    'id' => 5,
+])->assertRecordExists();
+```
+
+#### `assertCountRecords(int $total)`
+
+Allows you to check if there is a specified number of records in the database.
+
+```php
+$this->assertTable('users')->where([
+    'id' => 5,
+])->assertCountRecords(2);
+```
+
+#### `countRecords()`
+
+Returns the number of records in the database.
+
+```php
+$total = $this->assertTable('users')->where([
+    'deleted_at' => ['!=' => null],
+])->countRecords();
+```
+
+#### `assertEmpty()`
+
+Allows you to check if there are no records in the database.
+
+```php
+$this->assertTable('users')->where([
+    'id' => 5,
+])->assertEmpty();
+```
+
+#### `assertExists()`
+
+Allows you to check if table exists in the database.
+
+```php
+$this->assertTable('users')->assertExists();
+```
+
+#### `assertColumnExists(string $column)`
+
+Allows you to check if column exists in the table.
+
+```php
+$this->assertTable('users')->assertColumnExists('id');
+```
+
+#### `assertColumnMissing(string $column)`
+
+Allows you to check if column missing in the table.
+
+```php
+$this->assertTable('users')->assertColumnMissing('id');
+```
 
 ## Console commands
 
