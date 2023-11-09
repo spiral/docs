@@ -33,13 +33,22 @@ environment.
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="MONOLOG_DEFAULT_CHANNEL" value="stderr"/>
         <env name="CACHE_STORAGE" value="array"/>
+        <env name="TOKENIZER_CACHE_TARGETS" value="true" />
+        <env name="CYCLE_SCHEMA_CACHE" value="true" />
         // ...
     </php>
 </phpunit>
 ```
 
-By using the `phpunit.xml` file to define test environment variables, you can ensure that your tests are run in a
-consistent environment, and that any configuration specific to the test environment is properly set.
+> **Warning**
+> When you run tests in a Docker container, the settings in Docker are more important than the ones in `phpunit.xml`. 
+> This might cause trouble if they don't match. Make sure the Docker settings are right for your tests.
+
+> **Notice**
+> It is highly advised to enable `TOKENIZER_CACHE_TARGETS` and `CYCLE_SCHEMA_CACHE` for enhanced test performance. By 
+> doing so, you allow caching of tokenizer and ORM schema which means they won't be executed with each test iteration. 
+> However, please note it's important to clear this cache whenever you make changes to your code or the schema of your 
+> entities to ensure tests run with up-to-date configurations.
 
 ## Unit tests
 
