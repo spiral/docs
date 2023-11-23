@@ -68,7 +68,7 @@ return [
      * 
      * The key of one of the registered cache storages to use by default.
      */
-    'default' => env('CACHE_STORAGE', 'redis'),
+    'default' => env('CACHE_STORAGE', 'rr-redis'),
     
     /**
      * -------------------------------------------------------------------------
