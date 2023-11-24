@@ -92,23 +92,8 @@ class Kernel extends \Spiral\Framework\Kernel
            MyBootloader::class,
            
            // anonymous bootloader via object instance
-           new class () extends Bootloader {
-               public const BINDINGS = [
-                 // ...
-               ];
-               public const SINGLETONS = [
-                 // ...
-               ];
-               
-               public function init(BinderInterface $binder): void
-               {
-                 // ...
-               }
-               
-               public function boot(BinderInterface $binder): void
-               {
-                  // ...
-               }
+           new class extends Bootloader {
+               // ...
            },
        ];
     }
@@ -154,6 +139,147 @@ class Kernel extends \Spiral\Framework\Kernel
 :::
 
 ::::
+
+### Bootloader loading control
+
+There is also a feature that lets developers manage how bootloaders are set up and used. This functionality is
+particularly advantageous for adapting applications to various environments, such as HTTP, command-line
+interfaces, or any other contexts. It allows for the selective activation or deactivation of bootloaders based on the
+specific requirements of the environment, enhancing both efficiency and performance.
+
+There is a new DTO class `Spiral\Boot\Attribute\BootloadConfig` which enables the inclusion or exclusion of bootloaders,
+passing parameters that will be forwarded to the init and boot methods of the bootloader, and dynamically adjusting the
+bootloader loading based on environment variables.
+
+To use it in the Kernel, you should employ the full class name of the bootloader as the key in the array of bootloaders,
+with the corresponding value being a `BootloadConfig` object.
+
+```php app/src/Application/Kernel.php
+namespace App\Application;
+
+use Spiral\Boot\Attribute\BootloadConfig;
+use Spiral\Prototype\Bootloader\PrototypeBootloader;
+
+class Kernel extends \Spiral\Framework\Kernel
+{
+    public function defineBootloaders(): array
+    {
+        return [
+            // ...
+            PrototypeBootloader::class => new BootloadConfig(allowEnv: ['APP_ENV' => ['local', 'dev']]),
+            // ...
+        ];
+    }
+}
+```
+
+In this example, we specified that the `PrototypeBootloader` should be loaded only if the environment variable `APP_ENV`
+is defined and has a value of `local` or `dev`.
+
+Instead of creating a `BootloadConfig` object directly, you can define a function that returns a `BootloadConfig`
+object. This function can take arguments, which might be obtained from the container.
+
+```php app/src/Application/Kernel.php
+namespace App\Application;
+
+use Spiral\Boot\Attribute\BootloadConfig;
+use Spiral\Boot\Environment\AppEnvironment;
+use Spiral\Prototype\Bootloader\PrototypeBootloader;
+
+class Kernel extends \Spiral\Framework\Kernel
+{
+    public function defineBootloaders(): array
+    {
+        return [
+            // ...
+            PrototypeBootloader::class => static fn (AppEnvironment $env) => new BootloadConfig(enabled: $env->isLocal()),
+            // ...
+        ];
+    }
+}
+```
+
+You can also use `BootloadConfig` class as an attribute to control how a bootloader behaves. This method is particularly
+useful because it allows you to set up the configuration directly in the bootloader's class, making it more
+straightforward and easier to understand.
+
+**Here's a simple example of how you can use an attribute to configure a bootloader:**
+
+```php app/src/Application/Bootloader/SomeBootloader.php
+use Spiral\Boot\Attribute\BootloadConfig;
+use Spiral\Boot\Bootloader\Bootloader;
+
+#[BootloadConfig(allowEnv: ['APP_ENV' => 'local'])]
+final class SomeBootloader extends Bootloader
+{
+}
+```
+
+Attributes are a great choice when you want to keep the configuration close to the bootloader's code. It's a more
+intuitive way to set up bootloaders, especially in cases where the configuration is straightforward and doesn't require
+complex logic.
+
+#### Extending for Custom Preconditions
+
+By extending `BootloadConfig`, you can create custom classes that encapsulate specific conditions under which
+bootloaders should operate. This approach simplifies the usage of bootloaders by abstracting the configuration details
+into these custom classes.
+
+```php app/src/Application/Bootloader/TargetRRWorker.php
+namespace App\Application\Bootloader;
+
+use Spiral\Boot\Attribute\BootloadConfig;
+use Spiral\Boot\Bootloader\Bootloader;
+
+class TargetRRWorker extends BootloadConfig 
+{
+    public function __construct(array $modes)
+    {
+        parent::__construct(
+            env: ['RR_MODE' => $modes],
+        );
+    }
+}
+```
+
+Now you can use it in your bootloaders
+
+```php app/src/Application/Bootloader/SomeBootloader.php
+use Spiral\Boot\Attribute\BootloadConfig;
+use Spiral\Boot\Bootloader\Bootloader;
+
+#[TargetRRWorker(modes: ['http', 'grpc'])]
+final class SomeBootloader extends Bootloader
+{
+}
+```
+
+or use in Kernel:
+
+```php app/src/Application/Kernel.php
+namespace App\Application;
+
+use Spiral\Framework\Kernel;
+
+class Kernel extends Kernel
+{
+    public function defineBootloaders(): array
+    {
+        return [
+            HttpBootloader::class => new TargetRRWorker(['http']),
+            RoutesBootloader::class => new TargetRRWorker(['http']),
+
+            GrpcBootloader::class => new TargetRRWorker(['grpc']),
+
+            TemporalBootloader::class => new TargetRRWorker(['temporal']),
+            
+            // Other bootloaders...
+        ];
+    }
+}
+```
+
+The ability to extend `BootloadConfig` opens up a world of possibilities for customizing the behavior of bootloaders.
 
 ## Available methods
 
@@ -251,12 +377,13 @@ final class GithubClientBootloader extends Bootloader
     
     public function boot(BinderInterface $binder): void 
     {
-        $binder->bindSingleton(ClinetInterface::class, function (GithubConfig $config) {
-            return new Clinet(
+        $binder->bindSingleton(
+            ClinetInterface::class, 
+            static fn (GithubConfig $config) => new Clinet(
                 $config->getAccessToken(),
                 $config->getSecret(),
-            );
-        });
+            )
+        );
     }
 }
 ```
@@ -269,7 +396,63 @@ final class GithubClientBootloader extends Bootloader
 > If you want to learn more about DI, you can check out the [Container and Factories](../framework/container.md) section
 > of the documentation. It should have all the info you need.
 
-Bootloaders provide the ability to simplify container binding definition using constants `BINDINGS` and `SINGLETONS`.
+Bootloaders also provide the ability to simplify container binding definition
+
+:::: tabs
+
+::: tab Using methods
+
+You can use the `defineBindings` and `defineSingletons` methods to define container bindings in a declarative way.
+
+```php app/src/Application/Bootloader/GithubClientBootloader.php
+namespace App\Application\Bootloader;
+
+// ...
+use Spiral\Core\BinderInterface;
+use App\Service\Github\GithubConfig;
+use App\Service\Github\ClientInterface;
+use App\Service\Github\Client;
+
+final class GithubClientBootloader extends Bootloader
+{
+    public function defineSingletons(): array
+    {
+        return [
+            MyInterface::class => MyClass::class
+        ];
+    }
+
+    public function defineSingletons(): array
+    {
+        return [
+            ClientInterface::class => [self::class, 'createClient'],
+            
+            // or
+            
+            ClientInterface::class => static fn(GithubConfig $config) => new Client(
+                $config->getAccessToken(),
+                $config->getSecret(),
+            );
+        ];
+    }
+
+    // See code above ...
+    
+    public function createClient(GithubConfig $config): ClinetInterface 
+    {
+        return new Clinet(
+            $config->getAccessToken(),
+            $config->getSecret(),
+        );
+    }
+}
+```
+
+:::
+
+::: tab Using constants
+
+You can use the `BINDINGS` and `SINGLETONS` constants to define container bindings in a declarative way.
 
 ```php app/src/Application/Bootloader/GithubClientBootloader.php
 namespace App\Application\Bootloader;
@@ -301,6 +484,10 @@ final class GithubClientBootloader extends Bootloader
     }
 }
 ```
+
+:::
+
+::::
 
 ## Configuring Application
 
