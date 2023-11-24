@@ -101,7 +101,7 @@ return [
 ## Usage
 
 When the validation component is enabled in your application, it will register itself with
-the `\Spiral\Validator\FilterDefinition` class as validation name and be available for use with Spiral validation 
+the `\Spiral\Validator\FilterDefinition` class as validation name and be available for use with Spiral validation
 component.
 
 You can use the `Spiral\Validator\ValidatorInterface` interface to access the validator and perform validation tasks.
@@ -124,8 +124,8 @@ class UserController
 
 ## Filters
 
-The `spiral/filters` component is a tool for validating HTTP request data in Spiral. It allows you to create 
-a "Filter" object, which defines the required data that should be extracted from the request object and mapped into the 
+The `spiral/filters` component is a tool for validating HTTP request data in Spiral. It allows you to create
+a "Filter" object, which defines the required data that should be extracted from the request object and mapped into the
 filter object's properties.
 
 > **See more**
@@ -543,7 +543,7 @@ The most used rule-set is available thought the set of shortcuts:
 |----------|------------------------|---------------------------------------------------|
 | notEmpty | asString:*bool* - true | The value should not be empty (same as `!empty`). |
 | notNull  | ---                    | The value should not be null.                     |
-| boolean  | ---                    | The value has to be boolean or integer[0,1].      |
+| boolean  | strict:*bool* - false  | The value has to be boolean or integer[0,1].      |
 
 > **Note**
 > All of the rules of this checker are available without the prefix.
