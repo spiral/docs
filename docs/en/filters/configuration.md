@@ -1,8 +1,8 @@
 # Filters — Getting started
 
 The `spiral/filters` is a powerful component for filtering and optional validating input data. It allows you to define a
-set of rules for each input field, and then use those rules to ensure that the input data is in the correct format and 
-meets any other requirements you have set. You can use filters to validate data from various sources like HTTP requests, 
+set of rules for each input field, and then use those rules to ensure that the input data is in the correct format and
+meets any other requirements you have set. You can use filters to validate data from various sources like HTTP requests,
 gRPC requests, console commands, and others.
 
 **Here is a simple example of a filter:**
@@ -155,7 +155,8 @@ For more advanced scenarios, where data needs to be transformed into custom type
 
 ### Understanding the Caster
 
-Before diving into the application of casters, it's essential to comprehend the `Spiral\Filters\Model\Mapper\CasterInterface`.
+Before diving into the application of casters, it's essential to comprehend
+the `Spiral\Filters\Model\Mapper\CasterInterface`.
 
 ```php Spiral\Filters\Model\Mapper\CasterInterface
 use Spiral\Filters\Model\FilterInterface;
@@ -257,8 +258,35 @@ class AppBootloader extends Bootloader
 }
 ```
 
-After registering the caster, whenever you define filters with properties that match the caster's supported types, 
+After registering the caster, whenever you define filters with properties that match the caster's supported types,
 Spiral will automatically employ the registered caster to transform the data.
+
+### Handling Casting Errors
+
+When dealing with request data filters, it's crucial to ensure that these parameters match the expected data types. For
+instance, a parameter expected as a `string` should not be processed if it comes in a different format, like an `array`
+or an `integer`. The Spiral Framework offers an effective solution to handle such type mismatches gracefully.
+
+You can use the `Spiral\Filters\Attribute\CastingErrorMessage` attribute for any property that requires type validation:
+
+```php app/src/Endpoint/Web/Filter/UserFilter.php
+namespace App\Endpoint\Web\Filter;
+
+use Spiral\Filters\Attribute\Input\Query;
+use Spiral\Filters\Model\Filter;
+use Spiral\Filters\Attribute\CastingErrorMessage;
+
+final class UserFilter extends Filter
+{
+    #[Query(key: 'username')]
+    #[CastingErrorMessage('Invalid type')]
+    public string $username;
+}
+```
+
+In this scenario, the `username` is expected to be a string. However, there might be instances where the input data is
+of the wrong type, such as an `array` or an `integer`. In such cases, the filter will catch the exception and return the
+validation error message.
 
 ## Validation
 
