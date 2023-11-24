@@ -704,6 +704,45 @@ Allows you to check if column missing in the table.
 $this->assertTable('users')->assertColumnMissing('id');
 ```
 
+#### `assertColumnSame(...)`
+
+Asserts that a column in the table matches specified characteristics, including type, size, precision, scale, nullability, and default value. This method is particularly useful for validating the detailed schema of a table.
+
+```php
+$assertion = $this->assertTable('users');
+
+$assertion->assertColumnSame(
+     column: 'id', 
+     type: 'uuid', 
+     size: 64,
+     ...
+);
+```
+
+#### `assertIndexPresent(array $columns)`
+
+Asserts the presence of an index on specified columns in the table. It's vital for ensuring that necessary indexes, which can affect performance and uniqueness constraints, are in place.
+
+```php
+$this->assertTable('users')->assertIndexPresent(['email']);
+```
+
+#### `assertForeignKeyPresent(array $columns)`
+
+Checks for the existence of a foreign key related to specified table columns. It's important for validating relational integrity constraints in the database schema.
+
+```php
+$this->assertTable('users')->assertForeignKeyPresent(['org_id']);
+```
+
+#### `assertPrimaryKeyExists(string ...$columns)`
+
+Asserts that specified columns are part of the primary key for the table. It's crucial for ensuring the correct configuration of primary keys, which are fundamental to the identification and integrity of records in a table.
+
+```php
+$this->assertTable('users')->assertPrimaryKeyExists('id');
+```
+
 ## Console commands
 
 The package provides several console commands to quickly create a factory, seeder. These commands make it easy to
