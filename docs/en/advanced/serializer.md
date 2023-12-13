@@ -157,22 +157,39 @@ interface defines two methods that your serializer class must implement:
 Here is an example of a custom serializer class that implements the `SerializerInterface`:
 
 ```php
-namespace App;
+<?php
 
+declare(strict_types=1);
+
+namespace App\Application\Serializer;
+
+use Google\Protobuf\Internal\Message;
 use Spiral\Serializer\SerializerInterface;
 
-class CustomSerializer implements SerializerInterface
+final class ProtoSerializer implements SerializerInterface
 {
     public function serialize(mixed $payload): string|\Stringable
     {
-        // your serialization logic goes here
+        \assert($payload instanceof Message);
+
+        return $payload->serializeToString();
     }
 
     public function unserialize(\Stringable|string $payload, object|string|null $type = null): mixed
     {
-        // your deserialization logic goes here
+        \assert(
+            $type !== null
+            && \class_exists($type)
+            && \is_a($type, Message::class, true),
+        );
+
+        $object = new $type();
+        $object->mergeFromString((string)$payload);
+
+        return $object;
     }
 }
+
 ```
 
 The `serialize` method of your custom serializer class should accept a single parameter `$payload` which represents the
@@ -193,7 +210,7 @@ Using the `Spiral\Serializer\SerializerRegistryInterface`:
 ```php
 namespace App\Application\Bootloader;
 
-use App\CustomSerializer;
+use App\Application\Serializer\ProtoSerializer;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Serializer\SerializerRegistryInterface;
 
@@ -201,7 +218,7 @@ class SerializerBootloader extends Bootloader
 {
     public function boot(SerializerRegistryInterface $registry): void
     {
-        $registry->register('my-serializer', new CustomSerializer());
+        $registry->register('proto', new ProtoSerializer());
     }
 }
 ```
@@ -211,11 +228,11 @@ class SerializerBootloader extends Bootloader
 Using the config file:
 
 ```php app/config/serializer.php
-use App\Serializer;
+use App\Application\Serializer\ProtoSerializer;
 
 return [
     'serializers' => [
-        'my-serializer' => CustomSerializer::class,
+        'proto' => ProtoSerializer::class,
         // other serializers
     ],
 ];
