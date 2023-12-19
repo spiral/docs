@@ -14,11 +14,10 @@ Use Temporal when you have to manage complex data flows or ensure reliable trans
 business domains. it provides timers, retry mechanisms and much more.
 
 ## Installation
- 
-Spiral offers seamless integration with the Temporal workflow engine. By installing the
-`spiral/temporal-bridge` package, you can easily use Temporal within your application.
 
-Install the `spiral/temporal-bridge` package by running the following composer command:
+To use Temporal in your PHP project, you need to install the `spiral/temporal-bridge` package.
+
+Here's how:
 
 ```terminal
 composer require spiral/temporal-bridge
@@ -26,82 +25,70 @@ composer require spiral/temporal-bridge
 
 After the package is installed, you will need to activate the component using the bootloader:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\TemporalBridge\Bootloader\TemporalBridgeBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\TemporalBridge\Bootloader\TemporalBridgeBootloader::class,
+    // ...
 ];
 ```
 
-### Temporal Server
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
 
-You can run temporal server via docker by using the example below:
+::::
+
+### Setting Up a Temporal Server
+
+To start using Temporal quickly, use a development server.
+
+First, install the Temporal CLI - follow the instructions on
+the [Temporal website](https://docs.temporal.io/cli#install).
+
+After the CLI is installed, you can start the Temporal server by running the following command:
+
+```terminal
+temporal server start-dev
+````
 
 > **Note**
-> You can find official docker compose files [here](https://github.com/temporalio/docker-compose).
-
-```yaml
-version: '3.5'
-
-services:
-  postgresql:
-    container_name: temporal-postgresql
-    image: postgres:13
-    environment:
-      POSTGRES_PASSWORD: temporal
-      POSTGRES_USER: temporal
-    ports:
-      - 5432:5432
-
-  temporal:
-    container_name: temporal
-    image: temporalio/auto-setup:1.14.2
-    depends_on:
-      - postgresql
-    environment:
-      - DB=postgresql
-      - DB_PORT=5432
-      - POSTGRES_USER=temporal
-      - POSTGRES_PWD=temporal
-      - POSTGRES_SEEDS=postgresql
-      - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml
-    ports:
-      - 7233:7233
-    volumes:
-      - ./temporal:/etc/temporal/config/dynamicconfig
-
-  temporal-web:
-    container_name: temporal-web
-    image: temporalio/web:1.13.0
-    depends_on:
-      - temporal
-    environment:
-      - TEMPORAL_GRPC_ENDPOINT=temporal:7233
-      - TEMPORAL_PERMIT_WRITE_API=true
-    ports:
-      - 8088:8088
-```
-
-> **Warning**
-> Please make sure that a configuration file for temporal server
-> exists. `mkdir temporal && touch temporal/development.yaml`.
+> There are other ways to start a Temporal server. For example, you can use Docker. You can find docker-compose files
+> in the [Temporal repository](https://github.com/temporalio/docker-compose).
 
 ## Configuration
 
-Configure temporal address via env variables .env
+### PHP application
+
+All you need is to specify the address of your Temporal server in the `.env` file:
 
 ```dotenv .env
 TEMPORAL_ADDRESS=127.0.0.1:7233
 ```
 
-Or create a `temporal.php` configuration file in the `app/config` directory. This file allows you to specify options such
-as the `address`, `namespace`, default worker, and individual worker configurations.
+If you want to precisely configure your application, you can create the `temporal.php` configuration file. There you can
+specify options such as a task queue, and individual worker configurations.
 
-> **Note**
-> The default configuration should work for most cases, so you only need to modify this file if you need to change the
-> default settings.
-
-Here is an example configuration:
+Here is an example configuration file:
 
 ```php app/config/temporal.php
 use Temporal\Worker\WorkerFactoryInterface;
@@ -109,7 +96,6 @@ use Temporal\Worker\WorkerOptions;
 
 return [
     'address' => env('TEMPORAL_ADDRESS', '127.0.0.1:7233'),
-    'namespace' => 'App\\Application\\Workflow',
     'defaultWorker' => WorkerFactoryInterface::DEFAULT_TASK_QUEUE,
     'workers' => [
         'workerName' => WorkerOptions::new()
@@ -117,8 +103,10 @@ return [
 ];
 ```
 
-In your RoadRunner configuration file `.rr.yaml`, add a temporal plugin section. This will allow you to specify the
-`address` of your Temporal server, as well as the number of workers for your activities:
+### RoadRunner
+
+In your RoadRunner configuration file `.rr.yaml`, add a section `temporal`. This lets you set the server address and the
+number of workers. For example:
 
 ```yaml .rr.yaml
 ...
@@ -129,8 +117,7 @@ temporal:
     num_workers: 10
 ```
 
-> **Note**
-> For more information on configuring the Temporal plugin in RoadRunner, check out the
-> documentation [here](https://roadrunner.dev/docs/workflow-temporal).
+For more details on configuring Temporal with RoadRunner, read
+the [RoadRunner](https://roadrunner.dev/docs/workflow-temporal) documentation.
 
 That's it! Happy workflow building!
