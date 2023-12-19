@@ -10,6 +10,26 @@ data changes that should be reflected in your UI.
 To enable the component, you just need to add `Spiral\Broadcasting\Bootloader\BroadcastingBootloader` class to the
 bootloaders list, which is located in the class of your application.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Broadcasting\Bootloader\BroadcastingBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -17,6 +37,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Configuration
 

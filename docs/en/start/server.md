@@ -193,6 +193,34 @@ composer require spiral/roadrunner-bridge
 Once installed, you need to add the package's bootloaders to your application in the `Kernel`, choosing the specific
 bootloaders that correspond to the plugins you want to use:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+use Spiral\RoadRunnerBridge\Bootloader as RoadRunnerBridge;
+
+public function defineBootloaders(): array
+{
+    return [
+        RoadRunnerBridge\HttpBootloader::class, // Optional, if it needs to work with http plugin
+        RoadRunnerBridge\QueueBootloader::class, // Optional, if it needs to work with jobs plugin
+        RoadRunnerBridge\CacheBootloader::class, // Optional, if it needs to work with KV plugin
+        RoadRunnerBridge\GRPCBootloader::class, // Optional, if it needs to work with GRPC plugin
+        RoadRunnerBridge\CommandBootloader::class,
+        RoadRunnerBridge\TcpBootloader::class, // Optional, if it needs to work with TCP plugin
+        RoadRunnerBridge\MetricsBootloader::class, // Optional, if it needs to work with metrics plugin
+        RoadRunnerBridge\LoggerBootloader::class, // Optional, if it needs to work with app-logger plugin
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 use Spiral\RoadRunnerBridge\Bootloader as RoadRunnerBridge;
 
@@ -208,6 +236,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Beware of the Underwater Rocks
 

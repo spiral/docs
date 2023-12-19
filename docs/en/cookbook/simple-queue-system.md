@@ -225,12 +225,38 @@ composer require spiral-packages/symfony-serializer
 
 After package install you need to register bootloader:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Serializer\Symfony\Bootloader\SerializerBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Serializer\Symfony\Bootloader\SerializerBootloader::class,
+    // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 And define default serializer in the `app/config/queue.php` file:
 

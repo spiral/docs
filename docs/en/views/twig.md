@@ -13,6 +13,28 @@ composer require spiral/twig-bridge
 
 Activate the component by adding `Spiral\Twig\Bootloader\TwigBootloader` bootloader to your `Kernel`:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Views\Bootloader\ViewsBootloader::class,
+        \Spiral\Bootloader\Views\TranslatedCacheBootloader::class, // keep localized views in separate cache files
+        \Spiral\Twig\Bootloader\TwigBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -22,6 +44,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 You can add any custom extension to Twig via the `addExtension` method of `TwigBootloader`:
 
@@ -92,13 +119,38 @@ final class TwigDebugBootloader extends Bootloader
 
 Activate the component by adding `TwigDebugBootloader` bootloader to your `Kernel`:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \App\Application\Bootloader\TwigDebugBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \App\Application\Bootloader\TwigDebugBootloader::class,
     // ...
-]
+];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 Afterwards you can use the `{{ dump() }}` function in your template.
 

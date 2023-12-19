@@ -13,10 +13,36 @@ composer require spiral/nyholm-bridge
 
 Activate the component by adding two bootloaders:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        // Fast PSR-7 implementation
+        \Spiral\Nyholm\Bootloader\NyholmBootloader::class,
+    
+        // HTTP core
+        \Spiral\Bootloader\Http\HttpBootloader::class,
+    
+        // PSR-15 handler      
+        \Spiral\Bootloader\Http\RouterBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
-
     // Fast PSR-7 implementation
     \Spiral\Nyholm\Bootloader\NyholmBootloader::class,
 
@@ -25,10 +51,14 @@ protected const LOAD = [
 
     // PSR-15 handler      
     \Spiral\Bootloader\Http\RouterBootloader::class,
-
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 > **Note**
 > See how to use custom PSR-15 handler [here](../cookbook/psr-15.md).

@@ -16,12 +16,38 @@ and more...
 To enable the component, you just need to add the `Spiral\Scaffolder\Bootloader\ScaffolderBootloader` class to the
 bootloader list:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Scaffolder\Bootloader\ScaffolderBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
-    \Spiral\Scaffolder\Bootloader\ScaffolderBootloader::class
+    \Spiral\Scaffolder\Bootloader\ScaffolderBootloader::class,
+    // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Configuration
 

@@ -6,12 +6,38 @@ of the symfony/console package, the Console component provides a convenient inte
 All of the provided application skeletons include the Console component by default. To enable the component in
 alternative builds, make sure to require composer package `spiral/console` and modify the application bootloader:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Bootloader\CommandBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
-    //...
+    // ...
     \Spiral\Bootloader\CommandBootloader::class,
+    // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 To invoke application command just run:
 

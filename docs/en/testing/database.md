@@ -42,12 +42,38 @@ composer require spiral-packages/database-seeder --dev
 
 After package install you need to register bootloader from the package.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader::class,
+    // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 We also recommend you to add the following to your `composer.json` file. This allows you to separate your factories,
 seeders from the rest of your application code.

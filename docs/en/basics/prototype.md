@@ -10,12 +10,38 @@ components and Cycle Repositories.
 
 Make sure to add `Spiral\Prototype\Bootloader\PrototypeBootloader` to your App class:
 
+:::: tabs
+
+::: tab Using method
+
 ```php app/src/Application/Kernel.php
-protected const APP = [
-    //...
-    \Spiral\Prototype\Bootloader\PrototypeBootloader::class
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Prototype\Bootloader\PrototypeBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
+```php app/src/Application/Kernel.php
+protected const LOAD = [
+    // ...
+    \Spiral\Prototype\Bootloader\PrototypeBootloader::class,
+    // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 Now you can run `php app.php configure` to generate IDE autocomplete helpers for your application.
 

@@ -11,6 +11,26 @@ It also provides an easy way to integrate `PSR-14` compatible `EventDispatcher`.
 To enable the component, you need to add `Spiral\Events\Bootloader\EventsBootloader` to the bootloaders
 list, which is located in the class of your application.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Events\Bootloader\EventsBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -18,6 +38,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 This bootloader registers the implementation of the `Spiral\Events\ListenerFactoryInterface` and
 `Spiral\Events\ListenerProcessorRegistry` in the application container. It also registers event listeners
@@ -33,6 +58,27 @@ composer require spiral-packages/league-event
 
 After the package is installed, you need to register a bootloader from the package.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Events\Bootloader\EventsBootloader::class,
+        \Spiral\League\Event\Bootloader\EventBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -41,6 +87,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Configuration
 

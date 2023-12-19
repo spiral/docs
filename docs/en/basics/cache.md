@@ -35,6 +35,27 @@ To enable the component, you just need to add `Spiral\Cache\Bootloader\CacheBoot
 > **Warning**
 > Make sure that you have the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package installed.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Cache\Bootloader\CacheBootloader::class,
+        \Spiral\RoadRunnerBridge\Bootloader\CacheBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -43,6 +64,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 > **Note**
 > The `spiral/roadrunner-bridge` package allows you to use RoadRunner

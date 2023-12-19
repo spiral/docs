@@ -18,6 +18,26 @@ composer require spiral/validator
 To enable the component, you just need to add `Spiral\Validator\Bootloader\ValidatorBootloader` to the bootloaders
 list, which is located in the class of your application.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Validator\Bootloader\ValidatorBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -25,6 +45,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 The configuration file for this component should be located at `app/config/validator.php`. Here you can register all
 required validation checkers, conditions and aliases required for your application.

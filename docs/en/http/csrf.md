@@ -54,12 +54,38 @@ To install it in alternative application:
 
 Add `Spiral\Bootloader\Http\CsrfBootloader` to the list of bootloaders:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Bootloader\Http\CsrfBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
-    //...
+    // ...
     \Spiral\Bootloader\Http\CsrfBootloader::class,
-]
+    // ...
+];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 After the bootloader is added you need to enable `Spiral\Csrf\Middleware\CsrfMiddleware` middleware to issue a unique
 token for every user.
