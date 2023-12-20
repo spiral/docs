@@ -1,7 +1,7 @@
 # Queue — RoadRunner integration
 
-Spiral has full integration with RoadRunner jobs plugin, which provides a unified queueing API for a variety of queue
-brokers such as:
+Spiral has full integration with [RoadRunner jobs](https://roadrunner.dev/docs/queues-overview) plugin, which provides 
+a unified queueing API for a variety of queue brokers such as:
 
 - [Kafka](https://roadrunner.dev/docs/plugins-jobs#kafka-driver),
 - [AMQP (RabbitMQ)](https://roadrunner.dev/docs/plugins-jobs#amqp-driver),

@@ -177,7 +177,7 @@ Use the following command to start application server on **Windows**
 
 The [spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package provides full integration between
 Spiral and RoadRunner. This package allows developers to use RoadRunner's various plugins,
-including `http`, `grpc`, `jobs`, `tcp`, `kv`, `centrifugo`, `logger`, and `metrics`.
+including `http`, `grpc`, `jobs`, `tcp`, `kv`, `locks`, `centrifugo`, `app-logger`, and `metrics`.
 
 > **Note**
 > The component is available by default in the [application bundle](https://github.com/spiral/app).

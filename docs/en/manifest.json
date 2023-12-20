@@ -65,6 +65,7 @@
       "advanced/telemetry": "Application Telemetry",
       "advanced/injectors": "Container injectors",
       "advanced/scheduler": "Task Scheduling",
+      "advanced/locks": "Atomic Locks",
       "advanced/sendit": "Mailer",
       "advanced/notifications": "Notifications"
     }
