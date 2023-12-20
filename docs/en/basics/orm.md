@@ -15,16 +15,91 @@ composer require spiral/cycle-bridge
 After successful installation of the package, it is necessary to add the `Spiral\Cycle\Bootloader\BridgeBootloader`
 bootloader to the Kernel:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Cycle\Bootloader\BridgeBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
+    // ...
     \Spiral\Cycle\Bootloader\BridgeBootloader::class,
+    // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 Alternatively, for more granular control, the `BridgeBootloader` can be excluded and selected the only needed
 bootloaders.
 
 The relevant code for this in Kernel would look like this:
+
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+use Spiral\Cycle\Bootloader as CycleBridge;
+
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+    
+        // Database
+        CycleBridge\DatabaseBootloader::class,
+        CycleBridge\MigrationsBootloader::class,
+    
+        // Close the database connection after every request automatically (Optional)
+        // CycleBridge\DisconnectsBootloader::class,
+    
+        // ORM
+        CycleBridge\SchemaBootloader::class,
+        CycleBridge\CycleOrmBootloader::class,
+        CycleBridge\AnnotatedBootloader::class,
+        CycleBridge\CommandBootloader::class,
+    
+        // Validation (Optional)
+        // CycleBridge\ValidationBootloader::class,
+    
+        // DataGrid (Optional)
+        // CycleBridge\DataGridBootloader::class,
+    
+        // Database Token Storage (Optional)
+        CycleBridge\AuthTokensBootloader::class,
+    
+        // Migrations and Cycle Scaffolders (Optional)
+        CycleBridge\ScaffolderBootloader::class,
+        
+        // Prototyping (Optional)
+        CycleBridge\PrototypeBootloader::class,
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
 
 ```php app/src/Application/Kernel.php
 use Spiral\Cycle\Bootloader as CycleBridge;
@@ -61,6 +136,11 @@ protected const LOAD = [
     CycleBridge\PrototypeBootloader::class,
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 #### Disconnects bootloader
 
@@ -461,12 +541,38 @@ final class EntityBehaviorBootloader extends Bootloader
 
 And finally, you need to register the `App\Application\Bootloader\EntityBehaviorBootloader` in the application kernel:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \App\Application\Bootloader\EntityBehaviorBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
+    // ...
     \App\Application\Bootloader\EntityBehaviorBootloader::class,
-    ...
-],
+    // ...
+];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 That's it! Now you can use entity behaviors in your application.
 
@@ -814,6 +920,26 @@ The default Web and GRPC bundles include a set of console commands to view the d
 
 Activate the bootloader `Spiral\Cycle\Bootloader\CommandBootloader` in your application:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Cycle\Bootloader\CommandBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -821,6 +947,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 #### View available drivers and tables
 

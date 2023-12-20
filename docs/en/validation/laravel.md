@@ -18,6 +18,26 @@ composer require spiral-packages/laravel-validator
 To enable the component, you just need to add `Spiral\Validation\Laravel\Bootloader\ValidatorBootloader` to the
 bootloaders list, which is located in the class of your application.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Validation\Laravel\Bootloader\ValidatorBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -25,6 +45,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Usage
 

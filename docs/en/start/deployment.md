@@ -139,12 +139,38 @@ composer require spiral/sapi-bridge
 Once the package is installed, you'll need to register the `Spiral\Sapi\Bootloader\SapiBootloader` bootloader in your
 application's list of bootloaders.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Sapi\Bootloader\SapiBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Sapi\Bootloader\SapiBootloader::class,
+    // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 2. Configure Nginx to use PHP-FPM.
 

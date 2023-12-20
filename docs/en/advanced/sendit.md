@@ -13,9 +13,25 @@ Emails are delivered via a "transport". Out of the box, you can deliver emails o
 
 To enable the component, you need to add the `Spiral\SendIt\Bootloader\MailerBootloader` class to the bootloaders list.
 
-> **See more**
-> Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
->
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\SendIt\Bootloader\MailerBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
 
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
@@ -24,6 +40,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 This bootloader configures the base bindings, default settings, and a queue for sending emails. It will also
 automatically register the `Spiral\SendIt\Bootloader\BuilderBootloader`, which registers the `spiral/views` component

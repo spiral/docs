@@ -11,6 +11,26 @@ abstract classes that define the expected behavior of a validator.
 To enable the component, you just need to add `Spiral\Validation\Bootloader\ValidationBootloader` to the bootloaders
 list.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Validation\Bootloader\ValidationBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -18,6 +38,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Configuration
 

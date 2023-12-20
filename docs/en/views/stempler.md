@@ -2237,6 +2237,26 @@ composer require spiral/stempler-bridge
 The `Spiral\Stempler\Bootloader\StemplerBootloader` bootloader must be added to the application kernel to enable its
 usage.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Stempler\Bootloader\StemplerBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -2244,6 +2264,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 The Stempler bridge comes pre-configured. To replace and alter the default configuration, create a
 file `app/config/views/stempler.php`.

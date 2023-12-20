@@ -27,13 +27,38 @@ composer require spiral/filters-bridge
 The package does not require any configuration and can be activated using the
 bootloader `Spiral\Filters\Bootloader\FiltersBootloader`:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Filters\Bootloader\FiltersBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
-    \Spiral\Filters\Bootloader\FiltersBootloader::class
+    \Spiral\Filters\Bootloader\FiltersBootloader::class,
     // ...
-]
+];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 There is no difference between using the `spiral/filters` component and the `spiral/filters-bridge` package, so you can use
 [documentation](https://spiral.dev/docs/filters-configuration/2.14/en#create-filter) for the previous Spiral version.

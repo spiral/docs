@@ -335,12 +335,36 @@ return [
 To use this feature, you will need to include `Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader`
 bootloader in your project at the top of bootloader's list:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineSystemBootloaders(): array
+{
+    return [
+        \Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const SYSTEM = [
     \Spiral\Tokenizer\Bootloader\TokenizerListenerBootloader::class,
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ### Crafting a listener
 

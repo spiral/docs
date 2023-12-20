@@ -41,14 +41,36 @@ composer require --dev spiral/dumper
 
 Once installed, you need to add the package's bootloader to your application.
 
-```php app/src/Application/Kernel.php
-use Spiral\Debug\Bootloader\DumperBootloader;
+:::: tabs
 
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineSystemBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Debug\Bootloader\DumperBootloader::class,
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
+```php app/src/Application/Kernel.php
 protected const SYSTEM = [
     // ...
-    DumperBootloader::class,
+    \Spiral\Debug\Bootloader\DumperBootloader::class,
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ### Usage
 
@@ -256,6 +278,26 @@ composer require --dev spiral/profiler:^3.0
 
 Once the package is installed, add the bootloader from the package to your application.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Profiler\ProfilerBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -263,6 +305,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 #### Configuration
 

@@ -13,12 +13,38 @@ composer require spiral-packages/scheduler
 
 Once the package is installed, you need to add the bootloader from the package to your application:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Scheduler\Bootloader\SchedulerBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Scheduler\Bootloader\SchedulerBootloader::class,
+    // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 To run the schedule, you have two options:
 

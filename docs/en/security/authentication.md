@@ -29,13 +29,38 @@ fly. The framework includes multiple token implementations out of the box for a 
 
 To activate the component add the bootloader `Spiral\Bootloader\Auth\HttpAuthBootloader`:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Bootloader\Auth\HttpAuthBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Bootloader\Auth\HttpAuthBootloader::class,
     // ...
-]
+];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Auth Token Storage
 
@@ -138,14 +163,40 @@ composer require spiral/cycle-bridge
 
 Then you need to activate `Spiral\Cycle\Bootloader\AuthTokensBootloader`:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Bootloader\Auth\HttpAuthBootloader::class,
+        \Spiral\Cycle\Bootloader\AuthTokensBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Bootloader\Auth\HttpAuthBootloader::class,
     \Spiral\Cycle\Bootloader\AuthTokensBootloader::class,
     // ...
-]
+];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 To store tokens in Cycle ORM use `cycle` value for `AUTH_TOKEN_STORAGE` environment variable.
 
@@ -546,13 +597,38 @@ class User implements ActorInterface
 
 And activate the bootloader `Spiral\Bootloader\Auth\SecurityActorBootloader` to link two components together:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Bootloader\Auth\SecurityActorBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
     \Spiral\Bootloader\Auth\SecurityActorBootloader::class,
     // ...
-]
+];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Firewall Middleware
 

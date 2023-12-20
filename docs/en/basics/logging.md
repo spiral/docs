@@ -147,12 +147,38 @@ final class LoggingBootloader extends Bootloader
 > **Warning**
 > Don't forget to add this bootloader to the top of bootloaders list in `app/src/Application/Kernel.php`:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \App\Application\Bootloader\LoggingBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
+    // ...
     \App\Application\Bootloader\LoggingBootloader::class,
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ### RoadRunner handler
 
@@ -161,12 +187,38 @@ the [RoadRunner app logger](https://roadrunner.dev/docs/plugins-applogger).
 
 You just need to add `Spiral\RoadRunnerBridge\Bootloader\LoggerBootloader` to the top of bootloaders list:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\RoadRunnerBridge\Bootloader\LoggerBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
+    // ...
     \Spiral\RoadRunnerBridge\Bootloader\LoggerBootloader::class,
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 > **Warning**
 > Make sure that you have the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package installed.

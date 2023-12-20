@@ -89,12 +89,38 @@ final class ExceptionHandlerBootloader extends Bootloader
 > **Warning**
 > Don't forget to add this bootloader to the top of bootloaders list in `app/src/Application/Kernel.php`:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \App\Application\Bootloader\ExceptionHandlerBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
+    // ...
     \App\Application\Bootloader\ExceptionHandlerBootloader::class,
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 3. **Use Your Renderer**
 
@@ -180,6 +206,26 @@ composer require spiral-packages/yii-error-handler-bridge
 
 After package install you need to register bootloader from the package:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\YiiErrorHandler\Bootloader\YiiErrorHandlerBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -187,6 +233,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 The `YiiErrorHandlerBootloader` will register all available renderers during initialization. If you wish to register
 specific renderers.
@@ -416,6 +467,26 @@ composer require spiral/sentry-bridge
 
 2. Once installed, register `Spiral\Sentry\Bootloader\SentryReporterBootloader` bootloader from the package into your
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Sentry\Bootloader\SentryReporterBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -423,6 +494,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 It will register `Spiral\Sentry\SentryReporter` in the `Spiral\Exceptions\ExceptionHandler`.
 
@@ -460,6 +536,27 @@ It will send the following information about the current request:
 To enable the HTTP collector, you first need to register `Spiral\Bootloader\Debug\HttpCollectorBootloader`
 before `SentryReporterBootloader`.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Bootloader\Debug\HttpCollectorBootloader::class,
+        \Spiral\Sentry\Bootloader\SentryReporterBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -468,6 +565,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 Then you need to register the middleware `Spiral\Debug\StateCollector\HttpCollector` in the application.
 
@@ -481,6 +583,27 @@ Use the Logs collector to send all received logs to Sentry.
 To enable the Logs collector, you just need to register S`piral\Bootloader\Debug\LogCollectorBootloader`
 before `SentryBootaloder`.
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Bootloader\Debug\LogCollectorBootloader::class,
+        \Spiral\Sentry\Bootloader\SentryReporterBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -489,6 +612,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 #### Creating Custom Collectors
 

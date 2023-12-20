@@ -463,12 +463,38 @@ final class QueueFailedJobsBootloader extends Bootloader
 
 And register this bootloader after `QueueFailedJobsBootloader` in your application
 
-```php  app/src/Application/Kernel.php
-protected const APP = [
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \App\Application\Bootloader\QueueFailedJobsBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
+```php app/src/Application/Kernel.php
+protected const LOAD = [
     // ...
     \App\Application\Bootloader\QueueFailedJobsBootloader::class,
+    // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Retrying Failed Jobs
 

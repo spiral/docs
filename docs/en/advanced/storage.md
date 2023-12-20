@@ -29,6 +29,26 @@ composer require spiral/storage
 
 Make sure to add `Spiral\Storage\Bootloader\StorageBootloader` to the list of bootloaders in your application:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Storage\Bootloader\StorageBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -36,6 +56,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ### Configuration
 
@@ -731,14 +756,38 @@ composer require spiral/distribution
 To enable the component, you just need to add the `Spiral\Distribution\Bootloader\DistributionBootloader` class to the
 bootloader list:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Distribution\Bootloader\DistributionBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
-    // Added distribution bootloader
     \Spiral\Distribution\Bootloader\DistributionBootloader::class,
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ### Configuration
 

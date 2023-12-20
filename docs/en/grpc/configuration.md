@@ -51,6 +51,27 @@ At first, you need to install the [spiral/roadrunner-bridge](../start/server.md#
 Once the package is installed, activate the component using 
 bootloader `Spiral\RoadRunnerBridge\Bootloader\GRPCBootloader`:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\RoadRunnerBridge\Bootloader\GRPCBootloader::class,
+        \Spiral\RoadRunnerBridge\Bootloader\CommandBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -59,6 +80,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 After the package installed you will need to download the `protoc-gen-php-grpc`. It is a plugin for the `protoc` tool
 that generates PHP code for gRPC services.

@@ -66,6 +66,7 @@ In Spiral, you can register bootloaders in your kernel using two different appro
 ::: tab Using methods
 
 Add the class reference into `defineBootloaders` or `defineAppBootloaders` methods of your `App\Application\Kernel`
+
 class:
 
 ```php app/src/Application/Kernel.php

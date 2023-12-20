@@ -49,6 +49,26 @@ composer require spiral/data-grid-bridge spiral/cycle-bridge
 
 Activate the bootloader `Spiral\DataGrid\Bootloader\GridBootloader` in your application after Cycle bootloaders:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\DataGrid\Bootloader\GridBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -56,6 +76,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Quick Start
 

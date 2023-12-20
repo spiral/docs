@@ -34,12 +34,36 @@ composer require spiral-packages/discoverer
 
 After installation, you need to register the package's bootloader. Add the `DiscovererBootloader` to your system's bootloaders array:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineSystemBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Discoverer\DiscovererBootloader::class,
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const SYSTEM = [
     // ...
     \Spiral\Discoverer\DiscovererBootloader::class,
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 That's it.
 

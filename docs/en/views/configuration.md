@@ -8,13 +8,38 @@ composer require spiral/views
 
 To activate the component, use the bootloader `Spiral\Views\Bootloader\ViewsBootloader`:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Views\Bootloader\ViewsBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
-    Spiral\Views\Bootloader\ViewsBootloader::class,
+    \Spiral\Views\Bootloader\ViewsBootloader::class,
     // ...
-]
+];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 The component can work with multiple rendering engines (**Twig**, **Stempler** or **native PHP** templates) and
 store view files in multiple namespaces.

@@ -82,6 +82,27 @@ callback function that returns response.
 
 Add this Bootloader to your application:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Bootloader\Http\HttpBootloader::class,
+        \App\Bootloader\FastRouteBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -90,6 +111,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 Once you have implemented the FastRoute bootloader and added it to your Spiral application, you will be able
 to use FastRoute to handle HTTP requests.

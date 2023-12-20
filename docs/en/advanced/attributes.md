@@ -45,6 +45,26 @@ composer require spiral/attributes
 To enable the component, you just need to add the `Spiral\Bootloader\Attributes\AttributesBootloader` class to the
 bootloader list:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Bootloader\Attributes\AttributesBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -52,6 +72,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 ## Usage
 
@@ -290,7 +315,8 @@ $getter = $reader->firstConstantMetadata($reflection, PreCondition::class);
 
 > **Note**
 > For details on using doctrine annotations, please see
-> the [doctrine documentation](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html#create-an-annotation-class).
+>
+the [doctrine documentation](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/index.html#create-an-annotation-class).
 
 You should use "hybrid" syntax to create metadata classes that will work on any version of PHP.
 
@@ -372,7 +398,8 @@ In this case, the annotation class itself might look like this:
 In this case, when declaring a metadata class, the attribute/annotation properties will be filled.
 
 > **Note**
-> See also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
+> See
+> also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
 
 ```php
 /** @Annotation */
@@ -389,7 +416,8 @@ In the case of a constructor declaration, all data when using the metadata class
 an array.
 
 > **Note**
-> See also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
+> See
+> also [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
 
 ```php
 /** @Annotation */

@@ -17,6 +17,26 @@ the container:
 
 Add the bootloader to your application:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \App\Application\Bootloader\ExceptionHandlerBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -24,6 +44,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 > **Note**
 > If you don't use a `spiral/app` bundle, you can use the `Spiral\Bootloader\Http\ErrorHandlerBootloader` instead.

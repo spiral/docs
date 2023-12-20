@@ -24,6 +24,26 @@ the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package.
 To get started, you need to install [Roadrunner bridge](../start/server.md#roadrunner-bridge) package. Once installed,
 add the `Spiral\RoadRunnerBridge\Bootloader\QueueBootloader` to the list of bootloaders in your Kernel class:
 
+:::: tabs
+
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\RoadRunnerBridge\Bootloader\QueueBootloader::class,
+        // ...
+    ];
+}
+```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::: tab Using constant
+
 ```php app/src/Application/Kernel.php
 protected const LOAD = [
     // ...
@@ -31,6 +51,11 @@ protected const LOAD = [
     // ...
 ];
 ```
+
+Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
+:::
+
+::::
 
 By doing this, an additional queue driver named `roadrunner` will be registered automatically. You can then add a new
 queue connection for RoadRunner in your `app/config/queue.php` configuration file.
