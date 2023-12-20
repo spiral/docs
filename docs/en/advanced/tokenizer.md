@@ -1,10 +1,23 @@
 # Component — Static analysis
 
-Tokenizer is your go-to tool to quickly find and explore code within specified directories. Its main role is to help you
-identify class declarations. Good news:
+Tokenizer is a key component offering a range of functionalities that significantly enhance the development experience
+in Spiral applications. Its primary role is in scanning specified directories, enabling developers to effortlessly
+manage and organize their codebase. This tool is particularly adept at identifying and utilizing classes based on
+specific interfaces or attributes, facilitating a variety of practical applications.
 
-> **Note**
-> Tokenizer comes with the framework, so you won't have to fuss about setting it up.
+#### Key Use Cases
+
+1. **Automatic Route Registration**: One of the classic applications is in identifying route attributes on controller
+   actions. By doing so, it automates the process of registering routes in your application, leveraging the attributes
+   defined in the controllers. This feature significantly reduces manual overhead and streamlines the routing mechanism.
+
+2. **Modular Structure Support**: In projects where a modular architecture is essential, the Tokenizer excels. It can
+   automatically detect and register modules (e.g., those added as composer packages) that implement a specific
+   interface. This capability ensures a seamless integration and management of various modules within your application.
+
+3. **Attribute-Based Configuration**: The tokenizer can scan for specific attributes in your codebase, enabling
+   attribute-based configuration and behavior definition. This approach aligns with modern coding practices, where
+   attributes are used to define aspects like dependency injection, configuration settings, and more.
 
 ## Locators
 
@@ -13,10 +26,10 @@ Locators are like your code's searchlight. They help you find specific pieces of
 ### Classes Locator
 
 If you're aiming to locate classes, turn to `Spiral\Tokenizer\ClassesInterface`. Using this, you can search for classes
-based on their name, the interfaces they use, or the traits they incorporate.
+based on their name, the interfaces they implement, or the traits they incorporate.
 
-Here's a quick example. Let's say you want to locate all classes that use the `\Psr\Http\Server\MiddlewareInterface`
-interface:
+Here's a quick example. Let's say you want to locate all classes that implement 
+the `\Psr\Http\Server\MiddlewareInterface` interface:
 
 ```php
 use Spiral\Tokenizer\ClassesInterfac;
@@ -232,6 +245,7 @@ final class SomeLocator
 :::
 
 ::: tab Enums
+
 Just like with classes, you can set up specific scopes for searching enums. Once you have your scopes configured in
 the `app\config\tokenizer.php` file, you can utilize the `Spiral\Tokenizer\ScopedEnumsInterface`.
 
@@ -264,6 +278,7 @@ final class EnumSearcher
 :::
 
 ::: tab Interfaces
+
 Similar to the above, once your scopes are good to go in the config file,
 the `Spiral\Tokenizer\ScopedInterfacesInterface` will help you search for interfaces within those specified zones.
 
