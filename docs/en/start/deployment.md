@@ -34,6 +34,18 @@ accidental actions that should only be run on a development server.
 APP_ENV=production
 ```
 
+### Enable tokenizer cache
+
+Make sure that the `TOKENIZER_CACHE_TARGETS ` variable is set to `true` in your application's environment configuration.
+This will disable scanning and analysis of the application's source code, which can improve performance on boot.
+
+```dotenv .env
+TOKENIZER_CACHE_TARGETS=true
+```
+
+> **Note**
+> Read more about tokenizer in [Component — Static analysis](../advanced/tokenizer.md) section.
+
 ### Set the verbosity level
 
 Set the `VERBOSITY_LEVEL` variable to a `basic` level to hide server errors from being displayed to the public.
