@@ -61,7 +61,7 @@ return [
 This service receives a `RoadRunner\Centrifugo\Request\Connect` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\ConnectResponse` object.
 
-#### Simple example
+### Simple example
 
 Here is an example of a service that accepts all connection requests:
 
@@ -81,7 +81,9 @@ class ConnectService implements ServiceInterface
         try {
             $request->respond(
                 // Return an empty string for accepting unauthenticated requests
-                new ConnectResponse(user: '')
+                new ConnectResponse(
+                  user: ''
+                )
             );
         } catch (\Throwable $e) {
             $request->error($e->getCode(), $e->getMessage());
@@ -90,12 +92,66 @@ class ConnectService implements ServiceInterface
 }
 ```
 
+To create a service class use the following command:
+
+```terminal
+php app.php create:centrifugo-handler Connect -t=connect
+```
+
 The Centrifugo JavaScript SDK allows you to pass additional data to the server when connecting via WebSocket. This data
 can be used for a variety of purposes, such as client authentication.
 
-#### Service that accepts only authenticated requests
+### Automatic subscription to channels
 
-Here is an example of a service that accepts only authenticated connection requests:
+One of the coolest features of Centrifugo is the ability to automatically subscribe to channels when a client connects.
+
+For example, you can automatically subscribe a user to a public channel when they connect to the server and you don't
+need to do anything else on a client side.
+
+All you need is just return a list of channels in the `channels` field:
+
+```php app/src/Endpoint/Centrifugo/ConnectService.php
+namespace App\Endpoint\Centrifugo;
+
+use RoadRunner\Centrifugo\Request\Connect;
+use RoadRunner\Centrifugo\Payload\ConnectResponse;
+use RoadRunner\Centrifugo\Request\RequestInterface;
+use Spiral\RoadRunnerBridge\Centrifugo\ServiceInterface;
+
+class ConnectService implements ServiceInterface
+{
+    /** @param Connect $request */
+    public function handle(RequestInterface $request): void
+    {
+        try {
+            $request->respond(
+                // Return an empty string for accepting unauthenticated requests
+                new ConnectResponse(
+                  user: '',
+                   // List of channels to subscribe to on connect to Centrifugo
+                  channels: [
+                     'public',
+                     ...
+                  ],
+                )
+            );
+        } catch (\Throwable $e) {
+            $request->error($e->getCode(), $e->getMessage());
+        }
+    }
+}
+```
+
+### Service that accepts only authenticated requests
+
+An authenticated request is a request that contains a valid token in the `authToken` field. This token can be used to
+authenticate the user on the server side. 
+
+**For example, it can be useful for:**
+
+- Authentication of a user on the server side
+- Automatic subscription to private channels
+- Automatic subscription to channels based on user roles
 
 ```php app/src/Endpoint/Centrifugo/ConnectService.php
 namespace App\Endpoint\Centrifugo;
@@ -130,9 +186,19 @@ class ConnectService implements ServiceInterface
                 $request->disconnect('403', 'Connection is not allowed.');
                 return;
             }
+            
+            $user = $this->users->getById($userId);
+            $roles = $user->getRoles();
         
             $request->respond(
-                new ConnectResponse(user: (string) $userId)
+                new ConnectResponse(
+                    user: (string) $userId,
+                    channels: [
+                        (string) new UserChannel($user->uuid), // user-{uuid}
+                        (string) new ChatChannel($user->uuid), // chat-{uuid}
+                        'public',
+                    ],
+                )
             );
         } catch (\Throwable $e) {
             $request->error($e->getCode(), $e->getMessage());
@@ -165,8 +231,14 @@ const centrifuge = new Centrifuge('http://127.0.0.18000/connection/websocket', {
 ## Subscribe request
 
 This service receives a `RoadRunner\Centrifugo\Request\Subscribe` object and performs some action based on the
-connection
-request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\SubscribeResponse` object.
+connection request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\SubscribeResponse` 
+object.
+
+To create a service class use the following command:
+
+```terminal
+php app.php create:centrifugo-handler Subscribe -t=subscribe
+```
 
 In this example, we will create a service that will allow users to subscribe to channels only if they are authenticated
 with rules provided by the `Spiral\Broadcasting\TopicRegistryInterface` interface.
@@ -258,6 +330,12 @@ return [
 This service receives a `RoadRunner\Centrifugo\Request\Refresh` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\RefreshResponse` object.
 
+To create a service class use the following command:
+
+```terminal
+php app.php create:centrifugo-handler Refresh -t=refresh
+```
+
 Here is an example of a service:
 
 ```php app/src/Endpoint/Centrifugo/RefreshService.php
@@ -292,6 +370,12 @@ class RefreshService implements ServiceInterface
 
 This service receives a `RoadRunner\Centrifugo\Request\RPC` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\RPCResponse` object.
+
+To create a service class use the following command:
+
+```terminal
+php app.php create:centrifugo-handler Rpc -t=rpc
+```
 
 #### Simple example
 
@@ -437,6 +521,12 @@ centrifuge.rpc("get:news/123", {"lang": "en"}).then(function (res) {
 
 This service receives a `RoadRunner\Centrifugo\Request\Publish` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\PublishResponse` object.
+
+To create a service class use the following command:
+
+```terminal
+php app.php create:centrifugo-handler Publish -t=publish
+```
 
 ```php app/src/Endpoint/Centrifugo/PublishService.php
 namespace App\Endpoint\Centrifugo;
