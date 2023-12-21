@@ -268,7 +268,7 @@ use Cycle\Database\Config;
 
 return [
     'logger' => [
-        'default' => null,
+        'default' => env('DB_LOGGER_DRIVER'),
         'drivers' => [
             // 'runtime' => 'stdout'
         ],
@@ -294,7 +294,12 @@ return [
 +                password: env('DB_PASSWORD', 'secret'),
 +                port: (int) env('DB_PORT', 5432),
 +            ),
-+            queryCache: true
++            schema: 'public',
++            queryCache: true,
++            options: [
++                'withDatetimeMicroseconds' => true,
++                'logQueryParameters' => env('DB_LOG_QUERY_PARAMETERS', false),
++            ],
 +        ),
     ],
 ];
@@ -1311,9 +1316,15 @@ CycleBridge\AuthTokensBootloader::class,
 
 That's it. Now we can get the authenticated user (`Actor`) by a token from the `ActorProviderInterface`.
 
-To handle the `connect` event, we need to create a `ConnectService` class:
+To handle the `connect` event, we need to create a `ConnectHandler` class. Let's create it:
 
-```php app/src/Endpoint/Centrifugo/ConnectService.php
+```terminal
+php app.php create:centrifugo-handler Connect
+```
+
+And modify the generated code:
+
+```php app/src/Endpoint/Centrifugo/ConnectHandler.php
 namespace App\Endpoint\Centrifugo;
 
 use App\Database\User;
@@ -1324,7 +1335,7 @@ use Spiral\Auth\ActorProviderInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\RoadRunnerBridge\Centrifugo\ServiceInterface;
 
-final class ConnectService implements ServiceInterface
+final class ConnectHandler implements ServiceInterface
 {
     use PrototypeTrait;
 
@@ -1378,15 +1389,15 @@ on the client side.
 > When we respond to the request, we also pass the user's data to the `data` field to be able to use it in the
 > frontend application.
 
-Now we need to register the `ConnectService` as a service that should handle the `connect` event:
+Now we need to register the `ConnectHandler` as a service that should handle the `connect` event:
 
 ```php app/config/centrifugo.php
-use App\Endpoint\Centrifugo\ConnectService;
+use App\Endpoint\Centrifugo\ConnectHandler;
 use RoadRunner\Centrifugo\Request\RequestType;
 
 return [
     'services' => [
-        RequestType::Connect->value => ConnectService::class,
+        RequestType::Connect->value => ConnectHandler::class,
     ],
 ];
 ```
@@ -1399,9 +1410,13 @@ RPC event is used to send messages from the client to the server. In our example
 available messages in a given thread and to store a new message in the database when a user sends a message from the
 chat.
 
-To handle the `rpc` event, we need to create a `RPCService` class
+To handle the `rpc` event, we need to create a `RpcHandler` class. Let's create it:
 
-```php app/src/Endpoint/Centrifugo/RPCService.php
+```terminal
+php app.php create:centrifugo-handler Rpc -t=rpc
+```
+
+```php app/src/Endpoint/Centrifugo/RpcHandler.php
 namespace App\Endpoint\Centrifugo;
 
 use App\Database\Message;
@@ -1413,7 +1428,7 @@ use Spiral\Core\InvokerInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\RoadRunnerBridge\Centrifugo\ServiceInterface;
 
-final class RPCService implements ServiceInterface
+final class RpcHandler implements ServiceInterface
 {
     use PrototypeTrait;
 
@@ -1541,18 +1556,18 @@ final class AuthInterceptor implements CoreInterceptorInterface
 As we found out earlier, interceptors can be reused in different events. So we can use it not only for the `rpc` event
 but also for the `connect` event.
 
-Let's register the `AuthInterceptor` and the `RPCService` in the `centrifugo.php` config file:
+Let's register the `AuthInterceptor` and the `RpcHandler` in the `centrifugo.php` config file:
 
 ```diff app/config/centrifugo.php
 +use App\Endpoint\Centrifugo\Interceptor\AuthInterceptor;
-use App\Endpoint\Centrifugo\ConnectService;
-+use App\Endpoint\Centrifugo\RPCService;
+use App\Endpoint\Centrifugo\ConnectHandler;
++use App\Endpoint\Centrifugo\RpcHandler;
 use RoadRunner\Centrifugo\Request\RequestType;
 
 return [
     'services' => [
-        RequestType::Connect->value => ConnectService::class,
-+       RequestType::RPC->value => RPCService::class,
+        RequestType::Connect->value => ConnectHandler::class,
++       RequestType::RPC->value => RpcHandler::class,
     ],
 +   'interceptors' => [
 +       RequestType::RPC->value => [
@@ -1568,9 +1583,9 @@ return [
 > **Note**
 > You can also use key `*` as wildcard to register the same interceptor for multiple events.
 
-And modify the `ConnectService` to make it cleaner:
+And modify the `ConnectHandler` to make it cleaner:
 
-```diff app/src/Endpoint/Centrifugo/ConnectService.php
+```diff app/src/Endpoint/Centrifugo/ConnectHandler.php
 namespace App\Endpoint\Centrifugo;
 
 use App\Entity\User;
@@ -1581,7 +1596,7 @@ use Spiral\Auth\ActorProviderInterface;
 use Spiral\Prototype\Traits\PrototypeTrait;
 use Spiral\RoadRunnerBridge\Centrifugo\ServiceInterface;
 
-final class ConnectService implements ServiceInterface
+final class ConnectHandler implements ServiceInterface
 {
     use PrototypeTrait;
 
@@ -1739,7 +1754,7 @@ app.mount('#app')
 ```
 
 When a client is connected to the Centrifugo server, it will receive an authenticated user data from the
-`ConnectService` that we created earlier. We will register it as a `user` global property to use it in our components.
+`ConnectHandler` that we created earlier. We will register it as a `user` global property to use it in our components.
 
 In this file we will connect to the Centrifugo server and register `centrifuge` as a global property to use it in our
 components.
@@ -1977,3 +1992,4 @@ Spiral provides a lot of pre-build functionality for you. Read the following sec
 - [Authenticating users](../security/authentication.md)
 - [WebSockets](../websockets/configuration.md)
 - [Broadcasting](../websockets/broadcasting.md)
+- [Deployment](../start/deployment.md)

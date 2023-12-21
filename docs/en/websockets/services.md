@@ -92,6 +92,12 @@ class ConnectService implements ServiceInterface
 }
 ```
 
+To create a service class use the following command:
+
+```terminal
+php app.php create:centrifugo-handler Connect -t=connect
+```
+
 The Centrifugo JavaScript SDK allows you to pass additional data to the server when connecting via WebSocket. This data
 can be used for a variety of purposes, such as client authentication.
 
@@ -141,7 +147,7 @@ class ConnectService implements ServiceInterface
 An authenticated request is a request that contains a valid token in the `authToken` field. This token can be used to
 authenticate the user on the server side. 
 
-**For example it can be useful for:**
+**For example, it can be useful for:**
 
 - Authentication of a user on the server side
 - Automatic subscription to private channels
@@ -227,6 +233,12 @@ const centrifuge = new Centrifuge('http://127.0.0.18000/connection/websocket', {
 This service receives a `RoadRunner\Centrifugo\Request\Subscribe` object and performs some action based on the
 connection request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\SubscribeResponse` 
 object.
+
+To create a service class use the following command:
+
+```terminal
+php app.php create:centrifugo-handler Subscribe -t=subscribe
+```
 
 In this example, we will create a service that will allow users to subscribe to channels only if they are authenticated
 with rules provided by the `Spiral\Broadcasting\TopicRegistryInterface` interface.
@@ -318,6 +330,12 @@ return [
 This service receives a `RoadRunner\Centrifugo\Request\Refresh` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\RefreshResponse` object.
 
+To create a service class use the following command:
+
+```terminal
+php app.php create:centrifugo-handler Refresh -t=refresh
+```
+
 Here is an example of a service:
 
 ```php app/src/Endpoint/Centrifugo/RefreshService.php
@@ -352,6 +370,12 @@ class RefreshService implements ServiceInterface
 
 This service receives a `RoadRunner\Centrifugo\Request\RPC` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\RPCResponse` object.
+
+To create a service class use the following command:
+
+```terminal
+php app.php create:centrifugo-handler Rpc -t=rpc
+```
 
 #### Simple example
 
@@ -497,6 +521,12 @@ centrifuge.rpc("get:news/123", {"lang": "en"}).then(function (res) {
 
 This service receives a `RoadRunner\Centrifugo\Request\Publish` object and performs some action based on the connection
 request. It should respond to the Centrifugo server with `RoadRunner\Centrifugo\Payload\PublishResponse` object.
+
+To create a service class use the following command:
+
+```terminal
+php app.php create:centrifugo-handler Publish -t=publish
+```
 
 ```php app/src/Endpoint/Centrifugo/PublishService.php
 namespace App\Endpoint\Centrifugo;
