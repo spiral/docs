@@ -97,11 +97,103 @@ use Temporal\Worker\WorkerOptions;
 return [
     'address' => env('TEMPORAL_ADDRESS', '127.0.0.1:7233'),
     'defaultWorker' => WorkerFactoryInterface::DEFAULT_TASK_QUEUE,
+    'temporalNamespace' => 'default',
     'workers' => [
-        'workerName' => WorkerOptions::new()
+        'someTaskQueue' => WorkerOptions::new(),
+        // ...
+    ],
+    'interceptors' => [],
+    'clientOptions' => null,
+];
+```
+
+#### Client Options
+
+Client options are used to configure various aspects of a Temporal client's behavior.
+
+1. **Namespace Specification:** Allows the specification of a namespace in which the client operations will be
+   performed.
+2. **Client Identity Setting:** This class enables the setting of an identity for the client. This identity is useful
+   for tracking and logging purposes, helping in identifying which client performed certain operations in the Temporal
+   system.
+3. **Query Rejection Condition Configuration:** It offers the ability to set conditions under which query requests to
+   the Temporal server can be rejected.
+
+For example:
+
+```php app/config/temporal.php
+use Temporal\Client\ClientOptions;
+
+return [
+    // ...
+    'clientOptions' => (new ClientOptions())
+       ->withNamespace('default')
+       ->withIdentity('customer-service'),
+];
+```
+
+> **Note**
+> `temporalNamespace` option will be used only if `clientOptions` is not specified. If `clientOptions` is not specified
+> then ClientOptions will be created with `temporalNamespace` option value.
+
+#### Worker Options
+
+Worker options are used to configure various aspects of a Temporal worker's behavior.
+
+1. **Customization of Worker Behavior:** The class provides a range of options to fine-tune how workers handle activity
+   and workflow tasks. This includes setting concurrency limits, rate limiting, and managing task polling behavior.
+2. **Resource Management:** By allowing developers to set limits on the number and rate of activities executed,
+   the `WorkerOptions` class helps in effectively managing system resources. This is crucial for maintaining system
+   stability and efficiency, especially in high-load scenarios.
+3. **Control Over Task Processing:** The class gives control over how tasks are retrieved and processed by the worker.
+   Options like the maximum number of concurrent tasks and pollers help balance workload and optimize task execution.
+4. **Enhanced Flexibility:** It offers advanced options like sticky schedules and graceful stop timeouts, providing
+   greater control over task execution and worker shutdown processes.
+5. **Support for Session-Based Activities:** With options to enable session workers and set session-related parameters,
+   it facilitates the execution of activities within a session context, enhancing the scope of what can be achieved with
+   Temporal workflows.
+
+You can define worker options for each task queue. For example:
+
+```php app/config/temporal.php
+use Temporal\Worker\WorkerOptions;
+
+return [
+    // ...
+    'workers' => [
+        'workerName' => WorkerOptions::new(),
+        'default' => WorkerOptions::new()
+           ->withMaxConcurrentActivityExecutionSize(10)
+           ->withWorkerActivitiesPerSecond(100),
     ],
 ];
 ```
+
+There is also an ability to use alternative way to define worker options. For example:
+
+```php app/config/temporal.php
+use Temporal\Worker\WorkerOptions;
+
+return [
+    // ...
+    'workers' => [
+        'workerName' => [
+            'options' => WorkerOptions::new(),
+            'exception_interceptor' => new ExceptionInterceptor(),
+        ]
+    ],
+];
+```
+
+Using this way you can additionally define an exception interceptor. Read more about interceptors in the
+[Temporal — Interceptors](interceptors.md#exception-interceptor) section.
+
+#### Interceptors
+
+Interceptors are used to intercept workflow and activity invocations. They can be used to add custom logic to the
+invocation process, such as logging or metrics collection.
+
+Read more about interceptors in the [Temporal — Interceptors](interceptors.md) section.
 
 ### RoadRunner
 
@@ -121,3 +213,4 @@ For more details on configuring Temporal with RoadRunner, read
 the [RoadRunner](https://roadrunner.dev/docs/workflow-temporal) documentation.
 
 That's it! Happy workflow building!
+
