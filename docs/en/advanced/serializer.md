@@ -102,9 +102,10 @@ return [
 The component comes with a few basic serializers out of the box, but it's also easy to integrate
 additional serialization tools or develop custom solutions for your specific needs.
 
-- `Spiral\Serializer\Serializer\JsonSerializer` - uses PHP functions `json_encode` and `json_decode`.
+- `Spiral\Serializer\Serializer\JsonSerializer` (`json`) - uses PHP functions `json_encode` and `json_decode`.
   It does not support data hydration to an object.
-- `Spiral\Serializer\Serializer\PhpSerializer` - uses PHP functions `serialize` and `unserialize`.
+- `Spiral\Serializer\Serializer\PhpSerializer` (`serializer`) - uses PHP functions `serialize` and `unserialize`.
+- `Spiral\Serializer\Serializer\ProtoSerializer` (`proto`) - uses Google Protobuf for serialization and deserialization.
 - `Spiral\Serializer\Serializer\CallbackSerializer`- uses callbacks for serializing and deserializing data.
 
 There are also packages that provide additional serializers:
