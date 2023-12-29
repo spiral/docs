@@ -164,13 +164,21 @@ private ?string $username = null;
 
 ### Options
 
-To mark a class property as an option for a console command, you can use the `Spiral\Console\Attribute\Option`
-attribute:
+Options are additional parameters that users can specify when running a command. They are defined as properties in your
+command class, annotated with the #[\Spiral\Console\Attribute\Option] attribute.
 
 ```php
+use Spiral\Console\Attribute\Option;
+
 #[Option(name: 'admin', description: 'Set the user as admin')]
 private bool $isAdmin = false;
-````
+```
+
+The `name` parameter allows you to specify a custom option name that is different from the property name.
+
+```terminal
+php app.php app:create:user --admin
+```
 
 You can also specify a shortcut for the option using the shortcut parameter:
 
@@ -179,9 +187,40 @@ You can also specify a shortcut for the option using the shortcut parameter:
 private bool $isAdmin = false;
 ```
 
-By default, the `Option` attribute does not accept input for the option (e.g. `--admin`). If you want to allow the user
-to provide a value for the option, you can set the `mode` parameter to `InputOption::VALUE_REQUIRED` or `InputOption::
-VALUE_OPTIONAL`, depending on whether the option is required or optional, respectively.
+This option can be invoked with a shortcut `-a` instead of typing `--admin`.
+
+Options can be defined as required or optional. To make an option required, you don't need to specify default value for
+the property:
+
+```php
+#[Option(...)]
+private string $status;
+```
+
+If you want to make an option optional, you can specify the default value as the property's default value:
+
+```php
+#[Option(...)]
+private ?string $status = null;
+```
+
+Using PHP enums, the value of the option will be validated against the enum values.
+
+```php
+#[Option(description: 'Set the user status')]
+private Status $status = Status::new;
+```
+
+To accept multiple values for an option, you can use `array` typehint for the property that represents the option:
+
+```php
+#[Option(name: 'role', description: 'Set the user roles')]
+private array $role = [];
+```
+
+```terminal
+php app.php app:create:user --role=foo --role=bar
+```
 
 ### Questions
 
@@ -402,6 +441,7 @@ $status = $this->ask('Are you sure?', default: 'no');
 ```
 
 To ask a multiple choice question:
+
 ```php
 $name = $this->choiceQuestion(
     'Which of the following is package manager?',
