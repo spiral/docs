@@ -498,7 +498,7 @@ use Spiral\Console\Attribute\Question;
 use Spiral\Console\Command;
 
 #[AsCommand(name: 'check:status')]
-final class StartWebsiteStatusWorkflowCommand extends Command
+final class CheckStatusCommand extends Command
 {
     public function __invoke(): int
     {
@@ -547,3 +547,120 @@ php app.php check:status https://spiral.dev -i 5
 ```
 
 That's it. Now you can open the Temporal UI http://127.0.0.1:8233 and see the workflow execution.
+
+## Scheduled Workflows
+
+[Temporal Schedules](https://docs.temporal.io/workflows#schedule) are a replacement for traditional cron jobs for task
+scheduling because the Schedules provide a more durable way to execute tasks, allow insight into their progress, enable
+observability of schedules and workflow runs, and let you start, stop, and pause them.
+
+To schedule a workflow, you need to use `Temporal\Client\ScheduleClientInterface` interface:
+
+```php app/src/Endpoint/Console/CheckStatusCommand.php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Endpoint\Console;
+
+use Spiral\Console\Attribute\Argument;
+use Spiral\Console\Attribute\AsCommand;
+use Spiral\Console\Attribute\Option;
+use Spiral\Console\Attribute\Question;
+use Spiral\Console\Command;
+use Temporal\Client\ScheduleClientInterface;
+use Temporal\Client\Schedule;
+
+#[AsCommand(name: 'check:status')]
+final class CheckStatusCommand extends Command
+{
+    #[Argument(description: 'Domain to check')]
+    #[Question(question: 'What domain do you want to check?')]
+    private string $domain;
+
+    #[Option(name: 'interval', shortcut: 'i', description: 'Interval in minutes')]
+    private int $intervalInMinutes = 5;
+
+    public function __invoke(ScheduleClientInterface $client): int
+    {
+        $client->createSchedule(
+            Schedule\Schedule::new()->withAction(
+                Schedule\Action\StartWorkflowAction::new(WebsiteStatusWorkflow::class)
+                    ->withRetryPolicy(\Temporal\Common\RetryOptions::new()->withMaximumAttempts(3))
+                    ->withWorkflowExecutionTimeout('40m')
+            )->withSpec(
+                Schedule\Spec\ScheduleSpec::new()
+                    ->withIntervalList(5 * 60) // every 5 minutes
+                    ->withJitter(60) // with jitter of 1 minute
+            ),
+        );
+
+        return self::SUCCESS;
+    }
+}
+```
+
+> **Note**
+> You can find examples of how to use schedules in
+> the [Temporal PHP samples repository](https://github.com/temporalio/samples-php/tree/master/app/src/Schedule).
+
+## Console Commands
+
+There are several console commands that can be used to manage workflows and activities:
+
+### List Available Workflows and Activities
+
+To list all available workflows and activities, run the following command:
+
+```terminal
+php app.php temporal:info
+```
+
+Here is an example output:
+
+```bash
+Workflows
+=========
+
++-----------------+------------------------------------------------------+------------------+
+| Name            | Class                                                | Task Queue       |
++-----------------+------------------------------------------------------+------------------+
+| fooWorkflow     | Spiral\TemporalBridge\Tests\Commands\Workflow        | worker2          |
+|                 | src/Commands/InfoCommandTest.php                     |                  |
+| AnotherWorkflow | Spiral\TemporalBridge\Tests\Commands\AnotherWorkflow | default, worker2 |
+|                 | src/Commands/InfoCommandTest.php                     |                  |
++-----------------+------------------------------------------------------+------------------+
+```
+
+You can also use `--with-activities` or `-a` option to list all available activities:
+
+```terminal
+php app.php temporal:info --with-activities
+```
+
+```bash
+Workflows
+=========
+
++-----------------+------------------------------------------------------+------------------+
+| Name            | Class                                                | Task Queue       |
++-----------------+------------------------------------------------------+------------------+
+| fooWorkflow     | Spiral\TemporalBridge\Tests\Commands\Workflow        | worker2          |
+|                 | src/Commands/InfoCommandTest.php                     |                  |
+| AnotherWorkflow | Spiral\TemporalBridge\Tests\Commands\AnotherWorkflow | default, worker2 |
+|                 | src/Commands/InfoCommandTest.php                     |                  |
++-----------------+------------------------------------------------------+------------------+
+
+Activities
+==========
+
++------------------------+---------------------------------------------+------------+
+| Name                   | Class                                       | Task Queue |
++------------------------+---------------------------------------------+------------+
+| fooActivity            | ActivityInterfaceWithWorker::foo            | worker1    |
+| bar                    | ActivityInterfaceWithWorker::bar            |            |
++------------------------+---------------------------------------------+------------+
+| fooActivity__construct | ActivityInterfaceWithoutWorker::__construct | default    |
+| fooActivitybaz         | ActivityInterfaceWithoutWorker::baz         |            |
++------------------------+---------------------------------------------+------------+
+```
