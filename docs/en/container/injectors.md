@@ -1,4 +1,4 @@
-# Advanced — Container injectors
+# Container — Injectors
 
 Spiral provides a way to control the creation process of any interface or abstract class children using an injection
 interface.

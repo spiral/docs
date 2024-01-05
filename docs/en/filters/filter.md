@@ -140,7 +140,7 @@ that when you request a filter class from the container, it will be automaticall
 mapped to each filter property.
 
 > **See more**
-> Read more about injectors in the [Advanced — Container injectors](../advanced/injectors.md) section.
+> Read more about injectors in the [Advanced — Container injectors](../container/injectors.md) section.
 
 ```php app/src/Endpoint/Web/Filter/MyFilter.php
 namespace App\Endpoint\Web\Filter;

@@ -394,7 +394,7 @@ final class GithubClientBootloader extends Bootloader
 > (DI) container when it needs to create an instance of `MyService`. When the closure is called, the DI container will
 > automatically resolve and inject any dependencies that are required by the closure.
 >
-> If you want to learn more about DI, you can check out the [Container and Factories](../framework/container.md) section
+> If you want to learn more about DI, you can check out the [Container and Factories](../container/overview.md) section
 > of the documentation. It should have all the info you need.
 
 Bootloaders also provide the ability to simplify container binding definition

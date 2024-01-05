@@ -882,8 +882,7 @@ $manager->add('local', new StaticResolver(new Uri('https://static.example.com'))
 Once you've configured your component, you can start using it.
 
 If you are using a Spiral application, the manager is already configured. You can get it from
-[the container](../framework/container.md) or
-via [dependency injection](../framework/container.md#dependency-injection).
+[the container](../container/overview.md) or via [dependency injection](../container/overview.md#dependency-injection).
 
 ```php
 use Spiral\Distribution\DistributionInterface;

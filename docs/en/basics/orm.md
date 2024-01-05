@@ -353,7 +353,7 @@ class UserService
 }
 ```
 
-You can also request a repository from the container. The framework uses [IoC injections](../advanced/injectors.md) to
+You can also request a repository from the container. The framework uses [IoC injections](../container/injectors.md) to
 inject repositories into your code that implement `Cycle\ORM\RepositoryInterface`.
 
 ```php
@@ -722,7 +722,7 @@ final class UserService
 
 #### Using method and Constructor Injections
 
-The DBAL component fully supports [IoC injections](../advanced/injectors.md) based on the database name and their
+The DBAL component fully supports [IoC injections](../container/injectors.md) based on the database name and their
 aliases:
 
 ```php
