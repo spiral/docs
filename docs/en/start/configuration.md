@@ -218,7 +218,7 @@ The current application environment is determined via the `APP_ENV` variable. Yo
 `Spiral\Boot\Environment\AppEnvironment` injectable enum class.
 
 > **See more**
-> Read more about injectable enums in the [Advanced — Container injectors](../advanced/injectors.md#enum-injectors)
+> Read more about injectable enums in the [Advanced — Container injectors](../container/injectors.md#enum-injectors)
 > section.
 
 When you request the `AppEnvironment` from the container it will automatically inject an Enum with the correct value.
@@ -328,5 +328,5 @@ final class ErrorHandlerMiddleware implements MiddlewareInterface
 Now, dive deeper into the fundamentals by reading some articles:
 
 * [Config objects](../framework/config.md)
-* [Advanced — Container injectors](../advanced/injectors.md)
+* [Advanced — Container injectors](../container/injectors.md)
 * [Kernel and Environment](../framework/kernel.md)

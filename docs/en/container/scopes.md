@@ -1,4 +1,4 @@
-# Framework — IoC Scopes
+# Container — IoC Scopes
 
 An essential aspect of developing long-living applications is proper context management. In demonized applications,
 you are no longer allowed to treat user requests as a global singleton object and store references to its instance in
@@ -181,7 +181,7 @@ These restrictions ensure proper usage and prevent conflicts within the scope hi
 
 ### Resolving Rules
 
-When a nested scope does not have its own bindings, it will now resolve dependencies from the parent scope. 
+When a nested scope does not have its own bindings, it will now resolve dependencies from the parent scope.
 
 ### Accessing Scoped Values
 
@@ -259,3 +259,8 @@ class HomeController implements SingletonInterface
 > **Note**
 > A good example is `Spiral\Http\Request\InputManager`. The manager operates as an accessor
 > to `Psr\Http\Message\ServerRequestInterface` available only inside http dispatcher scope.
+
+
+## Fibers support
+
+The container supports the creation of parallel independent scopes, which are safe to use with fibers.
