@@ -263,5 +263,4 @@ class HomeController implements SingletonInterface
 
 ## Fibers support
 
-The container supports PHP 8.2 fibers. The static class `\Spiral\Core\ContainerScope::getContainer()` will return the
-correct container instance for the current fiber and scope, enabling seamless integration with fibers.
+The container supports the creation of parallel independent scopes, which are safe to use with fibers.
