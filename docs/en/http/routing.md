@@ -1378,7 +1378,7 @@ $uri = $router->uri('page', ['path' => 'некоторый-путь']);
 // Default behavior generates: /page/nekotoriy-put
 ```
 
-To overcome this limitation, you can replace the default URI handler for a route with a custom encoding function using
+To change this behavior, you can replace the default URI handler for a route with a custom encoding function using
 the `withPathSegmentEncoder` method. This method allows you to define a custom function for segment encoding.
 
 **Here is an example**
