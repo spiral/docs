@@ -23,7 +23,7 @@ way to set up your routes, attribute-based routing might be worth considering!
 > on [customizing search directories.](../advanced/tokenizer.md#customizing-search-directories).
 
 > **Warning**
-> Be cautious because Tokenizer will ignore any files that contain `include` or `require` statements in your 
+> Be cautious because Tokenizer will ignore any files that contain `include` or `require` statements in your
 > controllers.
 
 Just activate the bootloader `Spiral\Router\Bootloader\AnnotatedRoutesBootloader` in your application:
@@ -1356,6 +1356,85 @@ public function index(RouterInterface $router)
 
 > **Note**
 > You can use `@route(name, params)` directive in Stempler views.
+
+#### Handling Non-Latin Characters in URIs
+
+The Spiral router component, by default, transliterates non-Latin characters into Latin characters when generating URIs.
+This can be problematic, especially when maintaining the original character set in the URI is important, such as for SEO
+or multilingual applications.
+
+**For example:**
+
+```php
+$router->setRoute(
+  'page',
+  new Route('/page/<path>', ....),
+);
+
+$uri = $router->uri('page', ['path' => 'some-path']);
+// Generates: /page/some-path
+
+$uri = $router->uri('page', ['path' => 'некоторый-путь']); 
+// Default behavior generates: /page/nekotoriy-put
+```
+
+To change this behavior, you can replace the default URI handler for a route with a custom encoding function using
+the `withPathSegmentEncoder` method. This method allows you to define a custom function for segment encoding.
+
+**Here is an example**
+
+```php
+$router->setRoute(
+  'page',
+  new Route('/page/<path>', ....),
+);
+
+// Get the route by name
+$route = $router->getRoute('page');
+
+// Replace the default URI handler with a custom encoding function for path segments
+$route = $route->withUriHandler(
+    $route->getUriHandler()->withPathSegmentEncoder(
+      static fn(string $segment): string => \rawurlencode($segment),
+    ),
+);
+
+// Generate the URI
+$uri = $route->uri(['path' => 'некоторый-путь']);
+
+// Generates: /page/%D0%BD%D0%B5%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D0%B9-%D0%BF%D1%83%D1%82%D1%8C
+```
+
+To define a custom encoder configure a `Spiral\Router\UriHandler` factory
+in the Container via a Bootloader.
+
+**Here is an example of how to do this:**
+
+```php app/src/Application/Bootloader/AppBootloader.php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Application\Bootloader;
+
+use Psr\Http\Message\UriFactoryInterface;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Router\UriHandler;
+
+final class AppBootloader extends Bootloader
+{
+    public function defineSingletons(): array
+    {
+        return [
+            UriHandler::class => static function (UriFactoryInterface $uriFactory) {
+                return (new UriHandler($uriFactory))->withPathSegmentEncoder(
+                    static fn(string $segment): string => \rawurlencode($segment)
+                );
+            },
+        ];
+    }
+}
+```
 
 ## Events
 
