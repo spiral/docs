@@ -1405,8 +1405,8 @@ $uri = $route->uri(['path' => 'некоторый-путь']);
 // Generates: /page/%D0%BD%D0%B5%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D0%B9-%D0%BF%D1%83%D1%82%D1%8C
 ```
 
-To integrate this functionality into your application, bind the `Spiral\Router\UriHandler` into the application
-container via a Bootloader.
+To define a custom encoder configure a `Spiral\Router\UriHandler` factory
+in the Container via a Bootloader.
 
 **Here is an example of how to do this:**
 
