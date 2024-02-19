@@ -221,7 +221,8 @@
       "cookbook/console-validation": "Console command validation",
       "cookbook/psr-15": "Custom HTTP request handler",
       "cookbook/simple-chat": "Realtime chat application",
-      "cookbook/simple-queue-system": "Queue system"
+      "cookbook/simple-queue-system": "Queue system",
+      "cookbook/migration-from-v2": "Migration from v2.x"
     }
   },
   {
