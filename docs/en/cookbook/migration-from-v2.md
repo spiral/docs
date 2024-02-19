@@ -1136,6 +1136,8 @@ including:
 - TCP
 - Websockets
 
+> **See more** about RoadRunner bridge in the [documentation](../start/server.md#roadrunner-bridge)
+
 #### [`spiral/cycle-bridge:2.0`](https://github.com/spiral/cycle-bridge)
 
 Provides a bridge to Cycle ORM v2, enabling powerful object-relational mapping within Spiral. Supported packages
@@ -1144,30 +1146,42 @@ include:
 - CycleOrm
 - Database
 - Migrations
+- 
+> **See more** about Cycle ORM in the [documentation](../basics/orm.md)
 
 #### [`spiral/temporal-bridge:2.0`](https://github.com/spiral/temporal-bridge)
 
 Offers integration with Temporal for writing and running reliable cloud applications. Temporal provides a robust
 platform for building scalable applications.
 
+> **See more** about Temporal in the [documentation](../temporal/configuration.md)
+
 #### [`spiral/testing:2.0`](https://github.com/spiral/testing)
 
 A testing SDK designed specifically for the Spiral, facilitating easy and efficient testing of your applications.
+
+> **See more** about testing in the [documentation](../testing/start.md)
 
 #### [`spiral-packages/database-seeder`](https://github.com/spiral-packages/database-seeder)
 
 This package provides the capability to seed your database with data using seed classes, enhancing the data setup
 process for development and testing.
 
+> **See more** about database seeding in the [documentation](../testing/database.md)
+
 #### [`spiral-packages/notifications:2.0`](https://github.com/spiral-packages/notifications)
 
 Enables sending notifications across various channels from the Spiral, simplifying the process of keeping users
 informed.
 
+> **See more** about notifications in the [documentation](../advanced/notifications.md)
+
 #### [`spiral-packages/scheduler:2.0`](https://github.com/spiral-packages/scheduler)
 
 Assists in managing scheduled tasks on your server, providing a streamlined way to handle cron jobs and other scheduled
 operations.
+
+> **See more** about the scheduler in the [documentation](../advanced/scheduler.md)
 
 #### [`spiral-packages/cqrs:2.0`](https://github.com/spiral-packages/cqrs)
 
