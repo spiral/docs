@@ -152,7 +152,7 @@ namespace App\Infrastructure\Queue;
 use Spiral\Queue\SerializerRegistryInterface;
 use Spiral\Queue\QueueInterface;
 
-final class RedisQueue imlements QueueInterface
+final class RedisQueue implements QueueInterface
 {
     public function __construct(
         private readonly SerializerRegistryInterface $redis,
