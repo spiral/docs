@@ -369,8 +369,8 @@ namespace App\Application\Bootloader;
 // ...
 use Spiral\Core\BinderInterface;
 use App\Service\Github\GithubConfig;
-use App\Service\Github\ClinetInterface;
-use App\Service\Github\Clinet;
+use App\Service\Github\ClientInterface;
+use App\Service\Github\Client;
 
 final class GithubClientBootloader extends Bootloader
 {
@@ -379,8 +379,8 @@ final class GithubClientBootloader extends Bootloader
     public function boot(BinderInterface $binder): void 
     {
         $binder->bindSingleton(
-            ClinetInterface::class, 
-            static fn (GithubConfig $config) => new Clinet(
+            ClientInterface::class, 
+            static fn (GithubConfig $config) => new Client(
                 $config->getAccessToken(),
                 $config->getSecret(),
             )
@@ -439,9 +439,9 @@ final class GithubClientBootloader extends Bootloader
 
     // See code above ...
     
-    public function createClient(GithubConfig $config): ClinetInterface 
+    public function createClient(GithubConfig $config): ClientInterface 
     {
-        return new Clinet(
+        return new Client(
             $config->getAccessToken(),
             $config->getSecret(),
         );
@@ -476,9 +476,9 @@ final class GithubClientBootloader extends Bootloader
     
     // See code above ...
     
-    public function createClient(GithubConfig $config): ClinetInterface 
+    public function createClient(GithubConfig $config): ClientInterface 
     {
-        return new Clinet(
+        return new Client(
             $config->getAccessToken(),
             $config->getSecret(),
         );
