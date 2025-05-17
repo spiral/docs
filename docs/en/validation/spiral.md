@@ -751,7 +751,7 @@ File checker fully supports the filename provided in a string form or using `Upl
 |-----------|--------------------|-----------------------------------------------------------------------------------------------|
 | exists    | ---                | Checks if the file exist.                                                                     |
 | uploaded  | ---                | Checks if the file was uploaded.                                                              |
-| size      | size:*int*         | Checks if the file size is smaller than the specified value in KB.                            |
+| size      | size:*int*         | Checks if the file size is smaller than the specified value in KiB.                           |
 | extension | extensions:*array* | Checks if the file extension in whitelist. The client name of the uploaded file will be used! |                                                     |
 
 ### Image Checker
