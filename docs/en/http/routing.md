@@ -429,7 +429,7 @@ final class RoutesBootloader extends BaseRoutesBootloader
             ->setPrefix('/api');
             
         $groups->getGroup('web')
-            ->addMiddleware(MyMiddelware::class);
+            ->addMiddleware(MyMiddelware::class)
             ->setPrefix('/api');
     }
 }
