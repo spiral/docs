@@ -117,25 +117,25 @@ Spiral comes with several built-in dispatchers:
   responsible for handling console commands within your application. This is useful if you want to create custom
   commands that can be run from the command line.
 
-- [RoadRunner HTTP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/2.0/src/Http/Dispatcher.php):
+- [RoadRunner HTTP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/Http/Internal/Dispatcher.php):
   responsible for handling incoming HTTP requests and routing them to the appropriate controller action or function.
   This is the dispatcher that is used when your application is running as an HTTP service.
 
-- [RoadRunner GRPC dispatcher](https://github.com/spiral/roadrunner-bridge/blob/2.0/src/GRPC/Dispatcher.php):
+- [RoadRunner GRPC dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/GRPC/Internal/Dispatcher.php):
   responsible for handling incoming GRPC requests and routing them to the appropriate services.
-  This is the dispatcher that is used when your application is running as an GRPC service.
+  This is the dispatcher that is used when your application is running as a GRPC service.
 
-- [RoadRunner TCP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/2.0/src/Tcp/Dispatcher.php): Handles
-  responsible for handling incoming TCP connections and routing them to the appropriate handler. This is the dispatcher
-  that is used when your application is running as an TCP service.
+- [RoadRunner TCP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/Tcp/Internal/Dispatcher.php):
+  Handles responsible for handling incoming TCP connections and routing them to the appropriate handler.
+  This is the dispatcher that is used when your application is running as a TCP service.
 
 - [Temporal dispatcher](https://github.com/spiral/temporal-bridge/blob/2.0/src/Dispatcher.php): responsible for handling
   incoming workflow activities. Temporal is a distributed, scalable, and fault-tolerant workflow engine that is used to
   build and orchestrate long-running business logic.
 
-- [RoadRunner Queue dispatcher](https://github.com/spiral/roadrunner-bridge/blob/2.0/src/Queue/Dispatcher.php): allows
-  you to consume messages from a queue and route them to the appropriate handler. This is useful if you want to build a
-  system that is based on message-driven architecture.
+- [RoadRunner Queue dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/Queue/Internal/Dispatcher.php):
+  allows you to consume messages from a queue and route them to the appropriate handler.
+  This is useful if you want to build a system that is based on message-driven architecture.
   This is the dispatcher that is used when your application is running as a Queue consumer service.
 
 > **Note**

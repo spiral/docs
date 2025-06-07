@@ -110,17 +110,17 @@ Spiral 附带了几个内置的 dispatcher：
 - [Console dispatcher](https://github.com/spiral/framework/blob/master/src/Framework/Console/ConsoleDispatcher.php)：
   负责处理应用程序内的控制台命令。如果您想创建可以从命令行运行的自定义命令，这将非常有用。
 
-- [RoadRunner HTTP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/2.0/src/Http/Dispatcher.php)：
+- [RoadRunner HTTP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/Http/Internal/Dispatcher.php)：
   负责处理传入的 HTTP 请求，并将它们路由到相应的控制器动作或函数。这是当您的应用程序作为 HTTP 服务运行时使用的 dispatcher。
 
-- [RoadRunner GRPC dispatcher](https://github.com/spiral/roadrunner-bridge/blob/2.0/src/GRPC/Dispatcher.php)：
+- [RoadRunner GRPC dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/GRPC/Internal/Dispatcher.php)：
   负责处理传入的 GRPC 请求，并将它们路由到相应的服务。这是当您的应用程序作为 GRPC 服务运行时使用的 dispatcher。
 
-- [RoadRunner TCP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/2.0/src/Tcp/Dispatcher.php)：负责处理传入的 TCP 连接，并将它们路由到相应的处理器。这是当您的应用程序作为 TCP 服务运行时使用的 dispatcher。
+- [RoadRunner TCP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/Tcp/Internal/Dispatcher.php)：负责处理传入的 TCP 连接，并将它们路由到相应的处理器。这是当您的应用程序作为 TCP 服务运行时使用的 dispatcher。
 
 - [Temporal dispatcher](https://github.com/spiral/temporal-bridge/blob/2.0/src/Dispatcher.php)：负责处理传入的工作流活动。Temporal 是一个分布式、可扩展且具有容错能力的工作流引擎，用于构建和编排长时间运行的业务逻辑。
 
-- [RoadRunner Queue dispatcher](https://github.com/spiral/roadrunner-bridge/blob/2.0/src/Queue/Dispatcher.php)：允许
+- [RoadRunner Queue dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/Queue/Internal/Dispatcher.php)：允许
   您从队列中消费消息并将它们路由到适当的处理器。如果您想构建一个基于消息驱动架构的系统，这将非常有用。
   这是当您的应用程序作为队列消费者服务运行时使用的 dispatcher。
 

@@ -45,8 +45,7 @@ final class AuthenticatorInterceptor implements InterceptorInterface
 
     public function intercept(CallContextInterface $context, HandlerInterface $handler): mixed
     {
-        $args = $context->getArguments();
-        $request = $args['request'];
+        $request = $context->getArguments()[0];
         \assert($request instanceof RequestInterface);
 
         $authToken = $request->getData()['authToken'] ?? null;

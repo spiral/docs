@@ -177,7 +177,7 @@ $pipeline = (new PipelineBuilder())
 // 创建调用上下文
 $context = new CallContext(
     target: Target::fromPair(UserController::class, 'show'),
-    arguments: ['id' => 42],
+    arguments: [42],
     attributes: ['request' => $request]
 );
 

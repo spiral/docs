@@ -183,7 +183,7 @@ $pipeline = (new PipelineBuilder())
 // Create call context
 $context = new CallContext(
     target: Target::fromPair(UserController::class, 'show'),
-    arguments: ['id' => 42],
+    arguments: [42],
     attributes: ['request' => $request]
 );
 

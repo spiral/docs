@@ -10,7 +10,7 @@ Scopes allow you to create isolated contexts where you can redefine services and
 
 ## Creating Isolated Scopes
 
-To create an isolated context, use the `Container::runScope()` method.
+To create an isolated context, use the `$container->runScope()` method.
 The first argument is a `Scope` object that contains scope options, and the second is a function that will run inside this scope.
 The result of this function is returned by `runScope()`.
 
