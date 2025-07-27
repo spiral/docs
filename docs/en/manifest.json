@@ -112,6 +112,7 @@
       "data-grid/getting-started": "Getting Started",
       "data-grid/installation": "Installation",
       "data-grid/grid-schema": "Grid Schema",
+      "data-grid/input": "Input Sources",
       "data-grid/filters": "Filters",
       "data-grid/values": "Value Types",
       "data-grid/accessors": "Value Accessors",

@@ -272,3 +272,77 @@ class ProductRepository
 $this->addSorter('popularity', new Sorter('popularity_score'));
 $this->addSorter('availability', new DescSorter('in_stock', 'stock_quantity'));
 ```
+
+## Performance Considerations
+
+### Database Indexes
+
+Ensure sorted fields have appropriate indexes:
+
+```php
+// These sorters should have corresponding database indexes
+$this->addSorter('created_at', new Sorter('created_at'));     // INDEX(created_at)
+$this->addSorter('status', new Sorter('status'));           // INDEX(status)  
+$this->addSorter('user_id', new Sorter('user_id'));         // INDEX(user_id)
+
+// Composite sorting needs composite indexes
+$this->addSorter('user_date', new Sorter('user_id', 'created_at')); // INDEX(user_id, created_at)
+```
+
+### Expensive Sorts
+
+Be careful with expensive sorting operations:
+
+```php
+// Efficient: Sorting by indexed columns
+$this->addSorter('price', new Sorter('price'));
+
+// Less efficient: Sorting by calculated values
+$this->addSorter('total_value', new Sorter('price * quantity'));
+
+// Better: Pre-calculate expensive values
+$this->addSorter('total_value', new Sorter('calculated_total_value')); // Pre-computed column
+```
+
+## Error Handling
+
+Invalid sort directions are automatically handled:
+
+```php
+// Schema defines valid sorter
+$schema->addSorter('name', new Sorter('name'));
+
+// Invalid input is ignored
+// ?sort[name]=invalid_direction
+// Result: No sorting applied, no error thrown
+
+// Valid input is processed
+// ?sort[name]=asc → ORDER BY name ASC
+// ?sort[name]=desc → ORDER BY name DESC
+```
+
+## Best Practices
+
+1. **Use meaningful sorter names** - Choose names that make sense to users
+2. **Index sorted fields** - Ensure database performance
+3. **Limit complex sorting** - Pre-calculate expensive sort values
+4. **Provide sensible defaults** - Most important/relevant sort first
+5. **Consider user experience** - Popular sorting options should be easy to access
+
+```php
+class BlogPostSchema extends GridSchema
+{
+    public function __construct()
+    {
+        // User-friendly sorter names
+        $this->addSorter('newest', new DescSorter('published_at'));
+        $this->addSorter('oldest', new AscSorter('published_at'));  
+        $this->addSorter('popular', new DescSorter('view_count', 'like_count'));
+        $this->addSorter('title', new Sorter('title'));
+        $this->addSorter('author', new Sorter('author_name'));
+        
+        // Performance-optimized sorting
+        $this->addSorter('trending', new DescSorter('trending_score')); // Pre-calculated
+    }
+}
+```
