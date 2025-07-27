@@ -241,86 +241,52 @@ public function products(ProductSchema $schema, GridFactoryInterface $factory, P
 }
 ```
 
-## Understanding InputInterface
+## How Grid Schema Receives User Input
 
-The `InputInterface` is the foundation that makes Data Grid work with different input sources. It provides a simple way
-to extract user parameters regardless of where they come from:
+The Data Grid component automatically receives user input from various sources - web requests, console commands, APIs,
+or arrays. When a user interacts with your application, their filtering, sorting, and pagination preferences are
+captured and processed by the Grid Schema.
 
-```php
-interface InputInterface
-{
-    public function hasValue(string $option): bool;
-    public function getValue(string $option, mixed $default = null): mixed;
-    public function withNamespace(string $namespace): InputInterface;
-}
+**User Input Flow:**
+
+```
+User Action →    Input Source → Grid Factory   →   Grid Schema   →   Database Query
+     ↓                ↓               ↓                 ↓                 ↓
+Filter products  HTTP Request   Input Processing   Schema Rules      WHERE clauses
+Sort by price    Console Args   Validation         Allowed Fields    ORDER BY
+Navigate page    JSON API       Security Check     Type Safety      LIMIT/OFFSET
 ```
 
-**How GridFactory Uses Input Keys:**
+**Input Structure:**
 
-The GridFactory uses three specific keys to organize user input:
+User input is organized into three main categories:
 
-- **`filter`** - For filtering operations (`filter[name]=john`)
-- **`sort`** - For sorting operations (`sort[created_at]=desc`)
-- **`paginate`** - For pagination (`paginate[page]=2&paginate[limit]=25`)
+- **`filter`** - What data to show (`?filter[name]=john&filter[status]=active`)
+- **`sort`** - How to order results (`?sort[created_at]=desc&sort[name]=asc`)
+- **`paginate`** - Which page to display (`?paginate[page]=2&paginate[limit]=25`)
 
-The InputInterface always returns **arrays of values**, not dot notation:
-
-```php
-// URL: ?filter[name]=john&filter[status]=active&sort[created_at]=desc&paginate[page]=2
-
-$input->getValue('filter');    // Returns: ['name' => 'john', 'status' => 'active']
-$input->getValue('sort');      // Returns: ['created_at' => 'desc']
-$input->getValue('paginate');  // Returns: ['page' => '2']
-```
-
-### Input Sources
-
-Data Grid supports multiple input sources through different InputInterface implementations:
-
-> **Note:** The package provide only `ArrayInput` implementation, but you can create your own implementation for
-> your specific needs. For Spiral Framework, you can use the `spiral/data-grid-bridge` bridge package which provides
-> implementations for HTTP requests.
-
-#### HTTP Requests
+**Example:**
 
 ```php
-// URL: /products?filter[name]=laptop&sort[price]=desc&paginate[page]=2
-$httpInput = new HttpInput($request);
+// User searches for products:
+// URL: ?filter[search]=laptop&filter[category]=electronics&sort[price]=desc&paginate[page]=2
 
-$httpInput->getValue('filter')['name'];     // 'laptop'
-$httpInput->getValue('sort')['price'];      // 'desc'  
-$httpInput->getValue('paginate')['page'];   // '2'
+// Grid Factory processes input and applies Schema rules:
+$schema = new ProductSchema(); // Defines what's allowed
+$grid = $factory->create($products->select(), $schema);
+
+// Results in optimized database query:
+// SELECT * FROM products 
+// WHERE name LIKE '%laptop%' AND category = 'electronics'
+// ORDER BY price DESC 
+// LIMIT 25 OFFSET 25
 ```
 
-#### Console Commands
+The Grid Factory processes all user input and validates it against your Schema rules, ensuring only allowed operations
+reach your database while providing a consistent interface across different input sources.
 
-```php
-// Command: php app.php products:list --filter[name]=laptop --sort[price]=desc --page=2
-$consoleInput = new ConsoleInput($input);
-
-$consoleInput->getValue('filter')['name'];  // 'laptop'
-$consoleInput->getValue('sort')['price'];   // 'desc'
-$consoleInput->getValue('paginate')['page'];// '2'
-```
-
-#### Manual Input (Testing)
-
-```php
-$arrayInput = new ArrayInput([
-    'filter' => ['name' => 'John', 'status' => 'active'],
-    'sort' => ['created_at' => 'desc'],
-    'paginate' => ['page' => 2, 'limit' => 25],
-]);
-```
-
-## Framework Integration
-
-To use `InputInterface` and `GridFactoryInterface`, you need to register implementations in your framework's container.
-
-```php
-$container->bind(InputInterface::class, HttpInput::class);
-$container->bind(GridFactoryInterface::class, Spiral\DataGrid\GridFactory::class);
-```
+> **See Also:** [Input Processing Documentation](input.md) - Complete guide to input handling including custom input
+> sources, validation, security, and advanced patterns for console, API, and GraphQL implementations.
 
 ## Complete Flow Example
 
