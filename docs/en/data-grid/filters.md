@@ -615,33 +615,6 @@ $schema->addFilter('category', new Equals('category', new EnumValue(
 // Result: Filter is not applied, no error thrown
 ```
 
-## Performance Considerations
-
-### Database Indexes
-
-Ensure filtered fields are properly indexed:
-
-```php
-// These filters should have corresponding database indexes
-$schema->addFilter('user_id', new Equals('user_id', new IntValue()));     // INDEX(user_id)  
-$schema->addFilter('status', new Equals('status', new StringValue()));   // INDEX(status)
-$schema->addFilter('created_at', new Gte('created_at', new DatetimeValue())); // INDEX(created_at)
-```
-
-### Like Filter Optimization
-
-Be careful with LIKE filters on large datasets:
-
-```php
-// Efficient: Prefix matching can use indexes
-$schema->addFilter('name_prefix', new Like('name', new StringValue(), '%s%%'));
-// SQL: WHERE name LIKE 'search%'
-
-// Less efficient: Full wildcard matching
-$schema->addFilter('name_contains', new Like('name', new StringValue()));  
-// SQL: WHERE name LIKE '%search%'
-```
-
 ## Best Practices
 
 1. **Use meaningful filter names** - Choose names that make sense to frontend developers
