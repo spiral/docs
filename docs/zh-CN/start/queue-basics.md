@@ -51,20 +51,26 @@ final class PingSiteJob extends JobHandler
 
 接下来，我们需要配置我们的应用程序，以便将任务发送到 RoadRunner。 打开 `app/config/queue.php` 文件，并将以下配置添加到该文件中：
 
-```php app/src/Endpoint/Job/PingSiteJob.php
-namespace App\Endpoint\Job;
+```php app/config/queue.php
+use Spiral\RoadRunner\Jobs\Queue\MemoryCreateInfo;
 
-use Spiral\Queue\JobHandler;
+return [
+    'default' => env('QUEUE_CONNECTION', 'roadrunner'),
 
-final class PingSiteJob extends JobHandler
-{
-    public function invoke(HttpClientInterface $client, string $site): void
-    {
-        $response = $client->request('GET', $site);
-
-        // do something with response
-    }
-}
+    pipelines' => [
+        'memory' => [
+            'connector' => new MemoryCreateInfo('local'),
+            'consume' => true,
+        ]
+    ],
+            
+    'connections' => [
+        'roadrunner' => [
+            'driver' => 'roadrunner',
+            'default' => 'memory',
+        ],
+    ],
+];
 ```
 
 这些配置将创建一个新的 `in-memory` 队列来处理您的任务。
