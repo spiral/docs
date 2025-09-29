@@ -92,7 +92,7 @@ public function index(): string
     /** @var \Spiral\Views\ViewInterface $view */
     $view = $this->views->get('profile-card');
     
-    $card1 = $view->render('name' => 'John']);
+    $card1 = $view->render(['name' => 'John']);
     $card2 = $view->render(['name' => 'Jane']);
     
     return "<html><body>{$card1} {$card2}</body></html>";
