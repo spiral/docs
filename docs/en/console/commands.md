@@ -447,7 +447,7 @@ $name = $this->choiceQuestion(
     'Which of the following is package manager?',
     ['composer', 'django', 'phoenix', 'maven', 'symfony'],
     default: 2,
-    allowMultipleSelections: true
+    multiselect: true
 );
 ```
 
