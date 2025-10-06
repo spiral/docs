@@ -32,7 +32,7 @@ Here's a quick example. Let's say you want to locate all classes that implement
 the `\Psr\Http\Server\MiddlewareInterface` interface:
 
 ```php
-use Spiral\Tokenizer\ClassesInterfac;
+use Spiral\Tokenizer\ClassesInterface;
 
 public function findClasses(ClassesInterface $classes): void
 {
