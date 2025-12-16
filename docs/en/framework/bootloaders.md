@@ -1,618 +1,963 @@
 # Framework — Bootloaders
 
-Spiral uses bootloader classes during the bootstrapping process to handle application configuration. One of the key
-features is that bootloaders are executed only once during the application bootstrapping, ensuring that adding
-additional code to them does not negatively impact runtime performance.
+Bootloaders are classes that configure your application during startup. They run once during bootstrapping, so adding
+code to them doesn't affect runtime performance.
 
-Bootloader classes play a crucial role in configuring various aspects of the application.
+**Common uses:**
 
-**Here are some examples:**
-
-- **Container Configuration**: Bootloaders can be utilized to configure the dependency injection container. This
-  includes tasks such as registering services and binding interfaces to their respective implementations.
-- **Application Configuration**: Bootloaders are responsible for setting up various application-level settings,
-  including the environment, debug mode, and error handling.
-- **Database Configuration**: Bootloaders are involved in setting up and configuring the application's database
-  connection. This includes specifying the database driver, connection details, and any necessary migrations.
-- **Routing Configuration**: The bootloaders can be used to set up the application's routing rules, such as defining
-  which controllers should handle which URLs.
-- **Services Initialization**: Bootloaders take care of initializing any services required by the application, such as
-  caching, logging, and event systems.
+- Register services and bind interfaces
+- Configure environment, debugging, and error handling
+- Set up database connections
+- Define routing rules
+- Initialize caching, logging, and event systems
 
 ![Application Control Phases](https://user-images.githubusercontent.com/773481/180768689-c711e6f0-3523-4330-a496-f78088504b29.png)
 
-## Simple Bootloader
+## Creating a Bootloader
 
-To create a simple bootloader effortlessly, use the scaffolding command:
+Generate a bootloader using the scaffolding command:
 
 ```terminal
 php app.php create:bootloader GithubClient
 ```
 
-> **Note**
-> Read more about scaffolding in the [Basics — Scaffolding](../basics/scaffolding.md#bootloader) section.
+This creates `app/src/Application/Bootloader/GithubClientBootloader.php`.
 
-After executing this command, the following output will confirm the successful creation:
+> **See also**
+> [Basics — Scaffolding](../basics/scaffolding.md#bootloader)
 
-```output
-Declaration of '[32mGithubClientBootloader[39m' has been successfully written into '[33mapp/src/Application/Bootloader/GithubClientBootloader.php[39m'.
-```
+## Registering Bootloaders
 
-Now you can find the `GithubClientBootloader` class in the `app/src/Application/Bootloader` directory.
-
-Currently, a new Bootloader doesn't perform any actions. A little later, we will add some functionality to it.
-
-## Registering bootloader
-
-Every bootloader must be activated in your application kernel `app/src/Application/Kernel.php`.
-
-In Spiral, you can register bootloaders in your kernel using two different approaches: constants and methods.
-
-1. **Constants:** The kernel provides constants such as `Kernel::SYSTEM`, `Kernel::LOAD`, and `Kernel::APP`. These
-   constants allow you to specify which bootloaders should be executed at different stages of the application's
-   initialization process. By using these constants, you can achieve a clear separation of concerns and easily
-   understand which bootloaders handle specific tasks.
-2. **Methods:** The kernel also offers methods like `defineBootloaders`, `defineAppBootloaders`,
-   and `defineSystemBootloaders`. These methods allow for more complex logic and registration of objects, anonymous
-   classes, or other advanced use cases. With these methods, you have greater flexibility and control over the
-   initialization process of your application.
-
-> **Warning**
-> You cannot use both methods and constants simultaneously. If you choose to use the method approach, the registration
-> through constants will not take effect.
-
-:::: tabs
-
-::: tab Using methods
-
-Add the class reference into `defineBootloaders` or `defineAppBootloaders` methods of your `App\Application\Kernel`
-
-class:
+Register bootloaders in `app/src/Application/Kernel.php`:
 
 ```php app/src/Application/Kernel.php
 namespace App\Application;
-
-use App\Application\Bootloader\RoutesBootloader;
-use App\Application\Bootloader\LoggingBootloader;
-use App\Application\Bootloader\MyBootloader;
 
 class Kernel extends \Spiral\Framework\Kernel
 {
     public function defineBootloaders(): array
     {
         return [
-            // ...
-           RoutesBootloader::class,
+            RoutesBootloader::class,
+            // Framework bootloaders
         ];
     }
 
     public function defineAppBootloaders(): array
     {
         return [
-           LoggingBootloader::class,
-           MyBootloader::class,
-           
-           // anonymous bootloader via object instance
-           new class extends Bootloader {
-               // ...
-           },
-       ];
+            LoggingBootloader::class,
+            MyBootloader::class,
+            
+            // You can even use anonymous classes
+            new class extends Bootloader {
+                // ...
+            },
+        ];
     }
 }
 ```
 
 > **Note**
-> Bootloaders in the `defineAppBootloaders` method are always loaded after bootloaders in the `defineBootloaders`
-> method. Keep domain-specific bootloaders in it.
+> `defineAppBootloaders()` runs after `defineBootloaders()`. Keep your application-specific bootloaders there.
 
-:::
+## Conditional Loading
 
-::: tab Using constants
+The `BootloadConfig` class allows you to control when and how bootloaders are loaded. This is useful for
+environment-specific features, optional components, or dynamic configuration.
 
-Add the class reference into `LOAD` or `APP` constants of your `App\Application\Kernel` class:
+### Configuration Options
 
-```php app/src/Application/Kernel.php
-namespace App\Application;
+| Parameter  | Type    | Default | Description                                                            |
+|------------|---------|---------|------------------------------------------------------------------------|
+| `args`     | `array` | `[]`    | Arguments passed to bootloader's constructor                           |
+| `enabled`  | `bool`  | `true`  | Enable/disable the bootloader                                          |
+| `allowEnv` | `array` | `[]`    | Environment variables that must match specified values (whitelist)     |
+| `denyEnv`  | `array` | `[]`    | Environment variables that must NOT match specified values (blacklist) |
+| `override` | `bool`  | `true`  | Whether runtime config (in Kernel) can override attribute config       |
 
-use App\Application\Bootloader\RoutesBootloader;
-use App\Application\Bootloader\LoggingBootloader;
-use App\Application\Bootloader\MyBootloader;
+### Basic Usage
 
-class Kernel extends \Spiral\Framework\Kernel
-{
-    protected const LOAD = [
-        // ...
-        RoutesBootloader::class,
-    ];
-
-    protected const APP = [
-        // ...
-        LoggingBootloader::class,
-        MyBootloader::class,
-    ];
-}
-```
-
-> **Note**
-> Bootloaders in the `APP` constant are always loaded after bootloaders in the `LOAD` constant. Keep domain-specific
-> bootloaders in it.
-
-:::
-
-::::
-
-### Bootloader loading control
-
-There is also a feature that lets developers manage how bootloaders are set up and used. This functionality is
-particularly advantageous for adapting applications to various environments, such as HTTP, command-line
-interfaces, or any other contexts. It allows for the selective activation or deactivation of bootloaders based on the
-specific requirements of the environment, enhancing both efficiency and performance.
-
-There is a new DTO class `Spiral\Boot\Attribute\BootloadConfig` which enables the inclusion or exclusion of bootloaders,
-passing parameters that will be forwarded to the init and boot methods of the bootloader, and dynamically adjusting the
-bootloader loading based on environment variables.
-
-To use it in the Kernel, you should employ the full class name of the bootloader as the key in the array of bootloaders,
-with the corresponding value being a `BootloadConfig` object.
+Control bootloader loading based on environment:
 
 ```php app/src/Application/Kernel.php
-namespace App\Application;
-
 use Spiral\Boot\Attribute\BootloadConfig;
-use Spiral\Prototype\Bootloader\PrototypeBootloader;
 
 class Kernel extends \Spiral\Framework\Kernel
 {
     public function defineBootloaders(): array
     {
         return [
-            // ...
-            PrototypeBootloader::class => new BootloadConfig(allowEnv: ['APP_ENV' => ['local', 'dev']]),
-            // ...
+            // Load only in local/dev environments
+            PrototypeBootloader::class => new BootloadConfig(
+                allowEnv: ['APP_ENV' => ['local', 'dev']]
+            ),
+            
+            // Disable in production
+            DebugBootloader::class => new BootloadConfig(
+                denyEnv: ['APP_ENV' => 'production']
+            ),
+            
+            // Pass constructor arguments
+            CacheBootloader::class => new BootloadConfig(
+                args: ['driver' => 'redis', 'ttl' => 3600]
+            ),
         ];
     }
 }
 ```
 
-In this example, we specified that the `PrototypeBootloader` should be loaded only if the environment variable `APP_ENV`
-is defined and has a value of `local` or `dev`.
+### Using Closures
 
-Instead of creating a `BootloadConfig` object directly, you can define a function that returns a `BootloadConfig`
-object. This function can take arguments, which might be obtained from the container.
+Use a closure to access container services when building configuration:
 
-```php app/src/Application/Kernel.php
-namespace App\Application;
-
-use Spiral\Boot\Attribute\BootloadConfig;
+```php
 use Spiral\Boot\Environment\AppEnvironment;
-use Spiral\Prototype\Bootloader\PrototypeBootloader;
 
-class Kernel extends \Spiral\Framework\Kernel
-{
-    public function defineBootloaders(): array
-    {
-        return [
-            // ...
-            PrototypeBootloader::class => static fn (AppEnvironment $env) => new BootloadConfig(enabled: $env->isLocal()),
-            // ...
-        ];
-    }
-}
+PrototypeBootloader::class => static fn(AppEnvironment $env) => 
+    new BootloadConfig(
+        enabled: $env->isLocal(),
+        args: ['debug' => $env->get('DEBUG')]
+    ),
 ```
 
-You can also use `BootloadConfig` class as an attribute to control how a bootloader behaves. This method is particularly
-useful because it allows you to set up the configuration directly in the bootloader's class, making it more
-straightforward and easier to understand.
+**Use case:** Dynamic configuration based on complex application state or multiple services.
 
-**Here's a simple example of how you can use an attribute to configure a bootloader:**
+### Using Attributes
 
-```php app/src/Application/Bootloader/SomeBootloader.php
+Define configuration directly on the bootloader class:
+
+```php app/src/Application/Bootloader/DevToolsBootloader.php
 use Spiral\Boot\Attribute\BootloadConfig;
 use Spiral\Boot\Bootloader\Bootloader;
 
-#[BootloadConfig(allowEnv: ['APP_ENV' => 'local'])]
-final class SomeBootloader extends Bootloader
+#[BootloadConfig(
+    allowEnv: ['APP_ENV' => ['local', 'development']],
+    denyEnv: ['TESTING' => true]
+)]
+final class DevToolsBootloader extends Bootloader
 {
+    public function __construct(
+        private readonly bool $profiling = false
+    ) {}
 }
 ```
 
-Attributes are a great choice when you want to keep the configuration close to the bootloader's code. It's a more
-intuitive way to set up bootloaders, especially in cases where the configuration is straightforward and doesn't require
-complex logic.
+**Use case:** Self-contained bootloaders with built-in loading conditions.
 
-#### Extending for Custom Preconditions
+### Configuration Priority
 
-By extending `BootloadConfig`, you can create custom classes that encapsulate specific conditions under which
-bootloaders should operate. This approach simplifies the usage of bootloaders by abstracting the configuration details
-into these custom classes.
+When a bootloader has both attribute and runtime configuration, the `override` parameter controls precedence:
 
-```php app/src/Application/Bootloader/TargetRRWorker.php
-namespace App\Application\Bootloader;
+```php
+// In the bootloader
+#[BootloadConfig(
+    args: ['debug' => true],
+    override: false  // Prevent runtime override
+)]
+final class MyBootloader extends Bootloader
+{
+    public function __construct(
+        private readonly bool $debug
+    ) {}
+}
 
+// In the Kernel - this will be IGNORED due to override: false
+MyBootloader::class => new BootloadConfig(args: ['debug' => false]),
+```
+
+**Use case:** Enforce specific configuration for critical bootloaders that shouldn't be modified at runtime.
+
+### Custom Configuration Classes
+
+Create reusable configuration by extending `BootloadConfig`:
+
+```php app/src/Application/Attribute/TargetRRWorker.php
 use Spiral\Boot\Attribute\BootloadConfig;
-use Spiral\Boot\Bootloader\Bootloader;
 
+/**
+ * Load bootloader only for specific RoadRunner workers
+ */
 class TargetRRWorker extends BootloadConfig 
 {
     public function __construct(array $modes)
     {
-        parent::__construct(
-            env: ['RR_MODE' => $modes],
-        );
+        parent::__construct(allowEnv: ['RR_MODE' => $modes]);
     }
 }
 ```
 
-Now you can use it in your bootloaders
+Use in bootloaders:
 
-```php app/src/Application/Bootloader/SomeBootloader.php
-use Spiral\Boot\Attribute\BootloadConfig;
-use Spiral\Boot\Bootloader\Bootloader;
-
+```php
 #[TargetRRWorker(modes: ['http', 'grpc'])]
-final class SomeBootloader extends Bootloader
+final class ApiBootloader extends Bootloader {}
+```
+
+Or in Kernel:
+
+```php
+public function defineBootloaders(): array
 {
+    return [
+        HttpBootloader::class => new TargetRRWorker(['http']),
+        GrpcBootloader::class => new TargetRRWorker(['grpc']),
+        TemporalBootloader::class => new TargetRRWorker(['temporal']),
+    ];
 }
 ```
 
-or use in Kernel:
+**Use case:** Microservices or multi-protocol applications where different workers need different bootloaders.
 
-```php app/src/Application/Kernel.php
-namespace App\Application;
+### Environment Matching
 
-use Spiral\Framework\Kernel;
+Both `allowEnv` and `denyEnv` support multiple values:
 
-class Kernel extends Kernel
-{
-    public function defineBootloaders(): array
-    {
-        return [
-            HttpBootloader::class => new TargetRRWorker(['http']),
-            RoutesBootloader::class => new TargetRRWorker(['http']),
-
-            GrpcBootloader::class => new TargetRRWorker(['grpc']),
-
-            TemporalBootloader::class => new TargetRRWorker(['temporal']),
-            
-            // Other bootloaders...
-        ];
-    }
-}
+```php
+#[BootloadConfig(
+    // Load if APP_ENV is local OR development
+    allowEnv: ['APP_ENV' => ['local', 'development']],
+    
+    // Don't load if any of these are true
+    denyEnv: [
+        'TESTING' => [true, 1, 'true', 'yes'],
+        'CI' => true
+    ]
+)]
+final class DevToolsBootloader extends Bootloader {}
 ```
 
-The ability to extend `BootloadConfig` opens up a world of possibilities for customizing the behavior of bootloaders.
+**How it works:**
 
-## Available methods
+- `allowEnv`: At least one condition must match (OR logic)
+- `denyEnv`: If any condition matches, bootloader is skipped (OR logic)
+- If both specified: `allowEnv` is checked first, then `denyEnv`
 
-Bootloaders provide two methods `init` and `boot` that are executed when the application is initialized.
+## Initialization Methods
 
-### Init method
+Bootloaders provide multiple ways to execute initialization code. You can use traditional methods, attribute-based
+methods, or combine both approaches.
 
-This method will be run **first**.
+### Traditional Methods
 
-It's a good idea to set default values for the config files before proceeding. You can use the special bootloader
-methods to modify the config files as needed. After that, you can go ahead and run any other logic that doesn't require
-reading the config files and isn't dependent on code execution in the `init` and `boot` methods of other bootloaders.
+#### init()
 
-This is also a good time to add initialization callbacks and configure container bindings, as long as it doesn't require
-accessing the app config.
+The `init()` method runs first, before any bootloader's `boot()` method executes.
 
-```php app/src/Application/Bootloader/GithubClientBootloader.php
-namespace App\Application\Bootloader;
+**Parameters:**
 
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Boot\EnvironmentInterface;
-use Spiral\Config\ConfiguratorInterface;
-use App\Service\Github\GithubConfig;
+- Supports dependency injection - request any service through method parameters
 
+**Use cases:**
+
+- Set configuration defaults before other bootloaders read them
+- Register container bindings that don't depend on configuration
+- Initialize services that other bootloaders might need
+
+```php
 final class GithubClientBootloader extends Bootloader
 {
     public function __construct(
         private readonly ConfiguratorInterface $config
-    ) {
-    }
+    ) {}
 
     public function init(EnvironmentInterface $env): void 
     {
-        $this->config->setDefaults(
-            GithubConfig::CONFIG,
-            [
-                'access_token' => $env->get('GITHUB_ACCESS_TOKEN'),
-                'secret' => $env->get('GITHUB_SECRET'),
-            ]
+        // Set defaults before configuration is accessed
+        $this->config->setDefaults(GithubConfig::CONFIG, [
+            'access_token' => $env->get('GITHUB_ACCESS_TOKEN'),
+            'secret' => $env->get('GITHUB_SECRET'),
+            'timeout' => 30,
+        ]);
+    }
+}
+```
+
+> **See also**
+> [Configuration](../start/configuration.md) • [Kernel](../framework/kernel.md) • [Config Objects](../framework/config.md)
+
+#### boot()
+
+The `boot()` method runs after all `init()` methods complete across all bootloaders.
+
+**Parameters:**
+
+- Supports dependency injection - request any service through method parameters
+- Can receive compiled configuration objects
+
+**Use cases:**
+
+- Configure services using finalized configuration
+- Register routes, middleware, event listeners
+- Set up integrations between different components
+
+```php
+final class GithubClientBootloader extends Bootloader
+{
+    public function boot(
+        GithubConfig $config,
+        HttpBootloader $http
+    ): void {
+        // Configuration is now compiled and ready
+        $client = new GithubClient($config->getAccessToken());
+        
+        // Other bootloaders are initialized
+        $http->addMiddleware(GithubAuthMiddleware::class);
+    }
+}
+```
+
+### Attribute-Based Methods
+
+Attribute-based methods give you fine-grained control over execution order and allow multiple initialization/boot
+methods in a single bootloader.
+
+#### #[InitMethod]
+
+Methods marked with `#[InitMethod]` run during the initialization phase.
+
+**Parameters:**
+
+| Parameter  | Type  | Default | Description                            |
+|------------|-------|---------|----------------------------------------|
+| `priority` | `int` | `0`     | Execution priority (higher runs first) |
+
+**Features:**
+
+- Supports dependency injection
+- Multiple `#[InitMethod]` methods per bootloader
+- Execution order: priority 10 → 5 → 0 → -5 → -10
+
+**Use cases:**
+
+- Split initialization logic into focused methods
+- Control exact initialization order across bootloaders
+- Register groups of related bindings
+
+```php
+use Spiral\Boot\Attribute\InitMethod;
+
+final class DatabaseBootloader extends Bootloader
+{
+    // Critical: runs first
+    #[InitMethod(priority: 10)]
+    public function registerDrivers(DatabaseManager $manager): void
+    {
+        $manager->addDriver('mysql', MySQLDriver::class);
+        $manager->addDriver('postgres', PostgresDriver::class);
+    }
+    
+    // Normal: runs after high priority
+    #[InitMethod]
+    public function registerConnections(Container $container): void
+    {
+        $container->bindSingleton(
+            ConnectionInterface::class,
+            DefaultConnection::class
+        );
+    }
+    
+    // Low priority: runs last
+    #[InitMethod(priority: -10)]
+    public function registerExtensions(): void
+    {
+        // Optional extensions that depend on core setup
+    }
+}
+```
+
+#### #[BootMethod]
+
+Methods marked with `#[BootMethod]` run during the boot phase, after all initialization completes.
+
+**Parameters:**
+
+| Parameter  | Type  | Default | Description                            |
+|------------|-------|---------|----------------------------------------|
+| `priority` | `int` | `0`     | Execution priority (higher runs first) |
+
+**Features:**
+
+- Supports dependency injection
+- Multiple `#[BootMethod]` methods per bootloader
+- Access to fully configured services and compiled configuration
+
+**Use cases:**
+
+- Configure routes, middleware, or event listeners
+- Set up cross-cutting concerns
+- Register application-level services
+
+```php
+use Spiral\Boot\Attribute\BootMethod;
+
+final class ApplicationBootloader extends Bootloader
+{
+    // Critical services first
+    #[BootMethod(priority: 10)]
+    public function configureErrorHandling(ErrorHandler $handler): void
+    {
+        $handler->addRenderer(new JsonErrorRenderer());
+    }
+    
+    // Standard configuration
+    #[BootMethod]
+    public function configureRoutes(RouterInterface $router): void
+    {
+        $router->addRoute('home', new Route('/', HomeController::class));
+    }
+    
+    // Non-critical features last
+    #[BootMethod(priority: -10)]
+    public function registerEventListeners(
+        EventDispatcherInterface $dispatcher
+    ): void {
+        $dispatcher->addListener(
+            ApplicationStarted::class, 
+            fn() => $this->onStart()
         );
     }
 }
 ```
 
-> **Note**
-> 1. Learn more about the `Spiral\Boot\EnvironmentInterface`, in the [Configuration](../start/configuration.md) section.
-> 2. Learn more about the `Spiral\Boot\AbstractKernel` class (also known as the 'Kernel'), in
-     the [Kernel and Environment](../framework/kernel.md) section.
-> 3. Learn more about the `Spiral\Config\ConfiguratorInterface` class, in the [Config Objects](../framework/config.md)
-     section.
+### Execution Order
 
-### Boot method
+Understanding the complete execution sequence:
 
-This method will be run after the `init` method in all the bootloaders have been executed. The reason for this is that
-you might need the results of bootloader initialization in order to proceed. For example, compiled configuration files.
-
-Just keep in mind that it should be run after all those `init` methods have completed.
-
-```php app/src/Application/Bootloader/GithubClientBootloader.php
-namespace App\Application\Bootloader;
-
-// ...
-use App\Service\Github\GithubConfig;
-
-final class GithubClientBootloader extends Bootloader
-{
-    // See code above ...
-    
-    public function boot(GithubConfig $config): void 
-    {
-        $token = $config->getAccessToken();
-        // ...
-    }
-}
+```
+1. #[InitMethod(priority: 10)]  ← Highest priority init methods
+2. #[InitMethod(priority: 0)]   ← Default priority init methods  
+3. #[InitMethod(priority: -10)] ← Lowest priority init methods
+4. init()                       ← Traditional init method
+5. #[BootMethod(priority: 10)]  ← Highest priority boot methods
+6. #[BootMethod(priority: 0)]   ← Default priority boot methods
+7. #[BootMethod(priority: -10)] ← Lowest priority boot methods
+8. boot()                       ← Traditional boot method
 ```
 
-## Configuring Container
+**This applies across ALL bootloaders**, meaning:
 
-Bootloaders are usually used to set up a container, like if we want to link multiple implementations to their
-interfaces or create some service. We can use both `init` or `boot` method for this, which lets us request any services
-we need using method injection.
+- All `#[InitMethod(priority: 10)]` methods execute before any `#[InitMethod(priority: 0)]`
+- All `init()` methods execute before any `#[BootMethod]`
+- You can mix traditional and attribute-based methods in the same bootloader
 
-```php app/src/Application/Bootloader/GithubClientBootloader.php
-namespace App\Application\Bootloader;
+## Container Configuration
 
-// ...
+Bootloaders provide multiple ways to configure the dependency injection container. Choose the approach that best fits
+your needs.
+
+### Direct Configuration
+
+Use the `BinderInterface` directly for maximum flexibility:
+
+```php
 use Spiral\Core\BinderInterface;
-use App\Service\Github\GithubConfig;
-use App\Service\Github\ClientInterface;
-use App\Service\Github\Client;
 
 final class GithubClientBootloader extends Bootloader
 {
-    // See code above ...
-    
-    public function boot(BinderInterface $binder): void 
+    public function boot(BinderInterface $binder, GithubConfig $config): void 
     {
+        // Singleton - created once, reused
         $binder->bindSingleton(
             ClientInterface::class, 
-            static fn (GithubConfig $config) => new Client(
+            static fn(GithubConfig $config) => new Client(
                 $config->getAccessToken(),
                 $config->getSecret(),
             )
         );
+        
+        // Factory - created each time
+        $binder->bind(
+            RequestInterface::class,
+            static fn() => new Request()
+        );
     }
 }
 ```
 
-> **Note**
-> The closure is provided as an argument to the `bindSingleton` method will be called by the dependency injection
-> (DI) container when it needs to create an instance of `MyService`. When the closure is called, the DI container will
-> automatically resolve and inject any dependencies that are required by the closure.
->
-> If you want to learn more about DI, you can check out the [Container and Factories](../container/overview.md) section
-> of the documentation. It should have all the info you need.
+> **See also**
+> [Container and Factories](../container/overview.md)
 
-Bootloaders also provide the ability to simplify container binding definition
+### Declarative Bindings
 
-:::: tabs
+Define bindings in a structured, declarative way.
 
-::: tab Using methods
+#### Using Methods
 
-You can use the `defineBindings` and `defineSingletons` methods to define container bindings in a declarative way.
+**Available methods:**
 
-```php app/src/Application/Bootloader/GithubClientBootloader.php
-namespace App\Application\Bootloader;
+| Method               | Returns | Description                               |
+|----------------------|---------|-------------------------------------------|
+| `defineBindings()`   | `array` | Factory bindings (new instance each time) |
+| `defineSingletons()` | `array` | Singleton bindings (created once, reused) |
 
-// ...
-use Spiral\Core\BinderInterface;
-use App\Service\Github\GithubConfig;
-use App\Service\Github\ClientInterface;
-use App\Service\Github\Client;
+**Binding formats:**
 
-final class GithubClientBootloader extends Bootloader
+```php
+return [
+    // Simple class binding
+    InterfaceA::class => ClassA::class,
+    
+    // Method callback
+    InterfaceB::class => [self::class, 'createServiceB'],
+    
+    // Closure with dependencies
+    InterfaceC::class => static fn(Config $config) => new ServiceC($config),
+];
+```
+
+**Example:**
+
+```php
+final class ServicesBootloader extends Bootloader
 {
-    public function defineSingletons(): array
+    public function defineBindings(): array
     {
         return [
-            MyInterface::class => MyClass::class
+            // New instance each resolution
+            RequestInterface::class => Request::class,
+            TokenGeneratorInterface::class => [self::class, 'createTokenGenerator'],
         ];
     }
 
     public function defineSingletons(): array
     {
         return [
-            ClientInterface::class => [self::class, 'createClient'],
+            // Shared instance
+            CacheInterface::class => RedisCache::class,
             
-            // or
-            
-            ClientInterface::class => static fn(GithubConfig $config) => new Client(
-                $config->getAccessToken(),
-                $config->getSecret(),
-            );
+            // Lazy initialization with dependencies
+            LoggerInterface::class => static fn(Config $config) => 
+                new Logger($config->get('logging.channel')),
         ];
     }
-
-    // See code above ...
     
-    public function createClient(GithubConfig $config): ClientInterface 
+    private function createTokenGenerator(): TokenGeneratorInterface
+    {
+        return new TokenGenerator(hash_algo: 'sha256', length: 32);
+    }
+}
+```
+
+**Use cases:**
+
+- Clean, scannable binding definitions
+- Group related bindings together
+- Simple class-to-class or class-to-factory bindings
+
+#### Using Attributes
+
+Use PHP attributes for type-safe, self-documenting bindings with additional features like aliases and scopes.
+
+##### #[SingletonMethod]
+
+Creates a singleton binding - the method is called once, and the result is cached and reused.
+
+**Parameters:**
+
+| Parameter               | Type           | Default | Description                                      |
+|-------------------------|----------------|---------|--------------------------------------------------|
+| `alias`                 | `string\|null` | `null`  | Bind to this alias instead of return type        |
+| `aliasesFromReturnType` | `bool`         | `false` | Also bind to return type when alias is specified |
+
+**Use cases:**
+
+- Services that maintain state
+- Expensive-to-create objects (database connections, HTTP clients)
+- Shared resources (cache, event dispatcher)
+
+```php
+use Spiral\Boot\Attribute\SingletonMethod;
+
+final class ServicesBootloader extends Bootloader
+{
+    // Binds to return type: HttpClientInterface
+    #[SingletonMethod]
+    public function createHttpClient(GithubConfig $config): HttpClientInterface
     {
         return new Client(
             $config->getAccessToken(),
             $config->getSecret(),
         );
     }
-}
-```
-
-:::
-
-::: tab Using constants
-
-You can use the `BINDINGS` and `SINGLETONS` constants to define container bindings in a declarative way.
-
-```php app/src/Application/Bootloader/GithubClientBootloader.php
-namespace App\Application\Bootloader;
-
-// ...
-use Spiral\Core\BinderInterface;
-use App\Service\Github\GithubConfig;
-use App\Service\Github\ClientInterface;
-use App\Service\Github\Client;
-
-final class GithubClientBootloader extends Bootloader
-{
-    const BINDINGS = [
-        MyInterface::class => MyClass::class
-    ];
     
-    const SINGLETONS = [
-        ClientInterface::class => [self::class, 'createClient'],
-    ];
-    
-    // See code above ...
-    
-    public function createClient(GithubConfig $config): ClientInterface 
+    // Binds to DbFactory, NOT DatabaseFactory
+    #[SingletonMethod(alias: DbFactory::class)]
+    public function createDatabaseFactory(): DatabaseFactory
     {
-        return new Client(
-            $config->getAccessToken(),
-            $config->getSecret(),
-        );
+        return new DatabaseFactory();
+    }
+    
+    // Binds to BOTH LogManagerInterface AND LogManager
+    #[SingletonMethod(
+        alias: LogManagerInterface::class, 
+        aliasesFromReturnType: true
+    )]
+    public function createLogManager(): LogManager
+    {
+        return new LogManager();
     }
 }
 ```
 
-:::
+##### #[BindMethod]
 
-::::
+Creates a factory binding - the method is called each time the dependency is resolved, creating a new instance.
 
-## Configuring Application
+**Parameters:**
 
-Another common use case of bootloaders is to configure the framework before the application launch. For example, we can
-declare a new route for our application or module:
+| Parameter               | Type           | Default | Description                                      |
+|-------------------------|----------------|---------|--------------------------------------------------|
+| `alias`                 | `string\|null` | `null`  | Bind to this alias instead of return type        |
+| `aliasesFromReturnType` | `bool`         | `false` | Also bind to return type when alias is specified |
 
-```php app/src/Application/Bootloader/RoutesBootloader.php
-namespace App\Application\Bootloader;
+**Use cases:**
 
-use Spiral\Router\RouterInterface;
-use Spiral\Router\Target\Controller;
-use Spiral\Router\Route;
+- Stateless services
+- Request-scoped objects
+- Objects that shouldn't be shared between requests
 
-final class RoutesBootloader extends Bootloader 
+```php
+use Spiral\Boot\Attribute\BindMethod;
+
+final class ServicesBootloader extends Bootloader
 {
-    public function boot(RouterInterface $router): void
+    // New instance each time
+    #[BindMethod]
+    public function createHttpClient(): HttpClientInterface
     {
-        $router->setRoute(
-            'my-route',
-            new Route('/<action>', new Controller(MyController::class))
-        );
+        return new HttpClient();
+    }
+    
+    // New request factory each time
+    #[BindMethod(alias: RequestFactory::class)]
+    public function createRequestFactory(): RequestFactoryInterface
+    {
+        return new RequestFactory();
     }
 }
 ```
 
-> **Note**
-> You are only able to use bootloaders to configure your components during the bootstrap phase (a.k.a. via another
-> bootloader). The framework would not allow you to change any configuration value after component initialization.
+##### #[InjectorMethod]
 
-## Depending on other Bootloaders
+Creates a custom injector that controls how a type is resolved. The method itself becomes the resolver.
 
-Depending on other bootloaders can be really useful in certain situations. For example, if you want to make sure a
-certain bootloader is initialized before yours, you can use one of two main approaches: injecting the bootloader class
-into the init or boot method as an argument, or using the `Bootloader::DEPENDENCIES` constant in your bootloader class.
+**Parameters:**
 
-This can be a good way to manage the initialization of your app and make sure all the necessary resources and
-dependencies are available when you need them. Just keep in mind that dependent bootloaders will only be initialized
-once, even if they are depended on by multiple other bootloaders.
+| Parameter | Type     | Required | Description        |
+|-----------|----------|----------|--------------------|
+| `alias`   | `string` | Yes      | The type to inject |
 
-Some framework bootloaders can be used as a simple way to configure application settings. For example, we can
-use `Spiral\Bootloader\Http\HttpBootloader` to add global PSR-15 middleware:
+**Use cases:**
 
-**There are two ways to define dependent bootloaders:**
+- Types that need context-aware creation
+- Services that accept creation-time parameters
+- Complex initialization logic that varies per resolution
 
-1. Injecting the bootloader class into the `init` or `boot` method as an argument of your bootloader class
+```php
+use Spiral\Boot\Attribute\InjectorMethod;
 
-**For example:**
+final class LoggingBootloader extends Bootloader
+{
+    // Each logger resolution can specify a different channel
+    #[InjectorMethod(LoggerInterface::class)]
+    public function createLogger(string $channel = 'default'): LoggerInterface
+    {
+        return new Logger($channel);
+    }
+    
+    // Connection name can be provided at resolution time
+    #[InjectorMethod(ConnectionInterface::class)]
+    public function createConnection(?string $name = null): ConnectionInterface
+    {
+        return $name === null
+            ? new DefaultConnection()
+            : $this->connectionPool->get($name);
+    }
+}
 
-```php app/src/Application/Bootloader/MyBootloader.php
-namespace App\Application\Bootloader;
+// Later, in another class:
+class UserRepository
+{
+    public function __construct(
+        // Will call createConnection(null) -> DefaultConnection
+        ConnectionInterface $connection,
+        
+        // Will call createLogger('user') -> Logger with 'user' channel
+        #[LogChannel('user')] LoggerInterface $logger
+    ) {}
+}
+```
 
+##### #[BindAlias]
+
+Adds additional binding aliases to a method. Can be applied multiple times.
+
+**Parameters:**
+
+| Parameter     | Type       | Required | Description                                 |
+|---------------|------------|----------|---------------------------------------------|
+| `...$aliases` | `string[]` | Yes      | Additional class/interface names to bind to |
+
+**Use cases:**
+
+- Binding one implementation to multiple interfaces
+- Legacy interface support
+- Multiple ways to resolve the same service
+
+```php
+use Spiral\Boot\Attribute\{SingletonMethod, BindAlias};
+
+final class LoggingBootloader extends Bootloader
+{
+    #[SingletonMethod]
+    #[BindAlias(LoggerInterface::class, PsrLoggerInterface::class)]
+    #[BindAlias(MonologLoggerInterface::class)]
+    public function createLogger(): Logger
+    {
+        return new Logger();
+    }
+}
+```
+
+**This binds to ALL of these:**
+
+- `Logger` (return type)
+- `LoggerInterface`
+- `PsrLoggerInterface`
+- `MonologLoggerInterface`
+
+Any of these types can now be injected and will receive the same Logger instance.
+
+##### #[BindScope]
+
+Binds a service to a specific container scope. Can be applied multiple times for multiple scopes.
+
+**Parameters:**
+
+| Parameter | Type                  | Required | Description        |
+|-----------|-----------------------|----------|--------------------|
+| `scope`   | `string\|\BackedEnum` | Yes      | Scope name or enum |
+
+**Use cases:**
+
+- HTTP-only services (request, response, session)
+- Console-only services (input, output)
+- Worker-specific services
+- Environment-specific bindings
+
+```php
+use Spiral\Boot\Attribute\{SingletonMethod, BindScope};
+
+final class ServicesBootloader extends Bootloader
+{
+    // Only available in 'http' scope
+    #[SingletonMethod]
+    #[BindScope('http')]
+    public function createHttpClient(): HttpClientInterface
+    {
+        return new HttpClient();
+    }
+    
+    // Only in 'console' scope
+    #[SingletonMethod]
+    #[BindScope('console')]
+    public function createConsoleOutput(): OutputInterface
+    {
+        return new ConsoleOutput();
+    }
+    
+    // Available in BOTH 'http' and 'grpc' scopes
+    #[SingletonMethod]
+    #[BindScope('http')]
+    #[BindScope('grpc')]
+    public function createSharedService(): SharedServiceInterface
+    {
+        return new SharedService();
+    }
+}
+```
+
+**How scopes work:**
+
+- Bindings without `#[BindScope]` are global (available everywhere)
+- Scoped bindings are only available when running in that scope
+- Attempting to resolve a scoped binding outside its scope throws an exception
+
+##### Combining Attributes
+
+Attributes can be combined for complex binding scenarios:
+
+```php
+use Spiral\Boot\Attribute\{SingletonMethod, BindAlias, BindScope};
+
+final class LoggingBootloader extends Bootloader
+{
+    // Singleton logger with multiple aliases, only in HTTP scope
+    #[SingletonMethod]
+    #[BindAlias(LoggerInterface::class, PsrLoggerInterface::class)]
+    #[BindScope('http')]
+    public function createHttpLogger(): Logger
+    {
+        return new Logger('http');
+    }
+    
+    // Different logger for console scope
+    #[SingletonMethod]
+    #[BindAlias(LoggerInterface::class, PsrLoggerInterface::class)]
+    #[BindScope('console')]
+    public function createConsoleLogger(): Logger
+    {
+        return new Logger('console');
+    }
+}
+```
+
+**Result:**
+
+- HTTP requests get an HTTP logger via `LoggerInterface` or `PsrLoggerInterface`
+- Console commands get a console logger via the same interfaces
+- Both are singletons within their scope
+- They can't be resolved outside their respective scopes
+
+## Bootloader Dependencies
+
+Ensure other bootloaders are loaded and initialized before yours. Dependencies are loaded only once, even if required by
+multiple bootloaders.
+
+### Method 1: Inject as Parameter
+
+Request the bootloader directly in your `init()` or `boot()` method:
+
+```php
 use Spiral\Bootloader\Http\HttpBootloader;
-use App\Middleware\MyMiddleware;
 
-class MyBootloader extends Bootloader 
+class ApiBootloader extends Bootloader 
 {
     public function boot(HttpBootloader $http): void
     {
-        $http->addMiddleware(MyMiddleware::class);
+        // HttpBootloader is guaranteed to be initialized
+        $http->addMiddleware(ApiAuthMiddleware::class);
+        $http->addMiddleware(RateLimitMiddleware::class);
     }
 }
 ```
 
-2. Using the `Bootloader::DEPENDENCIES` constant in your bootloader class. This can be a convenient way to define
-   dependent bootloaders when you don't need to access them directly in your bootloader class.
+**Use case:** When you need to interact with the dependency's methods or properties.
 
-**For example:**
+### Method 2: Use DEPENDENCIES Constant
 
-```php app/src/Application/Bootloader/MyBootloader.php
-namespace App\Application\Bootloader;
+Declare dependencies without accessing them:
 
-class MyBootloader extends Bootloader 
+```php
+class ApiBootloader extends Bootloader 
 {
-    protected const DEPENDENCIES = [
-        \Spiral\Bootloader\Http\HttpBootloader::class
-    ];
+    public function defineDependencies(): void
+    {
+        return [
+            HttpBootloader::class,
+            CorsBootloader::class,
+            AuthBootloader::class,
+        ];
+    }
     
     public function boot(): void
     {
-        // ...
+        // All dependencies are initialized before this runs
+        // Use when you need dependencies loaded but don't interact with them directly
     }
 }
 ```
 
-Spiral will automatically resolve and initialize the dependent bootloader before the depending bootloader
-is initialized.
+**Use case:** When dependencies just need to be loaded (for their side effects) but you don't need to call their
+methods.
 
-Both of these approaches allow you to define dependent bootloaders in a declarative way, which can make it easier to
-manage the initialization of your application and ensure that all necessary resources and dependencies are available
-when they are needed.
+### When to Use Each
 
-> **Note**
-> Dependent bootloaders will be only initialized once, even if multiple other bootloaders depend on them.
+```php
+// Use injection when you need to call methods
+public function boot(HttpBootloader $http): void
+{
+    $http->addMiddleware(MyMiddleware::class);  // Interacting with dependency
+}
 
-## Cascade bootloading
+// Use defineDependencies when you just need initialization
+public function defineDependencies(): void
+{
+    return [ 
+        DatabaseBootloader::class,  // Just needs to set up database
+        CacheBootloader::class,     // Just needs to configure cache
+    ];
+}
+```
 
-You can control the bootload process using Bootloader itself, simply request `Spiral\Boot\BootloadManager`:
+## Dynamic Bootloading
 
-```php app/src/Application/Bootloader/AppBootloader.php
-namespace App\Application\Bootloader;
+Load bootloaders conditionally at runtime based on application state.
 
-use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Boot\BootloadManager;
-use Spiral\Bootloader\DebugBootloader;
-use Spiral\Boot\EnvironmentInterface;
+**Parameters of `bootload()` method:**
+
+| Parameter          | Type    | Description                              |
+|--------------------|---------|------------------------------------------|
+| `classes`          | `array` | Array of bootloader class names to load  |
+| `bootingCallbacks` | `array` | Callbacks to run before bootloaders boot |
+| `bootedCallbacks`  | `array` | Callbacks to run after bootloaders boot  |
+
+**Use cases:**
+
+- Feature flags
+- Environment-specific bootloaders
+- Plugin systems
+- Conditional feature loading
+
+```php
+use Spiral\Boot\BootloadManagerInterface;
 
 class AppBootloader extends Bootloader
 {
-    public function boot(BootloadManager $bootloadManager, EnvironmentInterface $env): void
-    {
+    public function boot(
+        BootloadManagerInterface $bootloadManager, 
+        EnvironmentInterface $env
+    ): void {
+        // Load debug tools only when DEBUG is enabled
         if ($env->get('DEBUG')) {
             $bootloadManager->bootload([
-                DebugBootloader::class
+                DebugBootloader::class,
+                ProfilerBootloader::class,
             ]);
         }
+        
+        // Load feature bootloaders based on feature flags
+        if ($this->isFeatureEnabled('new-api')) {
+            $bootloadManager->bootload([
+                NewApiBootloader::class,
+            ]);
+        }
+        
+        // Load different bootloaders per environment
+        match($env->get('APP_ENV')) {
+            'production' => $bootloadManager->bootload([
+                ProductionCacheBootloader::class,
+                ProductionLoggingBootloader::class,
+            ]),
+            'local' => $bootloadManager->bootload([
+                DevToolsBootloader::class,
+                LocalCacheBootloader::class,
+            ]),
+            default => null,
+        };
     }
 }
 ```
+
+> **Warning**
+> Dynamic bootloading happens during the boot phase, so dynamically loaded bootloaders cannot have `init()` methods or
+`#[InitMethod]` attributes - the initialization phase has already completed.
 
 <hr>
 
 ## What's Next?
 
-Now, dive deeper into the fundamentals by reading some articles:
-
 * [HTTP — Interceptors](../http/interceptors.md)
 * [Scaffolding](../basics/scaffolding.md)
+* [Container — Attributes](../container/attributes.md)
