@@ -1,24 +1,23 @@
 # Advanced — Attributes
 
-PHP Attributes provide a structured way to add metadata to classes, methods, properties, constants, and parameters. This
-metadata enables declarative configuration, behavior modification, and enhanced code documentation without cluttering
-your business logic.
+PHP Attributes (introduced in PHP 8.0) provide a structured, native way to add metadata to classes, methods, properties,
+constants, and parameters. This metadata enables declarative configuration, behavior modification, and enhanced code
+documentation without cluttering your business logic.
 
-The `spiral/attributes` component offers a unified interface for reading both native PHP 8 attributes and legacy
-Doctrine annotations, making it ideal for projects in transition or working with mixed metadata sources.
+The `spiral/attributes` component provides a powerful interface for reading and processing PHP attributes throughout
+your application.
 
 ## Key Benefits
 
 **Declarative Configuration**
-Define behavior through metadata rather than procedural configuration, making code more self-documenting and reducing
+Define behavior through metadata rather than procedural configuration, making code self-documenting and reducing
 boilerplate.
 
-**Metadata Unification**
-Work seamlessly with both PHP 8+ attributes and Doctrine annotations through a single API—no need to check which format
-developers are using.
+**Native PHP Support**
+Use PHP 8.0+ native attribute syntax with full language-level support, IDE integration, and static analysis.
 
-**Version Compatibility**
-Use modern PHP 8 attribute syntax even in PHP 7.2+ projects by leveraging the Doctrine annotation bridge.
+**Reflection Integration**
+Seamlessly work with PHP's reflection API to discover and process attributes at runtime.
 
 **Aspect-Oriented Programming**
 Combine attributes with interceptors to implement cross-cutting concerns (logging, caching, validation) without
@@ -79,9 +78,6 @@ class UserRegistrationHandler
 }
 ```
 
-> **Note**
-> Throughout this documentation, "metadata" refers to both PHP attributes and Doctrine annotations interchangeably.
-
 ## Installation
 
 Install the component via Composer:
@@ -127,35 +123,6 @@ Read more about bootloaders in the [Framework — Bootloaders](../framework/boot
 
 ::::
 
-### Doctrine Annotation Configuration
-
-When using Doctrine annotations alongside PHP attributes, you may encounter errors about unrecognized annotations.
-Configure Doctrine to ignore specific annotations that aren't meant to be processed:
-
-```php app/src/Application/Bootloader/AttributesBootloader.php
-namespace App\Application\Bootloader;
-
-use Doctrine\Common\Annotations\AnnotationReader;
-use Spiral\Boot\Bootloader\Bootloader;
-
-class AttributesBootloader extends Bootloader
-{
-    public function boot(): void
-    {
-        // Ignore PHPDoc annotations that aren't Doctrine annotations
-        AnnotationReader::addGlobalIgnoredName('note');
-        AnnotationReader::addGlobalIgnoredName('mixin');
-        AnnotationReader::addGlobalIgnoredName('yield');
-        AnnotationReader::addGlobalIgnoredName('type');
-    }
-}
-```
-
-> **Note**
-> Place this bootloader early in your bootloader list (in the `SYSTEM` section) to ensure it executes before any
-> attribute reading occurs. The Attributes SDK already configures these common ignored names internally, but you may need
-> to add project-specific ones.
-
 ## Quick Start
 
 The `ReaderInterface` provides methods to read metadata from any PHP reflection target:
@@ -166,14 +133,14 @@ use Spiral\Attributes\ReaderInterface;
 class AttributeProcessor
 {
     public function __construct(
-        private readonly ReaderInterface $reader,
+        private readonly ReaderInterface $reader
     ) {}
     
     public function processClass(\ReflectionClass $class): void
     {
-        // Read all metadata from the class
-        foreach ($this->reader->getClassMetadata($class) as $metadata) {
-            // Process each attribute/annotation
+        // Read all attributes from the class
+        foreach ($this->reader->getClassMetadata($class) as $attribute) {
+            // Process each attribute
         }
     }
 }
@@ -181,34 +148,35 @@ class AttributeProcessor
 
 **Core Interface Methods**
 
-| Method                     | Return Type        | Description                                          |
-|----------------------------|--------------------|------------------------------------------------------|
-| `getClassMetadata()`       | `iterable<object>` | Returns all metadata from a class (including traits) |
-| `getPropertyMetadata()`    | `iterable<object>` | Returns all metadata from a property                 |
-| `getFunctionMetadata()`    | `iterable<object>` | Returns all metadata from a method/function          |
-| `getConstantMetadata()`    | `iterable<object>` | Returns all metadata from a class constant           |
-| `getParameterMetadata()`   | `iterable<object>` | Returns all metadata from a function parameter       |
-| `firstClassMetadata()`     | `?object`          | Returns first matching class metadata or null        |
-| `firstPropertyMetadata()`  | `?object`          | Returns first matching property metadata or null     |
-| `firstFunctionMetadata()`  | `?object`          | Returns first matching function metadata or null     |
-| `firstConstantMetadata()`  | `?object`          | Returns first matching constant metadata or null     |
-| `firstParameterMetadata()` | `?object`          | Returns first matching parameter metadata or null    |
+| Method                     | Return Type        | Description                                            |
+|----------------------------|--------------------|--------------------------------------------------------|
+| `getClassMetadata()`       | `iterable<object>` | Returns all attributes from a class (including traits) |
+| `getPropertyMetadata()`    | `iterable<object>` | Returns all attributes from a property                 |
+| `getFunctionMetadata()`    | `iterable<object>` | Returns all attributes from a method/function          |
+| `getConstantMetadata()`    | `iterable<object>` | Returns all attributes from a class constant           |
+| `getParameterMetadata()`   | `iterable<object>` | Returns all attributes from a function parameter       |
+| `firstClassMetadata()`     | `?object`          | Returns first matching class attribute or null         |
+| `firstPropertyMetadata()`  | `?object`          | Returns first matching property attribute or null      |
+| `firstFunctionMetadata()`  | `?object`          | Returns first matching function attribute or null      |
+| `firstConstantMetadata()`  | `?object`          | Returns first matching constant attribute or null      |
+| `firstParameterMetadata()` | `?object`          | Returns first matching parameter attribute or null     |
 
-## Reading Metadata
+## Reading Attributes
 
-### Class Metadata
+### Class Attributes
 
-Read metadata from classes using reflection. The reader automatically includes metadata from traits used by the class.
+Read attributes from classes using reflection. The reader automatically includes attributes from traits used by the
+class.
 
-**Read all metadata:**
+**Read all attributes:**
 
 ```php
 $reflection = new \ReflectionClass(User::class);
 
-// Get all metadata objects
-$metadata = $reader->getClassMetadata($reflection); 
-foreach ($metadata as $item) {
-    // Process each metadata object
+// Get all attribute objects
+$attributes = $reader->getClassMetadata($reflection); 
+foreach ($attributes as $attribute) {
+    // Process each attribute object
 }
 ```
 
@@ -219,34 +187,30 @@ use Cycle\Annotated\Annotation\Entity;
 
 $reflection = new \ReflectionClass(User::class);
 
-// Get only Entity metadata
+// Get only Entity attributes
 $entities = $reader->getClassMetadata($reflection, Entity::class); 
 foreach ($entities as $entity) {
     echo $entity->getTable(); // Access Entity properties
 }
 ```
 
-**Get single metadata instance:**
+**Get single attribute instance:**
 
 ```php
 use Cycle\Annotated\Annotation\Entity;
 
 $reflection = new \ReflectionClass(User::class);
 
-// Get first Entity metadata or null
+// Get first Entity attribute or null
 $entity = $reader->firstClassMetadata($reflection, Entity::class); 
 if ($entity !== null) {
     echo $entity->getTable();
 }
 ```
 
-**Trait metadata support (since v2.10.0):**
+**Trait attribute support (since v2.10.0):**
 
-Metadata from traits is automatically included when reading class metadata:
-
-:::: tabs
-
-::: tab PHP Attributes
+Attributes from traits are automatically included when reading class attributes:
 
 ```php
 use Cycle\Annotated\Annotation\Entity;
@@ -275,75 +239,26 @@ trait TimestampTrait
 ```php
 $reflection = new \ReflectionClass(User::class);
 
-// Returns Entity, CreatedAt, UpdatedAt metadata
-$metadata = $reader->getClassMetadata($reflection);
+// Returns Entity, CreatedAt, UpdatedAt attributes
+$attributes = $reader->getClassMetadata($reflection);
 ```
 
-:::
+### Property Attributes
 
-::: tab Doctrine Annotations
-
-```php
-use Cycle\Annotated\Annotation\Entity;
-use Cycle\Annotated\Annotation\Column;
-use App\Behavior\CreatedAt;
-use App\Behavior\UpdatedAt;
-
-/**
- * @Entity(table="entities")
- */
-class User
-{
-    use TimestampTrait;
-}
-
-/**
- * @CreatedAt
- * @UpdatedAt
- */
-trait TimestampTrait
-{
-    /**
-     * @Column(type="datetime")
-     */
-    private \DateTimeImmutable $createdAt;
-
-    /**
-     * @Column(type="datetime", nullable=true)
-     */
-    private ?\DateTimeImmutable $updatedAt = null;
-}
-```
-
-```php
-$reflection = new \ReflectionClass(User::class);
-
-// Returns Entity, CreatedAt, UpdatedAt annotations
-$metadata = $reader->getClassMetadata($reflection);
-```
-
-:::
-
-::::
-
-### Property Metadata
-
-Read metadata from class properties to configure field behavior:
-
-**Basic usage:**
+Read attributes from class properties to configure field behavior:
 
 ```php
 use Cycle\Annotated\Annotation\Column;
 
 $reflection = new \ReflectionProperty(User::class, 'email');
 
-// Get all property metadata
-$metadata = $reader->getPropertyMetadata($reflection);
+// Get all property attributes
+$attributes = $reader->getPropertyMetadata($reflection);
 
-// Get specific metadata type
+// Get specific attribute type
 $columns = $reader->getPropertyMetadata($reflection, Column::class);
 
-// Get first matching metadata
+// Get first matching attribute
 $column = $reader->firstPropertyMetadata($reflection, Column::class);
 if ($column !== null) {
     echo $column->getType(); // string
@@ -351,24 +266,22 @@ if ($column !== null) {
 }
 ```
 
-### Function Metadata
+### Function Attributes
 
-Read metadata from methods and functions to configure behavior or route registration:
-
-**Basic usage:**
+Read attributes from methods and functions to configure behavior or route registration:
 
 ```php
 use Spiral\Router\Annotation\Route;
 
 $reflection = new \ReflectionMethod(UserController::class, 'list');
 
-// Get all method metadata
-$metadata = $reader->getFunctionMetadata($reflection);
+// Get all method attributes
+$attributes = $reader->getFunctionMetadata($reflection);
 
-// Get specific metadata type
+// Get specific attribute type
 $routes = $reader->getFunctionMetadata($reflection, Route::class);
 
-// Get first matching metadata
+// Get first matching attribute
 $route = $reader->firstFunctionMetadata($reflection, Route::class);
 if ($route !== null) {
     echo $route->getPath(); // /users
@@ -381,18 +294,16 @@ if ($route !== null) {
 ```php
 // For class methods
 $methodReflection = new \ReflectionMethod(SomeClass::class, 'someMethod');
-$metadata = $reader->getFunctionMetadata($methodReflection);
+$attributes = $reader->getFunctionMetadata($methodReflection);
 
 // For standalone functions
 $functionReflection = new \ReflectionFunction('someFunction');
-$metadata = $reader->getFunctionMetadata($functionReflection);
+$attributes = $reader->getFunctionMetadata($functionReflection);
 ```
 
-### Constant Metadata
+### Constant Attributes
 
-Read metadata from class constants (PHP 8.0+):
-
-**Basic usage:**
+Read attributes from class constants (PHP 8.0+):
 
 ```php
 use App\Metadata\Deprecated;
@@ -407,10 +318,10 @@ class StatusCodes
 
 $reflection = new \ReflectionClassConstant(StatusCodes::class, 'STATUS_OK');
 
-// Get all constant metadata
-$metadata = $reader->getConstantMetadata($reflection);
+// Get all constant attributes
+$attributes = $reader->getConstantMetadata($reflection);
 
-// Get first matching metadata
+// Get first matching attribute
 $deprecated = $reader->firstConstantMetadata($reflection, Deprecated::class);
 if ($deprecated !== null) {
     echo $deprecated->getSince(); // 2.0
@@ -418,11 +329,9 @@ if ($deprecated !== null) {
 }
 ```
 
-### Parameter Metadata
+### Parameter Attributes
 
-Read metadata from function/method parameters for validation or injection configuration:
-
-**Basic usage:**
+Read attributes from function/method parameters for validation or injection configuration:
 
 ```php
 use App\Validation\Email;
@@ -438,13 +347,13 @@ function sendEmail(
 
 $reflection = new \ReflectionParameter('sendEmail', 'to');
 
-// Get all parameter metadata
-$metadata = $reader->getParameterMetadata($reflection);
+// Get all parameter attributes
+$attributes = $reader->getParameterMetadata($reflection);
 
-// Get specific metadata types
+// Get specific attribute types
 $validators = $reader->getParameterMetadata($reflection, NotEmpty::class);
 
-// Get first matching metadata
+// Get first matching attribute
 $emailValidator = $reader->firstParameterMetadata($reflection, Email::class);
 ```
 
@@ -462,20 +371,14 @@ class EmailService
 }
 
 $reflection = new \ReflectionParameter([EmailService::class, 'send'], 'to');
-$metadata = $reader->getParameterMetadata($reflection);
+$attributes = $reader->getParameterMetadata($reflection);
 ```
 
-## Creating Metadata Classes
+## Creating Attribute Classes
 
-Define custom metadata classes that work with both PHP attributes and Doctrine annotations:
-
-**Hybrid syntax (PHP 7.2 - 8.x compatible):**
+Define custom attribute classes for your application:
 
 ```php
-/**
- * @Annotation
- * @Target({"CLASS"})
- */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Table
 {
@@ -486,53 +389,30 @@ class Table
 }
 ```
 
-This metadata class works on any PHP version:
-
-:::: tabs
-
-::: tab PHP Attributes (8.0+)
+**Usage:**
 
 ```php
 #[Table(name: 'users', database: 'main')] 
 class User {}
 ```
 
-:::
+### Attribute Targets
 
-::: tab Doctrine Annotations (7.2+)
+Specify where your attributes can be applied using the `#[\Attribute]` declaration:
 
-```php
-/**
- * @Table(name="users", database="main")
- */
-class User {}
-```
-
-:::
-
-::::
-
-**Attribute targets:**
-
-Specify where your metadata can be applied using the `@Target` annotation and `#[\Attribute]` flags:
-
-| Target Constant         | Applies To | Doctrine Annotation      | PHP Attribute                       |
-|-------------------------|------------|--------------------------|-------------------------------------|
-| `TARGET_CLASS`          | Classes    | `@Target({"CLASS"})`     | `\Attribute::TARGET_CLASS`          |
-| `TARGET_METHOD`         | Methods    | `@Target({"METHOD"})`    | `\Attribute::TARGET_METHOD`         |
-| `TARGET_PROPERTY`       | Properties | `@Target({"PROPERTY"})`  | `\Attribute::TARGET_PROPERTY`       |
-| `TARGET_FUNCTION`       | Functions  | `@Target({"FUNCTION"})`  | `\Attribute::TARGET_FUNCTION`       |
-| `TARGET_PARAMETER`      | Parameters | `@Target({"PARAMETER"})` | `\Attribute::TARGET_PARAMETER`      |
-| `TARGET_CLASS_CONSTANT` | Constants  | N/A                      | `\Attribute::TARGET_CLASS_CONSTANT` |
-| `TARGET_ALL`            | All        | `@Target({"ALL"})`       | `\Attribute::TARGET_ALL`            |
+| Target Constant         | Applies To | Example                                            |
+|-------------------------|------------|----------------------------------------------------|
+| `TARGET_CLASS`          | Classes    | `#[\Attribute(\Attribute::TARGET_CLASS)]`          |
+| `TARGET_METHOD`         | Methods    | `#[\Attribute(\Attribute::TARGET_METHOD)]`         |
+| `TARGET_PROPERTY`       | Properties | `#[\Attribute(\Attribute::TARGET_PROPERTY)]`       |
+| `TARGET_FUNCTION`       | Functions  | `#[\Attribute(\Attribute::TARGET_FUNCTION)]`       |
+| `TARGET_PARAMETER`      | Parameters | `#[\Attribute(\Attribute::TARGET_PARAMETER)]`      |
+| `TARGET_CLASS_CONSTANT` | Constants  | `#[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]` |
+| `TARGET_ALL`            | All        | `#[\Attribute(\Attribute::TARGET_ALL)]`            |
 
 **Multiple targets example:**
 
 ```php
-/**
- * @Annotation
- * @Target({"CLASS", "METHOD", "PROPERTY"})
- */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 class Cached
 {
@@ -542,318 +422,145 @@ class Cached
 }
 ```
 
-## Instantiation Strategies
+### Repeatable Attributes
 
-The Attributes SDK supports multiple ways to instantiate metadata classes. Understanding these patterns helps you choose
-the right approach for your use case.
-
-### Property-Based Instantiation (Doctrine Style)
-
-Public properties are automatically populated from metadata arguments:
+Allow the same attribute to be used multiple times on a single element:
 
 ```php
-/**
- * @Annotation
- */
-#[\Attribute]
-class Route
-{
-    public string $path;
-    public array $methods = ['GET'];
-    public ?string $name = null;
-}
-```
-
-**Usage:**
-
-```php
-#[Route(path: '/users', methods: ['GET', 'POST'], name: 'user.list')]
-class UserController {}
-```
-
-> **See also**
-> [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
-
-### Array-Based Constructor Instantiation
-
-When a constructor accepts an array parameter, all arguments are passed as a single array:
-
-```php
-/**
- * @Annotation
- */
-#[\Attribute]
-class Validation
-{
-    private array $rules;
-    
-    public function __construct(array $data)
-    {
-        // $data = ['min' => 5, 'max' => 100]
-        $this->rules = $data;
-    }
-}
-```
-
-**Usage:**
-
-```php
-#[Validation(min: 5, max: 100)]
-private int $age;
-```
-
-> **See also**
-> [Doctrine Custom Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/1.10/custom.html#custom-annotation-classes)
-
-### Named Arguments Constructor (Recommended)
-
-Use named constructor parameters for better IDE support and type safety. Mark the class using either an interface or
-metadata attribute.
-
-**Using interface marker (requires spiral/attributes):**
-
-```php
-use Spiral\Attributes\NamedArgumentConstructorAttribute;
-
-/**
- * @Annotation
- */
-#[\Attribute]
-class Column implements NamedArgumentConstructorAttribute
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+class Tag
 {
     public function __construct(
-        public string $type,
-        public bool $nullable = false,
-        public ?int $length = null,
+        public string $name,
     ) {}
 }
 ```
 
-**Using metadata marker (framework-independent):**
+**Usage:**
 
 ```php
-use Spiral\Attributes\NamedArgumentConstructor;
+#[Tag('api')]
+#[Tag('v1')]
+#[Tag('user-management')]
+class UserController {}
+```
 
-/**
- * @Annotation
- * @NamedArgumentConstructor
- */
-#[\Attribute]
-#[NamedArgumentConstructor]
+## Attribute Design Patterns
+
+### Named Arguments Constructor (Recommended)
+
+Use named constructor parameters for better IDE support and type safety:
+
+```php
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Column
 {
     public function __construct(
         public string $type,
         public bool $nullable = false,
         public ?int $length = null,
+        public bool $unique = false,
     ) {}
 }
 ```
 
-**Usage:**
+**Usage with named arguments:**
 
 ```php
-#[Column(type: 'string', length: 255)]
+#[Column(type: 'string', length: 255, unique: true)]
 private string $email;
 
 #[Column(type: 'integer', nullable: true)]
 private ?int $age;
 ```
 
-**Benefits of named arguments:**
+**Benefits:**
 
 - IDE autocomplete and type hints
 - Clear parameter names at usage site
 - Optional parameters with defaults
-- No dependency on `spiral/attributes` when using metadata marker
+- Compile-time validation
+
+### Property-Based Pattern
+
+Use public properties for simple data containers:
+
+```php
+#[\Attribute(\Attribute::TARGET_METHOD)]
+class Route
+{
+    public string $path;
+    public array $methods = ['GET'];
+    public ?string $name = null;
+    
+    public function __construct(
+        string $path,
+        array $methods = ['GET'],
+        ?string $name = null,
+    ) {
+        $this->path = $path;
+        $this->methods = $methods;
+        $this->name = $name;
+    }
+}
+```
+
+### Validation in Attributes
+
+Add validation logic in attribute constructors:
+
+```php
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
+class Range
+{
+    public function __construct(
+        public int $min,
+        public int $max,
+    ) {
+        if ($min > $max) {
+            throw new \InvalidArgumentException('Min cannot be greater than max');
+        }
+    }
+}
+```
 
 ## Reader Implementations
 
-Choose the appropriate reader based on your project's needs:
+The component provides several reader implementations:
+
+### AttributeReader
+
+The default and recommended reader for PHP 8+ attributes:
+
+```php
+use Spiral\Attributes\AttributeReader;
+
+$reader = new AttributeReader();
+
+$attributes = $reader->getClassMetadata(new \ReflectionClass(User::class));
+```
 
 ### Factory (Recommended)
 
-The `Factory` class automatically selects the best reader implementation and configures caching:
+Use the factory to create a properly configured reader:
 
 ```php
 use Spiral\Attributes\Factory;
 
-// Create default reader (SelectiveReader with both annotation and attribute support)
+// Create default reader
 $reader = (new Factory())->create();
 
-// With PSR-6 or PSR-16 cache
+// With cache
 $reader = (new Factory())
     ->withCache($cacheImplementation)
     ->create();
 ```
 
-**Default behavior:**
-
-- Returns `SelectiveReader` that tries attributes first, then annotations
-- Automatically includes `AnnotationReader` if `doctrine/annotations` is installed
-- Configures common ignored annotation names (e.g., `@mixin`, `@note`)
-
-### AttributeReader
-
-Reads native PHP 8+ attributes. Works on any PHP version but only reads attribute syntax:
-
-```php
-use Spiral\Attributes\AttributeReader;
-
-#[ExampleAttribute]
-class Example {}
-
-$reader = new AttributeReader();
-
-$attributes = $reader->getClassMetadata(new \ReflectionClass(Example::class));
-// Returns: iterable<ExampleAttribute>
-```
-
-**Use when:**
-
-- Your project uses PHP 8+ attributes exclusively
-- You don't need Doctrine annotation compatibility
-- You want maximum performance (no annotation parsing overhead)
-
-### AnnotationReader (Legacy)
-
-Reads Doctrine annotations. Requires `doctrine/annotations` package:
-
-```php
-use Spiral\Attributes\AnnotationReader;
-
-/**
- * @ExampleAnnotation
- */
-class Example {}
-
-$reader = new AnnotationReader();
-
-$annotations = $reader->getClassMetadata(new \ReflectionClass(Example::class));
-// Returns: iterable<ExampleAnnotation>
-```
-
-**Use when:**
-
-- Maintaining legacy codebases with Doctrine annotations
-- Gradual migration from annotations to attributes
-- Working with libraries that only support annotations
-
-> **Note**
-> Requires `composer require doctrine/annotations`
-
-### SelectiveReader
-
-Automatically chooses between attributes and annotations based on what's present. Best for migration scenarios:
-
-**Example classes:**
-
-:::: tabs
-
-::: tab PHP Attributes
-
-```php
-#[ExampleAttribute]
-class ClassWithAttributes {}
-```
-
-:::
-
-::: tab Doctrine Annotations
-
-```php
-/** 
- * @ExampleAnnotation 
- */
-class ClassWithAnnotations {}
-```
-
-:::
-
-::::
-
-**Reader setup:**
-
-```php
-use Spiral\Attributes\Composite\SelectiveReader;
-use Spiral\Attributes\AnnotationReader;
-use Spiral\Attributes\AttributeReader;
-
-$reader = new SelectiveReader([
-    new AttributeReader(),
-    new AnnotationReader(),
-]);
-
-// Reads attributes from ClassWithAttributes
-$attributes = $reader->getClassMetadata(
-    new \ReflectionClass(ClassWithAttributes::class)
-);
-
-// Reads annotations from ClassWithAnnotations
-$annotations = $reader->getClassMetadata(
-    new \ReflectionClass(ClassWithAnnotations::class)
-);
-```
-
-**Use when:**
-
-- Migrating from Doctrine annotations to PHP attributes
-- Different classes use different metadata syntax
-- You want automatic detection of metadata format
-
-> **Note**
-> If both attributes and annotations are present on the same element, behavior is non-deterministic (first reader wins).
-
-### MergeReader
-
-Combines metadata from multiple readers. Useful when working with mixed libraries:
-
-**Example class with both:**
-
-```php
-/**
- * @DoctrineAnnotation
- */
-#[NativeAttribute]
-class ExampleClass {}
-```
-
-**Reader setup:**
-
-```php
-use Spiral\Attributes\Composite\MergeReader;
-use Spiral\Attributes\AnnotationReader;
-use Spiral\Attributes\AttributeReader;
-
-$reader = new MergeReader([
-    new AttributeReader(),
-    new AnnotationReader(),
-]);
-
-$metadata = $reader->getClassMetadata(new \ReflectionClass(ExampleClass::class));
-// Returns: iterable containing both DoctrineAnnotation and NativeAttribute
-```
-
-**Use when:**
-
-- Working with multiple libraries requiring different metadata formats
-- You need all metadata from all sources combined
-- Integrating legacy and modern components
-
-**Comparison table:**
-
-| Reader             | Reads Attributes | Reads Annotations | Combines Both   | Best For                 |
-|--------------------|------------------|-------------------|-----------------|--------------------------|
-| `AttributeReader`  | ✅                | ❌                 | ❌               | Modern PHP 8+ projects   |
-| `AnnotationReader` | ❌                | ✅                 | ❌               | Legacy Doctrine projects |
-| `SelectiveReader`  | ✅                | ✅                 | ❌ (first found) | Migration scenarios      |
-| `MergeReader`      | ✅                | ✅                 | ✅               | Mixed library ecosystems |
-
 ## Performance Optimization with Caching
 
-Metadata reading involves reflection and parsing, which can be expensive. Use caching for production environments.
+Attribute reading involves reflection, which can be expensive. Use caching for production environments.
 
-### PSR-6 Cache (Symfony Cache, etc.)
+### PSR-6 Cache
 
 ```php
 use Spiral\Attributes\Psr6CachedReader;
@@ -867,13 +574,13 @@ $reader = new Psr6CachedReader(
 );
 
 // First call: reads and caches
-$metadata = $reader->getClassMetadata(new \ReflectionClass(User::class));
+$attributes = $reader->getClassMetadata(new \ReflectionClass(User::class));
 
 // Subsequent calls: returns from cache
-$metadata = $reader->getClassMetadata(new \ReflectionClass(User::class));
+$attributes = $reader->getClassMetadata(new \ReflectionClass(User::class));
 ```
 
-### PSR-16 Cache (Simple Cache)
+### PSR-16 Cache
 
 ```php
 use Spiral\Attributes\Psr16CachedReader;
@@ -887,12 +594,12 @@ $reader = new Psr16CachedReader(
     $cache
 );
 
-$metadata = $reader->getClassMetadata(new \ReflectionClass(User::class));
+$attributes = $reader->getClassMetadata(new \ReflectionClass(User::class));
 ```
 
 ### Factory with Cache
 
-The simplest approach using the factory:
+The simplest approach:
 
 ```php
 use Spiral\Attributes\Factory;
@@ -902,33 +609,65 @@ $reader = (new Factory())
     ->create();
 ```
 
-### Cache Key Generation
-
-By default, cached readers generate keys using:
-
-- File modification time (for user-defined classes)
-- Extension version (for built-in classes)
-- Unique reflection identifiers
-
-**Custom key generation:**
-
-```php
-use Spiral\Attributes\Psr6CachedReader;
-use Spiral\Attributes\Internal\Key\NameKeyGenerator;
-
-$reader = new Psr6CachedReader(
-    new AttributeReader(),
-    $cache,
-    new NameKeyGenerator() // Only class/method names, no modification time
-);
-```
-
 **Performance considerations:**
 
 - Cache increases read performance by 10-100x for repeated access
 - Cache keys automatically invalidate when source files change
 - Disable cache in development for immediate reflection of code changes
 - Essential for production where classes are stable
+
+## Discovering Classes with Attributes
+
+For automatic discovery of classes with specific attributes, use the [Tokenizer component](./tokenizer.md).
+
+The Tokenizer can scan your codebase to find all classes that use specific attributes, making it perfect for:
+
+- Automatic route registration
+- Event listener discovery
+- Command registration
+- Plugin/module discovery
+
+**Example using Tokenizer:**
+
+```php
+use Spiral\Tokenizer\TokenizationListenerInterface;
+use Spiral\Attributes\ReaderInterface;
+
+#[\Spiral\Tokenizer\Attribute\TargetAttribute(Route::class)]
+class RouteListener implements TokenizationListenerInterface
+{
+    private array $routes = [];
+
+    public function __construct(
+        private readonly ReaderInterface $reader
+    ) {}
+    
+    public function listen(\ReflectionClass $class): void
+    {
+        foreach ($class->getMethods() as $method) {
+            $route = $this->reader->firstFunctionMetadata($method, Route::class);
+
+            if ($route !== null) {
+                $this->routes[] = [
+                    'path' => $route->path,
+                    'handler' => [$class->getName(), $method->getName()],
+                ];
+            }
+        }
+    }
+
+    public function finalize(): void
+    {
+        // Register all discovered routes
+        foreach ($this->routes as $route) {
+            // Add to router
+        }
+    }
+}
+```
+
+> **See also**
+> [Component — Static analysis](./tokenizer.md) for detailed information on class discovery and automatic registration.
 
 ## Practical Examples
 
@@ -1001,13 +740,21 @@ class EntityValidator
     
     private function checkValidator(object $validator, \ReflectionProperty $property, object $entity): bool
     {
-        // Validation logic
-        return true;
+        // Validation logic based on validator type
+        $property->setAccessible(true);
+        $value = $property->getValue($entity);
+        
+        return match (true) {
+            $validator instanceof NotEmpty => !empty($value),
+            $validator instanceof Email => filter_var($value, FILTER_VALIDATE_EMAIL) !== false,
+            $validator instanceof MinLength => strlen($value) >= $validator->length,
+            default => true,
+        };
     }
 }
 ```
 
-### Event Listener Registration
+### Event Listener Discovery
 
 ```php
 use Spiral\Attributes\ReaderInterface;
@@ -1038,17 +785,65 @@ class ListenerRegistrar
             }
         }
         
+        // Sort by priority
+        foreach ($listeners as &$eventListeners) {
+            usort($eventListeners, fn($a, $b) => $b['priority'] <=> $a['priority']);
+        }
+        
         return $listeners;
+    }
+}
+```
+
+### Dependency Injection Configuration
+
+```php
+#[\Attribute(\Attribute::TARGET_PARAMETER)]
+class Inject
+{
+    public function __construct(
+        public ?string $id = null,
+    ) {}
+}
+
+class ServiceFactory
+{
+    public function __construct(
+        private readonly ReaderInterface $reader,
+        private readonly ContainerInterface $container,
+    ) {}
+    
+    public function createInstance(string $class): object
+    {
+        $reflection = new \ReflectionClass($class);
+        $constructor = $reflection->getConstructor();
+        
+        if ($constructor === null) {
+            return new $class();
+        }
+        
+        $args = [];
+        foreach ($constructor->getParameters() as $parameter) {
+            $inject = $this->reader->firstParameterMetadata($parameter, Inject::class);
+            
+            if ($inject !== null) {
+                $args[] = $this->container->get($inject->id ?? $parameter->getType()->getName());
+            } else {
+                $args[] = $this->container->get($parameter->getType()->getName());
+            }
+        }
+        
+        return $reflection->newInstanceArgs($args);
     }
 }
 ```
 
 ## Best Practices
 
-**Use specific metadata filtering:**
+**Use specific attribute filtering:**
 
 ```php
-// ❌ Avoid: Reading all metadata when you need specific type
+// ❌ Avoid: Reading all attributes when you need specific type
 $all = $reader->getClassMetadata($reflection);
 foreach ($all as $item) {
     if ($item instanceof Entity) {
@@ -1072,73 +867,91 @@ $reader = (new Factory())
     ->create();
 ```
 
-**Handle missing metadata gracefully:**
+**Handle missing attributes gracefully:**
 
 ```php
 // ✅ Always check for null
 $entity = $reader->firstClassMetadata($reflection, Entity::class);
 if ($entity === null) {
-    throw new \RuntimeException('Entity metadata required');
+    throw new \RuntimeException('Entity attribute required on ' . $reflection->getName());
 }
 ```
 
-**Use appropriate reader for your use case:**
+**Validate in attribute constructors:**
 
 ```php
-// Modern project: AttributeReader
-$reader = new AttributeReader();
+#[\Attribute]
+class Range
+{
+    public function __construct(
+        public int $min,
+        public int $max,
+    ) {
+        if ($min > $max) {
+            throw new \InvalidArgumentException('min must be less than or equal to max');
+        }
+    }
+}
+```
 
-// Legacy project: AnnotationReader  
-$reader = new AnnotationReader();
+**Use descriptive attribute names:**
 
-// Migration phase: SelectiveReader via Factory
-$reader = (new Factory())->create();
+```php
+// ❌ Avoid: Generic names
+#[Config('table', 'users')]
 
-// Multiple libraries: MergeReader
-$reader = new MergeReader([/* readers */]);
+// ✅ Prefer: Specific, clear names
+#[Table(name: 'users')]
+```
+
+**Group related attributes:**
+
+```php
+// Create attribute groups for related configuration
+#[Entity(table: 'users')]
+#[HasTimestamps]
+#[SoftDeletes]
+class User {}
 ```
 
 ## Troubleshooting
 
-**Problem: "Class X not found" errors**
+**Problem: "Attribute class not found" errors**
 
-Solution: Ensure metadata classes are autoloaded before reading:
-
-```php
-// Ensure attribute class is loaded
-class_exists(MyAttribute::class, true);
-
-$metadata = $reader->getClassMetadata($reflection);
-```
-
-**Problem: Doctrine annotation parsing errors**
-
-Solution: Configure ignored annotations in your bootloader:
-
-```php![img.png](img.png)
-use Doctrine\Common\Annotations\AnnotationReader;
-
-AnnotationReader::addGlobalIgnoredName('psalm');
-AnnotationReader::addGlobalIgnoredName('phpstan');
-AnnotationReader::addGlobalIgnoredName('internal');
-```
-
-**Problem: Cache not invalidating**
-
-Solution: Verify file modification detection:
+Solution: Ensure attribute classes are autoloaded:
 
 ```php
-// Default key generator includes modification time
-$reader = new Psr6CachedReader(
-    new AttributeReader(),
-    $cache,
-    null // Uses default: NameKeyGenerator + ModificationTimeKeyGenerator
-);
+// Verify class exists before reading
+if (!class_exists(MyAttribute::class)) {
+    throw new \RuntimeException('Attribute class not found: ' . MyAttribute::class);
+}
+
+$attributes = $reader->getClassMetadata($reflection);
+```
+
+**Problem: Attributes not being detected**
+
+Solution: Verify attribute target matches usage:
+
+```php
+// Wrong: Attribute declared for TARGET_CLASS
+#[\Attribute(\Attribute::TARGET_CLASS)]
+class MyAttribute {}
+
+// Used on method - won't work!
+class Example {
+    #[MyAttribute] // Error: attribute target mismatch
+    public function method() {}
+}
+
+// Correct: Use appropriate target
+#[\Attribute(\Attribute::TARGET_METHOD)]
+class MyAttribute {}
 ```
 
 **Problem: Performance issues**
 
-Solution: Use caching and specific filtering:
+Solution: Enable caching and use specific filtering:
 
 ```php
 // Enable cache
@@ -1146,5 +959,39 @@ $reader = (new Factory())->withCache($cache)->create();
 
 // Use specific type filtering
 $entity = $reader->firstClassMetadata($class, Entity::class);
-// Instead of getClassMetadata() with manual filtering
 ```
+
+**Problem: Attribute constructor errors**
+
+Solution: Use named arguments for clarity:
+
+```php
+// ❌ Avoid: Positional arguments are error-prone
+#[Route('/users', ['GET', 'POST'])]
+
+// ✅ Prefer: Named arguments are clear
+#[Route(path: '/users', methods: ['GET', 'POST'])]
+```
+
+## Migration from Doctrine Annotations
+
+If you're migrating from Doctrine annotations to PHP attributes:
+
+1. **Update PHP version**: Requires PHP 8.0+
+2. **Convert annotation syntax**:
+   ```php
+   // Old (Doctrine annotation)
+   /**
+    * @Entity(table="users")
+    */
+   class User {}
+   
+   // New (PHP attribute)
+   #[Entity(table: 'users')]
+   class User {}
+   ```
+3. **Update attribute classes**: Remove `@Annotation` doc comments, add `#[\Attribute]`
+4. **Test thoroughly**: Attributes have different parsing rules than annotations
+
+For projects still using Doctrine annotations, consider the legacy compatibility features in previous versions of this
+component, though migration to native PHP attributes is recommended.
