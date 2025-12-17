@@ -256,7 +256,6 @@ final class Ping extends JobHandler
 }
 ```
 
-
 or using `app/config/queue.php` configuration file.
 
 ```php app/config/queue.php
@@ -498,123 +497,343 @@ Read more about bootloaders in the [Framework — Bootloaders](../framework/boot
 
 ## Retrying Failed Jobs
 
-In distributed systems, sometimes jobs fail due to temporary glitches like network errors. Spiral ensures these jobs
-aren't lost by automatically retrying them.
+In distributed systems, jobs often fail due to temporary issues like network timeouts, rate limits, or database
+deadlocks. Spiral's retry mechanism ensures these jobs are automatically retried without data loss.
 
-### How it works
+### Quick Start
 
-1. **Interceptor's Role:** An interceptor oversees the job execution. If a job fails, it updates the ob's retry count,
-   and signals a `Spiral\Queue\Exception\RetryException`. This way, the job is marked for a retry with the updated
-   details.
+Add the `RetryPolicy` attribute to your job handler:
 
-2. **Consumer's Role:** When a consumer comes across a `RetryException`, it knows the job should be put back to the
-   queue to be retried with the new settings provided in the exception.
+```php app/src/Endpoint/Job/SendEmailJob.php
+use Spiral\Queue\Attribute\RetryPolicy;
+use Spiral\Queue\JobHandler;
+
+#[RetryPolicy(maxAttempts: 3, delay: 5, multiplier: 2)]
+final class SendEmailJob extends JobHandler
+{
+    public function invoke(array $payload): void
+    {
+        // If this throws an exception, the job will be retried
+        $this->mailer->send($payload['email'], $payload['message']);
+    }
+}
+```
+
+This configuration will retry the job up to 3 times with exponential backoff:
+
+- First retry: after 5 seconds
+- Second retry: after 10 seconds (5 * 2^1)
+- Third retry: after 20 seconds (5 * 2^2)
+
+### How Retries Work
+
+The retry mechanism consists of three components:
+
+1. **RetryPolicyInterceptor** — Catches exceptions during job execution and evaluates retry policies
+2. **Retry Policy** — Determines whether to retry and calculates delay
+3. **Queue Driver** — Re-queues the job with updated options
+
+When a job fails:
+
+1. The interceptor catches the exception
+2. It checks for a retry policy (from attribute or exception)
+3. If retryable, it increments the attempt counter
+4. It calculates the delay based on the policy
+5. It throws a `RetryException` with the new delay
+6. The consumer re-queues the job with the updated delay and attempt count
 
 ### Configuration
 
-To get this mechanism up and running, make a few tweaks in the `app/config/queue.php` configuration file. By default,
-interceptor is turned on. But, if you've changed the `interceptors` section in your config, remember to include
-the `Spiral\Queue\Interceptor\Consume\RetryPolicyInterceptor` as shown:
+The `RetryPolicyInterceptor` is enabled by default. Verify it's configured in your `app/config/queue.php`:
 
 ```php app/config/queue.php
 use Spiral\Queue\Interceptor\Consume\RetryPolicyInterceptor;
+use Spiral\Queue\Interceptor\Consume\ErrorHandlerInterceptor;
 
 return [    
     'interceptors' => [
-        'push' => [
-            // ...
-        ],
         'consume' => [
-            RetryPolicyInterceptor::class
+            ErrorHandlerInterceptor::class,    // Handles failed jobs
+            RetryPolicyInterceptor::class,     // Handles retries
         ],
     ],
-    // ...
 ];
 ```
 
 > **See more**
 > Read more about interceptors in the [Queue — Interceptors](./interceptors.md) section.
 
-### Usage
+### Retry Methods
 
-There are two primary methods to use this retry system:
+Spiral provides multiple ways to configure retry behavior:
 
-#### `Spiral\Queue\Attribute\RetryPolicy` attribute
+#### Using RetryPolicy Attribute
 
-You can use `Spiral\Queue\Attribute\RetryPolicy` attribute to specify the retry policy for the job like in the example
-below:
+The `RetryPolicy` attribute is the recommended approach for most use cases:
 
-```php app/src/Endpoint/Job/PingJob.php
+```php
 use Spiral\Queue\Attribute\RetryPolicy;
 use Spiral\Queue\JobHandler;
 
-#[RetryPolicy(maxAttempts: 3, delay: 5, multiplier: 2)]
-final class PingJob extends JobHandler
+#[RetryPolicy(maxAttempts: 5, delay: 10, multiplier: 2.0)]
+final class ApiCallJob extends JobHandler
 {
     public function invoke(array $payload): void
     {
-        // ...
+        $this->api->call($payload['endpoint']);
     }
 }
 ```
 
-In this case if job will fail, it will be automatically re-enqueued with the retry policy specified in the attribute.
+**Parameters:**
 
-#### Using a Custom Exception
+- `maxAttempts` — Maximum number of retry attempts (0 disables retries)
+- `delay` — Initial delay in seconds between retries
+- `multiplier` — Exponential backoff multiplier (1.0 for constant delay)
 
-You can implement `Spiral\Queue\Exception\RetryableExceptionInterface` interface in your exception class and throw it
-from your job handler like in the example below:
+#### Using RetryableExceptionInterface
 
-```php app/src/Exception/Job/RetryableException.php
+For fine-grained control based on exception types:
+
+```php app/src/Exception/ApiException.php
 use Spiral\Queue\Exception\RetryableExceptionInterface;
 use Spiral\Queue\RetryPolicy;
+use Spiral\Queue\RetryPolicyInterface;
 
-class RetryableException extends \Exception implements RetryableExceptionInterface
+final class ApiException extends \RuntimeException implements RetryableExceptionInterface
 {
     public function isRetryable(): bool
     {
-        return true;
+        // Only retry server errors (5xx)
+        return $this->getCode() >= 500 && $this->getCode() < 600;
     }
 
     public function getRetryPolicy(): ?RetryPolicyInterface
     {
         return new RetryPolicy(
-            maxAttempts: 3,
-            delay: 5,
-            multiplier: 2
+            maxAttempts: 5,
+            delay: 10,
+            multiplier: 2.0
         );
     }
 }
 ```
 
-And then throw it from your job handler:
+Then use it in your job:
 
-```php app/src/Endpoint/Job/PingJob.php
+```php app/src/Endpoint/Job/ApiCallJob.php
 use Spiral\Queue\JobHandler;
 
-final class PingJob extends JobHandler
+final class ApiCallJob extends JobHandler
 {
     public function invoke(array $payload): void
     {
-        // ...
-        
-        throw new RetryableException('Something went wrong');
+        try {
+            $response = $this->api->call($payload['endpoint']);
+        } catch (\Exception $e) {
+            // Transform to retryable exception
+            throw new ApiException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 }
 ```
 
-If this job encounters the custom exception, it'll know to retry based on the conditions you've set.
+#### Using RetryException
 
-As you can see Spiral offers a robust retry mechanism, easily configurable and adaptable to specific needs. By utilizing
-either the built-in RetryPolicy attribute or crafting a custom exception, you can efficiently dictate how jobs should be
-retried.
+For manual retry control with custom options:
+
+```php app/src/Endpoint/Job/RateLimitedJob.php
+use Spiral\Queue\Exception\RetryException;
+use Spiral\Queue\Options;
+use Spiral\Queue\JobHandler;
+
+final class RateLimitedJob extends JobHandler
+{
+    public function invoke(array $payload): void
+    {
+        if ($this->api->isRateLimited()) {
+            throw new RetryException(
+                reason: 'Rate limit exceeded',
+                options: (new Options())->withDelay(300) // Retry in 5 minutes
+            );
+        }
+        
+        $this->api->call($payload['endpoint']);
+    }
+}
+```
+
+### Tracking Retry Attempts
+
+Access the current attempt number via job headers:
+
+```php
+use Spiral\Queue\JobHandler;
+
+final class ProgressiveJob extends JobHandler
+{
+    public function invoke(array $payload, array $headers): void
+    {
+        $attempt = (int) ($headers['attempts'][0] ?? 0);
+        
+        $this->logger->info('Processing job', [
+            'attempt' => $attempt + 1,
+            'payload' => $payload,
+        ]);
+        
+        // Adjust strategy based on attempt
+        if ($attempt >= 2) {
+            $this->processCautiously($payload);
+        } else {
+            $this->process($payload);
+        }
+    }
+}
+```
+
+### Best Practices
+
+**Make Handlers Idempotent**
+
+Ensure handlers can be safely retried:
+
+```php
+final class ProcessOrderJob extends JobHandler
+{
+    public function invoke(array $payload): void
+    {
+        $orderId = $payload['orderId'];
+        
+        // Check if already processed
+        if ($this->orders->isProcessed($orderId)) {
+            return; // Skip duplicate
+        }
+        
+        // Process and mark atomically
+        $this->orders->processAndMark($orderId);
+    }
+}
+```
+
+**Log Retry Context**
+
+Track retry behavior for monitoring:
+
+```php
+public function invoke(array $payload, string $id, array $headers): void
+{
+    $attempt = (int) ($headers['attempts'][0] ?? 0);
+    
+    if ($attempt > 0) {
+        $this->logger->warning('Job retry', [
+            'job_id' => $id,
+            'attempt' => $attempt + 1,
+            'max_attempts' => 3,
+        ]);
+    }
+    
+    try {
+        $this->process($payload);
+    } catch (\Exception $e) {
+        $this->logger->error('Job failed', [
+            'job_id' => $id,
+            'error' => $e->getMessage(),
+        ]);
+        throw $e;
+    }
+}
+```
+
+> **See more**
+> For understanding retry lifecycle, see [Queue — Job Lifecycle](./lifecycle.md).
 
 ## Events
 
-| Event                            | Description                                                   |
-|----------------------------------|---------------------------------------------------------------|
-| Spiral\Queue\Event\JobProcessing | The Event will be fired `before` the job handler is executed. |
-| Spiral\Queue\Event\JobProcessed  | The Event will be fired `after`  the job handler is executed. |
+The Queue component dispatches events at key points during job processing, enabling monitoring, logging, and custom
+processing logic.
 
-> **Note**
-> To learn more about dispatching events, see the [Events](../advanced/events.md) section in our documentation.
+### Available Events
+
+| Event                              | Description                          | Dispatched When           |
+|------------------------------------|--------------------------------------|---------------------------|
+| `Spiral\Queue\Event\JobProcessing` | Job execution is about to start      | Before handler invocation |
+| `Spiral\Queue\Event\JobProcessed`  | Job execution completed successfully | After handler completes   |
+
+### JobProcessing Event
+
+Dispatched immediately before a job handler is invoked.
+
+```php
+use Spiral\Queue\Event\JobProcessing;
+use Psr\EventDispatcher\ListenerProviderInterface;
+
+final class JobStartedListener
+{
+    public function __construct(
+        private readonly LoggerInterface $logger
+    ) {}
+    
+    public function __invoke(JobProcessing $event): void
+    {
+        $this->logger->info('Job processing started', [
+            'job' => $event->name,
+            'id' => $event->id,
+            'queue' => $event->queue,
+            'driver' => $event->driver,
+            'payload' => $event->payload,
+            'headers' => $event->headers,
+        ]);
+    }
+}
+```
+
+### JobProcessed Event
+
+Dispatched after a job handler completes successfully.
+
+```php
+use Spiral\Queue\Event\JobProcessed;
+
+final class JobCompletedListener
+{
+    public function __construct(
+        private readonly MetricsInterface $metrics
+    ) {}
+    
+    public function __invoke(JobProcessed $event): void
+    {
+        $this->metrics->increment('jobs.completed', [
+            'job' => $event->name,
+            'queue' => $event->queue,
+        ]);
+    }
+}
+```
+
+### Registering Event Listeners
+
+Register event listeners in your bootloader:
+
+```php
+use Spiral\Boot\Bootloader\Bootloader;
+use Psr\EventDispatcher\ListenerProviderInterface;
+use Spiral\Queue\Event\JobProcessing;
+use Spiral\Queue\Event\JobProcessed;
+
+final class QueueEventsBootloader extends Bootloader
+{
+    public function boot(ListenerProviderInterface $provider): void
+    {
+        $provider->listen(JobProcessing::class, JobStartedListener::class);
+        $provider->listen(JobProcessed::class, JobCompletedListener::class);
+    }
+}
+```
+
+> **See more**
+> For understanding when events are dispatched, see [Queue — Job Lifecycle](./lifecycle.md).
+> To learn more about the event system, see [Events](../advanced/events.md).
