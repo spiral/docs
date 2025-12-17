@@ -90,6 +90,7 @@
       "http/middleware": "Middleware",
       "http/cookies": "Cookies",
       "http/csrf": "CSRF protection",
+      "http/openapi": "OpenAPI Documentation",
       "http/errors": "Error Pages",
       "http/interceptors": "Interceptors"
     }
