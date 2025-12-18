@@ -41,7 +41,7 @@ use Throwable;
 
 final class Handler extends ExceptionHandler
 {
-    // ...
+    // Custom configuration and methods
 }
 ```
 
@@ -61,6 +61,8 @@ $app = Kernel::create(
 // ...
 ```
 
+#### Customization Points
+
 When a handler is initialized, it will call the `bootBasicHandlers` method, which is one of the ways to customize the
 handler. This method is used to register basic renderers and reporters.
 
@@ -73,7 +75,7 @@ final class Handler extends ExceptionHandler
         
         // Register your renderers and reporters here
         // $this->addRenderer(new MyRenderer());
-        // $this->addRenderer(new MyReporter());
+        // $this->addReporter(new MyReporter());
     }
 }
 ```
@@ -113,6 +115,10 @@ final class Handler extends ExceptionHandler
     }
 }
 ```
+
+> **Note**
+> This manual approach to filtering exceptions is still supported but using the [Non-reportable
+> Exceptions](#non-reportable-exceptions) feature is more convenient and maintainable.
 
 ## Exception rendering
 
@@ -355,15 +361,40 @@ The bridge provides several built-in renderers for displaying errors:
 
 ### Verbosity Levels
 
-The verbosity level can be used to control the amount of information that is displayed when an exception is rendered.
-You can set `VERBOSITY_LEVEL` in `.env` file:
+The verbosity level controls the amount of information displayed when an exception is rendered. Spiral provides three
+levels through the `Spiral\Exceptions\Verbosity` enum.
+
+You can configure the verbosity level using the `VERBOSITY_LEVEL` environment variable:
 
 ```dotenv .env
 # Verbosity level
-VERBOSITY_LEVEL=verbose # basic, verbose, debug
+VERBOSITY_LEVEL=verbose # basic, verbose, or debug
 ```
 
-The possible values are defined by the `Spiral\Exceptions\Verbosity` enum:
+The `Verbosity` enum implements `InjectableEnumInterface`, which means it can be automatically injected into your
+classes based on the environment configuration:
+
+```php
+use Spiral\Exceptions\Verbosity;
+use Spiral\Exceptions\ExceptionRendererInterface;
+
+class CustomRenderer implements ExceptionRendererInterface
+{
+    public function __construct(
+        private readonly Verbosity $verbosity,
+    ) {}
+    
+    public function render(\Throwable $exception, ?Verbosity $verbosity = null, ?string $format = null): string
+    {
+        // Use injected verbosity as default if none provided
+        $verbosity ??= $this->verbosity;
+        
+        // Rendering logic...
+    }
+}
+```
+
+The available verbosity levels are:
 
 #### basic or 0
 
@@ -423,6 +454,98 @@ Imagine you have a website, and sometimes things don't work as they should. This
 code, like when a file is missing or there's a problem with the database. Reporters help you handle these errors
 effectively.
 
+### Non-reportable Exceptions
+
+Certain exceptions don't require reporting because they're part of normal application flow or represent expected client
+errors. Spiral allows you to exclude specific exceptions from being reported to your error tracking services.
+
+By default, these exceptions are non-reportable:
+
+- `Spiral\Http\Exception\ClientException\BadRequestException`
+- `Spiral\Http\Exception\ClientException\ForbiddenException`
+- `Spiral\Http\Exception\ClientException\NotFoundException`
+- `Spiral\Http\Exception\ClientException\UnauthorizedException`
+- `Spiral\Filters\Exception\AuthorizationException`
+- `Spiral\Filters\Exception\ValidationException`
+
+You can exclude exceptions from reporting in several ways:
+
+#### Using the NonReportable Attribute
+
+Add the `Spiral\Exceptions\Attribute\NonReportable` attribute to any exception class to prevent it from being reported:
+
+```php app/src/Exception/AccessDeniedException.php
+namespace App\Exception;
+
+use Spiral\Exceptions\Attribute\NonReportable;
+
+#[NonReportable]
+class AccessDeniedException extends \Exception
+{
+    // Exception implementation
+}
+```
+
+This approach works automatically—the exception handler checks for this attribute and skips reporting if present.
+
+#### Using the dontReport Method
+
+Register non-reportable exceptions in a bootloader by calling the `dontReport` method:
+
+```php app/src/Application/Bootloader/ExceptionHandlerBootloader.php
+namespace App\Application\Bootloader;
+
+use App\Exception\EntityNotFoundException;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Exceptions\ExceptionHandler;
+
+final class ExceptionHandlerBootloader extends Bootloader
+{
+    public function init(ExceptionHandler $handler): void
+    {
+        $handler->dontReport(EntityNotFoundException::class);
+    }
+}
+```
+
+This method allows you to configure non-reportable exceptions without modifying the exception classes themselves.
+
+#### Extending the ExceptionHandler
+
+For more control, extend the `ExceptionHandler` class and override the `shouldNotReport` method or the
+`nonReportableExceptions` property:
+
+```php app/src/Application/Exception/Handler.php
+namespace App\Application\Exception;
+
+use App\Exception\BusinessLogicException;
+use Spiral\Exceptions\ExceptionHandler;
+
+final class Handler extends ExceptionHandler
+{
+    protected array $nonReportableExceptions = [
+        BusinessLogicException::class,
+        // Add more exception classes here
+    ];
+}
+```
+
+Then configure your custom handler in the application kernel:
+
+```php app.php
+use App\Application\Kernel;
+use App\Application\Exception\Handler;
+
+$app = Kernel::create(
+    directories: ['root' => __DIR__],
+    exceptionHandler: Handler::class,
+)->run();
+```
+
+> **Note**
+> Exception subclasses are also excluded when their parent class is non-reportable. For example, if `ClientException` is
+> non-reportable, all classes extending it will also be excluded from reports.
+
 ### How Reporters Work
 
 #### 1. Implementing `ExceptionReporterInterface` or using a built-in reporters:
@@ -436,6 +559,9 @@ an exception occurs.
 
 ```php app/src/Application/Exception/Reporter/CustomReporter.php
 namespace App\Application\Exception\Reporter;
+
+use Spiral\Exceptions\ExceptionReporterInterface;
+use Psr\Log\LoggerInterface;
 
 final class CustomReporter implements ExceptionReporterInterface
 {
@@ -457,21 +583,56 @@ To use reporters, you first need to register them with the `ExceptionHandler` cl
 using the `addReporter` method and providing an instance of a class that implements
 the `Spiral\Exceptions\ExceptionReporterInterface`.
 
+You can register reporters as class instances or as closures for simple reporting logic:
+
+**Using a reporter class:**
+
 ```php app/src/Application/Bootloader/ExceptionHandlerBootloader.php
 namespace App\Application\Bootloader;
 
+use App\Application\Exception\Reporter\CustomReporter;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Exceptions\ExceptionHandler;
-use App\Application\Exception\Reporter\CustomReporter;
 
 final class ExceptionHandlerBootloader extends Bootloader
 {
-    public function init(ExceptionHandler $handler): void
+    public function init(ExceptionHandler $handler, CustomReporter $reporter): void
     {
-        $handler->addReporter(new CustomReporter());
+        $handler->addReporter($reporter);
     }
 }
 ```
+
+**Using a closure:**
+
+For simple reporting logic, you can register a closure instead of creating a full reporter class:
+
+```php app/src/Application/Bootloader/ExceptionHandlerBootloader.php
+namespace App\Application\Bootloader;
+
+use Psr\Log\LoggerInterface;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Exceptions\ExceptionHandler;
+
+final class ExceptionHandlerBootloader extends Bootloader
+{
+    public function init(ExceptionHandler $handler, LoggerInterface $logger): void
+    {
+        $handler->addReporter(function (\Throwable $exception) use ($logger) {
+            $logger->critical('Critical exception occurred', [
+                'exception' => $exception::class,
+                'message' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+            ]);
+        });
+    }
+}
+```
+
+> **Note**
+> Closures are perfect for simple reporting tasks, while implementing `ExceptionReporterInterface` is better for complex
+> reporting logic that requires dependency injection or multiple methods.
 
 #### 3. Using Reporters in Your Code:
 
@@ -509,7 +670,7 @@ final class PingSiteJob
 ```
 
 > **Note**
-> Reporter will send exception through all registered reporters.
+> Reporter will send an exception through all registered reporters.
 
 ### Available Reporters
 
@@ -554,21 +715,28 @@ about an exception to a file known as `snapshot` in `runtime/snapshots` director
 3. Specify the desired bucket using the `SNAPSHOTS_BUCKET` environment variable where you want to store your snapshots.
 4. Register `Spiral\Exceptions\Reporter\StorageReporter` in the `Spiral\Exceptions\ExceptionHandler` class.
 
-## Sentry integration
+## Sentry Integration
 
-Spiral offers a Sentry bridge package that facilitates effortless integration with the [Sentry](https://sentry.io/)
-service. This document will guide you through the process of integrating and customizing this tool within your Spiral
-application.
+[Sentry](https://sentry.io/) is a powerful error tracking and performance monitoring platform that helps developers
+identify, diagnose, and fix issues in production. Spiral provides a bridge package for seamless integration with
+Sentry.
+
+> **See more**
+> For more information about Sentry features and capabilities, visit
+> the [official Sentry documentation](https://docs.sentry.io/).
 
 ### Installation
 
-1. Install the Sentry bridge component:
+Install the Sentry bridge component:
 
 ```terminal
 composer require spiral/sentry-bridge
 ```
 
-2. Once installed, register `Spiral\Sentry\Bootloader\SentryReporterBootloader` bootloader from the package into your
+After installation, register the bootloader in your application kernel. The bridge provides two bootloaders depending on
+your needs:
+
+**For exception reporting only:**
 
 :::: tabs
 
@@ -603,127 +771,359 @@ Read more about bootloaders in the [Framework — Bootloaders](../framework/boot
 
 ::::
 
-It will register `Spiral\Sentry\SentryReporter` in the `Spiral\Exceptions\ExceptionHandler`.
+**For snapshot creation (full exception dumps to Sentry):**
 
-### Configuration
+If you want exceptions to create detailed snapshots that are sent to Sentry:
 
-All you need to do is to set the `SENTRY_DSN` environment variable to your Sentry DSN.
+:::: tabs
 
-```dotenv .env
-SENTRY_DSN=https://...
+::: tab Using method
+
+```php app/src/Application/Kernel.php
+public function defineBootloaders(): array
+{
+    return [
+        // ...
+        \Spiral\Sentry\Bootloader\SentryBootloader::class,
+        // ...
+    ];
+}
 ```
 
-Since **v2.2** you can also use additional environment variables to configure the reporter:
+:::
 
-- `SENTRY_DSN`: Sentry Data Source Name (DSN).
-- `SENTRY_SAMPLE_RATE`: The rate at which to sample events (e.g., `0.4`).
-- `SENTRY_TRACES_SAMPLE_RATE`: The rate for tracing samples (e.g., `1.0`).
-- `SENTRY_SEND_DEFAULT_PII`: Whether to send default personally identifiable information (`true`/`false`).
-- `SENTRY_ENVIRONMENT`: The environment (e.g., `develop`). You can alternatively use `APP_ENV`.
-- `SENTRY_RELEASE`: Ehe release version (e.g., `1.0.0`). Alternatively, use `APP_VERSION`.
+::: tab Using constant
 
-Here is an example:
-
-```dotenv .env
-SENTRY_DSN=https://...
-SENTRY_SAMPLE_RATE=0.4
-SENTRY_TRACES_SAMPLE_RATE=1.0
-SENTRY_SEND_DEFAULT_PII=false
-
-SENTRY_ENVIRONMENT=develop
-SENTRY_RELEASE=1.0.0
-# or
-APP_ENV=develop
-APP_VERSION=1.0.0
-```
-
-We also provide a way to configure the reporter using `config/sentry.php` file:
-
-```php config/sentry.php
-return [
-  'dsn' => 'http://...',
-  'environment' => 'develop',
-  'release' => '1.0.0',
-  'sample_rate' => 1.0,
-  'traces_sample_rate' => null,
-  'send_default_pii' => true,
+```php app/src/Application/Kernel.php
+protected const LOAD = [
+    // ...
+    \Spiral\Sentry\Bootloader\SentryBootloader::class,
+    // ...
 ];
 ```
 
-### Sentry integrations [Since **v2.2**]
+:::
 
-Since **v2.2** we added support for [Sentry integrations](https://docs.sentry.io/platforms/php/integrations/).
+::::
 
-You can register application-specific integrations via `Spiral\Sentry\Bootloader\ClientBootloader`. This makes it
-straightforward to add custom functionalities tailored to your application's needs.
+> **Note**
+> `SentryReporterBootloader` registers the reporter with the exception handler.
+> `SentryBootloader` additionally registers `SentrySnapshotter` as the snapshot handler, making it the primary
+> snapshotter for the application.
 
-**Example of registering a custom integration:**
+### Configuration
 
-```php app/src/Application/Bootloader/AppBootloader.php
+Configure the Sentry integration using environment variables or a configuration file.
+
+#### Environment Variables
+
+The minimum required configuration is the DSN (Data Source Name):
+
+```dotenv .env
+SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
+```
+
+**Available Environment Variables:**
+
+| Variable | Type | Default | Description |
+|----------|------|---------|-------------|
+| `SENTRY_DSN` | `string` | Required | Sentry Data Source Name from your project settings |
+| `SENTRY_ENVIRONMENT` | `string` | `APP_ENV` value | Environment name (e.g., `production`, `staging`) |
+| `SENTRY_RELEASE` | `string` | `APP_VERSION` value | Release version identifier |
+| `SENTRY_SAMPLE_RATE` | `float` | `1.0` | Error sampling rate (0.0 to 1.0) |
+| `SENTRY_TRACES_SAMPLE_RATE` | `float` | `null` | Performance tracing sample rate (0.0 to 1.0) |
+| `SENTRY_SEND_DEFAULT_PII` | `bool` | `false` | Whether to send personally identifiable information |
+
+**Example configuration:**
+
+```dotenv .env
+SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
+SENTRY_ENVIRONMENT=production
+SENTRY_RELEASE=1.0.0
+SENTRY_SAMPLE_RATE=0.5
+SENTRY_TRACES_SAMPLE_RATE=0.1
+SENTRY_SEND_DEFAULT_PII=false
+```
+
+#### Configuration File
+
+For more advanced configuration, create a `config/sentry.php` file:
+
+```php config/sentry.php
+use Sentry\Event;
+use Sentry\EventHint;
+
+return [
+    'dsn' => env('SENTRY_DSN'),
+    'environment' => 'production',
+    'release' => '1.0.0',
+    'sample_rate' => 1.0,
+    'traces_sample_rate' => 0.1,
+    'send_default_pii' => false,
+    
+    // Exceptions to ignore (won't be sent to Sentry)
+    'ignore_exceptions' => [
+        \Spiral\Http\Exception\ClientException\NotFoundException::class,
+    ],
+    
+    // Callback to modify or filter events before sending
+    'before_send' => function (Event $event, ?EventHint $hint): ?Event {
+        // Filter sensitive data
+        // Return null to prevent sending
+        return $event;
+    },
+];
+```
+
+**Configuration Options:**
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `dsn` | `string` | Sentry project DSN |
+| `environment` | `string\|null` | Deployment environment identifier |
+| `release` | `string\|null` | Application release version |
+| `sample_rate` | `float` | Percentage of errors to send (0.0 = 0%, 1.0 = 100%) |
+| `traces_sample_rate` | `float\|null` | Percentage of transactions to trace for performance monitoring |
+| `send_default_pii` | `bool` | Include personally identifiable information (IP addresses, usernames) |
+| `ignore_exceptions` | `array` | Exception class names to exclude from reporting |
+| `before_send` | `callable\|null` | Callback to modify events before sending: `function(Event, ?EventHint): ?Event` |
+
+> **Note**
+> The `before_send` callback is executed for every event. Return `null` to prevent the event from being sent to Sentry.
+> This is useful for filtering sensitive data or implementing custom filtering logic.
+
+### Sentry SDK Integrations
+
+Sentry uses integrations to extend its functionality. The Spiral bridge automatically configures several integrations
+and allows you to register custom ones.
+
+#### Built-in Integrations
+
+The bridge automatically configures these Sentry integrations:
+
+- **RequestIntegration** - Captures HTTP request data (URL, method, headers, body)
+- **All default Sentry integrations** except:
+    - `ErrorListenerIntegration` (disabled - Spiral handles errors)
+    - `ExceptionListenerIntegration` (disabled - Spiral handles exceptions)
+    - `FatalErrorListenerIntegration` (disabled - Spiral handles fatal errors)
+
+#### Registering Custom Integrations
+
+Register application-specific integrations using the `ClientBootloader`:
+
+```php app/src/Application/Bootloader/SentryBootloader.php
+namespace App\Application\Bootloader;
+
+use Sentry\Integration\IntegrationInterface;
+use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Sentry\Bootloader\ClientBootloader;
 
-use Spiral\Boot\Bootloader\Bootloader;
-
-final class AppBootloader extends Bootloader
+final class SentryBootloader extends Bootloader
 {
-    public function init(ClientBootloader $sentry): void
+    public function init(ClientBootloader $client): void
     {
-        $sentry->addIntegration(new ExceptionContextIntegration());
+        // Register custom integration
+        $client->addIntegration(new CustomIntegration());
     }
 }
 ```
 
-#### HTTP Request integration
+**Available integrations from Sentry SDK:**
 
-Sentry will automatically collect information about the current request using
-built-in `Sentry\Integration\RequestIntegration` integration. There is also
-the `Spiral\Sentry\Http\SetRequestIpMiddleware`. This middleware is crucial for collecting user IP addresses when
-`send_default_pii` is enabled. It's an optional but powerful feature for those needing detailed user insights.
+- `FrameContextifierIntegration` - Adds source code context to stack traces
+- `EnvironmentIntegration` - Captures environment variables
+- `ModulesIntegration` - Lists installed packages/modules
+- `TransactionIntegration` - Groups events by transaction
+
+> **See more**
+> For a complete list of available integrations, see the
+> [Sentry PHP SDK Integrations documentation](https://docs.sentry.io/platforms/php/integrations/).
+
+### HTTP Request Data Collection
+
+The Sentry bridge automatically captures HTTP request information through the `RequestIntegration`. For enhanced user
+tracking with IP addresses, use the optional `SetRequestIpMiddleware`.
+
+#### Request IP Middleware
+
+This middleware captures the user's IP address when `send_default_pii` is enabled:
+
+```php app/src/Application/Bootloader/HttpBootloader.php
+namespace App\Application\Bootloader;
+
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Bootloader\Http\RoutesBootloader as BaseRoutesBootloader;
+use Spiral\Sentry\Http\SetRequestIpMiddleware;
+
+final class HttpBootloader extends Bootloader
+{
+    public function boot(BaseRoutesBootloader $routes): void
+    {
+        $routes->addMiddleware(SetRequestIpMiddleware::class);
+    }
+}
+```
+
+The middleware automatically checks the `send_default_pii` configuration and only sets IP addresses when enabled.
 
 > **Note**
 > Read more about middleware in the [HTTP — Routing](../http/routing.md#add-middleware) section.
 
-### Available Container Bindings [Since **v2.2**]
+**Captured Request Data:**
 
-For developers seeking deeper integration and control, we've introduced new container bindings:
+When the `RequestIntegration` is active, Sentry captures:
 
-- `Sentry\Options`: A configuration container for fine-tuning Sentry client settings.
-- `Sentry\State\HubInterface`: Provides access to Sentry's state and context management.
-- `Sentry\ClientInterface`: Facilitates direct interactions with the Sentry client.
-
-These bindings offer granular control over the Sentry client, catering to advanced use cases.
-
-### Providing Additional Data
-
-To expose current application logs, such as application logs or PSR-7 request state, enable the debug information
-collectors. These collectors gather relevant data about the current application's state.
-
-When an exception occurs, Sentry reporter will request `Spiral\Debug\StateInterface` class from the IoC container and
-during creation the object will be filled with information from the registered collectors.
+- HTTP method
+- Request URL
+- Query parameters
+- Request headers
+- Request body (when applicable)
+- User IP address (when `SetRequestIpMiddleware` is registered and `send_default_pii` is `true`)
 
 > **Warning**
-> Be careful when requesting `Spiral\Debug\StateInterface` from the container. The object will be created on every
-> request from the container and you cannot populate it outside collectors. If you need to add additional information
-> to the `Spiral\Debug\StateInterface` object, you should use collectors.
+> Be cautious when enabling `send_default_pii` as it will include personally identifiable information in error reports.
+> Ensure this complies with your privacy policy and data protection regulations (GDPR, CCPA, etc.).
 
-#### Http collector
+### Container Bindings
 
-HTTP collector a good way to send information about the current request to Sentry.
+The Sentry bridge provides several container bindings for advanced integration and control:
+
+| Binding | Description |
+|---------|-------------|
+| `Sentry\Options` | Configuration container for Sentry SDK options |
+| `Sentry\State\HubInterface` | Central hub for Sentry state and context management |
+| `Sentry\ClientInterface` | Direct interface to the Sentry client |
+| `Sentry\Integration\RequestFetcherInterface` | Custom request fetcher for PSR-7 integration |
+
+These bindings enable deep integration with the Sentry SDK for advanced use cases.
+
+#### Using the Sentry Hub
+
+The `HubInterface` provides access to Sentry's scope management:
+
+```php app/src/Endpoint/Web/SomeController.php
+namespace App\Endpoint\Web;
+
+use Sentry\State\HubInterface;
+use Sentry\State\Scope;
+
+final class SomeController
+{
+    public function __construct(
+        private readonly HubInterface $hub,
+    ) {}
+
+    public function index(): void
+    {
+        // Configure the current scope
+        $this->hub->configureScope(function (Scope $scope): void {
+            $scope->setTag('page', 'checkout');
+            $scope->setUser([
+                'id' => 123,
+                'email' => 'user@example.com',
+            ]);
+            $scope->setContext('order', [
+                'total' => 99.99,
+                'items' => 3,
+            ]);
+        });
+        
+        // Scope configuration persists for subsequent errors in this request
+    }
+}
+```
+
+#### Using the Sentry Client
+
+Direct access to the Sentry client for advanced operations:
+
+```php
+use Sentry\ClientInterface;
+
+final class CustomErrorHandler
+{
+    public function __construct(
+        private readonly ClientInterface $client,
+    ) {}
+    
+    public function captureMessage(string $message): void
+    {
+        $this->client->captureMessage($message, \Sentry\Severity::warning());
+    }
+}
+```
+
+> **See more**
+> For more information about the Sentry SDK API, visit the
+> [Sentry PHP SDK documentation](https://docs.sentry.io/platforms/php/).
+
+### Enriching Error Context with State Collectors
+
+State collectors allow you to automatically attach contextual information to every exception sent to Sentry. When an
+exception occurs, the Sentry reporter requests `Spiral\Debug\StateInterface` from the container, which is populated by
+registered collectors.
+
+> **Warning**
+> The `StateInterface` object is created fresh on each request from the container. You cannot populate it directly
+> outside of collectors. Always use collectors to add contextual information.
+
+#### Debug State Interface
+
+The `StateInterface` provides methods to enrich error context:
+
+**Tags** - Key-value pairs for filtering and grouping errors:
+
+```php
+$state->setTag('environment', 'production');
+$state->setTag('server', 'web-01');
+$state->setTags([
+    'version' => '1.0.0',
+    'region' => 'us-east-1',
+]);
+```
+
+**Variables** - Additional context data:
+
+```php
+$state->setVariable('user_id', 12345);
+$state->setVariable('session_data', $sessionData);
+$state->setVariables([
+    'request_id' => $requestId,
+    'trace_id' => $traceId,
+]);
+```
+
+**Log Events** - Breadcrumbs showing events leading to the error:
+
+```php
+use Spiral\Logger\Event\LogEvent;
+
+$state->addLogEvent(new LogEvent(
+    time: new \DateTimeImmutable(),
+    channel: 'database',
+    level: 'info',
+    message: 'Query executed',
+    context: ['query' => $sql, 'duration' => $duration]
+));
+```
+
+These breadcrumbs appear in Sentry's timeline, helping you understand the sequence of events that led to the error.
+
+#### Built-in State Collectors
+
+Spiral provides several built-in collectors that you can enable by registering their bootloaders.
+
+##### HTTP Collector
+
+Captures HTTP request information including method, URL, headers, query parameters, and request body.
 
 > **Note**
-> Since **v2.2** the HTTP collector can be avoided, because the reporter will automatically collect information about
-> the current request using built-in `Sentry\Integration\RequestIntegration` integration in a better way.
+> Since the bridge v2.2, the HTTP collector is optional because the `RequestIntegration` provides better HTTP data
+> collection. Consider using `RequestIntegration` instead for most use cases.
 
-It will send the following information about the current request:
+**To enable:**
 
-- `method`
-- `url`
-- `headers`
-- `query params`
-- `request body`
-
-To enable the HTTP collector, you first need to register `Spiral\Bootloader\Debug\HttpCollectorBootloader`
-before `SentryReporterBootloader`.
+Register `Spiral\Bootloader\Debug\HttpCollectorBootloader` before `SentryReporterBootloader`:
 
 :::: tabs
 
@@ -741,7 +1141,6 @@ public function defineBootloaders(): array
 }
 ```
 
-Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
 :::
 
 ::: tab Using constant
@@ -755,22 +1154,26 @@ protected const LOAD = [
 ];
 ```
 
-Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
 :::
 
 ::::
 
-Then you need to register the middleware `Spiral\Debug\StateCollector\HttpCollector` in the application.
+Then register the middleware:
+
+```php
+$routes->addMiddleware(\Spiral\Debug\StateCollector\HttpCollector::class);
+```
 
 > **See more**
 > Read more how to register middleware in the [HTTP — Routing](../http/routing.md#add-middleware) section.
 
-#### Logs collector
+##### Logs Collector
 
-Use the Logs collector to send all received logs to Sentry.
+Captures all application logs as breadcrumbs in Sentry, providing a complete timeline of events leading to an error.
 
-To enable the Logs collector, you just need to register S`piral\Bootloader\Debug\LogCollectorBootloader`
-before `SentryBootaloder`.
+**To enable:**
+
+Register `Spiral\Bootloader\Debug\LogCollectorBootloader` before `SentryReporterBootloader`:
 
 :::: tabs
 
@@ -788,7 +1191,6 @@ public function defineBootloaders(): array
 }
 ```
 
-Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
 :::
 
 ::: tab Using constant
@@ -802,98 +1204,175 @@ protected const LOAD = [
 ];
 ```
 
-Read more about bootloaders in the [Framework — Bootloaders](../framework/bootloaders.md) section.
 :::
 
 ::::
 
+Once enabled, all logs from your application will automatically appear as breadcrumbs in Sentry error reports.
+
 #### Creating Custom Collectors
 
-For specialized data collection, you can create custom collectors. Collector should
-implement `Spiral\Debug\StateCollectorInterface` interface.
+Create custom collectors to capture application-specific context. Collectors must implement
+the `Spiral\Debug\StateCollectorInterface`.
 
-For example, consider an SQL Collector:
+**Example - Database Query Collector:**
 
-```php app/src/Application/Debug/Collector/SqlCollector.php
+```php app/src/Application/Debug/Collector/DatabaseCollector.php
 namespace App\Application\Debug\Collector;
 
-use Spiral\Logger\Event\LogEvent;
 use Spiral\Debug\StateCollectorInterface;
+use Spiral\Debug\StateInterface;
+use Spiral\Logger\Event\LogEvent;
 
-final class SqlCollector implements StateCollectorInterface
+final class DatabaseCollector implements StateCollectorInterface
 {
-    public function __construct(
-        private readonly Database $db
-    ) {
+    private array $queries = [];
+    
+    public function recordQuery(string $query, array $params, float $duration): void
+    {
+        $this->queries[] = compact('query', 'params', 'duration');
     }
 
-    public function collect(\Spiral\Debug\StateInterface $state): void
+    public function collect(StateInterface $state): void
     {
-       foreach($this->db->getQueries() as $query) {
+        // Add database statistics as tags
+        $state->setTag('db.query_count', (string) count($this->queries));
+        
+        // Add detailed query information as context
+        $state->setVariable('database_queries', $this->queries);
+        
+        // Add each query as a breadcrumb
+        foreach ($this->queries as $query) {
             $state->addLogEvent(new LogEvent(
-                time: $query->getTime(),
-                channel: 'sql',
-                level: 'info',
-                message: $query->getQuery(),
-                context: $query->getParameters()
+                time: new \DateTimeImmutable(),
+                channel: 'database',
+                level: 'debug',
+                message: 'Query executed',
+                context: [
+                    'query' => $query['query'],
+                    'params' => $query['params'],
+                    'duration_ms' => $query['duration'],
+                ]
             ));
-       }
+        }
     }
 }
 ```
 
-> **Warning**
-> The above example uses a non-existent Database class, which means you'll need to implement this yourself.
+**Register the collector:**
 
-Here are some useful methods of the `Spiral\Debug\StateInterface` object:
-
-**Add a tag**
-
-The method will add tags associated with the current scope
-
-```php
-$state->addTag('IP address', $currentRequest->getIpAddress());
-$state->addTag('Environment', $env->get('APP_ENV'));
-```
-
-**Add a variable**
-
-The method will add extra data associated with the current scope
-
-```php
-$state->setVariable('query', $currentRequest->getQueryParams());
-```
-
-**Add a log event**
-
-The method will add a log event as a breadcrumb to the current scope.
-
-```php
-$state->addLogEvent(new \Spiral\Logger\Event\LogEvent(
-    time: new \DateTimeImmutable(),
-    channel: 'default',
-    level: 'info',
-    message: 'Something went wrong',
-    context: ['foo' => 'bar']
-));
-```
-
-#### Custom collector registration
-
-You can register your collector in a bootloader.
-
-```php app/src/Application/Bootloader/AppBootloader.php
+```php app/src/Application/Bootloader/DatabaseBootloader.php
 namespace App\Application\Bootloader;
 
+use App\Application\Debug\Collector\DatabaseCollector;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Bootloader\DebugBootloader;
-use App\Application\Exception\Reporter\CustomReporter;
 
-final class AppBootloader extends Bootloader
+final class DatabaseBootloader extends Bootloader
 {
-    public function init(DebugBootloader $debug, SqlCollector $sqlCollector): void
-    {
-        $debug->addStateCollector($sqlCollector);
+    public function init(
+        DebugBootloader $debug,
+        DatabaseCollector $collector,
+    ): void {
+        $debug->addStateCollector($collector);
     }
 }
 ```
+
+**State Collector Best Practices:**
+
+- Keep collectors lightweight - they run on every error
+- Use tags for filterable values (status codes, user roles, environments)
+- Use variables for detailed context data (session data, configuration)
+- Use log events for timeline information (requests, queries, cache operations)
+- Avoid collecting sensitive data (passwords, tokens, credit cards)
+- Consider memory usage when storing large amounts of data
+
+### Using the Sentry Client Wrapper
+
+The bridge provides a `Spiral\Sentry\Client` wrapper that simplifies sending exceptions with application state:
+
+```php
+use Spiral\Sentry\Client;
+
+final class PaymentService
+{
+    public function __construct(
+        private readonly Client $sentry,
+    ) {}
+    
+    public function processPayment(Payment $payment): void
+    {
+        try {
+            // Process payment
+        } catch (\Throwable $e) {
+            // Send exception with all collected state (tags, variables, logs)
+            $this->sentry->send($e);
+            throw $e;
+        }
+    }
+}
+```
+
+The `Client::send()` method:
+
+1. Retrieves the current `StateInterface` from the container
+2. Configures the Sentry scope with tags, variables, and breadcrumbs
+3. Captures the exception and returns the event ID
+
+This is particularly useful when you want to manually report exceptions while including the full application context.
+
+### Snapshots Integration
+
+When using `SentryBootloader` instead of `SentryReporterBootloader`, the bridge registers a `SentrySnapshotter` that
+implements `SnapshotterInterface`. This makes Sentry the primary handler for creating exception snapshots:
+
+```php app/src/Application/Kernel.php
+protected const LOAD = [
+    // ...
+    \Spiral\Sentry\Bootloader\SentryBootloader::class,
+    // ...
+];
+```
+
+With this configuration:
+
+- Exceptions automatically create snapshots in Sentry
+- Snapshot IDs are Sentry event IDs
+- You can reference errors by their Sentry event ID
+- Other snapshot handlers (file, storage) are bypassed
+
+**When to use snapshots:**
+
+- Use `SentryReporterBootloader` if you want exceptions reported to Sentry AND saved locally
+- Use `SentryBootloader` if Sentry should be the only destination for exception data
+
+### Best Practices
+
+**Security:**
+
+- Never enable `send_default_pii` unless required and compliant with privacy regulations
+- Use `ignore_exceptions` to exclude exceptions containing sensitive data
+- Implement `before_send` callback to scrub sensitive information from events
+- Be cautious with state collectors that might capture sensitive data
+
+**Performance:**
+
+- Use appropriate `sample_rate` values (0.1-0.5) for high-traffic applications
+- Enable `traces_sample_rate` only when needed for performance monitoring
+- Keep state collectors lightweight and avoid expensive operations
+- Consider the performance impact of breadcrumb collection
+
+**Debugging:**
+
+- Use tags to make errors searchable in Sentry (environment, version, feature flags)
+- Add contextual variables to help reproduce issues (user ID, request ID, session data)
+- Include breadcrumbs to understand the sequence of events leading to errors
+- Leverage Sentry's release tracking to identify when issues were introduced
+
+**Organization:**
+
+- Create custom integrations for application-specific concerns
+- Use separate Sentry projects for different environments (production, staging)
+- Configure appropriate `environment` values to distinguish between deployments
+- Use `release` tracking to correlate errors with specific code versions
