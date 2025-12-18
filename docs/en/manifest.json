@@ -181,6 +181,7 @@
     "links": {
       "queue/configuration": "Getting started",
       "queue/jobs": "Job Handlers",
+      "queue/lifecycle": "Job Lifecycle",
       "queue/roadrunner": "RoadRunner integration",
       "queue/interceptors": "Interceptors"
     }
