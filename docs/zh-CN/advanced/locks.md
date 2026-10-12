@@ -186,7 +186,7 @@ $lock->updateTTL('pdf:create', $id, new \DateInterval('PT10S'));
 要安装该包，请运行以下命令：
 
 ```terminal
-composer require roadrunner-php/symfony-lock-driver
+composer require roadrunner/symfony-lock-driver
 ```
 
 安装完成后，你需要创建一个引导程序类，该类将在容器中注册锁驱动程序：

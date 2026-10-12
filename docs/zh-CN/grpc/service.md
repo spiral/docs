@@ -212,7 +212,7 @@ public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 
 ## 错误
 
-`spiral/roadrunner-grpc` 组件提供了许多异常来指示服务器或请求错误：
+`roadrunner/grpc` 组件提供了许多异常来指示服务器或请求错误：
 
 | 异常                                                      | 错误代码          |
 |----------------------------------------------------------------|---------------------|

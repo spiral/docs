@@ -271,10 +271,10 @@ vx build -c plugins.toml -o .
 
 ## 应用程序调度器
 
-首先，我们需要安装 `spiral/roadrunner-worker` 包：
+首先，我们需要安装 `roadrunner/worker` 包：
 
 ```terminal
-composer require spiral/roadrunner-worker
+composer require roadrunner/worker
 ```
 
 现在我们可以创建我们的调度器：

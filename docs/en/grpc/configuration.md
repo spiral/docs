@@ -91,7 +91,7 @@ that generates PHP code for gRPC services.
 
 > **Note**
 > To download the binary, you can use `download-protoc-binary` console command provided by the
-> `spiral/roadrunner-cli` package. This command will download the latest version of the `protoc-gen-php-grpc` binary and
+> `roadrunner/cli` package. This command will download the latest version of the `protoc-gen-php-grpc` binary and
 > save it to the root directory of your project.
 
 ```terminal
