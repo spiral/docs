@@ -1,15 +1,15 @@
 # 队列 — RoadRunner 集成
 
-Spiral 框架与 [RoadRunner jobs](https://roadrunner.dev/docs/queues-overview) 插件完全集成，该插件为各种队列代理提供了统一的队列 API，例如：
+Spiral 框架与 [RoadRunner jobs](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues) 插件完全集成，该插件为各种队列代理提供了统一的队列 API，例如：
 
-- [Kafka](https://roadrunner.dev/docs/queues-kafka),
-- [AMQP (RabbitMQ)](https://roadrunner.dev/docs/queues-amqp),
-- [Amazon SQS](https://roadrunner.dev/docs/queues-sqs),
-- [Beanstalk](https://roadrunner.dev/docs/queues-beanstalk),
-- 以及 [memory](https://roadrunner.dev/docs/queues-memory) 驱动。
+- [Kafka](https://docs.roadrunner.dev/docs/queues-and-jobs/kafka),
+- [AMQP (RabbitMQ)](https://docs.roadrunner.dev/docs/queues-and-jobs/amqp),
+- [Amazon SQS](https://docs.roadrunner.dev/docs/queues-and-jobs/sqs),
+- [Beanstalk](https://docs.roadrunner.dev/docs/queues-and-jobs/beanstalk),
+- 以及 [memory](https://docs.roadrunner.dev/docs/queues-and-jobs/memory) 驱动。
 
 > **注意**
-> 有关支持的代理的更多信息，请访问 [官方网站](https://roadrunner.dev/docs/plugins-jobs)。
+> 有关支持的代理的更多信息，请访问 [官方网站](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues)。
 
 为了实现与 RoadRunner 的集成，Spiral 框架通过 [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) 包提供了内置支持。
 

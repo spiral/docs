@@ -8,7 +8,7 @@ you the time and effort of building your own dashboard from scratch.
 
 ![Grafana dashboard](https://user-images.githubusercontent.com/773481/205066017-ecddefc4-1d07-4428-b3ad-af49baadad0a.png)
 
-Spiral and [RoadRunner metrics](https://roadrunner.dev/docs/plugins-metrics) plugin provide the ability to collect
+Spiral and [RoadRunner metrics](https://docs.roadrunner.dev/docs/logging-and-observability/metrics) plugin provide the ability to collect
 application metrics and expose them to Prometheus.
 
 > **Note**
@@ -20,7 +20,7 @@ At first, you need to install the [spiral/roadrunner-bridge](../start/server.md#
 
 > **Note**
 > The `spiral/roadrunner-bridge` package allows you to use RoadRunner
-> [metrics plugin](https://roadrunner.dev/docs/lab-metrics) with Spiral. This package provides RPC api for metrics
+> [metrics plugin](https://docs.roadrunner.dev/docs/logging-and-observability/metrics) with Spiral. This package provides RPC api for metrics
 > and a bootloader for your application.
 
 Once the package is installed, you can add the `Spiral\RoadRunnerBridge\Bootloader\MetricsBootloader` to the list of

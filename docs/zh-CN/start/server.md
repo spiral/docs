@@ -126,7 +126,7 @@ http:
 ```
 
 > **另请参阅**
-> 在官方 [文档](https://roadrunner.dev/docs) 中阅读有关应用程序服务器配置的更多信息。
+> 在官方 [文档](https://docs.roadrunner.dev/docs) 中阅读有关应用程序服务器配置的更多信息。
 
 ## 运行服务器
 
@@ -157,7 +157,7 @@ http:
 ::::
 
 > **另请参阅**
-> 在 [RoadRunner 文档](https://roadrunner.dev/docs/app-server-cli) 中阅读有关服务器命令的更多信息。
+> 在 [RoadRunner 文档](https://docs.roadrunner.dev/docs/app-server/cli) 中阅读有关服务器命令的更多信息。
 
 ## RoadRunner 桥接器
 

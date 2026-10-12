@@ -37,7 +37,7 @@ sudo pecl install protobuf-3.10.0
 ## 包安装
 
 `spiral/roadrunner-bridge` 包允许你将 RoadRunner 的
-[gRPC 插件](https://roadrunner.dev/docs/app-server-grpc) 与 Spiral 结合使用。该包提供了生成 proto 文件、客户端代码和应用程序引导器的工具。
+[gRPC 插件](https://docs.roadrunner.dev/docs/grpc/grpc) 与 Spiral 结合使用。该包提供了生成 proto 文件、客户端代码和应用程序引导器的工具。
 
 首先，你需要安装 [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) 包。
 
@@ -133,7 +133,7 @@ grpc:
 ```
 
 > **注意**
-> 关于配置 RoadRunner gRPC 插件的完整文档[在这里](https://roadrunner.dev/docs/app-server-grpc)。
+> 关于配置 RoadRunner gRPC 插件的完整文档[在这里](https://docs.roadrunner.dev/docs/grpc/grpc)。
 
 ## 示例应用程序
 
