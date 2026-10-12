@@ -21,12 +21,12 @@ RoadRunner 是一个高性能的 PHP 应用程序服务器和进程管理器，�
 
 ::: tab Composer
 
-最好的方法是使用 composer 包 `spiral/roadrunner-cli`。它将帮助你自动下载服务器。
+最好的方法是使用 composer 包 `roadrunner/cli`。它将帮助你自动下载服务器。
 
 只需在你的项目中安装该软件包并运行以下命令：
 
 ```terminal
-composer require spiral/roadrunner-cli
+composer require roadrunner/cli
 ```
 
 并运行以下命令以下载最新版本的 RoadRunner：

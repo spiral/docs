@@ -200,7 +200,7 @@ the [Symfony lock](https://symfony.com/doc/current/components/lock.html) compone
 To install the package, run the following command:
 
 ```terminal
-composer require roadrunner-php/symfony-lock-driver
+composer require roadrunner/symfony-lock-driver
 ```
 
 Once installed, you need to create a bootloader class that will register the lock driver in the container:

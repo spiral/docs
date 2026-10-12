@@ -288,10 +288,10 @@ vx build -c plugins.toml -o .
 
 ## Application Dispatcher
 
-At first, we need to install `spiral/roadrunner-worker` package:
+At first, we need to install `roadrunner/worker` package:
 
 ```terminal
-composer require spiral/roadrunner-worker
+composer require roadrunner/worker
 ```
 
 Now we can create our dispatcher:

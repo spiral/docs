@@ -228,7 +228,7 @@ public function ping(GRPC\ContextInterface $ctx, PingRequest $in): PingResponse
 
 ## Errors
 
-The `spiral/roadrunner-grpc` component provides a number of exceptions to indicate a server or request error:
+The `roadrunner/grpc` component provides a number of exceptions to indicate a server or request error:
 
 | Exception                                                      | Error Code          |
 |----------------------------------------------------------------|---------------------|

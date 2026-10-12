@@ -81,7 +81,7 @@ protected const LOAD = [
 安装包后，你需要下载 `protoc-gen-php-grpc`。 它是 `protoc` 工具的插件，用于为 gRPC 服务生成 PHP 代码。
 
 > **注意**
-> 要下载二进制文件，你可以使用 `spiral/roadrunner-cli` 包提供的 `download-protoc-binary` 命令行工具。此命令将下载最新版本的 `protoc-gen-php-grpc` 二进制文件，并将其保存到你项目的根目录。
+> 要下载二进制文件，你可以使用 `roadrunner/cli` 包提供的 `download-protoc-binary` 命令行工具。此命令将下载最新版本的 `protoc-gen-php-grpc` 二进制文件，并将其保存到你项目的根目录。
 
 ```terminal
 ./vendor/bin/rr download-protoc-binary

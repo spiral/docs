@@ -33,13 +33,13 @@ There are several ways to download it:
 
 ::: tab Composer
 
-The best way is to use composer package `spiral/roadrunner-cli`. It will help you to download the server
+The best way is to use composer package `roadrunner/cli`. It will help you to download the server
 automatically.
 
 Just install the package in your project and run the following command:
 
 ```terminal
-composer require spiral/roadrunner-cli
+composer require roadrunner/cli
 ```
 
 And run the following command to download the latest version of the RoadRunner:
