@@ -1,16 +1,16 @@
 # Queue — RoadRunner integration
 
-Spiral has full integration with [RoadRunner jobs](https://roadrunner.dev/docs/queues-overview) plugin, which provides 
+Spiral has full integration with [RoadRunner jobs](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues) plugin, which provides 
 a unified queueing API for a variety of queue brokers such as:
 
-- [Kafka](https://roadrunner.dev/docs/queues-kafka),
-- [AMQP (RabbitMQ)](https://roadrunner.dev/docs/queues-amqp),
-- [Amazon SQS](https://roadrunner.dev/docs/queues-sqs),
-- [Beanstalk](https://roadrunner.dev/docs/queues-beanstalk),
-- and [memory](https://roadrunner.dev/docs/queues-memory) driver.
+- [Kafka](https://docs.roadrunner.dev/docs/queues-and-jobs/kafka),
+- [AMQP (RabbitMQ)](https://docs.roadrunner.dev/docs/queues-and-jobs/amqp),
+- [Amazon SQS](https://docs.roadrunner.dev/docs/queues-and-jobs/sqs),
+- [Beanstalk](https://docs.roadrunner.dev/docs/queues-and-jobs/beanstalk),
+- and [memory](https://docs.roadrunner.dev/docs/queues-and-jobs/memory) driver.
 
 > **Note**
-> For more information on supported brokers, please visit the [official site](https://roadrunner.dev/docs/plugins-jobs).
+> For more information on supported brokers, please visit the [official site](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues).
 
 To enable the integration with RoadRunner, Spiral provides built-in support through
 the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package.
@@ -78,7 +78,8 @@ This is the most common way to declare pipelines. But in this way, you can only 
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@localhost:5672
+  default:
+    addr: amqp://guest:guest@localhost:5672
 
 jobs:
   consume: [ "in-memory", "high-priority" ]
@@ -90,7 +91,11 @@ jobs:
     high-priority:
       driver: amqp
       config:
+        connection: default
         priority: 1
+        queue:
+          name: default
+          routing_key: default
 ```
 
 In this case your `app/config/queue.php` configuration file should look like this:
@@ -140,6 +145,8 @@ return [
                   name: 'high-priority',
                   priority: 1,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              'consume' => true, // Consume jobs for this pipeline on startup
          ],
@@ -148,6 +155,8 @@ return [
                   name: 'low-priority',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              'consume' => false, // Do not consume jobs for this pipeline on startup
          ],
@@ -170,6 +179,12 @@ return [
     ],
 ];
 ```
+
+> **Note**
+> RoadRunner 3 has no default AMQP connection: each AMQP pipeline must name one of the connections declared in the
+> `amqp` section of `.rr.yaml`. Pipelines in `.rr.yaml` set `config.connection`, and pipelines created from PHP pass the
+> connection name in the reserved `rr_connection` queue header. Read more in the
+> [RoadRunner documentation](https://docs.roadrunner.dev/docs/queues-and-jobs/amqp).
 
 > **Warning**
 > All the pipelines defined with `'consume' => true` will be initialized during application bootstrapping. This means

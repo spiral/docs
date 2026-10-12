@@ -1,15 +1,15 @@
 # 队列 — RoadRunner 集成
 
-Spiral 框架与 [RoadRunner jobs](https://roadrunner.dev/docs/queues-overview) 插件完全集成，该插件为各种队列代理提供了统一的队列 API，例如：
+Spiral 框架与 [RoadRunner jobs](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues) 插件完全集成，该插件为各种队列代理提供了统一的队列 API，例如：
 
-- [Kafka](https://roadrunner.dev/docs/queues-kafka),
-- [AMQP (RabbitMQ)](https://roadrunner.dev/docs/queues-amqp),
-- [Amazon SQS](https://roadrunner.dev/docs/queues-sqs),
-- [Beanstalk](https://roadrunner.dev/docs/queues-beanstalk),
-- 以及 [memory](https://roadrunner.dev/docs/queues-memory) 驱动。
+- [Kafka](https://docs.roadrunner.dev/docs/queues-and-jobs/kafka),
+- [AMQP (RabbitMQ)](https://docs.roadrunner.dev/docs/queues-and-jobs/amqp),
+- [Amazon SQS](https://docs.roadrunner.dev/docs/queues-and-jobs/sqs),
+- [Beanstalk](https://docs.roadrunner.dev/docs/queues-and-jobs/beanstalk),
+- 以及 [memory](https://docs.roadrunner.dev/docs/queues-and-jobs/memory) 驱动。
 
 > **注意**
-> 有关支持的代理的更多信息，请访问 [官方网站](https://roadrunner.dev/docs/plugins-jobs)。
+> 有关支持的代理的更多信息，请访问 [官方网站](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues)。
 
 为了实现与 RoadRunner 的集成，Spiral 框架通过 [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) 包提供了内置支持。
 
@@ -73,7 +73,8 @@ RoadRunner 提供了两种声明管道的方法：
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@localhost:5672
+  default:
+    addr: amqp://guest:guest@localhost:5672
 
 jobs:
   consume: [ "in-memory", "high-priority" ]
@@ -85,7 +86,11 @@ jobs:
     high-priority:
       driver: amqp
       config:
+        connection: default
         priority: 1
+        queue:
+          name: default
+          routing_key: default
 ```
 
 在这种情况下，您的 `app/config/queue.php` 配置文件应如下所示：
@@ -129,6 +134,8 @@ return [
                   name: 'high-priority',
                   priority: 1,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              'consume' => true, // Consume jobs for this pipeline on startup
          ],
@@ -137,6 +144,8 @@ return [
                   name: 'low-priority',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              'consume' => false, // Do not consume jobs for this pipeline on startup
          ],
@@ -159,6 +168,9 @@ return [
     ],
 ];
 ```
+
+> **注意**
+> RoadRunner 3 没有默认的 AMQP 连接：每个 AMQP 管道都必须指定 `.rr.yaml` 的 `amqp` 部分中声明的某个连接。`.rr.yaml` 中的管道通过 `config.connection` 指定，从 PHP 创建的管道则通过保留的队列头 `rr_connection` 传递连接名称。更多信息请参阅 [RoadRunner 文档](https://docs.roadrunner.dev/docs/queues-and-jobs/amqp)。
 
 > **警告**
 > 所有定义了 `'consume' => true` 的管道都将在应用程序启动期间初始化。 这意味着推送到这些管道的所有作业都将立即被消费。 所有定义了 `'consume' => false` 的管道将在您将作业推送到它们时才会被初始化。

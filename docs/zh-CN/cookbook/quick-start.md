@@ -65,7 +65,7 @@ http:
 ```
 
 > **更多信息**
-> 阅读有关 RoadRunner 官方文档中工作进程的更多信息 [documentation](https://roadrunner.dev/docs/app-server-cli/2.x/en)。
+> 阅读有关 RoadRunner 官方文档中工作进程的更多信息 [documentation](https://docs.roadrunner.dev/docs/app-server/cli)。
 
 ### 精简启动
 

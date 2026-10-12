@@ -2,7 +2,7 @@
 
 [Temporal](https://temporal.io/) is an open-source workflow engine that manage and execute reliable, durable and
 fault-tolerant workflows in a distributed manner. But the only way to use it in PHP is
-with [RoadRunner](https://roadrunner.dev/docs/workflow-temporal). It makes it super easy to integrate your PHP app with
+with [RoadRunner](https://docs.roadrunner.dev/docs/workflow-engine/temporal). It makes it super easy to integrate your PHP app with
 Temporal, so you can start using it right away.
 
 One cool thing about Temporal is that you can write your workflows and activities in any supported language. So for
@@ -238,7 +238,7 @@ temporal:
 ```
 
 For more details on configuring Temporal with RoadRunner,
-read the [RoadRunner](https://roadrunner.dev/docs/workflow-temporal) documentation.
+read the [RoadRunner](https://docs.roadrunner.dev/docs/workflow-engine/temporal) documentation.
 
 
 ## Temporal Cloud

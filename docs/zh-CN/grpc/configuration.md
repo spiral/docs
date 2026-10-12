@@ -37,7 +37,7 @@ sudo pecl install protobuf-3.10.0
 ## 包安装
 
 `spiral/roadrunner-bridge` 包允许你将 RoadRunner 的
-[gRPC 插件](https://roadrunner.dev/docs/app-server-grpc) 与 Spiral 结合使用。该包提供了生成 proto 文件、客户端代码和应用程序引导器的工具。
+[gRPC 插件](https://docs.roadrunner.dev/docs/grpc/grpc) 与 Spiral 结合使用。该包提供了生成 proto 文件、客户端代码和应用程序引导器的工具。
 
 首先，你需要安装 [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) 包。
 
@@ -81,7 +81,7 @@ protected const LOAD = [
 安装包后，你需要下载 `protoc-gen-php-grpc`。 它是 `protoc` 工具的插件，用于为 gRPC 服务生成 PHP 代码。
 
 > **注意**
-> 要下载二进制文件，你可以使用 `spiral/roadrunner-cli` 包提供的 `download-protoc-binary` 命令行工具。此命令将下载最新版本的 `protoc-gen-php-grpc` 二进制文件，并将其保存到你项目的根目录。
+> 要下载二进制文件，你可以使用 `roadrunner/cli` 包提供的 `download-protoc-binary` 命令行工具。此命令将下载最新版本的 `protoc-gen-php-grpc` 二进制文件，并将其保存到你项目的根目录。
 
 ```terminal
 ./vendor/bin/rr download-protoc-binary
@@ -133,7 +133,7 @@ grpc:
 ```
 
 > **注意**
-> 关于配置 RoadRunner gRPC 插件的完整文档[在这里](https://roadrunner.dev/docs/app-server-grpc)。
+> 关于配置 RoadRunner gRPC 插件的完整文档[在这里](https://docs.roadrunner.dev/docs/grpc/grpc)。
 
 ## 示例应用程序
 

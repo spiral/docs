@@ -1,6 +1,6 @@
 # Advanced — Atomic Locks
 
-Spiral has full integration with [RoadRunner locks](https://roadrunner.dev/docs/plugins-locks) plugin, which enables you
+Spiral has full integration with [RoadRunner locks](https://docs.roadrunner.dev/docs/plugins/locks) plugin, which enables you
 to manage resource locks in your application. With this component, you can easily manage critical sections of your
 application and prevent race conditions, data corruption, and other synchronization issues that can occur in
 multi-process environments.
@@ -200,7 +200,7 @@ the [Symfony lock](https://symfony.com/doc/current/components/lock.html) compone
 To install the package, run the following command:
 
 ```terminal
-composer require roadrunner-php/symfony-lock-driver
+composer require roadrunner/symfony-lock-driver
 ```
 
 Once installed, you need to create a bootloader class that will register the lock driver in the container:
