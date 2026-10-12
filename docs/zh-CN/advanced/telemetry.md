@@ -149,15 +149,20 @@ service:
 http:
   address: 0.0.0.0:8080
   middleware: [ "otel" ]
-  otel:
-    insecure: true
-    compress: false
-    client: http
-    exporter: otlp
+
+otel:
+  resource:
     service_name: rr-blog # 您的应用名称
     service_version: 1.0.0 # 您的应用版本
-    endpoint: 127.0.0.1:4318 # otel 收集器服务器地址
+  insecure: true
+  compress: false
+  client: http
+  exporter: otlp
+  endpoint: 127.0.0.1:4318 # otel 收集器服务器地址
 ```
+
+> **注意**
+> RoadRunner 3 仅通过 OTLP（或 `stdout`/`stderr`）导出跟踪信息：其原生 Zipkin 导出器已被移除。要将跟踪信息发送到 Zipkin，请像上面那样将其导出到 OpenTelemetry 收集器。
 
 这将启用集成，并允许您开始使用 OpenTelemetry 服务跟踪您的应用程序中的请求。
 

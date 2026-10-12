@@ -10,7 +10,7 @@ To improve the performance of Spiral application, an alternative solution is to 
 server [RoadRunner](https://roadrunner.dev/).
 
 RoadRunner is a high-performance application server designed to handle a wide range of request types, including HTTP,
-gRPC, TCP, Queue Job consuming, and Temporal. It operates by running workers only once when it is initiated and then
+gRPC, Queue Job consuming, and Temporal. It operates by running workers only once when it is initiated and then
 directing requests to a [dispatcher](../framework/dispatcher.md) based on their type. This means that each worker is
 isolated and works independently, following a "share nothing" approach where resources are not shared between workers.
 

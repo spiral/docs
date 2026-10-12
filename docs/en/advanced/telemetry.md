@@ -166,15 +166,21 @@ You should also configure RoadRunner to send traces to the OpenTelemetry collect
 http:
   address: 0.0.0.0:8080
   middleware: [ "otel" ]
-  otel:
-    insecure: true
-    compress: false
-    client: http
-    exporter: otlp
+
+otel:
+  resource:
     service_name: rr-blog # your app name
     service_version: 1.0.0 # your app version
-    endpoint: 127.0.0.1:4318 # otel collector server address
+  insecure: true
+  compress: false
+  client: http
+  exporter: otlp
+  endpoint: 127.0.0.1:4318 # otel collector server address
 ```
+
+> **Note**
+> RoadRunner 3 exports traces only via OTLP (or `stdout`/`stderr`): its native Zipkin exporter was removed. To send
+> traces to Zipkin, export them to the OpenTelemetry collector as shown above.
 
 This will enable the integration and allow you to start tracing requests through your application using the
 OpenTelemetry service.

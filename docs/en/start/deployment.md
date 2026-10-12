@@ -361,7 +361,7 @@ COPY ./composer.* .
 RUN composer config --no-plugins allow-plugins.spiral/composer-publish-plugin false && \
     composer install --optimize-autoloader --no-dev
 
-COPY --from=spiralscout/roadrunner:latest /usr/bin/rr /app
+COPY --from=spiralscout/roadrunner:3 /usr/bin/rr /app
 
 EXPOSE 8080/tcp
 
