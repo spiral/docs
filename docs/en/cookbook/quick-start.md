@@ -75,7 +75,7 @@ You can also create and use an alternative configuration file via `-c` flag of t
 ```
 
 > **See more**
-> Read more about workers in the Official RoadRunner [documentation](https://roadrunner.dev/docs/app-server-cli/2.x/en).
+> Read more about workers in the Official RoadRunner [documentation](https://docs.roadrunner.dev/docs/app-server/cli).
 
 ### Lighter Up
 

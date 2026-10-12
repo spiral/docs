@@ -43,7 +43,7 @@ sudo pecl install protobuf-3.10.0
 ## Package Installation
 
 The `spiral/roadrunner-bridge` package allows you to use RoadRunner
-[gRPC plugin](https://roadrunner.dev/docs/app-server-grpc) with Spiral. This package provides tools to generate proto 
+[gRPC plugin](https://docs.roadrunner.dev/docs/grpc/grpc) with Spiral. This package provides tools to generate proto 
 files, client code, and a bootloader for your application.
 
 At first, you need to install the [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) package.
@@ -145,7 +145,7 @@ grpc:
 
 > **Note**
 > Full documentation about configuration the RoadRunner gRPC
-> plugin [here](https://roadrunner.dev/docs/app-server-grpc).
+> plugin [here](https://docs.roadrunner.dev/docs/grpc/grpc).
 
 ## Example Application
 

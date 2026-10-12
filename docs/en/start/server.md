@@ -171,7 +171,7 @@ Use the following command to start application server on **Windows**
 ::::
 
 > **See more**
-> Read more about Server Commands in the [RoadRunner documentation](https://roadrunner.dev/docs/app-server-cli).
+> Read more about Server Commands in the [RoadRunner documentation](https://docs.roadrunner.dev/docs/app-server/cli).
 
 ## RoadRunner bridge
 

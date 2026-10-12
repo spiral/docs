@@ -214,7 +214,7 @@ return [
 
 </details>
 
-RoadRunner 插件提供了 [Fileserver 插件](https://roadrunner.dev/docs/http-static#file-server-plugin)，它通过使用 URL 前缀促进了从各种本地存储提供文件服务。 此功能可以对特定文件和目录的可见性和访问进行细粒度的控制。
+RoadRunner 插件提供了 [Fileserver 插件](https://docs.roadrunner.dev/docs/http/static#fileserver-plugin)，它通过使用 URL 前缀促进了从各种本地存储提供文件服务。 此功能可以对特定文件和目录的可见性和访问进行细粒度的控制。
 
 例如，您可以将 URL 前缀 http://127.0.0.1:10101/avatars 映射到 `/app/storage/user-profiles/avatars` 目录，以提供对静态资产的公共访问。
 

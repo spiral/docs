@@ -1,6 +1,6 @@
 # Temporal — 入门
 
-[Temporal](https://temporal.io/) 是一个开源的工作流引擎，它以分布式的方式管理和执行可靠、持久且容错的工作流。但要在 PHP 中使用它，唯一的方法是结合 [RoadRunner](https://roadrunner.dev/docs/workflow-temporal)。它使得将你的 PHP 应用与 Temporal 集成变得超级简单，你可以立即开始使用它。
+[Temporal](https://temporal.io/) 是一个开源的工作流引擎，它以分布式的方式管理和执行可靠、持久且容错的工作流。但要在 PHP 中使用它，唯一的方法是结合 [RoadRunner](https://docs.roadrunner.dev/docs/workflow-engine/temporal)。它使得将你的 PHP 应用与 Temporal 集成变得超级简单，你可以立即开始使用它。
 
 关于 Temporal 的一个很酷的事情是，你可以使用任何支持的语言编写你的工作流和活动。例如，你可以有一个用 PHP 编写的工作流，但用 Go 或其他语言编写的代码来处理某些活动。如果你的团队对语言有不同的偏好，或者你想利用不同语言在不同任务上的优势，这会非常有帮助。
 
@@ -213,7 +213,7 @@ temporal:
     num_workers: 10
 ```
 
-有关使用 RoadRunner 配置 Temporal 的更多详细信息，请阅读 [RoadRunner](https://roadrunner.dev/docs/workflow-temporal) 文档。
+有关使用 RoadRunner 配置 Temporal 的更多详细信息，请阅读 [RoadRunner](https://docs.roadrunner.dev/docs/workflow-engine/temporal) 文档。
 
 ## Temporal Cloud
 

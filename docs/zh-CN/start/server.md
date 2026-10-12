@@ -157,7 +157,7 @@ http:
 ::::
 
 > **另请参阅**
-> 在 [RoadRunner 文档](https://roadrunner.dev/docs/app-server-cli) 中阅读有关服务器命令的更多信息。
+> 在 [RoadRunner 文档](https://docs.roadrunner.dev/docs/app-server/cli) 中阅读有关服务器命令的更多信息。
 
 ## RoadRunner 桥接器
 

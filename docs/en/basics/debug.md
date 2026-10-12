@@ -449,7 +449,7 @@ Ad first, you need to configure your IDE to work with xDebug.
 
 > **See more**
 > Read more about the IDE configuration in the
-> official [documentation](https://roadrunner.dev/docs/php-debugging).
+> official [documentation](https://docs.roadrunner.dev/docs/php-worker/debugging).
 
 ### On-Demand
 

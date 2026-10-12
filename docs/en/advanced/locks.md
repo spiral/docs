@@ -1,6 +1,6 @@
 # Advanced — Atomic Locks
 
-Spiral has full integration with [RoadRunner locks](https://roadrunner.dev/docs/plugins-locks) plugin, which enables you
+Spiral has full integration with [RoadRunner locks](https://docs.roadrunner.dev/docs/plugins/locks) plugin, which enables you
 to manage resource locks in your application. With this component, you can easily manage critical sections of your
 application and prevent race conditions, data corruption, and other synchronization issues that can occur in
 multi-process environments.

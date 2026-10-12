@@ -59,13 +59,13 @@ jobs:
 
 > **Note**
 > You can read more about RoadRunner Jobs plugin configuration
-> in the [official documentation](https://roadrunner.dev/docs/queues-overview)
+> in the [official documentation](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues)
 
 As you can see we didn't specify any pipelines in our configuration. RoadRunner provides the ability to create pipelines
 dynamically, so we will create them later in our application.
 
 Once the configuration is complete, you can start the server. RoadRunner
-uses [RPC](https://roadrunner.dev/docs/php-rpc/2023.x/en) to communicate between PHP application and RoadRunner, so we
+uses [RPC](https://docs.roadrunner.dev/docs/php-worker/rpc) to communicate between PHP application and RoadRunner, so we
 need to start it before pushing jobs into a queue.
 
 Let's check if everything work fine using the following command:
