@@ -43,7 +43,8 @@ composer create-project spiral/app my-app
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
@@ -85,6 +86,8 @@ return [
                   name: 'default',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              // 在启动时不消耗此管道的作业
              'consume' => false,
@@ -111,15 +114,20 @@ return [
 
 ```yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
   pipelines:
     default:
       driver: amqp
-      priority: 100
-      queue: default
+      config:
+        connection: default
+        priority: 100
+        queue:
+          name: default
+          routing_key: default
 ```
 
 并在 `app/config/queue.php` 文件中选择已定义的管道：
@@ -331,7 +339,8 @@ composer create-project spiral/app my-consumer-app
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
@@ -361,6 +370,8 @@ return [
                   name: 'default',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              'consume' => true, // <===== 启用消费
          ],
@@ -386,15 +397,20 @@ return [
 
 ```yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ default ]  # <===== 启用消费
   pipelines:
     default:
       driver: amqp
-      priority: 100
-      queue: default
+      config:
+        connection: default
+        priority: 100
+        queue:
+          name: default
+          routing_key: default
 ```
 
 > **注意**

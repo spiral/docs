@@ -116,7 +116,7 @@ Spiral 附带了几个内置的 dispatcher：
 - [RoadRunner GRPC dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/GRPC/Internal/Dispatcher.php)：
   负责处理传入的 GRPC 请求，并将它们路由到相应的服务。这是当您的应用程序作为 GRPC 服务运行时使用的 dispatcher。
 
-- [RoadRunner TCP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/Tcp/Internal/Dispatcher.php)：负责处理传入的 TCP 连接，并将它们路由到相应的处理器。这是当您的应用程序作为 TCP 服务运行时使用的 dispatcher。
+- [RoadRunner TCP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/Tcp/Internal/Dispatcher.php)：负责处理传入的 TCP 连接，并将它们路由到相应的处理器。这是当您的应用程序作为 TCP 服务运行时使用的 dispatcher。RoadRunner 3 不包含 TCP 插件，因此该 dispatcher 仅适用于 RoadRunner 2025.x。
 
 - [Temporal dispatcher](https://github.com/spiral/temporal-bridge/blob/2.0/src/Dispatcher.php)：负责处理传入的工作流活动。Temporal 是一个分布式、可扩展且具有容错能力的工作流引擎，用于构建和编排长时间运行的业务逻辑。
 

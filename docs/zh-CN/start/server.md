@@ -4,7 +4,7 @@ Spiral 框架旨在促进长时间运行的应用程序的开发，同时确保�
 
 RoadRunner 是一个高性能的 PHP 应用程序服务器和进程管理器，它为 PHP 应用程序提供了长时间运行的能力。它提供了高效的资源管理，例如 CPU 和内存使用，这有助于应用程序长时间平稳高效地运行。
 
-它被设计用来处理各种请求类型，包括 [HTTP](../http/lifecycle.md)、[gRPC](../grpc/configuration.md)、TCP、[队列任务](../queue/roadrunner.md) 消费和 Temporal。它的运行方式是在启动时只运行一次 worker，然后根据请求的类型将请求定向到 [调度器](../framework/dispatcher.md)。这意味着每个 worker 都是隔离的，并且独立工作，遵循“无共享”的方法，其中资源不会在 worker 之间共享。
+它被设计用来处理各种请求类型，包括 [HTTP](../http/lifecycle.md)、[gRPC](../grpc/configuration.md)、[队列任务](../queue/roadrunner.md) 消费和 Temporal。它的运行方式是在启动时只运行一次 worker，然后根据请求的类型将请求定向到 [调度器](../framework/dispatcher.md)。这意味着每个 worker 都是隔离的，并且独立工作，遵循“无共享”的方法，其中资源不会在 worker 之间共享。
 
 使用 RoadRunner 可以显著提高速度和效率，因为消除了应用程序反复进行引导启动的需要。这可以节省 CPU 和内存资源，并减少响应时间。
 
@@ -29,7 +29,7 @@ RoadRunner 是一个高性能的 PHP 应用程序服务器和进程管理器，�
 composer require roadrunner/cli
 ```
 
-并运行以下命令以下载最新版本的 RoadRunner：
+并运行以下命令以下载 RoadRunner 3 的最新版本：
 
 ```terminal
 ./vendor/bin/rr get
@@ -53,11 +53,11 @@ curl --proto '=https' --tlsv1.2 -sSf  https://raw.githubusercontent.com/roadrunn
 RoadRunner 在 Docker 镜像中提供了预编译的 RoadRunner 服务器二进制文件。
 
 ```docker Dockerfile
-FROM spiralscout/roadrunner as roadrunner
+FROM spiralscout/roadrunner:3 as roadrunner
 # OR
-# FROM ghcr.io/roadrunner-server/roadrunner as roadrunner
+# FROM ghcr.io/roadrunner-server/roadrunner:3 as roadrunner
 
-FROM php:8.1-cli
+FROM php:8.2-cli
 
 # 将 RoadRunner 二进制文件从 roadrunner 镜像复制到本地 bin 目录
 COPY --from=roadrunner /usr/bin/rr /usr/local/bin/rr
@@ -77,8 +77,8 @@ CMD ["rr", "serve"]
 适用于 Debian 衍生版本（Ubuntu, Mint, MX 等）的安装选项
 
 ```bash
-wget https://github.com/roadrunner-server/roadrunner/releases/download/v2.X.X/roadrunner-2.X.X-linux-amd64.deb
-sudo dpkg -i roadrunner-2.X.X-linux-amd64.deb
+wget https://github.com/roadrunner-server/roadrunner/releases/download/v3.X.X/roadrunner-3.X.X-linux-amd64.deb
+sudo dpkg -i roadrunner-3.X.X-linux-amd64.deb
 ```
 :::
 
@@ -97,6 +97,8 @@ sudo dpkg -i roadrunner-2.X.X-linux-amd64.deb
 你可以使用 `.rr.yaml` 文件配置 worker 的数量、内存限制和其他插件：
 
 ```yaml .rr.yaml
+version: "3"
+
 rpc:
   listen: tcp://127.0.0.1:6001
 
@@ -116,6 +118,9 @@ http:
     supervisor:
       max_worker_memory: 100
 ```
+
+> **注意**
+> 在 RoadRunner 3 中，请求按从左到右的顺序经过 `http.middleware`，因此 `gzip` 也会压缩由 `static` 提供的静态文件。RoadRunner 2025.x 按相反的顺序应用该列表：要保持原有行为，请将现有列表反转。
 
 设置 HTTP 的 worker 数量：
 
@@ -191,7 +196,7 @@ public function defineBootloaders(): array
         RoadRunnerBridge\CacheBootloader::class, // 可选，如果需要与 KV 插件一起使用
         RoadRunnerBridge\GRPCBootloader::class, // 可选，如果需要与 GRPC 插件一起使用
         RoadRunnerBridge\CommandBootloader::class,
-        RoadRunnerBridge\TcpBootloader::class, // 可选，如果需要与 TCP 插件一起使用
+        RoadRunnerBridge\TcpBootloader::class, // 可选，如果需要与 TCP 插件一起使用（RoadRunner 3 中不可用）
         RoadRunnerBridge\MetricsBootloader::class, // 可选，如果需要与 metrics 插件一起使用
         RoadRunnerBridge\LoggerBootloader::class, // 可选，如果需要与 app-logger 插件一起使用
         // ...
@@ -213,7 +218,7 @@ protected const LOAD = [
     RoadRunnerBridge\CacheBootloader::class, // 可选，如果需要与 KV 插件一起使用
     RoadRunnerBridge\GRPCBootloader::class, // 可选，如果需要与 GRPC 插件一起使用
     RoadRunnerBridge\CommandBootloader::class,
-    RoadRunnerBridge\TcpBootloader::class, // 可选，如果需要与 TCP 插件一起使用
+    RoadRunnerBridge\TcpBootloader::class, // 可选，如果需要与 TCP 插件一起使用（RoadRunner 3 中不可用）
     RoadRunnerBridge\MetricsBootloader::class, // 可选，如果需要与 metrics 插件一起使用
     RoadRunnerBridge\LoggerBootloader::class, // 可选，如果需要与 app-logger 插件一起使用
     // ...
