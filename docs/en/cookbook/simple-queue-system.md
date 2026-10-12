@@ -50,7 +50,8 @@ First of all you need to configure RoadRunner server to use `jobs` plugin:
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
@@ -97,6 +98,8 @@ return [
                   name: 'default',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              // Do not consume jobs for this pipeline on startup
              'consume' => false,
@@ -124,15 +127,20 @@ Let's define our first pipeline in the `.rr.yaml` file:
 
 ```yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
   pipelines:
     default:
       driver: amqp
-      priority: 100
-      queue: default
+      config:
+        connection: default
+        priority: 100
+        queue:
+          name: default
+          routing_key: default
 ```
 
 And select defined pipeline in the `app/config/queue.php` file:
@@ -352,7 +360,8 @@ First of all you need to configure RoadRunner server to use `jobs` plugin:
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
@@ -383,6 +392,8 @@ return [
                   name: 'default',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              'consume' => true, // <===== Enables consuming
          ],
@@ -409,15 +420,20 @@ Let's define our pipeline in the `.rr.yaml` file:
 
 ```yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ default ]  # <===== Enables consuming
   pipelines:
     default:
       driver: amqp
-      priority: 100
-      queue: default
+      config:
+        connection: default
+        priority: 100
+        queue:
+          name: default
+          routing_key: default
 ```
 
 > **Note**
