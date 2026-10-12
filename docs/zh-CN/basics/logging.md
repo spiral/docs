@@ -170,7 +170,7 @@ protected const LOAD = [
 
 ### RoadRunner 处理程序
 
-RoadRunner bridge 包提供了 `Spiral\RoadRunnerBridge\Logger\Handler` 处理程序，用于将日志发送到 [RoadRunner 应用程序日志记录器](https://roadrunner.dev/docs/plugins-applogger)。
+RoadRunner bridge 包提供了 `Spiral\RoadRunnerBridge\Logger\Handler` 处理程序，用于将日志发送到 [RoadRunner 应用程序日志记录器](https://docs.roadrunner.dev/docs/logging-and-observability/applogger)。
 
 您只需要将 `Spiral\RoadRunnerBridge\Bootloader\LoggerBootloader` 添加到启动器列表的顶部：
 

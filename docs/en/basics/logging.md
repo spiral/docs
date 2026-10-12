@@ -183,7 +183,7 @@ Read more about bootloaders in the [Framework — Bootloaders](../framework/boot
 ### RoadRunner handler
 
 The RoadRunner bridge package provides `Spiral\RoadRunnerBridge\Logger\Handler` handler for sending logs to
-the [RoadRunner app logger](https://roadrunner.dev/docs/plugins-applogger).
+the [RoadRunner app logger](https://docs.roadrunner.dev/docs/logging-and-observability/applogger).
 
 You just need to add `Spiral\RoadRunnerBridge\Bootloader\LoggerBootloader` to the top of bootloaders list:
 

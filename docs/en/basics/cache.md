@@ -21,7 +21,7 @@ When we speak of Spiral's caching prowess, RoadRunner sits at its core. Here's w
   high-performance tasks, it can manage concurrent operations without a hiccup.
 
 - **Diverse Storage Choices through the Key-Value Plugin:** With RoadRunner's 
-  [Key-Value plugin](https://roadrunner.dev/docs/plugins-kv/), you're spoilt for choice. Opt for household names like 
+  [Key-Value plugin](https://docs.roadrunner.dev/docs/key-value/overview-kv), you're spoilt for choice. Opt for household names like 
   Redis Server and Memcached or go the server-less route with choices like in-memory storage.
 
 - **No PHP Extensions Required:** One of the standout features of using RoadRunner is the elimination of any PHP 
@@ -72,7 +72,7 @@ Read more about bootloaders in the [Framework — Bootloaders](../framework/boot
 
 > **Note**
 > The `spiral/roadrunner-bridge` package allows you to use RoadRunner
-> [kv plugin](https://roadrunner.dev/docs/plugins-kv/) with Spiral. This package provides RPC api for KV
+> [kv plugin](https://docs.roadrunner.dev/docs/key-value/overview-kv) with Spiral. This package provides RPC api for KV
 > and a bootloader for your application.
 
 ## Configuration
@@ -205,7 +205,7 @@ kv:
 
 > **See more**
 > Read more about the configuration of the RoadRunner KV plugin in
-> the [RoadRunner documentation](https://roadrunner.dev/docs/plugins-kv).
+> the [RoadRunner documentation](https://docs.roadrunner.dev/docs/key-value/overview-kv).
 
 ## Usage
 
