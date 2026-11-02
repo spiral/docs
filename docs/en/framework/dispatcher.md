@@ -125,11 +125,6 @@ Spiral comes with several built-in dispatchers:
   responsible for handling incoming GRPC requests and routing them to the appropriate services.
   This is the dispatcher that is used when your application is running as a GRPC service.
 
-- [RoadRunner TCP dispatcher](https://github.com/spiral/roadrunner-bridge/blob/4.x/src/Tcp/Internal/Dispatcher.php):
-  Handles responsible for handling incoming TCP connections and routing them to the appropriate handler.
-  This is the dispatcher that is used when your application is running as a TCP service. RoadRunner 3 does not include
-  the TCP plugin, so this dispatcher works only with RoadRunner 2025.x.
-
 - [Temporal dispatcher](https://github.com/spiral/temporal-bridge/blob/2.0/src/Dispatcher.php): responsible for handling
   incoming workflow activities. Temporal is a distributed, scalable, and fault-tolerant workflow engine that is used to
   build and orchestrate long-running business logic.

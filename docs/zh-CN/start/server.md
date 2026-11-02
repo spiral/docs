@@ -166,7 +166,7 @@ http:
 
 ## RoadRunner 桥接器
 
-[spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) 软件包提供了 Spiral 和 RoadRunner 之间的完全集成。此软件包允许开发人员使用 RoadRunner 的各种插件，包括 `http`、`grpc`、`jobs`、`tcp`、`kv`、`locks`、`centrifugo`、`app-logger` 和 `metrics`。
+[spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) 软件包提供了 Spiral 和 RoadRunner 之间的完全集成。此软件包允许开发人员使用 RoadRunner 的各种插件，包括 `http`、`grpc`、`jobs`、`kv`、`locks`、`centrifugo`、`app-logger` 和 `metrics`。
 
 > **注意**
 > 默认情况下，该组件在 [应用程序包](https://github.com/spiral/app) 中可用。
@@ -196,7 +196,6 @@ public function defineBootloaders(): array
         RoadRunnerBridge\CacheBootloader::class, // 可选，如果需要与 KV 插件一起使用
         RoadRunnerBridge\GRPCBootloader::class, // 可选，如果需要与 GRPC 插件一起使用
         RoadRunnerBridge\CommandBootloader::class,
-        RoadRunnerBridge\TcpBootloader::class, // 可选，如果需要与 TCP 插件一起使用（RoadRunner 3 中不可用）
         RoadRunnerBridge\MetricsBootloader::class, // 可选，如果需要与 metrics 插件一起使用
         RoadRunnerBridge\LoggerBootloader::class, // 可选，如果需要与 app-logger 插件一起使用
         // ...
@@ -218,7 +217,6 @@ protected const LOAD = [
     RoadRunnerBridge\CacheBootloader::class, // 可选，如果需要与 KV 插件一起使用
     RoadRunnerBridge\GRPCBootloader::class, // 可选，如果需要与 GRPC 插件一起使用
     RoadRunnerBridge\CommandBootloader::class,
-    RoadRunnerBridge\TcpBootloader::class, // 可选，如果需要与 TCP 插件一起使用（RoadRunner 3 中不可用）
     RoadRunnerBridge\MetricsBootloader::class, // 可选，如果需要与 metrics 插件一起使用
     RoadRunnerBridge\LoggerBootloader::class, // 可选，如果需要与 app-logger 插件一起使用
     // ...

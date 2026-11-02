@@ -284,7 +284,6 @@ PROFILER_APP_NAME=My super app
 -   [控制器](../http/interceptors.md),
 -   [GRPC](../grpc/interceptors.md),
 -   [队列作业](../queue/interceptors.md).
--   TCP
 -   [事件](../advanced/events.md#interceptors).
 
 > **查看更多**

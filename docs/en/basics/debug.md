@@ -336,7 +336,6 @@ interceptors.
 - [Controllers](../http/interceptors.md),
 - [GRPC](../grpc/interceptors.md),
 - [Queue jobs](../queue/interceptors.md).
-- TCP
 - [Events](../advanced/events.md#interceptors).
 
 > **See more**
