@@ -46,36 +46,36 @@ message PingResponse {
 
 ## 生成服务
 
-要将 `.proto` 文件编译成 PHP 代码，您需要使用 `protoc` 编译器和 `protoc-gen-php-grpc`。
+为了将 `.proto` 文件编译成 PHP 代码，`grpc:generate` 命令行命令会使用 `protoc` 编译器和 `protoc-gen-php-grpc` 插件运行 [buf](https://buf.build)。
 
 > **注意**
-> 可以在[此处](./configuration.md)找到 `grpc` PHP 扩展、`protoc` 编译器和 `protoc-gen-php-grpc` 插件的[安装说明]。
+> 可以在[此处](./configuration.md)找到 `protobuf` PHP 扩展和代码生成工具 `buf`、`protoc`、`protoc-gen-php-grpc` 的安装说明。
 
-首先，您需要生成服务存根。为此，您需要将它们添加到 `app/config/grpc.php` 配置文件中：
+首先，您需要将 proto 文件添加到 `app/config/grpc.php` 配置文件中：
 
 ```php app/config/grpc.php
 return [
     /**
-     * 生成的 DTO（数据传输对象）文件将存储的路径。
+     * 所有 proto 文件的根目录：所有导入都从这里解析。
      */
-    'generatedPath' => directory('root') . '/generated',
+    'servicesBasePath' => directory('root') . 'proto',
 
     /**
-     * 所有 proto 文件的根目录，将在此处搜索导入。
-     */
-    'servicesBasePath' => directory('root') . '/proto',
-
-    /**
-     * protoc-gen-php-grpc 库的路径。
-     */
-    'binaryPath' => directory('root').'protoc-gen-php-grpc',
-
-    /**
-     * 应该由 grpc:generate 控制台命令编译成 PHP 的 proto 文件路径数组。
+     * 由 grpc:generate 命令行命令编译成 PHP 的 proto 文件。
      */
     'services' => [
-        directory('root').'proto/pinger.proto',
+        directory('root') . 'proto/pinger.proto',
     ],
+
+    /**
+     * 存放生成文件的路径。
+     */
+    'generatedPath' => directory('root') . 'generated',
+
+    /**
+     * 生成类的基础命名空间。它会从生成文件的路径中去掉。
+     */
+    'namespace' => 'GRPC',
 ];
 ```
 
@@ -88,14 +88,26 @@ php app.php grpc:generate
 您应该看到以下输出：
 
 ```bash
-Compiling `proto/pinger.proto`:
-• generated/GRPC/Pinger/PingerInterface.php
-• generated/GRPC/Pinger/PingRequest.php
-• generated/GRPC/Pinger/PingResponse.php
-• generated/GRPC/GPBMetadata/Pinger.php
+Compiling `/path/to/project/proto/pinger.proto`:
+• generated/GPBMetadata/Pinger.php
+• generated/Pinger/PingRequest.php
+• generated/Pinger/PingResponse.php
+• generated/Pinger/PingerInterface.php
 ```
 
-代码将被生成在 `generated/GRPC/Pinger` 和 `generated/GRPC/GPBMetadata` 目录中。
+代码将被生成在 `generated/Pinger` 和 `generated/GPBMetadata` 目录中：基础命名空间 `GRPC` 已从路径中去掉。
+
+> **注意**
+> 该命令接受路径和命名空间作为可选参数：`php app.php grpc:generate [path] [namespace]`。它们会覆盖配置中的 `generatedPath` 和 `namespace`。路径相对于当前目录。如果参数和配置值都没有设置，则使用应用程序内核所在的目录和命名空间。
+
+如果 proto 文件声明了基础命名空间之外的类，该命令会在路径中保留它们的完整命名空间，并打印它们所需的自动加载规则，例如：
+
+```bash
+Classes outside the base namespace `GRPC` keep their full namespace as the path and need their own autoload rules:
+  "Shared\\": "generated/Shared/"
+```
+
+如果找不到 proto 文件或编译失败，该命令会打印错误，跳过 `generators`，并以代码 `1` 退出。
 
 最后一步是在 `composer.json` 文件中注册 `GRPC` 命名空间：
 
@@ -154,13 +166,23 @@ grpc:
     - "proto/pinger.proto"
 ```
 
+要检查应用程序是否找到了您的服务实现，请运行：
+
+```terminal
+php app.php grpc:services
+```
+
+该命令会列出找到的服务及其实现类和文件。
+
+然后启动服务器：
+
 ```terminal
 ./rr serve
 ```
 
 ### 多个服务
 
-使用 proto 声明的 `import` 指令将多个服务组合在一个应用程序中，或单独存储消息声明。
+使用 proto 声明的 `import` 指令将多个服务组合在一个应用程序中，或单独存储消息声明。导入从 `servicesBasePath` 解析，在[导入](./configuration.md#导入)部分阅读更多信息。
 
 ## 元数据
 
