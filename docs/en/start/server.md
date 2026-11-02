@@ -184,7 +184,7 @@ Use the following command to start application server on **Windows**
 
 The [spiral/roadrunner-bridge](https://github.com/spiral/roadrunner-bridge) package provides full integration between
 Spiral and RoadRunner. This package allows developers to use RoadRunner's various plugins,
-including `http`, `grpc`, `jobs`, `tcp`, `kv`, `locks`, `centrifugo`, `app-logger`, and `metrics`.
+including `http`, `grpc`, `jobs`, `kv`, `locks`, `centrifugo`, `app-logger`, and `metrics`.
 
 > **Note**
 > The component is available by default in the [application bundle](https://github.com/spiral/app).
@@ -215,7 +215,6 @@ public function defineBootloaders(): array
         RoadRunnerBridge\CacheBootloader::class, // Optional, if it needs to work with KV plugin
         RoadRunnerBridge\GRPCBootloader::class, // Optional, if it needs to work with GRPC plugin
         RoadRunnerBridge\CommandBootloader::class,
-        RoadRunnerBridge\TcpBootloader::class, // Optional, if it needs to work with TCP plugin (not available in RoadRunner 3)
         RoadRunnerBridge\MetricsBootloader::class, // Optional, if it needs to work with metrics plugin
         RoadRunnerBridge\LoggerBootloader::class, // Optional, if it needs to work with app-logger plugin
         // ...
@@ -237,7 +236,6 @@ protected const LOAD = [
     RoadRunnerBridge\CacheBootloader::class, // Optional, if it needs to work with KV plugin
     RoadRunnerBridge\GRPCBootloader::class, // Optional, if it needs to work with GRPC plugin
     RoadRunnerBridge\CommandBootloader::class,
-    RoadRunnerBridge\TcpBootloader::class, // Optional, if it needs to work with TCP plugin (not available in RoadRunner 3)
     RoadRunnerBridge\MetricsBootloader::class, // Optional, if it needs to work with metrics plugin
     RoadRunnerBridge\LoggerBootloader::class, // Optional, if it needs to work with app-logger plugin
     // ...

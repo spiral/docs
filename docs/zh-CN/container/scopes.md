@@ -57,7 +57,7 @@ Spiral 提供了几个预定义的作用域：
 
 1. `root` — 主全局作用域。所有其他作用域都是它的子作用域。
 2. **调度器作用域** — 当相应的[调度器](../framework/dispatcher.md)启动时打开的作用域：
-   `http`、`console`、`grpc`、`centrifugo`、`tcp`、`queue` 或 `temporal`。
+   `http`、`console`、`grpc`、`centrifugo`、`queue` 或 `temporal`。
 3. **请求作用域** — 在执行控制器之前打开的作用域，当请求对象完全形成并准备好处理时。
    对于 HTTP 调度器，中间件将在 `http` 作用域中执行，而拦截器在 `http-request` 作用域中执行。
 
