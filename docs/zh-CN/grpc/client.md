@@ -7,7 +7,7 @@
 `spiral/roadrunner-bridge` 包默认包含 `spiral/grpc-client` 包，它提供了一种简单高效的方式来与 gRPC 服务通信。
 
 > **注意**
-> 在[这里](./configuration.md)可以找到 `grpc` PHP 扩展、`protoc` 编译器和 `protoc-gen-php-grpc` 插件的安装说明。
+> 在[这里](./configuration.md)可以找到 `protobuf` PHP 扩展和代码生成工具 `buf`、`protoc`、`protoc-gen-php-grpc` 的安装说明。
 
 ### 1. 从 `.proto` 文件生成 PHP 接口
 
