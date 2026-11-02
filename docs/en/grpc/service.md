@@ -56,38 +56,38 @@ as input and returns a `PingResponse` message.
 
 ## Generate the service
 
-To compile the `.proto` file into PHP code, you will need to use the `protoc` compiler and the `protoc-gen-php-grpc`.
+To compile the `.proto` file into PHP code, the `grpc:generate` console command runs [buf](https://buf.build) with the
+`protoc` compiler and the `protoc-gen-php-grpc` plugin.
 
 > **Note**
-> Here you can find the [installation instructions](./configuration.md) for the `grpc` PHP extension, `protoc` compiler 
-> and the `protoc-gen-php-grpc` plugin.
+> Here you can find the [installation instructions](./configuration.md) for the `protobuf` PHP extension and the code
+> generation tools: `buf`, `protoc` and `protoc-gen-php-grpc`.
 
-At first, you need to generate the service stubs. To do this, you need to add them to the `app/config/grpc.php`
-configuration file:
+At first, you need to add the proto file to the `app/config/grpc.php` configuration file:
 
 ```php app/config/grpc.php
 return [
     /**
-     * The path where generated DTO (Data Transfer Object) files will be stored.
+     * The root directory of the proto files: all imports are resolved from it.
      */
-    'generatedPath' => directory('root') . '/generated',
+    'servicesBasePath' => directory('root') . 'proto',
 
     /**
-     * The root dir for all proto files, where imports will be searched.
-     */
-    'servicesBasePath' => directory('root') . '/proto',
-
-    /**
-     * The path to the protoc-gen-php-grpc library.
-     */
-    'binaryPath' => directory('root').'protoc-gen-php-grpc',
-
-    /**
-     * An array of paths to proto files that should be compiled into PHP by the grpc:generate console command.
+     * Proto files that the grpc:generate console command compiles into PHP.
      */
     'services' => [
-        directory('root').'proto/pinger.proto',
+        directory('root') . 'proto/pinger.proto',
     ],
+
+    /**
+     * The path where the generated files are stored.
+     */
+    'generatedPath' => directory('root') . 'generated',
+
+    /**
+     * The base namespace of the generated classes. It is cut from the paths of the generated files.
+     */
+    'namespace' => 'GRPC',
 ];
 ```
 
@@ -100,16 +100,33 @@ php app.php grpc:generate
 You should see the following output:
 
 ```bash
-Compiling `proto/pinger.proto`:
-• generated/GRPC/Pinger/PingerInterface.php
-• generated/GRPC/Pinger/PingRequest.php
-• generated/GRPC/Pinger/PingResponse.php
-• generated/GRPC/GPBMetadata/Pinger.php
+Compiling `/path/to/project/proto/pinger.proto`:
+• generated/GPBMetadata/Pinger.php
+• generated/Pinger/PingRequest.php
+• generated/Pinger/PingResponse.php
+• generated/Pinger/PingerInterface.php
 ```
 
-The code will be generated in the `generated/GRPC/Pinger` and `generated/GRPC/GPBMetadata` directories.
+The code will be generated in the `generated/Pinger` and `generated/GPBMetadata` directories: the base namespace `GRPC`
+is cut from the paths.
 
-And the last step is to register `GRPC` namespace in the `composer.json` file:
+> **Note**
+> The command takes the path and the namespace as optional arguments: `php app.php grpc:generate [path] [namespace]`.
+> They override `generatedPath` and `namespace` from the config. The path is relative to the current directory. When
+> neither the argument nor the config value is set, the directory and the namespace of the application kernel are used.
+
+If the proto files declare classes outside the base namespace, the command keeps their full namespace in the path and
+prints the autoload rules they need, for example:
+
+```bash
+Classes outside the base namespace `GRPC` keep their full namespace as the path and need their own autoload rules:
+  "Shared\\": "generated/Shared/"
+```
+
+If a proto file is not found or fails to compile, the command prints the error, skips the `generators`, and exits
+with code `1`.
+
+And the last step is to register the `GRPC` namespace in the `composer.json` file:
 
 ```json composer.json
 {
@@ -168,6 +185,16 @@ grpc:
     - "proto/pinger.proto"
 ```
 
+To check that the application finds your service implementation, run:
+
+```terminal
+php app.php grpc:services
+```
+
+The command lists the found services with their implementation classes and files.
+
+Then start the server:
+
 ```terminal
 ./rr serve
 ```
@@ -175,7 +202,8 @@ grpc:
 ### Multiple Services
 
 Use the `import` directive of proto declarations to combine multiple services in a single application, or store message
-declarations separately.
+declarations separately. Imports are resolved from `servicesBasePath`, read more in the
+[Imports](./configuration.md#imports) section.
 
 ## Metadata
 
