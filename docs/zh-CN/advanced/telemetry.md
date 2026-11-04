@@ -184,6 +184,19 @@ return [
 
 这允许将**跟踪 ID**与日志信息一起存储。这使得更容易找到特定日志的跟踪信息并调查问题，因为它允许关联日志和跟踪数据。
 
+### 开箱即用的跟踪
+
+配置遥测驱动后，以下内容无需编写任何代码即可被跟踪：
+
+- **HTTP** — 每个请求一个 `SERVER` span；跟踪从请求头继续，响应头把上下文带回。
+- **队列** — 推送任务时一个 `PRODUCER` span，处理任务时一个 `CONSUMER` span；跟踪上下文通过任务头传递。
+- **gRPC**（`spiral/roadrunner-bridge` 5.0+）— 每个传入调用一个 `SERVER` span，每个通过 `spiral/grpc-client` 发出的调用一个
+  `CLIENT` span；跟踪上下文通过 `traceparent` 元数据传递。参见 [GRPC — 拦截器](../grpc/interceptors.md#跟踪)。
+
+> **注意**
+> 与 gRPC 一起使用时，请使用 `spiral/otel-bridge` 2.0 或更高版本：更早的版本在回调抛出异常时会丢弃 span 的属性，
+> 因此失败的调用会缺少 `rpc.response.status_code` 和 `error.type`。
+
 ## 用法
 
 该组件提供了一个 `Spiral\Telemetry\TracerInterface` 接口，该接口可用于将跟踪信息发送到收集器。

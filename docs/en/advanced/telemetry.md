@@ -206,6 +206,22 @@ return [
 This allows the **trace ID** to be stored with the log information. This makes it easier to find the trace for a
 specific log and investigate issues as it allows to correlate log and trace data.
 
+### Traced out of the box
+
+Once a telemetry driver is configured, these are traced without any code of yours:
+
+- **HTTP** — a `SERVER` span per request; the trace continues from the request headers, and the response headers carry
+  its context back.
+- **Queue** — a `PRODUCER` span when a job is pushed and a `CONSUMER` span when it is handled; the trace context travels
+  in the job headers.
+- **gRPC** (`spiral/roadrunner-bridge` 5.0+) — a `SERVER` span per incoming call and a `CLIENT` span per call made with
+  `spiral/grpc-client`; the trace context travels in the `traceparent` metadata. See
+  [gRPC — Interceptors](../grpc/interceptors.md#tracing).
+
+> **Note**
+> Use `spiral/otel-bridge` 2.0 or later with gRPC: earlier versions drop the attributes of a span whose callback
+> throws, so failed calls lose `rpc.response.status_code` and `error.type`.
+
 ## Usage
 
 The component provides a `Spiral\Telemetry\TracerInterface` interface which can be used to send traces to the collector.
