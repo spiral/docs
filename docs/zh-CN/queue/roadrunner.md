@@ -239,6 +239,38 @@ public function createJob(QueueInterface $queue): void
 }
 ```
 
+RoadRunner 选项不携带管道名称，因此这样的作业总是进入连接的默认管道。
+
+### 作业优先级和自动确认
+
+从 `spiral/roadrunner-bridge` 5.0 开始，`Spiral\RoadRunnerBridge\Queue\JobOptions` 类可以同时选择管道并设置 RoadRunner 特有的作业选项。它继承自 `Spiral\Queue\Options`，因此拥有该类的全部方法（`onQueue()`、`delayed()`、`withDelay()`、`withHeader()` 等），另外还支持作业优先级和自动确认（auto-ack）：
+
+```php
+use App\Endpoint\Job\SampleJob;
+use Spiral\Queue\QueueInterface;
+use Spiral\RoadRunnerBridge\Queue\JobOptions;
+
+public function createJob(QueueInterface $queue): void
+{
+    $queue->push(
+        SampleJob::class,
+        ['value' => 123],
+        JobOptions::onQueue('in-memory')->withPriority(1)->withAutoAck(true)
+    );
+}
+```
+
+**优先级。** RoadRunner 优先把优先级数值**更小**的作业交给 worker。未设置优先级的作业使用其管道的优先级：`.rr.yaml` 中管道的 `priority` 选项，或者对于在 `app/config/queue.php` 中声明的管道，使用连接器的 `priority`（默认为 `10`）。RoadRunner 对 `0` 的处理方式相同，因此 `withPriority()` 只接受正数。
+
+作业优先级只在 RoadRunner 内部对作业排序，而不是在代理（broker）内部。所有管道共用一个 RoadRunner 优先级队列，每个管道最多向其中放入 `prefetch` 个作业，其余作业按代理自身的顺序留在代理中。因此，作业优先级适用于内存管道和较短的队列。如果紧急作业不能排在代理中大量积压的作业之后，请把它们推送到一个管道 `priority` 更小的独立管道，例如上面的 `high-priority` 管道。
+
+**自动确认。** 自动确认的作业在任何 worker 执行它之前就已被确认；代理驱动在 RoadRunner 从代理取到作业时立即确认。如果处理程序失败或 RoadRunner 重启，该作业就会丢失。请只对可以丢失的作业使用它。
+
+`JobOptions` 也可以用作 `app/config/queue.php` 中管道的默认 `options`，但 Kafka 管道除外，它们需要 `KafkaOptions`。推送时设置的选项优先于管道默认值，显式的 `withAutoAck(false)` 会覆盖自动确认的管道。使用 `JobOptions` 推送到 Kafka 管道的作业保留管道 `KafkaOptions` 中的主题（topic）。
+
+> **注意**
+> 当作业通过 `Spiral\Queue\Exception\RetryException` 重试时，只会应用其选项中的延迟和头信息：重试无法更改作业优先级。
+
 ## 自定义驱动程序
 
 在某些情况下，您可能需要为特定的队列代理创建自定义驱动程序。
