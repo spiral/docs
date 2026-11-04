@@ -249,6 +249,16 @@ return [
 
 ::::
 
+RoadRunner formats the records itself, according to `logs.mode` in `.rr.yaml`: JSON in `production` mode and
+`key=value` lines in `development` mode. The Monolog channel goes to the `channel` field, the context to separate
+fields, and every value arrives as a string. RoadRunner also drops records below `logs.level` (or
+`logs.channels.app.level`), so set it no higher than `MONOLOG_DEFAULT_LEVEL`. Otherwise, with `level: warn` in
+`.rr.yaml`, the application's info and notice records disappear.
+
+> **Note**
+> Since `spiral/roadrunner-bridge` 5.0, the `RR_LOGGER_MODE` environment variable has no effect, and the handler
+> accepts neither a logger mode nor a formatter. Remove the variable from `.env` and from `server.env` in `.rr.yaml`.
+
 ## Usage
 
 ### Send logs to the default channel
