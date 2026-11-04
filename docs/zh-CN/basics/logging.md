@@ -235,6 +235,11 @@ return [
 
 ::::
 
+RoadRunner 根据 `.rr.yaml` 中的 `logs.mode` 自行格式化日志记录：`production` 模式下为 JSON，`development` 模式下为 `key=value` 行。Monolog 通道写入 `channel` 字段，上下文写入单独的字段，所有值都以字符串形式传递。RoadRunner 还会丢弃低于 `logs.level`（或 `logs.channels.app.level`）的记录，因此请将其设置为不高于 `MONOLOG_DEFAULT_LEVEL`。否则，当 `.rr.yaml` 中设置 `level: warn` 时，应用程序的 info 和 notice 记录将会丢失。
+
+> **注意**
+> 从 `spiral/roadrunner-bridge` 5.0 开始，`RR_LOGGER_MODE` 环境变量不再起作用，处理程序也不再接受日志模式或格式化器。请从 `.env` 以及 `.rr.yaml` 的 `server.env` 中删除该变量。
+
 ## 使用
 
 ### 将日志发送到默认通道

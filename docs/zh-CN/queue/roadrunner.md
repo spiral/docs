@@ -175,6 +175,10 @@ return [
 > **警告**
 > 所有定义了 `'consume' => true` 的管道都将在应用程序启动期间初始化。 这意味着推送到这些管道的所有作业都将立即被消费。 所有定义了 `'consume' => false` 的管道将在您将作业推送到它们时才会被初始化。
 
+从 `spiral/roadrunner-bridge` 5.0 开始，桥接器在 RoadRunner [锁](../advanced/locks.md)的保护下声明这些管道，因此同一时间只有一个 worker 声明某个管道。自定义构建的 RoadRunner 必须包含 `lock` 插件；它不需要在 `.rr.yaml` 中配置。锁名称以 `roadrunner-bridge:jobs:` 开头。如果与应用程序自己的锁冲突，请在 `app/config/queue.php` 的 `lockPrefix` 键中设置其他前缀。
+
+创建 `'consume' => true` 管道的 worker 也会恢复（resume）它。已存在的管道保持原样，因此用 `rr:jobs:pause` 暂停的管道在 worker 重启后仍保持暂停。如果管道必须在第一个 worker 启动之前就存在，请在 `.rr.yaml` 中声明它：当 `server.on_init` 脚本声明管道时，RoadRunner 3 无法启动 `jobs` 插件。
+
 在某些情况下，您可能需要创建一个具有自定义默认选项或选项是强制性的管道。 例如，您可能希望为 Kafka 代理创建一个管道，该管道需要设置其他选项。
 
 ```php app/config/queue.php
@@ -189,6 +193,8 @@ use Spiral\RoadRunner\Jobs\KafkaOptions;
     ]
 ],
 ```
+
+Kafka 管道的默认 `options` 必须是 `KafkaOptions`：从 `spiral/roadrunner-bridge` 5.0 开始，向默认选项为其他类型的 Kafka 管道推送作业会抛出 `InvalidArgumentException`。没有 `options` 且连接器只消费一个主题的 Kafka 管道会把作业推送到该主题。
 
 ## 用法
 
