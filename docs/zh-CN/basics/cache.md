@@ -12,7 +12,7 @@ Spiral 中的 `spiral/cache` 组件提供了一种存储和检索数据的简化
 
 - **专为高并发设计：** 它不仅仅是执行；它是并行执行。专为承担高性能任务而设计，它可以管理并发操作而不会出现任何问题。
 
-- **通过 Key-Value 插件提供多样化的存储选择：** 借助 RoadRunner 的 [Key-Value 插件](https://roadrunner.dev/docs/plugins-kv/)，您有很多选择。选择像 Redis Server 和 Memcached 这样的知名产品，或者选择无服务器的方式，例如内存存储。
+- **通过 Key-Value 插件提供多样化的存储选择：** 借助 RoadRunner 的 [Key-Value 插件](https://docs.roadrunner.dev/docs/key-value/overview-kv)，您有很多选择。选择像 Redis Server 和 Memcached 这样的知名产品，或者选择无服务器的方式，例如内存存储。
 
 - **无需 PHP 扩展：** 使用 RoadRunner 的一个突出特点是消除了对 Redis 或 Memcache 的任何 PHP 扩展的需求。相反，您使用 RPC 与 RoadRunner 直接通信。
 
@@ -60,7 +60,7 @@ protected const LOAD = [
 
 > **注意**
 > `spiral/roadrunner-bridge` 包允许您使用 RoadRunner
-> [kv 插件](https://roadrunner.dev/docs/plugins-kv/) 与 Spiral。此包为 KV 提供了 RPC API 以及用于应用程序的引导程序。
+> [kv 插件](https://docs.roadrunner.dev/docs/key-value/overview-kv) 与 Spiral。此包为 KV 提供了 RPC API 以及用于应用程序的引导程序。
 
 ## 配置
 
@@ -185,7 +185,7 @@ kv:
 ```
 
 > **了解更多**
-> 在 [RoadRunner 文档](https://roadrunner.dev/docs/plugins-kv) 中阅读有关 RoadRunner KV 插件配置的更多信息。
+> 在 [RoadRunner 文档](https://docs.roadrunner.dev/docs/key-value/overview-kv) 中阅读有关 RoadRunner KV 插件配置的更多信息。
 
 ## 用法
 

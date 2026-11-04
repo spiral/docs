@@ -1,6 +1,6 @@
 # Websockets — 入门
 
-RoadRunner 曾经拥有自己的 [WebSocket 插件](https://roadrunner.dev/docs/plugins-websockets/2.x)，用于向客户端发送消息，但我们发现它的功能过于有限。 我们希望创建一个更好的解决方案来处理实时数据传输，并决定停止开发我们自己的插件。 相反，我们寻找了市场上最好的开源工具之一，并找到了 [Centrifugo](https://centrifugal.dev/)。 我们创建了一个名为 [Centrifuge](https://roadrunner.dev/docs/plugins-centrifuge) 的 RoadRunner 插件，它使用 [GRPC API](https://centrifugal.dev/docs/server/server_api#grpc-api) 与 Centrifugo 服务器集成，这是一个功能更强大、更灵活的选择。
+RoadRunner 曾经拥有自己的 [WebSocket 插件](https://roadrunner.dev/docs/plugins-websockets/2.x)，用于向客户端发送消息，但我们发现它的功能过于有限。 我们希望创建一个更好的解决方案来处理实时数据传输，并决定停止开发我们自己的插件。 相反，我们寻找了市场上最好的开源工具之一，并找到了 [Centrifugo](https://centrifugal.dev/)。 我们创建了一个名为 [Centrifuge](https://docs.roadrunner.dev/docs/plugins/centrifuge) 的 RoadRunner 插件，它使用 [GRPC API](https://centrifugal.dev/docs/server/server_api#grpc-api) 与 Centrifugo 服务器集成，这是一个功能更强大、更灵活的选择。
 
 **以下是使用 Centrifugo 的一些好处：**
 
@@ -85,7 +85,7 @@ centrifuge:
 而 `grpc_api_address` 是 Centrifugo GRPC 服务器的地址。 RoadRunner Centrifuge 插件将使用它与 Centrifugo 服务器通信。
 
 > **了解更多**
-> 在 [此处](https://roadrunner.dev/docs/plugins-centrifuge) 阅读有关 Centrifuge 插件配置的更多信息。
+> 在 [此处](https://docs.roadrunner.dev/docs/plugins/centrifuge) 阅读有关 Centrifuge 插件配置的更多信息。
 
 ### Centrifugo 服务器
 

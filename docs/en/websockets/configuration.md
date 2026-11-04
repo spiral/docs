@@ -4,7 +4,7 @@ RoadRunner used to have its own [WebSocket plugin](https://roadrunner.dev/docs/p
 sending messages to clients, but we found it was too limited. We wanted to create a better solution for handling
 real-time data transmission and decided to stop developing our own plugin. Instead, we looked for one of the best
 open-source tools out there and found [Centrifugo](https://centrifugal.dev/). We created a RoadRunner plugin
-called [Centrifuge](https://roadrunner.dev/docs/plugins-centrifuge) that integrates with Centrifugo server
+called [Centrifuge](https://docs.roadrunner.dev/docs/plugins/centrifuge) that integrates with Centrifugo server
 using [GRPC API](https://centrifugal.dev/docs/server/server_api#grpc-api) and it's a much more powerful and flexible
 option.
 
@@ -106,7 +106,7 @@ And `grpc_api_address` is the address of the Centrifugo GRPC server. It will be 
 to communicate with the Centrifugo server.
 
 > **See more**
-> Read more about the configuration of the Centrifuge plugin [here](https://roadrunner.dev/docs/plugins-centrifuge).
+> Read more about the configuration of the Centrifuge plugin [here](https://docs.roadrunner.dev/docs/plugins/centrifuge).
 
 ### Centrifugo server
 

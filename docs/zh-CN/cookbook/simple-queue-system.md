@@ -43,7 +43,8 @@ composer create-project spiral/app my-app
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
@@ -51,11 +52,11 @@ jobs:
 ```
 
 > **注意**
-> 您可以在 [官方文档](https://roadrunner.dev/docs/queues-overview) 中阅读有关 RoadRunner Jobs 插件配置的更多信息
+> 您可以在 [官方文档](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues) 中阅读有关 RoadRunner Jobs 插件配置的更多信息
 
 如您所见，我们在配置中没有指定任何管道。 RoadRunner 提供了动态创建管道的功能，所以我们稍后将在应用程序中创建它们。
 
-配置完成后，您可以启动服务器。 RoadRunner 使用 [RPC](https://roadrunner.dev/docs/php-rpc/2023.x/en) 在 PHP 应用程序和 RoadRunner 之间进行通信，因此在将作业推送到队列之前，我们需要启动它。
+配置完成后，您可以启动服务器。 RoadRunner 使用 [RPC](https://docs.roadrunner.dev/docs/php-worker/rpc) 在 PHP 应用程序和 RoadRunner 之间进行通信，因此在将作业推送到队列之前，我们需要启动它。
 
 让我们使用以下命令检查一切是否正常工作：
 
@@ -85,6 +86,8 @@ return [
                   name: 'default',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              // 在启动时不消耗此管道的作业
              'consume' => false,
@@ -111,15 +114,20 @@ return [
 
 ```yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
   pipelines:
     default:
       driver: amqp
-      priority: 100
-      queue: default
+      config:
+        connection: default
+        priority: 100
+        queue:
+          name: default
+          routing_key: default
 ```
 
 并在 `app/config/queue.php` 文件中选择已定义的管道：
@@ -331,7 +339,8 @@ composer create-project spiral/app my-consumer-app
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
@@ -361,6 +370,8 @@ return [
                   name: 'default',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              'consume' => true, // <===== 启用消费
          ],
@@ -386,15 +397,20 @@ return [
 
 ```yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ default ]  # <===== 启用消费
   pipelines:
     default:
       driver: amqp
-      priority: 100
-      queue: default
+      config:
+        connection: default
+        priority: 100
+        queue:
+          name: default
+          routing_key: default
 ```
 
 > **注意**

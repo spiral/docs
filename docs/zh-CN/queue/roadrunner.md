@@ -1,15 +1,15 @@
 # 队列 — RoadRunner 集成
 
-Spiral 框架与 [RoadRunner jobs](https://roadrunner.dev/docs/queues-overview) 插件完全集成，该插件为各种队列代理提供了统一的队列 API，例如：
+Spiral 框架与 [RoadRunner jobs](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues) 插件完全集成，该插件为各种队列代理提供了统一的队列 API，例如：
 
-- [Kafka](https://roadrunner.dev/docs/queues-kafka),
-- [AMQP (RabbitMQ)](https://roadrunner.dev/docs/queues-amqp),
-- [Amazon SQS](https://roadrunner.dev/docs/queues-sqs),
-- [Beanstalk](https://roadrunner.dev/docs/queues-beanstalk),
-- 以及 [memory](https://roadrunner.dev/docs/queues-memory) 驱动。
+- [Kafka](https://docs.roadrunner.dev/docs/queues-and-jobs/kafka),
+- [AMQP (RabbitMQ)](https://docs.roadrunner.dev/docs/queues-and-jobs/amqp),
+- [Amazon SQS](https://docs.roadrunner.dev/docs/queues-and-jobs/sqs),
+- [Beanstalk](https://docs.roadrunner.dev/docs/queues-and-jobs/beanstalk),
+- 以及 [memory](https://docs.roadrunner.dev/docs/queues-and-jobs/memory) 驱动。
 
 > **注意**
-> 有关支持的代理的更多信息，请访问 [官方网站](https://roadrunner.dev/docs/plugins-jobs)。
+> 有关支持的代理的更多信息，请访问 [官方网站](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues)。
 
 为了实现与 RoadRunner 的集成，Spiral 框架通过 [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) 包提供了内置支持。
 
@@ -73,7 +73,8 @@ RoadRunner 提供了两种声明管道的方法：
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@localhost:5672
+  default:
+    addr: amqp://guest:guest@localhost:5672
 
 jobs:
   consume: [ "in-memory", "high-priority" ]
@@ -85,7 +86,11 @@ jobs:
     high-priority:
       driver: amqp
       config:
+        connection: default
         priority: 1
+        queue:
+          name: default
+          routing_key: default
 ```
 
 在这种情况下，您的 `app/config/queue.php` 配置文件应如下所示：
@@ -129,6 +134,8 @@ return [
                   name: 'high-priority',
                   priority: 1,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              'consume' => true, // Consume jobs for this pipeline on startup
          ],
@@ -137,6 +144,8 @@ return [
                   name: 'low-priority',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              'consume' => false, // Do not consume jobs for this pipeline on startup
          ],
@@ -160,8 +169,15 @@ return [
 ];
 ```
 
+> **注意**
+> RoadRunner 3 没有默认的 AMQP 连接：每个 AMQP 管道都必须指定 `.rr.yaml` 的 `amqp` 部分中声明的某个连接。`.rr.yaml` 中的管道通过 `config.connection` 指定，从 PHP 创建的管道则通过保留的队列头 `rr_connection` 传递连接名称。更多信息请参阅 [RoadRunner 文档](https://docs.roadrunner.dev/docs/queues-and-jobs/amqp)。
+
 > **警告**
 > 所有定义了 `'consume' => true` 的管道都将在应用程序启动期间初始化。 这意味着推送到这些管道的所有作业都将立即被消费。 所有定义了 `'consume' => false` 的管道将在您将作业推送到它们时才会被初始化。
+
+从 `spiral/roadrunner-bridge` 5.0 开始，桥接器在 RoadRunner [锁](../advanced/locks.md)的保护下声明这些管道，因此同一时间只有一个 worker 声明某个管道。自定义构建的 RoadRunner 必须包含 `lock` 插件；它不需要在 `.rr.yaml` 中配置。锁名称以 `roadrunner-bridge:jobs:` 开头。如果与应用程序自己的锁冲突，请在 `app/config/queue.php` 的 `lockPrefix` 键中设置其他前缀。
+
+创建 `'consume' => true` 管道的 worker 也会恢复（resume）它。已存在的管道保持原样，因此用 `rr:jobs:pause` 暂停的管道在 worker 重启后仍保持暂停。如果管道必须在第一个 worker 启动之前就存在，请在 `.rr.yaml` 中声明它：当 `server.on_init` 脚本声明管道时，RoadRunner 3 无法启动 `jobs` 插件。
 
 在某些情况下，您可能需要创建一个具有自定义默认选项或选项是强制性的管道。 例如，您可能希望为 Kafka 代理创建一个管道，该管道需要设置其他选项。
 
@@ -177,6 +193,8 @@ use Spiral\RoadRunner\Jobs\KafkaOptions;
     ]
 ],
 ```
+
+Kafka 管道的默认 `options` 必须是 `KafkaOptions`：从 `spiral/roadrunner-bridge` 5.0 开始，向默认选项为其他类型的 Kafka 管道推送作业会抛出 `InvalidArgumentException`。没有 `options` 且连接器只消费一个主题的 Kafka 管道会把作业推送到该主题。
 
 ## 用法
 
@@ -226,6 +244,38 @@ public function createJob(QueueInterface $queue): void
     );
 }
 ```
+
+RoadRunner 选项不携带管道名称，因此这样的作业总是进入连接的默认管道。
+
+### 作业优先级和自动确认
+
+从 `spiral/roadrunner-bridge` 5.0 开始，`Spiral\RoadRunnerBridge\Queue\JobOptions` 类可以同时选择管道并设置 RoadRunner 特有的作业选项。它继承自 `Spiral\Queue\Options`，因此拥有该类的全部方法（`onQueue()`、`delayed()`、`withDelay()`、`withHeader()` 等），另外还支持作业优先级和自动确认（auto-ack）：
+
+```php
+use App\Endpoint\Job\SampleJob;
+use Spiral\Queue\QueueInterface;
+use Spiral\RoadRunnerBridge\Queue\JobOptions;
+
+public function createJob(QueueInterface $queue): void
+{
+    $queue->push(
+        SampleJob::class,
+        ['value' => 123],
+        JobOptions::onQueue('in-memory')->withPriority(1)->withAutoAck(true)
+    );
+}
+```
+
+**优先级。** RoadRunner 优先把优先级数值**更小**的作业交给 worker。未设置优先级的作业使用其管道的优先级：`.rr.yaml` 中管道的 `priority` 选项，或者对于在 `app/config/queue.php` 中声明的管道，使用连接器的 `priority`（默认为 `10`）。RoadRunner 对 `0` 的处理方式相同，因此 `withPriority()` 只接受正数。
+
+作业优先级只在 RoadRunner 内部对作业排序，而不是在代理（broker）内部。所有管道共用一个 RoadRunner 优先级队列，每个管道最多向其中放入 `prefetch` 个作业，其余作业按代理自身的顺序留在代理中。因此，作业优先级适用于内存管道和较短的队列。如果紧急作业不能排在代理中大量积压的作业之后，请把它们推送到一个管道 `priority` 更小的独立管道，例如上面的 `high-priority` 管道。
+
+**自动确认。** 自动确认的作业在任何 worker 执行它之前就已被确认；代理驱动在 RoadRunner 从代理取到作业时立即确认。如果处理程序失败或 RoadRunner 重启，该作业就会丢失。请只对可以丢失的作业使用它。
+
+`JobOptions` 也可以用作 `app/config/queue.php` 中管道的默认 `options`，但 Kafka 管道除外，它们需要 `KafkaOptions`。推送时设置的选项优先于管道默认值，显式的 `withAutoAck(false)` 会覆盖自动确认的管道。使用 `JobOptions` 推送到 Kafka 管道的作业保留管道 `KafkaOptions` 中的主题（topic）。
+
+> **注意**
+> 当作业通过 `Spiral\Queue\Exception\RetryException` 重试时，只会应用其选项中的延迟和头信息：重试无法更改作业优先级。
 
 ## 自定义驱动程序
 

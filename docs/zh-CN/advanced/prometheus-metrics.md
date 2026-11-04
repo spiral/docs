@@ -4,7 +4,7 @@
 
 ![Grafana 仪表板](https://user-images.githubusercontent.com/773481/205066017-ecddefc4-1d07-4428-b3ad-af49baadad0a.png)
 
-Spiral 和 [RoadRunner 指标](https://roadrunner.dev/docs/plugins-metrics) 插件提供了收集应用程序指标并将它们暴露给 Prometheus 的能力。
+Spiral 和 [RoadRunner 指标](https://docs.roadrunner.dev/docs/logging-and-observability/metrics) 插件提供了收集应用程序指标并将它们暴露给 Prometheus 的能力。
 
 > **注意**
 > 在这里，您可以找到有关 [Prometheus 指标](https://prometheus.io/docs/concepts/data_model/) 的更多信息。
@@ -14,7 +14,7 @@ Spiral 和 [RoadRunner 指标](https://roadrunner.dev/docs/plugins-metrics) 插�
 首先，您需要安装 [spiral/roadrunner-bridge](../start/server.md#roadrunner-bridge) 软件包。
 
 > **注意**
-> `spiral/roadrunner-bridge` 软件包允许您将 RoadRunner [指标插件](https://roadrunner.dev/docs/lab-metrics) 与 Spiral 一起使用。此软件包提供了指标的 RPC API 和应用程序的启动器。
+> `spiral/roadrunner-bridge` 软件包允许您将 RoadRunner [指标插件](https://docs.roadrunner.dev/docs/logging-and-observability/metrics) 与 Spiral 一起使用。此软件包提供了指标的 RPC API 和应用程序的启动器。
 
 安装完软件包后，您可以将 `Spiral\RoadRunnerBridge\Bootloader\MetricsBootloader` 添加到启动器列表中：
 

@@ -1,6 +1,6 @@
 # 高级特性 — 原子锁
 
-Spiral 完整集成了 [RoadRunner locks](https://roadrunner.dev/docs/plugins-locks) 插件，这使你
+Spiral 完整集成了 [RoadRunner locks](https://docs.roadrunner.dev/docs/plugins/locks) 插件，这使你
 能够在你的应用程序中管理资源锁。通过这个组件，你可以轻松管理应用程序的关键部分并防止竞争条件、数据损坏以及可能在
 多进程环境中发生的其他同步问题。
 
@@ -186,7 +186,7 @@ $lock->updateTTL('pdf:create', $id, new \DateInterval('PT10S'));
 要安装该包，请运行以下命令：
 
 ```terminal
-composer require roadrunner-php/symfony-lock-driver
+composer require roadrunner/symfony-lock-driver
 ```
 
 安装完成后，你需要创建一个引导程序类，该类将在容器中注册锁驱动程序：

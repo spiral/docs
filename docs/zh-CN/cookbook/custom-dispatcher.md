@@ -21,7 +21,7 @@
 - [Velox](https://github.com/roadrunner-server/velox/releases) - 官方 RoadRunner 构建工具。它允许您从 github 和 gitlab 存储库构建自定义 RoadRunner 二进制文件。
 
 > **了解更多**
-> 阅读更多关于如何创建 RoadRunner 插件 [here](https://roadrunner.dev/docs/plugins-intro/) 以及如何构建带有自定义插件的二进制文件 [here](https://roadrunner.dev/docs/app-server-build)。
+> 阅读更多关于如何创建 RoadRunner 插件 [here](https://docs.roadrunner.dev/docs/customization/plugin) 以及如何构建带有自定义插件的二进制文件 [here](https://docs.roadrunner.dev/docs/customization/build)。
 
 ### 插件配置
 
@@ -236,7 +236,7 @@ func (p *Plugin) Weight() uint {
 
 ### 使用 Velox 构建 RoadRunner 二进制文件
 
-接下来，我们将使用 [Velox](https://roadrunner.dev/docs/app-server-build) 来构建带有我们插件的自定义 RoadRunner 二进制文件。
+接下来，我们将使用 [Velox](https://docs.roadrunner.dev/docs/customization/build) 来构建带有我们插件的自定义 RoadRunner 二进制文件。
 
 创建一个名为 `plugins.toml` 的新文件，并添加以下配置：
 
@@ -271,10 +271,10 @@ vx build -c plugins.toml -o .
 
 ## 应用程序调度器
 
-首先，我们需要安装 `spiral/roadrunner-worker` 包：
+首先，我们需要安装 `roadrunner/worker` 包：
 
 ```terminal
-composer require spiral/roadrunner-worker
+composer require roadrunner/worker
 ```
 
 现在我们可以创建我们的调度器：

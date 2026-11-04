@@ -8,8 +8,8 @@ Spiral and `spiral/roadrunner-bridge` package. In this part, we will show you ho
 The `spiral/roadrunner-bridge` package includes the `spiral/grpc-client` package by default, which provides a simple and efficient way to communicate with gRPC services.
 
 > **Note**
-> Here you can find the [installation instructions](./configuration.md) for the `grpc` PHP extension, `protoc` compiler
-> and the `protoc-gen-php-grpc` plugin.
+> Here you can find the [installation instructions](./configuration.md) for the `protobuf` PHP extension and the code
+> generation tools: `buf`, `protoc` and `protoc-gen-php-grpc`.
 
 ### 1. Generate PHP interfaces from the `.proto` file
 

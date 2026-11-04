@@ -59,7 +59,7 @@ Spiral provides several predefined scopes:
 
 1. `root` — The main global scope. All other scopes are its children.
 2. **Dispatcher Scope** — A scope that opens when the corresponding [Dispatcher](../framework/dispatcher.md) is started:
-   `http`, `console`, `grpc`, `centrifugo`, `tcp`, `queue`, or `temporal`.
+   `http`, `console`, `grpc`, `centrifugo`, `queue`, or `temporal`.
 3. **Request Scope** — A scope that opens before the controller is executed, when the request object is fully formed and ready for processing.
    In the case of the HTTP dispatcher, middleware will be executed in the `http` scope, and interceptors in `http-request`.
 

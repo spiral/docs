@@ -50,7 +50,8 @@ First of all you need to configure RoadRunner server to use `jobs` plugin:
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
@@ -59,13 +60,13 @@ jobs:
 
 > **Note**
 > You can read more about RoadRunner Jobs plugin configuration
-> in the [official documentation](https://roadrunner.dev/docs/queues-overview)
+> in the [official documentation](https://docs.roadrunner.dev/docs/queues-and-jobs/overview-queues)
 
 As you can see we didn't specify any pipelines in our configuration. RoadRunner provides the ability to create pipelines
 dynamically, so we will create them later in our application.
 
 Once the configuration is complete, you can start the server. RoadRunner
-uses [RPC](https://roadrunner.dev/docs/php-rpc/2023.x/en) to communicate between PHP application and RoadRunner, so we
+uses [RPC](https://docs.roadrunner.dev/docs/php-worker/rpc) to communicate between PHP application and RoadRunner, so we
 need to start it before pushing jobs into a queue.
 
 Let's check if everything work fine using the following command:
@@ -97,6 +98,8 @@ return [
                   name: 'default',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              // Do not consume jobs for this pipeline on startup
              'consume' => false,
@@ -124,15 +127,20 @@ Let's define our first pipeline in the `.rr.yaml` file:
 
 ```yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
   pipelines:
     default:
       driver: amqp
-      priority: 100
-      queue: default
+      config:
+        connection: default
+        priority: 100
+        queue:
+          name: default
+          routing_key: default
 ```
 
 And select defined pipeline in the `app/config/queue.php` file:
@@ -352,7 +360,8 @@ First of all you need to configure RoadRunner server to use `jobs` plugin:
 
 ```yaml .rr.yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ ]
@@ -383,6 +392,8 @@ return [
                   name: 'default',
                   priority: 100,
                   queue: 'default',
+                  routingKey: 'default',
+                  queueHeaders: ['rr_connection' => 'default'],
              ),
              'consume' => true, // <===== Enables consuming
          ],
@@ -409,15 +420,20 @@ Let's define our pipeline in the `.rr.yaml` file:
 
 ```yaml
 amqp:
-  addr: amqp://guest:guest@127.0.0.1:5672
+  default:
+    addr: amqp://guest:guest@127.0.0.1:5672
 
 jobs:
   consume: [ default ]  # <===== Enables consuming
   pipelines:
     default:
       driver: amqp
-      priority: 100
-      queue: default
+      config:
+        connection: default
+        priority: 100
+        queue:
+          name: default
+          routing_key: default
 ```
 
 > **Note**

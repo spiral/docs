@@ -284,7 +284,6 @@ PROFILER_APP_NAME=My super app
 -   [控制器](../http/interceptors.md),
 -   [GRPC](../grpc/interceptors.md),
 -   [队列作业](../queue/interceptors.md).
--   TCP
 -   [事件](../advanced/events.md#interceptors).
 
 > **查看更多**
@@ -394,7 +393,7 @@ final class UserController
 首先，您需要配置您的 IDE 以与 xDebug 一起工作。
 
 > **查看更多**
-> 在官方 [文档](https://roadrunner.dev/docs/php-debugging) 中阅读有关 IDE 配置的更多信息。
+> 在官方 [文档](https://docs.roadrunner.dev/docs/php-worker/debugging) 中阅读有关 IDE 配置的更多信息。
 
 ### 按需
 

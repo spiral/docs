@@ -6,7 +6,7 @@ Spiral 可以与传统的 Nginx/PHP-FPM 配置一起使用，其中 Nginx 充当
 
 为了提高 Spiral 应用程序的性能，另一种解决方案是使用应用程序服务器 [RoadRunner](https://roadrunner.dev/)。
 
-RoadRunner 是一个高性能的应用程序服务器，旨在处理各种请求类型，包括 HTTP、gRPC、TCP、队列作业消费和 Temporal。它通过在启动时仅运行一次工人来实现，然后根据其类型将请求定向到 [dispatcher](../framework/dispatcher.md)。这意味着每个工人都是隔离的并且独立工作，遵循“无共享”方法，其中资源不会在工人之间共享。
+RoadRunner 是一个高性能的应用程序服务器，旨在处理各种请求类型，包括 HTTP、gRPC、队列作业消费和 Temporal。它通过在启动时仅运行一次工人来实现，然后根据其类型将请求定向到 [dispatcher](../framework/dispatcher.md)。这意味着每个工人都是隔离的并且独立工作，遵循“无共享”方法，其中资源不会在工人之间共享。
 
 > **注意**
 > 这种运行应用程序的方法类似于其他语言，例如 **Java**、**C#** 等。

@@ -29,8 +29,8 @@ Before we begin, you'll need to have the following installed on your machine:
   to build custom RoadRunner binaries from github and gitlab repositories.
 
 > **See more**
-> Read more how to create a RoadRunner plugin [here](https://roadrunner.dev/docs/plugins-intro/) and how to build a
-> binary with custom plugins [here](https://roadrunner.dev/docs/app-server-build).
+> Read more how to create a RoadRunner plugin [here](https://docs.roadrunner.dev/docs/customization/plugin) and how to build a
+> binary with custom plugins [here](https://docs.roadrunner.dev/docs/customization/build).
 
 ### Plugin Configuration
 
@@ -252,7 +252,7 @@ used. Spiral can then use the value of this variable to choose the appropriate d
 
 ### Build the RoadRunner Binary with Velox
 
-Next, we will use [Velox](https://roadrunner.dev/docs/app-server-build) to build a custom RoadRunner binary with our
+Next, we will use [Velox](https://docs.roadrunner.dev/docs/customization/build) to build a custom RoadRunner binary with our
 plugin.
 
 Create a new file called `plugins.toml` and add the following configuration:
@@ -288,10 +288,10 @@ vx build -c plugins.toml -o .
 
 ## Application Dispatcher
 
-At first, we need to install `spiral/roadrunner-worker` package:
+At first, we need to install `roadrunner/worker` package:
 
 ```terminal
-composer require spiral/roadrunner-worker
+composer require roadrunner/worker
 ```
 
 Now we can create our dispatcher:

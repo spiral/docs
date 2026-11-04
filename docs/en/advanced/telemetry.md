@@ -166,15 +166,21 @@ You should also configure RoadRunner to send traces to the OpenTelemetry collect
 http:
   address: 0.0.0.0:8080
   middleware: [ "otel" ]
-  otel:
-    insecure: true
-    compress: false
-    client: http
-    exporter: otlp
+
+otel:
+  resource:
     service_name: rr-blog # your app name
     service_version: 1.0.0 # your app version
-    endpoint: 127.0.0.1:4318 # otel collector server address
+  insecure: true
+  compress: false
+  client: http
+  exporter: otlp
+  endpoint: 127.0.0.1:4318 # otel collector server address
 ```
+
+> **Note**
+> RoadRunner 3 exports traces only via OTLP (or `stdout`/`stderr`): its native Zipkin exporter was removed. To send
+> traces to Zipkin, export them to the OpenTelemetry collector as shown above.
 
 This will enable the integration and allow you to start tracing requests through your application using the
 OpenTelemetry service.
@@ -199,6 +205,22 @@ return [
 
 This allows the **trace ID** to be stored with the log information. This makes it easier to find the trace for a
 specific log and investigate issues as it allows to correlate log and trace data.
+
+### Traced out of the box
+
+Once a telemetry driver is configured, these are traced without any code of yours:
+
+- **HTTP** — a `SERVER` span per request; the trace continues from the request headers, and the response headers carry
+  its context back.
+- **Queue** — a `PRODUCER` span when a job is pushed and a `CONSUMER` span when it is handled; the trace context travels
+  in the job headers.
+- **gRPC** (`spiral/roadrunner-bridge` 5.0+) — a `SERVER` span per incoming call and a `CLIENT` span per call made with
+  `spiral/grpc-client`; the trace context travels in the `traceparent` metadata. See
+  [gRPC — Interceptors](../grpc/interceptors.md#tracing).
+
+> **Note**
+> Use `spiral/otel-bridge` 2.0 or later with gRPC: earlier versions drop the attributes of a span whose callback
+> throws, so failed calls lose `rpc.response.status_code` and `error.type`.
 
 ## Usage
 
