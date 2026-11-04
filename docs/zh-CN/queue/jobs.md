@@ -420,7 +420,7 @@ class DatabaseFailedJobsHandler implements FailedJobHandlerInterface
 namespace App\Application\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\RoadRunnerBridge\Queue\Failed\FailedJobHandlerInterface;
+use Spiral\Queue\Failed\FailedJobHandlerInterface;
 
 final class QueueFailedJobsBootloader extends Bootloader
 {
