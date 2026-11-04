@@ -191,6 +191,16 @@ return [
 > that all the jobs pushed to these pipelines will be consumed immediately. All the pipelines with `'consume' => false` 
 > will be initialized only when you push a job to them.
 
+Since `spiral/roadrunner-bridge` 5.0, the bridge declares these pipelines under a RoadRunner
+[lock](../advanced/locks.md), so only one worker declares a pipeline at a time. A custom RoadRunner build must include
+the `lock` plugin; it needs no section in `.rr.yaml`. The lock names start with `roadrunner-bridge:jobs:`. If this
+clashes with locks of your application, set another prefix in the `lockPrefix` key of `app/config/queue.php`.
+
+The worker that creates a `'consume' => true` pipeline also resumes it. A pipeline that already exists is left as is,
+so a pipeline paused with `rr:jobs:pause` stays paused after workers restart. If a pipeline must exist before the first
+worker boots, declare it in `.rr.yaml`: RoadRunner 3 fails to start the `jobs` plugin when a `server.on_init` script
+declares pipelines.
+
 In some cases, you may need to create a pipeline with custom default options or in cases where the options are
 mandatory. For example, you may want to create a pipeline for Kafka broker, which requires additional options to be set.
 
@@ -206,6 +216,10 @@ use Spiral\RoadRunner\Jobs\KafkaOptions;
     ]
 ],
 ```
+
+The default `options` of a Kafka pipeline must be `KafkaOptions`: since `spiral/roadrunner-bridge` 5.0, a push to a
+Kafka pipeline with other default options throws `InvalidArgumentException`. A Kafka pipeline without `options` whose
+connector consumes a single topic pushes jobs to that topic.
 
 ## Usage
 
