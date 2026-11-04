@@ -93,48 +93,14 @@ final class ExceptionHandlerInterceptor implements InterceptorInterface
 }
 ```
 
-### 从请求接收跟踪上下文
+### 跟踪
 
-以下是一个简单拦截器的示例，从请求接收跟踪上下文。
+跟踪传入调用不需要编写拦截器：从 `spiral/roadrunner-bridge` 5.0 开始，每个调用都在[遥测](../advanced/telemetry.md)跟踪器的
+`SERVER` span 中运行，您的拦截器也在该 span 内执行。跟踪会从请求的 `traceparent` 元数据继续，响应头会把 span 上下文带回调用方。
 
-```php
-namespace App\Endpoint\GRPC\Interceptor;
-
-use Spiral\Interceptors\Context\CallContextInterface;
-use Spiral\Interceptors\HandlerInterface;
-use Spiral\Interceptors\InterceptorInterface;
-use Spiral\Telemetry\TraceKind;
-use Spiral\Telemetry\TracerFactoryInterface;
-
-class InjectTelemetryFromContextInterceptor implements InterceptorInterface
-{
-    public function __construct(
-        private readonly TracerFactoryInterface $tracerFactory,
-    ) {}
-
-    public function intercept(CallContextInterface $context, HandlerInterface $handler): mixed
-    {
-        $ctx = $context->getArguments()[0] ?? null;
-
-        $traceContext = $ctx instanceof \Spiral\RoadRunner\GRPC\ContextInterface
-            ? (array) $ctx->getValue('telemetry-trace-id')
-            : [];
-
-        $target = $context->getTarget();
-
-        return $this->tracerFactory->make($traceContext)->trace(
-            name: \sprintf('Interceptor [%s]', __CLASS__),
-            callback: static fn(): mixed => $handler->handle($context),
-            attributes: [
-                'target' => (string) $target,
-                'path' => $target->getPath(),
-            ],
-            scoped: true,
-            traceKind: TraceKind::SERVER,
-        );
-    }
-}
-```
+span 以方法命名，例如 `ping.dto.PingService/Ping`，并带有 OpenTelemetry gRPC 属性 `rpc.system.name`、`rpc.method` 和
+`rpc.response.status_code`。以 `OK` 以外的任何状态结束的调用都会被标记为错误，状态写入 `error.type`；如果异常不是
+`GRPCExceptionInterface`，则写入异常的类名。
 
 ### 守卫拦截器
 
@@ -307,6 +273,24 @@ use Spiral\Grpc\Client\Interceptor\ExecuteServiceInterceptors;
 ExecuteServiceInterceptors::class
 ```
 
+#### TracingInterceptor
+
+`Spiral\RoadRunnerBridge\GRPC\Client\TracingInterceptor` 随 `spiral/roadrunner-bridge` 5.0 提供，并会自动添加：桥接器把它放在全局拦截器的第一位。
+每个调用都会成为[遥测](../advanced/telemetry.md)跟踪器的 `CLIENT` span，名称和属性与服务器 span 相同，跟踪上下文通过
+`traceparent` 元数据发送给服务器，因此两端处于同一个跟踪中。
+
+放在第一位时，每个调用（包括重试）只有一个 span。如果需要每次尝试一个 span，请自行把它放在 `RetryInterceptor` 之后；桥接器会保留您选择的位置。
+只把它放在全局列表中：如果同时加入某个服务的拦截器，每个调用会被包裹两次。
+
+```php
+use Spiral\Grpc\Client\Interceptor\RetryInterceptor;
+use Spiral\RoadRunnerBridge\GRPC\Client\TracingInterceptor;
+
+// 每次尝试一个 span
+RetryInterceptor::createConfig(maximumAttempts: 3),
+TracingInterceptor::class,
+```
+
 ### 使用 gRPC 上下文字段
 
 编写自定义客户端拦截器时，您经常需要访问或修改 gRPC 请求上下文的元素。
@@ -349,51 +333,6 @@ final class AuthInterceptor implements InterceptorInterface
 - `getReturnType()`/`withReturnType()` - 获取/设置预期响应类型
 - `getOptions()`/`withOptions()` - 获取/设置请求选项
 
-### 自定义客户端拦截器示例：遥测
-
-以下是一个自定义客户端拦截器的示例，它将遥测数据注入到请求中：
-
-```php
-use Spiral\Grpc\Client\Interceptor\Helper;
-use Spiral\Interceptors\Context\CallContextInterface;
-use Spiral\Interceptors\HandlerInterface;
-use Spiral\Interceptors\InterceptorInterface;
-use Spiral\Telemetry\TraceKind;
-use Spiral\Telemetry\TracerInterface;
-
-final class TelemetryInterceptor implements InterceptorInterface
-{
-    public function __construct(
-        private readonly TracerInterface $tracer,
-    ) {}
-
-    public function intercept(CallContextInterface $context, HandlerInterface $handler): mixed
-    {
-        // 获取当前元数据
-        $metadata = Helper::getMetadata($context);
-
-        // 在元数据中添加跟踪上下文
-        $metadata['telemetry-trace-id'] = $this->tracer->getContext();
-
-        // 用新元数据更新上下文
-        $context = Helper::withMetadata($context, $metadata);
-
-        // 跟踪 gRPC 调用
-        $target = $context->getTarget();
-
-        return $this->tracer->trace(
-            name: \sprintf('GRPC client request %s', (string) $target),
-            callback: static fn(): mixed => $handler->handle($context),
-            attributes: [
-                'target' => (string) $target,
-                'path' => $target->getPath(),
-            ],
-            traceKind: TraceKind::PRODUCER,
-        );
-    }
-}
-```
-
 ### 拦截器顺序
 
 拦截器的顺序很重要。拦截器按照它们在配置中定义的顺序执行。
@@ -419,7 +358,6 @@ final class TelemetryInterceptor implements InterceptorInterface
 有关配置 gRPC 客户端及其拦截器的详细信息，请参阅 [客户端](./client.md) 文档。以下是一个基本示例：
 
 ```php app/config/grpc.php
-use App\GRPC\Interceptor\TelemetryInterceptor;
 use Spiral\Grpc\Client\Config\GrpcClientConfig;
 use Spiral\Grpc\Client\Config\ServiceConfig;
 use Spiral\Grpc\Client\Config\ConnectionConfig;
@@ -433,7 +371,6 @@ return [
     'client' => new GrpcClientConfig(
         interceptors: [
             // 全局拦截器
-            TelemetryInterceptor::class,
             SetTimoutInterceptor::createConfig(5_000),
             RetryInterceptor::createConfig(maximumAttempts: 3),
             // 调用特定于服务的拦截器

@@ -96,48 +96,17 @@ final class ExceptionHandlerInterceptor implements InterceptorInterface
 }
 ```
 
-### Receiving trace context from request
+### Tracing
 
-Here is an example of a simple interceptor that receives trace context from the request.
+You don't need an interceptor to trace incoming calls: since `spiral/roadrunner-bridge` 5.0, every call runs inside
+a `SERVER` span of the [telemetry](../advanced/telemetry.md) tracer, and your interceptors run inside that span. The
+trace continues from the `traceparent` metadata of the request, and the response headers carry the span context
+back to the caller.
 
-```php
-namespace App\Endpoint\GRPC\Interceptor;
-
-use Spiral\Interceptors\Context\CallContextInterface;
-use Spiral\Interceptors\HandlerInterface;
-use Spiral\Interceptors\InterceptorInterface;
-use Spiral\Telemetry\TraceKind;
-use Spiral\Telemetry\TracerFactoryInterface;
-
-class InjectTelemetryFromContextInterceptor implements InterceptorInterface
-{
-    public function __construct(
-        private readonly TracerFactoryInterface $tracerFactory,
-    ) {}
-
-    public function intercept(CallContextInterface $context, HandlerInterface $handler): mixed
-    {
-        $ctx = $context->getArguments()[0] ?? null;
-
-        $traceContext = $ctx instanceof \Spiral\RoadRunner\GRPC\ContextInterface
-            ? (array) $ctx->getValue('telemetry-trace-id')
-            : [];
-
-        $target = $context->getTarget();
-
-        return $this->tracerFactory->make($traceContext)->trace(
-            name: \sprintf('Interceptor [%s]', __CLASS__),
-            callback: static fn(): mixed => $handler->handle($context),
-            attributes: [
-                'target' => (string) $target,
-                'path' => $target->getPath(),
-            ],
-            scoped: true,
-            traceKind: TraceKind::SERVER,
-        );
-    }
-}
-```
+The span is named after the method, such as `ping.dto.PingService/Ping`, and carries the OpenTelemetry gRPC
+attributes `rpc.system.name`, `rpc.method` and `rpc.response.status_code`. A call that ends with any status other than
+`OK` is marked as an error, with the status in `error.type`; an exception that is not a `GRPCExceptionInterface`
+puts its class there instead.
 
 ### Guard Interceptor
 
@@ -311,6 +280,26 @@ use Spiral\Grpc\Client\Interceptor\ExecuteServiceInterceptors;
 ExecuteServiceInterceptors::class
 ```
 
+#### TracingInterceptor
+
+`Spiral\RoadRunnerBridge\GRPC\Client\TracingInterceptor` comes with `spiral/roadrunner-bridge` 5.0 and is added
+for you: the bridge puts it first among the global interceptors. Each call becomes a `CLIENT` span of the
+[telemetry](../advanced/telemetry.md) tracer, with the same name and attributes as a server span, and the trace
+context goes to the server in the `traceparent` metadata, so both sides end up in one trace.
+
+Being first, it makes one span per call, retries included. For a span per attempt, list it yourself after
+`RetryInterceptor`; the bridge keeps the position you chose. Keep it in the global list only: added to a service's
+interceptors as well, it wraps each call twice.
+
+```php
+use Spiral\Grpc\Client\Interceptor\RetryInterceptor;
+use Spiral\RoadRunnerBridge\GRPC\Client\TracingInterceptor;
+
+// A span per attempt
+RetryInterceptor::createConfig(maximumAttempts: 3),
+TracingInterceptor::class,
+```
+
 ### Working with gRPC Context Fields
 
 When writing custom client interceptors, you'll often need to access or modify elements of the gRPC request context.
@@ -353,51 +342,6 @@ The `Helper` class provides the following methods:
 - `getReturnType()`/`withReturnType()` - Get/set expected response type
 - `getOptions()`/`withOptions()` - Get/set request options
 
-### Custom Client Interceptor Example: Telemetry
-
-Here's an example of a custom client interceptor that injects telemetry data into the request:
-
-```php
-use Spiral\Grpc\Client\Interceptor\Helper;
-use Spiral\Interceptors\Context\CallContextInterface;
-use Spiral\Interceptors\HandlerInterface;
-use Spiral\Interceptors\InterceptorInterface;
-use Spiral\Telemetry\TraceKind;
-use Spiral\Telemetry\TracerInterface;
-
-final class TelemetryInterceptor implements InterceptorInterface
-{
-    public function __construct(
-        private readonly TracerInterface $tracer,
-    ) {}
-
-    public function intercept(CallContextInterface $context, HandlerInterface $handler): mixed
-    {
-        // Get the current metadata
-        $metadata = Helper::getMetadata($context);
-
-        // Add trace context to metadata
-        $metadata['telemetry-trace-id'] = $this->tracer->getContext();
-
-        // Update context with new metadata
-        $context = Helper::withMetadata($context, $metadata);
-
-        // Trace the gRPC call
-        $target = $context->getTarget();
-
-        return $this->tracer->trace(
-            name: \sprintf('GRPC client request %s', (string) $target),
-            callback: static fn(): mixed => $handler->handle($context),
-            attributes: [
-                'target' => (string) $target,
-                'path' => $target->getPath(),
-            ],
-            traceKind: TraceKind::PRODUCER,
-        );
-    }
-}
-```
-
 ### Order of Interceptors
 
 The order of interceptors matters. Interceptors are executed in the order they are defined in the configuration.
@@ -423,7 +367,6 @@ The `ExecuteServiceInterceptors` interceptor should typically be placed last in 
 For detailed information on configuring the gRPC client and its interceptors, see the [Client](./client.md) documentation. Below is a basic example:
 
 ```php app/config/grpc.php
-use App\GRPC\Interceptor\TelemetryInterceptor;
 use Spiral\Grpc\Client\Config\GrpcClientConfig;
 use Spiral\Grpc\Client\Config\ServiceConfig;
 use Spiral\Grpc\Client\Config\ConnectionConfig;
@@ -437,7 +380,6 @@ return [
     'client' => new GrpcClientConfig(
         interceptors: [
             // Global interceptors
-            TelemetryInterceptor::class,
             SetTimoutInterceptor::createConfig(5_000),
             RetryInterceptor::createConfig(maximumAttempts: 3),
             // Calls service-specific interceptors
