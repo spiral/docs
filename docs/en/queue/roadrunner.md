@@ -260,6 +260,54 @@ public function createJob(QueueInterface $queue): void
 }
 ```
 
+RoadRunner options carry no pipeline name, so such a job always goes to the default pipeline of the connection.
+
+### Job priority and auto-ack
+
+Starting from `spiral/roadrunner-bridge` 5.0, the `Spiral\RoadRunnerBridge\Queue\JobOptions` class lets you choose the
+pipeline and set RoadRunner-specific job options at the same time. It extends `Spiral\Queue\Options`, so it has
+everything that class has (`onQueue()`, `delayed()`, `withDelay()`, `withHeader()`, ...) plus the job priority and
+auto-ack:
+
+```php
+use App\Endpoint\Job\SampleJob;
+use Spiral\Queue\QueueInterface;
+use Spiral\RoadRunnerBridge\Queue\JobOptions;
+
+public function createJob(QueueInterface $queue): void
+{
+    $queue->push(
+        SampleJob::class,
+        ['value' => 123],
+        JobOptions::onQueue('in-memory')->withPriority(1)->withAutoAck(true)
+    );
+}
+```
+
+**Priority.** RoadRunner hands jobs with a **lower** priority value to workers first. A job without a priority gets the
+priority of its pipeline: the `priority` option of the pipeline in `.rr.yaml`, or the `priority` of the connector for
+pipelines declared in `app/config/queue.php` (`10` by default). RoadRunner treats `0` the same way, so `withPriority()`
+accepts positive values only.
+
+The job priority orders jobs inside RoadRunner, not inside the broker. All pipelines share one RoadRunner priority
+queue, and each pipeline moves at most its `prefetch` number of jobs into it; the rest waits in the broker in the
+broker's own order. So a job priority works well for in-memory pipelines and short queues. When urgent jobs must not
+wait behind a large backlog in a broker, push them to a separate pipeline with a lower pipeline `priority`, like the
+`high-priority` pipeline above.
+
+**Auto-ack.** An auto-acked job is acknowledged before any worker runs it; broker drivers acknowledge it as soon as
+RoadRunner fetches it from the broker. If the handler fails or RoadRunner restarts, the job is lost. Use it only for
+jobs you can afford to lose.
+
+`JobOptions` also works as the default `options` of a pipeline in `app/config/queue.php`, except for Kafka pipelines,
+which require `KafkaOptions`. Options set on the push take precedence over the pipeline defaults, and an explicit
+`withAutoAck(false)` overrides a pipeline that auto-acks. Jobs pushed with `JobOptions` to a Kafka pipeline keep the
+topic from the pipeline's `KafkaOptions`.
+
+> **Note**
+> When a job is retried with `Spiral\Queue\Exception\RetryException`, only the delay and headers of its options are
+> applied: a retry cannot change the job priority.
+
 ## Custom driver
 
 In some cases, you may need to create a custom driver for a specific queue broker.
