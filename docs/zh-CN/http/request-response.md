@@ -167,6 +167,9 @@ dump($input->server('SERVER_PORT'));
 dump($input->server('server-port'));
 ```
 
+> **警告**
+> 请从请求对象读取请求数据，而不是从 `$_SERVER` 超全局变量读取。从 `spiral/roadrunner-bridge` 5.0 开始，RoadRunner HTTP worker 不再为每个请求填充 `$_SERVER`：它保留 worker 启动时的值。如果您的代码或某个库依赖 `$_SERVER`，请在 `app/config/http-worker.php` 中设置 `'populateServer' => true` 以恢复旧的行为。
+
 ### Post/Data 参数
 
 ```php
