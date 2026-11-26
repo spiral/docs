@@ -179,6 +179,12 @@ dump($input->server('SERVER_PORT'));
 dump($input->server('server-port'));
 ```
 
+> **Warning**
+> Read request data from the request, not from the `$_SERVER` superglobal. Since `spiral/roadrunner-bridge` 5.0, the
+> RoadRunner HTTP worker no longer fills `$_SERVER` for each request: it keeps the values the worker started with.
+> If your code or a library depends on `$_SERVER`, set `'populateServer' => true` in `app/config/http-worker.php` to
+> restore the old behaviour.
+
 ### Post/Data parameters
 
 ```php
